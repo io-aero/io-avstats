@@ -1,0 +1,11 @@
+[default]
+postgres_password="postgresql"
+postgres_password_admin = "postgresql"
+
+[dev]
+
+[prod]
+
+[test]
+postgres_password = "postgresql"
+postgres_password_admin = "postgresql"

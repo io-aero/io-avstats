@@ -1,0 +1,22 @@
+[tool.bandit]
+skips = ["B404", "B603", "B608"]
+
+[tool.isort]
+float_to_top = true
+force_single_line = true
+overwrite_in_place = true
+profile = "black"
+
+[tool.pydocstyle]
+match = '((?!test_).*\.py)'
+
+[tool.pytest.ini_options]
+console_output_style = "count"
+log_cli_level = "INFO"
+log_file = "logging_io-avstats_pytest.log"
+log_file_level = "DEBUG"
+log_level = "DEBUG"
+markers = ["issue"]
+norecursedirs = "./tests/helpers"
+pythonpath = "./src/"
+testpaths = "./tests/"

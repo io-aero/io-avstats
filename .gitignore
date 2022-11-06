@@ -1,0 +1,7 @@
+.secrets.*
+/*.log
+/.coverage*
+/.history/
+/.idea/
+/Pipfile.lock
+coverage.xml

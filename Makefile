@@ -1,30 +1,30 @@
 .DEFAULT_GOAL := help
 
 ifeq ($(OS),Windows_NT)
+	export ENV_FOR_DYNACONF=test
 	export MYPYPATH=
 	export PIPENV=python -m pipenv
 	export PYTHON=python
 	export PYTHONPATH=
-	export PYTHONPATH=src
+	export PYTHONPATH_DEV=
 else
+	export ENV_FOR_DYNACONF=test
 	export MYPYPATH=
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
 	export PYTHONPATH=
-	export PYTHONPATH=src
+	export PYTHONPATH_DEV=
 endif
-
-export ENV_FOR_DYNACONF=test
 
 ##                                                                            .
 ## =============================================================================
 ## IO-AVSTATS - Aviation Accident Statistics - make Documentation.
-##              -------------------------------------------------------------
-##              The purpose of this Makefile is to support the whole software
-##              development process for io-avstats. It contains also the
-##              necessary tools for the CI activities.
-##              -------------------------------------------------------------
-##              The available make commands are:
+##                -------------------------------------------------------------
+##                The purpose of this Makefile is to support the whole software
+##                development process for io-avstats. It contains also the
+##                necessary tools for the CI activities.
+##                -------------------------------------------------------------
+##                The available make commands are:
 ## ------------------------------------------------------------------------------
 ## help:               Show this help.
 ## -----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ export ENV_FOR_DYNACONF=test
 dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: pydocstyle mkdocs
-## final:              Format, lint and test the code.
+## final:              Format, lint and test the code and the documentation.
 final: format lint docs tests
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter

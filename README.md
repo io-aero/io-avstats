@@ -17,10 +17,11 @@ TODO by wwe
 | Directory         | Content                                                       |
 |-------------------|---------------------------------------------------------------|
 | .github/workflows | **[GitHub Action](https://github.com/actions)** workflows.    |
-| data              | Application data related files.                               |
 | docs              | Documentation files.                                          |
+| resources         | Selected manuals and software.                                |
+| scripts           | Supporting Ubuntu and Windows Scripts.                        |
 | site              | Documentation as static HTML pages generated with **MkDocs**. |
-| src               | Python scripts files.                                         |
+| src               | Python script files and the **IO-AVSTATS-DB** package.        |
 | tests             | Scripts and data for **pytest**.                              |
 
 ### 3.2 Files
@@ -35,5 +36,6 @@ TODO by wwe
 | Pipfile                  | Definition of the Python package requirements.                                                  |
 | pyproject.toml           | Optional configuration data for the **bandit**, **isort**, **pydocstyle** and **pytest** tools. |
 | README.md                | This file.                                                                                      |
+| run_io_avstats           | Main script for using the functionality of **IO-AVSTATS**.                                      |
 | settings.io_avstats.toml | Configuration data for **IO-AVSTATS**.                                                          |
 | setup.cfg                | Optional configuration data for **flake8**.                                                     |

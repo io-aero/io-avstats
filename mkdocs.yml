@@ -28,13 +28,6 @@ nav:
     - Configuration:
       - IO-AVSTATS: config_io_avstats.md
       - Logging: config_logging.md
-  - Data:
-    - Data Source NTSB: data_source.md
-    - Database PostgreSQL:
-      - Administration: db_administration.md
-      - Database Schema: db_schema.md
-      - Data Transfer: db_data_transfer.md
-  - Operation: operation.md
   - Release Documents:
     - Release Notes: release_notes.md
     - Release History: release_history.md
@@ -51,7 +44,7 @@ plugins:
         python:
           options:
             heading_level: 3
-            paths: [src/io_avstats_ui]
+            paths: [src/io_avstats_db]
             show_root_heading: false
             show_source: true
   - search

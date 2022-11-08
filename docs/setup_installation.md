@@ -1,19 +1,18 @@
 # IO-AVSTATS - Installation
 
-1. Clone or copy the **IO-AVSTATS** repository from [here](https://github.com/KonnexionsGmbH/dcr){:target="_blank"}.
+1. Clone or copy the **IO-AVSTATS** repository from [here](https://github.com/io-aero/io-avstats-db){:target="_blank"}.
 
 2. Switch to the file directory **io-avstats**:
 
-    **`cd avstats`**
+    **`cd io-avstats`**
 
-3. Install the necessary Python packages by running the script  **`run_dcr_prod`** with action **`m_p`**.
+3. Install the necessary Python packages by running the command  **`make pipenv-dev`**.
 
-4. Optionally, adjustments can be made in the following configuration files - details may be found [here](https://konnexionsgmbh.github.io/dcr/running_configuration/){:target="_blank"}:
+4. Optionally, adjustments can be made in the following configuration files:
 
-    - **`data/db_initial_data_file.json`**: to configure the document languages to be used
     - **`logging_cfg.yaml`**: for the logging functionality
-    - **`setup.cfg`**: for the **DCR** application in section **DCR**
+    - **`settings.io_avstats.toml`**: for the **IO-AVSTATS** application
  
-5. Create a PostgreSQL database container by running the script **`scripts/run_setup_postgresql`** with action **`prod`**.
-
-6. Create the **DCR** database by running the script **`run_dcr_prod`** with action **`db_c`**.
+5. Create the configuration file **`.settings.io_avstats.toml`** with the passwords for the PostgreSQL database users.
+ 
+6. Use the **IOO-AVSTATS** application by running the script **`run_io_avstats.bat`**.

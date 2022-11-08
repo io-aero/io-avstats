@@ -13,7 +13,7 @@ postgres_dbname = "io_avstats_db"
 postgres_dbname_admin = "postgres"
 postgres_host = "localhost"
 postgres_net = "io_avstats_net"
-postgres_pgdata ="data/postgres"
+postgres_pgdata ="data/dev_postgres"
 postgres_user = "io_aero"
 postgres_user_admin = "postgres"
 postgres_version ="latest"
@@ -28,26 +28,3 @@ razorsql_reference_file = "2022.11.01_avall.sql"
 [prod]
 
 [test]
-is_verbose = true
-msaccess_chunk_size = 10000
-ntsb_chunk_size = 524288
-ntsb_timeout = 10
-ntsb_url_prefix = "https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C"
-ntsb_work_dir = "data/NTSB"
-odbc_connection_string = "Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename}}"
-postgres_connection_port = 5432
-postgres_container_name = "io_avstats_container"
-postgres_container_port = 5432
-postgres_dbname = "io_avstats_db"
-postgres_dbname_admin = "postgres"
-postgres_host = "localhost"
-postgres_net = "io_avstats_net"
-postgres_pgdata ="data/postgres_test"
-postgres_user = "io_aero"
-postgres_user_admin = "postgres"
-postgres_version ="latest"
-razorsql_jar_file_windows = "C:\\Program Files\\RazorSQL\\razorsql.jar"
-razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
-razorsql_profile = "IO-AVSTATS"
-razorsql_reference_dir = "data/RazorSQL"
-razorsql_reference_file = "2022.11.01_avall.sql"

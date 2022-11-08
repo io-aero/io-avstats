@@ -1,3 +1,5 @@
 # IO-AVSTATS - Aviation Accident Statistics
 
-## TODO by lho
+TODO
+
+All processing tasks can be performed using the **`run_io_avstats`** shell script.

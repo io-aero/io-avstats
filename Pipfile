@@ -6,11 +6,9 @@ name = "pypi"
 [packages]
 dynaconf = "*"
 psycopg = "*"
-pyodbc = "*"
 pyyaml = "<=6.0.0"
-requests = "*"
+streamlit = "*"
 toml = "*"
-extensions = "*"
 
 [dev-packages]
 bandit = "*"
@@ -36,7 +34,6 @@ pytest-deadfixtures = "*"
 pytest-helpers-namespace = "*"
 pytest-random-order = "*"
 types-PyYAML = "*"
-types-requests = "*"
 
 [requires]
 python_version = "3.10"

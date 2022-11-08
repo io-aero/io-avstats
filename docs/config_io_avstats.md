@@ -30,9 +30,7 @@ The `test` layer is used for the automated tests.
 | postgres_user              | io_aero                                       | database username                                             |
 | postgres_user_admin        | postgres                                      | administration database username                              |
 | postgres_version           | latest                                        | requested PostgreSQL version from DockerHub                   |
-| razorsql_jar_file_linux    | TODO                                          | name of the jar file (Linux version)                          |
 | razorsql_jar_file_windows  | C:\\Program Files\\RazorSQL\\razorsql.jar     | name of the jar file (Windows version)                        |
-| razorsql_java_path_linux   | TODO                                          | name of the Java file (Linux version)                         |
 | razorsql_java_path_windows | C:\\Program Files\\RazorSQL\\jre11\\bin\\java | name of the Java file (Windows version)                       |
 | razorsql_profile           | IO-AVSTATS                                    | name of the RazorSQL connection profile                       |
 | razorsql_reference_dir     | data/RazorSQL                                 | file directory of the database schema reference file          |

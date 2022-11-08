@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Module io_avstats_ui: Entry Point Functionality.
+"""Module io_avstats_db: Entry Point Functionality.
 
 This is the entry point to the application IO-AVSTATS.
 """
@@ -11,8 +11,8 @@ import locale
 import sys
 import time
 
-from io_avstats_ui import avstats
-from io_avstats_ui import io_glob
+from io_avstats_db import avstats
+from io_avstats_db import io_glob
 
 # -----------------------------------------------------------------------------
 # Global variables.

@@ -34,39 +34,17 @@ See [here](https://semver.org/){:target="_blank"} for details.
 
 #### a) Update the version number in the **IO-AVSTATS** files:
 
-- pyproject.toml
-- docs/development_environment.md
-- docs/library_installation.md
 - docs/release_history.md
 - docs/release_notes.md
 - src//io_glob.py
 
-#### b) Update the project in io-docker and io-docker-shared.
-
-- Check the versions of the software to be installed and adjust them if necessary.
-- Create the Docker image that matches the new version.
-
-#### c) Copy the **IO-AVSTATS** specific project `9.9.9` from io-docker to `io-avstats/scripts/9.9.9`.
-
 ### **3. Create release candidate branch `<rel_branch>`**.
 
-### **4. Check the functionality of **IO-AVSTATS** in the docker container and in the VM**. 
-
-#### a) Create the Docker image in the **IO-AVSTATS** repository.
-
-#### b) Manually test the functionality of **IO-AVSTATS** in the Docker container.
-
-#### c) Create a clean virtual machine (VM) with the scripts.
-
-#### d) Start the VM and clone the **IO-AVSTATS** repository.
-
-    git clone https://github.com/io-aero/io-avstats
-
-### **5. Switch to the release candidate branch `<rel_branch> `**.
+### **4. Switch to the release candidate branch `<rel_branch> `**.
 
     git checkout <rel_branch>
 
-### **6. Finalise the new release**.
+### **5. Finalise the new release**.
 
 #### a. Execute the following command in the **IO-AVSTATS** clone.
 
@@ -84,20 +62,12 @@ See [here](https://semver.org/){:target="_blank"} for details.
 - **`x`** Create a discussion for this release
 - Publish release
 
-### **7. Preepare the next release**.
+### **6. Preepare the next release**.
 
-#### a. Choose a new preliminary version number.
+#### a. Choose a new version number.
 
 #### b. Prepare the following files in the **io-rsaster** repository for the new version:
 
-- pyproject.toml
-- docs/development_environment.md
-- docs/library_installation.md
 - docs/release_history.md
 - docs/release_notes.md
 - src//io_glob.py
-
-#### c. Prepare **io-rsaster** project in the repositories **io-docker** und **io-docker-shared** for the new version:
-
-
-

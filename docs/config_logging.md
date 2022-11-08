@@ -1,4 +1,4 @@
-# IO-AVSTATS - Configuration Logging
+# IO-AVSTATS - Configuration - Logging
 
 In **IO-AVSTATS** the Python standard module for logging is used - details can be found [here](https://docs.python.org/3/library/logging.config.html){:target="_blank"}.
 

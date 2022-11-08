@@ -1,12 +1,8 @@
 # IO-AVSTATS - Requirements
 
-The **DCR-CORE** library used in **DCR** determines the software required for the development and operation of **DCR**:
+The following are the minimum requirements to run the application::
 
-- Operating System **`Ubuntu 22.04`**, **`Windows 10`** oder **`Windows 11`**.
-- [Pandoc](https://pandoc.org){:target="_blank"} & [TeX Live](https://www.tug.org/texlive){:target="_blank"}
-- [PDFlib TET](https://www.pdflib.com/products/tet/){:target="_blank"}
-- [Poppler](https://poppler.freedesktop.org){:target="_blank"}
-- Python
-- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract){:target="_blank"}
+- Operating System **`Windows 10`** oder **`Windows 11`**
 
-Further details can be found [here](https://konnexionsgmbh.github.io/dcr-core/application_requirements/){:target="_blank"}.
+- [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm){:target="_blank"} 
+- [Python](https://www.python.org){:target="_blank"}

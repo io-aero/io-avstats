@@ -45,7 +45,7 @@ echo "==========================================================================
 # ------------------------------------------------------------------------------
 
 elif [ "${IO_AVSTATS_TASK}" = "demo" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
+    if ! ( pipenv run streamlit run src/demo.py ); then
         exit 255
     fi
 

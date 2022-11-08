@@ -136,9 +136,7 @@ def main(argv: list[str]) -> None:
     avstats.progress_msg("-" * 79)
 
     # Perform the processing
-    if ARG_TASK == io_glob.ARG_TASK_DEMO:
-        avstats.streamlit_demo()
-    elif ARG_TASK == io_glob.ARG_TASK_VERSION:
+    if ARG_TASK == io_glob.ARG_TASK_VERSION:
         print(f"The version of IO-AVSTATS is {avstats.version()}")
 
     avstats.progress_msg("-" * 79)

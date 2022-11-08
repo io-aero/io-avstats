@@ -30,18 +30,6 @@ def progress_msg(msg: str) -> None:
 
 
 # ------------------------------------------------------------------
-# Streamlit demo.
-# ------------------------------------------------------------------
-def streamlit_demo() -> None:
-    """Streamlit demo."""
-    io_glob.logger.debug(io_glob.LOGGER_START)
-
-    print("demo.fatalities()")
-
-    io_glob.logger.debug(io_glob.LOGGER_END)
-
-
-# ------------------------------------------------------------------
 # Terminate the application immediately.
 # ------------------------------------------------------------------
 def terminate_fatal(error_msg: str) -> None:

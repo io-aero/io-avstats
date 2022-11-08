@@ -54,7 +54,7 @@ rem Show the IO-AVSTATS demo.
 rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["demo"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    pipenv run streamlit run src\demo.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

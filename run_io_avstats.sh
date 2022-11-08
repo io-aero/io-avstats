@@ -15,6 +15,7 @@ export IO_AVSTATS_TASK_DEFAULT=version
 
 if [ -z "$1" ]; then
     echo "========================================================="
+    echo "demo    - Show the IO-AVSTATS demo"
     echo "version - Show the IO-AVSTATS version"
     echo "---------------------------------------------------------"
     read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_TASK
@@ -38,6 +39,15 @@ echo "TASK       : ${IO_AVSTATS_TASK}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
+
+# ------------------------------------------------------------------------------
+# Show the IO-AVSTATS demo.
+# ------------------------------------------------------------------------------
+
+elif [ "${IO_AVSTATS_TASK}" = "demo" ]; then
+    if ! ( pipenv run streamlit run src/demo.py ); then
+        exit 255
+    fi
 
 # ------------------------------------------------------------------------------
 # Show the IO-AVSTATS version.

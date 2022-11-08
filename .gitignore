@@ -3,5 +3,6 @@
 /.coverage*
 /.history/
 /.idea/
+/.settings.io_avstats.toml
 /Pipfile.lock
 coverage.xml

@@ -5,14 +5,14 @@ ifeq ($(OS),Windows_NT)
 	export MYPYPATH=
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=
+	export PYTHONPATH=src
 	export PYTHONPATH_DEV=
 else
 	export ENV_FOR_DYNACONF=test
 	export MYPYPATH=
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=
+	export PYTHONPATH=src
 	export PYTHONPATH_DEV=
 endif
 

@@ -6,52 +6,34 @@
 import pandas as pd
 import streamlit as st
 
-from io_avstats_ui import db_utils
+from io_avstats_db import db_utils
 
 # ------------------------------------------------------------------
 # Database query.
 # ------------------------------------------------------------------
 
-conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-cur_pg.execute(
-    """
-SELECT
-    e.ev_year AS YEAR,
-       sum(i.inj_person_count) AS fatalities
-FROM
-    injury i
-INNER JOIN events e ON
-    (i.ev_id = e.ev_id)
-WHERE
-    e.ev_year >= 1982
-    AND e.ev_year < EXTRACT( YEAR FROM CURRENT_DATE )::int
-    AND e.ev_country = 'USA'
-    AND i.injury_level = 'FATL'
-GROUP BY
-    e.ev_year
-ORDER BY
-    e.ev_year;
-    """
-)
-
-years = []
-fatalities = []
-
-for row in cur_pg.fetchall():
-    years.append(row[0])
-    fatalities.append(row[1])
-
-cur_pg.close()
-conn_pg.close()
-
-# ------------------------------------------------------------------
-# Preparing the database results.
-# ------------------------------------------------------------------
-
-data = {"Year": years, "Fatalities": fatalities}
-
-data_df = pd.DataFrame(data)
+with db_utils.get_postgres_connection() as conn_pg:
+    data_df = pd.read_sql_query(
+        """
+    SELECT
+        e.ev_year AS year,
+           sum(i.inj_person_count) AS fatalities
+    FROM
+        injury i
+    INNER JOIN events e ON
+        (i.ev_id = e.ev_id)
+    WHERE
+        e.ev_year >= 1982
+        AND e.ev_year < EXTRACT( YEAR FROM CURRENT_DATE )::int
+        AND e.ev_country = 'USA'
+        AND i.inj_person_category <> 'ABRD'
+        AND i.injury_level = 'FATL'
+    GROUP BY
+        e.ev_year
+    ORDER BY
+        e.ev_year;
+        """, conn_pg
+    )
 
 # ------------------------------------------------------------------
 # Creating the diagram.
@@ -59,4 +41,8 @@ data_df = pd.DataFrame(data)
 
 st.subheader("Aviation fatalities in the U.S. per year since 1982")
 
-st.bar_chart(data_df, x="Year", y="Fatalities")
+st.bar_chart(data_df, x="year", y="fatalities")
+
+st.line_chart(data_df, x="year", y="fatalities")
+
+st.area_chart(data_df, x="year", y="fatalities")

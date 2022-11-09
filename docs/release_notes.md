@@ -1,12 +1,12 @@
 # IO-AVSTATS - Release Notes
 
-## 1. Version 1.0.0 
+## 1. Version 0.9.0 
 
 Release Date: dd.mm.2022
 
 ### 1.1 New Features
 
-- TODO
+- Streamlit demo
 
 ### 1.2 Applied Software (Windows-specific)
 

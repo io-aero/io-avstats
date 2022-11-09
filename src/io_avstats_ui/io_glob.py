@@ -32,7 +32,7 @@ INFO_00_006 = "INFO.00.006 End   Launcher"
 INFORMATION_NOT_YET_AVAILABLE = "n/a"
 
 # Library version number.
-IO_AVSTATS_VERSION = "1.0.0"
+IO_AVSTATS_VERSION = "0.9.0"
 
 LOCALE = "en_US.UTF-8"
 # Logging constants.

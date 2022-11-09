@@ -4,11 +4,11 @@ TODO by lho
 
 ## 1. Features
 
-TODO by lho
+- Demo showing the aviation fatalities in the U.S. per year since 1982.
 
 ## 2. Quick Start
 
-TODO by wwe
+All processing tasks can be performed using the **`run_io_avstats`** shell script.
 
 ## 3. Directory and File Structure of this Repository
 

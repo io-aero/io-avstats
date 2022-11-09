@@ -5,9 +5,11 @@ name = "pypi"
 
 [packages]
 dynaconf = "*"
+#io-avstats-db = {file = "./libs/io_avstats_db-1.0.0-py3-none-any.whl"}
 pandas = "*"
 psycopg = "*"
 pyyaml = "<=6.0.0"
+pyodbc = "*"
 streamlit = "*"
 toml = "*"
 

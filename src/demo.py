@@ -6,7 +6,7 @@
 import pandas as pd
 import streamlit as st
 
-from io_avstats_db import db_utils
+from io_avstats_db import db_utils  # type: ignore  # pylint: disable=no-name-in-module
 
 # ------------------------------------------------------------------
 # Database query.
@@ -16,8 +16,8 @@ with db_utils.get_postgres_connection() as conn_pg:
     data_df = pd.read_sql_query(
         """
     SELECT
-        e.ev_year AS year,
-           sum(i.inj_person_count) AS fatalities
+        e.ev_year AS "Year",
+           sum(i.inj_person_count) AS "Fatalities"
     FROM
         injury i
     INNER JOIN events e ON
@@ -32,7 +32,8 @@ with db_utils.get_postgres_connection() as conn_pg:
         e.ev_year
     ORDER BY
         e.ev_year;
-        """, conn_pg
+        """,
+        conn_pg,
     )
 
 # ------------------------------------------------------------------
@@ -41,8 +42,8 @@ with db_utils.get_postgres_connection() as conn_pg:
 
 st.subheader("Aviation fatalities in the U.S. per year since 1982")
 
-st.bar_chart(data_df, x="year", y="fatalities")
+st.bar_chart(data_df, x="Year", y="Fatalities")
 
-st.line_chart(data_df, x="year", y="fatalities")
+st.line_chart(data_df, x="Year", y="Fatalities")
 
-st.area_chart(data_df, x="year", y="fatalities")
+st.area_chart(data_df, x="Year", y="Fatalities")

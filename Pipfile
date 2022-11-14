@@ -13,6 +13,8 @@ pyodbc = "*"
 sqlalchemy = "*"
 streamlit = "*"
 toml = "*"
+pyproj = "*"
+fiona = "*"
 
 [dev-packages]
 bandit = "*"

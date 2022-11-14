@@ -7,6 +7,7 @@ ifeq ($(OS),Windows_NT)
 	export PYTHON=python
 	export PYTHONPATH=src
 	export PYTHONPATH_DEV=
+	export VSCODE=code
 else
 	export ENV_FOR_DYNACONF=test
 	export MYPYPATH=
@@ -14,6 +15,7 @@ else
 	export PYTHON=python3
 	export PYTHONPATH=src
 	export PYTHONPATH_DEV=
+	export VSCODE=
 endif
 
 ##                                                                            .
@@ -44,6 +46,15 @@ tests: pytest
 
 help:
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
+
+code-dev:
+	@echo Info **********  Start: code-dev ***************************************
+	@echo MYPYPATH  =${MYPYPATH}
+	@echo PYTHON    =${PYTHON}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${VSCODE} .
+	@echo Info **********  End:   code-dev **************************************
 
 # Bandit is a tool designed to find common security issues in Python code.
 # https://github.com/PyCQA/bandit

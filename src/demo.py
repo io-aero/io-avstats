@@ -3,8 +3,8 @@
 # be found in the LICENSE.md file.
 
 """IO-AVSTATS-UI interface."""
-import pandas as pd
 import streamlit as st
+from pandas import DataFrame
 
 from io_avstats_db import db_utils  # type: ignore  # pylint: disable=no-name-in-module
 
@@ -13,9 +13,10 @@ APP_SUB_TITLE = "Data source: National Transportation Safety Board"
 
 
 # ------------------------------------------------------------------
-# Streamlit application.
+# Application entry point.
 # ------------------------------------------------------------------
-def main():
+def main() -> None:
+    """Application entry point."""
     st.set_page_config(APP_TITLE)
 
     st.subheader("Aviation fatalities in the U.S. per year since 1982")
@@ -42,9 +43,9 @@ def main():
 # ------------------------------------------------------------------
 # Load data.
 # ------------------------------------------------------------------
-def get_data():
-    with db_utils.get_postgres_connection() as conn_pg:
-        data_df = pd.read_sql_query(
+def get_data() -> DataFrame:
+    """Load data."""
+    return db_utils.get_dataframe(
             """
         SELECT
             e.ev_year AS "Year",
@@ -63,11 +64,7 @@ def get_data():
             e.ev_year
         ORDER BY
             e.ev_year;
-            """,
-            conn_pg,
-        )
-
-    return data_df
+            """)
 
 
 # ------------------------------------------------------------------

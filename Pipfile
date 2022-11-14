@@ -7,9 +7,10 @@ name = "pypi"
 dynaconf = "*"
 #io-avstats-db = {file = "./libs/io_avstats_db-1.0.0-py3-none-any.whl"}
 pandas = "*"
-psycopg = "*"
+psycopg2 = "*"
 pyyaml = "<=6.0.0"
 pyodbc = "*"
+sqlalchemy = "*"
 streamlit = "*"
 toml = "*"
 

@@ -12,6 +12,8 @@ pyyaml = "<=6.0.0"
 pyodbc = "*"
 streamlit = "*"
 toml = "*"
+pyproj = "*"
+fiona = "*"
 
 [dev-packages]
 bandit = "*"

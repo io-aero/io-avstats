@@ -65,36 +65,40 @@ with db_utils.get_postgres_connection() as conn_pg:
        ev_id,
        ev_year,
        inj_tot_f,
-       latitude,
-       longitude
+       dec_latitude,
+       dec_longitude
     FROM
         events
     WHERE
         inj_tot_f > 0 AND
         ev_year >= 2011 AND
         ev_year < 2012 AND
-        latitude <> 'None' AND
-        longitude <> 'None' AND
-        latitude <> '       '
+        ev_country = 'USA'
     ORDER BY
         ev_year;
         """,
         conn_pg,
     )
 print(data_df["ev_id"][0], data_df["ev_year"][0], data_df["inj_tot_f"][0])
-print(f'<{data_df["latitude"][0]}>', data_df["longitude"][0])
+print(f'<{data_df["dec_latitude"][0]}>', data_df["dec_longitude"][0])
 
 ptArray = []
-for lat, lon in zip(data_df["latitude"], data_df["longitude"]):
-    print(lat, lon, lat[0:2], lat[2:4])
-    d_lat = float(lat[0:2]) + float(lat[2:4]) / 60.0 + float(lat[4:6]) / 3600.0
-    d_lon = float(lon[0:3]) + float(lon[3:5]) / 60.0 + float(lon[5:7]) / 3600.0
-    if lat[6] == "S":
-        d_lat *= -1
-    if lon[7] == "W":
-        d_lon *= -1
+for lat, lon in zip(data_df["dec_latitude"], data_df["dec_longitude"]):
+    d_lat = lat
+    d_lon = lon
+    # print(lat, lon, lat[0:2], lat[2:4])
+    # d_lat = float(lat[0:2]) + float(lat[2:4]) / 60.0 + float(lat[4:6]) / 3600.0
+    # d_lon = float(lon[0:3]) + float(lon[3:5]) / 60.0 + float(lon[5:7]) / 3600.0
+    # if lat[6] == "S":
+    #     d_lat *= -1
+    # if lon[7] == "W":
+    #     d_lon *= -1
     print(f"The latitude <{d_lat}> and the longitude <{d_lon}>")
     pt = io_point(d_lon, d_lat, "test1")
     ptArray.append(pt.transform_crs(new_crs=3857))
 shapeDict = {"Points": ptArray}
 createPtShapefile("testPts", shapeDict=shapeDict)
+
+# dec_latitude <> 'None' AND
+#         dec_longitude <> 'None' AND
+#         latitude <> '       ' AND

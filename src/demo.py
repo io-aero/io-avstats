@@ -46,7 +46,7 @@ def main() -> None:
 def get_data() -> DataFrame:
     """Load data."""
     return db_utils.get_dataframe(
-            """
+        """
         SELECT
             e.ev_year AS "Year",
                sum(i.inj_person_count) AS "Fatalities"
@@ -64,7 +64,8 @@ def get_data() -> DataFrame:
             e.ev_year
         ORDER BY
             e.ev_year;
-            """)
+            """
+    )
 
 
 # ------------------------------------------------------------------

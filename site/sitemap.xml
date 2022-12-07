@@ -2,62 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://io-aero.com/index.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/LICENSE.html</loc>
-         <lastmod>2022-11-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://io-aero.com/api_reference.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/config_io_avstats.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/config_logging.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/release_history.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/release_notes.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/release_schedule.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/setup_development_environment.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/setup_installation.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/setup_requirements.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/img/index.html</loc>
-         <lastmod>2022-11-11</lastmod>
+         <lastmod>2022-12-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

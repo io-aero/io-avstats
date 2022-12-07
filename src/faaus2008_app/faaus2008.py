@@ -7,11 +7,11 @@ import datetime
 
 import pandas as pd
 import psycopg2
-import pydeck as pdk
-import seaborn as sns
+import pydeck as pdk  # type: ignore
+import seaborn as sns  # type: ignore
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
@@ -113,7 +113,10 @@ def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
         cur.execute(query)
         result = cur.fetchone()
         return pdk.ViewState(
-            latitude=result[0], longitude=result[1], pitch=PITCH, zoom=ZOOM
+            latitude=result[0],  # type: ignore
+            longitude=result[1],  # type: ignore
+            pitch=PITCH,
+            zoom=ZOOM,
         )
 
 

@@ -12,9 +12,11 @@ import seaborn as sns  # type: ignore
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
 from matplotlib import pyplot as plt  # type: ignore
+from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
+from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants.
@@ -149,6 +151,12 @@ choice_details = st.sidebar.checkbox(
     help="Tabular representation of the selected detailed data.",
 )
 
+choice_details_profile = st.sidebar.checkbox(
+    label="Show details profile",
+    value=False,
+    help="Pandas profiling of the dataset.",
+)
+
 choice_map = st.sidebar.checkbox(
     label="Show US map",
     value=False,
@@ -189,13 +197,32 @@ else:
 # ------------------------------------------------------------------
 # Present details.
 # ------------------------------------------------------------------
+if choice_details_profile:
+    st.subheader("Profiling of the filtered data set")
+    df_faa_states_year_profile = ProfileReport(
+        df_faa_states_year,
+        # correlations={
+        #     "creamers": False,
+        #     "kendall": False,
+        #     "pearson": False,
+        #     "phi_k": False,
+        #     "recoded": False,
+        #     "spearman": False,
+        # },
+        # explorative=True,
+        minimal=True,
+    )
+    st_profile_report(df_faa_states_year_profile)
+
 if choice_details:
+    st.subheader("The filtered data set in detail")
     st.dataframe(df_faa_states_year)
 
 # ------------------------------------------------------------------
 # Present the US map.
 # ------------------------------------------------------------------
 if choice_map:
+    st.subheader("Depicting the fatal accidents on a map of the USA")
     faa_layer = pdk.Layer(
         type=LAYER_TYPE,
         auto_highlight=True,
@@ -218,6 +245,7 @@ if choice_map:
 # Present the yearly fatal accidents.
 # ------------------------------------------------------------------
 if choice_histogram:
+    st.subheader("Number of fatal accidents per year")
     width = st.sidebar.slider("Histogram width", 1, 25, 11)
     height = st.sidebar.slider("Histogram height", 1, 25, 5)
     fig, ax = plt.subplots(figsize=(width, height))

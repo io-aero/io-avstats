@@ -32,7 +32,6 @@ nav:
     - Release Notes: release_notes.md
     - Release History: release_history.md
     - Release Schedule: release_schedule.md
-  - API Reference: api_reference.md
   - License: LICENSE.md
 
 plugins:

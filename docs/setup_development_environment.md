@@ -101,7 +101,7 @@ Set up the database container
 
 Create the database schema
 
-    run_io_avstats_db s_d_c
+    run_io_avstats_db c_d_s
 
 Download Microsoft Access database file
 

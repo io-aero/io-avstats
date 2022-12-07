@@ -6,7 +6,7 @@ ifeq ($(OS),Windows_NT)
 	export PIPENV=python -m pipenv
 	export PYTHON=python
 	export PYTHONPATH=src
-	export PYTHONPATH_DEV=
+	export PYTHONPATH_DEV=src
 	export VSCODE=code
 else
 	export ENV_FOR_DYNACONF=test
@@ -14,7 +14,7 @@ else
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
 	export PYTHONPATH=src
-	export PYTHONPATH_DEV=
+	export PYTHONPATH_DEV=src
 	export VSCODE=
 endif
 
@@ -35,7 +35,8 @@ dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: pydocstyle mkdocs
 ## final:              Format, lint and test the code and the documentation.
-final: format lint docs tests
+#final: format lint docs tests
+final: format lint docs
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
 ## lint:               Lint the code with Bandit, Flake8, Pylint and Mypy.
@@ -46,15 +47,6 @@ tests: pytest
 
 help:
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
-
-code-dev:
-	@echo Info **********  Start: code-dev ***************************************
-	@echo MYPYPATH  =${MYPYPATH}
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
-	@echo ----------------------------------------------------------------------
-	${VSCODE} .
-	@echo Info **********  End:   code-dev **************************************
 
 # Bandit is a tool designed to find common security issues in Python code.
 # https://github.com/PyCQA/bandit

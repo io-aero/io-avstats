@@ -2,6 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
+"""Fatal Aviation Accidents in the US since 2008."""
 import datetime
 
 import pandas as pd
@@ -51,7 +52,7 @@ QUERY_US_LL = """
      WHERE country = 'USA'
 """
 
-RADIUS_DEFAULT = 1609.347 * 2
+RADIUS = 1609.347 * 2
 
 SETTINGS = Dynaconf(
     environments=True,
@@ -87,6 +88,11 @@ def get_engine() -> Engine:
 #           hash_funcs={"_thread.RLock": lambda _: None},
 #           show_spinner=True)
 def _get_postgres_connection() -> connection:
+    """Create a PostgreSQL connection,
+
+    Returns:
+        connection: Database connection.
+    """
     return psycopg2.connect(**st.secrets["db_postgres"])
 
 
@@ -94,6 +100,15 @@ def _get_postgres_connection() -> connection:
 # Run the US latitude and longitude query.
 # ------------------------------------------------------------------
 def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
+    """Run t.he US latitude and longitude query.
+
+    Args:
+        conn (connection): Database connection.
+        query (str): Database query.
+
+    Returns:
+        pdk.ViewState: Screen focus.
+    """
     with conn.cursor() as cur:
         cur.execute(query)
         result = cur.fetchone()
@@ -136,15 +151,14 @@ choice_map = st.sidebar.checkbox(
     value=False,
     help="Display of fatal accident events on a map of the USA.",
 )
+
 if choice_map:
-    choice_map_radius = st.sidebar.number_input(
+    RADIUS = st.sidebar.number_input(
         label="Accident radius in meters",
-        value=RADIUS_DEFAULT,
+        value=RADIUS,
         help="Radius for displaying the fatal accident events - "
         + "default value is 2 miles.",
     )
-else:
-    choice_map_radius = RADIUS_DEFAULT
 
 choice_histogram = st.sidebar.checkbox(
     label="Show histogram", value=True, help="Fatal accidents per year."
@@ -185,7 +199,7 @@ if choice_map:
         data=df_faa_states_year,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
-        get_radius=choice_map_radius,
+        get_radius=RADIUS,
         pickable=True,
     )
 
@@ -204,6 +218,6 @@ if choice_histogram:
     width = st.sidebar.slider("Histogram width", 1, 25, 11)
     height = st.sidebar.slider("Histogram height", 1, 25, 5)
     fig, ax = plt.subplots(figsize=(width, height))
-    ax = sns.histplot(df_faa_states_year["ev_year"], discrete=True)
+    sns.histplot(df_faa_states_year["ev_year"], discrete=True)
     plt.xlabel("Year")
     st.pyplot(fig)

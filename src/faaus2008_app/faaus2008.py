@@ -2,41 +2,82 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
+import datetime
+
 import pandas as pd
 import psycopg2
+import pydeck as pdk
+import seaborn as sns
 import streamlit as st
+from dynaconf import Dynaconf  # type: ignore
+from matplotlib import pyplot as plt
 from psycopg2.extensions import connection
-import datetime
-from psycopg2.extensions import cursor
-import pandas.io.sql as sqlio
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
+
+# ------------------------------------------------------------------
+# Global constants.
+# ------------------------------------------------------------------
+# LAYER_TYPE = "HexagonLayer"
+LAYER_TYPE = "ScatterplotLayer"
+
+MAP_STYLE = "mapbox://styles/mapbox/light-v9"
+
+PITCH = 30
 
 # ------------------------------------------------------------------
 # Query regarding the aircraft fatalities in the US since 2008.
 # ------------------------------------------------------------------
-QUERY = """
-    SELECT ev_year "year",
+QUERY_FAAUS2008 = """
+    SELECT ev_year,
            inj_tot_f fatalities,
            COALESCE(io_state, ev_state) state,
            COALESCE(io_city, ev_city) city,
            COALESCE(io_site_zipcode, ev_site_zipcode) zip,
-           COALESCE(io_latitude, latitude) latitude,
            COALESCE(io_dec_latitude, dec_latitude) dec_latitude,
-           io_dec_latitude_deviating latitude_deviating,
-           COALESCE(io_longitude, longitude) longitude,
            COALESCE(io_dec_longitude, dec_longitude) dec_longitude,
-           io_dec_longitude_deviating longitude_deviating,
-           io_invalid_latitude invalid_latitude,
-           io_invalid_longitude invalid_longitude,
-           io_invalid_us_city invalid_us_city,
-           io_invalid_us_city_zipcode invalid_us_city_zipcode,
-           io_invalid_us_state invalid_us_state,
-           io_invalid_us_zipcode invalid_us_zipcode,
            ev_id event_id,
-           ntsb_no,
-           io_dec_lat_lng_actions actions
+           ntsb_no
      FROM io_fatalities_us_2008
+    WHERE COALESCE(io_dec_latitude, dec_latitude) IS NOT NULL
+      AND COALESCE(io_dec_longitude, dec_longitude) IS NOT NULL
     ORDER BY ev_id;
 """
+
+QUERY_US_LL = """
+    SELECT dec_latitude,
+           dec_longitude
+      FROM io_countries
+     WHERE country = 'USA'
+"""
+
+RADIUS_DEFAULT = 1609.347 * 2
+
+SETTINGS = Dynaconf(
+    environments=True,
+    envvar_prefix="IO_AVSTATS",
+    settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
+)
+
+ZOOM = 4.4
+
+
+# ------------------------------------------------------------------
+# Create a simple user PostgreSQL database engine.
+# ------------------------------------------------------------------
+def get_engine() -> Engine:
+    """Create a simple user PostgreSQL database engine.
+
+    Returns:
+        Engine: Database engine.
+    """
+    return create_engine(
+        f"postgresql://{SETTINGS.postgres_user}:"
+        + f"{SETTINGS.postgres_password}@"
+        + f"{SETTINGS.postgres_host}:"
+        + f"{SETTINGS.postgres_connection_port}/"
+        + f"{SETTINGS.postgres_dbname}",
+    )
 
 
 # ------------------------------------------------------------------
@@ -50,35 +91,119 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
-# Run a SQL query.
+# Run the US latitude and longitude query.
 # ------------------------------------------------------------------
-def _sql_query(conn:connection, query:str)->list[tuple]:
+def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
     with conn.cursor() as cur:
         cur.execute(query)
-        return cur.fetchall()
+        result = cur.fetchone()
+        return pdk.ViewState(
+            latitude=result[0], longitude=result[1], pitch=PITCH, zoom=ZOOM
+        )
 
 
+# ------------------------------------------------------------------
+# Setup the page.
+# ------------------------------------------------------------------
 st.set_page_config(layout="wide")
 st.header("Fatal Aviation Accidents in the US since 2008")
 
+# ------------------------------------------------------------------
+# Setup the controls.
+# ------------------------------------------------------------------
+filter_year_from, filter_year_to = st.sidebar.slider(
+    label="Select a time frame",
+    help="Data available from 2008 to the current year.",
+    min_value=2008,
+    max_value=datetime.date.today().year,
+    value=(2008, datetime.date.today().year),
+)
+
+filter_states = st.sidebar.text_input(
+    label="Select one or more states",
+    help="One or more USPS abbreviations - "
+    + "all U.S. states if no selection has been made.",
+)
+
+choice_details = st.sidebar.checkbox(
+    label="Show details",
+    value=False,
+    help="Tabular representation of the selected detailed data.",
+)
+
+choice_map = st.sidebar.checkbox(
+    label="Show US map",
+    value=False,
+    help="Display of fatal accident events on a map of the USA.",
+)
+if choice_map:
+    choice_map_radius = st.sidebar.number_input(
+        label="Accident radius in meters",
+        value=RADIUS_DEFAULT,
+        help="Radius for displaying the fatal accident events - "
+        + "default value is 2 miles.",
+    )
+else:
+    choice_map_radius = RADIUS_DEFAULT
+
+choice_histogram = st.sidebar.checkbox(
+    label="Show histogram", value=True, help="Fatal accidents per year."
+)
+
+# ------------------------------------------------------------------
+# Read and filter data.
+# ------------------------------------------------------------------
 pg_conn = _get_postgres_connection()
 
-df = sqlio.read_sql_query(QUERY, pg_conn)
-
-filter_states = st.sidebar.text_input(label="Select one or more states",help="xxx")
-filter_year_from,filter_year_to = st.sidebar.slider(label="Select a time frame",help="xxx",min_value=2008,max_value=datetime.date.today().year,value=(2008,datetime.date.today().year))
-choice_details = st.sidebar.checkbox(label="Show details",help="xxx")
+df_faa = pd.read_sql(QUERY_FAAUS2008, con=get_engine())
 
 if filter_states:
-    df_filtered_states = df.loc[(df["state"].isin(filter_states.upper().split(",")))]
+    df_faa_states = df_faa.loc[(df_faa["state"].isin(filter_states.upper().split(",")))]
 else:
-    df_filtered_states = df
+    df_faa_states = df_faa
 
 if filter_year_from or filter_year_to:
-    df_filtered = df_filtered_states.loc[(df["year"] >= filter_year_from )&(df["year"]<=filter_year_to)]
+    df_faa_states_year = df_faa_states.loc[
+        (df_faa["ev_year"] >= filter_year_from) & (df_faa["ev_year"] <= filter_year_to)
+    ]
 else:
-    df_filtered = df_filtered_states
+    df_faa_states_year = df_faa_states
 
+# ------------------------------------------------------------------
+# Present details.
+# ------------------------------------------------------------------
 if choice_details:
-    st.dataframe(df_filtered)
+    st.dataframe(df_faa_states_year)
 
+# ------------------------------------------------------------------
+# Present the US map.
+# ------------------------------------------------------------------
+if choice_map:
+    faa_layer = pdk.Layer(
+        type=LAYER_TYPE,
+        auto_highlight=True,
+        data=df_faa_states_year,
+        get_fill_color=[255, 0, 0],
+        get_position=["dec_longitude", "dec_latitude"],
+        get_radius=choice_map_radius,
+        pickable=True,
+    )
+
+    st.pydeck_chart(
+        pdk.Deck(
+            map_style=MAP_STYLE,
+            initial_view_state=_sql_query_us_ll(pg_conn, QUERY_US_LL),
+            layers=[faa_layer],
+        )
+    )
+
+# ------------------------------------------------------------------
+# Present the yearly fatal accidents.
+# ------------------------------------------------------------------
+if choice_histogram:
+    width = st.sidebar.slider("Histogram width", 1, 25, 11)
+    height = st.sidebar.slider("Histogram height", 1, 25, 5)
+    fig, ax = plt.subplots(figsize=(width, height))
+    ax = sns.histplot(df_faa_states_year["ev_year"], discrete=True)
+    plt.xlabel("Year")
+    st.pyplot(fig)

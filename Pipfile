@@ -4,17 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-dynaconf = "*"
 #io-avstats-db = {file = "./libs/io_avstats_db-1.0.0-py3-none-any.whl"}
+dynaconf = "*"
+fiona = "*"
 pandas = "*"
 psycopg2 = "*"
-pyyaml = "<=6.0.0"
 pyodbc = "*"
+pyproj = "*"
+pyyaml = "<=6.0.0"
+seaborn = "*"
 sqlalchemy = "*"
 streamlit = "*"
 toml = "*"
-pyproj = "*"
-fiona = "*"
 
 [dev-packages]
 bandit = "*"

@@ -10,6 +10,8 @@ import sys
 import traceback
 
 import yaml
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 
 from io_avstats_ui import io_config
 from io_avstats_ui import io_glob
@@ -21,6 +23,24 @@ _LOGGER_CFG_FILE = "logging_cfg.yaml"
 _LOGGER_FATAL_HEAD = "FATAL ERROR: program abort =====> "
 _LOGGER_FATAL_TAIL = " <===== FATAL ERROR"
 _LOGGER_PROGRESS_UPDATE = "Progress update "
+
+
+# ------------------------------------------------------------------
+# Create a simple user PostgreSQL database engine.
+# ------------------------------------------------------------------
+def get_engine() -> Engine:
+    """Create a simple user PostgreSQL database engine.
+
+    Returns:
+        Engine: Database engine.
+    """
+    return create_engine(
+        f"postgresql://{io_config.settings.postgres_user}:"
+        + f"{io_config.settings.postgres_password}@"
+        + f"{io_config.settings.postgres_host}:"
+        + f"{io_config.settings.postgres_connection_port}/"
+        + f"{io_config.settings.postgres_dbname}",
+    )
 
 
 # -----------------------------------------------------------------------------

@@ -4,9 +4,8 @@
 
 """IO-AVSTATS-UI interface."""
 import streamlit as st
-from pandas import DataFrame
-
 from io_avstats_db import db_utils  # type: ignore  # pylint: disable=no-name-in-module
+from pandas import DataFrame
 
 APP_TITLE = "Aviation fatalities in the U.S. since 1982"
 APP_SUB_TITLE = "Data source: National Transportation Safety Board"

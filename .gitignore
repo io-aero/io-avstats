@@ -1,8 +1,7 @@
-.secrets.*
 /*.log
-/.coverage*
+/.coverage
 /.history/
 /.idea/
 /.settings.io_avstats.toml
+/.streamlit/secrets.toml
 /Pipfile.lock
-coverage.xml

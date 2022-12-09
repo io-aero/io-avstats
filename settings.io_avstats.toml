@@ -1,5 +1,6 @@
 [default]
 is_verbose = true
+pandas_profile_dir = "data/pandas_profiles"
 postgres_connection_port = 5432
 postgres_container_name = "io_avstats_container"
 postgres_container_port = 5432
@@ -12,6 +13,3 @@ postgres_pgdata ="data/postgres"
 postgres_user = "io_aero"
 postgres_user_admin = "postgres"
 postgres_version ="latest"
-[dev]
-[prod]
-[test]

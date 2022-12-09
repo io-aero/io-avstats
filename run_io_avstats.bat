@@ -19,6 +19,7 @@ set PYTHONPATH=
 if ["%1"] EQU [""] (
     echo =========================================================
     echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
+    echo pdus2008  - Profiling Data for the US since 2008
     echo ---------------------------------------------------------
     set /P IO_AVSTATS_TASK="Enter the desired task [default: %IO_AVSTATS_TASK_DEFAULT%] "
 
@@ -54,6 +55,20 @@ rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["faaus2008"] (
     pipenv run streamlit run src\faaus2008_app\faaus2008.py
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Show the IO-AVSTATS pdus2008 application.
+rem ----------------------------------------------------------------------------
+
+if ["%IO_AVSTATS_TASK%"] EQU ["pdus2008"] (
+    pipenv run streamlit run src\pdus2008_app\pdus2008.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

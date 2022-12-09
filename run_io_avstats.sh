@@ -11,12 +11,12 @@ set -e
 export ENV_FOR_DYNACONF=dev
 
 export IO_AVSTATS_TASK=
-export IO_AVSTATS_TASK_DEFAULT=version
+export IO_AVSTATS_TASK_DEFAULT=faaus2008
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "demo    - Show the IO-AVSTATS demo"
-    echo "version - Show the IO-AVSTATS version"
+    echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
+    echo "pdus2008  - Profiling Data for the US since 2008"
     echo "---------------------------------------------------------"
     read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_TASK
     export IO_AVSTATS_TASK=${IO_AVSTATS_TASK}
@@ -41,20 +41,20 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS demo.
+# Show the IO-AVSTATS faaus2008 application.
 # ------------------------------------------------------------------------------
 
-elif [ "${IO_AVSTATS_TASK}" = "demo" ]; then
-    if ! ( pipenv run streamlit run src/demo.py ); then
+if [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
+    if ! ( pipenv run streamlit run src/faaus2008_app/faaus2008.py ); then
         exit 255
     fi
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS version.
+# Show the IO-AVSTATS pdus2008 application.
 # ------------------------------------------------------------------------------
 
-elif [ "${IO_AVSTATS_TASK}" = "version" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
+elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
+    if ! ( pipenv run streamlit run src/pdus2008_app/pdus2008.py ); then
         exit 255
     fi
 

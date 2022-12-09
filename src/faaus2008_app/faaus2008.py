@@ -157,6 +157,19 @@ choice_data_profile = st.sidebar.checkbox(
     help="Pandas profiling of the dataset.",
 )
 
+if choice_data_profile:
+    choice_data_profile_type = st.sidebar.radio(
+        help="xxx",
+        index=1,
+        label="Data profile type",
+        options=(
+            [
+                "explorative",
+                "minimal",
+            ]
+        ),
+    )
+
 choice_details = st.sidebar.checkbox(
     label="**`Show details`**",
     value=False,
@@ -218,20 +231,17 @@ else:
 # ------------------------------------------------------------------
 if choice_data_profile:
     st.subheader("Profiling of the filtered data set")
-    df_faa_states_year_profile = ProfileReport(
-        df_faa_states_year,
-        # correlations={
-        #     "auto": {"calculate": True},
-        #     "cramers": {"calculate": True},
-        #     "kendall": {"calculate": True},
-        #     "pearson": {"calculate": True},
-        #     "phi_k": {"calculate": True},
-        #     "recoded": {"calculate": False},
-        #     "spearman": {"calculate": False},
-        # },
-        explorative=True,
-        # minimal=True,
-    )
+    # noinspection PyUnboundLocalVariable
+    if choice_data_profile_type == "explorative":
+        df_faa_states_year_profile = ProfileReport(
+            df_faa_states_year,
+            explorative=True,
+        )
+    else:
+        df_faa_states_year_profile = ProfileReport(
+            df_faa_states_year,
+            minimal=True,
+        )
     st_profile_report(df_faa_states_year_profile)
 
 

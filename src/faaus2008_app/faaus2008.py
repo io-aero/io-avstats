@@ -12,9 +12,11 @@ import seaborn as sns  # type: ignore
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
 from matplotlib import pyplot as plt  # type: ignore
+from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
+from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants.
@@ -66,7 +68,8 @@ ZOOM = 4.4
 # ------------------------------------------------------------------
 # Create a simple user PostgreSQL database engine.
 # ------------------------------------------------------------------
-def get_engine() -> Engine:
+# pylint: disable=R0801
+def _get_engine() -> Engine:
     """Create a simple user PostgreSQL database engine.
 
     Returns:
@@ -84,9 +87,7 @@ def get_engine() -> Engine:
 # ------------------------------------------------------------------
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
-# @st.cache(allow_output_mutation=True,
-#           hash_funcs={"_thread.RLock": lambda _: None},
-#           show_spinner=True)
+# pylint: disable=R0801
 def _get_postgres_connection() -> connection:
     """Create a PostgreSQL connection,
 
@@ -129,28 +130,62 @@ st.header("Fatal Aviation Accidents in the US since 2008")
 # ------------------------------------------------------------------
 # Setup the controls.
 # ------------------------------------------------------------------
-filter_year_from, filter_year_to = st.sidebar.slider(
-    label="Select a time frame",
-    help="Data available from 2008 to the current year.",
-    min_value=2008,
-    max_value=datetime.date.today().year,
-    value=(2008, datetime.date.today().year),
+choice_filter_data = st.sidebar.checkbox(
+    label="**`Filter data ?`**",
+    value=False,
+    help="Pandas profiling of the dataset.",
 )
 
-filter_states = st.sidebar.text_input(
-    label="Select one or more states",
-    help="One or more USPS abbreviations - "
-    + "all U.S. states if no selection has been made.",
+if choice_filter_data:
+    filter_year_from, filter_year_to = st.sidebar.slider(
+        label="Select a time frame",
+        help="Data available from 2008 to the current year.",
+        min_value=2008,
+        max_value=datetime.date.today().year,
+        value=(2008, datetime.date.today().year),
+    )
+
+    filter_states = st.sidebar.text_input(
+        label="Select one or more states",
+        help="One or more USPS abbreviations - "
+        + "all U.S. states if no selection has been made.",
+    )
+
+choice_data_profile = st.sidebar.checkbox(
+    label="**`Show data profile`**",
+    value=False,
+    help="Pandas profiling of the dataset.",
 )
+
+if choice_data_profile:
+    choice_data_profile_type = st.sidebar.radio(
+        help="xxx",
+        index=1,
+        label="Data profile type",
+        options=(
+            [
+                "explorative",
+                "minimal",
+            ]
+        ),
+    )
 
 choice_details = st.sidebar.checkbox(
-    label="Show details",
+    label="**`Show details`**",
     value=False,
     help="Tabular representation of the selected detailed data.",
 )
 
+choice_histogram = st.sidebar.checkbox(
+    label="**`Show histogram`**", value=False, help="Fatal accidents per year."
+)
+
+if choice_histogram:
+    width = st.sidebar.slider("Histogram width", 1, 25, 11)
+    height = st.sidebar.slider("Histogram height", 1, 25, 5)
+
 choice_map = st.sidebar.checkbox(
-    label="Show US map",
+    label="**`Show US map`**",
     value=False,
     help="Display of fatal accident events on a map of the USA.",
 )
@@ -163,39 +198,76 @@ if choice_map:
         + "default value is 2 miles.",
     )
 
-choice_histogram = st.sidebar.checkbox(
-    label="Show histogram", value=True, help="Fatal accidents per year."
-)
-
 # ------------------------------------------------------------------
 # Read and filter data.
 # ------------------------------------------------------------------
 pg_conn = _get_postgres_connection()
 
-df_faa = pd.read_sql(QUERY_FAAUS2008, con=get_engine())
+df_faa = pd.read_sql(QUERY_FAAUS2008, con=_get_engine())
 
-if filter_states:
-    df_faa_states = df_faa.loc[(df_faa["state"].isin(filter_states.upper().split(",")))]
-else:
-    df_faa_states = df_faa
+if choice_filter_data:
+    # noinspection PyUnboundLocalVariable
+    if filter_states:
+        # noinspection PyUnboundLocalVariable
+        df_faa_states = df_faa.loc[
+            (df_faa["state"].isin(filter_states.upper().split(",")))
+        ]
+    else:
+        df_faa_states = df_faa
 
-if filter_year_from or filter_year_to:
-    df_faa_states_year = df_faa_states.loc[
-        (df_faa["ev_year"] >= filter_year_from) & (df_faa["ev_year"] <= filter_year_to)
-    ]
+    # noinspection PyUnboundLocalVariable
+    if filter_year_from or filter_year_to:
+        df_faa_states_year = df_faa_states.loc[
+            (df_faa["ev_year"] >= filter_year_from)
+            & (df_faa["ev_year"] <= filter_year_to)
+        ]
+    else:
+        df_faa_states_year = df_faa_states
 else:
-    df_faa_states_year = df_faa_states
+    df_faa_states_year = df_faa
+
+# ------------------------------------------------------------------
+# Present data profile.
+# ------------------------------------------------------------------
+if choice_data_profile:
+    st.subheader("Profiling of the filtered data set")
+    # noinspection PyUnboundLocalVariable
+    if choice_data_profile_type == "explorative":
+        df_faa_states_year_profile = ProfileReport(
+            df_faa_states_year,
+            explorative=True,
+        )
+    else:
+        df_faa_states_year_profile = ProfileReport(
+            df_faa_states_year,
+            minimal=True,
+        )
+    st_profile_report(df_faa_states_year_profile)
+
 
 # ------------------------------------------------------------------
 # Present details.
 # ------------------------------------------------------------------
 if choice_details:
+    st.subheader("The filtered data set in detail")
     st.dataframe(df_faa_states_year)
+
+# ------------------------------------------------------------------
+# Present the yearly fatal accidents.
+# ------------------------------------------------------------------
+if choice_histogram:
+    st.subheader("Number of fatal accidents per year")
+    # noinspection PyUnboundLocalVariable
+    fig, ax = plt.subplots(figsize=(width, height))
+    sns.histplot(df_faa_states_year["ev_year"], discrete=True)
+    plt.xlabel("Year")
+    st.pyplot(fig)
 
 # ------------------------------------------------------------------
 # Present the US map.
 # ------------------------------------------------------------------
 if choice_map:
+    st.subheader("Depicting the fatal accidents on a map of the USA")
     faa_layer = pdk.Layer(
         type=LAYER_TYPE,
         auto_highlight=True,
@@ -213,14 +285,3 @@ if choice_map:
             layers=[faa_layer],
         )
     )
-
-# ------------------------------------------------------------------
-# Present the yearly fatal accidents.
-# ------------------------------------------------------------------
-if choice_histogram:
-    width = st.sidebar.slider("Histogram width", 1, 25, 11)
-    height = st.sidebar.slider("Histogram height", 1, 25, 5)
-    fig, ax = plt.subplots(figsize=(width, height))
-    sns.histplot(df_faa_states_year["ev_year"], discrete=True)
-    plt.xlabel("Year")
-    st.pyplot(fig)

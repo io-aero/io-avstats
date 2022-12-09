@@ -3,6 +3,7 @@
 # be found in the LICENSE.md file.
 
 """Profiling Data for the US since 2008."""
+import os
 
 import pandas as pd
 import psycopg2
@@ -171,10 +172,20 @@ QUERIES = {
           FROM io_countries
         ORDER BY country;
     """,
+    "io_fatalities_us_2008": """
+        SELECT *
+          FROM io_fatalities_us_2008
+        ORDER BY ev_id;
+    """,
     "io_lat_lng": """
         SELECT *
           FROM io_lat_lng
         ORDER BY id;
+    """,
+    "io_lat_lng_issues": """
+        SELECT *
+          FROM io_lat_lng_issues
+        ORDER BY ev_id;
     """,
     "io_processed_files": """
         SELECT *
@@ -296,7 +307,7 @@ choice_data_profile = st.sidebar.checkbox(
 
 if choice_data_profile:
     choice_data_profile_type = st.sidebar.radio(
-        help="xxx",
+        help="explorative: thorough but also slow - minimal: minimal but faster.",
         index=1,
         label="Data profile type",
         options=(
@@ -306,6 +317,11 @@ if choice_data_profile:
             ]
         ),
     )
+    choice_data_profile_file = st.sidebar.checkbox(
+        help="Export the Pandas profile into a file.",
+        label="Export profile to file",
+        value=False,
+    )
 
 choice_details = st.sidebar.checkbox(
     help="Tabular representation of the selected detailed data.",
@@ -314,32 +330,10 @@ choice_details = st.sidebar.checkbox(
 )
 
 table_selection = st.sidebar.radio(
-    help="xxx",
+    help="Available database tables and views for profiling.",
     index=5,
     label="Database table",
-    options=(
-        [
-            "aircraft",
-            "dt_aircraft",
-            "dt_events",
-            "dt_flight_crew",
-            "engines",
-            "events",
-            "events_sequence",
-            "findings",
-            "flight_crew",
-            "flight_time",
-            "injury",
-            "io_countries",
-            "io_lat_lng",
-            "io_processed_files",
-            "io_states",
-            "narratives",
-            "ntsb_admin",
-            "occurrences",
-            "seq_of_events",
-        ]
-    ),
+    options=(QUERIES.keys()),
 )
 
 # ------------------------------------------------------------------
@@ -366,6 +360,16 @@ if choice_data_profile:
             minimal=True,
         )
     st_profile_report(df_db_data_profile)
+    # noinspection PyUnboundLocalVariable
+    if choice_data_profile_file:
+        if not os.path.isdir(SETTINGS.pandas_profile_dir):
+            os.mkdir(SETTINGS.pandas_profile_dir)
+        df_db_data_profile.to_file(
+            os.path.join(
+                SETTINGS.pandas_profile_dir,
+                table_selection + "_" + choice_data_profile_type,  # type: ignore
+            )
+        )
 
 
 # ------------------------------------------------------------------

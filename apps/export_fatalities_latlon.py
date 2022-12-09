@@ -1,13 +1,15 @@
-import pandas as pd
 import os
+
+import fiona
+import pandas as pd
 from io_avstats_db import db_utils  # type: ignore  # pylint: disable=no-name-in-module
 from pyproj import Transformer
-import fiona
 
 
 class io_point:
-    """
-    This class is a container for points for io raster.  Points are defined as x, y and a name
+    """This class is a container for points for io raster.
+
+    Points are defined as x, y and a name
     """
 
     def __init__(self, x, y, name, crs=4326) -> None:
@@ -35,11 +37,8 @@ class io_point:
 
 
 def createPtShapefile(baseName, shapeDict):
-    """
-    create a shapefile of points using a geometrical dictionary (pts, lines, and boxes), exclude
-    everything in the shapeDict except pts
-
-    """
+    """create a shapefile of points using a geometrical dictionary (pts, lines,
+    and boxes), exclude everything in the shapeDict except pts."""
     schema = {"geometry": "Point", "properties": [("Name", "str")]}
     shapeFile = os.path.join(outFilePath, baseName + ".shp")
     pointShp = fiona.open(

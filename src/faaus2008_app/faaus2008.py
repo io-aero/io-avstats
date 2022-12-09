@@ -4,6 +4,7 @@
 
 """Fatal Aviation Accidents in the US since 2008."""
 import datetime
+import os
 
 import pandas as pd
 import psycopg2
@@ -24,7 +25,7 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
 
-MAP_STYLE = "mapbox://styles/mapbox/light-v9"
+MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
 PITCH = 30
 
@@ -159,7 +160,7 @@ choice_data_profile = st.sidebar.checkbox(
 
 if choice_data_profile:
     choice_data_profile_type = st.sidebar.radio(
-        help="xxx",
+        help="explorative: thorough but also slow - minimal: minimal but faster.",
         index=1,
         label="Data profile type",
         options=(
@@ -168,6 +169,11 @@ if choice_data_profile:
                 "minimal",
             ]
         ),
+    )
+    choice_data_profile_file = st.sidebar.checkbox(
+        help="Export the Pandas profile into a file.",
+        label="Export profile to file",
+        value=False,
     )
 
 choice_details = st.sidebar.checkbox(
@@ -191,6 +197,22 @@ choice_map = st.sidebar.checkbox(
 )
 
 if choice_map:
+    map_style = st.sidebar.radio(
+        help="""
+light: designed to provide geographic context while highlighting the data -
+outdoors: focused on wilderness locations with curated tilesets -
+streets: emphasizes accurate, legible styling of road and transit networks.
+        """,
+        index=0,
+        label="Map style",
+        options=(
+            [
+                "light-v11",
+                "outdoors-v12",
+                "streets-v12",
+            ]
+        ),
+    )
     RADIUS = st.sidebar.number_input(
         label="Accident radius in meters",
         value=RADIUS,
@@ -243,6 +265,16 @@ if choice_data_profile:
             minimal=True,
         )
     st_profile_report(df_faa_states_year_profile)
+    # noinspection PyUnboundLocalVariable
+    if choice_data_profile_file:
+        if not os.path.isdir(SETTINGS.pandas_profile_dir):
+            os.mkdir(SETTINGS.pandas_profile_dir)
+        df_faa_states_year_profile.to_file(
+            os.path.join(
+                SETTINGS.pandas_profile_dir,
+                "faaus2008_" + choice_data_profile_type,  # type: ignore
+            )
+        )
 
 
 # ------------------------------------------------------------------
@@ -278,9 +310,10 @@ if choice_map:
         pickable=True,
     )
 
+    # noinspection PyUnboundLocalVariable
     st.pydeck_chart(
         pdk.Deck(
-            map_style=MAP_STYLE,
+            map_style=MAP_STYLE_PREFIX + map_style,  # type: ignore
             initial_view_state=_sql_query_us_ll(pg_conn, QUERY_US_LL),
             layers=[faa_layer],
         )

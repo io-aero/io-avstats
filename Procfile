@@ -1,0 +1,1 @@
+web: sh streamlit_setup.sh && streamlit run src/faaus2008_app/faaus2008.py

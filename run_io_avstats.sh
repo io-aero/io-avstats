@@ -16,6 +16,7 @@ export IO_AVSTATS_TASK_DEFAULT=faaus2008
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
+    echo "pdus2008  - Profiling Data for the US since 2008"
     echo "---------------------------------------------------------"
     read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_TASK
     export IO_AVSTATS_TASK=${IO_AVSTATS_TASK}
@@ -45,6 +46,15 @@ echo "==========================================================================
 
 if [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
     if ! ( pipenv run streamlit run src/faaus2008_app/faaus2008.py ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Show the IO-AVSTATS pdus2008 application.
+# ------------------------------------------------------------------------------
+
+elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
+    if ! ( pipenv run streamlit run src/pdus2008_app/pdus2008.py ); then
         exit 255
     fi
 

@@ -172,10 +172,20 @@ QUERIES = {
           FROM io_countries
         ORDER BY country;
     """,
+    "io_fatalities_us_2008": """
+        SELECT *
+          FROM io_fatalities_us_2008
+        ORDER BY ev_id;
+    """,
     "io_lat_lng": """
         SELECT *
           FROM io_lat_lng
         ORDER BY id;
+    """,
+    "io_lat_lng_issues": """
+        SELECT *
+          FROM io_lat_lng_issues
+        ORDER BY ev_id;
     """,
     "io_processed_files": """
         SELECT *
@@ -323,29 +333,7 @@ table_selection = st.sidebar.radio(
     help="Available database tables and views for profiling.",
     index=5,
     label="Database table",
-    options=(
-        [
-            "aircraft",
-            "dt_aircraft",
-            "dt_events",
-            "dt_flight_crew",
-            "engines",
-            "events",
-            "events_sequence",
-            "findings",
-            "flight_crew",
-            "flight_time",
-            "injury",
-            "io_countries",
-            "io_lat_lng",
-            "io_processed_files",
-            "io_states",
-            "narratives",
-            "ntsb_admin",
-            "occurrences",
-            "seq_of_events",
-        ]
-    ),
+    options=(QUERIES.keys()),
 )
 
 # ------------------------------------------------------------------

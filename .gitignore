@@ -5,6 +5,7 @@
 /.settings.io_avstats.toml
 /.streamlit/secrets.toml
 /Pipfile.lock
+/__ARCHIVE__/
 /data/*_postgres_*.zip
 /data/download/
 /data/postgres/
@@ -15,4 +16,3 @@
 /docs/reports/*/*.log
 /docs/reports/*/*.out
 /docs/reports/*/*.tps
-/__ARCHIVE__/

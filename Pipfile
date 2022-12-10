@@ -4,15 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-#io-avstats-db = {file = "./libs/io_avstats_db-1.0.0-py3-none-any.whl"}
 dynaconf = "*"
+extensions = "*"
 fiona = "*"
+lat_lon_parser ="*"
 pandas = "*"
 pandas-profiling = "*"
 psycopg2 = "*"
+pyexcel = "*"
+pyexcel-xls = "*"
+pyexcel-xlsx = "*"
 pyodbc = "*"
 pyproj = "*"
 pyyaml = "<=6.0.0"
+requests = "*"
 seaborn = "*"
 sqlalchemy = "*"
 streamlit = "*"

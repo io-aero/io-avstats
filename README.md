@@ -10,13 +10,40 @@ TODO by lho
 
 All processing tasks can be performed using the **`run_io_avstats`** shell script.
 
-## 3. Directory and File Structure of this Repository
+## 3. Warning about the Database
 
-### 3.1 Directories
+This Repository contains the latest version of the **IO-AVSTATS** database files in the `data/postgres` file directory. 
+The underlying database management system is [PostgreSQL](https://www.postgresql.org).
+
+Unfortunately, the database files cannot be made available via GitHub due to restrictions on GitHub:
+
+    remote: warning: File data/postgres/base/26303/26490 is 65.88 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB        
+    remote: warning: File data/postgres/base/26303/26343 is 62.95 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB        
+    remote: warning: File data/postgres/base/26303/26435 is 91.64 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB        
+    remote: error: Trace: 686e558f33fcfe8570217bc82f91eadd38abdae6588066bad7e8e82559ca1f33        
+    remote: error: See http://git.io/iEPt8g for more information.        
+    remote: error: File data/postgres/base/26303/26487 is 109.09 MB; this exceeds GitHub's file size limit of 100.00 MB        
+    remote: error: File data/postgres/base/26303/26438 is 105.01 MB; this exceeds GitHub's file size limit of 100.00 MB        
+    remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
+    error: failed to push some refs to 'https://github.com/io-aero/io-avstats-db'
+    To https://github.com/io-aero/io-avstats-db
+    !	refs/heads/main:refs/heads/main	[remote rejected] (pre-receive hook declined)
+    Done
+
+For the transition period until a suitable cloud solution is implemented, the database files will be made available in the corresponding Google Drive via the Google Account ioavstats.ioaero@gmail.com.  
+
+The latest version of the **IO-AVSTATS** database can be found here: 
+
+[Google Drive](https://drive.google.com/drive/folders/1VvIHxnsTbaoQnkLnr-jiszwOO1HD5bTc?usp=share_link)
+
+## 4. Directory and File Structure of this Repository
+
+### 4.1 Directories
 
 | Directory         | Content                                                       |
 |-------------------|---------------------------------------------------------------|
 | .github/workflows | **[GitHub Action](https://github.com/actions)** workflows.    |
+| data              | Application data related files.                               |
 | docs              | Documentation files.                                          |
 | resources         | Selected manuals and software.                                |
 | scripts           | Supporting Ubuntu and Windows Scripts.                        |
@@ -24,7 +51,7 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | src               | Python script files and the **IO-AVSTATS-DB** package.        |
 | tests             | Scripts and data for **pytest**.                              |
 
-### 3.2 Files
+### 4.2 Files
 
 | File                     | Functionality                                                                                   |
 |--------------------------|-------------------------------------------------------------------------------------------------|

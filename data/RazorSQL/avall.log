@@ -1,0 +1,393 @@
+Microsoft Windows [Version 10.0.19045.2193]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+=========================================================
+d_m_a   - PostgreSQL: Download Microsoft Access database file
+l_m_a   - PostgreSQL: Load Microsoft Access database data
+---------------------------------------------------------
+c_d_s   - PostgreSQL: Create the database schema
+d_d_f   - PostgreSQL: Delete the database files
+d_d_s   - PostgreSQL: Drop the database schema
+s_d_c   - PostgreSQL: Set up the database container
+---------------------------------------------------------
+version - Show the IO-AVSTATS version
+---------------------------------------------------------
+Enter the desired task [default: l_m_a] d_m_a
+=========================================================
+avall   - Data from January 1, 2008 to today
+Pre2008 - Data from January 1, 1982 to December 31, 2007
+upDDMON - New additions and updates until DD day in the month MON
+---------------------------------------------------------
+Enter the stem name of the desired MS Access database file [default: up22OCT] avall
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : d_m_a
+MSACCESS   : avall
+-----------------------------------------------------------------------
+The current time is: 11:12:21.81
+Enter the new time:
+=======================================================================
+Progress update 2022-11-05 11:12:23.210374 : ===============================================================================.
+Progress update 2022-11-05 11:12:23.210874 : INFO.00.004 Start Launcher.
+Progress update 2022-11-05 11:12:23.214874 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-11-05 11:12:23.223374 : INFO.00.008 Arguments task='d_m_a' msaccess='avall'.
+Progress update 2022-11-05 11:12:23.223374 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 11:12:23.920131 : INFO.00.013 The connection to the MS Access database file 'avall.zip' on the NTSB download page was successfully established.
+Progress update 2022-11-05 11:12:39.171818 : INFO.00.014 From the file 'avall.zip' 147 chunks were downloaded.
+Progress update 2022-11-05 11:12:40.493319 : INFO.00.015 The file 'avall.zip'  was successfully unpacked.
+Progress update 2022-11-05 11:12:41.939470 : INFO.00.011 The DDL script for the MS Access database 'avall.mdb' was created successfully.
+Progress update 2022-11-05 11:12:41.946970 : INFO.00.012 The DDL script for the MS Access database 'avall.mdb' is identical to the reference script.
+Progress update 2022-11-05 11:12:41.946970 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 11:12:41.946970 :       18,833,596,300 ns - Total time launcher.
+Progress update 2022-11-05 11:12:41.946970 : INFO.00.006 End   Launcher.
+Progress update 2022-11-05 11:12:41.946970 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 11:12:42.07
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+=========================================================
+d_m_a   - PostgreSQL: Download Microsoft Access database file
+l_m_a   - PostgreSQL: Load Microsoft Access database data
+---------------------------------------------------------
+c_d_s   - PostgreSQL: Create the database schema
+d_d_f   - PostgreSQL: Delete the database files
+d_d_s   - PostgreSQL: Drop the database schema
+s_d_c   - PostgreSQL: Set up the database container
+---------------------------------------------------------
+version - Show the IO-AVSTATS version
+---------------------------------------------------------
+Enter the desired task [default: l_m_a] l_m_a
+=========================================================
+avall.mdb
+msaccess.mdb
+Pre2008.mdb
+up22OCT.mdb
+---------------------------------------------------------
+Enter the stem name of the desired MS Access database file [default: up22OCT] avall
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : l_m_a
+MSACCESS   : avall
+-----------------------------------------------------------------------
+The current time is: 12:59:47.55
+Enter the new time:
+=======================================================================
+Progress update 2022-11-05 12:59:49.018964 : ===============================================================================.
+Progress update 2022-11-05 12:59:49.018964 : INFO.00.004 Start Launcher.
+Progress update 2022-11-05 12:59:49.023464 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-11-05 12:59:49.032465 : INFO.00.008 Arguments task='l_m_a' msaccess='avall'.
+Progress update 2022-11-05 12:59:49.032964 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 12:59:49.222466 :
+Progress update 2022-11-05 12:59:49.222466 : Database table       : occurrences         <-----------------------------------.
+Progress update 2022-11-05 12:59:49.222966 : Number rows selected :      0.
+Progress update 2022-11-05 12:59:49.342081 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 12:59:49.342081 :          425,116,800 ns - Total time launcher.
+Progress update 2022-11-05 12:59:49.342581 : INFO.00.006 End   Launcher.
+Progress update 2022-11-05 12:59:49.342581 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 12:59:49.46
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+=========================================================
+d_m_a   - PostgreSQL: Download Microsoft Access database file
+l_m_a   - PostgreSQL: Load Microsoft Access database data
+---------------------------------------------------------
+c_d_s   - PostgreSQL: Create the database schema
+d_d_f   - PostgreSQL: Delete the database files
+d_d_s   - PostgreSQL: Drop the database schema
+s_d_c   - PostgreSQL: Set up the database container
+---------------------------------------------------------
+version - Show the IO-AVSTATS version
+---------------------------------------------------------
+Enter the desired task [default: l_m_a] l_m_a
+=========================================================
+avall.mdb
+msaccess.mdb
+Pre2008.mdb
+up22OCT.mdb
+---------------------------------------------------------
+Enter the stem name of the desired MS Access database file [default: up22OCT] avall
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : l_m_a
+MSACCESS   : avall
+-----------------------------------------------------------------------
+The current time is: 13:00:54.24
+Enter the new time:
+=======================================================================
+Progress update 2022-11-05 13:00:55.474883 : ===============================================================================.
+Progress update 2022-11-05 13:00:55.474883 : INFO.00.004 Start Launcher.
+Progress update 2022-11-05 13:00:55.476882 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-11-05 13:00:55.484882 : INFO.00.008 Arguments task='l_m_a' msaccess='avall'.
+Progress update 2022-11-05 13:00:55.485383 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 13:00:55.647882 :
+Progress update 2022-11-05 13:00:55.647882 : Database table       : events              <-----------------------------------.
+Progress update 2022-11-05 13:05:32.283530 : Number of rows so far read :  10000.
+Progress update 2022-11-05 13:10:13.263617 : Number of rows so far read :  20000.
+Progress update 2022-11-05 13:12:27.434836 : Number rows selected :  24834.
+Progress update 2022-11-05 13:12:27.434836 : Number rows inserted :  24834.
+Progress update 2022-11-05 13:12:27.455835 :
+Progress update 2022-11-05 13:12:27.456335 : Database table       : aircraft            <-----------------------------------.
+Progress update 2022-11-05 13:17:09.122088 : Number of rows so far read :  10000.
+Progress update 2022-11-05 13:21:44.703826 : Number of rows so far read :  20000.
+Progress update 2022-11-05 13:24:10.396559 : Number rows selected :  25225.
+Progress update 2022-11-05 13:24:10.397059 : Number rows inserted :  25225.
+Progress update 2022-11-05 13:24:10.420059 :
+Progress update 2022-11-05 13:24:10.420059 : Database table       : dt_events           <-----------------------------------.
+Progress update 2022-11-05 13:28:49.077966 : Number of rows so far read :  10000.
+Progress update 2022-11-05 13:33:27.491185 : Number of rows so far read :  20000.
+Progress update 2022-11-05 13:38:08.929690 : Number of rows so far read :  30000.
+Progress update 2022-11-05 13:42:50.384999 : Number of rows so far read :  40000.
+Progress update 2022-11-05 13:47:07.596777 : Number of rows so far read :  50000.
+Progress update 2022-11-05 13:51:44.652680 : Number of rows so far read :  60000.
+Progress update 2022-11-05 13:56:14.843540 : Number of rows so far read :  70000.
+Progress update 2022-11-05 14:00:55.015623 : Number of rows so far read :  80000.
+Progress update 2022-11-05 14:02:38.086689 : Number rows selected :  83763.
+Progress update 2022-11-05 14:02:38.086689 : Number rows inserted :  83763.
+Progress update 2022-11-05 14:02:38.097199 :
+Progress update 2022-11-05 14:02:38.097199 : Database table       : ntsb_admin          <-----------------------------------.
+Progress update 2022-11-05 14:07:20.083159 : Number of rows so far read :  10000.
+Progress update 2022-11-05 14:11:57.481076 : Number of rows so far read :  20000.
+Traceback (most recent call last):
+  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 287, in <module>
+    main(sys.argv)
+  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 263, in main
+    avstats.load_msaccess_data(ARG_MSACCESS)
+  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\avstats.py", line 89, in load_msaccess_data
+    db_dml_base.load_msaccess_data(msaccess)
+  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 3006, in load_msaccess_data
+    _load_table_ntsb_admin(io_glob.TABLE_NAME_NTSB_ADMIN, cur_ma, cur_pg)
+  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 2564, in _load_table_ntsb_admin
+    cur_pg.execute(
+  File "C:\Users\walte\.virtualenvs\io-avstats-zZIfNcpY\lib\site-packages\psycopg\cursor.py", line 725, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.ForeignKeyViolation: insert or update on table "ntsb_admin" violates foreign key constraint "ntsb_admin_ev_id_fkey"
+DETAIL:  Key (ev_id)=(20210527103155) is not present in table "events".
+
+-----------------------------------------------------------------------
+The current time is: 14:13:02.60
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+=========================================================
+d_m_a   - PostgreSQL: Download Microsoft Access database file
+l_m_a   - PostgreSQL: Load Microsoft Access database data
+---------------------------------------------------------
+c_d_s   - PostgreSQL: Create the database schema
+d_d_f   - PostgreSQL: Delete the database files
+d_d_s   - PostgreSQL: Drop the database schema
+s_d_c   - PostgreSQL: Set up the database container
+---------------------------------------------------------
+version - Show the IO-AVSTATS version
+---------------------------------------------------------
+Enter the desired task [default: l_m_a] l_m_a
+=========================================================
+avall.mdb
+msaccess.mdb
+Pre2008.mdb
+---------------------------------------------------------
+Enter the stem name of the desired MS Access database file [default: up22OCT] avall
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : l_m_a
+MSACCESS   : avall
+-----------------------------------------------------------------------
+The current time is: 14:23:28.84
+Enter the new time:
+=======================================================================
+Progress update 2022-11-05 14:23:30.071255 : ===============================================================================.
+Progress update 2022-11-05 14:23:30.071255 : INFO.00.004 Start Launcher.
+Progress update 2022-11-05 14:23:30.073255 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-11-05 14:23:30.081256 : INFO.00.008 Arguments task='l_m_a' msaccess='avall'.
+Progress update 2022-11-05 14:23:30.081256 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 14:23:30.251256 :
+Progress update 2022-11-05 14:23:30.251256 : Database table       : ntsb_admin          <-----------------------------------.
+Progress update 2022-11-05 14:23:39.298655 : Number of rows so far read :  10000.
+Progress update 2022-11-05 14:23:48.500096 : Number of rows so far read :  20000.
+Progress update 2022-11-05 14:24:55.372781 : Number rows selected :  24836.
+Progress update 2022-11-05 14:24:55.372781 : Number rows inserted :   2492.
+Progress update 2022-11-05 14:24:55.374280 :
+Progress update 2022-11-05 14:24:55.374780 : Database table       : dt_aircraft         <-----------------------------------.
+Progress update 2022-11-05 14:29:34.211393 : Number of rows so far read :  10000.
+Progress update 2022-11-05 14:34:08.501430 : Number of rows so far read :  20000.
+Progress update 2022-11-05 14:38:44.674359 : Number of rows so far read :  30000.
+Progress update 2022-11-05 14:43:17.356938 : Number of rows so far read :  40000.
+Progress update 2022-11-05 14:47:53.197054 : Number of rows so far read :  50000.
+Progress update 2022-11-05 14:52:31.310900 : Number of rows so far read :  60000.
+Progress update 2022-11-05 14:57:15.298599 : Number of rows so far read :  70000.
+Progress update 2022-11-05 15:01:51.704719 : Number of rows so far read :  80000.
+Progress update 2022-11-05 15:06:30.410546 : Number of rows so far read :  90000.
+Progress update 2022-11-05 15:10:52.087513 : Number of rows so far read : 100000.
+Progress update 2022-11-05 15:15:25.086711 : Number of rows so far read : 110000.
+Progress update 2022-11-05 15:20:01.767216 : Number of rows so far read : 120000.
+Progress update 2022-11-05 15:24:35.574565 : Number of rows so far read : 130000.
+Progress update 2022-11-05 15:29:09.456942 : Number of rows so far read : 140000.
+Progress update 2022-11-05 15:33:47.854148 : Number of rows so far read : 150000.
+Progress update 2022-11-05 15:38:29.566404 : Number of rows so far read : 160000.
+Progress update 2022-11-05 15:43:09.789083 : Number of rows so far read : 170000.
+Progress update 2022-11-05 15:47:45.653802 : Number of rows so far read : 180000.
+Progress update 2022-11-05 15:52:26.883984 : Number of rows so far read : 190000.
+Progress update 2022-11-05 15:57:08.488314 : Number of rows so far read : 200000.
+Progress update 2022-11-05 16:01:03.023166 : Number rows selected : 208578.
+Progress update 2022-11-05 16:01:03.023166 : Number rows inserted : 208578.
+Progress update 2022-11-05 16:01:03.048665 :
+Progress update 2022-11-05 16:01:03.049166 : Database table       : engines             <-----------------------------------.
+Progress update 2022-11-05 16:05:38.046425 : Number of rows so far read :  10000.
+Progress update 2022-11-05 16:10:21.384306 : Number of rows so far read :  20000.
+Progress update 2022-11-05 16:11:45.036185 : Number rows selected :  23008.
+Progress update 2022-11-05 16:11:45.036185 : Number rows inserted :  23008.
+Progress update 2022-11-05 16:11:45.043185 :
+Progress update 2022-11-05 16:11:45.043185 : Database table       : events_sequence     <-----------------------------------.
+Progress update 2022-11-05 16:16:12.578000 : Number of rows so far read :  10000.
+Progress update 2022-11-05 16:20:53.066132 : Number of rows so far read :  20000.
+Progress update 2022-11-05 16:25:27.081650 : Number of rows so far read :  30000.
+Progress update 2022-11-05 16:30:06.528654 : Number of rows so far read :  40000.
+Progress update 2022-11-05 16:34:46.425702 : Number of rows so far read :  50000.
+Progress update 2022-11-05 16:36:50.049585 : Number rows selected :  54390.
+Progress update 2022-11-05 16:36:50.049585 : Number rows inserted :  54390.
+Progress update 2022-11-05 16:36:50.059582 :
+Progress update 2022-11-05 16:36:50.060082 : Database table       : findings            <-----------------------------------.
+Progress update 2022-11-05 16:41:30.871336 : Number of rows so far read :  10000.
+Progress update 2022-11-05 16:46:03.437006 : Number of rows so far read :  20000.
+Progress update 2022-11-05 16:50:40.760377 : Number of rows so far read :  30000.
+Progress update 2022-11-05 16:55:19.907301 : Number of rows so far read :  40000.
+Progress update 2022-11-05 17:00:02.919944 : Number of rows so far read :  50000.
+Progress update 2022-11-05 17:04:06.668442 : Number rows selected :  59091.
+Progress update 2022-11-05 17:04:06.668941 : Number rows inserted :  59091.
+Progress update 2022-11-05 17:04:06.684941 :
+Progress update 2022-11-05 17:04:06.684941 : Database table       : flight_crew         <-----------------------------------.
+Progress update 2022-11-05 17:08:43.824204 : Number of rows so far read :  10000.
+Progress update 2022-11-05 17:13:22.188480 : Number of rows so far read :  20000.
+Progress update 2022-11-05 17:15:54.337727 : Number rows selected :  25391.
+Progress update 2022-11-05 17:15:54.337727 : Number rows inserted :  25391.
+Progress update 2022-11-05 17:15:54.348226 :
+Progress update 2022-11-05 17:15:54.348226 : Database table       : injury              <-----------------------------------.
+Progress update 2022-11-05 17:20:37.758844 : Number of rows so far read :  10000.
+Progress update 2022-11-05 17:25:21.188080 : Number of rows so far read :  20000.
+Progress update 2022-11-05 17:29:56.836126 : Number of rows so far read :  30000.
+Progress update 2022-11-05 17:34:23.853809 : Number of rows so far read :  40000.
+Progress update 2022-11-05 17:38:58.635675 : Number of rows so far read :  50000.
+Progress update 2022-11-05 17:43:33.300473 : Number of rows so far read :  60000.
+Progress update 2022-11-05 17:48:09.815233 : Number of rows so far read :  70000.
+Progress update 2022-11-05 17:50:01.325786 : Number rows selected :  73952.
+Progress update 2022-11-05 17:50:01.325786 : Number rows inserted :  73952.
+Progress update 2022-11-05 17:50:01.335286 :
+Progress update 2022-11-05 17:50:01.335786 : Database table       : narratives          <-----------------------------------.
+Progress update 2022-11-05 17:55:00.433779 : Number of rows so far read :  10000.
+Progress update 2022-11-05 17:59:48.919899 : Number of rows so far read :  20000.
+Progress update 2022-11-05 18:01:46.704223 : Number rows selected :  23956.
+Progress update 2022-11-05 18:01:46.704223 : Number rows inserted :  23956.
+Progress update 2022-11-05 18:01:46.730222 :
+Progress update 2022-11-05 18:01:46.730722 : Database table       : occurrences         <-----------------------------------.
+Progress update 2022-11-05 18:01:46.731222 : Number rows selected :      0.
+Progress update 2022-11-05 18:01:46.731222 :
+Progress update 2022-11-05 18:01:46.731222 : Database table       : dt_flight_crew      <-----------------------------------.
+Progress update 2022-11-05 18:06:32.415617 : Number of rows so far read :  10000.
+Progress update 2022-11-05 18:11:09.097645 : Number of rows so far read :  20000.
+Progress update 2022-11-05 18:15:45.103548 : Number of rows so far read :  30000.
+Progress update 2022-11-05 18:20:23.159492 : Number of rows so far read :  40000.
+Progress update 2022-11-05 18:24:57.857780 : Number of rows so far read :  50000.
+Progress update 2022-11-05 18:29:38.496516 : Number of rows so far read :  60000.
+Progress update 2022-11-05 18:34:20.868415 : Number of rows so far read :  70000.
+Progress update 2022-11-05 18:38:56.166285 : Number of rows so far read :  80000.
+Progress update 2022-11-05 18:43:23.083326 : Number of rows so far read :  90000.
+Progress update 2022-11-05 18:47:58.231598 : Number of rows so far read : 100000.
+Progress update 2022-11-05 18:52:34.554896 : Number of rows so far read : 110000.
+Progress update 2022-11-05 18:57:07.486782 : Number of rows so far read : 120000.
+Progress update 2022-11-05 19:01:19.583307 : Number of rows so far read : 130000.
+Progress update 2022-11-05 19:05:44.725913 : Number of rows so far read : 140000.
+Progress update 2022-11-05 19:06:23.823681 : Number rows selected : 141379.
+Progress update 2022-11-05 19:06:23.824178 : Number rows inserted : 141379.
+Progress update 2022-11-05 19:06:23.842178 :
+Progress update 2022-11-05 19:06:23.842178 : Database table       : flight_time         <-----------------------------------.
+Progress update 2022-11-05 19:11:04.836844 : Number of rows so far read :  10000.
+Progress update 2022-11-05 19:15:43.101168 : Number of rows so far read :  20000.
+Progress update 2022-11-05 19:20:24.406006 : Number of rows so far read :  30000.
+Progress update 2022-11-05 19:25:01.970636 : Number of rows so far read :  40000.
+Progress update 2022-11-05 19:29:39.392761 : Number of rows so far read :  50000.
+Progress update 2022-11-05 19:34:19.298033 : Number of rows so far read :  60000.
+Progress update 2022-11-05 19:39:01.944392 : Number of rows so far read :  70000.
+Progress update 2022-11-05 19:43:37.251045 : Number of rows so far read :  80000.
+Progress update 2022-11-05 19:48:04.584553 : Number of rows so far read :  90000.
+Progress update 2022-11-05 19:52:35.809803 : Number of rows so far read : 100000.
+Progress update 2022-11-05 19:57:11.448779 : Number of rows so far read : 110000.
+Progress update 2022-11-05 20:01:47.538794 : Number of rows so far read : 120000.
+Progress update 2022-11-05 20:06:22.703935 : Number of rows so far read : 130000.
+Progress update 2022-11-05 20:10:42.889888 : Number of rows so far read : 140000.
+Progress update 2022-11-05 20:14:53.028115 : Number of rows so far read : 150000.
+Progress update 2022-11-05 20:19:26.935331 : Number of rows so far read : 160000.
+Progress update 2022-11-05 20:24:05.707539 : Number of rows so far read : 170000.
+Progress update 2022-11-05 20:28:48.503821 : Number of rows so far read : 180000.
+Progress update 2022-11-05 20:33:28.992267 : Number of rows so far read : 190000.
+Progress update 2022-11-05 20:38:07.314791 : Number of rows so far read : 200000.
+Progress update 2022-11-05 20:42:46.012173 : Number of rows so far read : 210000.
+Progress update 2022-11-05 20:47:24.175829 : Number of rows so far read : 220000.
+Progress update 2022-11-05 20:52:03.764758 : Number of rows so far read : 230000.
+Progress update 2022-11-05 20:56:44.161325 : Number of rows so far read : 240000.
+Progress update 2022-11-05 21:01:24.758176 : Number of rows so far read : 250000.
+Progress update 2022-11-05 21:05:44.418757 : Number of rows so far read : 260000.
+Progress update 2022-11-05 21:10:18.809556 : Number of rows so far read : 270000.
+Progress update 2022-11-05 21:14:54.782121 : Number of rows so far read : 280000.
+Progress update 2022-11-05 21:19:32.629591 : Number of rows so far read : 290000.
+Progress update 2022-11-05 21:24:04.154020 : Number of rows so far read : 300000.
+Progress update 2022-11-05 21:28:17.891389 : Number of rows so far read : 310000.
+Progress update 2022-11-05 21:31:00.496653 : Number rows selected : 316533.
+Progress update 2022-11-05 21:31:00.496653 : Number rows inserted : 316533.
+Progress update 2022-11-05 21:31:00.545152 :
+Progress update 2022-11-05 21:31:00.545152 : Database table       : seq_of_events       <-----------------------------------.
+Progress update 2022-11-05 21:31:00.545653 : Number rows selected :      0.
+Progress update 2022-11-05 21:31:00.705284 : -------------------------------------------------------------------------------.
+Progress update 2022-11-05 21:31:00.705284 :   25,650,712,528,400 ns - Total time launcher.
+Progress update 2022-11-05 21:31:00.705284 : INFO.00.006 End   Launcher.
+Progress update 2022-11-05 21:31:00.705785 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 21:31:00.85
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats>

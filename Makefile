@@ -2,20 +2,18 @@
 
 ifeq ($(OS),Windows_NT)
 	export ENV_FOR_DYNACONF=test
-	export MYPYPATH=
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=src
-	export PYTHONPATH_DEV=src
-	export VSCODE=code
+	export PYTHONPATH=
+	export PYTHONPATH_BANDIT=src
+	export PYTHONPATH_MYPY=src
 else
 	export ENV_FOR_DYNACONF=test
-	export MYPYPATH=
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=src
-	export PYTHONPATH_DEV=src
-	export VSCODE=
+	export PYTHONPATH=
+	export PYTHONPATH_BANDIT=src
+	export PYTHONPATH_MYPY=src
 endif
 
 ##                                                                            .
@@ -53,12 +51,11 @@ help:
 # Configuration file: none
 bandit:             ## Find common security issues with Bandit.
 	@echo Info **********  Start: Bandit ***************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PYTHONPATH=${PYTHONPATH_BANDIT}
 	${PIPENV} run bandit --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH}
+	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH_BANDIT}
 	@echo Info **********  End:   Bandit **************************************
 
 # The Uncompromising Code Formatter
@@ -66,7 +63,6 @@ bandit:             ## Find common security issues with Bandit.
 # Configuration file: pyproject.toml
 black:              ## Format the code with Black.
 	@echo Info **********  Start: black ***************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run black --version
@@ -79,7 +75,6 @@ black:              ## Format the code with Black.
 # Configuration file: none
 compileall:         ## Byte-compile the Python libraries.
 	@echo Info **********  Start: Compile All Python Scripts ******************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PYTHON} --version
@@ -102,7 +97,6 @@ coveralls:          ## Run all the tests and upload the coverage data to coveral
 # Configuration file: none
 docformatter:       ## Format the docstrings with docformatter.
 	@echo Info **********  Start: docformatter ********************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run docformatter --version
@@ -115,7 +109,6 @@ docformatter:       ## Format the docstrings with docformatter.
 # Configuration file: cfg.cfg
 flake8:             ## Enforce the Python Style Guides with Flake8.
 	@echo Info **********  Start: Flake8 **************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run flake8 --version
@@ -128,7 +121,6 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 # Configuration file: pyproject.toml
 isort:              ## Edit and sort the imports with isort.
 	@echo Info **********  Start: isort ***************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run isort --version
@@ -141,7 +133,6 @@ isort:              ## Edit and sort the imports with isort.
 # Configuration file: none
 mkdocs:             ## Create and upload the user documentation with MkDocs.
 	@echo Info **********  Start: MkDocs **************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run mkdocs --version
@@ -154,12 +145,11 @@ mkdocs:             ## Create and upload the user documentation with MkDocs.
 # Configuration file: pyproject.toml
 mypy:               ## Find typing issues with Mypy.
 	@echo Info **********  Start: Mypy ****************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PYTHONPATH=${PYTHONPATH_MYPY}
 	${PIPENV} run mypy --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run mypy ${PYTHONPATH}
+	${PIPENV} run mypy ${PYTHONPATH_MYPY}
 	@echo Info **********  End:   Mypy ****************************************
 
 # pip is the package installer for Python.
@@ -170,7 +160,6 @@ mypy:               ## Find typing issues with Mypy.
 # Configuration file: Pipfile
 pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  Start: Installation of Development Packages ********
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
@@ -191,7 +180,6 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  End:   Installation of Development Packages ********
 pipenv-prod:        ## Install the package dependencies for production.
 	@echo Info **********  Start: Installation of Production Packages *********
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
@@ -216,7 +204,6 @@ pipenv-prod:        ## Install the package dependencies for production.
 # Configuration file: pyproject.toml
 pydocstyle:         ## Check the API documentation with pydocstyle.
 	@echo Info **********  Start: pydocstyle **********************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run pydocstyle --version
@@ -229,7 +216,6 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 # Configuration file: .pylintrc
 pylint:             ## Lint the code with Pylint.
 	@echo Info **********  Start: Pylint **************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run pylint --version
@@ -281,7 +267,6 @@ pytest-module:      ## Run tests of specific module(s) with pytest - test_all & 
 
 version:            ## Show the installed software versions.
 	@echo Info **********  Start: version *************************************
-	@echo MYPYPATH  =${MYPYPATH}
 	@echo PYTHON=${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PYTHON} -m pip --version

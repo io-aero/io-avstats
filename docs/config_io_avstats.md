@@ -1,5 +1,7 @@
 # IO-AVSTATS - Configuration
 
+Please see also [here](https://github.com/io-aero/io-avstats-db/blob/main/docs/config_io_avstats.md){:target="_blank"}
+
 For the administration of the configuration parameters of **IO-AVSTATS** the tool [**dynaconf**](https://www.dynaconf.com){:target="_blank"} is used.
 The two files `settings.io_avstats.toml` and `.settings.io_avstats.toml` are available as configuration files.
 The names of **IO-AVSTATS** related environment variables must include the prefix `IO_AVSTATS`.

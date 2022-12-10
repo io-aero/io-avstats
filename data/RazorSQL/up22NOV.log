@@ -1,0 +1,154 @@
+Microsoft Windows [Version 10.0.19045.2311]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats-db-content>run_io_avstats_db
+=========================================================
+c_l_l   - Correct decimal US latitudes and longitudes
+d_n_a   - Download a NTSB MS Access database file
+l_n_a   - Load NTSB MS Access database data into PostgreSQL
+v_n_d   - Verify selected NTSB data
+---------------------------------------------------------
+d_s_f   - Download basic simplemaps files
+l_c_d   - Load data from a correction file into PostgreSQL
+l_c_s   - Load country and state data into PostgreSQL
+l_s_d   - Load simplemaps data into PostgreSQL
+l_z_d   - Load ZIP Code Database data into PostgreSQL
+---------------------------------------------------------
+c_d_s   - Create the PostgreSQL database schema
+d_d_f   - Delete the PostgreSQL database files
+d_d_s   - Drop the PostgreSQL database schema
+s_d_c   - Set up the PostgreSQL database container
+u_d_s   - Update the PostgreSQL database schema
+---------------------------------------------------------
+version - Show the IO-AVSTATS-DB version
+---------------------------------------------------------
+Enter the desired task [default: version] l_n_a
+=========================================================
+IO-AVSTATS.mdb
+up22NOV.mdb
+---------------------------------------------------------
+Enter the stem name of the desired MS Access database file up22NOV
+
+Script run_io_avstats_db is now running
+=======================================================================
+Start run_io_avstats_db
+-----------------------------------------------------------------------
+IO-AVSTATS-DB - Aviation Accident Statistics Database.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : l_n_a
+CORRECTION :
+MSACCESS   : up22NOV
+-----------------------------------------------------------------------
+The current time is: 13:39:36.67
+Enter the new time:
+=======================================================================
+Progress update 2022-11-27 13:39:38.230700 : ===============================================================================.
+Progress update 2022-11-27 13:39:38.231199 : INFO.00.004 Start Launcher.
+Progress update 2022-11-27 13:39:38.232698 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-11-27 13:39:38.241199 : INFO.00.008 Arguments task='l_n_a' msaccess='up22NOV'.
+Progress update 2022-11-27 13:39:38.241199 : -------------------------------------------------------------------------------.
+Progress update 2022-11-27 13:39:38.241199 : INFO.00.049 Loading NTSB MS Access database data from  file 'up22NOV'.
+Progress update 2022-11-27 13:39:38.241199 : --------------------------------------------------------------------------------
+Progress update 2022-11-27 13:39:38.242700 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO Aero\io-avstats-db-content\data\download\up22NOV.mdb;'.
+Progress update 2022-11-27 13:39:38.414070 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
+Progress update 2022-11-27 13:39:38.414070 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
+Progress update 2022-11-27 13:39:38.414070 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.
+Progress update 2022-11-27 13:39:38.414070 : INFO.00.021 The following database table is not processed: 'MSysIMEXSpecs'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysModules2'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupCategories'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroups'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupToObjects'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysNavPaneObjectIDs'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysObjects'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysQueries'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'MSysRelationships'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'Country'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'ct_iaids'.
+Progress update 2022-11-27 13:39:38.414570 : INFO.00.021 The following database table is not processed: 'ct_seqevt'.
+Progress update 2022-11-27 13:39:38.415070 : INFO.00.021 The following database table is not processed: 'eADMSPUB_DataDictionary'.
+Progress update 2022-11-27 13:39:38.415070 : INFO.00.021 The following database table is not processed: 'states'.
+Progress update 2022-11-27 13:39:38.415070 :
+Progress update 2022-11-27 13:39:38.415070 : Database table       : events              <-----------------------------------.
+Progress update 2022-11-27 13:39:40.212602 : Number rows selected :     55.
+Progress update 2022-11-27 13:39:40.212602 : Number rows inserted :     35.
+Progress update 2022-11-27 13:39:40.212602 : Number rows updated  :     20.
+Progress update 2022-11-27 13:39:40.213103 :
+Progress update 2022-11-27 13:39:40.213103 : Database table       : aircraft            <-----------------------------------.
+Progress update 2022-11-27 13:39:42.886342 : Number rows selected :     56.
+Progress update 2022-11-27 13:39:42.886843 : Number rows inserted :     36.
+Progress update 2022-11-27 13:39:42.886843 : Number rows updated  :     20.
+Progress update 2022-11-27 13:39:42.886843 :
+Progress update 2022-11-27 13:39:42.887341 : Database table       : dt_events           <-----------------------------------.
+Progress update 2022-11-27 13:39:48.510323 : Number rows selected :    210.
+Progress update 2022-11-27 13:39:48.510836 : Number rows inserted :    171.
+Progress update 2022-11-27 13:39:48.510836 : Number rows updated  :     39.
+Progress update 2022-11-27 13:39:48.510836 :
+Progress update 2022-11-27 13:39:48.510836 : Database table       : ntsb_admin          <-----------------------------------.
+Progress update 2022-11-27 13:39:50.001488 : Number rows selected :     55.
+Progress update 2022-11-27 13:39:50.001488 : Number rows inserted :     35.
+Progress update 2022-11-27 13:39:50.001488 : Number rows updated  :     20.
+Progress update 2022-11-27 13:39:50.001988 :
+Progress update 2022-11-27 13:39:50.001988 : Database table       : dt_aircraft         <-----------------------------------.
+Progress update 2022-11-27 13:39:59.024220 : Number rows selected :    336.
+Progress update 2022-11-27 13:39:59.024719 : Number rows inserted :    256.
+Progress update 2022-11-27 13:39:59.024719 : Number rows updated  :     80.
+Progress update 2022-11-27 13:39:59.024719 :
+Progress update 2022-11-27 13:39:59.024719 : Database table       : engines             <-----------------------------------.
+Progress update 2022-11-27 13:39:59.449035 : Number rows selected :     15.
+Progress update 2022-11-27 13:39:59.449035 : Number rows inserted :     14.
+Progress update 2022-11-27 13:39:59.449035 : Number rows updated  :      1.
+Progress update 2022-11-27 13:39:59.449035 :
+Progress update 2022-11-27 13:39:59.449533 : Database table       : events_sequence     <-----------------------------------.
+Progress update 2022-11-27 13:40:01.398134 : Number rows selected :     72.
+Progress update 2022-11-27 13:40:01.398635 : Number rows inserted :     52.
+Progress update 2022-11-27 13:40:01.398635 : Number rows updated  :     20.
+Progress update 2022-11-27 13:40:01.398635 :
+Progress update 2022-11-27 13:40:01.398635 : Database table       : findings            <-----------------------------------.
+Progress update 2022-11-27 13:40:01.540015 : Number rows selected :      4.
+Progress update 2022-11-27 13:40:01.540416 : Number rows updated  :      4.
+Progress update 2022-11-27 13:40:01.540416 :
+Progress update 2022-11-27 13:40:01.540416 : Database table       : flight_crew         <-----------------------------------.
+Progress update 2022-11-27 13:40:02.181679 : Number rows selected :     21.
+Progress update 2022-11-27 13:40:02.181679 : Number rows inserted :     19.
+Progress update 2022-11-27 13:40:02.181679 : Number rows updated  :      2.
+Progress update 2022-11-27 13:40:02.182179 :
+Progress update 2022-11-27 13:40:02.182179 : Database table       : injury              <-----------------------------------.
+Progress update 2022-11-27 13:40:08.788113 : Number rows selected :    195.
+Progress update 2022-11-27 13:40:08.788113 : Number rows inserted :    140.
+Progress update 2022-11-27 13:40:08.788113 : Number rows updated  :     55.
+Progress update 2022-11-27 13:40:08.788614 :
+Progress update 2022-11-27 13:40:08.788614 : Database table       : narratives          <-----------------------------------.
+Progress update 2022-11-27 13:40:09.820825 : Number rows selected :     22.
+Progress update 2022-11-27 13:40:09.820825 : Number rows inserted :     10.
+Progress update 2022-11-27 13:40:09.820825 : Number rows updated  :     12.
+Progress update 2022-11-27 13:40:09.821326 :
+Progress update 2022-11-27 13:40:09.821326 : Database table       : occurrences         <-----------------------------------.
+Progress update 2022-11-27 13:40:09.821826 : Number rows selected :      0.
+Progress update 2022-11-27 13:40:09.821826 :
+Progress update 2022-11-27 13:40:09.821826 : Database table       : dt_flight_crew      <-----------------------------------.
+Progress update 2022-11-27 13:40:12.461876 : Number rows selected :     99.
+Progress update 2022-11-27 13:40:12.462123 : Number rows inserted :     89.
+Progress update 2022-11-27 13:40:12.462123 : Number rows updated  :     10.
+Progress update 2022-11-27 13:40:12.462123 :
+Progress update 2022-11-27 13:40:12.462123 : Database table       : flight_time         <-----------------------------------.
+Progress update 2022-11-27 13:40:18.093779 : Number rows selected :    218.
+Progress update 2022-11-27 13:40:18.093779 : Number rows inserted :    214.
+Progress update 2022-11-27 13:40:18.093779 : Number rows updated  :      4.
+Progress update 2022-11-27 13:40:18.093779 :
+Progress update 2022-11-27 13:40:18.094279 : Database table       : seq_of_events       <-----------------------------------.
+Progress update 2022-11-27 13:40:18.094279 : Number rows selected :      0.
+Progress update 2022-11-27 13:40:18.219316 : -------------------------------------------------------------------------------.
+Progress update 2022-11-27 13:40:18.219815 :       40,137,117,300 ns - Total time launcher.
+Progress update 2022-11-27 13:40:18.219815 : INFO.00.006 End   Launcher.
+Progress update 2022-11-27 13:40:18.219815 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 13:40:18.37
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats_db
+=======================================================================
+
+D:\SoftDevelopment\Projects\IO Aero\io-avstats-db-content>

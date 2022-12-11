@@ -10,7 +10,8 @@ services:
       - POSTGRES_USER=${IO_AVSTATS_POSTGRES_USER_ADMIN}
     image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
     ports:
-      - "0.0.0.0:${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_CONTAINER_PORT}"
+      - "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_CONTAINER_PORT}"
+    restart: always
     volumes:
       - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
 

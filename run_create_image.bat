@@ -13,6 +13,9 @@ set APPLICATION_DEFAULT=faaus2008
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=no
 
+set IO_AVSTATS_STREAMLIT_SERVER_ADDRESS=0.0.0.0
+set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+
 if ["%1"] EQU [""] (
     echo =========================================================
     echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
@@ -65,8 +68,10 @@ rem > %LOG_FILE% 2>&1 (
     echo Create a Docker image for application %APPLICATION%
 
     echo -----------------------------------------------------------------------
-    echo DOCKER_CLEAR_CACHE : %DOCKER_CLEAR_CACHE%
-    echo DOCKER_HUB_PUSH    : %DOCKER_HUB_PUSH%
+    echo DOCKER_CLEAR_CACHE       : %DOCKER_CLEAR_CACHE%
+    echo DOCKER_HUB_PUSH          : %DOCKER_HUB_PUSH%
+    echo STREAMLIT_SERVER_ADDRESS : %IO_AVSTATS_STREAMLIT_SERVER_ADDRESS%
+    echo STREAMLIT_SERVER_PORT    : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
     echo -----------------------------------------------------------------------
     echo:| TIME
     echo =======================================================================
@@ -75,14 +80,22 @@ rem > %LOG_FILE% 2>&1 (
         docker builder prune --all --force
     )
 
-    echo Docker stop/rm !APPLICATION! ............................................... before:
+    echo Docker stop/rm !APPLICATION! ................................ before containers:
     docker ps -a
-    docker ps    | find "!APPLICATION!" && docker stop !APPLICATION!
-    docker ps -a | find "!APPLICATION!" && docker rm --force !APPLICATION!
-    echo ............................................................. after:
+    docker ps       | find "!APPLICATION!" && docker stop !APPLICATION!
+    docker ps -a    | find "!APPLICATION!" && docker rm  --force !APPLICATION!
+    echo ............................................................. after containers:
     docker ps -a
+    echo ............................................................. before images:
+    docker image ls
+    docker image ls | find "!APPLICATION!" && docker rmi --force ioaero/!APPLICATION!
+    echo ............................................................. after images:
+    docker image ls
 
-    docker build --build-arg APP=!APPLICATION! -t ioaero/!APPLICATION! .
+    docker build --build-arg APP=!APPLICATION! ^
+                 --build-arg SERVER_ADDRESS=%IO_AVSTATS_STREAMLIT_SERVER_ADDRESS% ^
+                 --build-arg SERVER_PORT=%IO_AVSTATS_STREAMLIT_SERVER_PORT% ^
+                 -t ioaero/!APPLICATION! .
 
     docker tag ioaero/!APPLICATION! ioaero/!APPLICATION!
 

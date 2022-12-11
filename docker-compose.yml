@@ -2,29 +2,23 @@ version: '3.8'
 
 services:
   db:
-    container_name: dderl_db_ora
+    container_name: ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     environment:
-      ORACLE_PWD: oracle
-    image: ioaero/db_19_3_ee:latest
+      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}
+      - POSTGRES_HOST_AUTH_METHOD=password
+      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_PASSWORD_ADMIN}
+      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_USER_ADMIN}
+    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
     ports:
-      - "1521:1521"
+      - "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_CONTAINER_PORT}"
+    restart: always
+    volumes:
+      - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
 
-  app:
-    command: /bin/bash -c "
-        while [ `docker inspect -f {{.State.Health.Status}} dderl_db_ora` != 'healthy' ];
-          do docker ps --filter 'name=dderl_db_ora';
-          sleep 30;
-        done
-        && sqlplus sys/oracle@dderl_db_ora:1521/orclpdb1 as sysdba @/usr/opt/dderl/run_db_setup.sql
-        && ./usr/opt/dderl/run_application_setup.sh
-      "
-    container_name: dderl_dev
+  app_faaus2008:
+    container_name: faaus2008
     depends_on:
       - db
-    image: ioaero/dderl_dev:latest
+    image: ioaero/faaus2008:latest
     ports:
-      - "8443:8443"
-    tty: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-#     - ./Transfer:/Transfer                           # Example: (create and) use the directory `Transfer`
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"

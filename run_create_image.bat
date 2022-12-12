@@ -13,7 +13,6 @@ set APPLICATION_DEFAULT=faaus2008
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=no
 
-set IO_AVSTATS_STREAMLIT_SERVER_ADDRESS=0.0.0.0
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 
 if ["%1"] EQU [""] (
@@ -93,7 +92,6 @@ rem > %LOG_FILE% 2>&1 (
     docker image ls
 
     docker build --build-arg APP=!APPLICATION! ^
-                 --build-arg SERVER_ADDRESS=%IO_AVSTATS_STREAMLIT_SERVER_ADDRESS% ^
                  --build-arg SERVER_PORT=%IO_AVSTATS_STREAMLIT_SERVER_PORT% ^
                  -t ioaero/!APPLICATION! .
 

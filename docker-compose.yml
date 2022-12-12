@@ -1,6 +1,10 @@
 version: '3.8'
 
 services:
+
+  # ------------------------------------------------------------------------------
+  # PostgreSQL Database.
+  # ------------------------------------------------------------------------------
   db:
     container_name: ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     environment:
@@ -15,6 +19,9 @@ services:
     volumes:
       - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
 
+  # ------------------------------------------------------------------------------
+  # faaus2008 - Fatal Aircraft Accidents in the US since 2008.
+  # ------------------------------------------------------------------------------
   app_faaus2008:
     container_name: faaus2008
     depends_on:
@@ -22,3 +29,14 @@ services:
     image: ioaero/faaus2008:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+
+  # ------------------------------------------------------------------------------
+  # pdus2008 - Profiling Data for the US since 2008.
+  # ------------------------------------------------------------------------------
+  app_pdus2008:
+    container_name: pdus2008
+    depends_on:
+      - db
+    image: ioaero/pdus2008:latest
+    ports:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"

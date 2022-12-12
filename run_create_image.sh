@@ -89,7 +89,6 @@ echo "............................................................. after images
 docker image ls
 
 docker build --build-arg APP=${APPLICATION} \
-             --build-arg SERVER_ADDRESS=${IO_AVSTATS_STREAMLIT_SERVER_ADDRESS} \
              --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
              -t ioaero/${APPLICATION} .
 

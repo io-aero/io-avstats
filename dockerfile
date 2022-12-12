@@ -6,7 +6,6 @@ ARG APP
 ARG SERVER_ADDRESS
 ARG SERVER_PORT
 ENV APP=${APP}
-ENV SERVER_ADDRESS=${SERVER_ADDRESS}
 ENV SERVER_PORT=${SERVER_PORT}
 SHELL ["/bin/bash", "-c"]
 
@@ -24,4 +23,4 @@ COPY src/${APP}_app/${APP}.py ./${APP}.py
 
 RUN make pipenv-prod
 
-ENTRYPOINT ["pipenv", "run", "streamlit", "run", "${APP}.py", "--server.port=${SERVER_PORT}", "--server.address=${SERVER_ADDRESS}"]
+ENTRYPOINT ["pipenv", "run", "streamlit", "run", "${APP}.py", "--server.port=${SERVER_PORT}"]

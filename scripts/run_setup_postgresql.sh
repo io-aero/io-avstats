@@ -17,7 +17,6 @@ echo "POSTGRES_CONNECTION_PORT : ${IO_AVSTATS_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_CONTAINER_PORT  : ${IO_AVSTATS_POSTGRES_CONTAINER_PORT}"
 echo "POSTGRES_DBNAME_ADMIN    : ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}"
-echo "POSTGRES_NET             : ${IO_AVSTATS_POSTGRES_NET}"
 echo "POSTGRES_PGDATA          : ${IO_AVSTATS_POSTGRES_PGDATA}"
 echo "POSTGRES_USER_ADMIN      : ${IO_AVSTATS_POSTGRES_USER}"
 echo "POSTGRES_VERSION         : ${IO_AVSTATS_POSTGRES_VERSION}"
@@ -42,7 +41,6 @@ echo "Docker create ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} (PostgreSQL ${IO_AVSTA
 
 mkdir -p "${PWD}/${IO_AVSTATS_POSTGRES_PGDATA}"
 
-docker network create ${IO_AVSTATS_POSTGRES_NET} 2>/dev/null || echo Docker network ${IO_AVSTATS_POSTGRES_NET} already existing
 docker create -e        POSTGRES_DB=${IO_AVSTATS_POSTGRES_DBNAME_ADMIN} \
               -e        POSTGRES_HOST_AUTH_METHOD=password \
               -e        POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_PASSWORD_ADMIN} \
@@ -59,9 +57,6 @@ if ! docker start ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}; then
 fi
 
 sleep 30
-
-docker network ls
-docker network inspect ${IO_AVSTATS_POSTGRES_NET}
 
 end=$(date +%s)
 echo "DOCKER PostgreSQL was ready in $((end - start)) seconds"

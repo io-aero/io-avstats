@@ -25,7 +25,6 @@ The `test` layer is used for the automated tests.
 | postgres_dbname            | io_avstats_db                                 | database name                                                 |
 | postgres_dbname_admin      | postgres                                      | administration database name                                  |
 | postgres_host              | localhost                                     | database server hostname                                      |
-| postgres_net               | io_avstats_net                                | Docker network name                                           |
 | postgres_password          | postgresql                                    | database password                                             |
 | postgres_password_admin    | postgresql                                    | administration database password                              |
 | postgres_pgdata            | data/postgres                                 | file directory on the host for the database files             |

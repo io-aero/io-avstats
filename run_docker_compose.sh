@@ -12,7 +12,6 @@ export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_NET=io_avstats_net
 export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
@@ -47,7 +46,6 @@ echo "POSTGRES_CONTAINER_NAME         : ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_CONTAINER_NAME         : ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_CONTAINER_PORT         : ${IO_AVSTATS_POSTGRES_CONTAINER_PORT}"
 echo "POSTGRES_DBNAME_ADMIN           : ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}"
-echo "POSTGRES_NET                    : ${IO_AVSTATS_POSTGRES_NET}"
 echo "POSTGRES_PASSWORD_ADMIN         : ${IO_AVSTATS_POSTGRES_PASSWORD_ADMIN}"
 echo "POSTGRES_PGDATA                 : ${IO_AVSTATS_POSTGRES_PGDATA}"
 echo "POSTGRES_USER_ADMIN             : ${IO_AVSTATS_POSTGRES_USER_ADMIN}"
@@ -58,6 +56,24 @@ echo "STREAMLIT_SERVER_PORT_pdus2008  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
+
+echo "Docker Containers ........................................... before containers:"
+docker ps -a
+docker ps       | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+docker ps -a    | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+docker ps       | find "faaus2008"                             && docker stop faaus2008
+docker ps -a    | find "faaus2008"                             && docker rm --force faaus2008
+docker ps       | find "pdus2008"                              && docker stop pdus2008
+docker ps -a    | find "pdus2008"                              && docker rm --force pdus2008
+echo "............................................................. after containers:"
+docker ps -a
+echo "............................................................. before images:"
+docker image ls
+docker image ls | find "${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}" && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}
+docker image ls | find "faaus2008"                           && docker rmi --force ioaero/faaus2008
+docker image ls | find "pdus2008"                            && docker rmi --force ioaero/pdus2008
+echo "............................................................. after images:"
+docker image ls
 
 docker compose up
 

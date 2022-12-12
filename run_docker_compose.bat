@@ -16,7 +16,6 @@ set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
 set IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
-set IO_AVSTATS_STREAMLIT_SERVER_ADDRESS=0.0.0.0
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008=8502
@@ -43,12 +42,10 @@ rem > %LOG_FILE% 2>&1 (
     echo POSTGRES_CONTAINER_NAME         : %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
     echo POSTGRES_CONTAINER_PORT         : %IO_AVSTATS_POSTGRES_CONTAINER_PORT%
     echo POSTGRES_DBNAME_ADMIN           : %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
-    echo POSTGRES_NET                    : %IO_AVSTATS_POSTGRES_NET%
     echo POSTGRES_PASSWORD_ADMIN         : %IO_AVSTATS_POSTGRES_PASSWORD_ADMIN%
     echo POSTGRES_PGDATA                 : %IO_AVSTATS_POSTGRES_PGDATA%
     echo POSTGRES_USER_ADMIN             : %IO_AVSTATS_POSTGRES_USER_ADMIN%
     echo POSTGRES_VERSION                : %IO_AVSTATS_POSTGRES_VERSION%
-    echo STREAMLIT_SERVER_ADDRESS        : %IO_AVSTATS_STREAMLIT_SERVER_ADDRESS%
     echo STREAMLIT_SERVER_PORT           : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
     echo STREAMLIT_SRRVER_PORT_faaus2008 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008%
     echo STREAMLIT_SERVER_PORT_pdus2008  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008%
@@ -66,6 +63,13 @@ rem > %LOG_FILE% 2>&1 (
     docker ps -a    | find "pdus2008"                             && docker rm  --force pdus2008
     echo ............................................................. after containers:
     docker ps -a
+    echo ............................................................. before images:
+    docker image ls
+    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
+    docker image ls | find "faaus2008"                          && docker rmi --force ioaero/faaus2008
+    docker image ls | find "pdus2008"                           && docker rmi --force ioaero/pdus2008
+    echo ............................................................. after images:
+    docker image ls
 
     docker compose up
 

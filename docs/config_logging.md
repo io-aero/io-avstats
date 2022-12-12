@@ -4,7 +4,7 @@ In **IO-AVSTATS** the Python standard module for logging is used - details can b
 
 The file `logging_cfg.yaml` controls the logging behaviour of the application. 
 
-### Default content:
+## Default content:
 
     version: 1
     

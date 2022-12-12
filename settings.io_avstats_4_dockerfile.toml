@@ -26,7 +26,6 @@ postgres_database_schema = "public"
 postgres_dbname = "io_avstats_db"
 postgres_dbname_admin = "postgres"
 postgres_host = "db"
-postgres_net = "io_avstats_net"
 postgres_pgdata ="data/postgres"
 postgres_user = "io_aero"
 postgres_user_admin = "postgres"
@@ -36,7 +35,12 @@ razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2022.11.01_avall.sql"
-streamlit_server_address = "0.0.0.0"
 streamlit_server_port = 8501
 streamlit_server_port_faaus2008 = 8501
 streamlit_server_port_pdus2008 = 8502
+
+[dev]
+
+[prod]
+
+[test]

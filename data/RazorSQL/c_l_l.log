@@ -1,0 +1,65 @@
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : c_l_l
+CORRECTION :
+MSACCESS   :
+-----------------------------------------------------------------------
+The current time is: 13:30:04.35
+Enter the new time:
+=======================================================================
+Progress update 2022-12-12 13:30:06.149263 : ===============================================================================.
+Progress update 2022-12-12 13:30:06.149762 : INFO.00.004 Start Launcher.
+Progress update 2022-12-12 13:30:06.151763 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-12 13:30:06.159763 : INFO.00.005 Argument task='c_l_l'.
+Progress update 2022-12-12 13:30:06.159763 : -------------------------------------------------------------------------------.
+Progress update 2022-12-12 13:30:06.159763 : INFO.00.040 Correct decimal US latitudes and longitudes.
+Progress update 2022-12-12 13:30:06.160263 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 13:30:06.854525 : INFO.00.063 Processed data source 'events'.
+Progress update 2022-12-12 13:30:06.854823 : Number cols deleted  :  11276.
+Progress update 2022-12-12 13:30:06.854823 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 13:30:09.831178 : Number of rows so far read :   5000.
+Progress update 2022-12-12 13:30:09.869678 : Number of rows so far read :  10000.
+Progress update 2022-12-12 13:30:09.908179 : Number of rows so far read :  15000.
+Progress update 2022-12-12 13:30:09.993180 : Number of rows so far read :  20000.
+Progress update 2022-12-12 13:30:10.061679 : Number of rows so far read :  25000.
+Progress update 2022-12-12 13:30:10.150179 : Number of rows so far read :  30000.
+Progress update 2022-12-12 13:30:10.188678 : Number of rows so far read :  35000.
+Progress update 2022-12-12 13:30:10.226178 : Number of rows so far read :  40000.
+Progress update 2022-12-12 13:30:12.211428 : Number of rows so far read :  45000.
+Progress update 2022-12-12 13:30:17.858220 : Number of rows so far read :  50000.
+Progress update 2022-12-12 13:30:17.897221 : Number of rows so far read :  55000.
+Progress update 2022-12-12 13:30:17.957720 : Number of rows so far read :  60000.
+Progress update 2022-12-12 13:30:17.995720 : Number of rows so far read :  65000.
+Progress update 2022-12-12 13:30:18.034720 : Number of rows so far read :  70000.
+Progress update 2022-12-12 13:30:18.073220 : Number of rows so far read :  75000.
+Progress update 2022-12-12 13:30:18.112220 : Number of rows so far read :  80000.
+Progress update 2022-12-12 13:30:18.150720 : Number of rows so far read :  85000.
+Progress update 2022-12-12 13:30:18.189220 : Number of rows so far read :  90000.
+Progress update 2022-12-12 13:30:18.228221 : Number of rows so far read :  95000.
+Progress update 2022-12-12 13:30:42.394773 : Number of rows so far read : 100000.
+Progress update 2022-12-12 13:32:07.870835 : Number of rows so far read : 105000.
+Progress update 2022-12-12 13:32:22.127173 : Number of rows so far read : 110000.
+Progress update 2022-12-12 13:33:34.363848 : Number of rows so far read : 115000.
+Progress update 2022-12-12 13:35:51.126282 : Number of rows so far read : 120000.
+Progress update 2022-12-12 13:38:07.305202 : Number of rows so far read : 125000.
+Progress update 2022-12-12 13:40:20.818532 : Number of rows so far read : 130000.
+Progress update 2022-12-12 13:42:37.255588 : Number of rows so far read : 135000.
+Progress update 2022-12-12 13:42:37.383300 : Number rows selected : 135108.
+Progress update 2022-12-12 13:42:37.383800 : Number rows updated  :  26989.
+Progress update 2022-12-12 13:42:37.383800 : -------------------------------------------------------------------------------.
+Progress update 2022-12-12 13:42:37.383800 :      751,385,037,200 ns - Total time launcher.
+Progress update 2022-12-12 13:42:37.383800 : INFO.00.006 End   Launcher.
+Progress update 2022-12-12 13:42:37.383800 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 13:42:37.55
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================

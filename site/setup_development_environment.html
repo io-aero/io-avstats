@@ -531,7 +531,7 @@
 <p><a href="https://gnuwin32.sourceforge.net/packages/make.htm">https://gnuwin32.sourceforge.net/packages/make.htm</a></p>
 <h1 id="33-microsoft-access-database-engine-2016-redistributable">3.3 Microsoft Access Database Engine 2016 Redistributable</h1>
 <p>Important: Microsoft Access, Microsoft Access Database Engine and Python should all be installed either in the 32 bit version or in the 64 bit version!</p>
-<p>The installation file can be found in the <strong><code>io-avstats-db</code></strong> repository under <strong><code>resources/Microsoft Access Database Engine 2016 Redistributable</code></strong></p>
+<p>The installation file can be found in the <strong><code>io-avstats</code></strong> repository under <strong><code>resources/Microsoft Access Database Engine 2016 Redistributable</code></strong></p>
 <h1 id="34-postgresql">3.4 PostgreSQL</h1>
 <p>Important: Use version 15.0</p>
 <p><a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">https://www.enterprisedb.com/downloads/postgres-postgresql-downloads</a></p>
@@ -540,20 +540,20 @@
 <p>Important: Use version 3.10.8</p>
 <p><a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p>
 <h1 id="36-razorsql">3.6 RazorSQL</h1>
-<p>The installation file can be found in the <strong><code>io-avstats-db</code></strong> repository under <strong><code>resources/RazorSQL</code></strong></p>
+<p>The installation file can be found in the <strong><code>io-avstats</code></strong> repository under <strong><code>resources/RazorSQL</code></strong></p>
 <div style="page-break-after: always;"></div>
 
 <h1 id="37-dbeaver-optional-universal-database-tool">3.7 DBeaver (optional) - Universal Database Tool</h1>
 <p><a href="https://dbeaver.io">https://dbeaver.io</a></p>
 <h1 id="38-anydesk-optional-remote-desktop-application">3.8 AnyDesk (optional) - Remote Desktop Application</h1>
 <p><a href="https://anydesk.com/en">https://anydesk.com/en</a></p>
-<h1 id="4-set-up-io-avstats-db">4. Set up <strong>IO-AVSTATS-DB</strong></h1>
+<h1 id="4-set-up-io-avstats">4. Set up <strong>IO-AVSTATS</strong></h1>
 <h2 id="41-razorsql">4.1 RazorSQL</h2>
 <p>Create the connection profile IO-AVSTATS in RazorSQL</p>
 <div class="highlight"><pre><span></span><code>RazorSQL: Connections --&gt; Add Connection Profile --&gt; Microsoft Access --&gt; Continuue --&gt; ODBC (Direct)
 
     Connection Profile Name:   **IO-AVSTATS**
-    Database file:             **...\io-avstats-db\data\NTSB\IO-AVSTATS.mdb**
+    Database file:             **...\io-avstats\data\NTSB\IO-AVSTATS.mdb**
 </code></pre></div>
 <h2 id="42-windows-terminal">4.2 Windows Terminal</h2>
 <p>Install the Python packages</p>
@@ -580,14 +580,14 @@
     File:  **...\io-avstats\data\DBeaver\io-avstats-....dbp**
 </code></pre></div>
 <p>Connect to the PostgreSQL development database.</p>
-<h1 id="5-set-up-io-avstats-db-content">5. Set up <strong>IO-AVSTATS-DB-CONTENT</strong></h1>
+<h1 id="5-set-up-io-avstats">5. Set up <strong>IO-AVSTATS</strong></h1>
 <h2 id="51-google-drive">5.1 Google Drive</h2>
 <p>Download the PostgreSQL database files.</p>
 <div class="highlight"><pre><span></span><code>Shared with me
 
     22.11.05_postgre_avall.zip
 
-        Dowbload to:   **...\io-avstats-db-content\data**
+        Dowbload to:   **...\io-avstats\data**
 
             Unzip the downloaded file.
 </code></pre></div>
@@ -605,8 +605,8 @@
 <h1 id="6-set-up-io-avstats">6. Set up <strong>IO-AVSTATS</strong></h1>
 <h2 id="61-create-the-credentials-file-settingsio_avstatstoml">6.1 Create the credentials file <strong><code>.settings.io_avstats.toml</code></strong></h2>
 <div class="highlight"><pre><span></span><code>[default]
-postgres_password=&quot;postgresql&quot;
-postgres_password_admin = &quot;postgresql&quot;
+postgres_password=&quot;...&quot;
+postgres_password_admin = &quot;...&quot;
 </code></pre></div>
 <h2 id="62-windows-terminal">6.2 Windows Terminal</h2>
 <p>Install the Python packages</p>

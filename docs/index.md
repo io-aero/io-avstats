@@ -1,8 +1,12 @@
 # IO-AVSTATS - Aviation Accident Statistics
 
-TODO
+This repository is used for the development and maintenance of applications based on the data of the IO-AVSTATS database. 
+Currently, it includes the following applications:
 
-All processing tasks can be performed using the **`run_io_avstats`** shell script.
+- faaus2008 - Fatal Aircraft Accidents in the US since 2008
+- pdus2008  - Profiling Data for the US since 2008
 
-This Repository contains also the latest version of the **IO-AVSTATS** database files in the `data/postgres` file directory. 
-The underlying database management system is [PostgreSQL](https://www.postgresql.org){:target="_blank"}.
+These applications and the database are available in the cloud via AWS.
+In addition, the maintenance of the database content is also done in this repository. 
+
+The related database software is maintained in the repository **[io-avstats-db](https://github.com/io-aero/io-avstats-db)**.

@@ -1,35 +1,3 @@
-Microsoft Windows [Version 10.0.19045.2311]
-(c) Microsoft Corporation. All rights reserved.
-
-D:\SoftDevelopment\Projects\IO Aero\io-avstats-db-content>run_io_avstats_db
-=========================================================
-c_l_l   - Correct decimal US latitudes and longitudes
-d_n_a   - Download a NTSB MS Access database file
-l_n_a   - Load NTSB MS Access database data into PostgreSQL
-v_n_d   - Verify selected NTSB data
----------------------------------------------------------
-d_s_f   - Download basic simplemaps files
-l_c_d   - Load data from a correction file into PostgreSQL
-l_c_s   - Load country and state data into PostgreSQL
-l_s_d   - Load simplemaps data into PostgreSQL
-l_z_d   - Load ZIP Code Database data into PostgreSQL
----------------------------------------------------------
-c_d_s   - Create the PostgreSQL database schema
-d_d_f   - Delete the PostgreSQL database files
-d_d_s   - Drop the PostgreSQL database schema
-s_d_c   - Set up the PostgreSQL database container
-u_d_s   - Update the PostgreSQL database schema
----------------------------------------------------------
-version - Show the IO-AVSTATS-DB version
----------------------------------------------------------
-Enter the desired task [default: version] l_n_a
-=========================================================
-IO-AVSTATS.mdb
-up22NOV.mdb
----------------------------------------------------------
-Enter the stem name of the desired MS Access database file up22NOV
-
-Script run_io_avstats_db is now running
 =======================================================================
 Start run_io_avstats_db
 -----------------------------------------------------------------------
@@ -150,5 +118,3 @@ Enter the new time:
 -----------------------------------------------------------------------
 End   run_io_avstats_db
 =======================================================================
-
-D:\SoftDevelopment\Projects\IO Aero\io-avstats-db-content>

@@ -6,7 +6,6 @@ ARG APP
 ARG SERVER_ADDRESS
 ARG SERVER_PORT
 ENV APP=${APP}
-ENV SERVER_ADDRESS=${SERVER_ADDRESS}
 ENV SERVER_PORT=${SERVER_PORT}
 SHELL ["/bin/bash", "-c"]
 
@@ -16,12 +15,12 @@ WORKDIR /home
 
 COPY .settings.io_avstats.toml ./
 COPY .streamlit/config.toml ./.streamlit/
-COPY .streamlit/secrets_docker_compose.toml ./.streamlit/secrets.toml
+COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml
 COPY Makefile ./
 COPY Pipfile ./
-COPY settings.io_avstats_docker_compose.toml ./settings.io_avstats.toml
-COPY src/${APP}_app/${APP}.py ./${APP}.py
+COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml
+COPY src/streamlit_apps/${APP}.py ./${APP}.py
 
 RUN make pipenv-prod
 
-ENTRYPOINT ["pipenv", "run", "streamlit", "run", "${APP}.py", "--server.port=${SERVER_PORT}", "--server.address=${SERVER_ADDRESS}"]
+ENTRYPOINT ["pipenv", "run", "streamlit", "run", "${APP}.py", "--server.port=${SERVER_PORT}"]

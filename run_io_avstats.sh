@@ -15,7 +15,6 @@ export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_NET=io_avstats_net
 export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
@@ -81,7 +80,7 @@ echo "--------------------------------------------------------------------------
 echo "PYTHONPATH : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
 echo "TASK       : ${IO_AVSTATS_TASK}"
-echo "TASK       : ${IO_AVSTATS_TASK}"
+echo "CORRECTION : ${IO_AVSTATS_CORRECTION}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -120,7 +119,7 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # ------------------------------------------------------------------------------
 
 elif [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
-    if ! ( pipenv run streamlit run src/faaus2008_app/faaus2008.py ); then
+    if ! ( pipenv run streamlit run src/streamlit_apps/faaus2008.py ); then
         exit 255
     fi
 
@@ -137,7 +136,7 @@ elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
 # ------------------------------------------------------------------------------
 
 elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
-    if ! ( pipenv run streamlit run src/pdus2008_app/pdus2008.py ); then
+    if ! ( pipenv run streamlit run src/streamlit_apps/pdus2008.py ); then
         exit 255
     fi
 

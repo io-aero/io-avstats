@@ -352,15 +352,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#available-parameters" class="md-nav__link">
-    Available Parameters:
+  <a href="#1-available-parameters" class="md-nav__link">
+    1. Available Parameters
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    Notes:
+  <a href="#2-notes" class="md-nav__link">
+    2. Notes
   </a>
   
 </li>
@@ -534,15 +534,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#available-parameters" class="md-nav__link">
-    Available Parameters:
+  <a href="#1-available-parameters" class="md-nav__link">
+    1. Available Parameters
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    Notes:
+  <a href="#2-notes" class="md-nav__link">
+    2. Notes
   </a>
   
 </li>
@@ -563,13 +563,13 @@
 
 
 <h1 id="io-avstats-configuration">IO-AVSTATS - Configuration</h1>
-<p>Please see also <a href="https://github.com/io-aero/io-avstats-db/blob/main/docs/config_io_avstats.md" target="_blank">here</a></p>
 <p>For the administration of the configuration parameters of <strong>IO-AVSTATS</strong> the tool <a href="https://www.dynaconf.com" target="_blank"><strong>dynaconf</strong></a> is used.
 The two files <code>settings.io_avstats.toml</code> and <code>.settings.io_avstats.toml</code> are available as configuration files.
+The <code>.settings.io_avstats.toml</code> file contains the security related parameters such as passwords and is not made available in the GitHub repository.
 The names of <strong>IO-AVSTATS</strong> related environment variables must include the prefix <code>IO_AVSTATS</code>.
 Layered environments are supported.
 The <code>test</code> layer is used for the automated tests.</p>
-<h3 id="available-parameters">Available Parameters:</h3>
+<h2 id="1-available-parameters">1. Available Parameters</h2>
 <table>
 <thead>
 <tr>
@@ -580,44 +580,109 @@ The <code>test</code> layer is used for the automated tests.</p>
 </thead>
 <tbody>
 <tr>
-<td>is_verbose</td>
-<td>true</td>
-<td>output of progress messages</td>
+<td>correction_work_dir</td>
+<td>data/correction</td>
+<td>file directory containing the files with the manual corrections</td>
 </tr>
 <tr>
-<td>msaccess_chunk_size</td>
-<td>10000</td>
+<td>database_commit_size</td>
+<td>5000</td>
 <td>number of rows processed before a progress message is created</td>
 </tr>
 <tr>
-<td>ntsb_chunk_size</td>
+<td>download_chunk_size</td>
 <td>524288</td>
-<td>chunk size for download from NTSB website</td>
+<td>chunk size for download from the <strong>NTSB</strong> website</td>
 </tr>
 <tr>
-<td>ntsb_timeout</td>
+<td>download_file_countries_states_json</td>
+<td>data/Countries_States/countries_states.json</td>
+<td>name of the file containing data of countries and states</td>
+</tr>
+<tr>
+<td>download_file_simplemaps_us_cities_xlsx</td>
+<td>uscities.xlsx</td>
+<td>simplemaps: name of the zipped US city file</td>
+</tr>
+<tr>
+<td>download_file_simplemaps_us_cities_zip</td>
+<td>simplemaps_uscities_basicv1.75.zip</td>
+<td>simplemaps: name of the unzipped US city file</td>
+</tr>
+<tr>
+<td>download_file_simplemaps_us_zips_xlsx</td>
+<td>uszips.xlsx</td>
+<td>simplemaps: name of the zipped US zip code file</td>
+</tr>
+<tr>
+<td>download_file_simplemaps_us_zips_zip</td>
+<td>simplemaps_uszips_basicv1.81.zip</td>
+<td>simplemaps: name of the unzipped US zip code file</td>
+</tr>
+<tr>
+<td>download_file_zip_codes_org_xls</td>
+<td>zip_code_database.xls</td>
+<td>ZIP Code Database: name of the unzipped US zip code file</td>
+</tr>
+<tr>
+<td>download_timeout</td>
 <td>10</td>
 <td>seconds to wait for the server to send data</td>
 </tr>
 <tr>
-<td>ntsb_url_prefix</td>
+<td>download_url_ntsb_prefix</td>
 <td>https://data.ntsb.gov/...</td>
-<td>prefix of the download link for the NTSB data sets</td>
+<td>prefix of the download link for the <strong>NTSB</strong> data sets</td>
 </tr>
 <tr>
-<td>ntsb_work_dir</td>
-<td>data/NTSB</td>
-<td>working directory for the processing of NTSB data sets</td>
+<td>download_url_simplemaps_us_cities</td>
+<td>https://simplemaps.com/...</td>
+<td>prefix of the download link for the <strong>simplemaps</strong> US cities data sets</td>
+</tr>
+<tr>
+<td>download_url_simplemaps_us_zips</td>
+<td>https://simplemaps.com/...</td>
+<td>prefix of the download link for the <strong>simplemaps</strong> US zip code data sets</td>
+</tr>
+<tr>
+<td>download_url_zip_codes_org</td>
+<td>https://www.unitedstateszipcodes.org/...</td>
+<td>prefix of the download link for the <strong>ZIP Code Database</strong> data set</td>
+</tr>
+<tr>
+<td>download_work_dir</td>
+<td>data/download</td>
+<td>working directory for the processing of <strong>NTSB</strong> data sets</td>
+</tr>
+<tr>
+<td>is_verbose</td>
+<td>true</td>
+<td>display progress messages for processing</td>
+</tr>
+<tr>
+<td>max_deviation_latitude</td>
+<td>0.01</td>
+<td>maximum decimal deviation of the latitude in the database table even</td>
+</tr>
+<tr>
+<td>max_deviation_longitude</td>
+<td>0.01</td>
+<td>maximum decimal deviation of the longitude in the database table even</td>
 </tr>
 <tr>
 <td>odbc_connection_string</td>
-<td>Driver={Microsoft Access Driver ...</td>
-<td>connection string for the Microsoft Access ODBC driver</td>
+<td>Driver={MS Access Driver ...</td>
+<td>connection string for the MS Access ODBC driver</td>
+</tr>
+<tr>
+<td>pandas_profile_dir</td>
+<td>a/pandas_profiles</td>
+<td>directory to store the Pandas profiling results</td>
 </tr>
 <tr>
 <td>postgres_connection_port</td>
 <td>5432</td>
-<td>databasse IP address</td>
+<td>database port number</td>
 </tr>
 <tr>
 <td>postgres_container_name</td>
@@ -627,7 +692,12 @@ The <code>test</code> layer is used for the automated tests.</p>
 <tr>
 <td>postgres_container_port</td>
 <td>5432</td>
-<td>container IP address</td>
+<td>container port number</td>
+</tr>
+<tr>
+<td>postgres_database_schema</td>
+<td>public</td>
+<td>database schema name</td>
 </tr>
 <tr>
 <td>postgres_dbname</td>
@@ -641,13 +711,8 @@ The <code>test</code> layer is used for the automated tests.</p>
 </tr>
 <tr>
 <td>postgres_host</td>
-<td>localhost</td>
+<td>db</td>
 <td>database server hostname</td>
-</tr>
-<tr>
-<td>postgres_net</td>
-<td>io_avstats_net</td>
-<td>Docker network name</td>
 </tr>
 <tr>
 <td>postgres_password</td>
@@ -704,11 +769,26 @@ The <code>test</code> layer is used for the automated tests.</p>
 <td>2022.11.01_avall.sql</td>
 <td>file name of the database schema reference file</td>
 </tr>
+<tr>
+<td>streamlit_server_port</td>
+<td>8501</td>
+<td>Streamlit port number</td>
+</tr>
+<tr>
+<td>streamlit_server_port_faaus2008</td>
+<td>8501</td>
+<td>Streamlit port number for application faaus2008</td>
+</tr>
+<tr>
+<td>streamlit_server_port_pdus2008</td>
+<td>8502</td>
+<td>Streamlit port number for application pdus2008</td>
+</tr>
 </tbody>
 </table>
-<h3 id="notes">Notes:</h3>
+<h2 id="2-notes">2. Notes</h2>
 <ol>
-<li>The configuration parameters <code>postgres_password</code> and <code>postgres_password_admin</code> can be found in the configuration file <code>.settings.io_avstats.toml</code> which is not a part of the repository.</li>
+<li>The configuration parameters <code>postgres_password</code> and <code>postgres_password_admin</code> can be found in the configuration file <code>.settings.io_avstats.toml</code>.</li>
 <li>The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable <code>IO_AVSTATS_IS_VERBOSE</code> overrides the configuration parameter <code>is_verbose</code>. </li>
 </ol>
 

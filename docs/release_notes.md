@@ -41,17 +41,41 @@ Release Date: 12.12.2022
 
 ### 3.2 [NTSB - National Transport Safety Board](https://www.ntsb.gov/Pages/home.aspx){:target="_blank"}
 
-#### Data source `up22NOV.zip` TODO
+#### Data source `up01NOV.zip`
 
-- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22NOV.zip){:target="_blank"}
-- Version: 11/22/2022 3:00:14 AM
-- Purpose: aviation accident data available for public use from November 2022
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01NOV.zip){:target="_blank"}
+- Version: 11/01/2022 3:00:31 AM
+- Purpose: update of aviation accident data available for public use
+
+#### Data source `up08NOV.zip`
+
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08NOV.zip){:target="_blank"}
+- Version: 	11/08/2022 3:00:51 AM
+- Purpose: update of aviation accident data available for public use
+
+#### Data source `up15NOV.zip`
+
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15NOV.zip){:target="_blank"}
+- Version: 11/15/2022 3:00:15 AM
+- Purpose: update of aviation accident data available for public use
 
 #### Data source `up22NOV.zip`
 
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22NOV.zip){:target="_blank"}
 - Version: 11/22/2022 3:00:14 AM
-- Purpose: aviation accident data available for public use from November 2022
+- Purpose: update of aviation accident data available for public use
+
+#### Data source `up01DEC.zip`
+
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01DEC.zip){:target="_blank"}
+- Version: 12/01/2022 3:00:13 AM
+- Purpose: update of aviation accident data available for public use
+
+#### Data source `up08DEC.zip`
+
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08DEC.zip){:target="_blank"}
+- Version: 	12/08/2022 3:00:40 AM
+- Purpose: update of aviation accident data available for public use
 
 #### Data source `avall.zip`
 

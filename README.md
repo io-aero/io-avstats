@@ -40,16 +40,17 @@ The latest version of the **IO-AVSTATS** database can be found here:
 
 ### 4.1 Directories
 
-| Directory  | Content                                                       |
-|------------|---------------------------------------------------------------|
-| .streamlit | Streamlit configuration files.                               |
-| data       | Application data related files.                               |
-| docs       | Documentation files.                                          |
-| resources  | Selected manuals and software.                                |
-| scripts    | Supporting Ubuntu and Windows Scripts.                        |
-| site       | Documentation as static HTML pages generated with **MkDocs**. |
-| src        | Python script files and the **IO-AVSTATS-DB** package.        |
-| tests      | Scripts and data for **pytest**.                              |
+| Directory         | Content                                                       |
+|-------------------|---------------------------------------------------------------|
+| .github/workflows | **[GitHub Action](https://github.com/actions)** workflows.    |
+| .streamlit        | Streamlit configuration files.                                |
+| data              | Application data related files.                               |
+| docs              | Documentation files.                                          |
+| resources         | Selected manuals and software.                                |
+| scripts           | Supporting Ubuntu and Windows Scripts.                        |
+| site              | Documentation as static HTML pages generated with **MkDocs**. |
+| src               | Python script files and the **IO-AVSTATS-DB** package.        |
+| tests             | Scripts and data for **pytest**.                              |
 
 ### 4.2 Files
 

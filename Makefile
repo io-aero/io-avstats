@@ -7,6 +7,7 @@ ifeq ($(OS),Windows_NT)
 	export PYTHONPATH=
 	export PYTHONPATH_BANDIT=src
 	export PYTHONPATH_MYPY=src
+	export PYTHONPATH_PYTEST=src
 else
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python3 -m pipenv
@@ -14,6 +15,7 @@ else
 	export PYTHONPATH=
 	export PYTHONPATH_BANDIT=src
 	export PYTHONPATH_MYPY=src
+	export PYTHONPATH_PYTEST=src
 endif
 
 ##                                                                            .
@@ -33,8 +35,7 @@ dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: pydocstyle mkdocs
 ## final:              Format, lint and test the code and the documentation.
-#final: format lint docs tests
-final: format lint docs
+final: format lint docs tests
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
 ## lint:               Lint the code with Bandit, Flake8, Pylint and Mypy.
@@ -56,19 +57,19 @@ bandit:             ## Find common security issues with Bandit.
 	${PIPENV} run bandit --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH_BANDIT}
-	@echo Info **********  End:   Bandit **************************************
+	@echo Info **********  End:   Bandit ***************************************
 
 # The Uncompromising Code Formatter
 # https://github.com/psf/black
 # Configuration file: pyproject.toml
 black:              ## Format the code with Black.
-	@echo Info **********  Start: black ***************************************
+	@echo Info **********  Start: black ****************************************
 	@echo PYTHON    =${PYTHON}
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run black ${PYTHONPATH} tests
-	@echo Info **********  End:   black ***************************************
+	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
 # https://docs.python.org/3/library/compileall.html
@@ -87,7 +88,7 @@ compileall:         ## Byte-compile the Python libraries.
 # Configuration file: none
 coveralls:          ## Run all the tests and upload the coverage data to coveralls.
 	@echo Info **********  Start: coveralls ***********************************
-	${PIPENV} run pytest --cov=${PYTHONPATH} --cov-report=xml tests
+	${PIPENV} run pytest --cov=${PYTHONPATH_PYTEST} --cov-report=xml tests
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run coveralls --service=github
 	@echo Info **********  End:   coveralls ***********************************
@@ -220,7 +221,7 @@ pylint:             ## Lint the code with Pylint.
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pylint ${PYTHONPATH} tests
+	${PIPENV} run pylint tests
 	@echo Info **********  End:   Pylint **************************************
 
 # pytest: helps you write better programs.
@@ -231,7 +232,7 @@ pytest:             ## Run all tests with pytest.
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --dead-fixtures tests
-	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered --random-order -v tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH_PYTEST} --cov-report term-missing:skip-covered --random-order -v tests
 	@echo Info **********  End:   pytest **************************************
 pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo Info **********  Start: pytest **************************************
@@ -244,25 +245,25 @@ pytest-ci:          ## Run all tests with pytest after test tool installation.
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --dead-fixtures tests
-	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered --random-order -v tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH_PYTEST} --cov-report term-missing:skip-covered --random-order -v tests
 	@echo Info **********  End:   pytest **************************************
 pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo Info **********  Start: pytest **************************************
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered --random-order -rP -v -x tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH_PYTEST} --cov-report term-missing:skip-covered --random-order -rP -v -x tests
 	@echo Info **********  End:   pytest **************************************
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
 	@echo Info **********  Start: pytest **************************************
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH_PYTEST} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
 	@echo Info **********  End:   pytest **************************************
 pytest-module:      ## Run tests of specific module(s) with pytest - test_all & test_cfg_cls_setup & test_db_cls.
 	@echo Info **********  Start: pytest **************************************
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -v tests/test_db_cls_action.py
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH_PYTEST} --cov-report term-missing:skip-covered -v tests/test_db_cls_action.py
 	@echo Info **********  End:   pytest **************************************
 
 version:            ## Show the installed software versions.

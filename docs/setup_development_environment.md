@@ -48,7 +48,7 @@
 
 Important: Microsoft Access, Microsoft Access Database Engine and Python should all be installed either in the 32 bit version or in the 64 bit version!
 
-The installation file can be found in the **`io-avstats-db`** repository under **`resources/Microsoft Access Database Engine 2016 Redistributable`**
+The installation file can be found in the **`io-avstats`** repository under **`resources/Microsoft Access Database Engine 2016 Redistributable`**
 
 # 3.4 PostgreSQL
 
@@ -66,7 +66,7 @@ Important: Use version 3.10.8
 
 # 3.6 RazorSQL
 
-The installation file can be found in the **`io-avstats-db`** repository under **`resources/RazorSQL`**
+The installation file can be found in the **`io-avstats`** repository under **`resources/RazorSQL`**
 
 <div style="page-break-after: always;"></div>
 
@@ -78,7 +78,7 @@ The installation file can be found in the **`io-avstats-db`** repository under *
 
 [https://anydesk.com/en](https://anydesk.com/en)
 
-# 4. Set up **IO-AVSTATS-DB**
+# 4. Set up **IO-AVSTATS**
 
 ## 4.1 RazorSQL
 
@@ -87,7 +87,7 @@ Create the connection profile IO-AVSTATS in RazorSQL
     RazorSQL: Connections --> Add Connection Profile --> Microsoft Access --> Continuue --> ODBC (Direct)
 
         Connection Profile Name:   **IO-AVSTATS**
-        Database file:             **...\io-avstats-db\data\NTSB\IO-AVSTATS.mdb**
+        Database file:             **...\io-avstats\data\NTSB\IO-AVSTATS.mdb**
 
 ## 4.2 Windows Terminal
 
@@ -125,7 +125,7 @@ Import the io-avstats project settings:
 
 Connect to the PostgreSQL development database.
 
-# 5. Set up **IO-AVSTATS-DB-CONTENT**
+# 5. Set up **IO-AVSTATS**
 
 ## 5.1 Google Drive
 
@@ -135,7 +135,7 @@ Download the PostgreSQL database files.
 
         22.11.05_postgre_avall.zip
 
-            Dowbload to:   **...\io-avstats-db-content\data**
+            Dowbload to:   **...\io-avstats\data**
 
                 Unzip the downloaded file.
 

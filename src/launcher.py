@@ -214,7 +214,7 @@ def _get_args() -> None:
     io_glob.logger.debug(io_glob.LOGGER_START)
 
     parser = argparse.ArgumentParser(
-        description="Perform a IO-AVSTATS-DB task",
+        description="Perform a IO-AVSTATS task",
         prog="launcher",
         prefix_chars="--",
         usage="%(prog)s options",

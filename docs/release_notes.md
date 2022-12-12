@@ -1,12 +1,15 @@
 # IO-AVSTATS - Release Notes
 
-## 1. Version 0.9.0 
+## 1. Version 22.12.05 
 
-Release Date: dd.mm.2022
+Release Date: 12.12.2022
 
 ### 1.1 New Features
 
-- Streamlit demo
+- Docker Compose usage
+- Making available in AWS
+- Streamlit application: faaus2008 - Fatal Aircraft Accidents in the US since 2008
+- Streamlit application: pdus2008 - Profiling Data for the US since 2008
 
 ### 1.2 Applied Software (Windows-specific)
 
@@ -14,23 +17,21 @@ Release Date: dd.mm.2022
 
 | Software                                                                                                                                                                  | Version   | Remark | Status |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|:-------|--------|
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"}                                                                                       | 4.14.1    |        |        |
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"}                                                                                       | 4.15.0    |        |        |
 | [IO-AVSTATS-DB](https://github.com/io-aero/io-avstats-db){:target="_blank"}                                                                                               | 1.1.1     |        |        |
 | [The LLVM Compiler Infrastructure](https://llvm.org){:target="_blank"}                                                                                                    | 15.0.4    |        |        |
 | [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm){:target="_blank"}                                                                                   | 3.81      |        |        |
 | [Microsoft Access Database Engine 2016 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=54920){:target="_blank"}                                 | 8/11/2020 |        |        |
 | [PostgreSQL](https://www.postgresql.org){:target="_blank"}                                                                                                                | 15.1      |        |        |
-| [Python](https://www.python.org){:target="_blank"}                                                                                                                        | 3.10.8    |        |        |
-| [RazorSQL](https://razorsql.com/index.html?adid=jq15&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuNpdSvtB0l2gVp3Pc9ON8lOz4wRlVJxKPndX2tOatTlrTijCLVC6BRoCSqUQAvD_BwE){:target="_blank"} | 10.1.1    |        |        |
+| [Python](https://www.python.org){:target="_blank"}                                                                                                                        | 3.10.9    |        |        |
+| [RazorSQL](https://razorsql.com/index.html?adid=jq15&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuNpdSvtB0l2gVp3Pc9ON8lOz4wRlVJxKPndX2tOatTlrTijCLVC6BRoCSqUQAvD_BwE){:target="_blank"} | 10.2.0    |        |        |
 | [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs){:target="_blank"}                                                                                   | 2022      |        |        |  
 
 ### 2.1 Minimal Requirements Visual Studio Community 2022
 
 ![](img/Visual Studio Requirements.png)
 
-## 3. Changes to processed files
-
-TODO
+## 3. Processed files
 
 ### 3.1 [geodatos - Information and maps of the world](https://www.geodatos.net/en){:target="_blank"}
 

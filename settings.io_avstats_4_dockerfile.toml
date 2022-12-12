@@ -38,3 +38,9 @@ razorsql_reference_file = "2022.11.01_avall.sql"
 streamlit_server_port = 8501
 streamlit_server_port_faaus2008 = 8501
 streamlit_server_port_pdus2008 = 8502
+
+[dev]
+
+[prod]
+
+[test]

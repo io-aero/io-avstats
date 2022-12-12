@@ -1,6 +1,6 @@
 # IO-AVSTATS - Installation
 
-1. Clone or copy the **IO-AVSTATS** repository from [here](https://github.com/io-aero/io-avstats-db){:target="_blank"}.
+1. Clone or copy the **IO-AVSTATS** repository from [here](https://github.com/io-aero/io-avstats){:target="_blank"}.
 
 2. Switch to the file directory **io-avstats**:
 
@@ -15,4 +15,4 @@
  
 5. Create the configuration file **`.settings.io_avstats.toml`** with the passwords for the PostgreSQL database users.
  
-6. Use the **IOO-AVSTATS** application by running the script **`run_io_avstats.bat`**.
+6. Use the **IO-AVSTATS** application by running the script **`run_io_avstats.bat`**.

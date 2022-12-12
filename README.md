@@ -40,29 +40,34 @@ The latest version of the **IO-AVSTATS** database can be found here:
 
 ### 4.1 Directories
 
-| Directory         | Content                                                       |
-|-------------------|---------------------------------------------------------------|
-| .github/workflows | **[GitHub Action](https://github.com/actions)** workflows.    |
-| data              | Application data related files.                               |
-| docs              | Documentation files.                                          |
-| resources         | Selected manuals and software.                                |
-| scripts           | Supporting Ubuntu and Windows Scripts.                        |
-| site              | Documentation as static HTML pages generated with **MkDocs**. |
-| src               | Python script files and the **IO-AVSTATS-DB** package.        |
-| tests             | Scripts and data for **pytest**.                              |
+| Directory  | Content                                                       |
+|------------|---------------------------------------------------------------|
+| .streamlit | Streamlit configuration files.                               |
+| data       | Application data related files.                               |
+| docs       | Documentation files.                                          |
+| resources  | Selected manuals and software.                                |
+| scripts    | Supporting Ubuntu and Windows Scripts.                        |
+| site       | Documentation as static HTML pages generated with **MkDocs**. |
+| src        | Python script files and the **IO-AVSTATS-DB** package.        |
+| tests      | Scripts and data for **pytest**.                              |
 
 ### 4.2 Files
 
-| File                     | Functionality                                                                                   |
-|--------------------------|-------------------------------------------------------------------------------------------------|
-| .gitignore               | Configuration of files and folders to be ignored.                                               |
-| LICENSE.md               | Text of the licence terms.                                                                      |
-| logging_cfg.yaml         | Configuration of the Logger functionality.                                                      |
-| Makefile                 | Definition of tasks to be executed with the **`make`** command.                                 |
-| mkdocs.yml               | Configuration file for **MkDocs**.                                                              |
-| Pipfile                  | Definition of the Python package requirements.                                                  |
-| pyproject.toml           | Optional configuration data for the **bandit**, **isort**, **pydocstyle** and **pytest** tools. |
-| README.md                | This file.                                                                                      |
-| run_io_avstats           | Main script for using the functionality of **IO-AVSTATS**.                                      |
-| settings.io_avstats.toml | Configuration data for **IO-AVSTATS**.                                                          |
-| setup.cfg                | Optional configuration data for **flake8**.                                                     |
+| File                                  | Functionality                                                                                   |
+|---------------------------------------|-------------------------------------------------------------------------------------------------|
+| .gitignore                            | Configuration of files and folders to be ignored.                                               |
+| docker-compose.yaml                   | Docker Compose configuration file.                                                              |
+| dockerfile                            | Build instructions for the Streamlit application images.                                        |
+| LICENSE.md                            | Text of the licence terms.                                                                      |
+| logging_cfg.yaml                      | Configuration of the Logger functionality.                                                      |
+| Makefile                              | Definition of tasks to be executed with the **`make`** command.                                 |
+| mkdocs.yml                            | Configuration file for **MkDocs**.                                                              |
+| Pipfile                               | Definition of the Python package requirements.                                                  |
+| pyproject.toml                        | Optional configuration data for the **bandit**, **isort**, **pydocstyle** and **pytest** tools. |
+| README.md                             | This file.                                                                                      |
+| run_create_image                      | Script to create the Streamlit application images.                                              |
+| run_docker_compose                    | Script to start the Docker orchestration.                                                       |
+| run_io_avstats                        | Main script for using the functionality of **IO-AVSTATS**.                                      |
+| settings.io_avstats.toml              | Configuration data for **IO-AVSTATS**.                                                          |
+| settings.io_avstats_4_dockerfile.toml | Configuration data for **IO-AVSTATS** - variant for the Streamlit application images.           |
+| setup.cfg                             | Optional configuration data for **flake8**.                                                     |

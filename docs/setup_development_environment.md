@@ -162,8 +162,8 @@ Connect to the PostgreSQL production database.
 ## 6.1 Create the credentials file **`.settings.io_avstats.toml`**
 
     [default]
-    postgres_password="postgresql"
-    postgres_password_admin = "postgresql"
+    postgres_password="..."
+    postgres_password_admin = "..."
 
 ## 6.2 Windows Terminal
 

@@ -2,10 +2,7 @@
 /.coverage
 /.history/
 /.idea/
-/.settings.io_avstats.toml
-/.streamlit/secrets.toml
 /Pipfile.lock
-/__ARCHIVE__/
 /data/*_postgres_*.zip
 /data/download/
 /data/postgres/

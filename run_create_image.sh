@@ -13,6 +13,8 @@ export APPLICATION_DEFAULT=faaus2008
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=no
 
+export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
@@ -66,7 +68,6 @@ echo "Create a Docker image for application ${APPLICATION}"
 echo "--------------------------------------------------------------------------------"
 echo "DOCKER_CLEAR_CACHE       : ${DOCKER_CLEAR_CACHE}"
 echo "DOCKER_HUB_PUSH          : ${DOCKER_HUB_PUSH}"
-echo "STREAMLIT_SERVER_ADDRESS : ${IO_AVSTATS_STREAMLIT_SERVER_ADDRESS}"
 echo "STREAMLIT_SERVER_PORT    : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

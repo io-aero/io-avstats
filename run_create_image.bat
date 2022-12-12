@@ -69,7 +69,6 @@ rem > %LOG_FILE% 2>&1 (
     echo -----------------------------------------------------------------------
     echo DOCKER_CLEAR_CACHE       : %DOCKER_CLEAR_CACHE%
     echo DOCKER_HUB_PUSH          : %DOCKER_HUB_PUSH%
-    echo STREAMLIT_SERVER_ADDRESS : %IO_AVSTATS_STREAMLIT_SERVER_ADDRESS%
     echo STREAMLIT_SERVER_PORT    : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
     echo -----------------------------------------------------------------------
     echo:| TIME

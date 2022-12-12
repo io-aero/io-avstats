@@ -1,6 +1,6 @@
 # IO-AVSTATS - Release Notes
 
-## 1. Version 22.12.05 
+## 1. Version 22.12.08 
 
 Release Date: 12.12.2022
 

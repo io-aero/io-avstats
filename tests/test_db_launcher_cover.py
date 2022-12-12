@@ -6,8 +6,8 @@
 import os
 import platform
 
-from io_avstats_db import io_glob  # pylint: disable=import-error
-from io_avstats_db import io_utils  # pylint: disable=import-error
+from io_avstats_db import io_glob
+from io_avstats_db import io_utils
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.
@@ -25,12 +25,12 @@ def test_launcher():
 
     if platform.system() == "Windows":
         # d_d_f   - Delete the PostgreSQL database files
-        io_glob.logger.debug("next: run_io_avstats_db.bat d_d_f")
-        os.system("run_io_avstats_db.bat d_d_f")
+        io_glob.logger.debug("next: run_io_avstats.bat d_d_f")
+        os.system("run_io_avstats.bat d_d_f")
 
         # s_d_c   - Set up the PostgreSQL database container
-        io_glob.logger.debug("next: run_io_avstats_db.bat s_d_c")
-        os.system("run_io_avstats_db.bat s_d_c")
+        io_glob.logger.debug("next: run_io_avstats.bat s_d_c")
+        os.system("run_io_avstats.bat s_d_c")
 
         # c_d_s   - Create the PostgreSQL database schema
         io_glob.logger.debug("next: pipenv run python src\\launcher.py -t c_d_s")
@@ -61,12 +61,12 @@ def test_launcher():
         os.system("pipenv run python src\\launcher.py -t version")
     elif platform.system() == "Linux":
         # d_d_f   - Delete the PostgreSQL database files
-        io_glob.logger.debug("next: ./run_io_avstats_db.sh d_d_f")
-        os.system("./run_io_avstats_db.sh d_d_f")
+        io_glob.logger.debug("next: ./run_io_avstats.sh d_d_f")
+        os.system("./run_io_avstats.sh d_d_f")
 
         # s_d_c   - Set up the PostgreSQL database container
-        io_glob.logger.debug("next: ./run_io_avstats_db.sh s_d_c")
-        os.system("./run_io_avstats_db.sh s_d_c")
+        io_glob.logger.debug("next: ./run_io_avstats.sh s_d_c")
+        os.system("./run_io_avstats.sh s_d_c")
 
         # c_d_s   - Create the PostgreSQL database schema
         io_glob.logger.debug("next: pipenv run python src/launcher.py -t c_d_s")
@@ -127,12 +127,12 @@ def test_launcher_d_d_f():
 
     if platform.system() == "Windows":
         # d_d_f   - Delete the PostgreSQL database files
-        io_glob.logger.debug("next: run_io_avstats_db.bat d_d_f")
-        os.system("run_io_avstats_db.bat d_d_f")
+        io_glob.logger.debug("next: run_io_avstats.bat d_d_f")
+        os.system("run_io_avstats.bat d_d_f")
     elif platform.system() == "Linux":
         # d_d_f   - Delete the PostgreSQL database files
-        io_glob.logger.debug("next: ./run_io_avstats_db.sh d_d_f")
-        os.system("./run_io_avstats_db.sh d_d_f")
+        io_glob.logger.debug("next: ./run_io_avstats.sh d_d_f")
+        os.system("./run_io_avstats.sh d_d_f")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(
@@ -152,12 +152,12 @@ def test_launchers_d_c():
 
     if platform.system() == "Windows":
         # s_d_c   - Set up the PostgreSQL database container
-        io_glob.logger.debug("next: run_io_avstats_db.bat s_d_c")
-        os.system("run_io_avstats_db.bat s_d_c")
+        io_glob.logger.debug("next: run_io_avstats.bat s_d_c")
+        os.system("run_io_avstats.bat s_d_c")
     elif platform.system() == "Linux":
         # s_d_c   - Set up the PostgreSQL database container
-        io_glob.logger.debug("next: ./run_io_avstats_db.sh s_d_c")
-        os.system("./run_io_avstats_db.sh s_d_c")
+        io_glob.logger.debug("next: ./run_io_avstats.sh s_d_c")
+        os.system("./run_io_avstats.sh s_d_c")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(

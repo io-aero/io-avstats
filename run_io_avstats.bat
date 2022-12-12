@@ -232,7 +232,7 @@ rem Show the IO-AVSTATS faaus2008 application.
 rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["faaus2008"] (
-    pipenv run streamlit run src\faaus2008_app\faaus2008.py
+    pipenv run streamlit run src\streamlit_apps\faaus2008.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -311,7 +311,7 @@ rem Show the IO-AVSTATS pdus2008 application.
 rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["pdus2008"] (
-    pipenv run streamlit run src\pdus2008_app\pdus2008.py
+    pipenv run streamlit run src\streamlit_apps\pdus2008.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

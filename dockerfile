@@ -19,7 +19,7 @@ COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml
 COPY Makefile ./
 COPY Pipfile ./
 COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml
-COPY src/${APP}_app/${APP}.py ./${APP}.py
+COPY src/streamlit_apps/${APP}.py ./${APP}.py
 
 RUN make pipenv-prod
 

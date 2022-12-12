@@ -6,8 +6,8 @@
 import os
 import platform
 
-from io_avstats_db import io_glob  # pylint: disable=import-error
-from io_avstats_db import io_utils  # pylint: disable=import-error
+from io_avstats_db import io_glob
+from io_avstats_db import io_utils
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.
@@ -28,7 +28,7 @@ def test_launcher_task_d_d_f_c_d_s():
         os.system("run_io_avstats d_d_f")
         os.system("pipenv run python src\\launcher.py -t c_d_s")
     elif platform.system() == "Linux":
-        os.system("./run_io_avstats_db.sh d_d_f")
+        os.system("./run_io_avstats.sh d_d_f")
         os.system("pipenv run python src/launcher.py -t c_d_s")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported

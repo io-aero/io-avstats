@@ -4,19 +4,17 @@ ifeq ($(OS),Windows_NT)
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=
-	export PYTHONPATH_BANDIT=src
-	export PYTHONPATH_IO_AVSTATS_DB=src\\io_avstats_db
-	export PYTHONPATH_MYPY=src
+	export PYTHONPATH=src\\streamlit_apps
+	export PYTHONPATH_BANDIT=src\\streamlit_apps
+	export PYTHONPATH_MYPY=src\\streamlit_apps
 	export PYTHONPATH_PYTEST=src
 else
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=
-	export PYTHONPATH_BANDIT=src
-	export PYTHONPATH_IO_AVSTATS_DB=src/io_avstats_db
-	export PYTHONPATH_MYPY=src
+	export PYTHONPATH=src/streamlit_apps
+	export PYTHONPATH_BANDIT=src/streamlit_apps
+	export PYTHONPATH_MYPY=src/streamlit_apps
 	export PYTHONPATH_PYTEST=src
 endif
 
@@ -223,7 +221,8 @@ pylint:             ## Lint the code with Pylint.
 	@echo PYTHONPATH=${PYTHONPATH}
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pylint ${PYTHONPATH} ${PYTHONPATH_IO_AVSTATS_DB} tests
+#   ${PIPENV} run pylint ${PYTHONPATH} tests
+	${PIPENV} run pylint ${PYTHONPATH}
 	@echo Info **********  End:   Pylint **************************************
 
 # pytest: helps you write better programs.

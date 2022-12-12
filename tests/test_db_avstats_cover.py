@@ -5,8 +5,8 @@
 # pylint: disable=R0801
 # pylint: disable=unused-argument
 """io_config: coverage testing."""
-from io_avstats_db import avstats  # pylint: disable=import-error
-from io_avstats_db import io_glob  # pylint: disable=import-error
+from io_avstats_db import avstats
+from io_avstats_db import io_glob
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.

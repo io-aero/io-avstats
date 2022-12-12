@@ -4,7 +4,7 @@
 
 """io_utils: coverage testing."""
 
-from io_avstats_db import io_utils  # pylint: disable=import-error
+from io_avstats_db import io_utils
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.

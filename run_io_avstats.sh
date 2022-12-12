@@ -119,7 +119,7 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # ------------------------------------------------------------------------------
 
 elif [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
-    if ! ( pipenv run streamlit run src/faaus2008_app/faaus2008.py ); then
+    if ! ( pipenv run streamlit run src/streamlit_apps/faaus2008.py ); then
         exit 255
     fi
 
@@ -136,7 +136,7 @@ elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
 # ------------------------------------------------------------------------------
 
 elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
-    if ! ( pipenv run streamlit run src/pdus2008_app/pdus2008.py ); then
+    if ! ( pipenv run streamlit run src/streamlit_apps/pdus2008.py ); then
         exit 255
     fi
 

@@ -18,7 +18,7 @@ import shutil
 import pytest
 from dynaconf import settings
 
-from io_avstats_db import io_glob  # pylint: disable=import-error
+from io_avstats_db import io_glob
 
 # Constants & Globals.
 # -----------------------------------------------------------------------------

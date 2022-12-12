@@ -1,4 +1,4 @@
-# Below are all the sections and options you can have in ~/.streamlit/config.toml.
+# Below are all the sections and options you can have in ~/.streamlit_apps/config.toml.
 
 [global]
 

@@ -1,25 +1,3 @@
-Microsoft Windows [Version 10.0.19045.2193]
-(c) Microsoft Corporation. All rights reserved.
-
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
-=========================================================
-d_m_a   - PostgreSQL: Download Microsoft Access database file
-l_m_a   - PostgreSQL: Load Microsoft Access database data
----------------------------------------------------------
-c_d_s   - PostgreSQL: Create the database schema
-d_d_f   - PostgreSQL: Delete the database files
-d_d_s   - PostgreSQL: Drop the database schema
-s_d_c   - PostgreSQL: Set up the database container
----------------------------------------------------------
-version - Show the IO-AVSTATS version
----------------------------------------------------------
-Enter the desired task [default: l_m_a]
-=========================================================
-Pre2008.mdb
-up22OCT.mdb
----------------------------------------------------------
-Enter the stem name of the desired MS Access database file [default: up22OCT] Pre2008
-
 Script run_io_avstats is now running
 =======================================================================
 Start run_io_avstats
@@ -571,5 +549,3 @@ Enter the new time:
 -----------------------------------------------------------------------
 End   run_io_avstats
 =======================================================================
-
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>

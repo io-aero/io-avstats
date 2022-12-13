@@ -178,7 +178,7 @@ light: designed to provide geographic context while highlighting the data -
 outdoors: focused on wilderness locations with curated tilesets -
 streets: emphasizes accurate, legible styling of road and transit networks.
         """,
-        index=0,
+        index=1,
         label="Map style",
         options=(
             [
@@ -188,11 +188,13 @@ streets: emphasizes accurate, legible styling of road and transit networks.
             ]
         ),
     )
-    RADIUS = st.sidebar.number_input(
+    RADIUS = st.sidebar.slider(
         label="Accident radius in meters",
-        value=RADIUS,
         help="Radius for displaying the fatal accident events - "
         + "default value is 2 miles.",
+        min_value=10,
+        max_value=1609 * 4,
+        value=(1609 * 2),
     )
 
 st.sidebar.markdown("""---""")
@@ -245,7 +247,11 @@ if choice_filter_data:
     filter_latlong_acq = st.sidebar.selectbox(
         label="Select optionally a latitude and longitude determination method",
         help="`EST`means estimated - `MEAS`means measured using GPS.",
-        options=("", "EST","MEAS",)
+        options=(
+            "",
+            "EST",
+            "MEAS",
+        ),
     )
 
     filter_spin_stall = st.sidebar.checkbox(
@@ -286,7 +292,11 @@ if choice_filter_data:
     if filter_acft_categories:
         # noinspection PyUnboundLocalVariable
         df_faa_acft_categories = df_faa_year.loc[
-            (df_faa_year["acft_category"].isin(filter_acft_categories.upper().split(",")))
+            (
+                df_faa_year["acft_category"].isin(
+                    filter_acft_categories.upper().split(",")
+                )
+            )
         ]
     else:
         df_faa_acft_categories = df_faa_year
@@ -295,7 +305,11 @@ if choice_filter_data:
     if filter_far_parts:
         # noinspection PyUnboundLocalVariable
         df_faa_far_parts = df_faa_acft_categories.loc[
-            (df_faa_acft_categories["far_part"].isin(filter_far_parts.upper().split(",")))
+            (
+                df_faa_acft_categories["far_part"].isin(
+                    filter_far_parts.upper().split(",")
+                )
+            )
         ]
     else:
         df_faa_far_parts = df_faa_acft_categories
@@ -304,7 +318,11 @@ if choice_filter_data:
     if filter_finding_codes:
         # noinspection PyUnboundLocalVariable
         df_faa_finding_codes = df_faa_far_parts.loc[
-            (df_faa_far_parts["finding_code"].isin(filter_finding_codes.upper().split(",")))
+            (
+                df_faa_far_parts["finding_code"].isin(
+                    filter_finding_codes.upper().split(",")
+                )
+            )
         ]
     else:
         df_faa_finding_codes = df_faa_far_parts
@@ -313,7 +331,11 @@ if choice_filter_data:
     if filter_occurrence_codes:
         # noinspection PyUnboundLocalVariable
         df_faa_occurrence_codes = df_faa_finding_codes.loc[
-            (df_faa_finding_codes["occurrence_code"].isin(filter_occurrence_codes.upper().split(",")))
+            (
+                df_faa_finding_codes["occurrence_code"].isin(
+                    filter_occurrence_codes.upper().split(",")
+                )
+            )
         ]
     else:
         df_faa_occurrence_codes = df_faa_finding_codes
@@ -340,7 +362,7 @@ if choice_filter_data:
     if filter_spin_stall:
         # noinspection PyUnboundLocalVariable
         df_faa_spin_stall = df_faa_latlong_acq.loc[
-            (df_faa_latlong_acq["spin_stall"] == True)
+            (df_faa_latlong_acq["spin_stall"] is True)
         ]
     else:
         df_faa_spin_stall = df_faa_latlong_acq
@@ -348,18 +370,14 @@ if choice_filter_data:
     # noinspection PyUnboundLocalVariable
     if filter_alt_low:
         # noinspection PyUnboundLocalVariable
-        df_faa_alt_low = df_faa_spin_stall.loc[
-            (df_faa_spin_stall["alt_low"] == True )
-        ]
+        df_faa_alt_low = df_faa_spin_stall.loc[(df_faa_spin_stall["alt_low"] is True)]
     else:
         df_faa_alt_low = df_faa_spin_stall
 
     # noinspection PyUnboundLocalVariable
     if filter_narr_stall:
         # noinspection PyUnboundLocalVariable
-        df_faa_narr_stall = df_faa_alt_low.loc[
-            (df_faa_alt_low["narr_stall"] == True )
-        ]
+        df_faa_narr_stall = df_faa_alt_low.loc[(df_faa_alt_low["narr_stall"] is True)]
     else:
         df_faa_narr_stall = df_faa_alt_low
 
@@ -420,20 +438,29 @@ if choice_histogram:
 if choice_map:
     st.subheader("Depicting the fatal accidents on a map of the USA")
     faa_layer = pdk.Layer(
-        type=LAYER_TYPE,
         auto_highlight=True,
         data=df_faa_filtered,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
         get_radius=RADIUS,
         pickable=True,
+        type=LAYER_TYPE,
     )
 
     # noinspection PyUnboundLocalVariable
     st.pydeck_chart(
         pdk.Deck(
-            map_style=MAP_STYLE_PREFIX + map_style,  # type: ignore
             initial_view_state=_sql_query_us_ll(pg_conn, QUERY_US_LL),
             layers=[faa_layer],
+            map_style=MAP_STYLE_PREFIX + map_style,  # type: ignore
+            tooltip={
+                "html": "<table><tbody>"
+                + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
+                + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
+                + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
+                + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
+                + "<tr><td><b>Aquired</b></td><td>{latlong_acq}</td></tr>"
+                + "</tbody></table>"
+            },
         )
     )

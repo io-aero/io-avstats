@@ -167,6 +167,11 @@ QUERIES = {
                  inj_person_category,
                  injury_level;
     """,
+    "io_app_faaus2008": """
+        SELECT *
+          FROM io_app_faaus2008
+        ORDER BY ev_id;
+    """,
     "io_countries": """
         SELECT *
           FROM io_countries

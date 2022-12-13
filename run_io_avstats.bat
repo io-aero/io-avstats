@@ -21,17 +21,17 @@ set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
 
+set IO_AVSTATS_APPLICATION=
 set IO_AVSTATS_CORRECTION=
 set IO_AVSTATS_MSACCESS=
 set IO_AVSTATS_TASK=
-set IO_AVSTATS_TASK_DEFAULT=faaus2008
+set IO_AVSTATS_TASK_DEFAULT=r_s_a
 
 set PYTHONPATH=
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
-    echo pdus2008  - Profiling Data for the US since 2008
+    echo r_s_a     - Run a Streamlit application 
     echo ---------------------------------------------------------
     echo d_n_a     - Download a NTSB MS Access database file
     echo l_n_a     - Load NTSB MS Access database data into PostgreSQL
@@ -95,6 +95,18 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
         set IO_AVSTATS_MSACCESS=%2
+    )
+)
+
+if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+		echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
+		echo pdus2008  - Profiling Data for the US since 2008
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
+    ) else (
+        set IO_AVSTATS_APPLICATION=%2
     )
 )
 
@@ -228,20 +240,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_z_f"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS faaus2008 application.
-rem ----------------------------------------------------------------------------
-
-if ["%IO_AVSTATS_TASK%"] EQU ["faaus2008"] (
-    pipenv run streamlit run src\streamlit_apps\faaus2008.py
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
@@ -307,11 +305,11 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_z_d"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS pdus2008 application.
+rem Run a Streamlit application.
 rem ----------------------------------------------------------------------------
 
-if ["%IO_AVSTATS_TASK%"] EQU ["pdus2008"] (
-    pipenv run streamlit run src\streamlit_apps\pdus2008.py
+if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
+    pipenv run streamlit run src\streamlit_apps\%IO_AVSTATS_APPLICATION%.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

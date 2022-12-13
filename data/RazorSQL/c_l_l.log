@@ -10,56 +10,103 @@ TASK       : c_l_l
 CORRECTION :
 MSACCESS   :
 -----------------------------------------------------------------------
-The current time is: 13:30:04.35
+The current time is:  7:10:14.64
 Enter the new time:
 =======================================================================
-Progress update 2022-12-12 13:30:06.149263 : ===============================================================================.
-Progress update 2022-12-12 13:30:06.149762 : INFO.00.004 Start Launcher.
-Progress update 2022-12-12 13:30:06.151763 : INFO.00.001 The logger is configured and ready.
-Progress update 2022-12-12 13:30:06.159763 : INFO.00.005 Argument task='c_l_l'.
-Progress update 2022-12-12 13:30:06.159763 : -------------------------------------------------------------------------------.
-Progress update 2022-12-12 13:30:06.159763 : INFO.00.040 Correct decimal US latitudes and longitudes.
-Progress update 2022-12-12 13:30:06.160263 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:30:06.854525 : INFO.00.063 Processed data source 'events'.
-Progress update 2022-12-12 13:30:06.854823 : Number cols deleted  :  11276.
-Progress update 2022-12-12 13:30:06.854823 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:30:09.831178 : Number of rows so far read :   5000.
-Progress update 2022-12-12 13:30:09.869678 : Number of rows so far read :  10000.
-Progress update 2022-12-12 13:30:09.908179 : Number of rows so far read :  15000.
-Progress update 2022-12-12 13:30:09.993180 : Number of rows so far read :  20000.
-Progress update 2022-12-12 13:30:10.061679 : Number of rows so far read :  25000.
-Progress update 2022-12-12 13:30:10.150179 : Number of rows so far read :  30000.
-Progress update 2022-12-12 13:30:10.188678 : Number of rows so far read :  35000.
-Progress update 2022-12-12 13:30:10.226178 : Number of rows so far read :  40000.
-Progress update 2022-12-12 13:30:12.211428 : Number of rows so far read :  45000.
-Progress update 2022-12-12 13:30:17.858220 : Number of rows so far read :  50000.
-Progress update 2022-12-12 13:30:17.897221 : Number of rows so far read :  55000.
-Progress update 2022-12-12 13:30:17.957720 : Number of rows so far read :  60000.
-Progress update 2022-12-12 13:30:17.995720 : Number of rows so far read :  65000.
-Progress update 2022-12-12 13:30:18.034720 : Number of rows so far read :  70000.
-Progress update 2022-12-12 13:30:18.073220 : Number of rows so far read :  75000.
-Progress update 2022-12-12 13:30:18.112220 : Number of rows so far read :  80000.
-Progress update 2022-12-12 13:30:18.150720 : Number of rows so far read :  85000.
-Progress update 2022-12-12 13:30:18.189220 : Number of rows so far read :  90000.
-Progress update 2022-12-12 13:30:18.228221 : Number of rows so far read :  95000.
-Progress update 2022-12-12 13:30:42.394773 : Number of rows so far read : 100000.
-Progress update 2022-12-12 13:32:07.870835 : Number of rows so far read : 105000.
-Progress update 2022-12-12 13:32:22.127173 : Number of rows so far read : 110000.
-Progress update 2022-12-12 13:33:34.363848 : Number of rows so far read : 115000.
-Progress update 2022-12-12 13:35:51.126282 : Number of rows so far read : 120000.
-Progress update 2022-12-12 13:38:07.305202 : Number of rows so far read : 125000.
-Progress update 2022-12-12 13:40:20.818532 : Number of rows so far read : 130000.
-Progress update 2022-12-12 13:42:37.255588 : Number of rows so far read : 135000.
-Progress update 2022-12-12 13:42:37.383300 : Number rows selected : 135108.
-Progress update 2022-12-12 13:42:37.383800 : Number rows updated  :  26989.
-Progress update 2022-12-12 13:42:37.383800 : -------------------------------------------------------------------------------.
-Progress update 2022-12-12 13:42:37.383800 :      751,385,037,200 ns - Total time launcher.
-Progress update 2022-12-12 13:42:37.383800 : INFO.00.006 End   Launcher.
-Progress update 2022-12-12 13:42:37.383800 : ===============================================================================.
+Progress update 2022-12-13 07:10:18.254010 : ===============================================================================.
+Progress update 2022-12-13 07:10:18.254010 : INFO.00.004 Start Launcher.
+Progress update 2022-12-13 07:10:18.256510 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-13 07:10:18.266008 : INFO.00.005 Argument task='c_l_l'.
+Progress update 2022-12-13 07:10:18.266008 : -------------------------------------------------------------------------------.
+Progress update 2022-12-13 07:10:18.266008 : INFO.00.040 Correct decimal US latitudes and longitudes.
+Progress update 2022-12-13 07:10:18.266008 : --------------------------------------------------------------------------------
+Progress update 2022-12-13 07:10:19.589009 : INFO.00.063 Processed data source 'events'.
+Progress update 2022-12-13 07:10:19.589009 : Number cols deleted  :  11276.
+Progress update 2022-12-13 07:10:19.589009 : --------------------------------------------------------------------------------
+Progress update 2022-12-13 07:12:45.124549 : Number of rows so far read :   5000.
+Progress update 2022-12-13 07:15:00.538229 : Number of rows so far read :  10000.
+Progress update 2022-12-13 07:17:20.400443 : Number of rows so far read :  15000.
+Progress update 2022-12-13 07:19:22.676090 : Number of rows so far read :  20000.
+Progress update 2022-12-13 07:21:44.163296 : Number of rows so far read :  25000.
+Progress update 2022-12-13 07:24:03.691957 : Number of rows so far read :  30000.
+Progress update 2022-12-13 07:26:20.480211 : Number of rows so far read :  35000.
+Progress update 2022-12-13 07:28:41.334105 : Number of rows so far read :  40000.
+Progress update 2022-12-13 07:31:00.179746 : Number of rows so far read :  45000.
+Progress update 2022-12-13 07:33:20.142775 : Number of rows so far read :  50000.
+Progress update 2022-12-13 07:35:38.380268 : Number of rows so far read :  55000.
+Progress update 2022-12-13 07:38:03.266598 : Number of rows so far read :  60000.
+Progress update 2022-12-13 07:40:20.512861 : Number of rows so far read :  65000.
+Progress update 2022-12-13 07:42:40.850081 : Number of rows so far read :  70000.
+Progress update 2022-12-13 07:44:42.550913 : Number of rows so far read :  75000.
+Progress update 2022-12-13 07:47:05.887182 : Number of rows so far read :  80000.
+Progress update 2022-12-13 07:49:24.508261 : Number of rows so far read :  85000.
+Progress update 2022-12-13 07:51:42.955169 : Number of rows so far read :  90000.
+Progress update 2022-12-13 07:54:00.475724 : Number of rows so far read :  95000.
+Progress update 2022-12-13 07:56:22.904550 : Number of rows so far read : 100000.
+Progress update 2022-12-13 07:58:47.315275 : Number of rows so far read : 105000.
+Progress update 2022-12-13 08:01:10.376794 : Number of rows so far read : 110000.
+Progress update 2022-12-13 08:03:31.997151 : Number of rows so far read : 115000.
+Progress update 2022-12-13 08:05:50.959853 : Number of rows so far read : 120000.
+Progress update 2022-12-13 08:08:02.816335 : Number of rows so far read : 125000.
+Progress update 2022-12-13 08:10:02.034336 : Number of rows so far read : 130000.
+Progress update 2022-12-13 08:12:21.546449 : Number of rows so far read : 135000.
+Progress update 2022-12-13 08:12:25.537450 : Number rows selected : 135108.
+Progress update 2022-12-13 08:12:25.537450 : Number rows updated  : 135108.
+Progress update 2022-12-13 08:12:25.537450 : -------------------------------------------------------------------------------.
+Progress update 2022-12-13 08:12:25.537450 :    3,727,474,440,400 ns - Total time launcher.
+Progress update 2022-12-13 08:12:25.537952 : INFO.00.006 End   Launcher.
+Progress update 2022-12-13 08:12:25.537952 : ===============================================================================.
 
 -----------------------------------------------------------------------
-The current time is: 13:42:37.55
+The current time is:  8:12:25.69
 Enter the new time:
 -----------------------------------------------------------------------
 End   run_io_avstats
 =======================================================================
+
+
+=======================================================================
+=======================================================================
+SELECT io_dec_lat_lng_actions,
+       count(*)
+  FROM events
+ GROUP BY io_dec_lat_lng_actions
+ ORDER BY io_dec_lat_lng_actions
+
+io_dec_lat_lng_actions                                                                                                                                                                                                                                         |count|
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----+
+ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                           |  510|
+ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                                                                                                                                                           | 4088|
+ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                                                              |  585|
+ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                      |    5|
+ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                      |    4|
+ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                                                         |   14|
+ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                                                         |   14|
+ERROR.00.922 Invalid US state id & INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |    8|
+ERROR.00.922 Invalid US state id & INFO.00.034 Correction based on US state and city                                                                                                                                                                           |    3|
+ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |   91|
+ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00|    1|
+ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                              |    2|
+INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |42697|
+INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              | 1288|
+INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |10960|
+INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string                                                                                                                                                                  |  101|
+INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                   |    4|
+INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & INFO.00.033 Correction based on US zip code                                                                            |   64|
+INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                                                                 |  122|
+                                                                                                                                                                                                                                                               |27434|
+                                                                                                                                                                                                                                                              |27434|
+=======================================================================
+=======================================================================
+SELECT io_dec_lat_lng_actions,
+       count(*)
+  FROM io_fatalities_us_2008
+ GROUP BY io_dec_lat_lng_actions
+ ORDER BY io_dec_lat_lng_actions
+
+io_dec_lat_lng_actions                                                              |count|
+------------------------------------------------------------------------------------+-----+
+ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city|    1|
+INFO.00.033 Correction based on US zip code                                         |    4|
+INFO.00.034 Correction based on US state and city                                   |    3|
+                                                                                   | 3487|

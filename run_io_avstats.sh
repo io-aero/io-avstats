@@ -20,14 +20,14 @@ export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
+export IO_AVSTATS_Application=
 export IO_AVSTATS_CORRECTION=
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=faaus2008
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-    echo "pdus2008  - Profiling Data for the US since 2008"
+    echo "r_s_a     - Run a Streamlit application"
     echo "---------------------------------------------------------"
     echo "c_l_l     - Correct decimal US latitudes and longitudes"
     echo "v_n_d     - Verify selected NTSB data"
@@ -69,6 +69,20 @@ if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
         export IO_AVSTATS_CORRECTION=${IO_AVSTATS_CORRECTION}
     else
         export IO_AVSTATS_CORRECTION=$2
+    fi
+fi
+
+if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
+        echo "pdus2008  - Profiling Data for the US since 2008"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
+        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
+    else
+        export IO_AVSTATS_APPLICATION=$2
     fi
 fi
 
@@ -115,15 +129,6 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS faaus2008 application.
-# ------------------------------------------------------------------------------
-
-elif [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
-    if ! ( pipenv run streamlit run src/streamlit_apps/faaus2008.py ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -132,11 +137,11 @@ elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS pdus2008 application.
+# Run a Streamlit application.
 # ------------------------------------------------------------------------------
 
-elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
-    if ! ( pipenv run streamlit run src/streamlit_apps/pdus2008.py ); then
+elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+    if ! ( pipenv run streamlit run src/streamlit_apps/${IO_AVSTATS_Application}.py ); then
         exit 255
     fi
 

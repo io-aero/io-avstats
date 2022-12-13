@@ -362,7 +362,8 @@ if choice_filter_data:
     if filter_spin_stall:
         # noinspection PyUnboundLocalVariable
         df_faa_spin_stall = df_faa_latlong_acq.loc[
-            (df_faa_latlong_acq["spin_stall"] is True)
+            # pylint: disable=singleton-comparison
+            (df_faa_latlong_acq["spin_stall"] == True)  # noqa: E712
         ]
     else:
         df_faa_spin_stall = df_faa_latlong_acq
@@ -370,14 +371,20 @@ if choice_filter_data:
     # noinspection PyUnboundLocalVariable
     if filter_alt_low:
         # noinspection PyUnboundLocalVariable
-        df_faa_alt_low = df_faa_spin_stall.loc[(df_faa_spin_stall["alt_low"] is True)]
+        df_faa_alt_low = df_faa_spin_stall.loc[
+            # pylint: disable=singleton-comparison
+            (df_faa_spin_stall["alt_low"] == True)  # noqa: E712
+        ]
     else:
         df_faa_alt_low = df_faa_spin_stall
 
     # noinspection PyUnboundLocalVariable
     if filter_narr_stall:
         # noinspection PyUnboundLocalVariable
-        df_faa_narr_stall = df_faa_alt_low.loc[(df_faa_alt_low["narr_stall"] is True)]
+        df_faa_narr_stall = df_faa_alt_low.loc[
+            # pylint: disable=singleton-comparison
+            (df_faa_alt_low["narr_stall"] == True)  # noqa: E712
+        ]
     else:
         df_faa_narr_stall = df_faa_alt_low
 
@@ -457,6 +464,7 @@ if choice_map:
                 "html": "<table><tbody>"
                 + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
                 + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
+                + "<tr><td><b>Fatalities</b></td><td>{fatalities}</td></tr>"
                 + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
                 + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
                 + "<tr><td><b>Aquired</b></td><td>{latlong_acq}</td></tr>"

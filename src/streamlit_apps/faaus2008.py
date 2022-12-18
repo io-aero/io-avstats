@@ -33,18 +33,8 @@ PITCH = 30
 # Query regarding the aircraft fatalities in the US since 2008.
 # ------------------------------------------------------------------
 QUERY_FAAUS2008 = """
-    SELECT ev_year,
-           inj_tot_f fatalities,
-           COALESCE(io_state, ev_state) state,
-           COALESCE(io_city, ev_city) city,
-           COALESCE(io_site_zipcode, ev_site_zipcode) zip,
-           COALESCE(io_dec_latitude, dec_latitude) dec_latitude,
-           COALESCE(io_dec_longitude, dec_longitude) dec_longitude,
-           ev_id event_id,
-           ntsb_no
-     FROM io_fatalities_us_2008
-    WHERE COALESCE(io_dec_latitude, dec_latitude) IS NOT NULL
-      AND COALESCE(io_dec_longitude, dec_longitude) IS NOT NULL
+    SELECT *
+     FROM io_app_faaus2008
     ORDER BY ev_id;
 """
 
@@ -131,27 +121,6 @@ st.header("Fatal Aviation Accidents in the US since 2008")
 # ------------------------------------------------------------------
 # Setup the controls.
 # ------------------------------------------------------------------
-choice_filter_data = st.sidebar.checkbox(
-    label="**`Filter data ?`**",
-    value=False,
-    help="Pandas profiling of the dataset.",
-)
-
-if choice_filter_data:
-    filter_year_from, filter_year_to = st.sidebar.slider(
-        label="Select a time frame",
-        help="Data available from 2008 to the current year.",
-        min_value=2008,
-        max_value=datetime.date.today().year,
-        value=(2008, datetime.date.today().year),
-    )
-
-    filter_states = st.sidebar.text_input(
-        label="Select one or more states",
-        help="One or more USPS abbreviations - "
-        + "all U.S. states if no selection has been made.",
-    )
-
 choice_data_profile = st.sidebar.checkbox(
     label="**`Show data profile`**",
     value=False,
@@ -176,11 +145,15 @@ if choice_data_profile:
         value=False,
     )
 
+st.sidebar.markdown("""---""")
+
 choice_details = st.sidebar.checkbox(
     label="**`Show details`**",
     value=False,
     help="Tabular representation of the selected detailed data.",
 )
+
+st.sidebar.markdown("""---""")
 
 choice_histogram = st.sidebar.checkbox(
     label="**`Show histogram`**", value=False, help="Fatal accidents per year."
@@ -189,6 +162,8 @@ choice_histogram = st.sidebar.checkbox(
 if choice_histogram:
     width = st.sidebar.slider("Histogram width", 1, 25, 11)
     height = st.sidebar.slider("Histogram height", 1, 25, 5)
+
+st.sidebar.markdown("""---""")
 
 choice_map = st.sidebar.checkbox(
     label="**`Show US map`**",
@@ -203,7 +178,7 @@ light: designed to provide geographic context while highlighting the data -
 outdoors: focused on wilderness locations with curated tilesets -
 streets: emphasizes accurate, legible styling of road and transit networks.
         """,
-        index=0,
+        index=1,
         label="Map style",
         options=(
             [
@@ -213,12 +188,88 @@ streets: emphasizes accurate, legible styling of road and transit networks.
             ]
         ),
     )
-    RADIUS = st.sidebar.number_input(
+    RADIUS = st.sidebar.slider(
         label="Accident radius in meters",
-        value=RADIUS,
         help="Radius for displaying the fatal accident events - "
         + "default value is 2 miles.",
+        min_value=10,
+        max_value=1609 * 4,
+        value=(1609 * 2),
     )
+
+st.sidebar.markdown("""---""")
+
+choice_filter_data = st.sidebar.checkbox(
+    label="**`Filter data ?`**",
+    value=True,
+    help="Pandas profiling of the dataset.",
+)
+
+if choice_filter_data:
+    filter_year_from, filter_year_to = st.sidebar.slider(
+        label="Select a time frame",
+        help="Data available from 2008 to the current year.",
+        min_value=2008,
+        max_value=datetime.date.today().year,
+        value=(2008, datetime.date.today().year),
+    )
+
+    filter_acft_categories = st.sidebar.text_input(
+        label="Select one or more aircraft categories",
+        help="One or more aircraft categories - "
+        + "all aircraft categories if no selection has been made.",
+    )
+
+    filter_far_parts = st.sidebar.text_input(
+        label="Select one or more FAR parts",
+        help="One or more FAR parts - "
+        + "all FAR parts if no selection has been made.",
+    )
+
+    filter_finding_codes = st.sidebar.text_input(
+        label="Select one or more finding codes",
+        help="One or more finding codes - "
+        + "all finding codes if no selection has been made.",
+    )
+
+    filter_occurrence_codes = st.sidebar.text_input(
+        label="Select one or more occurrence codes",
+        help="One or more occurrence codes - "
+        + "all occurrence codes if no selection has been made.",
+    )
+
+    filter_states = st.sidebar.text_input(
+        label="Select one or more states",
+        help="One or more USPS abbreviations - "
+        + "all U.S. states if no selection has been made.",
+    )
+
+    filter_latlong_acq = st.sidebar.selectbox(
+        label="Select optionally a latitude and longitude determination method",
+        help="`EST`means estimated - `MEAS`means measured using GPS.",
+        options=(
+            "",
+            "EST",
+            "MEAS",
+        ),
+    )
+
+    filter_spin_stall = st.sidebar.checkbox(
+        label="Only events with aerodynamic spin stalls?",
+        help="Filters only events with `spin_stall` equals `True`.",
+    )
+
+    filter_alt_low = st.sidebar.checkbox(
+        label="Only events with altitude too low?",
+        help="Filters only events with `alt_low` equals `True`.",
+    )
+
+    filter_narr_stall = st.sidebar.checkbox(
+        label="Only events stalled according to narrative?",
+        help="Filters only events with `narr_stall` equals `True`.",
+    )
+
+st.sidebar.markdown("""---""")
 
 # ------------------------------------------------------------------
 # Read and filter data.
@@ -229,24 +280,117 @@ df_faa = pd.read_sql(QUERY_FAAUS2008, con=_get_engine())
 
 if choice_filter_data:
     # noinspection PyUnboundLocalVariable
-    if filter_states:
-        # noinspection PyUnboundLocalVariable
-        df_faa_states = df_faa.loc[
-            (df_faa["state"].isin(filter_states.upper().split(",")))
-        ]
-    else:
-        df_faa_states = df_faa
-
-    # noinspection PyUnboundLocalVariable
     if filter_year_from or filter_year_to:
-        df_faa_states_year = df_faa_states.loc[
+        df_faa_year = df_faa.loc[
             (df_faa["ev_year"] >= filter_year_from)
             & (df_faa["ev_year"] <= filter_year_to)
         ]
     else:
-        df_faa_states_year = df_faa_states
+        df_faa_year = df_faa
+
+    # noinspection PyUnboundLocalVariable
+    if filter_acft_categories:
+        # noinspection PyUnboundLocalVariable
+        df_faa_acft_categories = df_faa_year.loc[
+            (
+                df_faa_year["acft_category"].isin(
+                    filter_acft_categories.upper().split(",")
+                )
+            )
+        ]
+    else:
+        df_faa_acft_categories = df_faa_year
+
+    # noinspection PyUnboundLocalVariable
+    if filter_far_parts:
+        # noinspection PyUnboundLocalVariable
+        df_faa_far_parts = df_faa_acft_categories.loc[
+            (
+                df_faa_acft_categories["far_part"].isin(
+                    filter_far_parts.upper().split(",")
+                )
+            )
+        ]
+    else:
+        df_faa_far_parts = df_faa_acft_categories
+
+    # noinspection PyUnboundLocalVariable
+    if filter_finding_codes:
+        # noinspection PyUnboundLocalVariable
+        df_faa_finding_codes = df_faa_far_parts.loc[
+            (
+                df_faa_far_parts["finding_code"].isin(
+                    filter_finding_codes.upper().split(",")
+                )
+            )
+        ]
+    else:
+        df_faa_finding_codes = df_faa_far_parts
+
+    # noinspection PyUnboundLocalVariable
+    if filter_occurrence_codes:
+        # noinspection PyUnboundLocalVariable
+        df_faa_occurrence_codes = df_faa_finding_codes.loc[
+            (
+                df_faa_finding_codes["occurrence_code"].isin(
+                    filter_occurrence_codes.upper().split(",")
+                )
+            )
+        ]
+    else:
+        df_faa_occurrence_codes = df_faa_finding_codes
+
+    # noinspection PyUnboundLocalVariable
+    if filter_states:
+        # noinspection PyUnboundLocalVariable
+        df_faa_states = df_faa_occurrence_codes.loc[
+            (df_faa_occurrence_codes["state"].isin(filter_states.upper().split(",")))
+        ]
+    else:
+        df_faa_states = df_faa_occurrence_codes
+
+    # noinspection PyUnboundLocalVariable
+    if filter_latlong_acq:
+        # noinspection PyUnboundLocalVariable
+        df_faa_latlong_acq = df_faa_states.loc[
+            (df_faa_states["latlong_acq"] == filter_latlong_acq)
+        ]
+    else:
+        df_faa_latlong_acq = df_faa_states
+
+    # noinspection PyUnboundLocalVariable
+    if filter_spin_stall:
+        # noinspection PyUnboundLocalVariable
+        df_faa_spin_stall = df_faa_latlong_acq.loc[
+            # pylint: disable=singleton-comparison
+            (df_faa_latlong_acq["spin_stall"] == True)  # noqa: E712
+        ]
+    else:
+        df_faa_spin_stall = df_faa_latlong_acq
+
+    # noinspection PyUnboundLocalVariable
+    if filter_alt_low:
+        # noinspection PyUnboundLocalVariable
+        df_faa_alt_low = df_faa_spin_stall.loc[
+            # pylint: disable=singleton-comparison
+            (df_faa_spin_stall["alt_low"] == True)  # noqa: E712
+        ]
+    else:
+        df_faa_alt_low = df_faa_spin_stall
+
+    # noinspection PyUnboundLocalVariable
+    if filter_narr_stall:
+        # noinspection PyUnboundLocalVariable
+        df_faa_narr_stall = df_faa_alt_low.loc[
+            # pylint: disable=singleton-comparison
+            (df_faa_alt_low["narr_stall"] == True)  # noqa: E712
+        ]
+    else:
+        df_faa_narr_stall = df_faa_alt_low
+
+    df_faa_filtered = df_faa_narr_stall
 else:
-    df_faa_states_year = df_faa
+    df_faa_filtered = df_faa
 
 # ------------------------------------------------------------------
 # Present data profile.
@@ -256,12 +400,12 @@ if choice_data_profile:
     # noinspection PyUnboundLocalVariable
     if choice_data_profile_type == "explorative":
         df_faa_states_year_profile = ProfileReport(
-            df_faa_states_year,
+            df_faa_filtered,
             explorative=True,
         )
     else:
         df_faa_states_year_profile = ProfileReport(
-            df_faa_states_year,
+            df_faa_filtered,
             minimal=True,
         )
     st_profile_report(df_faa_states_year_profile)
@@ -282,7 +426,7 @@ if choice_data_profile:
 # ------------------------------------------------------------------
 if choice_details:
     st.subheader("The filtered data set in detail")
-    st.dataframe(df_faa_states_year)
+    st.dataframe(df_faa_filtered)
 
 # ------------------------------------------------------------------
 # Present the yearly fatal accidents.
@@ -291,7 +435,7 @@ if choice_histogram:
     st.subheader("Number of fatal accidents per year")
     # noinspection PyUnboundLocalVariable
     fig, ax = plt.subplots(figsize=(width, height))
-    sns.histplot(df_faa_states_year["ev_year"], discrete=True)
+    sns.histplot(df_faa_filtered["ev_year"], discrete=True)
     plt.xlabel("Year")
     st.pyplot(fig)
 
@@ -301,20 +445,30 @@ if choice_histogram:
 if choice_map:
     st.subheader("Depicting the fatal accidents on a map of the USA")
     faa_layer = pdk.Layer(
-        type=LAYER_TYPE,
         auto_highlight=True,
-        data=df_faa_states_year,
+        data=df_faa_filtered,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
         get_radius=RADIUS,
         pickable=True,
+        type=LAYER_TYPE,
     )
 
     # noinspection PyUnboundLocalVariable
     st.pydeck_chart(
         pdk.Deck(
-            map_style=MAP_STYLE_PREFIX + map_style,  # type: ignore
             initial_view_state=_sql_query_us_ll(pg_conn, QUERY_US_LL),
             layers=[faa_layer],
+            map_style=MAP_STYLE_PREFIX + map_style,  # type: ignore
+            tooltip={
+                "html": "<table><tbody>"
+                + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
+                + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
+                + "<tr><td><b>Fatalities</b></td><td>{fatalities}</td></tr>"
+                + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
+                + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
+                + "<tr><td><b>Aquired</b></td><td>{latlong_acq}</td></tr>"
+                + "</tbody></table>"
+            },
         )
     )

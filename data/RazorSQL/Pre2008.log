@@ -100,15 +100,15 @@ Progress update 2022-11-04 17:30:47.770138 : Number of rows so far read : 190000
 Progress update 2022-11-04 17:35:27.150538 : Number of rows so far read : 200000.
 Progress update 2022-11-04 17:40:10.429656 : Number of rows so far read : 210000.
 Traceback (most recent call last):
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 287, in <module>
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\launcher.py", line 287, in <module>
     main(sys.argv)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 263, in main
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\launcher.py", line 263, in main
     avstats.load_msaccess_data(ARG_MSACCESS)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\avstats.py", line 89, in load_msaccess_data
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\avstats.py", line 89, in load_msaccess_data
     db_dml_base.load_msaccess_data(msaccess)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 3010, in load_msaccess_data
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\db_dml_base.py", line 3010, in load_msaccess_data
     _load_table_dt_aircraft(io_glob.TABLE_NAME_DT_AIRCRAFT, cur_ma, cur_pg)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 906, in _load_table_dt_aircraft
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\db_dml_base.py", line 906, in _load_table_dt_aircraft
     cur_pg.execute(
   File "C:\Users\walte\.virtualenvs\io-avstats-zZIfNcpY\lib\site-packages\psycopg\cursor.py", line 725, in execute
     raise ex.with_traceback(None)
@@ -123,7 +123,7 @@ Enter the new time:
 End   run_io_avstats
 =======================================================================
 
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
 =========================================================
 d_m_a   - PostgreSQL: Download Microsoft Access database file
 l_m_a   - PostgreSQL: Load Microsoft Access database data
@@ -481,7 +481,7 @@ Enter the new time:
 End   run_io_avstats
 =======================================================================
 
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
 =========================================================
 d_m_a   - PostgreSQL: Download Microsoft Access database file
 l_m_a   - PostgreSQL: Load Microsoft Access database data

@@ -20,31 +20,32 @@ export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
+export IO_AVSTATS_Application=
 export IO_AVSTATS_CORRECTION=
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=faaus2008
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-    echo "pdus2008  - Profiling Data for the US since 2008"
+    echo "r_s_a     - Run a Streamlit application"
     echo "---------------------------------------------------------"
-    echo "c_l_l     - Correct decimal US latitudes and longitudes"
-    echo "v_n_d     - Verify selected NTSB data"
+    echo "c_l_l   - Correct decimal US latitudes and longitudes"
+    echo "v_n_d   - Verify selected NTSB data"
+    echo "r_d_s   - Refresh the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    echo "c_p_d     - Cleansing PostgreSQL data"
-    echo "d_s_f     - Download basic simplemaps files"
-#   echo "d_z_f     - Download the ZIP Code Database file"
-    echo "l_c_d     - Load data from a correction file into PostgreSQL"
-    echo "l_c_s     - Load country and state data into PostgreSQL"
-    echo "l_s_d     - Load simplemaps data into PostgreSQL"
-    echo "l_z_d     - Load ZIP Code Database data into PostgreSQL"
+    echo "c_p_d   - Cleansing PostgreSQL data"
+    echo "d_s_f   - Download basic simplemaps files"
+#   echo "d_z_f   - Download the ZIP Code Database file"
+    echo "l_c_d   - Load data from a correction file into PostgreSQL"
+    echo "l_c_s   - Load country and state data into PostgreSQL"
+    echo "l_s_d   - Load simplemaps data into PostgreSQL"
+    echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
     echo "---------------------------------------------------------"
-    echo "c_d_s     - Create the PostgreSQL database schema"
-    echo "d_d_f     - Delete the PostgreSQL database files"
-    echo "d_d_s     - Drop the PostgreSQL database schema"
-    echo "s_d_c     - Set up the PostgreSQL database container"
-    echo "u_d_s     - Update the PostgreSQL database schema"
+    echo "c_d_s   - Create the PostgreSQL database schema"
+    echo "d_d_f   - Delete the PostgreSQL database files"
+    echo "d_d_s   - Drop the PostgreSQL database schema"
+    echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
     echo "version - Show the IO-AVSTATS-DB version"
     echo "---------------------------------------------------------"
@@ -72,6 +73,20 @@ if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
     fi
 fi
 
+if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
+        echo "pdus2008  - Profiling Data for the US since 2008"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
+        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
+    else
+        export IO_AVSTATS_APPLICATION=$2
+    fi
+fi
+
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
@@ -94,11 +109,12 @@ echo "==========================================================================
 # l_c_s: Load country and state data into PostgreSQL.
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_z_d: Load US Zip code data.
+# r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_z_d"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi
@@ -115,15 +131,6 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS faaus2008 application.
-# ------------------------------------------------------------------------------
-
-elif [ "${IO_AVSTATS_TASK}" = "faaus2008" ]; then
-    if ! ( pipenv run streamlit run src/streamlit_apps/faaus2008.py ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -132,11 +139,11 @@ elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Show the IO-AVSTATS pdus2008 application.
+# Run a Streamlit application.
 # ------------------------------------------------------------------------------
 
-elif [ "${IO_AVSTATS_TASK}" = "pdus2008" ]; then
-    if ! ( pipenv run streamlit run src/streamlit_apps/pdus2008.py ); then
+elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+    if ! ( pipenv run streamlit run src/streamlit_apps/${IO_AVSTATS_Application}.py ); then
         exit 255
     fi
 

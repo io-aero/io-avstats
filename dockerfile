@@ -1,6 +1,6 @@
 FROM python:3.10.9 as base
 
-LABEL maintainer="IO Aero"
+LABEL maintainer="IO-Aero"
 
 ARG APP
 ARG SERVER_ADDRESS

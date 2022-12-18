@@ -32,7 +32,7 @@ Enter the new time:
 End   run_io_avstats
 =======================================================================
 
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
 =========================================================
 d_m_a   - PostgreSQL: Download Microsoft Access database file
 l_m_a   - PostgreSQL: Load Microsoft Access database data
@@ -101,15 +101,15 @@ Progress update 2022-11-05 14:02:38.097199 : Database table       : ntsb_admin  
 Progress update 2022-11-05 14:07:20.083159 : Number of rows so far read :  10000.
 Progress update 2022-11-05 14:11:57.481076 : Number of rows so far read :  20000.
 Traceback (most recent call last):
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 287, in <module>
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\launcher.py", line 287, in <module>
     main(sys.argv)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\launcher.py", line 263, in main
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\launcher.py", line 263, in main
     avstats.load_msaccess_data(ARG_MSACCESS)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\avstats.py", line 89, in load_msaccess_data
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\avstats.py", line 89, in load_msaccess_data
     db_dml_base.load_msaccess_data(msaccess)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 3006, in load_msaccess_data
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\db_dml_base.py", line 3006, in load_msaccess_data
     _load_table_ntsb_admin(io_glob.TABLE_NAME_NTSB_ADMIN, cur_ma, cur_pg)
-  File "D:\SoftDevelopment\Projects\IO Aero\io-avstats\src\io_avstats\db_dml_base.py", line 2564, in _load_table_ntsb_admin
+  File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\src\io_avstats\db_dml_base.py", line 2564, in _load_table_ntsb_admin
     cur_pg.execute(
   File "C:\Users\walte\.virtualenvs\io-avstats-zZIfNcpY\lib\site-packages\psycopg\cursor.py", line 725, in execute
     raise ex.with_traceback(None)
@@ -123,7 +123,7 @@ Enter the new time:
 End   run_io_avstats
 =======================================================================
 
-D:\SoftDevelopment\Projects\IO Aero\io-avstats>run_io_avstats
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
 =========================================================
 d_m_a   - PostgreSQL: Download Microsoft Access database file
 l_m_a   - PostgreSQL: Load Microsoft Access database data

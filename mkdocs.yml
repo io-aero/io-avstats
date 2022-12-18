@@ -33,6 +33,8 @@ nav:
       - IO-AVSTATS: config_io_avstats.md
       - Logging: config_logging.md
   - Operation: operation.md
+  - How to:
+      - Add NTSB Accident Files: how_to_add_ntsb_accident_files.md
   - Release Documents:
     - Release Notes: release_notes.md
     - Release History: release_history.md

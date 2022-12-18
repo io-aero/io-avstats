@@ -10,52 +10,88 @@ TASK       : v_n_d
 CORRECTION :
 MSACCESS   :
 -----------------------------------------------------------------------
-The current time is: 13:44:01.18
+The current time is:  7:01:26.47
 Enter the new time:
 =======================================================================
-Progress update 2022-12-12 13:44:03.060593 : ===============================================================================.
-Progress update 2022-12-12 13:44:03.060593 : INFO.00.004 Start Launcher.
-Progress update 2022-12-12 13:44:03.062593 : INFO.00.001 The logger is configured and ready.
-Progress update 2022-12-12 13:44:03.070593 : INFO.00.005 Argument task='v_n_d'.
-Progress update 2022-12-12 13:44:03.070593 : -------------------------------------------------------------------------------.
-Progress update 2022-12-12 13:44:03.071094 : INFO.00.043 Verify selected NTSB data.
-Progress update 2022-12-12 13:44:03.071094 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:44:04.364950 : INFO.00.063 Processed data source 'events'.
-Progress update 2022-12-12 13:44:04.364950 : Number cols deleted  :  27349.
-Progress update 2022-12-12 13:44:04.365450 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:44:04.400450 : INFO.00.064 Verification of table 'events' column(s) 'latitude & longitude'.
-Progress update 2022-12-12 13:44:04.400450 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:44:05.393984 : Number of rows so far read :   5000.
-Progress update 2022-12-12 13:44:10.497248 : Number of rows so far read :  10000.
-Progress update 2022-12-12 13:44:59.132956 : Number of rows so far read :  15000.
-Progress update 2022-12-12 13:46:26.258657 : Number of rows so far read :  20000.
-Progress update 2022-12-12 13:47:38.389027 : Number of rows so far read :  25000.
-Progress update 2022-12-12 13:48:50.702806 : Number of rows so far read :  30000.
-Progress update 2022-12-12 13:49:52.964728 : Number rows errors   :  12363.
-Progress update 2022-12-12 13:49:52.964728 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:49:52.965229 : INFO.00.064 Verification of table 'events' column(s) 'ev_city'.
-Progress update 2022-12-12 13:49:54.126754 : Number rows errors   :   6041.
-Progress update 2022-12-12 13:49:54.126754 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:49:54.126754 : INFO.00.064 Verification of table 'events' column(s) 'ev_city & ev_site_zipcode'.
-Progress update 2022-12-12 13:49:55.468522 : Number rows errors   :  16507.
-Progress update 2022-12-12 13:49:55.468522 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:49:55.468522 : INFO.00.064 Verification of table 'events' column(s) 'ev_state'.
-Progress update 2022-12-12 13:49:56.193022 : Number rows errors   :    291.
-Progress update 2022-12-12 13:49:56.193022 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:49:56.193022 : INFO.00.064 Verification of table 'events' column(s) 'ev_site_zipcode'.
-Progress update 2022-12-12 13:49:56.701520 : Number rows errors   :   6034.
-Progress update 2022-12-12 13:49:56.701520 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 13:49:56.702519 : Number rows selected :  34300.
-Progress update 2022-12-12 13:49:56.703019 : Number rows updated  :  41236.
-Progress update 2022-12-12 13:49:56.703019 : Number rows errors   :  41236.
-Progress update 2022-12-12 13:49:56.703019 : -------------------------------------------------------------------------------.
-Progress update 2022-12-12 13:49:56.703019 :      353,785,422,200 ns - Total time launcher.
-Progress update 2022-12-12 13:49:56.703019 : INFO.00.006 End   Launcher.
-Progress update 2022-12-12 13:49:56.703019 : ===============================================================================.
+Progress update 2022-12-18 07:01:28.302801 : ===============================================================================.
+Progress update 2022-12-18 07:01:28.303299 : INFO.00.004 Start Launcher.
+Progress update 2022-12-18 07:01:28.305302 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-18 07:01:28.313799 : INFO.00.005 Argument task='v_n_d'.
+Progress update 2022-12-18 07:01:28.313799 : -------------------------------------------------------------------------------.
+Progress update 2022-12-18 07:01:28.313799 : INFO.00.043 Verify selected NTSB data.
+Progress update 2022-12-18 07:01:28.313799 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:01:29.791861 : INFO.00.063 Processed data source 'events'.
+Progress update 2022-12-18 07:01:29.791861 : Number cols deleted  :  27378.
+Progress update 2022-12-18 07:01:29.791861 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:01:29.847379 : INFO.00.064 Verification of table 'events' column(s) 'latitude & longitude'.
+Progress update 2022-12-18 07:01:29.847879 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:01:30.779339 : Number of rows so far read :   5000.
+Progress update 2022-12-18 07:01:35.923824 : Number of rows so far read :  10000.
+Progress update 2022-12-18 07:02:21.619041 : Number of rows so far read :  15000.
+Progress update 2022-12-18 07:03:23.893470 : Number of rows so far read :  20000.
+Progress update 2022-12-18 07:04:30.130890 : Number of rows so far read :  25000.
+Progress update 2022-12-18 07:05:33.466294 : Number of rows so far read :  30000.
+Progress update 2022-12-18 07:06:30.937809 : Number rows errors   :  12374.
+Progress update 2022-12-18 07:06:30.937809 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:06:30.938308 : INFO.00.064 Verification of table 'events' column(s) 'ev_city'.
+Progress update 2022-12-18 07:06:32.108776 : Number rows errors   :   6041.
+Progress update 2022-12-18 07:06:32.108776 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:06:32.108776 : INFO.00.064 Verification of table 'events' column(s) 'ev_city & ev_site_zipcode'.
+Progress update 2022-12-18 07:06:33.699993 : Number rows errors   :  16516.
+Progress update 2022-12-18 07:06:33.700494 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:06:33.700494 : INFO.00.064 Verification of table 'events' column(s) 'ev_state'.
+Progress update 2022-12-18 07:06:34.416462 : Number rows errors   :    291.
+Progress update 2022-12-18 07:06:34.416462 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:06:34.416462 : INFO.00.064 Verification of table 'events' column(s) 'ev_site_zipcode'.
+Progress update 2022-12-18 07:06:34.866764 : Number rows errors   :   6034.
+Progress update 2022-12-18 07:06:34.866764 : --------------------------------------------------------------------------------
+Progress update 2022-12-18 07:06:34.867763 : Number rows selected :  34324.
+Progress update 2022-12-18 07:06:34.867763 : Number rows updated  :  41256.
+Progress update 2022-12-18 07:06:34.867763 : Number rows errors   :  41256.
+Progress update 2022-12-18 07:06:34.868264 : -------------------------------------------------------------------------------.
+Progress update 2022-12-18 07:06:34.868264 :      306,720,465,000 ns - Total time launcher.
+Progress update 2022-12-18 07:06:34.868264 : INFO.00.006 End   Launcher.
+Progress update 2022-12-18 07:06:34.868264 : ===============================================================================.
 
 -----------------------------------------------------------------------
-The current time is: 13:49:56.85
+The current time is:  7:06:35.04
 Enter the new time:
 -----------------------------------------------------------------------
 End   run_io_avstats
 =======================================================================
+
+
+=======================================================================
+=======================================================================
+SELECT count(*) total,
+       count(io_dec_latitude_deviating) dev_latitude,
+       count(io_invalid_latitude) inv__latitude,
+       count(io_dec_longitude_deviating) dev_longitude,
+       count(io_invalid_longitude) inv_longitude,
+       count(io_invalid_us_city) inv_us_city,
+       count(io_invalid_us_city_zipcode) inv_us_city_zipcode,
+       count(io_invalid_us_state) inv_us_state,
+       count(io_invalid_us_zipcode) inv_us_zipcode
+  FROM events
+
+total|dev_latitude|inv__latitude|dev_longitude|inv_longitude|inv_us_city|inv_us_city_zipcode|inv_us_state|inv_us_zipcode|
+-----+------------+-------------+-------------+-------------+-----------+-------------------+------------+--------------+
+88010|        3719|         3794|         3649|         4119|       6041|              16516|         291|          6034|
+
+
+=======================================================================
+=======================================================================
+SELECT count(*) total,
+       count(io_dec_latitude_deviating) dev_latitude,
+       count(io_invalid_latitude) inv__latitude,
+       count(io_dec_longitude_deviating) dev_longitude,
+       count(io_invalid_longitude) inv_longitude,
+       count(io_invalid_us_city) inv_us_city,
+       count(io_invalid_us_city_zipcode) inv_us_city_zipcode,
+       count(io_invalid_us_state) inv_us_state,
+       count(io_invalid_us_zipcode) inv_us_zipcode
+  FROM io_fatalities_us_2008
+
+total|dev_latitude|inv__latitude|dev_longitude|inv_longitude|inv_us_city|inv_us_city_zipcode|inv_us_state|inv_us_zipcode|
+-----+------------+-------------+-------------+-------------+-----------+-------------------+------------+--------------+
+ 3498|         590|          530|          552|          577|        167|                612|           0|           129|

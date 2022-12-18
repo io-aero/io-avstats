@@ -5,7 +5,7 @@ type=Microsoft Access
 type2=null
 driverClass=sun.jdbc.odbc.JdbcOdbcDriver
 classLocation=C:\Program Files\RazorSQL\drivers\common\odbc.jar
-connectUrl=jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO Aero\io-avstats\data\NTSB\msaccess.mdb;DriverID=22;}
+connectUrl=jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\NTSB\msaccess.mdb;DriverID=22;}
 overrideUrl=null
 profileName=IO-AVSTATS
 keepAliveQuery=select date()

@@ -15,7 +15,7 @@ import time
 import pyexcel  # type: ignore
 from pyexcel.exceptions import FileTypeNotSupported  # type: ignore
 
-from io_avstats_db import avstats  # type: ignore
+from io_avstats_db import avstats
 from io_avstats_db import io_config
 from io_avstats_db import io_glob
 from io_avstats_db import io_utils
@@ -164,6 +164,7 @@ def _check_arg_task(args: argparse.Namespace) -> None:
             io_glob.ARG_TASK_L_N_A,
             io_glob.ARG_TASK_L_S_D,
             io_glob.ARG_TASK_L_Z_D,
+            io_glob.ARG_TASK_R_D_S,
             io_glob.ARG_TASK_U_D_S,
             io_glob.ARG_TASK_VERSION,
             io_glob.ARG_TASK_V_N_D,
@@ -197,6 +198,8 @@ def _check_arg_task(args: argparse.Namespace) -> None:
             + "' nor '"
             + io_glob.ARG_TASK_L_Z_D
             + "' nor '"
+            + io_glob.ARG_TASK_R_D_S
+            + "' nor '"
             + io_glob.ARG_TASK_U_D_S
             + "' nor '"
             + io_glob.ARG_TASK_VERSION
@@ -214,7 +217,7 @@ def _get_args() -> None:
     io_glob.logger.debug(io_glob.LOGGER_START)
 
     parser = argparse.ArgumentParser(
-        description="Perform a IO-AVSTATS task",
+        description="Perform a IO-AVSTATS-DB task",
         prog="launcher",
         prefix_chars="--",
         usage="%(prog)s options",
@@ -277,8 +280,10 @@ def _get_args() -> None:
         + "' (Load simplemaps data into PostgreSQL) or '"
         + io_glob.ARG_TASK_L_Z_D
         + "' (Load ZIP Code Database data into PostgreSQL) or '"
-        + io_glob.ARG_TASK_U_D_S
+        + io_glob.ARG_TASK_R_D_S
         + "' (Update the PostgreSQL database schema) or '"
+        + io_glob.ARG_TASK_U_D_S
+        + "' (Refresh the PostgreSQL database schema) or '"
         + io_glob.ARG_TASK_VERSION
         + "' (Show the current version of IO-AVSTATS)"
         + io_glob.ARG_TASK_V_N_D
@@ -395,6 +400,8 @@ def main(argv: list[str]) -> None:
         avstats.load_simplemaps_data()
     elif ARG_TASK == io_glob.ARG_TASK_L_Z_D:
         avstats.load_zip_code_db_data()
+    elif ARG_TASK == io_glob.ARG_TASK_R_D_S:
+        avstats.refresh_db_schema()
     elif ARG_TASK == io_glob.ARG_TASK_U_D_S:
         avstats.update_db_schema()
     elif ARG_TASK == io_glob.ARG_TASK_VERSION:

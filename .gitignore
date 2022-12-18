@@ -3,8 +3,10 @@
 /.history/
 /.idea/
 /Pipfile.lock
+/cloud.zip
 /data/*_postgres_*.zip
 /data/download/
+/data/latest_postgres.zip
 /data/postgres/
 /docs/reports/*/*.aux
 /docs/reports/*/*.bbl

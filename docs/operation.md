@@ -257,8 +257,8 @@ Example protocol:
     Progress update 2022-11-23 12:20:06.163453 : INFO.00.013 The connection to the MS Access database file 'up22OCT.zip' on the NTSB download page was successfully established.
     Progress update 2022-11-23 12:20:07.188487 : INFO.00.014 From the file 'up22OCT.zip' 2 chunks were downloaded.
     Progress update 2022-11-23 12:20:07.206986 : INFO.00.015 The file 'up22OCT.zip' was successfully unpacked.
-    Progress update 2022-11-23 12:20:07.218987 : INFO.00.051 msaccess_file     ='D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\data\download\IO-AVSTATS.mdb'.
-    Progress update 2022-11-23 12:20:07.219487 : INFO.00.051 msaccess_file     ='D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\data\download\up22OCT.sql'.
+    Progress update 2022-11-23 12:20:07.218987 : INFO.00.051 msaccess_file     ='D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\data\download\IO-AVSTATS.mdb'.
+    Progress update 2022-11-23 12:20:07.219487 : INFO.00.051 msaccess_file     ='D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\data\download\up22OCT.sql'.
     Progress update 2022-11-23 12:20:07.219487 : INFO.00.052 razorsql_jar_file ='C:\Program Files\RazorSQL\razorsql.jar'.
     Progress update 2022-11-23 12:20:07.219487 : INFO.00.053 razorsql_java_path='C:\Program Files\RazorSQL\jre11\bin\java'.
     1669202407306: launching RazorSQL . . .
@@ -269,7 +269,7 @@ Example protocol:
     null
     ;
     null
-    D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\data\download\up22OCT.sql
+    D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\data\download\up22OCT.sql
     NO
     tables
     YES
@@ -316,7 +316,7 @@ Example protocol:
     1669202407349: args[3]: null
     1669202407349: args[4]: ;
     1669202407349: args[5]: null
-    1669202407349: args[6]: D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\data\download\up22OCT.sql
+    1669202407349: args[6]: D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\data\download\up22OCT.sql
     1669202407349: args[7]: NO
     1669202407349: args[8]: tables
     1669202407349: args[9]: YES
@@ -568,15 +568,15 @@ Example protocol:
     Progress update 2022-11-26 07:12:23.337457 : INFO.00.055 Downloading ZIP Code Database file.
     Progress update 2022-11-26 07:12:23.337457 : --------------------------------------------------------------------------------
     
-      File "D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\src\launcher.py", line 416, in <module>
+      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\launcher.py", line 416, in <module>
         main(sys.argv)
-      File "D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\src\launcher.py", line 376, in main
+      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\launcher.py", line 376, in main
         avstats.download_zip_code_db_file()
-      File "D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\src\io_avstats_db\avstats.py", line 98, in download_zip_code_db_file
+      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\avstats.py", line 98, in download_zip_code_db_file
         db_dml_base.download_zip_code_db_file()
-      File "D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\src\io_avstats_db\db_dml_base.py", line 4052, in download_zip_code_db_file
+      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\db_dml_base.py", line 4052, in download_zip_code_db_file
         io_utils.terminate_fatal(
-      File "D:\SoftDevelopment\Projects\IO Aero\io-avstats-db\src\io_avstats_db\io_utils.py", line 99, in terminate_fatal
+      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\io_utils.py", line 99, in terminate_fatal
         traceback.print_stack()
     
     FATAL ERROR: program abort =====>
@@ -781,7 +781,18 @@ Example protocol:
     Progress update 2022-11-29 14:26:07.090743 : INFO.00.006 End   Launcher.
     Progress update 2022-11-29 14:26:07.090743 : ===============================================================================.
 
-### 1.14 **`s_d_c`** - Set up the PostgreSQL database container
+### 1.14 **`r_d_s`** - Refresh the PostgreSQL database schema
+
+Hereby changes can be made to the database schema.
+The task can be executed several times without problems, since before a change is always first checked whether this has already been done.
+
+1. Materialized database view
+
+- **`io_app_faaus2008`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
+
+Example protocol:
+
+### 1.15 **`s_d_c`** - Set up the PostgreSQL database container
 
 The default installation of the PostgreSQL database is done using the official Docker images from Dockerhub - see [here](https://hub.docker.com/_/postgres){:target="_blank"}.
 
@@ -862,7 +873,7 @@ Example protocol:
     a4469ea39fdd   postgres:latest          "docker-entrypoint.s…"   2 weeks ago      Up 10 hours     0.0.0.0:5432->5432/tcp                                     io_avstats_container
     f67eb28b8888   portainer/portainer-ce   "/portainer"             4 weeks ago      Up 10 hours     0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 
-### 1.15 **`u_d_s`** - Update the PostgreSQL database schema
+### 1.16 **`u_d_s`** - Update the PostgreSQL database schema
 
 Hereby changes can be made to the database schema.
 The task can be executed several times without problems, since before a change is always first checked whether this has already been done.
@@ -922,7 +933,7 @@ Example protocol:
     Progress update 2022-11-27 13:37:14.403313 : INFO.00.006 End   Launcher.
     Progress update 2022-11-27 13:37:14.403313 : ===============================================================================.
 
-### 1.16 **`v_n_d`** - Verify selected **NTSB** data
+### 1.17 **`v_n_d`** - Verify selected **NTSB** data
 
 This task can be used to perform a plausibility check for the following columns in the database table **`events`**:
 

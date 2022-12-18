@@ -29,6 +29,7 @@ services:
     image: ioaero/faaus2008:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always
 
   # ------------------------------------------------------------------------------
   # pdus2008 - Profiling Data for the US since 2008.
@@ -40,3 +41,4 @@ services:
     image: ioaero/pdus2008:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always

@@ -31,26 +31,27 @@ set PYTHONPATH=
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo r_s_a     - Run a Streamlit application 
+    echo r_s_a   - Run a Streamlit application 
     echo ---------------------------------------------------------
-    echo d_n_a     - Download a NTSB MS Access database file
-    echo l_n_a     - Load NTSB MS Access database data into PostgreSQL
-    echo c_l_l     - Correct decimal US latitudes and longitudes
-    echo v_n_d     - Verify selected NTSB data
+    echo d_n_a   - Download a NTSB MS Access database file
+    echo l_n_a   - Load NTSB MS Access database data into PostgreSQL
+    echo c_l_l   - Correct decimal US latitudes and longitudes
+    echo v_n_d   - Verify selected NTSB data
+    echo r_d_s   - Refresh the PostgreSQL database schema
     echo ---------------------------------------------------------
-    echo c_p_d     - Cleansing PostgreSQL data
-    echo d_s_f     - Download basic simplemaps files
-rem echo d_z_f     - Download the ZIP Code Database file
-    echo l_c_d     - Load data from a correction file into PostgreSQL
-    echo l_c_s     - Load country and state data into PostgreSQL
-    echo l_s_d     - Load simplemaps data into PostgreSQL
-    echo l_z_d     - Load ZIP Code Database data into PostgreSQL
+    echo c_p_d   - Cleansing PostgreSQL data
+    echo d_s_f   - Download basic simplemaps files
+rem echo d_z_f   - Download the ZIP Code Database file
+    echo l_c_d   - Load data from a correction file into PostgreSQL
+    echo l_c_s   - Load country and state data into PostgreSQL
+    echo l_s_d   - Load simplemaps data into PostgreSQL
+    echo l_z_d   - Load ZIP Code Database data into PostgreSQL
     echo ---------------------------------------------------------
-    echo c_d_s     - Create the PostgreSQL database schema
-    echo d_d_f     - Delete the PostgreSQL database files
-    echo d_d_s     - Drop the PostgreSQL database schema
-    echo s_d_c     - Set up the PostgreSQL database container
-    echo u_d_s     - Update the PostgreSQL database schema
+    echo c_d_s   - Create the PostgreSQL database schema
+    echo d_d_f   - Delete the PostgreSQL database files
+    echo d_d_s   - Drop the PostgreSQL database schema
+    echo s_d_c   - Set up the PostgreSQL database container
+    echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
     echo version - Show the IO-AVSTATS-DB version
     echo ---------------------------------------------------------
@@ -296,6 +297,19 @@ rem Load ZIP Code Database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_z_d"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Refresh the PostgreSQL database schema.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["r_d_s"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

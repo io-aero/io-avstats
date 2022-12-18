@@ -106,7 +106,7 @@ elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
     echo "............................................................. after images:"
     docker image ls
 
-    docker compose up
+    docker compose up &
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

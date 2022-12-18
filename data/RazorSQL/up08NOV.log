@@ -20,7 +20,7 @@ Progress update 2022-12-12 12:02:37.078911 : INFO.00.008 Arguments task='l_n_a' 
 Progress update 2022-12-12 12:02:37.078911 : -------------------------------------------------------------------------------.
 Progress update 2022-12-12 12:02:37.078911 : INFO.00.049 Loading NTSB MS Access database data from  file 'up08NOV'.
 Progress update 2022-12-12 12:02:37.078911 : --------------------------------------------------------------------------------
-Progress update 2022-12-12 12:02:37.079411 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO Aero\io-avstats\data\download\up08NOV.mdb;'.
+Progress update 2022-12-12 12:02:37.079411 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08NOV.mdb;'.
 Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
 Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
 Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.

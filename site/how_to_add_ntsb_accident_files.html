@@ -1,0 +1,1960 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Accident Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/how_to_add_ntsb_accident_files.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Add NTSB Accident Files - IO-AVSTATS - Aviation Accident Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.975780f9.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#io-avstats-how-to-add-ntsb-accident-files" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Accident Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Add NTSB Accident Files
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Accident Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Setup" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Configuration" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          How to
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How to" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How to
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Add NTSB Accident Files
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link md-nav__link--active">
+        Add NTSB Accident Files
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-reference" class="md-nav__link">
+    1. Quick reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-description" class="md-nav__link">
+    2. Detailed description
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
+    2.1 d_n_a - Download a NTSB MS Access database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
+    2.2 l_n_a - Load NTSB MS Access database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
+    2.3 d_s_f - Download basic simplemaps files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
+    2.4 l_s_d - Load simplemaps data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-download-the-zip-code-database-file" class="md-nav__link">
+    2.5 Download the ZIP Code Database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
+    2.6 l_z_d - Load ZIP Code Database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
+    2.7 l_c_d - Load data from a correction file into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
+    2.8 c_l_l - Correct decimal US latitudes and longitudes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
+    2.9 v_n_d - Verify selected NTSB data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
+    2.10 r_d_s - Refresh the PostgreSQL database schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-backup-the-file-directory-datapostgres" class="md-nav__link">
+    2.11 Backup the file directory data/postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-update-the-google-drive" class="md-nav__link">
+    2.12 Update the Google Drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-update-io-avstats-in-the-io-aero-cloud" class="md-nav__link">
+    2.13 Update IO-AVSTATS in the IO-Aero cloud
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Release Documents
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Release Documents" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Documents
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_notes.html" class="md-nav__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_history.html" class="md-nav__link">
+        Release History
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_schedule.html" class="md-nav__link">
+        Release Schedule
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-reference" class="md-nav__link">
+    1. Quick reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-description" class="md-nav__link">
+    2. Detailed description
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
+    2.1 d_n_a - Download a NTSB MS Access database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
+    2.2 l_n_a - Load NTSB MS Access database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
+    2.3 d_s_f - Download basic simplemaps files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
+    2.4 l_s_d - Load simplemaps data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-download-the-zip-code-database-file" class="md-nav__link">
+    2.5 Download the ZIP Code Database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
+    2.6 l_z_d - Load ZIP Code Database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
+    2.7 l_c_d - Load data from a correction file into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
+    2.8 c_l_l - Correct decimal US latitudes and longitudes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
+    2.9 v_n_d - Verify selected NTSB data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
+    2.10 r_d_s - Refresh the PostgreSQL database schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-backup-the-file-directory-datapostgres" class="md-nav__link">
+    2.11 Backup the file directory data/postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-update-the-google-drive" class="md-nav__link">
+    2.12 Update the Google Drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-update-io-avstats-in-the-io-aero-cloud" class="md-nav__link">
+    2.13 Update IO-AVSTATS in the IO-Aero cloud
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="io-avstats-how-to-add-ntsb-accident-files">IO-AVSTATS - How to add NTSB accident files</h1>
+<p>Aviation accident data provided by NTSB can be found at the following <a href="https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx">website</a> under <strong>Downloadable data sets</strong>:</p>
+<hr />
+<p><img alt="" src="img/how_to_add_ntsb_01.png" /></p>
+<p>In the database table <strong><code>io_processed_files</code></strong> you can find the previously processed files:</p>
+<table>
+<thead>
+<tr>
+<th>file_name</th>
+<th>first_processed</th>
+<th>last_processed</th>
+<th align="right">counter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre2008</td>
+<td>2022-11-05 10:44:38.868</td>
+<td>2022-11-05 11:49:12.766</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>avall</td>
+<td>2022-11-05 11:59:49.223</td>
+<td>2022-11-05 20:31:00.556</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>data/Countries_States/countries_states.json</td>
+<td>2022-11-27 14:15:55.929</td>
+<td>2022-11-27 14:15:57.546</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>uszips.xlsx</td>
+<td>2022-11-27 15:25:29.741</td>
+<td>2022-11-29 13:40:41.456</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>uscities.xlsx</td>
+<td>2022-11-27 15:08:39.447</td>
+<td>2022-11-29 13:54:55.259</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>zip_code_database.xls</td>
+<td>2022-11-27 14:57:37.929</td>
+<td>2022-11-29 14:26:07.066</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>up01NOV</td>
+<td>2022-12-12 11:57:31.862</td>
+<td></td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>up08NOV</td>
+<td>2022-12-12 12:05:13.850</td>
+<td></td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>up15NOV</td>
+<td>2022-12-12 12:07:16.557</td>
+<td></td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>up22NOV</td>
+<td>2022-11-27 13:40:18.094</td>
+<td>2022-12-12 12:08:15.915</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>up01DEC</td>
+<td>2022-12-12 13:26:03.872</td>
+<td></td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>up08DEC</td>
+<td>2022-12-12 13:29:14.703</td>
+<td></td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Any file can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.</p>
+<p>All necessary processing steps can be executed with the <strong><code>run_io_avstats</code></strong> script.
+The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22.04 bash shell.</p>
+<h2 id="1-quick-reference">1. Quick reference</h2>
+<table>
+<thead>
+<tr>
+<th align="right">No.</th>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">1</td>
+<td>d_n_a</td>
+<td>Download a NTSB MS Access database file</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>l_n_a</td>
+<td>Load NTSB MS Access database data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>d_s_f</td>
+<td>Download basic simplemaps files</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>l_s_d</td>
+<td><strong>Optional</strong>: Load simplemaps data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td></td>
+<td>Download the ZIP Code Database file</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>l_z_d</td>
+<td><strong>Optional</strong>: Load ZIP Code Database data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>l_c_d</td>
+<td><strong>Optional</strong>: Load data from a correction file into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>c_l_l</td>
+<td>Correct decimal US latitudes and longitudes</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>v_n_d</td>
+<td>Verify selected NTSB data</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>r_d_s</td>
+<td>Refresh the PostgreSQL database schema</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td></td>
+<td>Backup the file directory <strong><code>data/postgres</code></strong></td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td></td>
+<td>Update the Google Drive</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td></td>
+<td>Update IO-AVSTATS in the IO-Aero cloud</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-detailed-description">2. Detailed description</h2>
+<h3 id="21-d_n_a-download-a-ntsb-ms-access-database-file">2.1 <strong><code>d_n_a</code></strong> - Download a NTSB MS Access database file</h3>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>download_chunk_size = 524288
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>download_timeout = 10
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>download_url_ntsb_prefix = &quot;https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C&quot;
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>=========================================================
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>---------------------------------------------------------
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>---------------------------------------------------------
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>---------------------------------------------------------
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>---------------------------------------------------------
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>---------------------------------------------------------
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>Enter the desired task [default: r_s_a] d_n_a
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>=========================================================
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>avall   - Data from January 1, 2008 to today
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>Pre2008 - Data from January 1, 1982 to December 31, 2007
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>upDDMON - New additions and updates until DD day in the month MON
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>---------------------------------------------------------
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>Enter the stem name of the desired MS Access database file up15DEC
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>Script run_io_avstats is now running
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>=======================================================================
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>Start run_io_avstats
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>PYTHONPATH :
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>TASK       : d_n_a
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>CORRECTION :
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>MSACCESS   : up15DEC
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>The current time is: 13:07:00.80
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>Enter the new time:
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>=======================================================================
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>Progress update 2022-12-17 13:07:04.105948 : ===============================================================================.
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>Progress update 2022-12-17 13:07:04.105948 : INFO.00.004 Start Launcher.
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>Progress update 2022-12-17 13:07:04.111448 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>Progress update 2022-12-17 13:07:04.120447 : INFO.00.008 Arguments task=&#39;d_n_a&#39; msaccess=&#39;up15DEC&#39;.
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>Progress update 2022-12-17 13:07:04.120447 : -------------------------------------------------------------------------------.
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>Progress update 2022-12-17 13:07:04.120447 : INFO.00.047 Downloading NTSB MS Access database file &#39;up15DEC&#39;.
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>Progress update 2022-12-17 13:07:04.120447 : --------------------------------------------------------------------------------
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>Progress update 2022-12-17 13:07:06.491427 : INFO.00.013 The connection to the MS Access database file &#39;up15DEC.zip&#39; on the NTSB download page was successfully established.
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>Progress update 2022-12-17 13:07:07.115755 : INFO.00.014 From the file &#39;up15DEC.zip&#39; 2 chunks were downloaded.
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>Progress update 2022-12-17 13:07:07.133255 : INFO.00.015 The file &#39;up15DEC.zip&#39; was successfully unpacked.
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>Progress update 2022-12-17 13:07:07.144255 : INFO.00.051 msaccess_file=&#39;D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\IO-AVSTATS.mdb&#39;.
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>Progress update 2022-12-17 13:07:07.144755 : INFO.00.051 msaccess_file=&#39;D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up15DEC.sql&#39;.
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>Progress update 2022-12-17 13:07:07.144755 : INFO.00.052 razorsql_jar_file=&#39;C:\Program Files\RazorSQL\razorsql.jar&#39;.
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>Progress update 2022-12-17 13:07:07.144755 : INFO.00.053 razorsql_java_path=&#39;C:\Program Files\RazorSQL\jre11\bin\java&#39;.
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>1671278827242: launching RazorSQL . . .
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>1671278827242: args . . .
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>-backup
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>IO-AVSTATS
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>null
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>null
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>;
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>null
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up15DEC.sql
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>NO
+<a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>tables
+<a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a>YES
+<a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>null
+<a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>NO
+<a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>NO
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>1671278827278: userName: walte
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a>1671278827278: libraryPath: C:\Program Files\RazorSQL\jre11\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\walte\.virtualenvs\io-avstats-zZIfNcpY\Scripts;C:\Program Files (x86)\VMware\VMware Player\bin\;C:\Program Files (x86)\infogridpacific\AZARDI;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Calibre2\;C:\Program Files\dotnet\;C:\Program Files\Git LFS;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Pandoc\;C:\Program Files\TortoiseGit\bin;C:\Software\GnuWin32\bin;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS\System32\OpenSSH\;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Users\walte\.nimble\bin;C:\Windows;C:\Windows\system32;C:\Windows\System32\OpenSSH\;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Software\.cargo\bin;%GRADLE_HOME%\bin;%HOME_ELIXIR%\bin;%HOME_ERLANG%\bin;%HOME_GO%\bin;C:\Program Files\heroku\bin;%HOME_JULIA%\bin;%HOME_NIM%\bin;C:\Software\PostgreSQL\15\bin;C:\Software\poppler-0.68.0\bin;C:\Software\Python\Python310;C:\Software\Python\Python310\Scripts;C:\Software\rebar3;%HOME_RUST%\bin;C:\Software\Tesseract-OCR;C:\Software\jdk-18.0.2\bin;%KOTLIN_HOME%\bin;C:\Software\oracle\instantclient_21_6;C:\Software\Gpg4win\..\GnuPG\bin;C:\Program Files\LLVM\bin;C:\Program Files\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Git\cmd;C:\Program Files\PuTTY\;C:\Software\texlive\2022\bin\win32;C:\Users\walte\.cargo\bin;C:\Users\walte\AppData\Local\Microsoft\WindowsApps;C:\Software\Microsoft VS Code\bin;C:\Users\walte\go\bin;c:\users\walte\.local\bin;C:\Users\walte\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\walte\AppData\Roaming\npm;C:\Software\MiKTeX\miktex\bin\x64\;.
+<a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>1671278827279: javaVersion: 11.0.13
+<a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>1671278827279:
+<a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>1671278827279: Verifying RazorSQL resources location.
+<a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>1671278827279:
+<a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>1671278827280: testing base url: / = file:/C:/Program%20Files/RazorSQL/
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a>1671278827280:
+<a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a>1671278827280: testString1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+<a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a>1671278827280: testString2: file:/C:/Program%20Files/RazorSQL/data/base.ssql
+<a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a>1671278827280: testFile1: C:\Program Files\RazorSQL\razorsql.jar
+<a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a>1671278827280: testFile2: C:\Program Files\RazorSQL\data\base.ssql
+<a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a>1671278827281: both test file exists.  Base URL found.
+<a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a>1671278827281: resource directory: file:/C:/Program%20Files/RazorSQL/
+<a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a>1671278827281: user home: C:\Users\walte
+<a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a>1671278827282: user profile: C:\Users\walte
+<a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a>1671278827282: app data: C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a>1671278827282: checking write access to: C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a>1671278827283: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+<a id="__codelineno-1-97" name="__codelineno-1-97" href="#__codelineno-1-97"></a>1671278827283: can write to C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-98" name="__codelineno-1-98" href="#__codelineno-1-98"></a>1671278827283: user.home: C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-99" name="__codelineno-1-99" href="#__codelineno-1-99"></a>1671278827283: RazorSQL Scratch Directory: C:\Users\walte\AppData\Roaming\RazorSQL
+<a id="__codelineno-1-100" name="__codelineno-1-100" href="#__codelineno-1-100"></a>1671278827283: RazorSQL Scratch Directory exists
+<a id="__codelineno-1-101" name="__codelineno-1-101" href="#__codelineno-1-101"></a>1671278827283: checking for sub directories
+<a id="__codelineno-1-102" name="__codelineno-1-102" href="#__codelineno-1-102"></a>1671278827283: razorsql launch log: C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+<a id="__codelineno-1-103" name="__codelineno-1-103" href="#__codelineno-1-103"></a>1671278827284: launch log file = C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+<a id="__codelineno-1-104" name="__codelineno-1-104" href="#__codelineno-1-104"></a>1671278827284: Checking for graphics properties
+<a id="__codelineno-1-105" name="__codelineno-1-105" href="#__codelineno-1-105"></a>1671278827284: graphics properties file: C:\Users\walte\AppData\Roaming\RazorSQL\data\graphics_properties.txt
+<a id="__codelineno-1-106" name="__codelineno-1-106" href="#__codelineno-1-106"></a>1671278827284: gOverride: null
+<a id="__codelineno-1-107" name="__codelineno-1-107" href="#__codelineno-1-107"></a>1671278827285: not disabling advanced graphics
+<a id="__codelineno-1-108" name="__codelineno-1-108" href="#__codelineno-1-108"></a>1671278827285: path0: file:/C:/Program%20Files/RazorSQL/data/run.ssql
+<a id="__codelineno-1-109" name="__codelineno-1-109" href="#__codelineno-1-109"></a>1671278827285: path1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+<a id="__codelineno-1-110" name="__codelineno-1-110" href="#__codelineno-1-110"></a>1671278827285: runArgs: true
+<a id="__codelineno-1-111" name="__codelineno-1-111" href="#__codelineno-1-111"></a>1671278827285: showScreen: false
+<a id="__codelineno-1-112" name="__codelineno-1-112" href="#__codelineno-1-112"></a>1671278827285: args[0]: -backup
+<a id="__codelineno-1-113" name="__codelineno-1-113" href="#__codelineno-1-113"></a>1671278827286: args[1]: IO-AVSTATS
+<a id="__codelineno-1-114" name="__codelineno-1-114" href="#__codelineno-1-114"></a>1671278827286: args[2]: null
+<a id="__codelineno-1-115" name="__codelineno-1-115" href="#__codelineno-1-115"></a>1671278827286: args[3]: null
+<a id="__codelineno-1-116" name="__codelineno-1-116" href="#__codelineno-1-116"></a>1671278827286: args[4]: ;
+<a id="__codelineno-1-117" name="__codelineno-1-117" href="#__codelineno-1-117"></a>1671278827286: args[5]: null
+<a id="__codelineno-1-118" name="__codelineno-1-118" href="#__codelineno-1-118"></a>1671278827286: args[6]: D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up15DEC.sql
+<a id="__codelineno-1-119" name="__codelineno-1-119" href="#__codelineno-1-119"></a>1671278827286: args[7]: NO
+<a id="__codelineno-1-120" name="__codelineno-1-120" href="#__codelineno-1-120"></a>1671278827286: args[8]: tables
+<a id="__codelineno-1-121" name="__codelineno-1-121" href="#__codelineno-1-121"></a>1671278827286: args[9]: YES
+<a id="__codelineno-1-122" name="__codelineno-1-122" href="#__codelineno-1-122"></a>1671278827286: args[10]: null
+<a id="__codelineno-1-123" name="__codelineno-1-123" href="#__codelineno-1-123"></a>1671278827286: args[11]: NO
+<a id="__codelineno-1-124" name="__codelineno-1-124" href="#__codelineno-1-124"></a>1671278827286: args[12]: NO
+<a id="__codelineno-1-125" name="__codelineno-1-125" href="#__codelineno-1-125"></a>1671278827286: Command: -backup
+<a id="__codelineno-1-126" name="__codelineno-1-126" href="#__codelineno-1-126"></a>1671278827286: Running -backup
+<a id="__codelineno-1-127" name="__codelineno-1-127" href="#__codelineno-1-127"></a>h: name = C:\Program Files\RazorSQL\data\run.ssql
+<a id="__codelineno-1-128" name="__codelineno-1-128" href="#__codelineno-1-128"></a>h: name = C:\Program Files\RazorSQL\razorsql.jar
+<a id="__codelineno-1-129" name="__codelineno-1-129" href="#__codelineno-1-129"></a>1671278827293: Attempting to load . . .
+<a id="__codelineno-1-130" name="__codelineno-1-130" href="#__codelineno-1-130"></a>command found
+<a id="__codelineno-1-131" name="__codelineno-1-131" href="#__codelineno-1-131"></a>uOne: file:/C:/Program%20Files/RazorSQL/
+<a id="__codelineno-1-132" name="__codelineno-1-132" href="#__codelineno-1-132"></a>h: name = C:\Program Files\RazorSQL\data\run.ssql
+<a id="__codelineno-1-133" name="__codelineno-1-133" href="#__codelineno-1-133"></a>1671278827303reading file . . .C:\Program Files\RazorSQL\data\base.ssql
+<a id="__codelineno-1-134" name="__codelineno-1-134" href="#__codelineno-1-134"></a>1671278827327done reading . . .
+<a id="__codelineno-1-135" name="__codelineno-1-135" href="#__codelineno-1-135"></a>1671278827336done converting
+<a id="__codelineno-1-136" name="__codelineno-1-136" href="#__codelineno-1-136"></a>1671278827336starting lib load.
+<a id="__codelineno-1-137" name="__codelineno-1-137" href="#__codelineno-1-137"></a>1671278827347lib load complete.
+<a id="__codelineno-1-138" name="__codelineno-1-138" href="#__codelineno-1-138"></a>In command line processor
+<a id="__codelineno-1-139" name="__codelineno-1-139" href="#__codelineno-1-139"></a>Max Memory: 30688.0
+<a id="__codelineno-1-140" name="__codelineno-1-140" href="#__codelineno-1-140"></a>Current Total Memory: 2048.0
+<a id="__codelineno-1-141" name="__codelineno-1-141" href="#__codelineno-1-141"></a>Free Memory: 1957.998046875
+<a id="__codelineno-1-142" name="__codelineno-1-142" href="#__codelineno-1-142"></a>1671278827417: r init
+<a id="__codelineno-1-143" name="__codelineno-1-143" href="#__codelineno-1-143"></a>1671278827417: d init
+<a id="__codelineno-1-144" name="__codelineno-1-144" href="#__codelineno-1-144"></a>1671278827417: get default file encoding
+<a id="__codelineno-1-145" name="__codelineno-1-145" href="#__codelineno-1-145"></a>1671278827418: end d init
+<a id="__codelineno-1-146" name="__codelineno-1-146" href="#__codelineno-1-146"></a>custom home directory: null
+<a id="__codelineno-1-147" name="__codelineno-1-147" href="#__codelineno-1-147"></a>Checking for user data from old versions
+<a id="__codelineno-1-148" name="__codelineno-1-148" href="#__codelineno-1-148"></a>1671278827419: user home: C:\Users\walte
+<a id="__codelineno-1-149" name="__codelineno-1-149" href="#__codelineno-1-149"></a>1671278827419: user profile: C:\Users\walte
+<a id="__codelineno-1-150" name="__codelineno-1-150" href="#__codelineno-1-150"></a>1671278827419: app data: C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-151" name="__codelineno-1-151" href="#__codelineno-1-151"></a>1671278827419: checking write access to: C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-152" name="__codelineno-1-152" href="#__codelineno-1-152"></a>1671278827419: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+<a id="__codelineno-1-153" name="__codelineno-1-153" href="#__codelineno-1-153"></a>1671278827419: can write to C:\Users\walte\AppData\Roaming
+<a id="__codelineno-1-154" name="__codelineno-1-154" href="#__codelineno-1-154"></a>newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+<a id="__codelineno-1-155" name="__codelineno-1-155" href="#__codelineno-1-155"></a>dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+<a id="__codelineno-1-156" name="__codelineno-1-156" href="#__codelineno-1-156"></a>preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+<a id="__codelineno-1-157" name="__codelineno-1-157" href="#__codelineno-1-157"></a>Profiles Exist
+<a id="__codelineno-1-158" name="__codelineno-1-158" href="#__codelineno-1-158"></a>1671278827429: loading icons
+<a id="__codelineno-1-159" name="__codelineno-1-159" href="#__codelineno-1-159"></a>1671278827591: done r init
+<a id="__codelineno-1-160" name="__codelineno-1-160" href="#__codelineno-1-160"></a>Getting connection data from: IO-AVSTATS
+<a id="__codelineno-1-161" name="__codelineno-1-161" href="#__codelineno-1-161"></a>1671278827593: r init
+<a id="__codelineno-1-162" name="__codelineno-1-162" href="#__codelineno-1-162"></a>1671278827593: d init
+<a id="__codelineno-1-163" name="__codelineno-1-163" href="#__codelineno-1-163"></a>1671278827593: get default file encoding
+<a id="__codelineno-1-164" name="__codelineno-1-164" href="#__codelineno-1-164"></a>1671278827593: end d init
+<a id="__codelineno-1-165" name="__codelineno-1-165" href="#__codelineno-1-165"></a>custom home directory: null
+<a id="__codelineno-1-166" name="__codelineno-1-166" href="#__codelineno-1-166"></a>Checking for user data from old versions
+<a id="__codelineno-1-167" name="__codelineno-1-167" href="#__codelineno-1-167"></a>newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+<a id="__codelineno-1-168" name="__codelineno-1-168" href="#__codelineno-1-168"></a>dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+<a id="__codelineno-1-169" name="__codelineno-1-169" href="#__codelineno-1-169"></a>preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+<a id="__codelineno-1-170" name="__codelineno-1-170" href="#__codelineno-1-170"></a>Profiles Exist
+<a id="__codelineno-1-171" name="__codelineno-1-171" href="#__codelineno-1-171"></a>1671278827594: loading icons
+<a id="__codelineno-1-172" name="__codelineno-1-172" href="#__codelineno-1-172"></a>1671278827603: done r init
+<a id="__codelineno-1-173" name="__codelineno-1-173" href="#__codelineno-1-173"></a>getting connection . . .
+<a id="__codelineno-1-174" name="__codelineno-1-174" href="#__codelineno-1-174"></a>Not using SSH Tunnel
+<a id="__codelineno-1-175" name="__codelineno-1-175" href="#__codelineno-1-175"></a>driver: sun.jdbc.odbc.JdbcOdbcDriver
+<a id="__codelineno-1-176" name="__codelineno-1-176" href="#__codelineno-1-176"></a>classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+<a id="__codelineno-1-177" name="__codelineno-1-177" href="#__codelineno-1-177"></a>loadedCommonJars: false
+<a id="__codelineno-1-178" name="__codelineno-1-178" href="#__codelineno-1-178"></a>commonURL: file:/C:/Program%20Files/RazorSQL/drivers/common/
+<a id="__codelineno-1-179" name="__codelineno-1-179" href="#__codelineno-1-179"></a>commonDir: C:\Program Files\RazorSQL\drivers\common
+<a id="__codelineno-1-180" name="__codelineno-1-180" href="#__codelineno-1-180"></a>commonFiles[0]: file:/C:/Program%20Files/RazorSQL/drivers/common/activation.jar
+<a id="__codelineno-1-181" name="__codelineno-1-181" href="#__codelineno-1-181"></a>commonFiles[1]: file:/C:/Program%20Files/RazorSQL/drivers/common/common.jar
+<a id="__codelineno-1-182" name="__codelineno-1-182" href="#__codelineno-1-182"></a>commonFiles[2]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-api.jar
+<a id="__codelineno-1-183" name="__codelineno-1-183" href="#__codelineno-1-183"></a>commonFiles[3]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-core.jar
+<a id="__codelineno-1-184" name="__codelineno-1-184" href="#__codelineno-1-184"></a>commonFiles[4]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-impl.jar
+<a id="__codelineno-1-185" name="__codelineno-1-185" href="#__codelineno-1-185"></a>commonFiles[6]: file:/C:/Program%20Files/RazorSQL/drivers/common/odbc.jar
+<a id="__codelineno-1-186" name="__codelineno-1-186" href="#__codelineno-1-186"></a>connection type: ODBC
+<a id="__codelineno-1-187" name="__codelineno-1-187" href="#__codelineno-1-187"></a>final classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+<a id="__codelineno-1-188" name="__codelineno-1-188" href="#__codelineno-1-188"></a>classLocation file: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+<a id="__codelineno-1-189" name="__codelineno-1-189" href="#__codelineno-1-189"></a>building sql manager
+<a id="__codelineno-1-190" name="__codelineno-1-190" href="#__codelineno-1-190"></a>Loading driver
+<a id="__codelineno-1-191" name="__codelineno-1-191" href="#__codelineno-1-191"></a>Done loading driver
+<a id="__codelineno-1-192" name="__codelineno-1-192" href="#__codelineno-1-192"></a>Getting connection with no login info
+<a id="__codelineno-1-193" name="__codelineno-1-193" href="#__codelineno-1-193"></a>JdbcOdbcDriver: in initialize
+<a id="__codelineno-1-194" name="__codelineno-1-194" href="#__codelineno-1-194"></a>OdbcApi == null
+<a id="__codelineno-1-195" name="__codelineno-1-195" href="#__codelineno-1-195"></a>Creating new OdbcApi, nativePrefix:
+<a id="__codelineno-1-196" name="__codelineno-1-196" href="#__codelineno-1-196"></a>JdbcOdbc constructor
+<a id="__codelineno-1-197" name="__codelineno-1-197" href="#__codelineno-1-197"></a>Attempting to load JdbcOdbc library
+<a id="__codelineno-1-198" name="__codelineno-1-198" href="#__codelineno-1-198"></a>Got OdbcApi: sun.jdbc.odbc.JdbcOdbc@2d127a61
+<a id="__codelineno-1-199" name="__codelineno-1-199" href="#__codelineno-1-199"></a>Getting charset
+<a id="__codelineno-1-200" name="__codelineno-1-200" href="#__codelineno-1-200"></a>JdbcOdbcDriver.OdbcApi.charSet: Cp1252
+<a id="__codelineno-1-201" name="__codelineno-1-201" href="#__codelineno-1-201"></a>Connection obtained
+<a id="__codelineno-1-202" name="__codelineno-1-202" href="#__codelineno-1-202"></a>obtained connection
+<a id="__codelineno-1-203" name="__codelineno-1-203" href="#__codelineno-1-203"></a>database major version = 2
+<a id="__codelineno-1-204" name="__codelineno-1-204" href="#__codelineno-1-204"></a>database product name: ACCESS
+<a id="__codelineno-1-205" name="__codelineno-1-205" href="#__codelineno-1-205"></a>multiValueInsert: false
+<a id="__codelineno-1-206" name="__codelineno-1-206" href="#__codelineno-1-206"></a>includeIdentifyColumns: false
+<a id="__codelineno-1-207" name="__codelineno-1-207" href="#__codelineno-1-207"></a>Calling backup . . .
+<a id="__codelineno-1-208" name="__codelineno-1-208" href="#__codelineno-1-208"></a>Retrieving Tables . . .
+<a id="__codelineno-1-209" name="__codelineno-1-209" href="#__codelineno-1-209"></a>Generating Table DDL . . .
+<a id="__codelineno-1-210" name="__codelineno-1-210" href="#__codelineno-1-210"></a>1 of 20
+<a id="__codelineno-1-211" name="__codelineno-1-211" href="#__codelineno-1-211"></a>number of columns 93
+<a id="__codelineno-1-212" name="__codelineno-1-212" href="#__codelineno-1-212"></a>column map size: 93
+<a id="__codelineno-1-213" name="__codelineno-1-213" href="#__codelineno-1-213"></a>foundNull: false
+<a id="__codelineno-1-214" name="__codelineno-1-214" href="#__codelineno-1-214"></a>2 of 20
+<a id="__codelineno-1-215" name="__codelineno-1-215" href="#__codelineno-1-215"></a>number of columns 2
+<a id="__codelineno-1-216" name="__codelineno-1-216" href="#__codelineno-1-216"></a>column map size: 2
+<a id="__codelineno-1-217" name="__codelineno-1-217" href="#__codelineno-1-217"></a>foundNull: false
+<a id="__codelineno-1-218" name="__codelineno-1-218" href="#__codelineno-1-218"></a>3 of 20
+<a id="__codelineno-1-219" name="__codelineno-1-219" href="#__codelineno-1-219"></a>number of columns 11
+<a id="__codelineno-1-220" name="__codelineno-1-220" href="#__codelineno-1-220"></a>column map size: 11
+<a id="__codelineno-1-221" name="__codelineno-1-221" href="#__codelineno-1-221"></a>foundNull: false
+<a id="__codelineno-1-222" name="__codelineno-1-222" href="#__codelineno-1-222"></a>4 of 20
+<a id="__codelineno-1-223" name="__codelineno-1-223" href="#__codelineno-1-223"></a>number of columns 2
+<a id="__codelineno-1-224" name="__codelineno-1-224" href="#__codelineno-1-224"></a>column map size: 2
+<a id="__codelineno-1-225" name="__codelineno-1-225" href="#__codelineno-1-225"></a>foundNull: false
+<a id="__codelineno-1-226" name="__codelineno-1-226" href="#__codelineno-1-226"></a>5 of 20
+<a id="__codelineno-1-227" name="__codelineno-1-227" href="#__codelineno-1-227"></a>number of columns 6
+<a id="__codelineno-1-228" name="__codelineno-1-228" href="#__codelineno-1-228"></a>column map size: 6
+<a id="__codelineno-1-229" name="__codelineno-1-229" href="#__codelineno-1-229"></a>foundNull: false
+<a id="__codelineno-1-230" name="__codelineno-1-230" href="#__codelineno-1-230"></a>6 of 20
+<a id="__codelineno-1-231" name="__codelineno-1-231" href="#__codelineno-1-231"></a>number of columns 5
+<a id="__codelineno-1-232" name="__codelineno-1-232" href="#__codelineno-1-232"></a>column map size: 5
+<a id="__codelineno-1-233" name="__codelineno-1-233" href="#__codelineno-1-233"></a>foundNull: false
+<a id="__codelineno-1-234" name="__codelineno-1-234" href="#__codelineno-1-234"></a>7 of 20
+<a id="__codelineno-1-235" name="__codelineno-1-235" href="#__codelineno-1-235"></a>number of columns 7
+<a id="__codelineno-1-236" name="__codelineno-1-236" href="#__codelineno-1-236"></a>column map size: 7
+<a id="__codelineno-1-237" name="__codelineno-1-237" href="#__codelineno-1-237"></a>foundNull: false
+<a id="__codelineno-1-238" name="__codelineno-1-238" href="#__codelineno-1-238"></a>8 of 20
+<a id="__codelineno-1-239" name="__codelineno-1-239" href="#__codelineno-1-239"></a>number of columns 13
+<a id="__codelineno-1-240" name="__codelineno-1-240" href="#__codelineno-1-240"></a>column map size: 13
+<a id="__codelineno-1-241" name="__codelineno-1-241" href="#__codelineno-1-241"></a>foundNull: false
+<a id="__codelineno-1-242" name="__codelineno-1-242" href="#__codelineno-1-242"></a>9 of 20
+<a id="__codelineno-1-243" name="__codelineno-1-243" href="#__codelineno-1-243"></a>number of columns 17
+<a id="__codelineno-1-244" name="__codelineno-1-244" href="#__codelineno-1-244"></a>column map size: 17
+<a id="__codelineno-1-245" name="__codelineno-1-245" href="#__codelineno-1-245"></a>foundNull: false
+<a id="__codelineno-1-246" name="__codelineno-1-246" href="#__codelineno-1-246"></a>10 of 20
+<a id="__codelineno-1-247" name="__codelineno-1-247" href="#__codelineno-1-247"></a>number of columns 73
+<a id="__codelineno-1-248" name="__codelineno-1-248" href="#__codelineno-1-248"></a>column map size: 73
+<a id="__codelineno-1-249" name="__codelineno-1-249" href="#__codelineno-1-249"></a>foundNull: false
+<a id="__codelineno-1-250" name="__codelineno-1-250" href="#__codelineno-1-250"></a>11 of 20
+<a id="__codelineno-1-251" name="__codelineno-1-251" href="#__codelineno-1-251"></a>number of columns 10
+<a id="__codelineno-1-252" name="__codelineno-1-252" href="#__codelineno-1-252"></a>column map size: 10
+<a id="__codelineno-1-253" name="__codelineno-1-253" href="#__codelineno-1-253"></a>foundNull: false
+<a id="__codelineno-1-254" name="__codelineno-1-254" href="#__codelineno-1-254"></a>12 of 20
+<a id="__codelineno-1-255" name="__codelineno-1-255" href="#__codelineno-1-255"></a>number of columns 13
+<a id="__codelineno-1-256" name="__codelineno-1-256" href="#__codelineno-1-256"></a>column map size: 13
+<a id="__codelineno-1-257" name="__codelineno-1-257" href="#__codelineno-1-257"></a>foundNull: false
+<a id="__codelineno-1-258" name="__codelineno-1-258" href="#__codelineno-1-258"></a>13 of 20
+<a id="__codelineno-1-259" name="__codelineno-1-259" href="#__codelineno-1-259"></a>number of columns 33
+<a id="__codelineno-1-260" name="__codelineno-1-260" href="#__codelineno-1-260"></a>column map size: 33
+<a id="__codelineno-1-261" name="__codelineno-1-261" href="#__codelineno-1-261"></a>foundNull: false
+<a id="__codelineno-1-262" name="__codelineno-1-262" href="#__codelineno-1-262"></a>14 of 20
+<a id="__codelineno-1-263" name="__codelineno-1-263" href="#__codelineno-1-263"></a>number of columns 8
+<a id="__codelineno-1-264" name="__codelineno-1-264" href="#__codelineno-1-264"></a>column map size: 8
+<a id="__codelineno-1-265" name="__codelineno-1-265" href="#__codelineno-1-265"></a>foundNull: false
+<a id="__codelineno-1-266" name="__codelineno-1-266" href="#__codelineno-1-266"></a>15 of 20
+<a id="__codelineno-1-267" name="__codelineno-1-267" href="#__codelineno-1-267"></a>number of columns 7
+<a id="__codelineno-1-268" name="__codelineno-1-268" href="#__codelineno-1-268"></a>column map size: 7
+<a id="__codelineno-1-269" name="__codelineno-1-269" href="#__codelineno-1-269"></a>foundNull: false
+<a id="__codelineno-1-270" name="__codelineno-1-270" href="#__codelineno-1-270"></a>16 of 20
+<a id="__codelineno-1-271" name="__codelineno-1-271" href="#__codelineno-1-271"></a>number of columns 8
+<a id="__codelineno-1-272" name="__codelineno-1-272" href="#__codelineno-1-272"></a>column map size: 8
+<a id="__codelineno-1-273" name="__codelineno-1-273" href="#__codelineno-1-273"></a>foundNull: false
+<a id="__codelineno-1-274" name="__codelineno-1-274" href="#__codelineno-1-274"></a>17 of 20
+<a id="__codelineno-1-275" name="__codelineno-1-275" href="#__codelineno-1-275"></a>number of columns 5
+<a id="__codelineno-1-276" name="__codelineno-1-276" href="#__codelineno-1-276"></a>column map size: 5
+<a id="__codelineno-1-277" name="__codelineno-1-277" href="#__codelineno-1-277"></a>foundNull: false
+<a id="__codelineno-1-278" name="__codelineno-1-278" href="#__codelineno-1-278"></a>18 of 20
+<a id="__codelineno-1-279" name="__codelineno-1-279" href="#__codelineno-1-279"></a>number of columns 8
+<a id="__codelineno-1-280" name="__codelineno-1-280" href="#__codelineno-1-280"></a>column map size: 8
+<a id="__codelineno-1-281" name="__codelineno-1-281" href="#__codelineno-1-281"></a>foundNull: false
+<a id="__codelineno-1-282" name="__codelineno-1-282" href="#__codelineno-1-282"></a>19 of 20
+<a id="__codelineno-1-283" name="__codelineno-1-283" href="#__codelineno-1-283"></a>number of columns 11
+<a id="__codelineno-1-284" name="__codelineno-1-284" href="#__codelineno-1-284"></a>column map size: 11
+<a id="__codelineno-1-285" name="__codelineno-1-285" href="#__codelineno-1-285"></a>foundNull: false
+<a id="__codelineno-1-286" name="__codelineno-1-286" href="#__codelineno-1-286"></a>20 of 20
+<a id="__codelineno-1-287" name="__codelineno-1-287" href="#__codelineno-1-287"></a>number of columns 3
+<a id="__codelineno-1-288" name="__codelineno-1-288" href="#__codelineno-1-288"></a>column map size: 3
+<a id="__codelineno-1-289" name="__codelineno-1-289" href="#__codelineno-1-289"></a>foundNull: false
+<a id="__codelineno-1-290" name="__codelineno-1-290" href="#__codelineno-1-290"></a>Generating Alter Table DDL . . .
+<a id="__codelineno-1-291" name="__codelineno-1-291" href="#__codelineno-1-291"></a>1 of 20
+<a id="__codelineno-1-292" name="__codelineno-1-292" href="#__codelineno-1-292"></a>2 of 20
+<a id="__codelineno-1-293" name="__codelineno-1-293" href="#__codelineno-1-293"></a>3 of 20
+<a id="__codelineno-1-294" name="__codelineno-1-294" href="#__codelineno-1-294"></a>4 of 20
+<a id="__codelineno-1-295" name="__codelineno-1-295" href="#__codelineno-1-295"></a>5 of 20
+<a id="__codelineno-1-296" name="__codelineno-1-296" href="#__codelineno-1-296"></a>6 of 20
+<a id="__codelineno-1-297" name="__codelineno-1-297" href="#__codelineno-1-297"></a>7 of 20
+<a id="__codelineno-1-298" name="__codelineno-1-298" href="#__codelineno-1-298"></a>8 of 20
+<a id="__codelineno-1-299" name="__codelineno-1-299" href="#__codelineno-1-299"></a>9 of 20
+<a id="__codelineno-1-300" name="__codelineno-1-300" href="#__codelineno-1-300"></a>10 of 20
+<a id="__codelineno-1-301" name="__codelineno-1-301" href="#__codelineno-1-301"></a>11 of 20
+<a id="__codelineno-1-302" name="__codelineno-1-302" href="#__codelineno-1-302"></a>12 of 20
+<a id="__codelineno-1-303" name="__codelineno-1-303" href="#__codelineno-1-303"></a>13 of 20
+<a id="__codelineno-1-304" name="__codelineno-1-304" href="#__codelineno-1-304"></a>14 of 20
+<a id="__codelineno-1-305" name="__codelineno-1-305" href="#__codelineno-1-305"></a>15 of 20
+<a id="__codelineno-1-306" name="__codelineno-1-306" href="#__codelineno-1-306"></a>16 of 20
+<a id="__codelineno-1-307" name="__codelineno-1-307" href="#__codelineno-1-307"></a>17 of 20
+<a id="__codelineno-1-308" name="__codelineno-1-308" href="#__codelineno-1-308"></a>18 of 20
+<a id="__codelineno-1-309" name="__codelineno-1-309" href="#__codelineno-1-309"></a>19 of 20
+<a id="__codelineno-1-310" name="__codelineno-1-310" href="#__codelineno-1-310"></a>20 of 20
+<a id="__codelineno-1-311" name="__codelineno-1-311" href="#__codelineno-1-311"></a>backup finished
+<a id="__codelineno-1-312" name="__codelineno-1-312" href="#__codelineno-1-312"></a>closing connection . . .
+<a id="__codelineno-1-313" name="__codelineno-1-313" href="#__codelineno-1-313"></a>connection closed.
+<a id="__codelineno-1-314" name="__codelineno-1-314" href="#__codelineno-1-314"></a>Shutting down logging streams
+<a id="__codelineno-1-315" name="__codelineno-1-315" href="#__codelineno-1-315"></a>Done shutting down logging streams
+<a id="__codelineno-1-316" name="__codelineno-1-316" href="#__codelineno-1-316"></a>Exiting . . .
+<a id="__codelineno-1-317" name="__codelineno-1-317" href="#__codelineno-1-317"></a>Progress update 2022-12-17 13:07:08.208772 : INFO.00.011 The DDL script for the MS Access database &#39;up15DEC.mdb&#39; was created successfully.
+<a id="__codelineno-1-318" name="__codelineno-1-318" href="#__codelineno-1-318"></a>Progress update 2022-12-17 13:07:08.216271 : INFO.00.012 The DDL script for the MS Access database &#39;up15DEC.mdb&#39; is identical to the reference script.
+<a id="__codelineno-1-319" name="__codelineno-1-319" href="#__codelineno-1-319"></a>Progress update 2022-12-17 13:07:08.216271 : -------------------------------------------------------------------------------.
+<a id="__codelineno-1-320" name="__codelineno-1-320" href="#__codelineno-1-320"></a>Progress update 2022-12-17 13:07:08.216271 :        4,294,822,800 ns - Total time launcher.
+<a id="__codelineno-1-321" name="__codelineno-1-321" href="#__codelineno-1-321"></a>Progress update 2022-12-17 13:07:08.216271 : INFO.00.006 End   Launcher.
+<a id="__codelineno-1-322" name="__codelineno-1-322" href="#__codelineno-1-322"></a>Progress update 2022-12-17 13:07:08.216772 : ===============================================================================.
+<a id="__codelineno-1-323" name="__codelineno-1-323" href="#__codelineno-1-323"></a>
+<a id="__codelineno-1-324" name="__codelineno-1-324" href="#__codelineno-1-324"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-325" name="__codelineno-1-325" href="#__codelineno-1-325"></a>The current time is: 13:07:08.37
+<a id="__codelineno-1-326" name="__codelineno-1-326" href="#__codelineno-1-326"></a>Enter the new time:
+<a id="__codelineno-1-327" name="__codelineno-1-327" href="#__codelineno-1-327"></a>-----------------------------------------------------------------------
+<a id="__codelineno-1-328" name="__codelineno-1-328" href="#__codelineno-1-328"></a>End   run_io_avstats
+<a id="__codelineno-1-329" name="__codelineno-1-329" href="#__codelineno-1-329"></a>=======================================================================
+</code></pre></div>
+<h3 id="22-l_n_a-load-ntsb-ms-access-database-data-into-postgresql">2.2 <strong><code>l_n_a</code></strong> - Load NTSB MS Access database data into PostgreSQL</h3>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>=========================================================
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>---------------------------------------------------------
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>---------------------------------------------------------
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>---------------------------------------------------------
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>---------------------------------------------------------
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>---------------------------------------------------------
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>Enter the desired task [default: r_s_a] l_n_a
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>=========================================================
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>IO-AVSTATS.mdb
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>up01DEC.mdb
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>up08DEC.mdb
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>up15DEC.mdb
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>up22OCT.mdb
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>---------------------------------------------------------
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>Enter the stem name of the desired MS Access database file up15DEC
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>Script run_io_avstats is now running
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>=======================================================================
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>Start run_io_avstats
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>PYTHONPATH :
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>TASK       : l_n_a
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>CORRECTION :
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>MSACCESS   : up15DEC
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>The current time is:  3:01:56.55
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>Enter the new time:
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>=======================================================================
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>Progress update 2022-12-18 03:01:59.422228 : ===============================================================================.
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>Progress update 2022-12-18 03:01:59.422228 : INFO.00.004 Start Launcher.
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>Progress update 2022-12-18 03:01:59.424228 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>Progress update 2022-12-18 03:01:59.432728 : INFO.00.008 Arguments task=&#39;l_n_a&#39; msaccess=&#39;up15DEC&#39;.
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>Progress update 2022-12-18 03:01:59.433228 : -------------------------------------------------------------------------------.
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>Progress update 2022-12-18 03:01:59.433228 : INFO.00.049 Loading NTSB MS Access database data from  file &#39;up15DEC&#39;.
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>Progress update 2022-12-18 03:01:59.433228 : --------------------------------------------------------------------------------
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>Progress update 2022-12-18 03:01:59.433228 : INFO.00.054 ODBC driver=&#39;DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up15DEC.mdb;&#39;.
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>Progress update 2022-12-18 03:02:00.468009 : INFO.00.021 The following database table is not processed: &#39;MSysAccessObjects&#39;.
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>Progress update 2022-12-18 03:02:00.468009 : INFO.00.021 The following database table is not processed: &#39;MSysACEs&#39;.
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>Progress update 2022-12-18 03:02:00.468009 : INFO.00.021 The following database table is not processed: &#39;MSysIMEXColumns&#39;.
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysIMEXSpecs&#39;.
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysModules2&#39;.
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysNavPaneGroupCategories&#39;.
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysNavPaneGroups&#39;.
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysNavPaneGroupToObjects&#39;.
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysNavPaneObjectIDs&#39;.
+<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysObjects&#39;.
+<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysQueries&#39;.
+<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;MSysRelationships&#39;.
+<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a>Progress update 2022-12-18 03:02:00.468510 : INFO.00.021 The following database table is not processed: &#39;Country&#39;.
+<a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a>Progress update 2022-12-18 03:02:00.469012 : INFO.00.021 The following database table is not processed: &#39;ct_iaids&#39;.
+<a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a>Progress update 2022-12-18 03:02:00.469012 : INFO.00.021 The following database table is not processed: &#39;ct_seqevt&#39;.
+<a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a>Progress update 2022-12-18 03:02:00.469012 : INFO.00.021 The following database table is not processed: &#39;eADMSPUB_DataDictionary&#39;.
+<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a>Progress update 2022-12-18 03:02:00.469012 : INFO.00.021 The following database table is not processed: &#39;states&#39;.
+<a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a>Progress update 2022-12-18 03:02:00.469012 :
+<a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a>Progress update 2022-12-18 03:02:00.469012 : Database table       : events              &lt;-----------------------------------.
+<a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>Progress update 2022-12-18 03:02:02.829483 : Number rows selected :     77.
+<a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a>Progress update 2022-12-18 03:02:02.829483 : Number rows inserted :     15.
+<a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a>Progress update 2022-12-18 03:02:02.829997 : Number rows updated  :     62.
+<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a>Progress update 2022-12-18 03:02:02.829997 :
+<a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a>Progress update 2022-12-18 03:02:02.829997 : Database table       : aircraft            &lt;-----------------------------------.
+<a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a>Progress update 2022-12-18 03:02:07.828401 : Number rows selected :     77.
+<a id="__codelineno-3-84" name="__codelineno-3-84" href="#__codelineno-3-84"></a>Progress update 2022-12-18 03:02:07.828401 : Number rows inserted :     15.
+<a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a>Progress update 2022-12-18 03:02:07.828903 : Number rows updated  :     62.
+<a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a>Progress update 2022-12-18 03:02:07.828903 :
+<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a>Progress update 2022-12-18 03:02:07.828903 : Database table       : dt_events           &lt;-----------------------------------.
+<a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a>Progress update 2022-12-18 03:02:18.425030 : Number rows selected :    385.
+<a id="__codelineno-3-89" name="__codelineno-3-89" href="#__codelineno-3-89"></a>Progress update 2022-12-18 03:02:18.425030 : Number rows inserted :    159.
+<a id="__codelineno-3-90" name="__codelineno-3-90" href="#__codelineno-3-90"></a>Progress update 2022-12-18 03:02:18.425523 : Number rows updated  :    226.
+<a id="__codelineno-3-91" name="__codelineno-3-91" href="#__codelineno-3-91"></a>Progress update 2022-12-18 03:02:18.425523 :
+<a id="__codelineno-3-92" name="__codelineno-3-92" href="#__codelineno-3-92"></a>Progress update 2022-12-18 03:02:18.425523 : Database table       : ntsb_admin          &lt;-----------------------------------.
+<a id="__codelineno-3-93" name="__codelineno-3-93" href="#__codelineno-3-93"></a>Progress update 2022-12-18 03:02:20.508241 : Number rows selected :     77.
+<a id="__codelineno-3-94" name="__codelineno-3-94" href="#__codelineno-3-94"></a>Progress update 2022-12-18 03:02:20.508241 : Number rows inserted :     15.
+<a id="__codelineno-3-95" name="__codelineno-3-95" href="#__codelineno-3-95"></a>Progress update 2022-12-18 03:02:20.508241 : Number rows updated  :     62.
+<a id="__codelineno-3-96" name="__codelineno-3-96" href="#__codelineno-3-96"></a>Progress update 2022-12-18 03:02:20.508241 :
+<a id="__codelineno-3-97" name="__codelineno-3-97" href="#__codelineno-3-97"></a>Progress update 2022-12-18 03:02:20.508241 : Database table       : dt_aircraft         &lt;-----------------------------------.
+<a id="__codelineno-3-98" name="__codelineno-3-98" href="#__codelineno-3-98"></a>Progress update 2022-12-18 03:02:37.020238 : Number rows selected :    683.
+<a id="__codelineno-3-99" name="__codelineno-3-99" href="#__codelineno-3-99"></a>Progress update 2022-12-18 03:02:37.020238 : Number rows inserted :    385.
+<a id="__codelineno-3-100" name="__codelineno-3-100" href="#__codelineno-3-100"></a>Progress update 2022-12-18 03:02:37.020738 : Number rows updated  :    298.
+<a id="__codelineno-3-101" name="__codelineno-3-101" href="#__codelineno-3-101"></a>Progress update 2022-12-18 03:02:37.020738 :
+<a id="__codelineno-3-102" name="__codelineno-3-102" href="#__codelineno-3-102"></a>Progress update 2022-12-18 03:02:37.020738 : Database table       : engines             &lt;-----------------------------------.
+<a id="__codelineno-3-103" name="__codelineno-3-103" href="#__codelineno-3-103"></a>Progress update 2022-12-18 03:02:38.360943 : Number rows selected :     47.
+<a id="__codelineno-3-104" name="__codelineno-3-104" href="#__codelineno-3-104"></a>Progress update 2022-12-18 03:02:38.361447 : Number rows inserted :     36.
+<a id="__codelineno-3-105" name="__codelineno-3-105" href="#__codelineno-3-105"></a>Progress update 2022-12-18 03:02:38.361447 : Number rows updated  :     11.
+<a id="__codelineno-3-106" name="__codelineno-3-106" href="#__codelineno-3-106"></a>Progress update 2022-12-18 03:02:38.361447 :
+<a id="__codelineno-3-107" name="__codelineno-3-107" href="#__codelineno-3-107"></a>Progress update 2022-12-18 03:02:38.361447 : Database table       : events_sequence     &lt;-----------------------------------.
+<a id="__codelineno-3-108" name="__codelineno-3-108" href="#__codelineno-3-108"></a>Progress update 2022-12-18 03:02:41.193854 : Number rows selected :    108.
+<a id="__codelineno-3-109" name="__codelineno-3-109" href="#__codelineno-3-109"></a>Progress update 2022-12-18 03:02:41.194353 : Number rows inserted :     62.
+<a id="__codelineno-3-110" name="__codelineno-3-110" href="#__codelineno-3-110"></a>Progress update 2022-12-18 03:02:41.194353 : Number rows updated  :     46.
+<a id="__codelineno-3-111" name="__codelineno-3-111" href="#__codelineno-3-111"></a>Progress update 2022-12-18 03:02:41.194353 :
+<a id="__codelineno-3-112" name="__codelineno-3-112" href="#__codelineno-3-112"></a>Progress update 2022-12-18 03:02:41.194353 : Database table       : findings            &lt;-----------------------------------.
+<a id="__codelineno-3-113" name="__codelineno-3-113" href="#__codelineno-3-113"></a>Progress update 2022-12-18 03:02:43.593633 : Number rows selected :     94.
+<a id="__codelineno-3-114" name="__codelineno-3-114" href="#__codelineno-3-114"></a>Progress update 2022-12-18 03:02:43.593633 : Number rows inserted :     94.
+<a id="__codelineno-3-115" name="__codelineno-3-115" href="#__codelineno-3-115"></a>Progress update 2022-12-18 03:02:43.593633 :
+<a id="__codelineno-3-116" name="__codelineno-3-116" href="#__codelineno-3-116"></a>Progress update 2022-12-18 03:02:43.594133 : Database table       : flight_crew         &lt;-----------------------------------.
+<a id="__codelineno-3-117" name="__codelineno-3-117" href="#__codelineno-3-117"></a>Progress update 2022-12-18 03:02:45.726279 : Number rows selected :     74.
+<a id="__codelineno-3-118" name="__codelineno-3-118" href="#__codelineno-3-118"></a>Progress update 2022-12-18 03:02:45.726279 : Number rows inserted :     57.
+<a id="__codelineno-3-119" name="__codelineno-3-119" href="#__codelineno-3-119"></a>Progress update 2022-12-18 03:02:45.726279 : Number rows updated  :     17.
+<a id="__codelineno-3-120" name="__codelineno-3-120" href="#__codelineno-3-120"></a>Progress update 2022-12-18 03:02:45.726279 :
+<a id="__codelineno-3-121" name="__codelineno-3-121" href="#__codelineno-3-121"></a>Progress update 2022-12-18 03:02:45.726781 : Database table       : injury              &lt;-----------------------------------.
+<a id="__codelineno-3-122" name="__codelineno-3-122" href="#__codelineno-3-122"></a>Progress update 2022-12-18 03:02:53.998519 : Number rows selected :    305.
+<a id="__codelineno-3-123" name="__codelineno-3-123" href="#__codelineno-3-123"></a>Progress update 2022-12-18 03:02:53.998519 : Number rows inserted :     97.
+<a id="__codelineno-3-124" name="__codelineno-3-124" href="#__codelineno-3-124"></a>Progress update 2022-12-18 03:02:53.998519 : Number rows updated  :    208.
+<a id="__codelineno-3-125" name="__codelineno-3-125" href="#__codelineno-3-125"></a>Progress update 2022-12-18 03:02:53.999019 :
+<a id="__codelineno-3-126" name="__codelineno-3-126" href="#__codelineno-3-126"></a>Progress update 2022-12-18 03:02:53.999019 : Database table       : narratives          &lt;-----------------------------------.
+<a id="__codelineno-3-127" name="__codelineno-3-127" href="#__codelineno-3-127"></a>Progress update 2022-12-18 03:02:55.873454 : Number rows selected :     60.
+<a id="__codelineno-3-128" name="__codelineno-3-128" href="#__codelineno-3-128"></a>Progress update 2022-12-18 03:02:55.873454 : Number rows inserted :     39.
+<a id="__codelineno-3-129" name="__codelineno-3-129" href="#__codelineno-3-129"></a>Progress update 2022-12-18 03:02:55.873454 : Number rows updated  :     21.
+<a id="__codelineno-3-130" name="__codelineno-3-130" href="#__codelineno-3-130"></a>Progress update 2022-12-18 03:02:55.873454 :
+<a id="__codelineno-3-131" name="__codelineno-3-131" href="#__codelineno-3-131"></a>Progress update 2022-12-18 03:02:55.873454 : Database table       : occurrences         &lt;-----------------------------------.
+<a id="__codelineno-3-132" name="__codelineno-3-132" href="#__codelineno-3-132"></a>Progress update 2022-12-18 03:02:55.885477 : Number rows selected :      0.
+<a id="__codelineno-3-133" name="__codelineno-3-133" href="#__codelineno-3-133"></a>Progress update 2022-12-18 03:02:55.885477 :
+<a id="__codelineno-3-134" name="__codelineno-3-134" href="#__codelineno-3-134"></a>Progress update 2022-12-18 03:02:55.885477 : Database table       : dt_flight_crew      &lt;-----------------------------------.
+<a id="__codelineno-3-135" name="__codelineno-3-135" href="#__codelineno-3-135"></a>Progress update 2022-12-18 03:03:04.629342 : Number rows selected :    338.
+<a id="__codelineno-3-136" name="__codelineno-3-136" href="#__codelineno-3-136"></a>Progress update 2022-12-18 03:03:04.629342 : Number rows inserted :    280.
+<a id="__codelineno-3-137" name="__codelineno-3-137" href="#__codelineno-3-137"></a>Progress update 2022-12-18 03:03:04.629844 : Number rows updated  :     58.
+<a id="__codelineno-3-138" name="__codelineno-3-138" href="#__codelineno-3-138"></a>Progress update 2022-12-18 03:03:04.629844 :
+<a id="__codelineno-3-139" name="__codelineno-3-139" href="#__codelineno-3-139"></a>Progress update 2022-12-18 03:03:04.629844 : Database table       : flight_time         &lt;-----------------------------------.
+<a id="__codelineno-3-140" name="__codelineno-3-140" href="#__codelineno-3-140"></a>Progress update 2022-12-18 03:03:24.973637 : Number rows selected :    774.
+<a id="__codelineno-3-141" name="__codelineno-3-141" href="#__codelineno-3-141"></a>Progress update 2022-12-18 03:03:24.973637 : Number rows inserted :    676.
+<a id="__codelineno-3-142" name="__codelineno-3-142" href="#__codelineno-3-142"></a>Progress update 2022-12-18 03:03:24.973637 : Number rows updated  :     98.
+<a id="__codelineno-3-143" name="__codelineno-3-143" href="#__codelineno-3-143"></a>Progress update 2022-12-18 03:03:24.973637 :
+<a id="__codelineno-3-144" name="__codelineno-3-144" href="#__codelineno-3-144"></a>Progress update 2022-12-18 03:03:24.974133 : Database table       : seq_of_events       &lt;-----------------------------------.
+<a id="__codelineno-3-145" name="__codelineno-3-145" href="#__codelineno-3-145"></a>Progress update 2022-12-18 03:03:24.994181 : Number rows selected :      0.
+<a id="__codelineno-3-146" name="__codelineno-3-146" href="#__codelineno-3-146"></a>Progress update 2022-12-18 03:03:25.075929 : INFO.00.065 Cleansing PostgreSQL data.
+<a id="__codelineno-3-147" name="__codelineno-3-147" href="#__codelineno-3-147"></a>Progress update 2022-12-18 03:03:25.075929 : --------------------------------------------------------------------------------
+<a id="__codelineno-3-148" name="__codelineno-3-148" href="#__codelineno-3-148"></a>Progress update 2022-12-18 03:03:25.142428 : INFO.00.066 Cleansing table &#39;events&#39; column &#39;ev_city&#39;.
+<a id="__codelineno-3-149" name="__codelineno-3-149" href="#__codelineno-3-149"></a>Progress update 2022-12-18 03:03:28.571816 : --------------------------------------------------------------------------------
+<a id="__codelineno-3-150" name="__codelineno-3-150" href="#__codelineno-3-150"></a>Progress update 2022-12-18 03:03:28.572316 : INFO.00.066 Cleansing table &#39;events&#39; column &#39;ev_site_zipcode&#39;.
+<a id="__codelineno-3-151" name="__codelineno-3-151" href="#__codelineno-3-151"></a>Progress update 2022-12-18 03:03:31.104986 : --------------------------------------------------------------------------------
+<a id="__codelineno-3-152" name="__codelineno-3-152" href="#__codelineno-3-152"></a>Progress update 2022-12-18 03:03:31.104986 : INFO.00.066 Cleansing table &#39;events&#39; column &#39;latitude&#39;.
+<a id="__codelineno-3-153" name="__codelineno-3-153" href="#__codelineno-3-153"></a>Progress update 2022-12-18 03:03:33.629172 : --------------------------------------------------------------------------------
+<a id="__codelineno-3-154" name="__codelineno-3-154" href="#__codelineno-3-154"></a>Progress update 2022-12-18 03:03:33.629172 : INFO.00.066 Cleansing table &#39;events&#39; column &#39;longitude&#39;.
+<a id="__codelineno-3-155" name="__codelineno-3-155" href="#__codelineno-3-155"></a>Progress update 2022-12-18 03:03:36.180510 : -------------------------------------------------------------------------------.
+<a id="__codelineno-3-156" name="__codelineno-3-156" href="#__codelineno-3-156"></a>Progress update 2022-12-18 03:03:36.180510 :       96,908,281,000 ns - Total time launcher.
+<a id="__codelineno-3-157" name="__codelineno-3-157" href="#__codelineno-3-157"></a>Progress update 2022-12-18 03:03:36.180510 : INFO.00.006 End   Launcher.
+<a id="__codelineno-3-158" name="__codelineno-3-158" href="#__codelineno-3-158"></a>Progress update 2022-12-18 03:03:36.180510 : ===============================================================================.
+<a id="__codelineno-3-159" name="__codelineno-3-159" href="#__codelineno-3-159"></a>
+<a id="__codelineno-3-160" name="__codelineno-3-160" href="#__codelineno-3-160"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-161" name="__codelineno-3-161" href="#__codelineno-3-161"></a>The current time is:  3:03:36.36
+<a id="__codelineno-3-162" name="__codelineno-3-162" href="#__codelineno-3-162"></a>Enter the new time:
+<a id="__codelineno-3-163" name="__codelineno-3-163" href="#__codelineno-3-163"></a>-----------------------------------------------------------------------
+<a id="__codelineno-3-164" name="__codelineno-3-164" href="#__codelineno-3-164"></a>End   run_io_avstats
+<a id="__codelineno-3-165" name="__codelineno-3-165" href="#__codelineno-3-165"></a>=======================================================================
+</code></pre></div>
+<h3 id="23-d_s_f-download-basic-simplemaps-files">2.3 <strong><code>d_s_f</code></strong> - Download basic simplemaps files</h3>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>download_chunk_size = 524288
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>download_timeout = 10
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>download_file_simplemaps_us_cities_xlsx = &quot;uscities.xlsx&quot;
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>download_file_simplemaps_us_cities_zip = &quot;simplemaps_uscities_basicv1.75.zip&quot;
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>download_file_simplemaps_us_zips_xlsx = &quot;uszips.xlsx&quot;
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>download_file_simplemaps_us_zips_zip = &quot;simplemaps_uszips_basicv1.81.zip&quot;
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>=========================================================
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>---------------------------------------------------------
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>---------------------------------------------------------
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>---------------------------------------------------------
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>---------------------------------------------------------
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>---------------------------------------------------------
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>Enter the desired task [default: r_s_a] d_s_f
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>=======================================================================
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>Start run_io_avstats
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>PYTHONPATH :
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>TASK       : d_s_f
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>CORRECTION :
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>MSACCESS   :
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>The current time is:  3:10:34.78
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>Enter the new time:
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>=======================================================================
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>Progress update 2022-12-18 03:10:36.547946 : ===============================================================================.
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>Progress update 2022-12-18 03:10:36.547946 : INFO.00.004 Start Launcher.
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>Progress update 2022-12-18 03:10:36.549946 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>Progress update 2022-12-18 03:10:36.558445 : INFO.00.005 Argument task=&#39;d_s_f&#39;.
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>Progress update 2022-12-18 03:10:36.558945 : -------------------------------------------------------------------------------.
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>Progress update 2022-12-18 03:10:36.558945 : INFO.00.048 Downloading basic simplemaps files.
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a>Progress update 2022-12-18 03:10:36.558945 : --------------------------------------------------------------------------------
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>Progress update 2022-12-18 03:10:36.743463 : INFO.00.030 The connection to the US city file &#39;simplemaps_uscities_basicv1.75.zip&#39; on the simplemaps download page was successfully established.
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>Progress update 2022-12-18 03:10:36.919741 : INFO.00.023 From the file &#39;simplemaps_uscities_basicv1.75.zip&#39; 8 chunks were downloaded.
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>Progress update 2022-12-18 03:10:36.951741 : INFO.00.024 The file &#39;simplemaps_uscities_basicv1.75.zip&#39; was successfully unpacked.
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>Progress update 2022-12-18 03:10:37.131672 : INFO.00.022 The connection to the US zip code file &#39;simplemaps_uszips_basicv1.81.zip&#39; on the simplemaps download page was successfully established.
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>Progress update 2022-12-18 03:10:37.226532 : INFO.00.023 From the file &#39;simplemaps_uszips_basicv1.81.zip&#39; 8 chunks were downloaded.
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>Progress update 2022-12-18 03:10:37.262050 : INFO.00.024 The file &#39;simplemaps_uszips_basicv1.81.zip&#39; was successfully unpacked.
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a>Progress update 2022-12-18 03:10:37.262549 : -------------------------------------------------------------------------------.
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a>Progress update 2022-12-18 03:10:37.262549 :          870,102,500 ns - Total time launcher.
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a>Progress update 2022-12-18 03:10:37.262549 : INFO.00.006 End   Launcher.
+<a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a>Progress update 2022-12-18 03:10:37.262549 : ===============================================================================.
+<a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a>
+<a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-62" name="__codelineno-5-62" href="#__codelineno-5-62"></a>The current time is:  3:10:37.41
+<a id="__codelineno-5-63" name="__codelineno-5-63" href="#__codelineno-5-63"></a>Enter the new time:
+<a id="__codelineno-5-64" name="__codelineno-5-64" href="#__codelineno-5-64"></a>-----------------------------------------------------------------------
+<a id="__codelineno-5-65" name="__codelineno-5-65" href="#__codelineno-5-65"></a>End   run_io_avstats
+<a id="__codelineno-5-66" name="__codelineno-5-66" href="#__codelineno-5-66"></a>=======================================================================
+</code></pre></div>
+<p>The downloaded files <strong><code>uscities.csv</code></strong> and <strong><code>uszips.xlsx</code></strong> must be checked with the reference files in the file directory <strong><code>data/reference</code></strong> for a match.
+If there is no mismatch, then the next step can be skipped.</p>
+<h3 id="24-l_s_d-load-simplemaps-data-into-postgresql">2.4 <strong><code>l_s_d</code></strong> - Load simplemaps data into PostgreSQL</h3>
+<p>Only necessary if the file downloaded in the previous step contains changes.</p>
+<p>TODO</p>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>TODO
+</code></pre></div>
+<h3 id="25-download-the-zip-code-database-file">2.5 Download the ZIP Code Database file</h3>
+<p>The <strong><code>Personal Free</code></strong> version of the ZIP Code Database file must be downloaded manually from the <strong><code>https://www.unitedstateszipcodes.org/zip-code-database/</code></strong> website to the file directory according to the <strong><code>download_work_dir</code></strong> configuration parameter.</p>
+<hr />
+<p><img alt="" src="img/Zip%20Codes.org%20Verify%20License%20Terms.png" /></p>
+<p>The two formats <strong><code>Excel Format (data only)</code></strong> and <strong><code>CSV Format</code></strong> must be downloaded one after the other.
+The downloaded file <strong><code>zip_code_database.csv</code></strong> must be checked with the reference files in the file directory <strong><code>data/reference</code></strong> for a match.
+If there is no mismatch, then the next step can be skipped.</p>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<h3 id="26-l_z_d-load-zip-code-database-data-into-postgresql">2.6 <strong><code>l_z_d</code></strong> - Load ZIP Code Database data into PostgreSQL</h3>
+<p>Only necessary if the file downloaded in the previous step contains changes.</p>
+<p>TODO</p>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>TODO
+</code></pre></div>
+<h3 id="27-l_c_d-load-data-from-a-correction-file-into-postgresql">2.7 <strong><code>l_c_d</code></strong> - Load data from a correction file into PostgreSQL</h3>
+<p>This step only needs to be performed if modified or new correction files are available.</p>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>correction_work_dir = &quot;data/correction&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>TODO
+</code></pre></div>
+<h3 id="28-c_l_l-correct-decimal-us-latitudes-and-longitudes">2.8 <strong><code>c_l_l</code></strong> - Correct decimal US latitudes and longitudes</h3>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>=========================================================
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>---------------------------------------------------------
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>---------------------------------------------------------
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>---------------------------------------------------------
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>---------------------------------------------------------
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>---------------------------------------------------------
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>Enter the desired task [default: r_s_a] c_l_l
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>=======================================================================
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>Start run_io_avstats
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>PYTHONPATH :
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>TASK       : c_l_l
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>CORRECTION :
+<a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>MSACCESS   :
+<a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>The current time is:  3:48:26.10
+<a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a>Enter the new time:
+<a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>=======================================================================
+<a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a>Progress update 2022-12-18 03:48:27.970732 : ===============================================================================.
+<a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a>Progress update 2022-12-18 03:48:27.970732 : INFO.00.004 Start Launcher.
+<a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a>Progress update 2022-12-18 03:48:27.972731 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a>Progress update 2022-12-18 03:48:27.981231 : INFO.00.005 Argument task=&#39;c_l_l&#39;.
+<a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a>Progress update 2022-12-18 03:48:27.981231 : -------------------------------------------------------------------------------.
+<a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a>Progress update 2022-12-18 03:48:27.981231 : INFO.00.040 Correct decimal US latitudes and longitudes.
+<a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a>Progress update 2022-12-18 03:48:27.981231 : --------------------------------------------------------------------------------
+<a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a>Progress update 2022-12-18 03:48:31.040942 : INFO.00.063 Processed data source &#39;events&#39;.
+<a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a>Progress update 2022-12-18 03:48:31.040942 : Number cols deleted  :  60561.
+<a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a>Progress update 2022-12-18 03:48:31.040942 : --------------------------------------------------------------------------------
+<a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a>Progress update 2022-12-18 03:50:40.621017 : Number of rows so far read :   5000.
+<a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a>Progress update 2022-12-18 03:52:41.946249 : Number of rows so far read :  10000.
+<a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a>Progress update 2022-12-18 03:54:48.519956 : Number of rows so far read :  15000.
+<a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a>Progress update 2022-12-18 03:56:53.584921 : Number of rows so far read :  20000.
+<a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a>Progress update 2022-12-18 03:59:01.258705 : Number of rows so far read :  25000.
+<a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>Progress update 2022-12-18 04:01:09.806450 : Number of rows so far read :  30000.
+<a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a>Progress update 2022-12-18 04:03:12.247750 : Number of rows so far read :  35000.
+<a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a>Progress update 2022-12-18 04:05:16.963868 : Number of rows so far read :  40000.
+<a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a>Progress update 2022-12-18 04:07:21.854231 : Number of rows so far read :  45000.
+<a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a>Progress update 2022-12-18 04:09:33.068583 : Number of rows so far read :  50000.
+<a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a>Progress update 2022-12-18 04:11:47.889551 : Number of rows so far read :  55000.
+<a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a>Progress update 2022-12-18 04:14:07.417816 : Number of rows so far read :  60000.
+<a id="__codelineno-13-65" name="__codelineno-13-65" href="#__codelineno-13-65"></a>Progress update 2022-12-18 04:16:14.266251 : Number of rows so far read :  65000.
+<a id="__codelineno-13-66" name="__codelineno-13-66" href="#__codelineno-13-66"></a>Progress update 2022-12-18 04:18:20.373523 : Number of rows so far read :  70000.
+<a id="__codelineno-13-67" name="__codelineno-13-67" href="#__codelineno-13-67"></a>Progress update 2022-12-18 04:20:29.429655 : Number of rows so far read :  75000.
+<a id="__codelineno-13-68" name="__codelineno-13-68" href="#__codelineno-13-68"></a>Progress update 2022-12-18 04:22:47.616519 : Number of rows so far read :  80000.
+<a id="__codelineno-13-69" name="__codelineno-13-69" href="#__codelineno-13-69"></a>Progress update 2022-12-18 04:24:49.899572 : Number of rows so far read :  85000.
+<a id="__codelineno-13-70" name="__codelineno-13-70" href="#__codelineno-13-70"></a>Progress update 2022-12-18 04:26:53.415653 : Number of rows so far read :  90000.
+<a id="__codelineno-13-71" name="__codelineno-13-71" href="#__codelineno-13-71"></a>Progress update 2022-12-18 04:29:00.088868 : Number of rows so far read :  95000.
+<a id="__codelineno-13-72" name="__codelineno-13-72" href="#__codelineno-13-72"></a>Progress update 2022-12-18 04:31:06.729171 : Number of rows so far read : 100000.
+<a id="__codelineno-13-73" name="__codelineno-13-73" href="#__codelineno-13-73"></a>Progress update 2022-12-18 04:33:26.507860 : Number of rows so far read : 105000.
+<a id="__codelineno-13-74" name="__codelineno-13-74" href="#__codelineno-13-74"></a>Progress update 2022-12-18 04:35:45.652623 : Number of rows so far read : 110000.
+<a id="__codelineno-13-75" name="__codelineno-13-75" href="#__codelineno-13-75"></a>Progress update 2022-12-18 04:37:52.009456 : Number of rows so far read : 115000.
+<a id="__codelineno-13-76" name="__codelineno-13-76" href="#__codelineno-13-76"></a>Progress update 2022-12-18 04:39:51.601865 : Number of rows so far read : 120000.
+<a id="__codelineno-13-77" name="__codelineno-13-77" href="#__codelineno-13-77"></a>Progress update 2022-12-18 04:42:02.349044 : Number of rows so far read : 125000.
+<a id="__codelineno-13-78" name="__codelineno-13-78" href="#__codelineno-13-78"></a>Progress update 2022-12-18 04:44:07.523367 : Number of rows so far read : 130000.
+<a id="__codelineno-13-79" name="__codelineno-13-79" href="#__codelineno-13-79"></a>Progress update 2022-12-18 04:46:14.330089 : Number of rows so far read : 135000.
+<a id="__codelineno-13-80" name="__codelineno-13-80" href="#__codelineno-13-80"></a>Progress update 2022-12-18 04:46:16.882015 : Number rows selected : 135089.
+<a id="__codelineno-13-81" name="__codelineno-13-81" href="#__codelineno-13-81"></a>Progress update 2022-12-18 04:46:16.882015 : Number rows updated  : 135089.
+<a id="__codelineno-13-82" name="__codelineno-13-82" href="#__codelineno-13-82"></a>Progress update 2022-12-18 04:46:16.882015 : -------------------------------------------------------------------------------.
+<a id="__codelineno-13-83" name="__codelineno-13-83" href="#__codelineno-13-83"></a>Progress update 2022-12-18 04:46:16.882015 :    3,469,058,783,600 ns - Total time launcher.
+<a id="__codelineno-13-84" name="__codelineno-13-84" href="#__codelineno-13-84"></a>Progress update 2022-12-18 04:46:16.882516 : INFO.00.006 End   Launcher.
+<a id="__codelineno-13-85" name="__codelineno-13-85" href="#__codelineno-13-85"></a>Progress update 2022-12-18 04:46:16.882516 : ===============================================================================.
+<a id="__codelineno-13-86" name="__codelineno-13-86" href="#__codelineno-13-86"></a>
+<a id="__codelineno-13-87" name="__codelineno-13-87" href="#__codelineno-13-87"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-88" name="__codelineno-13-88" href="#__codelineno-13-88"></a>The current time is:  4:46:17.03
+<a id="__codelineno-13-89" name="__codelineno-13-89" href="#__codelineno-13-89"></a>Enter the new time:
+<a id="__codelineno-13-90" name="__codelineno-13-90" href="#__codelineno-13-90"></a>-----------------------------------------------------------------------
+<a id="__codelineno-13-91" name="__codelineno-13-91" href="#__codelineno-13-91"></a>End   run_io_avstats
+<a id="__codelineno-13-92" name="__codelineno-13-92" href="#__codelineno-13-92"></a>=======================================================================
+</code></pre></div>
+<h3 id="29-v_n_d-verify-selected-ntsb-data">2.9 <strong><code>v_n_d</code></strong> - Verify selected NTSB data</h3>
+<p><strong>Relevant cofiguration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>max_deviation_latitude = 0.01
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>max_deviation_longitude = 0.01
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>=========================================================
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>---------------------------------------------------------
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>---------------------------------------------------------
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>---------------------------------------------------------
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>---------------------------------------------------------
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>---------------------------------------------------------
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>Enter the desired task [default: r_s_a] v_n_d
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>=======================================================================
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>Start run_io_avstats
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>PYTHONPATH :
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a>TASK       : v_n_d
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>CORRECTION :
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>MSACCESS   :
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>The current time is:  7:01:26.47
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>Enter the new time:
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>=======================================================================
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>Progress update 2022-12-18 07:01:28.302801 : ===============================================================================.
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>Progress update 2022-12-18 07:01:28.303299 : INFO.00.004 Start Launcher.
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>Progress update 2022-12-18 07:01:28.305302 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.005 Argument task=&#39;v_n_d&#39;.
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>Progress update 2022-12-18 07:01:28.313799 : -------------------------------------------------------------------------------.
+<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.043 Verify selected NTSB data.
+<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a>Progress update 2022-12-18 07:01:28.313799 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a>Progress update 2022-12-18 07:01:29.791861 : INFO.00.063 Processed data source &#39;events&#39;.
+<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>Progress update 2022-12-18 07:01:29.791861 : Number cols deleted  :  27378.
+<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a>Progress update 2022-12-18 07:01:29.791861 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>Progress update 2022-12-18 07:01:29.847379 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;latitude &amp; longitude&#39;.
+<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a>Progress update 2022-12-18 07:01:29.847879 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a>Progress update 2022-12-18 07:01:30.779339 : Number of rows so far read :   5000.
+<a id="__codelineno-15-56" name="__codelineno-15-56" href="#__codelineno-15-56"></a>Progress update 2022-12-18 07:01:35.923824 : Number of rows so far read :  10000.
+<a id="__codelineno-15-57" name="__codelineno-15-57" href="#__codelineno-15-57"></a>Progress update 2022-12-18 07:02:21.619041 : Number of rows so far read :  15000.
+<a id="__codelineno-15-58" name="__codelineno-15-58" href="#__codelineno-15-58"></a>Progress update 2022-12-18 07:03:23.893470 : Number of rows so far read :  20000.
+<a id="__codelineno-15-59" name="__codelineno-15-59" href="#__codelineno-15-59"></a>Progress update 2022-12-18 07:04:30.130890 : Number of rows so far read :  25000.
+<a id="__codelineno-15-60" name="__codelineno-15-60" href="#__codelineno-15-60"></a>Progress update 2022-12-18 07:05:33.466294 : Number of rows so far read :  30000.
+<a id="__codelineno-15-61" name="__codelineno-15-61" href="#__codelineno-15-61"></a>Progress update 2022-12-18 07:06:30.937809 : Number rows errors   :  12374.
+<a id="__codelineno-15-62" name="__codelineno-15-62" href="#__codelineno-15-62"></a>Progress update 2022-12-18 07:06:30.937809 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-63" name="__codelineno-15-63" href="#__codelineno-15-63"></a>Progress update 2022-12-18 07:06:30.938308 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city&#39;.
+<a id="__codelineno-15-64" name="__codelineno-15-64" href="#__codelineno-15-64"></a>Progress update 2022-12-18 07:06:32.108776 : Number rows errors   :   6041.
+<a id="__codelineno-15-65" name="__codelineno-15-65" href="#__codelineno-15-65"></a>Progress update 2022-12-18 07:06:32.108776 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-66" name="__codelineno-15-66" href="#__codelineno-15-66"></a>Progress update 2022-12-18 07:06:32.108776 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city &amp; ev_site_zipcode&#39;.
+<a id="__codelineno-15-67" name="__codelineno-15-67" href="#__codelineno-15-67"></a>Progress update 2022-12-18 07:06:33.699993 : Number rows errors   :  16516.
+<a id="__codelineno-15-68" name="__codelineno-15-68" href="#__codelineno-15-68"></a>Progress update 2022-12-18 07:06:33.700494 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-69" name="__codelineno-15-69" href="#__codelineno-15-69"></a>Progress update 2022-12-18 07:06:33.700494 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_state&#39;.
+<a id="__codelineno-15-70" name="__codelineno-15-70" href="#__codelineno-15-70"></a>Progress update 2022-12-18 07:06:34.416462 : Number rows errors   :    291.
+<a id="__codelineno-15-71" name="__codelineno-15-71" href="#__codelineno-15-71"></a>Progress update 2022-12-18 07:06:34.416462 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-72" name="__codelineno-15-72" href="#__codelineno-15-72"></a>Progress update 2022-12-18 07:06:34.416462 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_site_zipcode&#39;.
+<a id="__codelineno-15-73" name="__codelineno-15-73" href="#__codelineno-15-73"></a>Progress update 2022-12-18 07:06:34.866764 : Number rows errors   :   6034.
+<a id="__codelineno-15-74" name="__codelineno-15-74" href="#__codelineno-15-74"></a>Progress update 2022-12-18 07:06:34.866764 : --------------------------------------------------------------------------------
+<a id="__codelineno-15-75" name="__codelineno-15-75" href="#__codelineno-15-75"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows selected :  34324.
+<a id="__codelineno-15-76" name="__codelineno-15-76" href="#__codelineno-15-76"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows updated  :  41256.
+<a id="__codelineno-15-77" name="__codelineno-15-77" href="#__codelineno-15-77"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows errors   :  41256.
+<a id="__codelineno-15-78" name="__codelineno-15-78" href="#__codelineno-15-78"></a>Progress update 2022-12-18 07:06:34.868264 : -------------------------------------------------------------------------------.
+<a id="__codelineno-15-79" name="__codelineno-15-79" href="#__codelineno-15-79"></a>Progress update 2022-12-18 07:06:34.868264 :      306,720,465,000 ns - Total time launcher.
+<a id="__codelineno-15-80" name="__codelineno-15-80" href="#__codelineno-15-80"></a>Progress update 2022-12-18 07:06:34.868264 : INFO.00.006 End   Launcher.
+<a id="__codelineno-15-81" name="__codelineno-15-81" href="#__codelineno-15-81"></a>Progress update 2022-12-18 07:06:34.868264 : ===============================================================================.
+<a id="__codelineno-15-82" name="__codelineno-15-82" href="#__codelineno-15-82"></a>
+<a id="__codelineno-15-83" name="__codelineno-15-83" href="#__codelineno-15-83"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-84" name="__codelineno-15-84" href="#__codelineno-15-84"></a>The current time is:  7:06:35.04
+<a id="__codelineno-15-85" name="__codelineno-15-85" href="#__codelineno-15-85"></a>Enter the new time:
+<a id="__codelineno-15-86" name="__codelineno-15-86" href="#__codelineno-15-86"></a>-----------------------------------------------------------------------
+<a id="__codelineno-15-87" name="__codelineno-15-87" href="#__codelineno-15-87"></a>End   run_io_avstats
+<a id="__codelineno-15-88" name="__codelineno-15-88" href="#__codelineno-15-88"></a>=======================================================================
+</code></pre></div>
+<h3 id="210-r_d_s-refresh-the-postgresql-database-schema">2.10 <strong><code>r_d_s</code></strong> - Refresh the PostgreSQL database schema</h3>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>=========================================================
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>---------------------------------------------------------
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>---------------------------------------------------------
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>---------------------------------------------------------
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>---------------------------------------------------------
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>---------------------------------------------------------
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>Enter the desired task [default: r_s_a] r_d_s
+<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>
+<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>=======================================================================
+<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>Start run_io_avstats
+<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>PYTHONPATH :
+<a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>TASK       : r_d_s
+<a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>CORRECTION :
+<a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a>MSACCESS   :
+<a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>The current time is:  7:51:13.14
+<a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a>Enter the new time:
+<a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>=======================================================================
+<a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a>Progress update 2022-12-18 07:51:14.915905 : ===============================================================================.
+<a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a>Progress update 2022-12-18 07:51:14.915905 : INFO.00.004 Start Launcher.
+<a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a>Progress update 2022-12-18 07:51:14.918905 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a>Progress update 2022-12-18 07:51:14.927904 : INFO.00.005 Argument task=&#39;r_d_s&#39;.
+<a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a>Progress update 2022-12-18 07:51:14.927904 : -------------------------------------------------------------------------------.
+<a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a>Progress update 2022-12-18 07:51:14.928406 : INFO.00.071 Refreshing the database schema.
+<a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a>Progress update 2022-12-18 07:51:14.928406 : --------------------------------------------------------------------------------
+<a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus2008.
+<a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a>Progress update 2022-12-18 07:51:23.134620 : -------------------------------------------------------------------------------.
+<a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a>Progress update 2022-12-18 07:51:23.135120 :        8,366,215,500 ns - Total time launcher.
+<a id="__codelineno-16-53" name="__codelineno-16-53" href="#__codelineno-16-53"></a>Progress update 2022-12-18 07:51:23.135120 : INFO.00.006 End   Launcher.
+<a id="__codelineno-16-54" name="__codelineno-16-54" href="#__codelineno-16-54"></a>Progress update 2022-12-18 07:51:23.135120 : ===============================================================================.
+<a id="__codelineno-16-55" name="__codelineno-16-55" href="#__codelineno-16-55"></a>
+<a id="__codelineno-16-56" name="__codelineno-16-56" href="#__codelineno-16-56"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-57" name="__codelineno-16-57" href="#__codelineno-16-57"></a>The current time is:  7:51:23.31
+<a id="__codelineno-16-58" name="__codelineno-16-58" href="#__codelineno-16-58"></a>Enter the new time:
+<a id="__codelineno-16-59" name="__codelineno-16-59" href="#__codelineno-16-59"></a>-----------------------------------------------------------------------
+<a id="__codelineno-16-60" name="__codelineno-16-60" href="#__codelineno-16-60"></a>End   run_io_avstats
+<a id="__codelineno-16-61" name="__codelineno-16-61" href="#__codelineno-16-61"></a>=======================================================================
+</code></pre></div>
+<h3 id="211-backup-the-file-directory-datapostgres">2.11 Backup the file directory <strong><code>data/postgres</code></strong></h3>
+<ul>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
+<li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
+<li>Rename the file <strong><code>postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Create a copy of the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong> with the name <strong><code>latest_postgres.zip</code></strong>.</li>
+</ul>
+<h3 id="212-update-the-google-drive">2.12 Update the Google Drive</h3>
+<ul>
+<li>Log in to Google Drive with the Google Account <strong><code>io-avstats.io-aero@gmail.com</code></strong>.</li>
+<li>Upload the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Share the newly uploaded file.</li>
+</ul>
+<h3 id="213-update-io-avstats-in-the-io-aero-cloud">2.13 Update IO-AVSTATS in the IO-Aero cloud</h3>
+<ul>
+<li>Run the script <strong><code>scripts/run_cloud_files_zip</code></strong>.</li>
+<li>Upload the resulting <strong><code>cloud.zip</code></strong> file to the cloud and process it there.</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="operation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Operation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Operation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="release_notes.html" class="md-footer__link md-footer__link--next" aria-label="Next: Release Notes" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Release Notes
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+    
+  </body>
+</html>

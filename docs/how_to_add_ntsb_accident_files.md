@@ -1,27 +1,12 @@
-# IO-AVSTATS - How to add NTSB accident files
+# How to add NTSB accident files
 
-Aviation accident data provided by NTSB can be found at the following [website](https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx) under **Downloadable data sets**:
+Aviation accident data provided by NTSB can be found at the following [website](https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx){:target="_blank"} under **Downloadable data sets**:
 
----
-
-![](img/how_to_add_ntsb_01.png)
+<kbd>![](img/how_to_add_ntsb_01.png)</kbd>
 
 In the database table **`io_processed_files`** you can find the previously processed files:
 
-| file_name                                   | first_processed         | last_processed          | counter |
-|---------------------------------------------|-------------------------|-------------------------|--------:|
-| Pre2008                                     | 2022-11-05 10:44:38.868 | 2022-11-05 11:49:12.766 |       2 |
-| avall                                       | 2022-11-05 11:59:49.223 | 2022-11-05 20:31:00.556 |       2 |
-| data/Countries_States/countries_states.json | 2022-11-27 14:15:55.929 | 2022-11-27 14:15:57.546 |       3 |
-| uszips.xlsx                                 | 2022-11-27 15:25:29.741 | 2022-11-29 13:40:41.456 |       2 |
-| uscities.xlsx                               | 2022-11-27 15:08:39.447 | 2022-11-29 13:54:55.259 |       4 |
-| zip_code_database.xls                       | 2022-11-27 14:57:37.929 | 2022-11-29 14:26:07.066 |       3 |
-| up01NOV                                     | 2022-12-12 11:57:31.862 |                         |       1 |
-| up08NOV                                     | 2022-12-12 12:05:13.850 |                         |       1 |
-| up15NOV                                     | 2022-12-12 12:07:16.557 |                         |       1 |
-| up22NOV                                     | 2022-11-27 13:40:18.094 | 2022-12-12 12:08:15.915 |       2 |
-| up01DEC                                     | 2022-12-12 13:26:03.872 |                         |       1 |
-| up08DEC                                     | 2022-12-12 13:29:14.703 |                         |       1 |
+<kbd>![](img/io_processed_files.png)</kbd>
 
 Any file can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.
 
@@ -44,7 +29,7 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 |  10 | r_d_s | Refresh the PostgreSQL database schema                         |
 |  11 |       | Backup the file directory **`data/postgres`**                  |
 |  12 |       | Update the Google Drive                                        |
-|  13 |       | Update IO-AVSTATS in the IO-Aero cloud                         |
+|  13 |       | Update **IO-AVSTATS** in the IO-Aero cloud                     |
 
 ## 2. Detailed description
 
@@ -681,9 +666,7 @@ TODO
 
 The **`Personal Free`** version of the ZIP Code Database file must be downloaded manually from the **`https://www.unitedstateszipcodes.org/zip-code-database/`** website to the file directory according to the **`download_work_dir`** configuration parameter.
 
----
-
-![](img/Zip Codes.org Verify License Terms.png)
+<kbd>![](img/Zip Codes.org Verify License Terms.png)</kbd>
 
 The two formats **`Excel Format (data only)`** and **`CSV Format`** must be downloaded one after the other.
 The downloaded file **`zip_code_database.csv`** must be checked with the reference files in the file directory **`data/reference`** for a match.
@@ -1011,7 +994,7 @@ End   run_io_avstats
 - Upload the file **`yy.mm.dd_postgres_upDDMON.zip`**.
 - Share the newly uploaded file.
 
-### 2.13 Update IO-AVSTATS in the IO-Aero cloud 
+### 2.13 Update **IO-AVSTATS** in the IO-Aero cloud 
 
 - Run the script **`scripts/run_cloud_files_zip`**.
 - Upload the resulting **`cloud.zip`** file to the cloud and process it there.

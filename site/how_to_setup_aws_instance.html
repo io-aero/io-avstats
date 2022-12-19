@@ -1,0 +1,1220 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Accident Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/how_to_setup_aws_instance.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Set up an AWS instance - IO-AVSTATS - Aviation Accident Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.975780f9.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-set-up-an-aws-instance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Accident Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Set up an AWS instance
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Accident Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Setup" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Configuration" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          How to
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How to" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How to
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
+        Add NTSB Accident Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        Create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Set up an AWS instance
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link md-nav__link--active">
+        Set up an AWS instance
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-instance-creation" class="md-nav__link">
+    1. Instance creation
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Instance creation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-name-and-tags" class="md-nav__link">
+    1.1 Name and tags
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-application-and-os-images" class="md-nav__link">
+    1.2 Application and OS Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-instance-type" class="md-nav__link">
+    1.3 Instance type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-key-pair-login" class="md-nav__link">
+    1.4 Key pair (login)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-network-settings" class="md-nav__link">
+    1.5 Network settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-configure-storage" class="md-nav__link">
+    1.6 Configure Storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-launch-instance" class="md-nav__link">
+    1.7 Launch instance
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-open-port-numbers" class="md-nav__link">
+    2. Open port numbers
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Open port numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-determine-the-security" class="md-nav__link">
+    2.1 Determine the security
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-choose-the-security-group" class="md-nav__link">
+    2.2 Choose the security group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-open-the-port-numbers" class="md-nav__link">
+    2.3 Open the port numbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-finsh-with-save-rules" class="md-nav__link">
+    2.4 Finsh with Save rules
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-upload-installation-script" class="md-nav__link">
+    3. Upload installation script
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-run-installation-script" class="md-nav__link">
+    4. Run installation script
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Run installation script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-load-terminal-window" class="md-nav__link">
+    4.1 Load terminal window
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-run_cloud_setup_instance" class="md-nav__link">
+    4.2 run_cloud_setup_instance
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        Update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Release Documents
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Release Documents" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Release Documents
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_notes.html" class="md-nav__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_history.html" class="md-nav__link">
+        Release History
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_schedule.html" class="md-nav__link">
+        Release Schedule
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-instance-creation" class="md-nav__link">
+    1. Instance creation
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Instance creation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-name-and-tags" class="md-nav__link">
+    1.1 Name and tags
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-application-and-os-images" class="md-nav__link">
+    1.2 Application and OS Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-instance-type" class="md-nav__link">
+    1.3 Instance type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-key-pair-login" class="md-nav__link">
+    1.4 Key pair (login)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-network-settings" class="md-nav__link">
+    1.5 Network settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-configure-storage" class="md-nav__link">
+    1.6 Configure Storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-launch-instance" class="md-nav__link">
+    1.7 Launch instance
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-open-port-numbers" class="md-nav__link">
+    2. Open port numbers
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Open port numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-determine-the-security" class="md-nav__link">
+    2.1 Determine the security
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-choose-the-security-group" class="md-nav__link">
+    2.2 Choose the security group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-open-the-port-numbers" class="md-nav__link">
+    2.3 Open the port numbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-finsh-with-save-rules" class="md-nav__link">
+    2.4 Finsh with Save rules
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-upload-installation-script" class="md-nav__link">
+    3. Upload installation script
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-run-installation-script" class="md-nav__link">
+    4. Run installation script
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Run installation script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-load-terminal-window" class="md-nav__link">
+    4.1 Load terminal window
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-run_cloud_setup_instance" class="md-nav__link">
+    4.2 run_cloud_setup_instance
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="how-to-set-up-an-aws-instance">How to set up an AWS instance</h1>
+<p>Creating an AWS instance requires access to an AWS account as a root user or as an IAM user with appropriate permissions.</p>
+<p>IO-AVSTATS can be run on EC2 instances by default. 
+The EC2 instances are managed on the EC2 Dashboard.</p>
+<p><kbd><img alt="" src="img/aws_instance_01.png" /></kbd></p>
+<h2 id="1-instance-creation">1. Instance creation</h2>
+<p>On the EC2 dashboard, select <strong>Instances</strong> and then <strong>Launch instance</strong>.</p>
+<p><kbd><img alt="" src="img/aws_instance_02.png" /></kbd></p>
+<h3 id="11-name-and-tags">1.1 Name and tags</h3>
+<ul>
+<li><strong><code>IO-AVSTATS</code></strong></li>
+</ul>
+<p><kbd><img alt="" src="img/aws_instance_03.png" /></kbd></p>
+<h3 id="12-application-and-os-images">1.2 Application and OS Images</h3>
+<ul>
+<li><strong><code>Ubuntu Server 20.04 LTS (HVM), SSD Volume Type</code></strong></li>
+</ul>
+<p><kbd><img alt="" src="img/aws_instance_04.png" /></kbd></p>
+<h3 id="13-instance-type">1.3 Instance type</h3>
+<ul>
+<li><strong><code>t3a.medium</code></strong></li>
+</ul>
+<p><kbd><img alt="" src="img/aws_instance_05.png" /></kbd></p>
+<h3 id="14-key-pair-login">1.4 Key pair (login)</h3>
+<ul>
+<li>Either choose an existing one or create a new one.</li>
+</ul>
+<p><kbd><img alt="" src="img/aws_instance_06.png" /></kbd></p>
+<h3 id="15-network-settings">1.5 Network settings</h3>
+<p><kbd><img alt="" src="img/aws_instance_07.png" /></kbd></p>
+<h3 id="16-configure-storage">1.6 Configure Storage</h3>
+<ul>
+<li>1x <strong><code>30</code></strong> GiB</li>
+</ul>
+<p><kbd><img alt="" src="img/aws_instance_08.png" /></kbd></p>
+<h3 id="17-launch-instance">1.7 Launch instance</h3>
+<p><kbd><img alt="" src="img/aws_instance_09.png" /></kbd></p>
+<h2 id="2-open-port-numbers">2. Open port numbers</h2>
+<p>Each Streamlit application must be assigned its own port number so that they can run simultaneously.
+Currently, the following Streamlit applications are supported:</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Application</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8501</td>
+<td>faaus2008 - Fatal Aircraft Accidents in the US since 2008</td>
+</tr>
+<tr>
+<td>8502</td>
+<td>pdus2008  - Profiling Data for the US since 2008</td>
+</tr>
+</tbody>
+</table>
+<h3 id="21-determine-the-security">2.1 Determine the security</h3>
+<p>To determine the security group assigned to the intance: on the EC2 dashboard, select <strong>Instances</strong> and then <strong>Security</strong>.</p>
+<p><kbd><img alt="" src="img/aws_instance_10.png" /></kbd></p>
+<h3 id="22-choose-the-security-group">2.2 Choose the security group</h3>
+<p>To choose the security group assigned to the instance: on the EC2 dashboard, select <strong>Security Groups</strong> and <strong>Security</strong>.</p>
+<p><kbd><img alt="" src="img/aws_instance_11.png" /></kbd></p>
+<h3 id="23-open-the-port-numbers">2.3 Open the port numbers</h3>
+<p>For each streamline application port number press <strong><code>Add rule</code></strong> and enter the data.</p>
+<p><kbd><img alt="" src="img/aws_instance_13.png" /></kbd></p>
+<h3 id="24-finsh-with-save-rules">2.4 Finsh with <strong><code>Save rules</code></strong></h3>
+<p><kbd><img alt="" src="img/aws_instance_14.png" /></kbd></p>
+<h2 id="3-upload-installation-script">3. Upload installation script</h2>
+<p>On Windows, the <a href="https://winscp.net/eng/index.php" target="_blank">WinSCP</a> program can be used to upload data from the local system to the AWS Cloud.
+The script to be uploaded is called <strong><code>run_cloud_setup_instance.sh</code></strong>.</p>
+<p><kbd><img alt="" src="img/WinSCP_1.png" /></kbd></p>
+<p><kbd><img alt="" src="img/WinSCP_2.png" /></kbd></p>
+<h2 id="4-run-installation-script">4. Run installation script</h2>
+<h3 id="41-load-terminal-window">4.1 Load terminal window</h3>
+<p><kbd><img alt="" src="img/aws_instance_15.png" /></kbd></p>
+<p><kbd><img alt="" src="img/aws_instance_16.png" /></kbd></p>
+<p><kbd><img alt="" src="img/aws_instance_17.png" /></kbd></p>
+<h3 id="42-run_cloud_setup_instance">4.2 <strong><code>run_cloud_setup_instance</code></strong></h3>
+<p><strong><code>chmod +x run_cloud_setup_instance.sh</code></strong> </p>
+<p><strong><code>./run_cloud_setup_instance.sh</code></strong> </p>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code>ubuntu@ip-172-31-89-93:~$ chmod +x run_cloud_setup_instance.sh
+ubuntu@ip-172-31-89-93:~$ ./run_cloud_setup_instance.sh
+==============================================================================
+Start ./run_cloud_setup_instance.sh
+------------------------------------------------------------------------------
+DATE TIME : 19.12.2022 10:49:15
+==============================================================================
+Supplement necessary system software
+------------------------------------------------------------------------------
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 Packages [8628 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/universe Translation-en [5124 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 c-n-f Metadata [265 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [144 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/multiverse Translation-en [104 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/multiverse amd64 c-n-f Metadata [9136 B]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [2269 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main Translation-en [395 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64 c-n-f Metadata [16.1 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [1476 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/restricted Translation-en [208 kB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/restricted amd64 c-n-f Metadata [592 B]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1009 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/universe Translation-en [234 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/universe amd64 c-n-f Metadata [23.2 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [24.5 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/multiverse Translation-en [7380 B]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 c-n-f Metadata [592 B]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [45.7 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/main Translation-en [16.3 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/main amd64 c-n-f Metadata [1420 B]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [24.9 kB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/universe Translation-en [16.3 kB]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/universe amd64 c-n-f Metadata [880 B]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:31 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1895 kB]
+Get:32 http://security.ubuntu.com/ubuntu focal-security/main Translation-en [311 kB]
+Get:33 http://security.ubuntu.com/ubuntu focal-security/main amd64 c-n-f Metadata [11.5 kB]
+Get:34 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [1385 kB]
+Get:35 http://security.ubuntu.com/ubuntu focal-security/restricted Translation-en [195 kB]
+Get:36 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 c-n-f Metadata [596 B]
+Get:37 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [778 kB]
+Get:38 http://security.ubuntu.com/ubuntu focal-security/universe Translation-en [150 kB]
+Get:39 http://security.ubuntu.com/ubuntu focal-security/universe amd64 c-n-f Metadata [16.8 kB]
+Get:40 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [22.2 kB]
+Get:41 http://security.ubuntu.com/ubuntu focal-security/multiverse Translation-en [5464 B]
+Get:42 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 c-n-f Metadata [516 B]
+Fetched 25.2 MB in 4s (5617 kB/s)
+Reading package lists...
+
+...
+
+=============================================================================&gt; Version  Docker Compose:
+
+Current version of Docker Compose: docker-compose version 1.25.0, build unknown
+docker-py version: 4.1.0
+CPython version: 3.8.10
+OpenSSL version: OpenSSL 1.1.1f  31 Mar 2020
+
+==============================================================================
+
+=============================================================================&gt; Version  Docker Desktop:
+
+Current version of Docker Desktop: Client: Docker Engine - Community
+ Version:           20.10.22
+ API version:       1.41
+ Go version:        go1.18.9
+ Git commit:        3a2c30b
+ Built:             Thu Dec 15 22:28:08 2022
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.22
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.18.9
+  Git commit:       42c8b31
+  Built:            Thu Dec 15 22:25:58 2022
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.6.13
+  GitCommit:        78f51771157abb6c9ed224c22013cdf09962315d
+ runc:
+  Version:          1.1.4
+  GitCommit:        v1.1.4-0-g5fd4c4d
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+==============================================================================
+
+=============================================================================&gt; Version  dos2unix:
+
+Current version of dos2unix: dos2unix 7.4.0 (2017-10-10)
+With Unicode UTF-16 support.
+With native language support.
+With support to preserve the user and group ownership of files.
+LOCALEDIR: /usr/share/locale
+http://waterlan.home.xs4all.nl/dos2unix.html
+
+==============================================================================
+
+=============================================================================&gt; Version  unzip:
+
+Current version of unzip: UnZip 6.00 of 20 April 2009, by Debian. Original by Info-ZIP.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip/ ;
+see ftp://ftp.info-zip.org/pub/infozip/UnZip.html for other sites.
+
+Compiled with gcc 9.4.0 for Unix (Linux ELF).
+
+UnZip special compilation options:
+        ACORN_FTYPE_NFS
+        COPYRIGHT_CLEAN (PKZIP 0.9x unreducing method not supported)
+        SET_DIR_ATTRIB
+        SYMLINKS (symbolic links supported, if RTL and file system permit)
+        TIMESTAMP
+        UNIXBACKUP
+        USE_EF_UT_TIME
+        USE_UNSHRINK (PKZIP/Zip 1.x unshrinking method supported)
+        USE_DEFLATE64 (PKZIP 4.x Deflate64(tm) supported)
+        UNICODE_SUPPORT [wide-chars, char coding: UTF-8] (handle UTF-8 paths)
+        LARGE_FILE_SUPPORT (large files over 2 GiB supported)
+        ZIP64_SUPPORT (archives using Zip64 for large files supported)
+        USE_BZIP2 (PKZIP 4.6+, using bzip2 lib version 1.0.8, 13-Jul-2019)
+        VMS_TEXT_CONV
+        WILD_STOP_AT_DIR
+        [decryption, version 2.11 of 05 Jan 2007]
+
+UnZip and ZipInfo environment options:
+           UNZIP:  [none]
+        UNZIPOPT:  [none]
+         ZIPINFO:  [none]
+      ZIPINFOOPT:  [none]
+
+==============================================================================
+
+--------------------------------------------------------------------------------
+DATE TIME : 19.12.2022 10:50:52
+--------------------------------------------------------------------------------
+End   ./run_cloud_setup_instance.sh
+================================================================================
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="how_to_create_new_streamlit_app.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Create a new Streamlit app" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Create a new Streamlit app
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="how_to_update_avstats_on_aws.html" class="md-footer__link md-footer__link--next" aria-label="Next: Update IO-AVSTATS in AWS" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Update IO-AVSTATS in AWS
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+    
+  </body>
+</html>

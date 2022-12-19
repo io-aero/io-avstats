@@ -1,4 +1,4 @@
-# IO-AVSTATS - Requirements
+# Requirements
 
 The following are the minimum requirements to run the application:
 

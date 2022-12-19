@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#io-avstats-operation" class="md-skip">
+        <a href="#operation" class="md-skip">
           Skip to content
         </a>
       
@@ -536,13 +536,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#4-if-corrections-are-judged-to-be-necessary" class="md-nav__link">
-    4. If corrections are judged to be necessary
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -587,6 +580,48 @@
     <li class="md-nav__item">
       <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
         Add NTSB Accident Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        Create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
+        Set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        Update IO-AVSTATS in AWS
       </a>
     </li>
   
@@ -862,13 +897,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#4-if-corrections-are-judged-to-be-necessary" class="md-nav__link">
-    4. If corrections are judged to be necessary
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -884,7 +912,7 @@
                   
 
 
-<h1 id="io-avstats-operation">IO-AVSTATS - Operation</h1>
+<h1 id="operation">Operation</h1>
 <p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong><code>run_io_avstats</code></strong> script. 
 The script is available in a Windows command line version and in a Linux bash shell version.</p>
 <p>The following tasks can be executed with this script:</p>
@@ -960,6 +988,11 @@ The script is available in a Windows command line version and in a Linux bash sh
 <tr>
 <td><code>l_z_d</code></td>
 <td>Load ZIP Code Database data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>r_d_s</code></td>
+<td>Refresh the PostgreSQL database schema</td>
 <td></td>
 </tr>
 <tr>
@@ -1491,7 +1524,7 @@ Progress update 2022-11-27 14:59:15.676184 : ===================================
 <p>With this task, the free version of the file <a href="https://www.unitedstateszipcodes.org/zip-code-database/" target="_blank">ZIP Code Database</a> can be downloaded from the website <a href="https://www.unitedstateszipcodes.org/"><strong>United States Zip Codes.org</strong></a>.
 However, since a license window appears first before the actual download, it is better to download the file manually.
 Therefore, this task is currently not offered in the <strong><code>run_io_avstats_db</code></strong> shell script menu.</p>
-<p><img alt="" src="img/Zip%20Codes.org%20Verify%20License%20Terms.png" /></p>
+<p><kbd><img alt="" src="img/Zip%20Codes.org%20Verify%20License%20Terms.png" /></kbd></p>
 <p>Example protocol:</p>
 <div class="highlight"><pre><span></span><code>Progress update 2022-11-26 07:12:23.326957 : ===============================================================================.
 Progress update 2022-11-26 07:12:23.326957 : INFO.00.004 Start Launcher.
@@ -1708,6 +1741,18 @@ The task can be executed several times without problems, since before a change i
 </li>
 </ol>
 <p>Example protocol:</p>
+<div class="highlight"><pre><span></span><code>Progress update 2022-12-19 08:37:09.337180 : INFO.00.004 Start Launcher.
+Progress update 2022-12-19 08:37:09.342679 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-19 08:37:09.352180 : INFO.00.005 Argument task=&#39;r_d_s&#39;.
+Progress update 2022-12-19 08:37:09.352180 : -------------------------------------------------------------------------------.
+Progress update 2022-12-19 08:37:09.352180 : INFO.00.071 Refreshing the database schema.
+Progress update 2022-12-19 08:37:09.352180 : --------------------------------------------------------------------------------
+Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_faaus2008.
+Progress update 2022-12-19 08:37:19.366370 : -------------------------------------------------------------------------------.
+Progress update 2022-12-19 08:37:19.366370 :       10,187,690,800 ns - Total time launcher.
+Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
+Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
+</code></pre></div>
 <h3 id="115-s_d_c-set-up-the-postgresql-database-container">1.15 <strong><code>s_d_c</code></strong> - Set up the PostgreSQL database container</h3>
 <p>The default installation of the PostgreSQL database is done using the official Docker images from Dockerhub - see <a href="https://hub.docker.com/_/postgres" target="_blank">here</a>.</p>
 <p>This task consists of the following steps:</p>
@@ -1938,23 +1983,7 @@ Progress update 2022-11-29 14:58:12.402730 : ===================================
 <li><strong><code>l_n_a</code></strong> - Load the <strong>NTSB</strong> MS Access database from Pre2008 and avall</li>
 </ul>
 <h2 id="3-regular-updates">3. Regular updates</h2>
-<p>Processing an update file of the upDDMON format requires the following two steps:</p>
-<ul>
-<li><strong><code>d_n_a</code></strong> - Download the <strong>NTSB</strong> MS Access database file upDDMON                      </li>
-<li><strong><code>l_n_a</code></strong> - Load the <strong>NTSB</strong> MS Access database from upDDMon</li>
-</ul>
-<h2 id="4-if-corrections-are-judged-to-be-necessary">4. If corrections are judged to be necessary</h2>
-<ul>
-<li><strong><code>u_d_s</code></strong> - Update the PostgreSQL database schema</li>
-<li><strong><code>l_c_s</code></strong> - Load country and state data into PostgreSQL</li>
-<li><strong><code>d_s_f</code></strong> - Download basic <strong>simplemaps</strong> files</li>
-<li><strong><code>l_s_d</code></strong> - Load <strong>simplemaps</strong> data into PostgreSQL</li>
-<li><strong><code>d_z_f</code></strong> - Download the ZIP Code Database file</li>
-<li><strong><code>l_z_d</code></strong> - Load ZIP Code Database data into PostgreSQL</li>
-<li><strong><code>l_c_d</code></strong> - Load data from a correction file into PostgreSQL</li>
-<li><strong><code>c_l_l</code></strong> - Correct decimal US latitudes and longitudes</li>
-<li><strong><code>v_n_d</code></strong> - Verify selected <strong>NTSB</strong> data</li>
-</ul>
+<p><a href="how_to_add_ntsb_accident_files.html" target="_blank">see</a></p>
 
 
 

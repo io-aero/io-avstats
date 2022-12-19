@@ -35,6 +35,9 @@ nav:
   - Operation: operation.md
   - How to:
       - Add NTSB Accident Files: how_to_add_ntsb_accident_files.md
+      - Create a new Streamlit app: how_to_create_new_streamlit_app.md
+      - Set up an AWS instance: how_to_setup_aws_instance.md
+      - Update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
   - Release Documents:
     - Release Notes: release_notes.md
     - Release History: release_history.md

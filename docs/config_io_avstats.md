@@ -1,4 +1,4 @@
-# IO-AVSTATS - Configuration
+# Configuration - **IO-AVSTATS**
 
 For the administration of the configuration parameters of **IO-AVSTATS** the tool [**dynaconf**](https://www.dynaconf.com){:target="_blank"} is used.
 The two files `settings.io_avstats.toml` and `.settings.io_avstats.toml` are available as configuration files.

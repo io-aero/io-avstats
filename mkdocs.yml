@@ -33,8 +33,11 @@ nav:
       - IO-AVSTATS: config_io_avstats.md
       - Logging: config_logging.md
   - Operation: operation.md
-  - How to:
-      - Add NTSB Accident Files: how_to_add_ntsb_accident_files.md
+  - How to ...:
+      - ... add NTSB accident files: how_to_add_ntsb_accident_files.md
+      - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
+      - ... set up an AWS instance: how_to_setup_aws_instance.md
+      - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
   - Release Documents:
     - Release Notes: release_notes.md
     - Release History: release_history.md

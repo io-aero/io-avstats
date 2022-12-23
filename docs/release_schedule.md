@@ -1,4 +1,4 @@
-# IO-AVSTATS - Release Schedule
+# Release Schedule
 
 To create a new release, the following steps must be performed in the specified order.
 It is not allowed to continue with the next step until the current step has been completed successfully, i.e. also without any errors. 

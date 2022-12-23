@@ -1,6 +1,6 @@
-# IO-AVSTATS - Aviation Accident Statistics
+# Aviation Accident Statistics
 
-This repository is used for the development and maintenance of applications based on the data of the IO-AVSTATS database. 
+This repository is used for the development and maintenance of applications based on the data of the **IO-AVSTATS** database. 
 Currently, it includes the following applications:
 
 - faaus2008 - Fatal Aircraft Accidents in the US since 2008

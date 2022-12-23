@@ -19,7 +19,6 @@ if [ -z "$1" ]; then
     echo "========================================================="
     echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
     echo "pdus2008  - Profiling Data for the US since 2008"
-
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}

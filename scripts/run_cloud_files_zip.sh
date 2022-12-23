@@ -25,7 +25,6 @@ rm -f ${AWS_FILE_NAME}
 
 ${AWS_PROG_ZIP} a -tzip ${AWS_FILE_NAME} data/latest_postgres.zip \
                                          docker-compose.yml \
-                                         scripts/run_cloud_setup_instance.sh \
                                          scripts/run_docker_compose.sh
 
 echo ""

@@ -25,8 +25,9 @@ export IO_AVSTATS_TASK_DEFAULT=up
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "up   - Start Docker Compose"
-    echo "down - Stop  Docker Compose"
+    echo "clean - Remove all containers and images"
+    echo "down  - Stop  Docker Compose"
+    echo "up    - Start Docker Compose"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
     read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_TASK
@@ -80,33 +81,33 @@ echo "==========================================================================
 # ------------------------------------------------------------------------------
 # Stop Docker Compose.
 # ------------------------------------------------------------------------------
-if [ "${IO_AVSTATS_TASK}" = "down" ]; then
-    docker compose down
+if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
+    echo Docker Containers ........................................... containers:
+    docker ps -a
+    echo ............................................................. before images:
+    docker image ls
+    docker rmi $(docker images -a -q)
+    echo ............................................................. after images:
+    docker image ls
 
+# ------------------------------------------------------------------------------
+# Stop Docker Compose.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
+    docker-compose down
+    echo Docker Containers ........................................... containers:
+    docker ps -a
+    echo ............................................................. before images:
+    docker image ls
+    docker rmi $(docker images -a -q)
+    echo ............................................................. after images:
+    docker image ls
 
 # ------------------------------------------------------------------------------
 # Start Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
-    echo "Docker Containers ........................................... before containers:"
-    docker ps -a
-    docker ps       | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -a    | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps       | find "faaus2008"                             && docker stop faaus2008
-    docker ps -a    | find "faaus2008"                             && docker rm --force faaus2008
-    docker ps       | find "pdus2008"                              && docker stop pdus2008
-    docker ps -a    | find "pdus2008"                              && docker rm --force pdus2008
-    echo "............................................................. after containers:"
-    docker ps -a
-    echo "............................................................. before images:"
-    docker image ls
-    docker image ls | find "${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}" && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}
-    docker image ls | find "faaus2008"                           && docker rmi --force ioaero/faaus2008
-    docker image ls | find "pdus2008"                            && docker rmi --force ioaero/pdus2008
-    echo "............................................................. after images:"
-    docker image ls
-
-    docker compose up &
+    docker-compose up
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

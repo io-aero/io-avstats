@@ -1,4 +1,4 @@
-# IO-AVSTATS - Installation
+# Installation
 
 1. Clone or copy the **IO-AVSTATS** repository from [here](https://github.com/io-aero/io-avstats){:target="_blank"}.
 

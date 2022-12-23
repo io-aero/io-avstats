@@ -1,4 +1,4 @@
-# IO-AVSTATS - Operation
+# Operation
 
 The main tool for operating **IO-AVSTATS** is the **`run_io_avstats`** script. 
 The script is available in a Windows command line version and in a Linux bash shell version.
@@ -20,6 +20,7 @@ The following tasks can be executed with this script:
 | `l_n_a` | Load **NTSB** MS Access database data into PostgreSQL | -m / -msaccess          |
 | `l_s_d` | Load **simplemaps** data into PostgreSQL              |                         |
 | `l_z_d` | Load ZIP Code Database data into PostgreSQL           |                         |
+| `r_d_s` | Refresh the PostgreSQL database schema              |                         |
 | `s_d_c` | Set up the PostgreSQL database container              |                         |
 | `u_d_s` | Update the PostgreSQL database schema                 |                         |
 | `v_n_d` | Verify selected **NTSB** data                         |                         |
@@ -556,7 +557,7 @@ With this task, the free version of the file [ZIP Code Database](https://www.uni
 However, since a license window appears first before the actual download, it is better to download the file manually.
 Therefore, this task is currently not offered in the **`run_io_avstats_db`** shell script menu.
 
-![](img/Zip Codes.org Verify License Terms.png)
+<kbd>![](img/Zip Codes.org Verify License Terms.png)</kbd>
 
 Example protocol:
 
@@ -792,6 +793,18 @@ The task can be executed several times without problems, since before a change i
 
 Example protocol:
 
+    Progress update 2022-12-19 08:37:09.337180 : INFO.00.004 Start Launcher.
+    Progress update 2022-12-19 08:37:09.342679 : INFO.00.001 The logger is configured and ready.
+    Progress update 2022-12-19 08:37:09.352180 : INFO.00.005 Argument task='r_d_s'.
+    Progress update 2022-12-19 08:37:09.352180 : -------------------------------------------------------------------------------.
+    Progress update 2022-12-19 08:37:09.352180 : INFO.00.071 Refreshing the database schema.
+    Progress update 2022-12-19 08:37:09.352180 : --------------------------------------------------------------------------------
+    Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_faaus2008.
+    Progress update 2022-12-19 08:37:19.366370 : -------------------------------------------------------------------------------.
+    Progress update 2022-12-19 08:37:19.366370 :       10,187,690,800 ns - Total time launcher.
+    Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
+    Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
+
 ### 1.15 **`s_d_c`** - Set up the PostgreSQL database container
 
 The default installation of the PostgreSQL database is done using the official Docker images from Dockerhub - see [here](https://hub.docker.com/_/postgres){:target="_blank"}.
@@ -1021,19 +1034,4 @@ The initial load in a fresh Windows environment requires the execution of the fo
 
 ## 3. Regular updates
 
-Processing an update file of the upDDMON format requires the following two steps:
-
-- **`d_n_a`** - Download the **NTSB** MS Access database file upDDMON                      
-- **`l_n_a`** - Load the **NTSB** MS Access database from upDDMon
-
-## 4. If corrections are judged to be necessary
-
-- **`u_d_s`** - Update the PostgreSQL database schema
-- **`l_c_s`** - Load country and state data into PostgreSQL
-- **`d_s_f`** - Download basic **simplemaps** files
-- **`l_s_d`** - Load **simplemaps** data into PostgreSQL
-- **`d_z_f`** - Download the ZIP Code Database file
-- **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
-- **`l_c_d`** - Load data from a correction file into PostgreSQL
-- **`c_l_l`** - Correct decimal US latitudes and longitudes
-- **`v_n_d`** - Verify selected **NTSB** data
+[see](how_to_add_ntsb_accident_files.md){:target="_blank"}

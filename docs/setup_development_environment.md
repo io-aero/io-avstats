@@ -82,7 +82,7 @@ The installation file can be found in the **`io-avstats`** repository under **`r
 
 ## 4.1 RazorSQL
 
-Create the connection profile IO-AVSTATS in RazorSQL
+Create the connection profile **IO-AVSTATS** in RazorSQL
 
     RazorSQL: Connections --> Add Connection Profile --> Microsoft Access --> Continuue --> ODBC (Direct)
 

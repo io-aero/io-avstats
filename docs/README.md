@@ -1,4 +1,4 @@
-# IO-AVSTATS - File Directory **`docs`**
+# File Directory **`docs`**
 
 This directory contains all the necessary files to create the documentation for **IO-AVSTATS**. 
 These consist of 

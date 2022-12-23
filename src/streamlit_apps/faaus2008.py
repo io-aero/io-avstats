@@ -122,9 +122,9 @@ st.header("Fatal Aviation Accidents in the US since 2008")
 # Setup the controls.
 # ------------------------------------------------------------------
 choice_data_profile = st.sidebar.checkbox(
+    help="Pandas profiling of the dataset.",
     label="**`Show data profile`**",
     value=False,
-    help="Pandas profiling of the dataset.",
 )
 
 if choice_data_profile:
@@ -148,15 +148,17 @@ if choice_data_profile:
 st.sidebar.markdown("""---""")
 
 choice_details = st.sidebar.checkbox(
+    help="Tabular representation of the selected detailed data.",
     label="**`Show details`**",
     value=False,
-    help="Tabular representation of the selected detailed data.",
 )
 
 st.sidebar.markdown("""---""")
 
 choice_histogram = st.sidebar.checkbox(
-    label="**`Show histogram`**", value=False, help="Fatal accidents per year."
+    help="Fatal accidents per year.",
+    label="**`Show histogram`**",
+    value=False,
 )
 
 if choice_histogram:
@@ -166,9 +168,9 @@ if choice_histogram:
 st.sidebar.markdown("""---""")
 
 choice_map = st.sidebar.checkbox(
+    help="Display of fatal accident events on a map of the USA.",
     label="**`Show US map`**",
     value=False,
-    help="Display of fatal accident events on a map of the USA.",
 )
 
 if choice_map:
@@ -200,9 +202,9 @@ streets: emphasizes accurate, legible styling of road and transit networks.
 st.sidebar.markdown("""---""")
 
 choice_filter_data = st.sidebar.checkbox(
+    help="Pandas profiling of the dataset.",
     label="**`Filter data ?`**",
     value=True,
-    help="Pandas profiling of the dataset.",
 )
 
 if choice_filter_data:
@@ -255,18 +257,18 @@ if choice_filter_data:
     )
 
     filter_spin_stall = st.sidebar.checkbox(
-        label="Only events with aerodynamic spin stalls?",
         help="Filters only events with `spin_stall` equals `True`.",
+        label="Only events with aerodynamic spin stalls?",
     )
 
     filter_alt_low = st.sidebar.checkbox(
-        label="Only events with altitude too low?",
         help="Filters only events with `alt_low` equals `True`.",
+        label="Only events with altitude too low?",
     )
 
     filter_narr_stall = st.sidebar.checkbox(
-        label="Only events stalled according to narrative?",
         help="Filters only events with `narr_stall` equals `True`.",
+        label="Only events stalled according to narrative?",
     )
 
 st.sidebar.markdown("""---""")

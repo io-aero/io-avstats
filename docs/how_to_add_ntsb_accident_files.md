@@ -378,6 +378,80 @@ End   run_io_avstats
 =======================================================================
 ```
 
+### 2.2.1 Data quality check
+
+**Query**:
+
+```sql92
+SELECT count(*) "Count",
+       'Events Total' "Description"
+  FROM events e
+ UNION
+SELECT count(*) ,
+       'Events Total with Fatalities'
+  FROM events e
+ WHERE inj_tot_f > 0
+ UNION
+SELECT count(*) ,
+       'Events US'
+  FROM events e
+ WHERE ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ UNION
+SELECT count(*) ,
+       'Events US with Fatalities'
+  FROM events e
+ WHERE inj_tot_f > 0
+   AND ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ UNION
+SELECT count(*) "Count",
+       'Events Total since 2008' "Description"
+  FROM events e
+ WHERE ev_year >= 2008
+ UNION
+SELECT count(*) ,
+       'Events Total with Fatalities since 2008'
+  FROM events e
+ WHERE ev_year >= 2008
+   AND inj_tot_f > 0
+ UNION
+SELECT count(*) ,
+       'Events US since 2008'
+  FROM events e
+ WHERE ev_year >= 2008
+   AND ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ UNION
+SELECT count(*) ,
+       'Events US with Fatalities since 2008'
+  FROM events e
+ WHERE ev_year >= 2008
+   AND inj_tot_f > 0
+   AND ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ ORDER BY 2
+```
+
+**Results**:
+
+```
+Count|Description                            |
+-----+---------------------------------------+
+88045|Events Total                           |
+25031|Events Total since 2008                |
+17564|Events Total with Fatalities           |
+ 5259|Events Total with Fatalities since 2008|
+81088|Events US                              |
+20731|Events US since 2008                   |
+14689|Events US with Fatalities              |
+ 3501|Events US with Fatalities since 2008   |
+```
+
 ### 2.2 **`l_n_a`** - Load NTSB MS Access database data into PostgreSQL
 
 **Relevant cofiguration parameters**:
@@ -811,6 +885,73 @@ End   run_io_avstats
 =======================================================================
 ```
 
+### 2.8.1 Data quality check
+
+**Query Total:**:
+
+```sql92
+SELECT count(*) "Count",
+       io_dec_lat_lng_actions
+  FROM events 
+ WHERE io_dec_lat_lng_actions IS NOT NULL 
+ GROUP BY io_dec_lat_lng_actions 
+ ORDER BY io_dec_lat_lng_actions
+```
+
+**Results**:
+
+```
+Count|io_dec_lat_lng_actions                                                                                                                                                                                                                                         |
+-----+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  510|ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                           |
+ 4087|ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+  586|ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                                                              |
+    5|ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                      |
+    4|ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                      |
+   14|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                                                         |
+   14|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                                                         |
+    8|ERROR.00.922 Invalid US state id & INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |
+    3|ERROR.00.922 Invalid US state id & INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+   91|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |
+    1|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00|
+    2|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                              |
+42688|INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |
+ 1287|INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              |
+10960|INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |
+  101|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string                                                                                                                                                                  |
+    4|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                   |
+   64|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & INFO.00.033 Correction based on US zip code                                                                            |
+  122|INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                                                                 |
+```
+
+
+**Query Total since 2008:**:
+
+```sql92
+SELECT count(*) "Count",
+       io_dec_lat_lng_actions
+  FROM events 
+ WHERE ev_year >= 2008
+   AND io_dec_lat_lng_actions IS NOT NULL 
+ GROUP BY io_dec_lat_lng_actions 
+ ORDER BY io_dec_lat_lng_actions
+```
+
+**Results**:
+
+```
+Count|io_dec_lat_lng_actions                                                                                                                                   |
+-----+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+    1|ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                     |
+    6|ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                                                     |
+    6|ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                        |
+    1|ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country|
+    8|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country   |
+   10|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                   |
+   15|INFO.00.033 Correction based on US zip code                                                                                                              |
+   27|INFO.00.034 Correction based on US state and city                                                                                                        |
+```
+
 ### 2.9 **`v_n_d`** - Verify selected NTSB data
 
 **Relevant cofiguration parameters**:
@@ -911,6 +1052,188 @@ Enter the new time:
 -----------------------------------------------------------------------
 End   run_io_avstats
 =======================================================================
+```
+
+### 2.9.1 Data quality check
+
+**Query Total:**:
+
+```sql92
+SELECT count(*) "Count",
+       'Latitude deviation' "Description"
+  FROM events e
+ WHERE io_dec_latitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*),
+       'Longitude deviation'
+  FROM events e
+ WHERE io_dec_longitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Latitude'
+  FROM events e
+ WHERE io_invalid_latitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Longitude'
+  FROM events e
+ WHERE io_invalid_longitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City'
+  FROM events e
+ WHERE io_invalid_us_city IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City & Zipcode'
+  FROM events e
+ WHERE io_invalid_us_city_zipcode IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US State'
+  FROM events e
+ WHERE io_invalid_us_state IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US Zipcode'
+  FROM events e
+ WHERE io_invalid_us_zipcode IS NOT NULL 
+ ORDER BY 2
+```
+
+**Results**:
+
+```
+Count|Description              |
+-----+-------------------------+
+ 3797|Invalid Latitude         |
+ 4120|Invalid Longitude        |
+ 6041|Invalid US City          |
+16521|Invalid US City & Zipcode|
+  291|Invalid US State         |
+ 6038|Invalid US Zipcode       |
+ 3723|Latitude deviation       |
+ 3651|Longitude deviation      |
+```
+
+**Query US since 2008:**:
+
+```sql92
+SELECT count(*) "Count",
+       'Latitude deviation' "Description"
+  FROM io_us_2008 e
+ WHERE io_dec_latitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*),
+       'Longitude deviation'
+  FROM io_us_2008 e
+ WHERE io_dec_longitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Latitude'
+  FROM io_us_2008 e
+ WHERE io_invalid_latitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Longitude'
+  FROM io_us_2008 e
+ WHERE io_invalid_longitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City'
+  FROM io_us_2008 e
+ WHERE io_invalid_us_city IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City & Zipcode'
+  FROM io_us_2008 e
+ WHERE io_invalid_us_city_zipcode IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US State'
+  FROM io_us_2008 e
+ WHERE io_invalid_us_state IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US Zipcode'
+  FROM io_us_2008 e
+ WHERE io_invalid_us_zipcode IS NOT NULL 
+ ORDER BY 2
+```
+
+**Results**:
+
+```
+Count|Description              |
+-----+-------------------------+
+ 3249|Invalid Latitude         |
+ 3546|Invalid Longitude        |
+ 1090|Invalid US City          |
+ 4003|Invalid US City & Zipcode|
+    0|Invalid US State         |
+  858|Invalid US Zipcode       |
+ 3405|Latitude deviation       |
+ 3300|Longitude deviation      |
+```
+
+**Query US with Fatalities since 2008:**:
+
+```sql92
+SELECT count(*) "Count",
+       'Latitude deviation' "Description"
+  FROM io_fatalities_us_2008 e
+ WHERE io_dec_latitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*),
+       'Longitude deviation'
+  FROM io_fatalities_us_2008 e
+ WHERE io_dec_longitude_deviating IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Latitude'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_latitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid Longitude'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_longitude IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_us_city IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US City & Zipcode'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_us_city_zipcode IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US State'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_us_state IS NOT NULL 
+ UNION
+SELECT count(*) ,
+       'Invalid US Zipcode'
+  FROM io_fatalities_us_2008 e
+ WHERE io_invalid_us_zipcode IS NOT NULL 
+ ORDER BY 2
+```
+
+**Results**:
+
+```
+Count|Description              |
+-----+-------------------------+
+  531|Invalid Latitude         |
+  577|Invalid Longitude        |
+  167|Invalid US City          |
+  613|Invalid US City & Zipcode|
+    0|Invalid US State         |
+  129|Invalid US Zipcode       |
+  591|Latitude deviation       |
+  554|Longitude deviation      |
 ```
 
 ### 2.10 **`r_d_s`** - Refresh the PostgreSQL database schema

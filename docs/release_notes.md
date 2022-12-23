@@ -2,7 +2,7 @@
 
 ## Version 22.12.22 
 
-Release Date: dd.mm.2022
+Release Date: 23.12.2022
 
 ### 1. New Features
 
@@ -21,7 +21,7 @@ Release Date: dd.mm.2022
 | [7-Zip](https://www.7-zip.org){:target="_blank"}                                                                                                                          | 22.01     |                  |         |
 | [Docker Compose](https://docs.docker.com/compose/release-notes/){:target="_blank"}                                                                                        | 2.14.2    |                  | upgrade |
 | [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"}                                                                                       | 4.15.0    |                  |         |
-| [IO-AVSTATS-DB](https://github.com/io-aero/io-avstats-db){:target="_blank"}                                                                                               | 1.2.1     |                  |         |
+| [IO-AVSTATS-DB](https://github.com/io-aero/io-avstats-db){:target="_blank"}                                                                                               | 1.2.2     |                  |         |
 | [The LLVM Compiler Infrastructure](https://llvm.org){:target="_blank"}                                                                                                    | 15.0.6    | Windows-specific | upgrade |
 | [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm){:target="_blank"}                                                                                   | 3.81      | Windows-specific |         |
 | [Microsoft Access Database Engine 2016 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=54920){:target="_blank"}                                 | 8/11/2020 | Windows-specific |         |
@@ -41,5 +41,5 @@ Release Date: dd.mm.2022
 ##### Data source `up22DEC.zip`
 
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22DEC.zip){:target="_blank"}
-- Version: 12/15/2022 3:00:31 AM
+- Version: 12/22/2022 3:00:46 AM
 - Purpose: update of aviation accident data available for public use

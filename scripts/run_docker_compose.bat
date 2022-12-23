@@ -27,8 +27,9 @@ set IO_AVSTATS_TASK_DEFAULT=up
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo up   - Start Docker Compose
-    echo down - Stop  Docker Compose
+    echo clean - Remove all containers and images
+    echo down  - Stop  Docker Compose
+    echo up    - Start Docker Compose
     echo ---------------------------------------------------------
     set /P IO_AVSTATS_TASK="Enter the desired task [default: %IO_AVSTATS_TASK_DEFAULT%] "
 
@@ -61,33 +62,31 @@ echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
 
+if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
+    echo Docker Containers ........................................... containers:
+    docker ps -a
+    echo ............................................................. before images:
+    docker images
+    docker rmi $(docker images -a -q)
+    echo ............................................................. after images:
+    docker images
+    goto END_OF_SCRIPT
+)
+
 if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker compose down
-
+    echo Docker Containers ........................................... containers:
+    docker ps -a
+    echo ............................................................. before images:
+    docker images
+    docker rmi $(docker images -a -q)
+    echo ............................................................. after images:
+    docker images
     goto END_OF_SCRIPT
 )
 
 if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
-    echo Docker Containers ........................................... before containers:
-    docker ps -a
-    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "faaus2008"                            && docker stop faaus2008
-    docker ps -a    | find "faaus2008"                            && docker rm  --force faaus2008
-    docker ps       | find "pdus2008"                             && docker stop pdus2008
-    docker ps -a    | find "pdus2008"                             && docker rm  --force pdus2008
-    echo ............................................................. after containers:
-    docker ps -a
-    echo ............................................................. before images:
-    docker image ls
-    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
-    docker image ls | find "faaus2008"                          && docker rmi --force ioaero/faaus2008
-    docker image ls | find "pdus2008"                           && docker rmi --force ioaero/pdus2008
-    echo ............................................................. after images:
-    docker image ls
-
     docker compose up
-
     goto END_OF_SCRIPT
 )
 

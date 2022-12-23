@@ -195,13 +195,18 @@ QUERIES = {
     "io_processed_files": """
         SELECT *
           FROM io_processed_files
-        ORDER BY file_name;
+        ORDER BY first_processed DESC;
     """,
     "io_states": """
         SELECT *
           FROM io_states
         ORDER BY country,
                  state;
+    """,
+    "io_us_2008": """
+        SELECT *
+          FROM io_us_2008
+        ORDER BY ev_id;
     """,
     "narratives": """
         SELECT *

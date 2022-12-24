@@ -309,14 +309,14 @@ st.header("Profiling Data for the US since 2008")
 # ------------------------------------------------------------------
 # Setup the controls.
 # ------------------------------------------------------------------
-choice_data_profile = st.sidebar.checkbox(
+CHOICE_DATA_PROFILE = st.sidebar.checkbox(
     help="Pandas profiling of the dataset.",
     label="**`Show data profile`**",
     value=False,
 )
 
-if choice_data_profile:
-    choice_data_profile_type = st.sidebar.radio(
+if CHOICE_DATA_PROFILE:
+    CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
         help="explorative: thorough but also slow - minimal: minimal but faster.",
         index=1,
         label="Data profile type",
@@ -327,13 +327,13 @@ if choice_data_profile:
             ]
         ),
     )
-    choice_data_profile_file = st.sidebar.checkbox(
+    CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
         help="Export the Pandas profile into a file.",
         label="Export profile to file",
         value=False,
     )
 
-choice_details = st.sidebar.checkbox(
+CHOICE_DETAILS = st.sidebar.checkbox(
     help="Tabular representation of the selected detailed data.",
     label="**`Show details`**",
     value=True,
@@ -356,10 +356,10 @@ df_db_data = pd.read_sql(QUERIES[table_selection], con=_get_engine())  # type: i
 # ------------------------------------------------------------------
 # Present data profile.
 # ------------------------------------------------------------------
-if choice_data_profile:
+if CHOICE_DATA_PROFILE:
     st.subheader(f"Profiling of the database table `{table_selection}`")
     # noinspection PyUnboundLocalVariable
-    if choice_data_profile_type == "explorative":
+    if CHOICE_DATA_PROFILE_TYPE == "explorative":
         df_db_data_profile = ProfileReport(
             df_db_data,
             explorative=True,
@@ -371,13 +371,13 @@ if choice_data_profile:
         )
     st_profile_report(df_db_data_profile)
     # noinspection PyUnboundLocalVariable
-    if choice_data_profile_file:
+    if CHOICE_DATA_PROFILE_FILE:
         if not os.path.isdir(SETTINGS.pandas_profile_dir):
             os.mkdir(SETTINGS.pandas_profile_dir)
         df_db_data_profile.to_file(
             os.path.join(
                 SETTINGS.pandas_profile_dir,
-                table_selection + "_" + choice_data_profile_type,  # type: ignore
+                table_selection + "_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
             )
         )
 
@@ -385,6 +385,6 @@ if choice_data_profile:
 # ------------------------------------------------------------------
 # Present details.
 # ------------------------------------------------------------------
-if choice_details:
+if CHOICE_DETAILS:
     st.subheader(f"The database table `{table_selection}` in detail")
     st.dataframe(df_db_data)

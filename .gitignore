@@ -8,10 +8,3 @@
 /data/download/
 /data/latest_postgres.zip
 /data/postgres/
-/docs/reports/*/*.aux
-/docs/reports/*/*.bbl
-/docs/reports/*/*.blg
-/docs/reports/*/*.dvi
-/docs/reports/*/*.log
-/docs/reports/*/*.out
-/docs/reports/*/*.tps

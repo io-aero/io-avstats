@@ -107,7 +107,7 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
 # Start Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
-    docker-compose up
+    docker-compose up &
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

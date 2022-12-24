@@ -17,6 +17,7 @@ from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
@@ -34,7 +35,7 @@ CHOICE_HISTOGRAM_WIDTH = None
 CHOICE_MAP = None
 CHOICE_MAP_MAP_STYLE = None
 
-DF_FAA_FILTERED: DataFrame = DataFrame()
+DF: DataFrame = DataFrame()
 
 FILTER_ACFT_CATEGORIES = ""
 FILTER_ALT_LOW = None
@@ -53,6 +54,7 @@ LAYER_TYPE = "ScatterplotLayer"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
+PG_CONN: Connection | None = None
 PITCH = 30
 
 # ------------------------------------------------------------------
@@ -87,108 +89,86 @@ ZOOM = 4.4
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
 def _apply_filter_controls():
-    global DF_FAA_FILTERED  # pylint: disable=global-statement
+    global DF  # pylint: disable=global-statement
 
     # noinspection PyUnboundLocalVariable
     if FILTER_YEAR_FROM or FILTER_YEAR_TO:
-        df_faa_year = df_faa.loc[
-            (df_faa["ev_year"] >= FILTER_YEAR_FROM)
-            & (df_faa["ev_year"] <= FILTER_YEAR_TO)
+        DF = DF.loc[
+            (DF["ev_year"] >= FILTER_YEAR_FROM) & (DF["ev_year"] <= FILTER_YEAR_TO)
         ]
-    else:
-        df_faa_year = df_faa
+
     # noinspection PyUnboundLocalVariable
     if FILTER_ACFT_CATEGORIES:
         # noinspection PyUnboundLocalVariable
-        df_faa_acft_categories = df_faa_year.loc[
-            (
-                df_faa_year["acft_category"].isin(
-                    FILTER_ACFT_CATEGORIES.upper().split(",")
-                )
-            )
+        DF = DF.loc[
+            (DF["acft_category"].isin(FILTER_ACFT_CATEGORIES.upper().split(",")))
         ]
-    else:
-        df_faa_acft_categories = df_faa_year
+
     # noinspection PyUnboundLocalVariable
     if FILTER_FAR_PARTS:
         # noinspection PyUnboundLocalVariable
-        df_faa_far_parts = df_faa_acft_categories.loc[
-            (
-                df_faa_acft_categories["far_part"].isin(
-                    FILTER_FAR_PARTS.upper().split(",")
-                )
-            )
-        ]
-    else:
-        df_faa_far_parts = df_faa_acft_categories
+        DF = DF.loc[(DF["far_part"].isin(FILTER_FAR_PARTS.upper().split(",")))]
+
     # noinspection PyUnboundLocalVariable
     if FILTER_FINDING_CODES:
         # noinspection PyUnboundLocalVariable
-        df_faa_finding_codes = df_faa_far_parts.loc[
-            (
-                df_faa_far_parts["finding_code"].isin(
-                    FILTER_FINDING_CODES.upper().split(",")
-                )
-            )
-        ]
-    else:
-        df_faa_finding_codes = df_faa_far_parts
+        DF = DF.loc[(DF["finding_code"].isin(FILTER_FINDING_CODES.upper().split(",")))]
+
     # noinspection PyUnboundLocalVariable
     if FILTER_OCCURRENCE_CODES:
         # noinspection PyUnboundLocalVariable
-        df_faa_occurrence_codes = df_faa_finding_codes.loc[
-            (
-                df_faa_finding_codes["occurrence_code"].isin(
-                    FILTER_OCCURRENCE_CODES.upper().split(",")
-                )
-            )
+        DF = DF.loc[
+            (DF["occurrence_code"].isin(FILTER_OCCURRENCE_CODES.upper().split(",")))
         ]
-    else:
-        df_faa_occurrence_codes = df_faa_finding_codes
+
     # noinspection PyUnboundLocalVariable
     if FILTER_STATES:
         # noinspection PyUnboundLocalVariable
-        df_faa_states = df_faa_occurrence_codes.loc[
-            (df_faa_occurrence_codes["state"].isin(FILTER_STATES.upper().split(",")))
-        ]
-    else:
-        df_faa_states = df_faa_occurrence_codes
+        DF = DF.loc[(DF["state"].isin(FILTER_STATES.upper().split(",")))]
+
     # noinspection PyUnboundLocalVariable
     if FILTER_LATLONG_ACQ:
         # noinspection PyUnboundLocalVariable
-        df_faa_latlong_acq = df_faa_states.loc[
-            (df_faa_states["latlong_acq"] == FILTER_LATLONG_ACQ)
-        ]
-    else:
-        df_faa_latlong_acq = df_faa_states
+        DF = DF.loc[(DF["latlong_acq"] == FILTER_LATLONG_ACQ)]
+
     # noinspection PyUnboundLocalVariable
     if FILTER_SPIN_STALL:
         # noinspection PyUnboundLocalVariable
-        df_faa_spin_stall = df_faa_latlong_acq.loc[
+        DF = DF.loc[
             # pylint: disable=singleton-comparison
-            (df_faa_latlong_acq["spin_stall"] == True)  # noqa: E712
+            (DF["spin_stall"] == True)  # noqa: E712
         ]
-    else:
-        df_faa_spin_stall = df_faa_latlong_acq
+
     # noinspection PyUnboundLocalVariable
     if FILTER_ALT_LOW:
         # noinspection PyUnboundLocalVariable
-        df_faa_alt_low = df_faa_spin_stall.loc[
+        DF = DF.loc[
             # pylint: disable=singleton-comparison
-            (df_faa_spin_stall["alt_low"] == True)  # noqa: E712
+            (DF["alt_low"] == True)  # noqa: E712
         ]
-    else:
-        df_faa_alt_low = df_faa_spin_stall
+
     # noinspection PyUnboundLocalVariable
     if FILTER_NARR_STALL:
         # noinspection PyUnboundLocalVariable
-        df_faa_narr_stall = df_faa_alt_low.loc[
+        DF = DF.loc[
             # pylint: disable=singleton-comparison
-            (df_faa_alt_low["narr_stall"] == True)  # noqa: E712
+            (DF["narr_stall"] == True)  # noqa: E712
         ]
-    else:
-        df_faa_narr_stall = df_faa_alt_low
-    DF_FAA_FILTERED = df_faa_narr_stall
+
+
+# ------------------------------------------------------------------
+# Read and filter the data.
+# ------------------------------------------------------------------
+def _get_data():
+    global DF  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()
+
+    DF = pd.read_sql(QUERY_FAAUS2008, con=_get_engine())
+
+    if CHOICE_FILTER_DATA:
+        _apply_filter_controls()
 
 
 # ------------------------------------------------------------------
@@ -224,20 +204,39 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
+# Present the filtered data.
+# ------------------------------------------------------------------
+def _present_data():
+    if CHOICE_DATA_PROFILE:
+        st.subheader("Profiling of the filtered data set")
+        _present_data_profile()
+
+    if CHOICE_DETAILS:
+        st.subheader("The filtered data set in detail")
+        st.dataframe(DF)
+
+    if CHOICE_HISTOGRAM:
+        st.subheader("Number of fatal accidents per year")
+        _present_histogram()
+
+    if CHOICE_MAP:
+        st.subheader("Depicting the fatal accidents on a map of the USA")
+        _present_map()
+
+
+# ------------------------------------------------------------------
 # Present data profile.
 # ------------------------------------------------------------------
 def _present_data_profile():
-    st.subheader("Profiling of the filtered data set")
-
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
         df_faa_states_year_profile = ProfileReport(
-            DF_FAA_FILTERED,
+            DF,
             explorative=True,
         )
     else:
         df_faa_states_year_profile = ProfileReport(
-            DF_FAA_FILTERED,
+            DF,
             minimal=True,
         )
 
@@ -259,12 +258,10 @@ def _present_data_profile():
 # Present the yearly fatal accidents.
 # ------------------------------------------------------------------
 def _present_histogram():
-    st.subheader("Number of fatal accidents per year")
-
     # noinspection PyUnboundLocalVariable
     fig, _ax = plt.subplots(figsize=(CHOICE_HISTOGRAM_WIDTH, CHOICE_HISTOGRAM_HEIGHT))
 
-    sns.histplot(DF_FAA_FILTERED["ev_year"], discrete=True)
+    sns.histplot(DF["ev_year"], discrete=True)
 
     plt.xlabel("Year")
 
@@ -275,11 +272,9 @@ def _present_histogram():
 # Present the US map.
 # ------------------------------------------------------------------
 def _present_map():
-    st.subheader("Depicting the fatal accidents on a map of the USA")
-
     faa_layer = pdk.Layer(
         auto_highlight=True,
-        data=DF_FAA_FILTERED,
+        data=DF,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
         get_radius=CHOICE_MAP_RADIUS,
@@ -290,7 +285,7 @@ def _present_map():
     # noinspection PyUnboundLocalVariable
     st.pydeck_chart(
         pdk.Deck(
-            initial_view_state=_sql_query_us_ll(pg_conn, QUERY_US_LL),
+            initial_view_state=_sql_query_us_ll(PG_CONN, QUERY_US_LL),
             layers=[faa_layer],
             map_style=MAP_STYLE_PREFIX + CHOICE_MAP_MAP_STYLE,  # type: ignore
             tooltip={
@@ -398,9 +393,25 @@ def _setup_filter_controls():
 
 
 # ------------------------------------------------------------------
-# Setup the controls.
+# Setup the page.
 # ------------------------------------------------------------------
-def _setup_controls():
+def _setup_page():
+    st.set_page_config(layout="wide")
+    st.header("Fatal Aviation Accidents in the US since 2008")
+
+
+# ------------------------------------------------------------------
+# Setup the sidebar.
+# ------------------------------------------------------------------
+def _setup_sidebar():
+    _setup_task_controls()
+    _setup_filter_controls()
+
+
+# ------------------------------------------------------------------
+# Setup the task controls.
+# ------------------------------------------------------------------
+def _setup_task_controls():
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_FILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
@@ -518,41 +529,12 @@ def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
 
 
 # ------------------------------------------------------------------
-# Setup the page.
+# Streamlit flow.
 # ------------------------------------------------------------------
-st.set_page_config(layout="wide")
-st.header("Fatal Aviation Accidents in the US since 2008")
+_setup_page()
 
-# ------------------------------------------------------------------
-# Setup the sidebar.
-# ------------------------------------------------------------------
-_setup_controls()
-_setup_filter_controls()
+_setup_sidebar()
 
-# ------------------------------------------------------------------
-# Read and filter the data.
-# ------------------------------------------------------------------
-pg_conn = _get_postgres_connection()
+_get_data()
 
-df_faa = pd.read_sql(QUERY_FAAUS2008, con=_get_engine())
-
-if CHOICE_FILTER_DATA:
-    _apply_filter_controls()
-else:
-    DF_FAA_FILTERED = df_faa
-
-# ------------------------------------------------------------------
-# Present the filtered data.
-# ------------------------------------------------------------------
-if CHOICE_DATA_PROFILE:
-    _present_data_profile()
-
-if CHOICE_DETAILS:
-    st.subheader("The filtered data set in detail")
-    st.dataframe(DF_FAA_FILTERED)
-
-if CHOICE_HISTOGRAM:
-    _present_histogram()
-
-if CHOICE_MAP:
-    _present_map()
+_present_data()

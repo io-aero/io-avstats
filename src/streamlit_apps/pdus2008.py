@@ -9,15 +9,26 @@ import pandas as pd
 import psycopg2
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
+from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants.
 # ------------------------------------------------------------------
+CHOICE_DATA_PROFILE = None
+CHOICE_DATA_PROFILE_FILE = None
+CHOICE_DATA_PROFILE_TYPE = None
+CHOICE_DETAILS = None
+CHOICE_TABLE_SELECTION = None
+
+DF: DataFrame = DataFrame()
+
+PG_CONN: Connection | None = None
 
 # ------------------------------------------------------------------
 # Query data for the US since 2008.
@@ -269,6 +280,18 @@ SETTINGS = Dynaconf(
 
 
 # ------------------------------------------------------------------
+# Read and filter the data.
+# ------------------------------------------------------------------
+def _get_data():
+    global DF  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()
+
+    DF = pd.read_sql(QUERIES[CHOICE_TABLE_SELECTION], con=_get_engine())  # type: ignore
+
+
+# ------------------------------------------------------------------
 # Create a simple user PostgreSQL database engine.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
@@ -301,90 +324,118 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
-# Setup the page.
+# Present the filtered data.
 # ------------------------------------------------------------------
-st.set_page_config(layout="wide")
-st.header("Profiling Data for the US since 2008")
+def _present_data():
+    if CHOICE_DATA_PROFILE:
+        st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
+        _present_data_data_profile()
 
-# ------------------------------------------------------------------
-# Setup the controls.
-# ------------------------------------------------------------------
-CHOICE_DATA_PROFILE = st.sidebar.checkbox(
-    help="Pandas profiling of the dataset.",
-    label="**`Show data profile`**",
-    value=False,
-)
+    if CHOICE_DETAILS:
+        st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
+        st.dataframe(DF)
 
-if CHOICE_DATA_PROFILE:
-    CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
-        help="explorative: thorough but also slow - minimal: minimal but faster.",
-        index=1,
-        label="Data profile type",
-        options=(
-            [
-                "explorative",
-                "minimal",
-            ]
-        ),
-    )
-    CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
-        help="Export the Pandas profile into a file.",
-        label="Export profile to file",
-        value=False,
-    )
-
-CHOICE_DETAILS = st.sidebar.checkbox(
-    help="Tabular representation of the selected detailed data.",
-    label="**`Show details`**",
-    value=True,
-)
-
-table_selection = st.sidebar.radio(
-    help="Available database tables and views for profiling.",
-    index=5,
-    label="Database table",
-    options=(QUERIES.keys()),
-)
-
-# ------------------------------------------------------------------
-# Read and filter data.
-# ------------------------------------------------------------------
-pg_conn = _get_postgres_connection()
-
-df_db_data = pd.read_sql(QUERIES[table_selection], con=_get_engine())  # type: ignore
 
 # ------------------------------------------------------------------
 # Present data profile.
 # ------------------------------------------------------------------
-if CHOICE_DATA_PROFILE:
-    st.subheader(f"Profiling of the database table `{table_selection}`")
+def _present_data_data_profile():
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
-        df_db_data_profile = ProfileReport(
-            df_db_data,
+        profile_report = ProfileReport(
+            DF,
             explorative=True,
         )
     else:
-        df_db_data_profile = ProfileReport(
-            df_db_data,
+        profile_report = ProfileReport(
+            DF,
             minimal=True,
         )
-    st_profile_report(df_db_data_profile)
+
+    st_profile_report(profile_report)
+
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_FILE:
         if not os.path.isdir(SETTINGS.pandas_profile_dir):
             os.mkdir(SETTINGS.pandas_profile_dir)
-        df_db_data_profile.to_file(
+        profile_report.to_file(
             os.path.join(
                 SETTINGS.pandas_profile_dir,
-                table_selection + "_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
+                CHOICE_TABLE_SELECTION + "_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
             )
         )
 
 
 # ------------------------------------------------------------------
-# Present details.
+# Setup the page.
 # ------------------------------------------------------------------
-if CHOICE_DETAILS:
-    st.subheader(f"The database table `{table_selection}` in detail")
-    st.dataframe(df_db_data)
+def _setup_page():
+    st.set_page_config(layout="wide")
+    st.header("Profiling Data for the US since 2008")
+
+
+# ------------------------------------------------------------------
+# Setup the sidebar.
+# ------------------------------------------------------------------
+def _setup_sidebar():
+    _setup_task_controls()
+
+
+# ------------------------------------------------------------------
+# Setup the controls.
+# ------------------------------------------------------------------
+def _setup_task_controls():
+    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
+    global CHOICE_DATA_PROFILE_FILE  # pylint: disable=global-statement
+    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
+    global CHOICE_DETAILS  # pylint: disable=global-statement
+    global CHOICE_TABLE_SELECTION  # pylint: disable=global-statement
+
+    CHOICE_DATA_PROFILE = st.sidebar.checkbox(
+        help="Pandas profiling of the dataset.",
+        label="**`Show data profile`**",
+        value=False,
+    )
+
+    if CHOICE_DATA_PROFILE:
+        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
+            help="explorative: thorough but also slow - minimal: minimal but faster.",
+            index=1,
+            label="Data profile type",
+            options=(
+                [
+                    "explorative",
+                    "minimal",
+                ]
+            ),
+        )
+        CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
+            help="Export the Pandas profile into a file.",
+            label="Export profile to file",
+            value=False,
+        )
+
+    CHOICE_DETAILS = st.sidebar.checkbox(
+        help="Tabular representation of the selected detailed data.",
+        label="**`Show details`**",
+        value=True,
+    )
+
+    CHOICE_TABLE_SELECTION = st.sidebar.radio(
+        help="Available database tables and views for profiling.",
+        index=5,
+        label="Database table",
+        options=(QUERIES.keys()),
+    )
+
+
+# ------------------------------------------------------------------
+# Streamlit flow.
+# ------------------------------------------------------------------
+_setup_page()
+
+_setup_sidebar()
+
+_get_data()
+
+_present_data()

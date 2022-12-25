@@ -4,8 +4,8 @@
 
 | Identification | Header                                        |
 |----------------|-----------------------------------------------|
-| faaus2008      | Fatal Aircraft Accidents in the US since 2008 |
-| pdus2008       | Profiling Data for the US since 2008          |
+| faaus1982      | Fatal Aircraft Accidents in the US since 1982 |
+| pdus1982       | Profiling Data for the US since 1982          |
 
 ## 2. Coding
 
@@ -55,8 +55,8 @@ see file directory **`docs`**
 
 ```
 ...
-| streamlit_server_port_faaus2008         | 8501                                          | Streamlit port number for application faaus2008                          |
-| streamlit_server_port_pdus2008          | 8502                                          | Streamlit port number for application pdus2008                           |
+| streamlit_server_port_faaus1982         | 8501                                          | Streamlit port number for application faaus1982                          |
+| streamlit_server_port_pdus1982          | 8502                                          | Streamlit port number for application pdus1982                           |
 ...
 ```
 
@@ -71,8 +71,8 @@ Currently, the following Streamlit applications are supported:
 
 | Port | Application                                               |
 |------|-----------------------------------------------------------|
-| 8501 | faaus2008 - Fatal Aircraft Accidents in the US since 2008 |
-| 8502 | pdus2008  - Profiling Data for the US since 2008          |
+| 8501 | faaus1982 - Fatal Aircraft Accidents in the US since 1982 |
+| 8502 | pdus1982  - Profiling Data for the US since 1982          |
 ...
 ```
 
@@ -86,8 +86,8 @@ Currently, the following Streamlit applications are supported:
 
 | Application | Description                                    |
 |-------------|------------------------------------------------|
-| faaus2008   | Fatal Aircraft Accidents in the US since 2008  |
-| pdus2008    | Profiling Data for the US since 2008           |
+| faaus1982   | Fatal Aircraft Accidents in the US since 1982  |
+| pdus1982    | Profiling Data for the US since 1982           |
 ...
 ```
 
@@ -97,8 +97,8 @@ Currently, the following Streamlit applications are supported:
 ...
 Currently, it includes the following applications:
 
-- faaus2008 - Fatal Aircraft Accidents in the US since 2008
-- pdus2008  - Profiling Data for the US since 2008
+- faaus1982 - Fatal Aircraft Accidents in the US since 1982
+- pdus1982  - Profiling Data for the US since 1982
 ...
 ```
 
@@ -117,27 +117,27 @@ TODO
 ```
 ...
   # ------------------------------------------------------------------------------
-  # faaus2008 - Fatal Aircraft Accidents in the US since 2008.
+  # faaus1982 - Fatal Aircraft Accidents in the US since 1982.
   # ------------------------------------------------------------------------------
-  app_faaus2008:
-    container_name: faaus2008
+  app_faaus1982:
+    container_name: faaus1982
     depends_on:
       - db
-    image: ioaero/faaus2008:latest
+    image: ioaero/faaus1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
-  # pdus2008 - Profiling Data for the US since 2008.
+  # pdus1982 - Profiling Data for the US since 1982.
   # ------------------------------------------------------------------------------
-  app_pdus2008:
-    container_name: pdus2008
+  app_pdus1982:
+    container_name: pdus1982
     depends_on:
       - db
-    image: ioaero/pdus2008:latest
+    image: ioaero/pdus1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 ...
 ```
@@ -146,8 +146,8 @@ TODO
 
 ```
 ...
-streamlit_server_port_faaus2008 = 8501
-streamlit_server_port_pdus2008 = 8502
+streamlit_server_port_faaus1982 = 8501
+streamlit_server_port_pdus1982 = 8502
 ...
 ```
 
@@ -162,8 +162,8 @@ streamlit_server_port_pdus2008 = 8502
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-		echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
-		echo pdus2008  - Profiling Data for the US since 2008
+		echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
+		echo pdus1982  - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -180,8 +180,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-        echo "pdus2008  - Profiling Data for the US since 2008"
+        echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
+        echo "pdus1982  - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -205,8 +205,8 @@ fi
 ...
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo faaus2008 - Fatal Aircraft Accidents in the US since 2008
-    echo pdus2008  - Profiling Data for the US since 2008
+    echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
+    echo pdus1982  - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -225,8 +225,8 @@ if ["%1"] EQU [""] (
 ...
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-    echo "pdus2008  - Profiling Data for the US since 2008"
+    echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
+    echo "pdus1982  - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}
@@ -246,11 +246,11 @@ fi
 
 ```
 ...
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008=8501
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008=8502
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982=8501
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982=8502
 ...
-echo STREAMLIT_SRRVER_PORT_faaus2008 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008%
-echo STREAMLIT_SERVER_PORT_pdus2008  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008%
+echo STREAMLIT_SRRVER_PORT_faaus1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982%
+echo STREAMLIT_SERVER_PORT_pdus1982  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982%
 ...
 ```
 
@@ -258,10 +258,10 @@ echo STREAMLIT_SERVER_PORT_pdus2008  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus200
 
 ```
 ...
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008=8502
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982=8501
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982=8502
 ...
-echo "STREAMLIT_SRRVER_PORT_faaus2008 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus2008}"
-echo "STREAMLIT_SERVER_PORT_pdus2008  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus2008}"
+echo "STREAMLIT_SRRVER_PORT_faaus1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982}"
+echo "STREAMLIT_SERVER_PORT_pdus1982  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982}"
 ...
 ```

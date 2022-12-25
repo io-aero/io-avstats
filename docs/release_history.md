@@ -54,7 +54,7 @@ Release Date: 18.12.2022
 
 ### 2. Modified Features
 
-- Application faaus2008: 
+- Application faaus1982: 
   - extended filter options.
 
 ### 3. Applied Software (Windows-specific)
@@ -97,8 +97,8 @@ Release Date: 12.12.2022
 
 - Docker Compose usage
 - Making available in AWS
-- Streamlit application: faaus2008 - Fatal Aircraft Accidents in the US since 2008
-- Streamlit application: pdus2008 - Profiling Data for the US since 2008
+- Streamlit application: faaus1982 - Fatal Aircraft Accidents in the US since 1982
+- Streamlit application: pdus1982 - Profiling Data for the US since 1982
 
 ### 2. Applied Software (Windows-specific)
 

@@ -1337,45 +1337,77 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 <a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>                      FROM io_states is2)
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a> UNION
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>SELECT count(*) &quot;Count&quot;,
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>       &#39;Events Total since 2008&#39; &quot;Description&quot;
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>       &#39;Events Total since 1982&#39; &quot;Description&quot;
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>  FROM events e
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a> WHERE ev_year &gt;= 1982
 <a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a> UNION
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>SELECT count(*) ,
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>       &#39;Events Total with Fatalities since 2008&#39;
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>       &#39;Events Total with Fatalities since 1982&#39;
 <a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>  FROM events e
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a> WHERE ev_year &gt;= 1982
 <a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>   AND inj_tot_f &gt; 0
 <a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a> UNION
 <a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>SELECT count(*) ,
-<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>       &#39;Events US since 2008&#39;
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>       &#39;Events US since 1982&#39;
 <a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>  FROM events e
-<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a> WHERE ev_year &gt;= 1982
 <a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>   AND ev_state IS NOT NULL
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>   AND ev_state IN (SELECT state
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>                      FROM io_states is2)
 <a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a> UNION
 <a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>SELECT count(*) ,
-<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>       &#39;Events US with Fatalities since 2008&#39;
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>       &#39;Events US with Fatalities since 1982&#39;
 <a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>  FROM events e
-<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a> WHERE ev_year &gt;= 1982
 <a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>   AND inj_tot_f &gt; 0
 <a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>   AND ev_state IS NOT NULL
 <a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>   AND ev_state IN (SELECT state
 <a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>                      FROM io_states is2)
-<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a> ORDER BY 2
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a> UNION
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>       &#39;Events Total since 2008&#39; &quot;Description&quot;
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>  FROM events e
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a> UNION
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>SELECT count(*) ,
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>       &#39;Events Total with Fatalities since 2008&#39;
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a>  FROM events e
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a> UNION
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a>SELECT count(*) ,
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a>       &#39;Events US since 2008&#39;
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a>  FROM events e
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>                      FROM io_states is2)
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a> UNION
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>SELECT count(*) ,
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a>       &#39;Events US with Fatalities since 2008&#39;
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>  FROM events e
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a>                      FROM io_states is2)
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a> ORDER BY 2
 </code></pre></div>
 <p><strong>Results</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Count|Description                            |
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----+---------------------------------------+
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>88045|Events Total                           |
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>25031|Events Total since 2008                |
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>17564|Events Total with Fatalities           |
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a> 5259|Events Total with Fatalities since 2008|
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>81088|Events US                              |
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>20731|Events US since 2008                   |
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>14689|Events US with Fatalities              |
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a> 3501|Events US with Fatalities since 2008   |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>88038|Events Total since 1982                |
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>25031|Events Total since 2008                |
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>17564|Events Total with Fatalities           |
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>17558|Events Total with Fatalities since 1982|
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a> 5259|Events Total with Fatalities since 2008|
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>81088|Events US                              |
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>81081|Events US since 1982                   |
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>20731|Events US since 2008                   |
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>14689|Events US with Fatalities              |
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>14683|Events US with Fatalities since 1982   |
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a> 3501|Events US with Fatalities since 2008   |
 </code></pre></div>
 <h3 id="22-l_n_a-load-ntsb-ms-access-database-data-into-postgresql">2.2 <strong><code>l_n_a</code></strong> - Load NTSB MS Access database data into PostgreSQL</h3>
 <p><strong>Relevant cofiguration parameters</strong>:</p>
@@ -1790,348 +1822,380 @@ If there is no mismatch, then the next step can be skipped.</p>
 <a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>   64|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; INFO.00.033 Correction based on US zip code                                                                            |
 <a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>  122|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                                                                 |
 </code></pre></div>
-<p><strong>Query Total since 2008:</strong>:</p>
+<p><strong>Query Total since 1982:</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>       io_dec_lat_lng_actions
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  FROM events 
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a> WHERE ev_year &gt;= 1982
 <a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>   AND io_dec_lat_lng_actions IS NOT NULL 
 <a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a> GROUP BY io_dec_lat_lng_actions 
 <a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a> ORDER BY io_dec_lat_lng_actions
 </code></pre></div>
 <p><strong>Results</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                   |
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------+
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    1|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                     |
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    6|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                     |
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    6|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                        |
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    1|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country|
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    8|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country   |
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>   10|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                   |
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>   15|INFO.00.033 Correction based on US zip code                                                                                                              |
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>   27|INFO.00.034 Correction based on US state and city                                                                                                        |
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                                                                                                                         |
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>  510|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                           |
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a> 4087|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  586|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                                                              |
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    5|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                      |
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    4|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                      |
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>   14|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                                                         |
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>   14|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                                                         |
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>    8|ERROR.00.922 Invalid US state id &amp; INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>    3|ERROR.00.922 Invalid US state id &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>   91|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>    1|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00|
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>    2|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                              |
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>42684|INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a> 1286|INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              |
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>10958|INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>  101|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string                                                                                                                                                                  |
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>    4|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                   |
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>   64|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; INFO.00.033 Correction based on US zip code                                                                            |
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>  122|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                                                                 |
+</code></pre></div>
+<p><strong>Query Total since 2008:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>       io_dec_lat_lng_actions
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  FROM events 
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>   AND io_dec_lat_lng_actions IS NOT NULL 
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a> GROUP BY io_dec_lat_lng_actions 
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a> ORDER BY io_dec_lat_lng_actions
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                   |
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    1|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                     |
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    6|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                     |
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    6|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                        |
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    1|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country|
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    8|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country   |
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>   10|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                   |
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>   15|INFO.00.033 Correction based on US zip code                                                                                                              |
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>   27|INFO.00.034 Correction based on US state and city                                                                                                        |
 </code></pre></div>
 <h3 id="29-v_n_d-verify-selected-ntsb-data">2.9 <strong><code>v_n_d</code></strong> - Verify selected NTSB data</h3>
 <p><strong>Relevant cofiguration parameters</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>max_deviation_latitude = 0.01
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>max_deviation_longitude = 0.01
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>max_deviation_latitude = 0.01
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>max_deviation_longitude = 0.01
 </code></pre></div>
 <p><strong>Example protocol</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>...\io-avstats&gt;run_io_avstats
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>=========================================================
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>r_s_a   - Run a Streamlit application
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>---------------------------------------------------------
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>d_n_a   - Download a NTSB MS Access database file
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>v_n_d   - Verify selected NTSB data
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>r_d_s   - Refresh the PostgreSQL database schema
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>---------------------------------------------------------
-<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>c_p_d   - Cleansing PostgreSQL data
-<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>d_s_f   - Download basic simplemaps files
-<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
-<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>l_c_s   - Load country and state data into PostgreSQL
-<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
-<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
-<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>---------------------------------------------------------
-<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>c_d_s   - Create the PostgreSQL database schema
-<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>d_d_f   - Delete the PostgreSQL database files
-<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>d_d_s   - Drop the PostgreSQL database schema
-<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>s_d_c   - Set up the PostgreSQL database container
-<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>u_d_s   - Update the PostgreSQL database schema
-<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>---------------------------------------------------------
-<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>version - Show the IO-AVSTATS-DB version
-<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a>---------------------------------------------------------
-<a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a>Enter the desired task [default: r_s_a] v_n_d
-<a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a>
-<a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a>Script run_io_avstats is now running
-<a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a>=======================================================================
-<a id="__codelineno-21-30" name="__codelineno-21-30" href="#__codelineno-21-30"></a>Start run_io_avstats
-<a id="__codelineno-21-31" name="__codelineno-21-31" href="#__codelineno-21-31"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-32" name="__codelineno-21-32" href="#__codelineno-21-32"></a>IO-AVSTATS - Aviation Accident Statistics.
-<a id="__codelineno-21-33" name="__codelineno-21-33" href="#__codelineno-21-33"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-34" name="__codelineno-21-34" href="#__codelineno-21-34"></a>PYTHONPATH :
-<a id="__codelineno-21-35" name="__codelineno-21-35" href="#__codelineno-21-35"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-36" name="__codelineno-21-36" href="#__codelineno-21-36"></a>TASK       : v_n_d
-<a id="__codelineno-21-37" name="__codelineno-21-37" href="#__codelineno-21-37"></a>CORRECTION :
-<a id="__codelineno-21-38" name="__codelineno-21-38" href="#__codelineno-21-38"></a>MSACCESS   :
-<a id="__codelineno-21-39" name="__codelineno-21-39" href="#__codelineno-21-39"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-40" name="__codelineno-21-40" href="#__codelineno-21-40"></a>The current time is:  7:01:26.47
-<a id="__codelineno-21-41" name="__codelineno-21-41" href="#__codelineno-21-41"></a>Enter the new time:
-<a id="__codelineno-21-42" name="__codelineno-21-42" href="#__codelineno-21-42"></a>=======================================================================
-<a id="__codelineno-21-43" name="__codelineno-21-43" href="#__codelineno-21-43"></a>Progress update 2022-12-18 07:01:28.302801 : ===============================================================================.
-<a id="__codelineno-21-44" name="__codelineno-21-44" href="#__codelineno-21-44"></a>Progress update 2022-12-18 07:01:28.303299 : INFO.00.004 Start Launcher.
-<a id="__codelineno-21-45" name="__codelineno-21-45" href="#__codelineno-21-45"></a>Progress update 2022-12-18 07:01:28.305302 : INFO.00.001 The logger is configured and ready.
-<a id="__codelineno-21-46" name="__codelineno-21-46" href="#__codelineno-21-46"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.005 Argument task=&#39;v_n_d&#39;.
-<a id="__codelineno-21-47" name="__codelineno-21-47" href="#__codelineno-21-47"></a>Progress update 2022-12-18 07:01:28.313799 : -------------------------------------------------------------------------------.
-<a id="__codelineno-21-48" name="__codelineno-21-48" href="#__codelineno-21-48"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.043 Verify selected NTSB data.
-<a id="__codelineno-21-49" name="__codelineno-21-49" href="#__codelineno-21-49"></a>Progress update 2022-12-18 07:01:28.313799 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-50" name="__codelineno-21-50" href="#__codelineno-21-50"></a>Progress update 2022-12-18 07:01:29.791861 : INFO.00.063 Processed data source &#39;events&#39;.
-<a id="__codelineno-21-51" name="__codelineno-21-51" href="#__codelineno-21-51"></a>Progress update 2022-12-18 07:01:29.791861 : Number cols deleted  :  27378.
-<a id="__codelineno-21-52" name="__codelineno-21-52" href="#__codelineno-21-52"></a>Progress update 2022-12-18 07:01:29.791861 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-53" name="__codelineno-21-53" href="#__codelineno-21-53"></a>Progress update 2022-12-18 07:01:29.847379 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;latitude &amp; longitude&#39;.
-<a id="__codelineno-21-54" name="__codelineno-21-54" href="#__codelineno-21-54"></a>Progress update 2022-12-18 07:01:29.847879 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-55" name="__codelineno-21-55" href="#__codelineno-21-55"></a>Progress update 2022-12-18 07:01:30.779339 : Number of rows so far read :   5000.
-<a id="__codelineno-21-56" name="__codelineno-21-56" href="#__codelineno-21-56"></a>Progress update 2022-12-18 07:01:35.923824 : Number of rows so far read :  10000.
-<a id="__codelineno-21-57" name="__codelineno-21-57" href="#__codelineno-21-57"></a>Progress update 2022-12-18 07:02:21.619041 : Number of rows so far read :  15000.
-<a id="__codelineno-21-58" name="__codelineno-21-58" href="#__codelineno-21-58"></a>Progress update 2022-12-18 07:03:23.893470 : Number of rows so far read :  20000.
-<a id="__codelineno-21-59" name="__codelineno-21-59" href="#__codelineno-21-59"></a>Progress update 2022-12-18 07:04:30.130890 : Number of rows so far read :  25000.
-<a id="__codelineno-21-60" name="__codelineno-21-60" href="#__codelineno-21-60"></a>Progress update 2022-12-18 07:05:33.466294 : Number of rows so far read :  30000.
-<a id="__codelineno-21-61" name="__codelineno-21-61" href="#__codelineno-21-61"></a>Progress update 2022-12-18 07:06:30.937809 : Number rows errors   :  12374.
-<a id="__codelineno-21-62" name="__codelineno-21-62" href="#__codelineno-21-62"></a>Progress update 2022-12-18 07:06:30.937809 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-63" name="__codelineno-21-63" href="#__codelineno-21-63"></a>Progress update 2022-12-18 07:06:30.938308 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city&#39;.
-<a id="__codelineno-21-64" name="__codelineno-21-64" href="#__codelineno-21-64"></a>Progress update 2022-12-18 07:06:32.108776 : Number rows errors   :   6041.
-<a id="__codelineno-21-65" name="__codelineno-21-65" href="#__codelineno-21-65"></a>Progress update 2022-12-18 07:06:32.108776 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-66" name="__codelineno-21-66" href="#__codelineno-21-66"></a>Progress update 2022-12-18 07:06:32.108776 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city &amp; ev_site_zipcode&#39;.
-<a id="__codelineno-21-67" name="__codelineno-21-67" href="#__codelineno-21-67"></a>Progress update 2022-12-18 07:06:33.699993 : Number rows errors   :  16516.
-<a id="__codelineno-21-68" name="__codelineno-21-68" href="#__codelineno-21-68"></a>Progress update 2022-12-18 07:06:33.700494 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-69" name="__codelineno-21-69" href="#__codelineno-21-69"></a>Progress update 2022-12-18 07:06:33.700494 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_state&#39;.
-<a id="__codelineno-21-70" name="__codelineno-21-70" href="#__codelineno-21-70"></a>Progress update 2022-12-18 07:06:34.416462 : Number rows errors   :    291.
-<a id="__codelineno-21-71" name="__codelineno-21-71" href="#__codelineno-21-71"></a>Progress update 2022-12-18 07:06:34.416462 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-72" name="__codelineno-21-72" href="#__codelineno-21-72"></a>Progress update 2022-12-18 07:06:34.416462 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_site_zipcode&#39;.
-<a id="__codelineno-21-73" name="__codelineno-21-73" href="#__codelineno-21-73"></a>Progress update 2022-12-18 07:06:34.866764 : Number rows errors   :   6034.
-<a id="__codelineno-21-74" name="__codelineno-21-74" href="#__codelineno-21-74"></a>Progress update 2022-12-18 07:06:34.866764 : --------------------------------------------------------------------------------
-<a id="__codelineno-21-75" name="__codelineno-21-75" href="#__codelineno-21-75"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows selected :  34324.
-<a id="__codelineno-21-76" name="__codelineno-21-76" href="#__codelineno-21-76"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows updated  :  41256.
-<a id="__codelineno-21-77" name="__codelineno-21-77" href="#__codelineno-21-77"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows errors   :  41256.
-<a id="__codelineno-21-78" name="__codelineno-21-78" href="#__codelineno-21-78"></a>Progress update 2022-12-18 07:06:34.868264 : -------------------------------------------------------------------------------.
-<a id="__codelineno-21-79" name="__codelineno-21-79" href="#__codelineno-21-79"></a>Progress update 2022-12-18 07:06:34.868264 :      306,720,465,000 ns - Total time launcher.
-<a id="__codelineno-21-80" name="__codelineno-21-80" href="#__codelineno-21-80"></a>Progress update 2022-12-18 07:06:34.868264 : INFO.00.006 End   Launcher.
-<a id="__codelineno-21-81" name="__codelineno-21-81" href="#__codelineno-21-81"></a>Progress update 2022-12-18 07:06:34.868264 : ===============================================================================.
-<a id="__codelineno-21-82" name="__codelineno-21-82" href="#__codelineno-21-82"></a>
-<a id="__codelineno-21-83" name="__codelineno-21-83" href="#__codelineno-21-83"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-84" name="__codelineno-21-84" href="#__codelineno-21-84"></a>The current time is:  7:06:35.04
-<a id="__codelineno-21-85" name="__codelineno-21-85" href="#__codelineno-21-85"></a>Enter the new time:
-<a id="__codelineno-21-86" name="__codelineno-21-86" href="#__codelineno-21-86"></a>-----------------------------------------------------------------------
-<a id="__codelineno-21-87" name="__codelineno-21-87" href="#__codelineno-21-87"></a>End   run_io_avstats
-<a id="__codelineno-21-88" name="__codelineno-21-88" href="#__codelineno-21-88"></a>=======================================================================
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>=========================================================
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>---------------------------------------------------------
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>---------------------------------------------------------
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>---------------------------------------------------------
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a>---------------------------------------------------------
+<a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a>---------------------------------------------------------
+<a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a>Enter the desired task [default: r_s_a] v_n_d
+<a id="__codelineno-23-27" name="__codelineno-23-27" href="#__codelineno-23-27"></a>
+<a id="__codelineno-23-28" name="__codelineno-23-28" href="#__codelineno-23-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-23-29" name="__codelineno-23-29" href="#__codelineno-23-29"></a>=======================================================================
+<a id="__codelineno-23-30" name="__codelineno-23-30" href="#__codelineno-23-30"></a>Start run_io_avstats
+<a id="__codelineno-23-31" name="__codelineno-23-31" href="#__codelineno-23-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-32" name="__codelineno-23-32" href="#__codelineno-23-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-23-33" name="__codelineno-23-33" href="#__codelineno-23-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-34" name="__codelineno-23-34" href="#__codelineno-23-34"></a>PYTHONPATH :
+<a id="__codelineno-23-35" name="__codelineno-23-35" href="#__codelineno-23-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-36" name="__codelineno-23-36" href="#__codelineno-23-36"></a>TASK       : v_n_d
+<a id="__codelineno-23-37" name="__codelineno-23-37" href="#__codelineno-23-37"></a>CORRECTION :
+<a id="__codelineno-23-38" name="__codelineno-23-38" href="#__codelineno-23-38"></a>MSACCESS   :
+<a id="__codelineno-23-39" name="__codelineno-23-39" href="#__codelineno-23-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-40" name="__codelineno-23-40" href="#__codelineno-23-40"></a>The current time is:  7:01:26.47
+<a id="__codelineno-23-41" name="__codelineno-23-41" href="#__codelineno-23-41"></a>Enter the new time:
+<a id="__codelineno-23-42" name="__codelineno-23-42" href="#__codelineno-23-42"></a>=======================================================================
+<a id="__codelineno-23-43" name="__codelineno-23-43" href="#__codelineno-23-43"></a>Progress update 2022-12-18 07:01:28.302801 : ===============================================================================.
+<a id="__codelineno-23-44" name="__codelineno-23-44" href="#__codelineno-23-44"></a>Progress update 2022-12-18 07:01:28.303299 : INFO.00.004 Start Launcher.
+<a id="__codelineno-23-45" name="__codelineno-23-45" href="#__codelineno-23-45"></a>Progress update 2022-12-18 07:01:28.305302 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-23-46" name="__codelineno-23-46" href="#__codelineno-23-46"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.005 Argument task=&#39;v_n_d&#39;.
+<a id="__codelineno-23-47" name="__codelineno-23-47" href="#__codelineno-23-47"></a>Progress update 2022-12-18 07:01:28.313799 : -------------------------------------------------------------------------------.
+<a id="__codelineno-23-48" name="__codelineno-23-48" href="#__codelineno-23-48"></a>Progress update 2022-12-18 07:01:28.313799 : INFO.00.043 Verify selected NTSB data.
+<a id="__codelineno-23-49" name="__codelineno-23-49" href="#__codelineno-23-49"></a>Progress update 2022-12-18 07:01:28.313799 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-50" name="__codelineno-23-50" href="#__codelineno-23-50"></a>Progress update 2022-12-18 07:01:29.791861 : INFO.00.063 Processed data source &#39;events&#39;.
+<a id="__codelineno-23-51" name="__codelineno-23-51" href="#__codelineno-23-51"></a>Progress update 2022-12-18 07:01:29.791861 : Number cols deleted  :  27378.
+<a id="__codelineno-23-52" name="__codelineno-23-52" href="#__codelineno-23-52"></a>Progress update 2022-12-18 07:01:29.791861 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-53" name="__codelineno-23-53" href="#__codelineno-23-53"></a>Progress update 2022-12-18 07:01:29.847379 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;latitude &amp; longitude&#39;.
+<a id="__codelineno-23-54" name="__codelineno-23-54" href="#__codelineno-23-54"></a>Progress update 2022-12-18 07:01:29.847879 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-55" name="__codelineno-23-55" href="#__codelineno-23-55"></a>Progress update 2022-12-18 07:01:30.779339 : Number of rows so far read :   5000.
+<a id="__codelineno-23-56" name="__codelineno-23-56" href="#__codelineno-23-56"></a>Progress update 2022-12-18 07:01:35.923824 : Number of rows so far read :  10000.
+<a id="__codelineno-23-57" name="__codelineno-23-57" href="#__codelineno-23-57"></a>Progress update 2022-12-18 07:02:21.619041 : Number of rows so far read :  15000.
+<a id="__codelineno-23-58" name="__codelineno-23-58" href="#__codelineno-23-58"></a>Progress update 2022-12-18 07:03:23.893470 : Number of rows so far read :  20000.
+<a id="__codelineno-23-59" name="__codelineno-23-59" href="#__codelineno-23-59"></a>Progress update 2022-12-18 07:04:30.130890 : Number of rows so far read :  25000.
+<a id="__codelineno-23-60" name="__codelineno-23-60" href="#__codelineno-23-60"></a>Progress update 2022-12-18 07:05:33.466294 : Number of rows so far read :  30000.
+<a id="__codelineno-23-61" name="__codelineno-23-61" href="#__codelineno-23-61"></a>Progress update 2022-12-18 07:06:30.937809 : Number rows errors   :  12374.
+<a id="__codelineno-23-62" name="__codelineno-23-62" href="#__codelineno-23-62"></a>Progress update 2022-12-18 07:06:30.937809 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-63" name="__codelineno-23-63" href="#__codelineno-23-63"></a>Progress update 2022-12-18 07:06:30.938308 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city&#39;.
+<a id="__codelineno-23-64" name="__codelineno-23-64" href="#__codelineno-23-64"></a>Progress update 2022-12-18 07:06:32.108776 : Number rows errors   :   6041.
+<a id="__codelineno-23-65" name="__codelineno-23-65" href="#__codelineno-23-65"></a>Progress update 2022-12-18 07:06:32.108776 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-66" name="__codelineno-23-66" href="#__codelineno-23-66"></a>Progress update 2022-12-18 07:06:32.108776 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_city &amp; ev_site_zipcode&#39;.
+<a id="__codelineno-23-67" name="__codelineno-23-67" href="#__codelineno-23-67"></a>Progress update 2022-12-18 07:06:33.699993 : Number rows errors   :  16516.
+<a id="__codelineno-23-68" name="__codelineno-23-68" href="#__codelineno-23-68"></a>Progress update 2022-12-18 07:06:33.700494 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-69" name="__codelineno-23-69" href="#__codelineno-23-69"></a>Progress update 2022-12-18 07:06:33.700494 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_state&#39;.
+<a id="__codelineno-23-70" name="__codelineno-23-70" href="#__codelineno-23-70"></a>Progress update 2022-12-18 07:06:34.416462 : Number rows errors   :    291.
+<a id="__codelineno-23-71" name="__codelineno-23-71" href="#__codelineno-23-71"></a>Progress update 2022-12-18 07:06:34.416462 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-72" name="__codelineno-23-72" href="#__codelineno-23-72"></a>Progress update 2022-12-18 07:06:34.416462 : INFO.00.064 Verification of table &#39;events&#39; column(s) &#39;ev_site_zipcode&#39;.
+<a id="__codelineno-23-73" name="__codelineno-23-73" href="#__codelineno-23-73"></a>Progress update 2022-12-18 07:06:34.866764 : Number rows errors   :   6034.
+<a id="__codelineno-23-74" name="__codelineno-23-74" href="#__codelineno-23-74"></a>Progress update 2022-12-18 07:06:34.866764 : --------------------------------------------------------------------------------
+<a id="__codelineno-23-75" name="__codelineno-23-75" href="#__codelineno-23-75"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows selected :  34324.
+<a id="__codelineno-23-76" name="__codelineno-23-76" href="#__codelineno-23-76"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows updated  :  41256.
+<a id="__codelineno-23-77" name="__codelineno-23-77" href="#__codelineno-23-77"></a>Progress update 2022-12-18 07:06:34.867763 : Number rows errors   :  41256.
+<a id="__codelineno-23-78" name="__codelineno-23-78" href="#__codelineno-23-78"></a>Progress update 2022-12-18 07:06:34.868264 : -------------------------------------------------------------------------------.
+<a id="__codelineno-23-79" name="__codelineno-23-79" href="#__codelineno-23-79"></a>Progress update 2022-12-18 07:06:34.868264 :      306,720,465,000 ns - Total time launcher.
+<a id="__codelineno-23-80" name="__codelineno-23-80" href="#__codelineno-23-80"></a>Progress update 2022-12-18 07:06:34.868264 : INFO.00.006 End   Launcher.
+<a id="__codelineno-23-81" name="__codelineno-23-81" href="#__codelineno-23-81"></a>Progress update 2022-12-18 07:06:34.868264 : ===============================================================================.
+<a id="__codelineno-23-82" name="__codelineno-23-82" href="#__codelineno-23-82"></a>
+<a id="__codelineno-23-83" name="__codelineno-23-83" href="#__codelineno-23-83"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-84" name="__codelineno-23-84" href="#__codelineno-23-84"></a>The current time is:  7:06:35.04
+<a id="__codelineno-23-85" name="__codelineno-23-85" href="#__codelineno-23-85"></a>Enter the new time:
+<a id="__codelineno-23-86" name="__codelineno-23-86" href="#__codelineno-23-86"></a>-----------------------------------------------------------------------
+<a id="__codelineno-23-87" name="__codelineno-23-87" href="#__codelineno-23-87"></a>End   run_io_avstats
+<a id="__codelineno-23-88" name="__codelineno-23-88" href="#__codelineno-23-88"></a>=======================================================================
 </code></pre></div>
 <h3 id="291-data-quality-check">2.9.1 Data quality check</h3>
 <p><strong>Query Total:</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>SELECT count(*) &quot;Count&quot;,
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>  FROM events e
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a> WHERE io_dec_latitude_deviating IS NOT NULL 
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a> UNION
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>SELECT count(*),
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>       &#39;Longitude deviation&#39;
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>  FROM events e
-<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a> WHERE io_dec_longitude_deviating IS NOT NULL 
-<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a> UNION
-<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>SELECT count(*) ,
-<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>       &#39;Invalid Latitude&#39;
-<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>  FROM events e
-<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a> WHERE io_invalid_latitude IS NOT NULL 
-<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a> UNION
-<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a>SELECT count(*) ,
-<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>       &#39;Invalid Longitude&#39;
-<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>  FROM events e
-<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a> WHERE io_invalid_longitude IS NOT NULL 
-<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a> UNION
-<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>SELECT count(*) ,
-<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a>       &#39;Invalid US City&#39;
-<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>  FROM events e
-<a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a> WHERE io_invalid_us_city IS NOT NULL 
-<a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a> UNION
-<a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a>SELECT count(*) ,
-<a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a>       &#39;Invalid US City &amp; Zipcode&#39;
-<a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a>  FROM events e
-<a id="__codelineno-22-29" name="__codelineno-22-29" href="#__codelineno-22-29"></a> WHERE io_invalid_us_city_zipcode IS NOT NULL 
-<a id="__codelineno-22-30" name="__codelineno-22-30" href="#__codelineno-22-30"></a> UNION
-<a id="__codelineno-22-31" name="__codelineno-22-31" href="#__codelineno-22-31"></a>SELECT count(*) ,
-<a id="__codelineno-22-32" name="__codelineno-22-32" href="#__codelineno-22-32"></a>       &#39;Invalid US State&#39;
-<a id="__codelineno-22-33" name="__codelineno-22-33" href="#__codelineno-22-33"></a>  FROM events e
-<a id="__codelineno-22-34" name="__codelineno-22-34" href="#__codelineno-22-34"></a> WHERE io_invalid_us_state IS NOT NULL 
-<a id="__codelineno-22-35" name="__codelineno-22-35" href="#__codelineno-22-35"></a> UNION
-<a id="__codelineno-22-36" name="__codelineno-22-36" href="#__codelineno-22-36"></a>SELECT count(*) ,
-<a id="__codelineno-22-37" name="__codelineno-22-37" href="#__codelineno-22-37"></a>       &#39;Invalid US Zipcode&#39;
-<a id="__codelineno-22-38" name="__codelineno-22-38" href="#__codelineno-22-38"></a>  FROM events e
-<a id="__codelineno-22-39" name="__codelineno-22-39" href="#__codelineno-22-39"></a> WHERE io_invalid_us_zipcode IS NOT NULL 
-<a id="__codelineno-22-40" name="__codelineno-22-40" href="#__codelineno-22-40"></a> ORDER BY 2
-</code></pre></div>
-<p><strong>Results</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Count|Description              |
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>-----+-------------------------+
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a> 3797|Invalid Latitude         |
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a> 4120|Invalid Longitude        |
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a> 6041|Invalid US City          |
-<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>16521|Invalid US City &amp; Zipcode|
-<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>  291|Invalid US State         |
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a> 6038|Invalid US Zipcode       |
-<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a> 3723|Latitude deviation       |
-<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a> 3651|Longitude deviation      |
-</code></pre></div>
-<p><strong>Query US since 2008:</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  FROM events e
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a> WHERE io_dec_latitude_deviating IS NOT NULL 
 <a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a> UNION
 <a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>SELECT count(*),
 <a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>       &#39;Longitude deviation&#39;
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>  FROM events e
 <a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a> WHERE io_dec_longitude_deviating IS NOT NULL 
 <a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a> UNION
 <a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>SELECT count(*) ,
 <a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>       &#39;Invalid Latitude&#39;
-<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>  FROM events e
 <a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a> WHERE io_invalid_latitude IS NOT NULL 
 <a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a> UNION
 <a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a>SELECT count(*) ,
 <a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>       &#39;Invalid Longitude&#39;
-<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>  FROM events e
 <a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a> WHERE io_invalid_longitude IS NOT NULL 
 <a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a> UNION
 <a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a>SELECT count(*) ,
 <a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a>       &#39;Invalid US City&#39;
-<a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>  FROM events e
 <a id="__codelineno-24-24" name="__codelineno-24-24" href="#__codelineno-24-24"></a> WHERE io_invalid_us_city IS NOT NULL 
 <a id="__codelineno-24-25" name="__codelineno-24-25" href="#__codelineno-24-25"></a> UNION
 <a id="__codelineno-24-26" name="__codelineno-24-26" href="#__codelineno-24-26"></a>SELECT count(*) ,
 <a id="__codelineno-24-27" name="__codelineno-24-27" href="#__codelineno-24-27"></a>       &#39;Invalid US City &amp; Zipcode&#39;
-<a id="__codelineno-24-28" name="__codelineno-24-28" href="#__codelineno-24-28"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-28" name="__codelineno-24-28" href="#__codelineno-24-28"></a>  FROM events e
 <a id="__codelineno-24-29" name="__codelineno-24-29" href="#__codelineno-24-29"></a> WHERE io_invalid_us_city_zipcode IS NOT NULL 
 <a id="__codelineno-24-30" name="__codelineno-24-30" href="#__codelineno-24-30"></a> UNION
 <a id="__codelineno-24-31" name="__codelineno-24-31" href="#__codelineno-24-31"></a>SELECT count(*) ,
 <a id="__codelineno-24-32" name="__codelineno-24-32" href="#__codelineno-24-32"></a>       &#39;Invalid US State&#39;
-<a id="__codelineno-24-33" name="__codelineno-24-33" href="#__codelineno-24-33"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-33" name="__codelineno-24-33" href="#__codelineno-24-33"></a>  FROM events e
 <a id="__codelineno-24-34" name="__codelineno-24-34" href="#__codelineno-24-34"></a> WHERE io_invalid_us_state IS NOT NULL 
 <a id="__codelineno-24-35" name="__codelineno-24-35" href="#__codelineno-24-35"></a> UNION
 <a id="__codelineno-24-36" name="__codelineno-24-36" href="#__codelineno-24-36"></a>SELECT count(*) ,
 <a id="__codelineno-24-37" name="__codelineno-24-37" href="#__codelineno-24-37"></a>       &#39;Invalid US Zipcode&#39;
-<a id="__codelineno-24-38" name="__codelineno-24-38" href="#__codelineno-24-38"></a>  FROM io_us_2008 e
+<a id="__codelineno-24-38" name="__codelineno-24-38" href="#__codelineno-24-38"></a>  FROM events e
 <a id="__codelineno-24-39" name="__codelineno-24-39" href="#__codelineno-24-39"></a> WHERE io_invalid_us_zipcode IS NOT NULL 
 <a id="__codelineno-24-40" name="__codelineno-24-40" href="#__codelineno-24-40"></a> ORDER BY 2
 </code></pre></div>
 <p><strong>Results</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Count|Description              |
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>-----+-------------------------+
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a> 3249|Invalid Latitude         |
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a> 3546|Invalid Longitude        |
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a> 1090|Invalid US City          |
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a> 4003|Invalid US City &amp; Zipcode|
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    0|Invalid US State         |
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>  858|Invalid US Zipcode       |
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a> 3405|Latitude deviation       |
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a> 3300|Longitude deviation      |
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a> 3797|Invalid Latitude         |
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a> 4120|Invalid Longitude        |
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a> 6041|Invalid US City          |
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>16521|Invalid US City &amp; Zipcode|
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>  291|Invalid US State         |
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a> 6038|Invalid US Zipcode       |
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a> 3723|Latitude deviation       |
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a> 3651|Longitude deviation      |
 </code></pre></div>
-<p><strong>Query US with Fatalities since 2008:</strong>:</p>
+<p><strong>Query US since 1982:</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a> WHERE io_dec_latitude_deviating IS NOT NULL 
 <a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a> UNION
 <a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>SELECT count(*),
 <a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>       &#39;Longitude deviation&#39;
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a> WHERE io_dec_longitude_deviating IS NOT NULL 
 <a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a> UNION
 <a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>SELECT count(*) ,
 <a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>       &#39;Invalid Latitude&#39;
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a> WHERE io_invalid_latitude IS NOT NULL 
 <a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a> UNION
 <a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>SELECT count(*) ,
 <a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>       &#39;Invalid Longitude&#39;
-<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a> WHERE io_invalid_longitude IS NOT NULL 
 <a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a> UNION
 <a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>SELECT count(*) ,
 <a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>       &#39;Invalid US City&#39;
-<a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a> WHERE io_invalid_us_city IS NOT NULL 
 <a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a> UNION
 <a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a>SELECT count(*) ,
 <a id="__codelineno-26-27" name="__codelineno-26-27" href="#__codelineno-26-27"></a>       &#39;Invalid US City &amp; Zipcode&#39;
-<a id="__codelineno-26-28" name="__codelineno-26-28" href="#__codelineno-26-28"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-28" name="__codelineno-26-28" href="#__codelineno-26-28"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-29" name="__codelineno-26-29" href="#__codelineno-26-29"></a> WHERE io_invalid_us_city_zipcode IS NOT NULL 
 <a id="__codelineno-26-30" name="__codelineno-26-30" href="#__codelineno-26-30"></a> UNION
 <a id="__codelineno-26-31" name="__codelineno-26-31" href="#__codelineno-26-31"></a>SELECT count(*) ,
 <a id="__codelineno-26-32" name="__codelineno-26-32" href="#__codelineno-26-32"></a>       &#39;Invalid US State&#39;
-<a id="__codelineno-26-33" name="__codelineno-26-33" href="#__codelineno-26-33"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-33" name="__codelineno-26-33" href="#__codelineno-26-33"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-34" name="__codelineno-26-34" href="#__codelineno-26-34"></a> WHERE io_invalid_us_state IS NOT NULL 
 <a id="__codelineno-26-35" name="__codelineno-26-35" href="#__codelineno-26-35"></a> UNION
 <a id="__codelineno-26-36" name="__codelineno-26-36" href="#__codelineno-26-36"></a>SELECT count(*) ,
 <a id="__codelineno-26-37" name="__codelineno-26-37" href="#__codelineno-26-37"></a>       &#39;Invalid US Zipcode&#39;
-<a id="__codelineno-26-38" name="__codelineno-26-38" href="#__codelineno-26-38"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-26-38" name="__codelineno-26-38" href="#__codelineno-26-38"></a>  FROM io_us_1982 e
 <a id="__codelineno-26-39" name="__codelineno-26-39" href="#__codelineno-26-39"></a> WHERE io_invalid_us_zipcode IS NOT NULL 
 <a id="__codelineno-26-40" name="__codelineno-26-40" href="#__codelineno-26-40"></a> ORDER BY 2
 </code></pre></div>
 <p><strong>Results</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Count|Description              |
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>-----+-------------------------+
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>  531|Invalid Latitude         |
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>  577|Invalid Longitude        |
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>  167|Invalid US City          |
-<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>  613|Invalid US City &amp; Zipcode|
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a> 3418|Invalid Latitude         |
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a> 3737|Invalid Longitude        |
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a> 5857|Invalid US City          |
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>16342|Invalid US City &amp; Zipcode|
 <a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>    0|Invalid US State         |
-<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>  129|Invalid US Zipcode       |
-<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>  591|Latitude deviation       |
-<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>  554|Longitude deviation      |
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a> 5918|Invalid US Zipcode       |
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a> 3405|Latitude deviation       |
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a> 3300|Longitude deviation      |
+</code></pre></div>
+<p><strong>Query US with Fatalities since 2008:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a> WHERE io_dec_latitude_deviating IS NOT NULL 
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a> UNION
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>SELECT count(*),
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>       &#39;Longitude deviation&#39;
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a> WHERE io_dec_longitude_deviating IS NOT NULL 
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a> UNION
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>SELECT count(*) ,
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>       &#39;Invalid Latitude&#39;
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a> WHERE io_invalid_latitude IS NOT NULL 
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a> UNION
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>SELECT count(*) ,
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a>       &#39;Invalid Longitude&#39;
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a> WHERE io_invalid_longitude IS NOT NULL 
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a> UNION
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>SELECT count(*) ,
+<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a>       &#39;Invalid US City&#39;
+<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a> WHERE io_invalid_us_city IS NOT NULL 
+<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a> UNION
+<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a>SELECT count(*) ,
+<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a>       &#39;Invalid US City &amp; Zipcode&#39;
+<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a> WHERE io_invalid_us_city_zipcode IS NOT NULL 
+<a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a> UNION
+<a id="__codelineno-28-31" name="__codelineno-28-31" href="#__codelineno-28-31"></a>SELECT count(*) ,
+<a id="__codelineno-28-32" name="__codelineno-28-32" href="#__codelineno-28-32"></a>       &#39;Invalid US State&#39;
+<a id="__codelineno-28-33" name="__codelineno-28-33" href="#__codelineno-28-33"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-34" name="__codelineno-28-34" href="#__codelineno-28-34"></a> WHERE io_invalid_us_state IS NOT NULL 
+<a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a> UNION
+<a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a>SELECT count(*) ,
+<a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a>       &#39;Invalid US Zipcode&#39;
+<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>  FROM io_fatalities_us_2008 e
+<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a> WHERE io_invalid_us_zipcode IS NOT NULL 
+<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a> ORDER BY 2
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Count|Description              |
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>-----+-------------------------+
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>  531|Invalid Latitude         |
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>  577|Invalid Longitude        |
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>  167|Invalid US City          |
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>  613|Invalid US City &amp; Zipcode|
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>    0|Invalid US State         |
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>  129|Invalid US Zipcode       |
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>  591|Latitude deviation       |
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>  554|Longitude deviation      |
 </code></pre></div>
 <h3 id="210-r_d_s-refresh-the-postgresql-database-schema">2.10 <strong><code>r_d_s</code></strong> - Refresh the PostgreSQL database schema</h3>
 <p><strong>Example protocol</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>...\io-avstats&gt;run_io_avstats
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>=========================================================
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>r_s_a   - Run a Streamlit application
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>---------------------------------------------------------
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>d_n_a   - Download a NTSB MS Access database file
-<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
-<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
-<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>v_n_d   - Verify selected NTSB data
-<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>r_d_s   - Refresh the PostgreSQL database schema
-<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>---------------------------------------------------------
-<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>c_p_d   - Cleansing PostgreSQL data
-<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>d_s_f   - Download basic simplemaps files
-<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
-<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>l_c_s   - Load country and state data into PostgreSQL
-<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
-<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
-<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a>---------------------------------------------------------
-<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>c_d_s   - Create the PostgreSQL database schema
-<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a>d_d_f   - Delete the PostgreSQL database files
-<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a>d_d_s   - Drop the PostgreSQL database schema
-<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>s_d_c   - Set up the PostgreSQL database container
-<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a>u_d_s   - Update the PostgreSQL database schema
-<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a>---------------------------------------------------------
-<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a>version - Show the IO-AVSTATS-DB version
-<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a>---------------------------------------------------------
-<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a>Enter the desired task [default: r_s_a] r_d_s
-<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a>
-<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a>Script run_io_avstats is now running
-<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a>=======================================================================
-<a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a>Start run_io_avstats
-<a id="__codelineno-28-31" name="__codelineno-28-31" href="#__codelineno-28-31"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-32" name="__codelineno-28-32" href="#__codelineno-28-32"></a>IO-AVSTATS - Aviation Accident Statistics.
-<a id="__codelineno-28-33" name="__codelineno-28-33" href="#__codelineno-28-33"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-34" name="__codelineno-28-34" href="#__codelineno-28-34"></a>PYTHONPATH :
-<a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a>TASK       : r_d_s
-<a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a>CORRECTION :
-<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>MSACCESS   :
-<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a>The current time is:  7:51:13.14
-<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a>Enter the new time:
-<a id="__codelineno-28-42" name="__codelineno-28-42" href="#__codelineno-28-42"></a>=======================================================================
-<a id="__codelineno-28-43" name="__codelineno-28-43" href="#__codelineno-28-43"></a>Progress update 2022-12-18 07:51:14.915905 : ===============================================================================.
-<a id="__codelineno-28-44" name="__codelineno-28-44" href="#__codelineno-28-44"></a>Progress update 2022-12-18 07:51:14.915905 : INFO.00.004 Start Launcher.
-<a id="__codelineno-28-45" name="__codelineno-28-45" href="#__codelineno-28-45"></a>Progress update 2022-12-18 07:51:14.918905 : INFO.00.001 The logger is configured and ready.
-<a id="__codelineno-28-46" name="__codelineno-28-46" href="#__codelineno-28-46"></a>Progress update 2022-12-18 07:51:14.927904 : INFO.00.005 Argument task=&#39;r_d_s&#39;.
-<a id="__codelineno-28-47" name="__codelineno-28-47" href="#__codelineno-28-47"></a>Progress update 2022-12-18 07:51:14.927904 : -------------------------------------------------------------------------------.
-<a id="__codelineno-28-48" name="__codelineno-28-48" href="#__codelineno-28-48"></a>Progress update 2022-12-18 07:51:14.928406 : INFO.00.071 Refreshing the database schema.
-<a id="__codelineno-28-49" name="__codelineno-28-49" href="#__codelineno-28-49"></a>Progress update 2022-12-18 07:51:14.928406 : --------------------------------------------------------------------------------
-<a id="__codelineno-28-50" name="__codelineno-28-50" href="#__codelineno-28-50"></a>Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus2008.
-<a id="__codelineno-28-51" name="__codelineno-28-51" href="#__codelineno-28-51"></a>Progress update 2022-12-18 07:51:23.134620 : -------------------------------------------------------------------------------.
-<a id="__codelineno-28-52" name="__codelineno-28-52" href="#__codelineno-28-52"></a>Progress update 2022-12-18 07:51:23.135120 :        8,366,215,500 ns - Total time launcher.
-<a id="__codelineno-28-53" name="__codelineno-28-53" href="#__codelineno-28-53"></a>Progress update 2022-12-18 07:51:23.135120 : INFO.00.006 End   Launcher.
-<a id="__codelineno-28-54" name="__codelineno-28-54" href="#__codelineno-28-54"></a>Progress update 2022-12-18 07:51:23.135120 : ===============================================================================.
-<a id="__codelineno-28-55" name="__codelineno-28-55" href="#__codelineno-28-55"></a>
-<a id="__codelineno-28-56" name="__codelineno-28-56" href="#__codelineno-28-56"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-57" name="__codelineno-28-57" href="#__codelineno-28-57"></a>The current time is:  7:51:23.31
-<a id="__codelineno-28-58" name="__codelineno-28-58" href="#__codelineno-28-58"></a>Enter the new time:
-<a id="__codelineno-28-59" name="__codelineno-28-59" href="#__codelineno-28-59"></a>-----------------------------------------------------------------------
-<a id="__codelineno-28-60" name="__codelineno-28-60" href="#__codelineno-28-60"></a>End   run_io_avstats
-<a id="__codelineno-28-61" name="__codelineno-28-61" href="#__codelineno-28-61"></a>=======================================================================
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>=========================================================
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>r_s_a   - Run a Streamlit application
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>---------------------------------------------------------
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>d_n_a   - Download a NTSB MS Access database file
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>l_n_a   - Load NTSB MS Access database data into PostgreSQL
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>c_l_l   - Correct decimal US latitudes and longitudes
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>v_n_d   - Verify selected NTSB data
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>r_d_s   - Refresh the PostgreSQL database schema
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>---------------------------------------------------------
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>c_p_d   - Cleansing PostgreSQL data
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a>d_s_f   - Download basic simplemaps files
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a>l_c_d   - Load data from a correction file into PostgreSQL
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>l_c_s   - Load country and state data into PostgreSQL
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a>l_s_d   - Load simplemaps data into PostgreSQL
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a>l_z_d   - Load ZIP Code Database data into PostgreSQL
+<a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a>---------------------------------------------------------
+<a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a>c_d_s   - Create the PostgreSQL database schema
+<a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a>d_d_f   - Delete the PostgreSQL database files
+<a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>d_d_s   - Drop the PostgreSQL database schema
+<a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a>s_d_c   - Set up the PostgreSQL database container
+<a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a>u_d_s   - Update the PostgreSQL database schema
+<a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a>---------------------------------------------------------
+<a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a>version - Show the IO-AVSTATS-DB version
+<a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a>---------------------------------------------------------
+<a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a>Enter the desired task [default: r_s_a] r_d_s
+<a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a>
+<a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a>Script run_io_avstats is now running
+<a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a>=======================================================================
+<a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a>Start run_io_avstats
+<a id="__codelineno-30-31" name="__codelineno-30-31" href="#__codelineno-30-31"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-32" name="__codelineno-30-32" href="#__codelineno-30-32"></a>IO-AVSTATS - Aviation Accident Statistics.
+<a id="__codelineno-30-33" name="__codelineno-30-33" href="#__codelineno-30-33"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-34" name="__codelineno-30-34" href="#__codelineno-30-34"></a>PYTHONPATH :
+<a id="__codelineno-30-35" name="__codelineno-30-35" href="#__codelineno-30-35"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-36" name="__codelineno-30-36" href="#__codelineno-30-36"></a>TASK       : r_d_s
+<a id="__codelineno-30-37" name="__codelineno-30-37" href="#__codelineno-30-37"></a>CORRECTION :
+<a id="__codelineno-30-38" name="__codelineno-30-38" href="#__codelineno-30-38"></a>MSACCESS   :
+<a id="__codelineno-30-39" name="__codelineno-30-39" href="#__codelineno-30-39"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-40" name="__codelineno-30-40" href="#__codelineno-30-40"></a>The current time is:  7:51:13.14
+<a id="__codelineno-30-41" name="__codelineno-30-41" href="#__codelineno-30-41"></a>Enter the new time:
+<a id="__codelineno-30-42" name="__codelineno-30-42" href="#__codelineno-30-42"></a>=======================================================================
+<a id="__codelineno-30-43" name="__codelineno-30-43" href="#__codelineno-30-43"></a>Progress update 2022-12-18 07:51:14.915905 : ===============================================================================.
+<a id="__codelineno-30-44" name="__codelineno-30-44" href="#__codelineno-30-44"></a>Progress update 2022-12-18 07:51:14.915905 : INFO.00.004 Start Launcher.
+<a id="__codelineno-30-45" name="__codelineno-30-45" href="#__codelineno-30-45"></a>Progress update 2022-12-18 07:51:14.918905 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-30-46" name="__codelineno-30-46" href="#__codelineno-30-46"></a>Progress update 2022-12-18 07:51:14.927904 : INFO.00.005 Argument task=&#39;r_d_s&#39;.
+<a id="__codelineno-30-47" name="__codelineno-30-47" href="#__codelineno-30-47"></a>Progress update 2022-12-18 07:51:14.927904 : -------------------------------------------------------------------------------.
+<a id="__codelineno-30-48" name="__codelineno-30-48" href="#__codelineno-30-48"></a>Progress update 2022-12-18 07:51:14.928406 : INFO.00.071 Refreshing the database schema.
+<a id="__codelineno-30-49" name="__codelineno-30-49" href="#__codelineno-30-49"></a>Progress update 2022-12-18 07:51:14.928406 : --------------------------------------------------------------------------------
+<a id="__codelineno-30-50" name="__codelineno-30-50" href="#__codelineno-30-50"></a>Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus1982.
+<a id="__codelineno-30-51" name="__codelineno-30-51" href="#__codelineno-30-51"></a>Progress update 2022-12-18 07:51:23.134620 : -------------------------------------------------------------------------------.
+<a id="__codelineno-30-52" name="__codelineno-30-52" href="#__codelineno-30-52"></a>Progress update 2022-12-18 07:51:23.135120 :        8,366,215,500 ns - Total time launcher.
+<a id="__codelineno-30-53" name="__codelineno-30-53" href="#__codelineno-30-53"></a>Progress update 2022-12-18 07:51:23.135120 : INFO.00.006 End   Launcher.
+<a id="__codelineno-30-54" name="__codelineno-30-54" href="#__codelineno-30-54"></a>Progress update 2022-12-18 07:51:23.135120 : ===============================================================================.
+<a id="__codelineno-30-55" name="__codelineno-30-55" href="#__codelineno-30-55"></a>
+<a id="__codelineno-30-56" name="__codelineno-30-56" href="#__codelineno-30-56"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-57" name="__codelineno-30-57" href="#__codelineno-30-57"></a>The current time is:  7:51:23.31
+<a id="__codelineno-30-58" name="__codelineno-30-58" href="#__codelineno-30-58"></a>Enter the new time:
+<a id="__codelineno-30-59" name="__codelineno-30-59" href="#__codelineno-30-59"></a>-----------------------------------------------------------------------
+<a id="__codelineno-30-60" name="__codelineno-30-60" href="#__codelineno-30-60"></a>End   run_io_avstats
+<a id="__codelineno-30-61" name="__codelineno-30-61" href="#__codelineno-30-61"></a>=======================================================================
 </code></pre></div>
 <h3 id="211-backup-the-file-directory-datapostgres">2.11 Backup the file directory <strong><code>data/postgres</code></strong></h3>
 <ul>

@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Fatal Aviation Accidents in the US since 2008."""
+"""Fatal Aviation Accidents in the US since 1982."""
 import datetime
 import os
 
@@ -24,6 +24,7 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
+# pylint: disable=R0801
 CHOICE_DATA_PROFILE = None
 CHOICE_DATA_PROFILE_FILE = None
 CHOICE_DATA_PROFILE_TYPE = None
@@ -58,11 +59,11 @@ PG_CONN: Connection | None = None
 PITCH = 30
 
 # ------------------------------------------------------------------
-# Query regarding the aircraft fatalities in the US since 2008.
+# Query regarding the aircraft fatalities in the US since 1982.
 # ------------------------------------------------------------------
-QUERY_FAAUS2008 = """
+QUERY_FAAUS1982 = """
     SELECT *
-     FROM io_app_faaus2008
+     FROM io_app_faaus1982
     ORDER BY ev_id;
 """
 
@@ -165,7 +166,7 @@ def _get_data():
 
     PG_CONN = _get_postgres_connection()
 
-    DF = pd.read_sql(QUERY_FAAUS2008, con=_get_engine())
+    DF = pd.read_sql(QUERY_FAAUS1982, con=_get_engine())
 
     if CHOICE_FILTER_DATA:
         _apply_filter_controls()
@@ -249,7 +250,7 @@ def _present_data_profile():
         df_faa_states_year_profile.to_file(
             os.path.join(
                 SETTINGS.pandas_profile_dir,
-                "faaus2008_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
+                "faaus1982_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
             )
         )
 
@@ -272,6 +273,11 @@ def _present_histogram():
 # Present the US map.
 # ------------------------------------------------------------------
 def _present_map():
+    global DF  # pylint: disable=global-statement
+
+    # noinspection PyUnboundLocalVariable
+    DF = DF.loc[(DF["dec_latitude"].notna() & DF["dec_longitude"].notna())]
+
     faa_layer = pdk.Layer(
         auto_highlight=True,
         data=DF,
@@ -319,6 +325,8 @@ def _setup_filter_controls():
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
 
+    st.sidebar.markdown("""---""")
+
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**`Filter data ?`**",
@@ -328,8 +336,8 @@ def _setup_filter_controls():
     if CHOICE_FILTER_DATA:
         FILTER_YEAR_FROM, FILTER_YEAR_TO = st.sidebar.slider(
             label="Select a time frame",
-            help="Data available from 2008 to the current year.",
-            min_value=2008,
+            help="Data available from 1982 to the current year.",
+            min_value=1982,
             max_value=datetime.date.today().year,
             value=(2008, datetime.date.today().year),
         )
@@ -389,15 +397,13 @@ def _setup_filter_controls():
             label="Only events stalled according to narrative?",
         )
 
-    st.sidebar.markdown("""---""")
-
 
 # ------------------------------------------------------------------
 # Setup the page.
 # ------------------------------------------------------------------
 def _setup_page():
     st.set_page_config(layout="wide")
-    st.header("Fatal Aviation Accidents in the US since 2008")
+    st.header("Fatal Aviation Accidents in the US since 1982")
 
 
 # ------------------------------------------------------------------
@@ -500,8 +506,6 @@ streets: emphasizes accurate, legible styling of road and transit networks.
             max_value=1609 * 4,
             value=(1609 * 2),
         )
-
-    st.sidebar.markdown("""---""")
 
 
 # ------------------------------------------------------------------

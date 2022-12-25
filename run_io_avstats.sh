@@ -23,7 +23,7 @@ export IO_AVSTATS_POSTGRES_VERSION=latest
 export IO_AVSTATS_Application=
 export IO_AVSTATS_CORRECTION=
 export IO_AVSTATS_TASK=
-export IO_AVSTATS_TASK_DEFAULT=faaus2008
+export IO_AVSTATS_TASK_DEFAULT=faaus1982
 
 if [ -z "$1" ]; then
     echo "========================================================="
@@ -76,8 +76,8 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-        echo "pdus2008  - Profiling Data for the US since 2008"
+        echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
+        echo "pdus1982  - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION

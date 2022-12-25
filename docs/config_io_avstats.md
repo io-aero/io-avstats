@@ -51,8 +51,8 @@ The `test` layer is used for the automated tests.
 | razorsql_reference_dir                  | data/RazorSQL                                 | file directory of the database schema reference file                     |
 | razorsql_reference_file                 | 2022.11.01_avall.sql                          | file name of the database schema reference file                          |
 | streamlit_server_port                   | 8501                                          | Streamlit port number                                                    |
-| streamlit_server_port_faaus2008         | 8501                                          | Streamlit port number for application faaus2008                          |
-| streamlit_server_port_pdus2008          | 8502                                          | Streamlit port number for application pdus2008                           |
+| streamlit_server_port_faaus1982         | 8501                                          | Streamlit port number for application faaus1982                          |
+| streamlit_server_port_pdus1982          | 8502                                          | Streamlit port number for application pdus1982                           |
 
 ## 2. Notes
 

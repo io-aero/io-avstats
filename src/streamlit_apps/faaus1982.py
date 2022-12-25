@@ -325,8 +325,6 @@ def _setup_filter_controls():
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
 
-    st.sidebar.markdown("""---""")
-
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**`Filter data ?`**",
@@ -396,6 +394,8 @@ def _setup_filter_controls():
             help="Filters only events with `narr_stall` equals `True`.",
             label="Only events stalled according to narrative?",
         )
+
+    st.sidebar.markdown("""---""")
 
 
 # ------------------------------------------------------------------
@@ -506,6 +506,8 @@ streets: emphasizes accurate, legible styling of road and transit networks.
             max_value=1609 * 4,
             value=(1609 * 2),
         )
+
+    st.sidebar.markdown("""---""")
 
 
 # ------------------------------------------------------------------

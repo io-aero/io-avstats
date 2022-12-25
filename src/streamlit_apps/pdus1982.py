@@ -427,8 +427,6 @@ def _setup_filter_controls():
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
 
-    st.sidebar.markdown("""---""")
-
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**`Filter data ?`**",
@@ -443,6 +441,8 @@ def _setup_filter_controls():
             max_value=datetime.date.today().year,
             value=(2008, datetime.date.today().year),
         )
+
+    st.sidebar.markdown("""---""")
 
 
 # ------------------------------------------------------------------
@@ -513,6 +513,8 @@ def _setup_task_controls():
         label="**`Database table`**",
         options=(QUERIES.keys()),
     )
+
+    st.sidebar.markdown("""---""")
 
 
 # ------------------------------------------------------------------

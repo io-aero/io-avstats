@@ -26,6 +26,7 @@ The `test` layer is used for the automated tests.
 | download_url_simplemaps_us_zips         | https://simplemaps.com/...                    | prefix of the download link for the **simplemaps** US zip code data sets |
 | download_url_zip_codes_org              | https://www.unitedstateszipcodes.org/...      | prefix of the download link for the **ZIP Code Database** data set       |
 | download_work_dir                       | data/download                                 | working directory for the processing of **NTSB** data sets               |
+| is_runtime_environment_local            | false / true                                  | local execution environment - unlike Docker                              |
 | is_verbose                              | true                                          | display progress messages for processing                                 |
 | max_deviation_latitude                  | 0.01                                          | maximum decimal deviation of the latitude in the database table even     |
 | max_deviation_longitude                 | 0.01                                          | maximum decimal deviation of the longitude in the database table even    |

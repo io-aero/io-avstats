@@ -14,6 +14,7 @@ download_url_simplemaps_us_cities = "https://simplemaps.com/static/data/us-citie
 download_url_simplemaps_us_zips = "https://simplemaps.com/static/data/us-zips/1.81/basic/simplemaps_uszips_basicv1.81.zip"
 download_url_zip_codes_org = "https://www.unitedstateszipcodes.org/zip_code_database.xls?download_auth=72c4e8898190892f8fc65eda54add7b8"
 download_work_dir = "data/download"
+is_runtime_environment_local = true
 is_verbose = true
 max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
@@ -59,6 +60,7 @@ download_url_simplemaps_us_cities = "https://simplemaps.com/static/data/us-citie
 download_url_simplemaps_us_zips = "https://simplemaps.com/static/data/us-zips/1.81/basic/simplemaps_uszips_basicv1.81.zip"
 download_url_zip_codes_org = "https://www.unitedstateszipcodes.org/zip_code_database.xls?download_auth=72c4e8898190892f8fc65eda54add7b8"
 download_work_dir = "data/download"
+is_runtime_environment_local = true
 is_verbose = true
 max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01

@@ -63,11 +63,21 @@ echo:| TIME
 echo =======================================================================
 
 if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
-    echo Docker Containers ........................................... containers:
+    echo Docker Containers ........................................... before containers:
+    docker ps -a
+    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps       | find "faaus2008"                            && docker stop faaus2008
+    docker ps -a    | find "faaus2008"                            && docker rm  --force faaus2008
+    docker ps       | find "pdus2008"                             && docker stop pdus2008
+    docker ps -a    | find "pdus2008"                             && docker rm  --force pdus2008
+    echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker rmi $(docker images -a -q)
+    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
+    docker image ls | find "faaus2008"                          && docker rmi --force ioaero/faaus2008:latest
+    docker image ls | find "pdus2008"                           && docker rmi --force ioaero/pdus2008:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT
@@ -75,11 +85,22 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
 
 if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker compose down
-    echo Docker Containers ........................................... containers:
+    echo Docker Containers ........................................... before containers:
+    docker ps -a
+    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps       | find "faaus2008"                            && docker stop faaus2008
+    docker ps -a    | find "faaus2008"                            && docker rm  --force faaus2008
+    docker ps       | find "pdus2008"                             && docker stop pdus2008
+    docker ps -a    | find "pdus2008"                             && docker rm  --force pdus2008
+    echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker rmi $(docker images -a -q)
+    rem docker rmi (docker images -a -q)
+    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
+    docker image ls | find "faaus2008"                          && docker rmi --force ioaero/faaus2008:latest
+    docker image ls | find "pdus2008"                           && docker rmi --force ioaero/pdus2008:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT

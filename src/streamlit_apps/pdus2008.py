@@ -382,7 +382,7 @@ def _setup_sidebar():
 
 
 # ------------------------------------------------------------------
-# Setup the controls.
+# Setup the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls():
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
@@ -409,11 +409,15 @@ def _setup_task_controls():
                 ]
             ),
         )
-        CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
-            help="Export the Pandas profile into a file.",
-            label="Export profile to file",
-            value=False,
-        )
+
+        if SETTINGS.is_runtime_environment_local:
+            CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
+                help="Export the Pandas profile into a file.",
+                label="Export profile to file",
+                value=False,
+            )
+
+    st.sidebar.markdown("""---""")
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the selected detailed data.",
@@ -421,10 +425,12 @@ def _setup_task_controls():
         value=True,
     )
 
+    st.sidebar.markdown("""---""")
+
     CHOICE_TABLE_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
         index=5,
-        label="Database table",
+        label="**`Database table`**",
         options=(QUERIES.keys()),
     )
 

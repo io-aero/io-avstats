@@ -22,6 +22,7 @@ set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
 
 set IO_AVSTATS_APPLICATION=
+set IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
 set IO_AVSTATS_CORRECTION=
 set IO_AVSTATS_MSACCESS=
 set IO_AVSTATS_TASK=
@@ -53,6 +54,10 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
+    echo c_d_i   - Create or update a Docker image
+    echo c_d_c   - Run Docker Compose tasks
+    echo c_f_z   - Zip the files for the cloud
+    echo ---------------------------------------------------------
     echo version - Show the IO-AVSTATS-DB version
     echo ---------------------------------------------------------
     set /P IO_AVSTATS_TASK="Enter the desired task [default: %IO_AVSTATS_TASK_DEFAULT%] "
@@ -64,6 +69,23 @@ rem echo d_z_f   - Download the ZIP Code Database file
     set IO_AVSTATS_TASK=%1
 )
 
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo clean - Remove all containers and images
+        echo down  - Stop  Docker Compose
+        echo up    - Start Docker Compose
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AVSTATS_COMPOSE_TASK_DEFAULT%] "
+
+        if ["!IO_AVSTATS_COMPOSE_TASK!"] EQU [""] (
+            set IO_AVSTATS_COMPOSE_TASK=%IO_AVSTATS_COMPOSE_TASK_DEFAULT%
+        )
+    ) else (
+        set IO_AVSTATS_COMPOSE_TASK=%2
+    )
+)
+
 if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
@@ -72,7 +94,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
         echo upDDMON - New additions and updates until DD day in the month MON
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
-    ) else (
+    ) else ( Der Höhepunkt der englischen Weihnacht ist der Weihnachtskuchen: seine Zubereitung dauert ein paar Wochen: auf einer speziellen Fruchtkuchenbasis die über mehere  Tage mit Amaretto getauft wird, folgt eine Schicht aus selbstgemachtem Marzipan und zum Schluss eine Schicht mit einer Mischung aus Puderzucker und Glyzerin.
         set IO_AVSTATS_MSACCESS=%2
     )
 )
@@ -99,11 +121,23 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
     )
 )
 
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
+        echo pdus1982  - Profiling Data for the US since 1982
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
+    ) else (
+        set IO_AVSTATS_APPLICATION=%2
+    )
+)
+
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-		echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
-		echo pdus1982  - Profiling Data for the US since 1982
+        echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
+        echo pdus1982  - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -133,10 +167,49 @@ echo:| TIME
 echo =======================================================================
 
 rem ----------------------------------------------------------------------------
+rem Run Docker Compose tasks.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
+    call scripts\run_docker_compose %IO_AVSTATS_COMPOSE_TASK%
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Create or update a Docker image.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
+    call scripts\run_create_image %IO_AVSTATS_APPLICATION% yes yes
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
 rem Create the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["c_d_s"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Zip the files for the cloud.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["c_f_z"] (
+    call scripts\run_cloud_files_zip
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

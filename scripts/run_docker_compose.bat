@@ -85,6 +85,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
 
 if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker compose down
+
     echo Docker Containers ........................................... before containers:
     docker ps -a
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
@@ -97,7 +98,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker ps -a
     echo ............................................................. before images:
     docker images
-    rem docker rmi (docker images -a -q)
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
     docker image ls | find "faaus1982"                          && docker rmi --force ioaero/faaus1982:latest
     docker image ls | find "pdus1982"                           && docker rmi --force ioaero/pdus1982:latest
@@ -107,6 +107,18 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
 )
 
 if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
+    docker compose down
+    echo Docker Containers ........................................... before containers:
+    docker ps -a
+    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+    docker ps       | find "faaus1982"                            && docker stop faaus1982
+    docker ps -a    | find "faaus1982"                            && docker rm  --force faaus1982
+    docker ps       | find "pdus1982"                             && docker stop pdus1982
+    docker ps -a    | find "pdus1982"                             && docker rm  --force pdus1982
+    echo ............................................................. after containers:
+    docker ps -a
+
     docker compose up
     goto END_OF_SCRIPT
 )

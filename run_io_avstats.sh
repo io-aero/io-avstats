@@ -20,7 +20,8 @@ export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
-export IO_AVSTATS_Application=
+export IO_AVSTATS_APPLICATION=
+export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
 export IO_AVSTATS_CORRECTION=
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=faaus1982
@@ -47,6 +48,10 @@ if [ -z "$1" ]; then
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
+    echo "c_d_i   - Create or update a Docker image"
+    echo "c_d_c   - Run Docker Compose tasks"
+    echo "c_f_z   - Zip the files for the cloud"
+    echo "---------------------------------------------------------"
     echo "version - Show the IO-AVSTATS-DB version"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
@@ -58,6 +63,25 @@ if [ -z "$1" ]; then
     fi
 else
     export IO_AVSTATS_TASK=$1
+fi
+
+if [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "clean - Remove all containers and images"
+        echo "down  - Stop  Docker Compose"
+        echo "up    - Start Docker Compose"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the desired Docker Compose task [default: ${IO_AVSTATS_COMPOSE_TASK_DEFAULT}] " IO_AVSTATS_COMPOSE_TASK
+        export IO_AVSTATS_COMPOSE_TASK=${IO_AVSTATS_COMPOSE_TASK}
+
+        if [ -z "${IO_AVSTATS_COMPOSE_TASK}" ]; then
+            export IO_AVSTATS_COMPOSE_TASK=${IO_AVSTATS_COMPOSE_TASK_DEFAULT}
+        fi
+    else
+        export IO_AVSTATS_COMPOSE_TASK=$2
+    fi
 fi
 
 if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -73,7 +97,7 @@ if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
     fi
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
@@ -120,6 +144,30 @@ if [[ "${IO_AVSTATS_TASK}" = @("c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"
     fi
 
 # ------------------------------------------------------------------------------
+# Run Docker Compose tasks.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
+    if ! ( ./scripts/run_docker_compose.sh ${IO_AVSTATS_COMPOSE_TASK} ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Create or update a Docker image.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "c_d_i" ]; then
+    if ! ( ./scripts/run_create_image.sh ${IO_AVSTATS_APPLICATION} yes yes ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Zip the files for the cloud.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "c_f_z" ]; then
+    if ! ( ./scripts/run_cloud_files_zip.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
 # Delete the PostgreSQL database files.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
@@ -141,7 +189,6 @@ elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
 # ------------------------------------------------------------------------------
 # Run a Streamlit application.
 # ------------------------------------------------------------------------------
-
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if ! ( pipenv run streamlit run src/streamlit_apps/${IO_AVSTATS_Application}.py ); then
         exit 255
@@ -150,7 +197,6 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
 # ------------------------------------------------------------------------------
 # Setup the database container.
 # ------------------------------------------------------------------------------
-
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then
         exit 255
@@ -159,7 +205,6 @@ elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
-
 else
     echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AVSTATS_TASK}'"
     exit 255

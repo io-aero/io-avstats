@@ -84,45 +84,55 @@ echo "==========================================================================
 if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     echo "Docker Containers ........................................... before containers:"
     docker ps -a
-    docker ps       | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -a    | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps       | find "faaus1982"                             && docker stop faaus1982
-    docker ps -a    | find "faaus1982"                             && docker rm --force faaus1982
-    docker ps       | find "pdus1982"                              && docker stop pdus1982
-    docker ps -a    | find "pdus1982"                              && docker rm --force pdus1982
+    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
+    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
+    echo ............................................................. after containers:
+    docker ps -a
     echo ............................................................. before images:
-    docker image ls
-    docker image ls | find "${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}" && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker image ls | find "faaus1982"                           && docker rmi --force ioaero/faaus1982:latest
-    docker image ls | find "pdus1982"                            && docker rmi --force ioaero/pdus1982:latest
+    docker images
+    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
+    docker images -q --filter "reference=faaus1982:latest"                             | grep -q . && docker rmi --force faaus1982:latest
+    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
     echo ............................................................. after images:
-    docker image ls
+    docker images
 
 # ------------------------------------------------------------------------------
 # Stop Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker-compose down
+
     echo "Docker Containers ........................................... before containers:"
     docker ps -a
-    docker ps       | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -a    | find "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps       | find "faaus1982"                             && docker stop faaus1982
-    docker ps -a    | find "faaus1982"                             && docker rm --force faaus1982
-    docker ps       | find "pdus1982"                              && docker stop pdus1982
-    docker ps -a    | find "pdus1982"                              && docker rm --force pdus1982
+    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
+    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
+    echo ............................................................. after containers:
+    docker ps -a
     echo ............................................................. before images:
-    docker image ls
-    docker image ls | find "${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}" && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker image ls | find "faaus1982"                           && docker rmi --force ioaero/faaus1982:latest
-    docker image ls | find "pdus1982"                            && docker rmi --force ioaero/pdus1982:latest
+    docker images
+    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
+    docker images -q --filter "reference=faaus1982:latest"                             | grep -q . && docker rmi --force faaus1982:latest
+    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
     echo ............................................................. after images:
-    docker image ls
+    docker images
 
 # ------------------------------------------------------------------------------
 # Start Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
+    echo "Docker Containers ........................................... before containers:"
+    docker ps -a
+    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
+    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
+    echo ............................................................. after containers:
+    docker ps -a
+
     docker-compose up &
 
 # ------------------------------------------------------------------------------

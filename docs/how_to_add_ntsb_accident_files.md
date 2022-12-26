@@ -408,6 +408,34 @@ SELECT count(*) ,
                       FROM io_states is2)
  UNION
 SELECT count(*) "Count",
+       'Events Total since 1982' "Description"
+  FROM events e
+ WHERE ev_year >= 1982
+ UNION
+SELECT count(*) ,
+       'Events Total with Fatalities since 1982'
+  FROM events e
+ WHERE ev_year >= 1982
+   AND inj_tot_f > 0
+ UNION
+SELECT count(*) ,
+       'Events US since 1982'
+  FROM events e
+ WHERE ev_year >= 1982
+   AND ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ UNION
+SELECT count(*) ,
+       'Events US with Fatalities since 1982'
+  FROM events e
+ WHERE ev_year >= 1982
+   AND inj_tot_f > 0
+   AND ev_state IS NOT NULL
+   AND ev_state IN (SELECT state
+                      FROM io_states is2)
+ UNION
+SELECT count(*) "Count",
        'Events Total since 2008' "Description"
   FROM events e
  WHERE ev_year >= 2008
@@ -443,12 +471,16 @@ SELECT count(*) ,
 Count|Description                            |
 -----+---------------------------------------+
 88045|Events Total                           |
+88038|Events Total since 1982                |
 25031|Events Total since 2008                |
 17564|Events Total with Fatalities           |
+17558|Events Total with Fatalities since 1982|
  5259|Events Total with Fatalities since 2008|
 81088|Events US                              |
+81081|Events US since 1982                   |
 20731|Events US since 2008                   |
 14689|Events US with Fatalities              |
+14683|Events US with Fatalities since 1982   |
  3501|Events US with Fatalities since 2008   |
 ```
 
@@ -924,6 +956,43 @@ Count|io_dec_lat_lng_actions                                                    
   122|INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                                                                 |
 ```
 
+**Query Total since 1982:**:
+
+```sql92
+SELECT count(*) "Count",
+       io_dec_lat_lng_actions
+  FROM events 
+ WHERE ev_year >= 1982
+   AND io_dec_lat_lng_actions IS NOT NULL 
+ GROUP BY io_dec_lat_lng_actions 
+ ORDER BY io_dec_lat_lng_actions
+```
+
+**Results**:
+
+```
+Count|io_dec_lat_lng_actions                                                                                                                                                                                                                                         |
+-----+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  510|ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                           |
+ 4087|ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+  586|ERROR.00.916 Unknown US state and city & INFO.00.035 Correction based on US state                                                                                                                                                                              |
+    5|ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                      |
+    4|ERROR.00.922 Invalid US state id & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                      |
+   14|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & ERROR.00.917 Unknown US state & INFO.00.036 Correction based on US country                                                                                                         |
+   14|ERROR.00.922 Invalid US state id & ERROR.00.916 Unknown US state and city & INFO.00.036 Correction based on US country                                                                                                                                         |
+    8|ERROR.00.922 Invalid US state id & INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |
+    3|ERROR.00.922 Invalid US state id & INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+   91|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |
+    1|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & ERROR.00.916 Unknown US state and city & ERROR.00|
+    2|ERROR.00.922 Invalid US state id & INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                              |
+42684|INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |
+ 1286|INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              |
+10958|INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |
+  101|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string                                                                                                                                                                  |
+    4|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & ERROR.00.915 Unknown US zip code & INFO.00.034 Correction based on US state and city                                   |
+   64|INFO.00.037 Correction based on latitude and longitude & ERROR.00.920 Invalid latitude string & ERROR.00.921 Invalid longitude string & INFO.00.033 Correction based on US zip code                                                                            |
+  122|INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid longitude string                                                                                                                                                                 |
+```
 
 **Query Total since 2008:**:
 
@@ -1116,47 +1185,47 @@ Count|Description              |
  3651|Longitude deviation      |
 ```
 
-**Query US since 2008:**:
+**Query US since 1982:**:
 
 ```sql92
 SELECT count(*) "Count",
        'Latitude deviation' "Description"
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_dec_latitude_deviating IS NOT NULL 
  UNION
 SELECT count(*),
        'Longitude deviation'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_dec_longitude_deviating IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid Latitude'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_latitude IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid Longitude'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_longitude IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US City'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_us_city IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US City & Zipcode'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_us_city_zipcode IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US State'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_us_state IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US Zipcode'
-  FROM io_us_2008 e
+  FROM io_us_1982 e
  WHERE io_invalid_us_zipcode IS NOT NULL 
  ORDER BY 2
 ```
@@ -1166,12 +1235,12 @@ SELECT count(*) ,
 ```
 Count|Description              |
 -----+-------------------------+
- 3249|Invalid Latitude         |
- 3546|Invalid Longitude        |
- 1090|Invalid US City          |
- 4003|Invalid US City & Zipcode|
+ 3418|Invalid Latitude         |
+ 3737|Invalid Longitude        |
+ 5857|Invalid US City          |
+16342|Invalid US City & Zipcode|
     0|Invalid US State         |
-  858|Invalid US Zipcode       |
+ 5918|Invalid US Zipcode       |
  3405|Latitude deviation       |
  3300|Longitude deviation      |
 ```
@@ -1290,7 +1359,7 @@ Progress update 2022-12-18 07:51:14.927904 : INFO.00.005 Argument task='r_d_s'.
 Progress update 2022-12-18 07:51:14.927904 : -------------------------------------------------------------------------------.
 Progress update 2022-12-18 07:51:14.928406 : INFO.00.071 Refreshing the database schema.
 Progress update 2022-12-18 07:51:14.928406 : --------------------------------------------------------------------------------
-Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus2008.
+Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus1982.
 Progress update 2022-12-18 07:51:23.134620 : -------------------------------------------------------------------------------.
 Progress update 2022-12-18 07:51:23.135120 :        8,366,215,500 ns - Total time launcher.
 Progress update 2022-12-18 07:51:23.135120 : INFO.00.006 End   Launcher.

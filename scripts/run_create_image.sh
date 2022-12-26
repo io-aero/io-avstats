@@ -8,17 +8,17 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export APPLICATION_DEFAULT=faaus2008
+export APPLICATION_DEFAULT=faaus1982
 
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
-export DOCKER_HUB_PUSH_DEFAULT=no
+export DOCKER_HUB_PUSH_DEFAULT=yes
 
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "faaus2008 - Fatal Aircraft Accidents in the US since 2008"
-    echo "pdus2008  - Profiling Data for the US since 2008"
+    echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
+    echo "pdus1982  - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}

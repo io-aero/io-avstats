@@ -7,11 +7,6 @@
 /data/*_postgres_*.zip
 /data/download/
 /data/latest_postgres.zip
+/data/pandas_profiles/io_processed_files_explorative.html
+/data/pandas_profiles/io_processed_files_minimal.html
 /data/postgres/
-/docs/reports/*/*.aux
-/docs/reports/*/*.bbl
-/docs/reports/*/*.blg
-/docs/reports/*/*.dvi
-/docs/reports/*/*.log
-/docs/reports/*/*.out
-/docs/reports/*/*.tps

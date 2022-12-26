@@ -90,7 +90,7 @@ SELECT count(*) total,
        count(io_invalid_us_city_zipcode) inv_us_city_zipcode,
        count(io_invalid_us_state) inv_us_state,
        count(io_invalid_us_zipcode) inv_us_zipcode
-  FROM io_fatalities_us_2008
+  FROM io_fatalities_us_1982
 
 total|dev_latitude|inv__latitude|dev_longitude|inv_longitude|inv_us_city|inv_us_city_zipcode|inv_us_state|inv_us_zipcode|
 -----+------------+-------------+-------------+-------------+-----------+-------------------+------------+--------------+

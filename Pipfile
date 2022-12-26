@@ -21,7 +21,7 @@ pyyaml = "<=6.0.0"
 requests = "*"
 seaborn = "*"
 sqlalchemy = "*"
-streamlit = "*"
+streamlit = "<=1.15.0"
 streamlit-pandas-profiling = "*"
 toml = "*"
 

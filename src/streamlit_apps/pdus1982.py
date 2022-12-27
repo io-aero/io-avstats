@@ -194,20 +194,20 @@ QUERIES = {
                  i.inj_person_category,
                  i.injury_level;
     """,
-    "io_app_faaus1982": """
+    "io_accidents_us_1982": """
         SELECT *
-          FROM io_app_faaus1982
+          FROM io_accidents_us_1982
+        ORDER BY ev_id;
+    """,
+    "io_app_aaus1982": """
+        SELECT *
+          FROM io_app_aaus1982
         ORDER BY ev_id;
     """,
     "io_countries": """
         SELECT *
           FROM io_countries
         ORDER BY country;
-    """,
-    "io_fatalities_us_1982": """
-        SELECT *
-          FROM io_fatalities_us_1982
-        ORDER BY ev_id;
     """,
     "io_lat_lng": """
         SELECT *
@@ -236,11 +236,6 @@ QUERIES = {
           FROM io_states
         ORDER BY country,
                  state;
-    """,
-    "io_us_1982": """
-        SELECT *
-          FROM io_us_1982
-        ORDER BY ev_id;
     """,
     "narratives": """
         SELECT n.*,

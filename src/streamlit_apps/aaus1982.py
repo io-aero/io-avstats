@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Fatal Aviation Accidents in the US since 1982."""
+"""Aviation Accidents in the US since 1982."""
 import datetime
 import os
 
@@ -35,12 +35,15 @@ CHOICE_HISTOGRAM_HEIGHT = None
 CHOICE_HISTOGRAM_WIDTH = None
 CHOICE_MAP = None
 CHOICE_MAP_MAP_STYLE = None
+CHOICE_MAP_RADIUS = 1609.347 * 2
 
 DF: DataFrame = DataFrame()
 
 FILTER_ACFT_CATEGORIES = ""
 FILTER_ALT_LOW = None
 FILTER_FAR_PARTS = ""
+FILTER_FATALITIES_FROM = None
+FILTER_FATALITIES_TO = None
 FILTER_FINDING_CODES = ""
 FILTER_LATLONG_ACQ = None
 FILTER_NARR_STALL = None
@@ -59,22 +62,25 @@ PG_CONN: Connection | None = None
 PITCH = 30
 
 # ------------------------------------------------------------------
-# Query regarding the aircraft fatalities in the US since 1982.
+# Query regarding the aircraft accidents in the US since 1982.
 # ------------------------------------------------------------------
-QUERY_FAAUS1982 = """
+QUERY_AAUS1982 = """
     SELECT *
-     FROM io_app_faaus1982
+     FROM io_app_aaus1982
     ORDER BY ev_id;
+"""
+
+QUERY_MAX_FATALITIES = """
+    SELECT MAX(fatalities)
+      FROM io_app_aaus1982;
 """
 
 QUERY_US_LL = """
     SELECT dec_latitude,
            dec_longitude
       FROM io_countries
-     WHERE country = 'USA'
+     WHERE country = 'USA';
 """
-
-CHOICE_MAP_RADIUS = 1609.347 * 2
 
 SETTINGS = Dynaconf(
     environments=True,
@@ -96,6 +102,13 @@ def _apply_filter_controls():
     if FILTER_YEAR_FROM or FILTER_YEAR_TO:
         DF = DF.loc[
             (DF["ev_year"] >= FILTER_YEAR_FROM) & (DF["ev_year"] <= FILTER_YEAR_TO)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if FILTER_FATALITIES_FROM or FILTER_FATALITIES_TO:
+        DF = DF.loc[
+            (DF["fatalities"] >= FILTER_FATALITIES_FROM)
+            & (DF["fatalities"] <= FILTER_FATALITIES_TO)
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -162,11 +175,8 @@ def _apply_filter_controls():
 # ------------------------------------------------------------------
 def _get_data():
     global DF  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
 
-    PG_CONN = _get_postgres_connection()
-
-    DF = pd.read_sql(QUERY_FAAUS1982, con=_get_engine())
+    DF = pd.read_sql(QUERY_AAUS1982, con=_get_engine())
 
     if CHOICE_FILTER_DATA:
         _apply_filter_controls()
@@ -217,11 +227,11 @@ def _present_data():
         st.dataframe(DF)
 
     if CHOICE_HISTOGRAM:
-        st.subheader("Number of fatal accidents per year")
+        st.subheader("Number of accidents per year")
         _present_histogram()
 
     if CHOICE_MAP:
-        st.subheader("Depicting the fatal accidents on a map of the USA")
+        st.subheader("Depicting the accidents on a map of the USA")
         _present_map()
 
 
@@ -250,13 +260,13 @@ def _present_data_profile():
         df_faa_states_year_profile.to_file(
             os.path.join(
                 SETTINGS.pandas_profile_dir,
-                "faaus1982_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
+                "aaus1982_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
             )
         )
 
 
 # ------------------------------------------------------------------
-# Present the yearly fatal accidents.
+# Present the yearly accidents.
 # ------------------------------------------------------------------
 def _present_histogram():
     # noinspection PyUnboundLocalVariable
@@ -316,6 +326,8 @@ def _setup_filter_controls():
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
     global FILTER_ALT_LOW  # pylint: disable=global-statement
     global FILTER_FAR_PARTS  # pylint: disable=global-statement
+    global FILTER_FATALITIES_FROM  # pylint: disable=global-statement
+    global FILTER_FATALITIES_TO  # pylint: disable=global-statement
     global FILTER_FINDING_CODES  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
     global FILTER_NARR_STALL  # pylint: disable=global-statement
@@ -350,6 +362,15 @@ def _setup_filter_controls():
             label="Select one or more FAR parts",
             help="One or more FAR parts - "
             + "all FAR parts if no selection has been made.",
+        )
+
+        max_fatalities = _sql_query_max_fatalities(PG_CONN, QUERY_MAX_FATALITIES)
+
+        FILTER_FATALITIES_FROM, FILTER_FATALITIES_TO = st.sidebar.slider(
+            label="Select the number of fatalities",
+            min_value=0,
+            max_value=max_fatalities,
+            value=(1, max_fatalities),
         )
 
         FILTER_FINDING_CODES = st.sidebar.text_input(
@@ -402,8 +423,12 @@ def _setup_filter_controls():
 # Setup the page.
 # ------------------------------------------------------------------
 def _setup_page():
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()
+
     st.set_page_config(layout="wide")
-    st.header("Fatal Aviation Accidents in the US since 1982")
+    st.header("Aviation Accidents in the US since 1982")
 
 
 # ------------------------------------------------------------------
@@ -464,7 +489,7 @@ def _setup_task_controls():
     st.sidebar.markdown("""---""")
 
     CHOICE_HISTOGRAM = st.sidebar.checkbox(
-        help="Fatal accidents per year.",
+        help="Accidents per year.",
         label="**`Show histogram`**",
         value=False,
     )
@@ -476,7 +501,7 @@ def _setup_task_controls():
     st.sidebar.markdown("""---""")
 
     CHOICE_MAP = st.sidebar.checkbox(
-        help="Display of fatal accident events on a map of the USA.",
+        help="Display of accident events on a map of the USA.",
         label="**`Show US map`**",
         value=False,
     )
@@ -500,7 +525,7 @@ streets: emphasizes accurate, legible styling of road and transit networks.
         )
         CHOICE_MAP_RADIUS = st.sidebar.slider(
             label="Accident radius in meters",
-            help="Radius for displaying the fatal accident events - "
+            help="Radius for displaying the accident events - "
             + "default value is 2 miles.",
             min_value=10,
             max_value=1609 * 4,
@@ -513,8 +538,26 @@ streets: emphasizes accurate, legible styling of road and transit networks.
 # ------------------------------------------------------------------
 # Run the US latitude and longitude query.
 # ------------------------------------------------------------------
-def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
+def _sql_query_max_fatalities(conn: connection, query: str) -> int:
     """Run t.he US latitude and longitude query.
+
+    Args:
+        conn (connection): Database connection.
+        query (str): Database query.
+
+    Returns:
+        pdk.ViewState: Screen focus.
+    """
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Run the US latitude and longitude query.
+# ------------------------------------------------------------------
+def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
+    """Run the US latitude and longitude query.
 
     Args:
         conn (connection): Database connection.

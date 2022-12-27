@@ -8,10 +8,10 @@ A separate Docker image is created for each of the Streamlit applications.
 
 Currently, the following Streamlit applications are supported:
 
-| Application | Description                                   |
-|-------------|-----------------------------------------------|
-| faaus1982   | Fatal Aircraft Accidents in the US since 1982 |
-| pdus1982    | Profiling Data for the US since 1982          |
+| Application | Description                             |
+|-------------|-----------------------------------------|
+| aaus1982    | Aircraft Accidents in the US since 1982 |
+| pdus1982    | Profiling Data for the US since 1982    |
 
 The **`data/run_create_image`** script can be used to generate a Docker image for each of these applications.
 

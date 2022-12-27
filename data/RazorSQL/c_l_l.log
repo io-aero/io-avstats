@@ -100,7 +100,7 @@ INFO.00.037 Correction based on latitude and longitude & ERROR.00.921 Invalid lo
 =======================================================================
 SELECT io_dec_lat_lng_actions,
        count(*)
-  FROM io_fatalities_us_1982
+  FROM io_accidents_us_1982
  GROUP BY io_dec_lat_lng_actions
  ORDER BY io_dec_lat_lng_actions
 

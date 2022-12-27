@@ -1245,47 +1245,47 @@ Count|Description              |
  3300|Longitude deviation      |
 ```
 
-**Query US with Fatalities since 2008:**:
+**Query US Accidents since 1982:**:
 
 ```sql92
 SELECT count(*) "Count",
        'Latitude deviation' "Description"
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_dec_latitude_deviating IS NOT NULL 
  UNION
 SELECT count(*),
        'Longitude deviation'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_dec_longitude_deviating IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid Latitude'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_latitude IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid Longitude'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_longitude IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US City'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_us_city IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US City & Zipcode'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_us_city_zipcode IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US State'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_us_state IS NOT NULL 
  UNION
 SELECT count(*) ,
        'Invalid US Zipcode'
-  FROM io_fatalities_us_2008 e
+  FROM io_accidents_us_2008 e
  WHERE io_invalid_us_zipcode IS NOT NULL 
  ORDER BY 2
 ```
@@ -1359,7 +1359,7 @@ Progress update 2022-12-18 07:51:14.927904 : INFO.00.005 Argument task='r_d_s'.
 Progress update 2022-12-18 07:51:14.927904 : -------------------------------------------------------------------------------.
 Progress update 2022-12-18 07:51:14.928406 : INFO.00.071 Refreshing the database schema.
 Progress update 2022-12-18 07:51:14.928406 : --------------------------------------------------------------------------------
-Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_faaus1982.
+Progress update 2022-12-18 07:51:23.134620 : INFO.00.069 Materialized database view is refreshed: io_app_aaus1982.
 Progress update 2022-12-18 07:51:23.134620 : -------------------------------------------------------------------------------.
 Progress update 2022-12-18 07:51:23.135120 :        8,366,215,500 ns - Total time launcher.
 Progress update 2022-12-18 07:51:23.135120 : INFO.00.006 End   Launcher.

@@ -37,7 +37,7 @@ razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2022.11.01_avall.sql"
 streamlit_server_port = 8501
-streamlit_server_port_faaus1982 = 8501
+streamlit_server_port_aaus1982 = 8501
 streamlit_server_port_pdus1982 = 8502
 
 [dev]
@@ -83,5 +83,5 @@ razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2022.11.01_avall.sql"
 streamlit_server_port = 8501
-streamlit_server_port_faaus1982 = 8501
+streamlit_server_port_aaus1982 = 8501
 streamlit_server_port_pdus1982 = 8502

@@ -8,7 +8,7 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set APPLICATION_DEFAULT=faaus1982
+set APPLICATION_DEFAULT=aaus1982
 
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
@@ -17,8 +17,8 @@ set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
-    echo pdus1982  - Profiling Data for the US since 1982
+    echo aaus1982 - Aircraft Accidents in the US since 1982
+    echo pdus1982 - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 

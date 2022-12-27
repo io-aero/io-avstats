@@ -56,10 +56,10 @@ On the EC2 dashboard, select **Instances** and then **Launch instance**.
 Each Streamlit application must be assigned its own port number so that they can run simultaneously.
 Currently, the following Streamlit applications are supported:
 
-| Port | Application                                               |
-|------|-----------------------------------------------------------|
-| 8501 | faaus1982 - Fatal Aircraft Accidents in the US since 1982 |
-| 8502 | pdus1982  - Profiling Data for the US since 1982          |
+| Port | Application                                        |
+|------|----------------------------------------------------|
+| 8501 | aaus1982 - Aircraft Accidents in the US since 1982 |
+| 8502 | pdus1982 - Profiling Data for the US since 1982    |
 
 ### 2.1 Determine the security
 

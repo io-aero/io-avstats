@@ -97,7 +97,7 @@ Example protocol:
     Progress update 2022-11-26 02:25:29.731616 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_longitude'.
     Progress update 2022-11-26 02:25:29.756848 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_site_zipcode'.
     Progress update 2022-11-26 02:25:29.781847 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_state'.
-    Progress update 2022-11-26 02:25:29.806863 : INFO.00.032 Database view is available: io_fatalities_us_1982.
+    Progress update 2022-11-26 02:25:29.806863 : INFO.00.032 Database view is available: io_accidents_us_1982.
     Progress update 2022-11-26 02:25:29.831848 : INFO.00.032 Database view is available: io_lat_lng_issues.
     Progress update 2022-11-26 02:25:29.831848 : -------------------------------------------------------------------------------.
     Progress update 2022-11-26 02:25:29.832351 :        3,172,935,000 ns - Total time launcher.
@@ -789,7 +789,7 @@ The task can be executed several times without problems, since before a change i
 
 1. Materialized database view
 
-- **`io_app_faaus1982`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
+- **`io_app_aaus1982`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
 
 Example protocol:
 
@@ -799,7 +799,7 @@ Example protocol:
     Progress update 2022-12-19 08:37:09.352180 : -------------------------------------------------------------------------------.
     Progress update 2022-12-19 08:37:09.352180 : INFO.00.071 Refreshing the database schema.
     Progress update 2022-12-19 08:37:09.352180 : --------------------------------------------------------------------------------
-    Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_faaus1982.
+    Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_aaus1982.
     Progress update 2022-12-19 08:37:19.366370 : -------------------------------------------------------------------------------.
     Progress update 2022-12-19 08:37:19.366370 :       10,187,690,800 ns - Total time launcher.
     Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
@@ -908,7 +908,7 @@ The task can be executed several times without problems, since before a change i
 3. New database views:
 
 - **`io_lat_lng_issues`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
-- **`io_fatalities_us_1982`** - provides event data for aviation accidents in the U.S. since 1982.
+- **`io_accidents_us_1982`** - provides event data for aviation accidents in the U.S. since 1982.
 
 Example protocol:
 
@@ -939,7 +939,7 @@ Example protocol:
     Progress update 2022-11-27 13:37:14.244753 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_longitude'.
     Progress update 2022-11-27 13:37:14.277753 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_site_zipcode'.
     Progress update 2022-11-27 13:37:14.311253 : INFO.00.031 Database column added: table_schema 'public' table_name 'events' column_name 'io_state'.
-    Progress update 2022-11-27 13:37:14.378313 : INFO.00.032 Database view is available: io_fatalities_us_1982.
+    Progress update 2022-11-27 13:37:14.378313 : INFO.00.032 Database view is available: io_accidents_us_1982.
     Progress update 2022-11-27 13:37:14.402813 : INFO.00.032 Database view is available: io_lat_lng_issues.
     Progress update 2022-11-27 13:37:14.402813 : -------------------------------------------------------------------------------.
     Progress update 2022-11-27 13:37:14.402813 :        1,230,619,900 ns - Total time launcher.

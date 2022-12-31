@@ -2,7 +2,6 @@
 /.coverage
 /.history/
 /.idea/
-/Pipfile.lock
 /cloud.zip
 /data/*_postgres_*.zip
 /data/download/

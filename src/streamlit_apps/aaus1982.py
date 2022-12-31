@@ -49,9 +49,11 @@ FILTER_LATLONG_ACQ = None
 FILTER_NARR_STALL = None
 FILTER_OCCURRENCE_CODES = ""
 FILTER_SPIN_STALL = None
-FILTER_STATES = ""
+FILTER_US_STATES = ""
 FILTER_YEAR_FROM = None
 FILTER_YEAR_TO = None
+
+LAMBDA_LIST_COMPARE = lambda x,y: True if list(set(x).intersection(y)) else False
 
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
@@ -64,10 +66,31 @@ PITCH = 30
 # ------------------------------------------------------------------
 # Query regarding the aircraft accidents in the US since 1982.
 # ------------------------------------------------------------------
+QUERY_ACFT_CATEGORIES = """
+    SELECT string_agg(DISTINCT(acft_category)::text, ',')
+      FROM aircraft
+     WHERE acft_category IS NOT NULL
+     ORDER BY 1;
+"""
+
 QUERY_AAUS1982 = """
     SELECT *
      FROM io_app_aaus1982
     ORDER BY ev_id;
+"""
+
+QUERY_FAR_PARTS = """
+    SELECT string_agg(DISTINCT(far_part)::text, ',')
+      FROM aircraft
+    WHERE far_part IS NOT NULL
+    ORDER BY 1;
+"""
+
+QUERY_FINDING_CODES = """
+    SELECT string_agg(DISTINCT(finding_code)::text, ',')
+      FROM findings
+     WHERE finding_code IS NOT NULL
+     ORDER BY 1;
 """
 
 QUERY_MAX_FATALITIES = """
@@ -75,11 +98,25 @@ QUERY_MAX_FATALITIES = """
       FROM io_app_aaus1982;
 """
 
+QUERY_OCCURRENCE_CODES = """
+    SELECT string_agg(DISTINCT(occurrence_code)::text, ',')
+      FROM occurrences 
+     WHERE occurrence_code IS NOT NULL
+     ORDER BY 1;
+"""
+
 QUERY_US_LL = """
     SELECT dec_latitude,
            dec_longitude
       FROM io_countries
      WHERE country = 'USA';
+"""
+
+QUERY_US_STATES = """
+    SELECT string_agg(DISTINCT(state)::text, ',')
+      FROM io_states 
+     WHERE country  = 'USA'
+     ORDER BY 1;
 """
 
 SETTINGS = Dynaconf(
@@ -114,9 +151,8 @@ def _apply_filter_controls():
     # noinspection PyUnboundLocalVariable
     if FILTER_ACFT_CATEGORIES:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[
-            (DF["acft_category"].isin(FILTER_ACFT_CATEGORIES.upper().split(",")))
-        ]
+        #DF = DF.loc[(DF["acft_category"].isin(FILTER_ACFT_CATEGORIES.upper().split(",")))]
+        DF = DF.loc[(LAMBDA_LIST_COMPARE(DF["acft_category"],FILTER_ACFT_CATEGORIES))]
 
     # noinspection PyUnboundLocalVariable
     if FILTER_FAR_PARTS:
@@ -136,9 +172,9 @@ def _apply_filter_controls():
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_STATES:
+    if FILTER_US_STATES:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[(DF["state"].isin(FILTER_STATES.upper().split(",")))]
+        DF = DF.loc[(DF["state"].isin(FILTER_US_STATES))]
 
     # noinspection PyUnboundLocalVariable
     if FILTER_LATLONG_ACQ:
@@ -333,7 +369,7 @@ def _setup_filter_controls():
     global FILTER_NARR_STALL  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_SPIN_STALL  # pylint: disable=global-statement
-    global FILTER_STATES  # pylint: disable=global-statement
+    global FILTER_US_STATES  # pylint: disable=global-statement
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
 
@@ -352,19 +388,21 @@ def _setup_filter_controls():
             value=(2008, datetime.date.today().year),
         )
 
-        FILTER_ACFT_CATEGORIES = st.sidebar.text_input(
-            label="Select one or more aircraft categories",
+        FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
             help="One or more aircraft categories - "
             + "all aircraft categories if no selection has been made.",
+            label="Select one or more aircraft categories",
+            options=list(_sql_query_list(PG_CONN, QUERY_ACFT_CATEGORIES).split(",")),
         )
 
-        FILTER_FAR_PARTS = st.sidebar.text_input(
-            label="Select one or more FAR parts",
+        FILTER_FAR_PARTS = st.sidebar.multiselect(
             help="One or more FAR parts - "
             + "all FAR parts if no selection has been made.",
+            label="Select one or more FAR parts",
+            options=list(_sql_query_list(PG_CONN, QUERY_FAR_PARTS).split(",")),
         )
 
-        max_fatalities = _sql_query_max_fatalities(PG_CONN, QUERY_MAX_FATALITIES)
+        max_fatalities = _sql_query_max_fatalities()
 
         FILTER_FATALITIES_FROM, FILTER_FATALITIES_TO = st.sidebar.slider(
             label="Select the number of fatalities",
@@ -373,22 +411,25 @@ def _setup_filter_controls():
             value=(1, max_fatalities),
         )
 
-        FILTER_FINDING_CODES = st.sidebar.text_input(
-            label="Select one or more finding codes",
+        FILTER_FINDING_CODES = st.sidebar.multiselect(
             help="One or more finding codes - "
             + "all finding codes if no selection has been made.",
+            label="Select one or more finding codes",
+            options=list(_sql_query_list(PG_CONN, QUERY_FINDING_CODES).split(",")),
         )
 
-        FILTER_OCCURRENCE_CODES = st.sidebar.text_input(
-            label="Select one or more occurrence codes",
+        FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
             help="One or more occurrence codes - "
             + "all occurrence codes if no selection has been made.",
+            label="Select one or more occurrence codes",
+            options=list(_sql_query_list(PG_CONN, QUERY_OCCURRENCE_CODES).split(",")),
         )
 
-        FILTER_STATES = st.sidebar.text_input(
-            label="Select one or more states",
+        FILTER_US_STATES = st.sidebar.multiselect(
             help="One or more USPS abbreviations - "
             + "all U.S. states if no selection has been made.",
+            label="Select one or more states",
+            options=list(_sql_query_list(PG_CONN, QUERY_US_STATES).split(","))
         )
 
         FILTER_LATLONG_ACQ = st.sidebar.selectbox(
@@ -536,17 +577,31 @@ streets: emphasizes accurate, legible styling of road and transit networks.
 
 
 # ------------------------------------------------------------------
-# Run the US latitude and longitude query.
+# Maximum number of fatalities.
 # ------------------------------------------------------------------
-def _sql_query_max_fatalities(conn: connection, query: str) -> int:
-    """Run t.he US latitude and longitude query.
+def _sql_query_max_fatalities() -> int:
+    """Maximum number of fatalities.
+
+    Returns:
+        int.
+    """
+    with PG_CONN.cursor() as cur:
+        cur.execute(QUERY_MAX_FATALITIES)
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns a list.
+# ------------------------------------------------------------------
+def _sql_query_list(conn: connection, query: str) -> list[str]:
+    """Execute a query that returns a list.
 
     Args:
         conn (connection): Database connection.
         query (str): Database query.
 
     Returns:
-        pdk.ViewState: Screen focus.
+        list.
     """
     with conn.cursor() as cur:
         cur.execute(query)

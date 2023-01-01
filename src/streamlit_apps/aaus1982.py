@@ -4,7 +4,7 @@
 
 """Aviation Accidents in the US since 1982."""
 import datetime
-import os
+import time
 
 import pandas as pd
 import psycopg2
@@ -24,36 +24,37 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
+APP_ID = "aaus1982"
+
 # pylint: disable=R0801
-CHOICE_DATA_PROFILE = None
-CHOICE_DATA_PROFILE_FILE = None
-CHOICE_DATA_PROFILE_TYPE = None
-CHOICE_DETAILS = None
-CHOICE_FILTER_DATA = None
-CHOICE_HISTOGRAM = None
-CHOICE_HISTOGRAM_HEIGHT = None
-CHOICE_HISTOGRAM_WIDTH = None
-CHOICE_MAP = None
-CHOICE_MAP_MAP_STYLE = None
-CHOICE_MAP_RADIUS = 1609.347 * 2
+CHOICE_DATA_PROFILE: bool | None = None
+CHOICE_DATA_PROFILE_TYPE: str | None = None
+CHOICE_DETAILS: bool | None = None
+CHOICE_FILTER_DATA: bool | None = None
+CHOICE_HISTOGRAM: bool | None = None
+CHOICE_HISTOGRAM_HEIGHT: float | None = None
+CHOICE_HISTOGRAM_WIDTH: float | None = None
+CHOICE_MAP: bool | None = None
+CHOICE_MAP_MAP_STYLE: str | None = None
+CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
 
-DF: DataFrame = DataFrame()
+DF_FILTERED: DataFrame = DataFrame()
+DF_UNFILTERED: DataFrame = DataFrame()
 
-FILTER_ACFT_CATEGORIES = ""
-FILTER_ALT_LOW = None
-FILTER_FAR_PARTS = ""
-FILTER_FATALITIES_FROM = None
-FILTER_FATALITIES_TO = None
-FILTER_FINDING_CODES = ""
-FILTER_LATLONG_ACQ = None
-FILTER_NARR_STALL = None
-FILTER_OCCURRENCE_CODES = ""
-FILTER_SPIN_STALL = None
-FILTER_US_STATES = ""
-FILTER_YEAR_FROM = None
-FILTER_YEAR_TO = None
+FILTER_ACFT_CATEGORIES: list[str] = []
+FILTER_ALT_LOW: bool | None = None
+FILTER_FAR_PARTS: list[str] = []
+FILTER_FATALITIES_FROM: int | None = None
+FILTER_FATALITIES_TO: int | None = None
+FILTER_FINDING_CODES: list[str] = []
+FILTER_LATLONG_ACQ: str | None = None
+FILTER_NARR_STALL: bool | None = None
+FILTER_OCCURRENCE_CODES: list[str] = []
+FILTER_SPIN_STALL: bool | None = None
+FILTER_US_STATES: list[str] = []
+FILTER_YEAR_FROM: int | None = None
+FILTER_YEAR_TO: int | None = None
 
-LAMBDA_LIST_COMPARE = lambda x,y: True if list(set(x).intersection(y)) else False
 
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
@@ -61,13 +62,15 @@ LAYER_TYPE = "ScatterplotLayer"
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
 PG_CONN: Connection | None = None
+#  Up/down angle relative to the map’s plane,
+#  with 0 being looking directly at the map
 PITCH = 30
 
 # ------------------------------------------------------------------
 # Query regarding the aircraft accidents in the US since 1982.
 # ------------------------------------------------------------------
 QUERY_ACFT_CATEGORIES = """
-    SELECT string_agg(DISTINCT(acft_category)::text, ',')
+    SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
       FROM aircraft
      WHERE acft_category IS NOT NULL
      ORDER BY 1;
@@ -80,18 +83,27 @@ QUERY_AAUS1982 = """
 """
 
 QUERY_FAR_PARTS = """
-    SELECT string_agg(DISTINCT(far_part)::text, ',')
+    SELECT string_agg(DISTINCT far_part, ',' ORDER BY far_part)
       FROM aircraft
     WHERE far_part IS NOT NULL
     ORDER BY 1;
 """
 
 QUERY_FINDING_CODES = """
-    SELECT string_agg(DISTINCT(finding_code)::text, ',')
-      FROM findings
-     WHERE finding_code IS NOT NULL
-     ORDER BY 1;
-"""
+    SELECT string_agg(DISTINCT finding_code, ',' ORDER BY finding_code)
+      FROM (SELECT CASE WHEN substring(finding_code, 1, 8) = '01062012' THEN 'PARAMS_ALT'
+                        WHEN substring(finding_code, 1, 8) = '01062037' THEN 'PARAMS_DEC_RATE'
+                        WHEN substring(finding_code, 1, 8) = '01062040' THEN 'PARAMS_DEC_APP'
+                        WHEN substring(finding_code, 1, 8) = '01062042' THEN 'PARAMS_AoA'
+                        WHEN substring(finding_code, 1, 6) = '030210' THEN 'ENV_TER'
+                        WHEN substring(finding_code, 1, 6) = '030220' THEN 'ENV_OAS'
+                        ELSE finding_code
+                    END finding_code
+              FROM findings
+             WHERE (substring(finding_code, 1, 8) IN ('01062012', '01062037', '01062040', '01062042')
+                OR substring(finding_code, 1, 6) IN ('030210', '030220'))
+               AND finding_code IS NOT NULL) f
+"""  # noqa: E501
 
 QUERY_MAX_FATALITIES = """
     SELECT MAX(fatalities)
@@ -99,11 +111,25 @@ QUERY_MAX_FATALITIES = """
 """
 
 QUERY_OCCURRENCE_CODES = """
-    SELECT string_agg(DISTINCT(occurrence_code)::text, ',')
-      FROM occurrences 
-     WHERE occurrence_code IS NOT NULL
-     ORDER BY 1;
-"""
+    SELECT string_agg(DISTINCT occurrence_code, ',' ORDER BY occurrence_code)
+      FROM (SELECT CASE WHEN substring(occurrence_code, 1, 3) = '350' THEN 'INIT_CLIMB'
+                        WHEN substring(occurrence_code, 1, 3) = '452' THEN 'MAN_LALT'
+                        WHEN substring(occurrence_code, 1, 3) = '502' THEN 'FINAL_APP'
+                        WHEN substring(occurrence_code, 4, 6) = '120' THEN 'CFIT'
+                        WHEN substring(occurrence_code, 4, 6) = '220' THEN 'LALT'
+                        WHEN substring(occurrence_code, 4, 6) = '240' THEN 'LOC-I'
+                        WHEN substring(occurrence_code, 4, 6) = '241' THEN 'STALL'
+                        WHEN substring(occurrence_code, 4, 6) = '250' THEN 'MIDAIR'
+                        WHEN substring(occurrence_code, 4, 6) = '401' THEN 'UIMC'
+                        WHEN substring(occurrence_code, 4, 6) = '420' THEN 'CAA'
+                        WHEN substring(occurrence_code, 4, 6) = '901' THEN 'BIRD'
+                        ELSE occurrence_code
+                   END
+              FROM events_sequence
+             WHERE (substring(occurrence_code, 1, 3) IN ('350', '452', '502')
+                OR substring(occurrence_code, 4, 6) IN ('120', '220', '240', '241', '250', '401', '420', '901'))
+               AND occurrence_code IS NOT NULL) o
+"""  # noqa: E501
 
 QUERY_US_LL = """
     SELECT dec_latitude,
@@ -113,8 +139,8 @@ QUERY_US_LL = """
 """
 
 QUERY_US_STATES = """
-    SELECT string_agg(DISTINCT(state)::text, ',')
-      FROM io_states 
+    SELECT string_agg(DISTINCT state, ',' ORDER BY state)
+      FROM io_states
      WHERE country  = 'USA'
      ORDER BY 1;
 """
@@ -125,97 +151,157 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 
+# Magnification level of the map, usually between
+# 0 (representing the whole world) and
+# 24 (close to individual buildings)
 ZOOM = 4.4
 
 
 # ------------------------------------------------------------------
 # Filter the data frame.
 # ------------------------------------------------------------------
+# pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
-def _apply_filter_controls():
-    global DF  # pylint: disable=global-statement
+@st.experimental_memo
+def _apply_filter_controls(
+    df_unfiltered: DataFrame,
+    filter_acft_categories: list | None,
+    filter_alt_low: bool | None,
+    filter_fatalities_from: int | None,
+    filter_fatalities_to: int | None,
+    filter_far_parts: list | None,
+    filter_finding_codes: list | None,
+    filter_latlong_acq: str | None,
+    filter_narr_stall: bool | None,
+    filter_occurrence_codes: list | None,
+    filter_spin_stall: bool | None,
+    filter_us_states: list | None,
+    filter_year_from: int | None,
+    filter_year_to: int | None,
+) -> DataFrame:
+    """Filter the data frame."""
+    df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_YEAR_FROM or FILTER_YEAR_TO:
-        DF = DF.loc[
-            (DF["ev_year"] >= FILTER_YEAR_FROM) & (DF["ev_year"] <= FILTER_YEAR_TO)
+    if filter_year_from or filter_year_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["ev_year"] >= FILTER_YEAR_FROM)
+            & (df_filtered["ev_year"] <= FILTER_YEAR_TO)
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_FATALITIES_FROM or FILTER_FATALITIES_TO:
-        DF = DF.loc[
-            (DF["fatalities"] >= FILTER_FATALITIES_FROM)
-            & (DF["fatalities"] <= FILTER_FATALITIES_TO)
+    if filter_fatalities_from or filter_fatalities_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["fatalities"] >= filter_fatalities_from)
+            & (df_filtered["fatalities"] <= filter_fatalities_to)
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_ACFT_CATEGORIES:
+    if filter_acft_categories:
         # noinspection PyUnboundLocalVariable
-        #DF = DF.loc[(DF["acft_category"].isin(FILTER_ACFT_CATEGORIES.upper().split(",")))]
-        DF = DF.loc[(LAMBDA_LIST_COMPARE(DF["acft_category"],FILTER_ACFT_CATEGORIES))]
-
-    # noinspection PyUnboundLocalVariable
-    if FILTER_FAR_PARTS:
-        # noinspection PyUnboundLocalVariable
-        DF = DF.loc[(DF["far_part"].isin(FILTER_FAR_PARTS.upper().split(",")))]
-
-    # noinspection PyUnboundLocalVariable
-    if FILTER_FINDING_CODES:
-        # noinspection PyUnboundLocalVariable
-        DF = DF.loc[(DF["finding_code"].isin(FILTER_FINDING_CODES.upper().split(",")))]
-
-    # noinspection PyUnboundLocalVariable
-    if FILTER_OCCURRENCE_CODES:
-        # noinspection PyUnboundLocalVariable
-        DF = DF.loc[
-            (DF["occurrence_code"].isin(FILTER_OCCURRENCE_CODES.upper().split(",")))
+        df_filtered = df_filtered.loc[
+            df_filtered["acft_category"].apply(
+                lambda x: bool(set(x) & set(filter_acft_categories))  # type: ignore
+            )
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_US_STATES:
+    if filter_far_parts:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[(DF["state"].isin(FILTER_US_STATES))]
+        df_filtered = df_filtered.loc[
+            df_filtered["far_part"].apply(
+                lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
+            )
+        ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_LATLONG_ACQ:
+    if filter_finding_codes:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[(DF["latlong_acq"] == FILTER_LATLONG_ACQ)]
+        df_filtered = df_filtered.loc[
+            df_filtered["finding_code"].apply(
+                lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
+            )
+        ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_SPIN_STALL:
+    if filter_occurrence_codes:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[
+        df_filtered = df_filtered.loc[
+            df_filtered["occurrence_code"].apply(
+                lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
+            )
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_us_states:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_us_states))]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_latlong_acq:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (df_filtered["latlong_acq"] == filter_latlong_acq)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_spin_stall:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (DF["spin_stall"] == True)  # noqa: E712
+            (df_filtered["spin_stall"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_ALT_LOW:
+    if filter_alt_low:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[
+        df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (DF["alt_low"] == True)  # noqa: E712
+            (df_filtered["alt_low"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_NARR_STALL:
+    if filter_narr_stall:
         # noinspection PyUnboundLocalVariable
-        DF = DF.loc[
+        df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (DF["narr_stall"] == True)  # noqa: E712
+            (df_filtered["narr_stall"] == True)  # noqa: E712
         ]
+
+    return df_filtered
 
 
 # ------------------------------------------------------------------
-# Read and filter the data.
+# Convert a dataframe to csv data.
 # ------------------------------------------------------------------
-def _get_data():
-    global DF  # pylint: disable=global-statement
+@st.experimental_memo
+def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
+    """Convert a dataframe to csv data.
 
-    DF = pd.read_sql(QUERY_AAUS1982, con=_get_engine())
+    Args:
+        dataframe (DataFrame): The datafarame.
 
-    if CHOICE_FILTER_DATA:
-        _apply_filter_controls()
+    Returns:
+        bytes: The csv data.
+    """
+    return dataframe.to_csv().encode("utf-8")
+
+
+# ------------------------------------------------------------------
+# Read the data.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _get_data() -> DataFrame:
+    """Read the data.
+
+    Returns:
+        DataFrame: The unfiltered dataframe.
+    """
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()  # type: ignore
+
+    return pd.read_sql(QUERY_AAUS1982, con=_get_engine())
 
 
 # ------------------------------------------------------------------
@@ -241,8 +327,9 @@ def _get_engine() -> Engine:
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
+@st.experimental_singleton
 def _get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection,
+    """Create a PostgreSQL connection.
 
     Returns:
         connection: Database connection.
@@ -254,13 +341,22 @@ def _get_postgres_connection() -> connection:
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
+    """Present the filtered data."""
     if CHOICE_DATA_PROFILE:
         st.subheader("Profiling of the filtered data set")
         _present_data_profile()
 
     if CHOICE_DETAILS:
         st.subheader("The filtered data set in detail")
-        st.dataframe(DF)
+        st.dataframe(DF_FILTERED)
+        st.download_button(
+            data=_convert_df_2_csv(DF_FILTERED),
+            file_name=APP_ID + ".csv",
+            help="The download includes all data "
+            + "after applying the filter options.",
+            label="Download all data as CSV file",
+            mime="text/csv",
+        )
 
     if CHOICE_HISTOGRAM:
         st.subheader("Number of accidents per year")
@@ -275,40 +371,40 @@ def _present_data():
 # Present data profile.
 # ------------------------------------------------------------------
 def _present_data_profile():
+    """Present data profile."""
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
-        df_faa_states_year_profile = ProfileReport(
-            DF,
+        profile_report = ProfileReport(
+            DF_FILTERED,
             explorative=True,
         )
     else:
-        df_faa_states_year_profile = ProfileReport(
-            DF,
+        profile_report = ProfileReport(
+            DF_FILTERED,
             minimal=True,
         )
 
-    st_profile_report(df_faa_states_year_profile)
+    st_profile_report(profile_report)
 
-    # noinspection PyUnboundLocalVariable
-    if CHOICE_DATA_PROFILE_FILE:
-        if not os.path.isdir(SETTINGS.pandas_profile_dir):
-            os.mkdir(SETTINGS.pandas_profile_dir)
-        df_faa_states_year_profile.to_file(
-            os.path.join(
-                SETTINGS.pandas_profile_dir,
-                "aaus1982_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
-            )
-        )
+    st.download_button(
+        data=profile_report.to_html(),
+        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        help="The download includes a profile report from the dataframe "
+        + "after applying the filter options.",
+        label="Download the profile report",
+        mime="text/html",
+    )
 
 
 # ------------------------------------------------------------------
 # Present the yearly accidents.
 # ------------------------------------------------------------------
 def _present_histogram():
+    """Present the yearly accidents."""
     # noinspection PyUnboundLocalVariable
     fig, _ax = plt.subplots(figsize=(CHOICE_HISTOGRAM_WIDTH, CHOICE_HISTOGRAM_HEIGHT))
 
-    sns.histplot(DF["ev_year"], discrete=True)
+    sns.histplot(DF_FILTERED["ev_year"], discrete=True)
 
     plt.xlabel("Year")
 
@@ -316,17 +412,20 @@ def _present_histogram():
 
 
 # ------------------------------------------------------------------
-# Present the US map.
+# Present the accidents on the US map.
 # ------------------------------------------------------------------
 def _present_map():
-    global DF  # pylint: disable=global-statement
+    """Present the accidents on the US map."""
+    global DF_FILTERED  # pylint: disable=global-statement
 
     # noinspection PyUnboundLocalVariable
-    DF = DF.loc[(DF["dec_latitude"].notna() & DF["dec_longitude"].notna())]
+    DF_FILTERED = DF_FILTERED.loc[
+        (DF_FILTERED["dec_latitude"].notna() & DF_FILTERED["dec_longitude"].notna())
+    ]
 
     faa_layer = pdk.Layer(
         auto_highlight=True,
-        data=DF,
+        data=DF_FILTERED,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
         get_radius=CHOICE_MAP_RADIUS,
@@ -337,7 +436,7 @@ def _present_map():
     # noinspection PyUnboundLocalVariable
     st.pydeck_chart(
         pdk.Deck(
-            initial_view_state=_sql_query_us_ll(PG_CONN, QUERY_US_LL),
+            initial_view_state=_sql_query_us_ll(PITCH, ZOOM),
             layers=[faa_layer],
             map_style=MAP_STYLE_PREFIX + CHOICE_MAP_MAP_STYLE,  # type: ignore
             tooltip={
@@ -355,9 +454,10 @@ def _present_map():
 
 
 # ------------------------------------------------------------------
-# Setup the filter controls.
+# Set up the filter controls.
 # ------------------------------------------------------------------
 def _setup_filter_controls():
+    """Set up the filter controls."""
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
     global FILTER_ALT_LOW  # pylint: disable=global-statement
@@ -372,9 +472,12 @@ def _setup_filter_controls():
     global FILTER_US_STATES  # pylint: disable=global-statement
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
-        help="Pandas profiling of the dataset.",
+        help="Special filter options required.",
         label="**`Filter data ?`**",
         value=True,
     )
@@ -382,59 +485,55 @@ def _setup_filter_controls():
     if CHOICE_FILTER_DATA:
         FILTER_YEAR_FROM, FILTER_YEAR_TO = st.sidebar.slider(
             label="Select a time frame",
-            help="Data available from 1982 to the current year.",
+            help="Filter over year from to.",
             min_value=1982,
             max_value=datetime.date.today().year,
             value=(2008, datetime.date.today().year),
         )
 
         FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
-            help="One or more aircraft categories - "
-            + "all aircraft categories if no selection has been made.",
+            help="Filtering via selected aircraft categories.",
             label="Select one or more aircraft categories",
-            options=list(_sql_query_list(PG_CONN, QUERY_ACFT_CATEGORIES).split(",")),
+            options=_sql_query_acft_categories(),
         )
 
         FILTER_FAR_PARTS = st.sidebar.multiselect(
-            help="One or more FAR parts - "
-            + "all FAR parts if no selection has been made.",
+            help="Filtering via selected FAR parts.",
             label="Select one or more FAR parts",
-            options=list(_sql_query_list(PG_CONN, QUERY_FAR_PARTS).split(",")),
+            options=_sql_query_far_parts(),
         )
 
         max_fatalities = _sql_query_max_fatalities()
 
         FILTER_FATALITIES_FROM, FILTER_FATALITIES_TO = st.sidebar.slider(
-            label="Select the number of fatalities",
+            label="Filtering over an interval of number of fatalities.",
             min_value=0,
             max_value=max_fatalities,
             value=(1, max_fatalities),
         )
 
         FILTER_FINDING_CODES = st.sidebar.multiselect(
-            help="One or more finding codes - "
-            + "all finding codes if no selection has been made.",
+            help="Filtering via selected finding codes.",
             label="Select one or more finding codes",
-            options=list(_sql_query_list(PG_CONN, QUERY_FINDING_CODES).split(",")),
+            options=_sql_query_finding_codes(),
         )
 
         FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
-            help="One or more occurrence codes - "
-            + "all occurrence codes if no selection has been made.",
+            help="Filtering via selected occurrence codes.",
             label="Select one or more occurrence codes",
-            options=list(_sql_query_list(PG_CONN, QUERY_OCCURRENCE_CODES).split(",")),
+            options=_sql_query_occurrence_codes(),
         )
 
         FILTER_US_STATES = st.sidebar.multiselect(
-            help="One or more USPS abbreviations - "
-            + "all U.S. states if no selection has been made.",
+            help="Filtering via selected occurrence USPS abbreviations.",
             label="Select one or more states",
-            options=list(_sql_query_list(PG_CONN, QUERY_US_STATES).split(","))
+            options=_sql_query_us_states(),
         )
 
         FILTER_LATLONG_ACQ = st.sidebar.selectbox(
+            help="Filtering via a specific latitude and longitude "
+            + "determination method.",
             label="Select optionally a latitude and longitude determination method",
-            help="`EST`means estimated - `MEAS`means measured using GPS.",
             options=(
                 "",
                 "EST",
@@ -443,17 +542,17 @@ def _setup_filter_controls():
         )
 
         FILTER_SPIN_STALL = st.sidebar.checkbox(
-            help="Filters only events with `spin_stall` equals `True`.",
+            help="Filtering only events with `spin_stall` equals `True`.",
             label="Only events with aerodynamic spin stalls?",
         )
 
         FILTER_ALT_LOW = st.sidebar.checkbox(
-            help="Filters only events with `alt_low` equals `True`.",
+            help="Filtering only events with `alt_low` equals `True`.",
             label="Only events with altitude too low?",
         )
 
         FILTER_NARR_STALL = st.sidebar.checkbox(
-            help="Filters only events with `narr_stall` equals `True`.",
+            help="Filtering only events with `narr_stall` equals `True`.",
             label="Only events stalled according to narrative?",
         )
 
@@ -461,31 +560,29 @@ def _setup_filter_controls():
 
 
 # ------------------------------------------------------------------
-# Setup the page.
+# Set up the page.
 # ------------------------------------------------------------------
 def _setup_page():
-    global PG_CONN  # pylint: disable=global-statement
-
-    PG_CONN = _get_postgres_connection()
-
+    """Set up the page."""
     st.set_page_config(layout="wide")
     st.header("Aviation Accidents in the US since 1982")
 
 
 # ------------------------------------------------------------------
-# Setup the sidebar.
+# Set up the sidebar.
 # ------------------------------------------------------------------
 def _setup_sidebar():
+    """Set up the sidebar."""
     _setup_task_controls()
     _setup_filter_controls()
 
 
 # ------------------------------------------------------------------
-# Setup the task controls.
+# Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls():
+    """Set up the task controls."""
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_FILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
     global CHOICE_HISTOGRAM  # pylint: disable=global-statement
@@ -496,7 +593,7 @@ def _setup_task_controls():
     global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
-        help="Pandas profiling of the dataset.",
+        help="Pandas profiling of the filtered dataset.",
         label="**`Show data profile`**",
         value=False,
     )
@@ -513,16 +610,11 @@ def _setup_task_controls():
                 ]
             ),
         )
-        CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
-            help="Export the Pandas profile into a file.",
-            label="Export profile to file",
-            value=False,
-        )
 
     st.sidebar.markdown("""---""")
 
     CHOICE_DETAILS = st.sidebar.checkbox(
-        help="Tabular representation of the selected detailed data.",
+        help="Tabular representation of the filtered detailed data.",
         label="**`Show details`**",
         value=False,
     )
@@ -530,7 +622,7 @@ def _setup_task_controls():
     st.sidebar.markdown("""---""")
 
     CHOICE_HISTOGRAM = st.sidebar.checkbox(
-        help="Accidents per year.",
+        help="Accidents per year (after filtering the data).",
         label="**`Show histogram`**",
         value=False,
     )
@@ -542,7 +634,8 @@ def _setup_task_controls():
     st.sidebar.markdown("""---""")
 
     CHOICE_MAP = st.sidebar.checkbox(
-        help="Display of accident events on a map of the USA.",
+        help="Display of accident events on a map of the USA "
+        + "(after filtering the data).",
         label="**`Show US map`**",
         value=False,
     )
@@ -577,68 +670,158 @@ streets: emphasizes accurate, legible styling of road and transit networks.
 
 
 # ------------------------------------------------------------------
-# Maximum number of fatalities.
+# Execute a query that returns the list of aircraft categories.
 # ------------------------------------------------------------------
-def _sql_query_max_fatalities() -> int:
-    """Maximum number of fatalities.
+@st.experimental_memo
+def _sql_query_acft_categories() -> list[str]:
+    """Execute a query that returns a list of aircraft categories.
 
     Returns:
-        int.
+        list[str]: Query results in a list.
     """
-    with PG_CONN.cursor() as cur:
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_ACFT_CATEGORIES)
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the maximum number of fatalities.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_max_fatalities() -> int:
+    """Determine the maximum number of fatalities.
+
+    Returns:
+        int: Maximum number of fatalities.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(QUERY_MAX_FATALITIES)
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
-# Execute a query that returns a list.
+# Execute a query that returns the list of FAR parts.
 # ------------------------------------------------------------------
-def _sql_query_list(conn: connection, query: str) -> list[str]:
-    """Execute a query that returns a list.
-
-    Args:
-        conn (connection): Database connection.
-        query (str): Database query.
+@st.experimental_memo
+def _sql_query_far_parts() -> list[str]:
+    """Execute a query that returns a list of FAR part.
 
     Returns:
-        list.
+        list[str]: Query results in a list.
     """
-    with conn.cursor() as cur:
-        cur.execute(query)
-        return cur.fetchone()[0]  # type: ignore
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_FAR_PARTS)
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of finding codes.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_finding_codes() -> list[str]:
+    """Execute a query that returns a list of finding codes.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_FINDING_CODES)
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of occurrence codes.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_occurrence_codes() -> list[str]:
+    """Execute a query that returns a list of occurrence codes.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_OCCURRENCE_CODES)
+        return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Run the US latitude and longitude query.
 # ------------------------------------------------------------------
-def _sql_query_us_ll(conn: connection, query: str) -> pdk.ViewState:
+@st.experimental_memo
+def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
     """Run the US latitude and longitude query.
 
     Args:
-        conn (connection): Database connection.
-        query (str): Database query.
+        pitch (int): Up/down angle relative to the map’s plane.
+        zoom (float): Magnification level of the map.
 
     Returns:
         pdk.ViewState: Screen focus.
     """
-    with conn.cursor() as cur:
-        cur.execute(query)
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_US_LL)
         result = cur.fetchone()
         return pdk.ViewState(
             latitude=result[0],  # type: ignore
             longitude=result[1],  # type: ignore
-            pitch=PITCH,
-            zoom=ZOOM,
+            pitch=pitch,
+            zoom=zoom,
         )
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of US states.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_us_states() -> list[str]:
+    """Execute a query that returns a list of US states.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(QUERY_US_STATES)
+        return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
+# Start time measurement.
+start_time = time.time_ns()
+
 _setup_page()
 
 _setup_sidebar()
 
-_get_data()
+DF_UNFILTERED = _get_data()
+
+DF_FILTERED = DF_UNFILTERED
+
+if CHOICE_FILTER_DATA:
+    DF_FILTERED = _apply_filter_controls(
+        DF_UNFILTERED,
+        FILTER_ACFT_CATEGORIES,
+        FILTER_ALT_LOW,
+        FILTER_FATALITIES_FROM,
+        FILTER_FATALITIES_TO,
+        FILTER_FAR_PARTS,
+        FILTER_FINDING_CODES,
+        FILTER_LATLONG_ACQ,
+        FILTER_NARR_STALL,
+        FILTER_OCCURRENCE_CODES,
+        FILTER_SPIN_STALL,
+        FILTER_US_STATES,
+        FILTER_YEAR_FROM,
+        FILTER_YEAR_TO,
+    )
 
 _present_data()
+
+# Stop time measurement.
+print(
+    str(datetime.datetime.now())
+    + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application "
+    + APP_ID,
+    flush=True,
+)

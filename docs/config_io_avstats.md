@@ -31,7 +31,6 @@ The `test` layer is used for the automated tests.
 | max_deviation_latitude                  | 0.01                                          | maximum decimal deviation of the latitude in the database table even     |
 | max_deviation_longitude                 | 0.01                                          | maximum decimal deviation of the longitude in the database table even    |
 | odbc_connection_string                  | Driver={MS Access Driver ...                  | connection string for the MS Access ODBC driver                          |
-| pandas_profile_dir                      | a/pandas_profiles                             | directory to store the Pandas profiling results                          |
 | postgres_connection_port                | 5432                                          | database port number                                                     |
 | postgres_container_name                 | io_avstats_container                          | container name                                                           |
 | postgres_container_port                 | 5432                                          | container port number                                                    |

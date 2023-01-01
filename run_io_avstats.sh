@@ -100,6 +100,8 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
+        echo "all      - All Streamlit applications"
+        echo "---------------------------------------------------------"
         echo "aaus1982 - Aircraft Accidents in the US since 1982"
         echo "pdus1982 - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
@@ -182,7 +184,7 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -c "${IO_AVSTATS_CORRECTION}" ); then
+    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -c "${IO_AVSTATS_CORRECTION}".xlsx ); then
         exit 255
     fi
 
@@ -195,7 +197,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Setup the database container.
+# Set up the database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then

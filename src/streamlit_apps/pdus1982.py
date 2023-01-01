@@ -4,7 +4,7 @@
 
 """Profiling Data for the US since 1982."""
 import datetime
-import os
+import time
 
 import pandas as pd
 import psycopg2
@@ -19,20 +19,22 @@ from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
 # ------------------------------------------------------------------
-# Global constants.
+# Global constants and variables.
 # ------------------------------------------------------------------
+APP_ID = "pdus1982"
+
 # pylint: disable=R0801
-CHOICE_DATA_PROFILE = None
-CHOICE_DATA_PROFILE_FILE = None
-CHOICE_DATA_PROFILE_TYPE = None
-CHOICE_DETAILS = None
-CHOICE_FILTER_DATA = None
-CHOICE_TABLE_SELECTION = None
+CHOICE_DATA_PROFILE: bool | None = None
+CHOICE_DATA_PROFILE_TYPE: str | None = None
+CHOICE_DETAILS: bool | None = None
+CHOICE_FILTER_DATA: bool | None = None
+CHOICE_TABLE_SELECTION: str = ""
 
-DF: DataFrame = DataFrame()
+DF_FILTERED: DataFrame = DataFrame()
+DF_UNFILTERED: DataFrame = DataFrame()
 
-FILTER_YEAR_FROM = None
-FILTER_YEAR_TO = None
+FILTER_YEAR_FROM: int | None = None
+FILTER_YEAR_TO: int | None = None
 
 PG_CONN: Connection | None = None
 
@@ -305,38 +307,66 @@ SETTINGS = Dynaconf(
 # Filter the data frame.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
-def _apply_filter_controls():
-    global DF  # pylint: disable=global-statement
+@st.experimental_memo
+def _apply_filter_controls(
+    df_unfiltered: DataFrame, filter_year_from: int | None, filter_year_to: int | None
+) -> DataFrame:
+    """Filter the data frame.
+
+    Args:
+        df_unfiltered (DataFrame): The unfiltered dataframe.
+        filter_year_from (int | None): Event year from.
+        filter_year_to (int | None): Event year to.
+
+    Returns:
+        DataFrame: The filtered dataframe.
+    """
+    df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_YEAR_FROM or FILTER_YEAR_TO:
-        DF = DF.loc[
-            (DF["ev_year"] >= FILTER_YEAR_FROM) & (DF["ev_year"] <= FILTER_YEAR_TO)
+    if filter_year_from or filter_year_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["ev_year"] >= filter_year_from)
+            & (df_filtered["ev_year"] <= filter_year_to)
         ]
 
+    return df_filtered
+
 
 # ------------------------------------------------------------------
-# Read and filter the data.
+# Convert a dataframe to csv data.
 # ------------------------------------------------------------------
-def _get_data():
-    global DF  # pylint: disable=global-statement
+@st.experimental_memo
+def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
+    """Convert a dataframe to csv data.
+
+    Args:
+        dataframe (DataFrame): The datafarame.
+
+    Returns:
+        bytes: The csv data.
+    """
+    return dataframe.to_csv().encode("utf-8")
+
+
+# ------------------------------------------------------------------
+# Read the data.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _get_data(table_name: str) -> DataFrame:
+    """Read the data.
+
+    Args:
+        table_name (str): Name of the database table.
+
+    Returns:
+        DataFrame: The unfiltered dataframe.
+    """
     global PG_CONN  # pylint: disable=global-statement
 
-    PG_CONN = _get_postgres_connection()
+    PG_CONN = _get_postgres_connection()  # type: ignore
 
-    DF = pd.read_sql(QUERIES[CHOICE_TABLE_SELECTION], con=_get_engine())  # type: ignore
-
-    if not (
-        CHOICE_TABLE_SELECTION
-        in [
-            "io_countries",
-            "io_processed_files",
-            "io_lat_lng",
-            "io_states",
-        ]
-    ):
-        if CHOICE_FILTER_DATA:
-            _apply_filter_controls()
+    return pd.read_sql(QUERIES[table_name], con=_get_engine())  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -362,8 +392,9 @@ def _get_engine() -> Engine:
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
+@st.experimental_singleton
 def _get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection,
+    """Create a PostgreSQL connection.
 
     Returns:
         connection: Database connection.
@@ -375,49 +406,58 @@ def _get_postgres_connection() -> connection:
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
+    """Present the filtered data."""
     if CHOICE_DATA_PROFILE:
         st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
         _present_data_data_profile()
 
     if CHOICE_DETAILS:
         st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
-        st.dataframe(DF)
+        st.dataframe(DF_FILTERED)
+        st.download_button(
+            data=_convert_df_2_csv(DF_FILTERED),
+            file_name=APP_ID + "_" + CHOICE_TABLE_SELECTION + ".csv",
+            help="The download includes all data of the selected table "
+            + "after applying the filter options.",
+            label="Download all data as CSV file",
+            mime="text/csv",
+        )
 
 
 # ------------------------------------------------------------------
-# Present data profile.
+# Present the data profile.
 # ------------------------------------------------------------------
 def _present_data_data_profile():
+    """Present the data profile."""
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
         profile_report = ProfileReport(
-            DF,
+            DF_FILTERED,
             explorative=True,
         )
     else:
         profile_report = ProfileReport(
-            DF,
+            DF_FILTERED,
             minimal=True,
         )
 
     st_profile_report(profile_report)
 
-    # noinspection PyUnboundLocalVariable
-    if CHOICE_DATA_PROFILE_FILE:
-        if not os.path.isdir(SETTINGS.pandas_profile_dir):
-            os.mkdir(SETTINGS.pandas_profile_dir)
-        profile_report.to_file(
-            os.path.join(
-                SETTINGS.pandas_profile_dir,
-                CHOICE_TABLE_SELECTION + "_" + CHOICE_DATA_PROFILE_TYPE,  # type: ignore
-            )
-        )
+    st.download_button(
+        data=profile_report.to_html(),
+        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        help="The download includes a profile report from the dataframe "
+        + "after applying the filter options.",
+        label="Download the profile report",
+        mime="text/html",
+    )
 
 
 # ------------------------------------------------------------------
-# Setup the filter controls.
+# Set up the filter controls.
 # ------------------------------------------------------------------
 def _setup_filter_controls():
+    """Set up the filter controls."""
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
@@ -441,27 +481,29 @@ def _setup_filter_controls():
 
 
 # ------------------------------------------------------------------
-# Setup the page.
+# Set up the page.
 # ------------------------------------------------------------------
 def _setup_page():
+    """Set up the page."""
     st.set_page_config(layout="wide")
     st.header("Profiling Data for the US since 1982")
 
 
 # ------------------------------------------------------------------
-# Setup the sidebar.
+# Set up the sidebar.
 # ------------------------------------------------------------------
 def _setup_sidebar():
+    """Set up the sidebar."""
     _setup_task_controls()
     _setup_filter_controls()
 
 
 # ------------------------------------------------------------------
-# Setup the task controls.
+# Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls():
+    """Set up the task controls."""
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_FILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
     global CHOICE_TABLE_SELECTION  # pylint: disable=global-statement
@@ -484,13 +526,6 @@ def _setup_task_controls():
                 ]
             ),
         )
-
-        if SETTINGS.is_runtime_environment_local:
-            CHOICE_DATA_PROFILE_FILE = st.sidebar.checkbox(
-                help="Export the Pandas profile into a file.",
-                label="Export profile to file",
-                value=False,
-            )
 
     st.sidebar.markdown("""---""")
 
@@ -515,10 +550,34 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
+# Start time measurement.
+start_time = time.time_ns()
+
 _setup_page()
 
 _setup_sidebar()
 
-_get_data()
+DF_UNFILTERED = _get_data(CHOICE_TABLE_SELECTION)
+
+DF_FILTERED = DF_UNFILTERED
+
+if CHOICE_TABLE_SELECTION not in [
+    "io_countries",
+    "io_processed_files",
+    "io_lat_lng",
+    "io_states",
+]:
+    if CHOICE_FILTER_DATA:
+        DF_FILTERED = _apply_filter_controls(
+            DF_UNFILTERED, FILTER_YEAR_FROM, FILTER_YEAR_TO
+        )
 
 _present_data()
+
+# Stop time measurement.
+print(
+    str(datetime.datetime.now())
+    + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application "
+    + APP_ID,
+    flush=True,
+)

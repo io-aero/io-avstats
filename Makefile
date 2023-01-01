@@ -5,7 +5,7 @@ ifeq ($(OS),Windows_NT)
 	export PIPENV=python -m pipenv
 	export PYTHON=python
 	export PYTHONPATH=src\\streamlit_apps
-	export PYTHONPATH_BANDIT=src\\streamlit_apps
+	export PYTHONPATH_DEV=src\\streamlit_apps
 	export PYTHONPATH_MYPY=src\\streamlit_apps
 	export PYTHONPATH_PYTEST=src
 else
@@ -13,7 +13,7 @@ else
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
 	export PYTHONPATH=src/streamlit_apps
-	export PYTHONPATH_BANDIT=src/streamlit_apps
+	export PYTHONPATH_DEV=src/streamlit_apps
 	export PYTHONPATH_MYPY=src/streamlit_apps
 	export PYTHONPATH_PYTEST=src
 endif
@@ -53,10 +53,10 @@ help:
 bandit:             ## Find common security issues with Bandit.
 	@echo Info **********  Start: Bandit ***************************************
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH_BANDIT}
+	@echo PYTHONPATH=${PYTHONPATH_DEV}
 	${PIPENV} run bandit --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH_BANDIT}
+	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH_DEV}
 	@echo Info **********  End:   Bandit ***************************************
 
 # The Uncompromising Code Formatter
@@ -65,10 +65,10 @@ bandit:             ## Find common security issues with Bandit.
 black:              ## Format the code with Black.
 	@echo Info **********  Start: black ****************************************
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PYTHONPATH=${PYTHONPATH_DEV}
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run black ${PYTHONPATH} tests
+	${PIPENV} run black ${PYTHONPATH_DEV} tests
 	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
@@ -123,10 +123,10 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 isort:              ## Edit and sort the imports with isort.
 	@echo Info **********  Start: isort ***************************************
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PYTHONPATH=${PYTHONPATH_DEV}
 	${PIPENV} run isort --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run isort ${PYTHONPATH} tests
+	${PIPENV} run isort ${PYTHONPATH_DEV} tests
 	@echo Info **********  End:   isort ***************************************
 
 # Project documentation with Markdown.

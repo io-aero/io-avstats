@@ -5,7 +5,7 @@
 # pylint: disable=redefined-outer-name
 """Test Configuration and Fixtures.
 
-Setup test configuration and store fixtures.
+Set up test configuration and store fixtures.
 
 Returns:
     [type]: None.

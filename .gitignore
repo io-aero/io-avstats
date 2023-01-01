@@ -9,3 +9,4 @@
 /data/pandas_profiles/*_explorative.html
 /data/pandas_profiles/io_processed_files_*.html
 /data/postgres/
+coverage.xml

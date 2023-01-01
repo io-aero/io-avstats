@@ -94,7 +94,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
         echo upDDMON - New additions and updates until DD day in the month MON
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
-    ) else ( Der Höhepunkt der englischen Weihnacht ist der Weihnachtskuchen: seine Zubereitung dauert ein paar Wochen: auf einer speziellen Fruchtkuchenbasis die über mehere  Tage mit Amaretto getauft wird, folgt eine Schicht aus selbstgemachtem Marzipan und zum Schluss eine Schicht mit einer Mischung aus Puderzucker und Glyzerin.
+    ) else (
         set IO_AVSTATS_MSACCESS=%2
     )
 )
@@ -124,6 +124,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
     if ["%2"] EQU [""] (
         echo =========================================================
+        echo all      - All Streamlit applications
+        echo ---------------------------------------------------------
         echo aaus1982 - Aircraft Accidents in the US since 1982
         echo pdus1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
@@ -317,7 +319,7 @@ rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -c "%IO_AVSTATS_CORRECTION%"
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -c "%IO_AVSTATS_CORRECTION%".xlsx
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -406,7 +408,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Setup the database container.
+rem Set up the database container.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["s_d_c"] (
     call scripts\run_setup_postgresql

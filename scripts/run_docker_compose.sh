@@ -44,7 +44,8 @@ fi
 echo ""
 echo "Script $0 is now running"
 
-export LOG_FILE=run_docker_compose.log
+now=$(date +"%Y_%m_%d")
+export LOG_FILE=run_docker_compose_${now}.log
 
 echo ""
 echo "You can find the run log in the file ${LOG_FILE}"
@@ -91,9 +92,9 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker images -q --filter "reference=aaus1982:latest"                              | grep -q . && docker rmi --force aaus1982:latest
-    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
+    docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
+    docker images -q --filter "reference=ioaero/aaus1982:latest"       | grep -q . && docker rmi --force ioaero/aaus1982:latest
+    docker images -q --filter "reference=ioaero/pdus1982:latest"       | grep -q . && docker rmi --force ioaero/pdus1982:latest
     echo ............................................................. after images:
     docker images
 
@@ -112,9 +113,9 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker images -q --filter "reference=aaus1982:latest"                              | grep -q . && docker rmi --force aaus1982:latest
-    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
+    docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
+    docker images -q --filter "reference=ioaero/aaus1982:latest"       | grep -q . && docker rmi --force ioaero/aaus1982:latest
+    docker images -q --filter "reference=ioaero/pdus1982:latest"       | grep -q . && docker rmi --force ioaero/pdus1982:latest
     echo ............................................................. after images:
     docker images
 

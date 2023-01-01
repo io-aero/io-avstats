@@ -17,6 +17,8 @@ export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 
 if [ -z "$1" ]; then
     echo "========================================================="
+    echo "all      - All Streamlit applications"
+    echo "---------------------------------------------------------"
     echo "aaus1982 - Aircraft Accidents in the US since 1982"
     echo "pdus1982 - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
@@ -72,38 +74,48 @@ echo "--------------------------------------------------------------------------
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
-if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
-    docker builder prune --all --force
+    if ! ( ./scripts/run_docker_compose.sh ${IO_AVSTATS_COMPOSE_TASK} ); then
+        exit 255
+    fi
+
+if [ "${APPLICATION}" = "all" ]; then
+    ( ./scripts\run_create_image.sh aaus1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts\run_create_image.sh pdus1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    goto END_OF_SCRIPT
+else
+    if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
+        docker builder prune --all --force
+    fi
+
+    echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
+    docker ps -a
+    docker ps    | find "${APPLICATION}" && docker stop ${APPLICATION}
+    docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
+    echo "............................................................. after containers:"
+    docker ps -a
+    echo "............................................................. before images:"
+    docker image ls
+    docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/${APPLICATION}
+    echo "............................................................. after images:"
+    docker image ls
+
+    docker build --build-arg APP=${APPLICATION} \
+                 --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
+                 -t ioaero/${APPLICATION} .
+
+    docker tag ioaero/${APPLICATION} ioaero/${APPLICATION}
+
+    if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
+        docker push ioaero/${APPLICATION}
+    fi
+
+    docker images -q -f "dangling=true" -f "label=autodelete=true"
+
+    for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
+    do
+        docker rmi -f ${IMAGE}
+    done
 fi
-
-echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
-docker ps -a
-docker ps    | find "${APPLICATION}" && docker stop ${APPLICATION}
-docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
-echo "............................................................. after containers:"
-docker ps -a
-echo "............................................................. before images:"
-docker image ls
-docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/${APPLICATION}
-echo "............................................................. after images:"
-docker image ls
-
-docker build --build-arg APP=${APPLICATION} \
-             --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
-             -t ioaero/${APPLICATION} .
-
-docker tag ioaero/${APPLICATION} ioaero/${APPLICATION}
-
-if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
-    docker push ioaero/${APPLICATION}
-fi
-
-docker images -q -f "dangling=true" -f "label=autodelete=true"
-
-for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
-do
-    docker rmi -f ${IMAGE}
-done
 
 echo ""
 echo "--------------------------------------------------------------------------------"

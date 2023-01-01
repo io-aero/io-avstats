@@ -19,7 +19,6 @@ is_verbose = true
 max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
-pandas_profile_dir = "data/pandas_profiles"
 postgres_connection_port = 5432
 postgres_container_name = "io_avstats_db"
 postgres_container_port = 5432

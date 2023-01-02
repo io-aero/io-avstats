@@ -13,9 +13,11 @@ pyexcel = "*"
 pyexcel-xls = "*"
 pyexcel-xlsx = "*"
 pyodbc = "*"
+pyyaml = "<=6.0.0"
 sqlalchemy = "*"
 streamlit = "<=1.15.0"
 streamlit-pandas-profiling = "*"
+toml = "*"
 
 [dev-packages]
 bandit = "*"

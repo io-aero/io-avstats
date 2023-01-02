@@ -8,11 +8,18 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set ENV_FOR_DYNACONF=dev
+if ["!ENV_FOR_DYNACONF!"] EQU [""] (
+    set ENV_FOR_DYNACONF=prod
+)
+
 set ERRORLEVEL=
 
 set IO_AVSTATS_NTSB_WORK_DIR=data\download
-set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+
+if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
+    set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+)
+
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres

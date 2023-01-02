@@ -474,7 +474,7 @@ def _setup_filter_controls():
             help="Data available from 1982 to the current year.",
             min_value=1982,
             max_value=datetime.date.today().year,
-            value=(2008, datetime.date.today().year),
+            value=(2008, datetime.date.today().year - 1),
         )
 
     st.sidebar.markdown("""---""")

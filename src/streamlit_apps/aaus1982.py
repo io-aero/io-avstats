@@ -488,7 +488,7 @@ def _setup_filter_controls():
             help="Filter over year from to.",
             min_value=1982,
             max_value=datetime.date.today().year,
-            value=(2008, datetime.date.today().year),
+            value=(2008, datetime.date.today().year - 1),
         )
 
         FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(

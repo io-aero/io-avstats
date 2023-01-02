@@ -8,10 +8,16 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export ENV_FOR_DYNACONF=dev
+if [ -z "${ENV_FOR_DYNACONF}" ]; then
+    export ENV_FOR_DYNACONF=prod
+fi
 
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
-export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+
+if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
+    export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+fi
+
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres

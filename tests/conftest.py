@@ -5,7 +5,7 @@
 # pylint: disable=redefined-outer-name
 """Test Configuration and Fixtures.
 
-Set up test configuration and store fixtures.
+Setup test configuration and store fixtures.
 
 Returns:
     [type]: None.
@@ -13,12 +13,15 @@ Returns:
 import configparser
 import os
 import pathlib
+import platform
 import shutil
+import subprocess
 
 import pytest
-from dynaconf import settings
 
+from io_avstats_db import io_config
 from io_avstats_db import io_glob
+from io_avstats_db import io_utils
 
 # Constants & Globals.
 # -----------------------------------------------------------------------------
@@ -117,6 +120,31 @@ def fxtr_before_any_test():
     """Fixture Factory: Before any test."""
     io_glob.logger.debug(io_glob.LOGGER_START)
 
+    if os.path.isdir(io_config.settings.correction_work_dir):
+        shutil.rmtree(io_config.settings.correction_work_dir)
+
+    os.mkdir(io_config.settings.correction_work_dir)
+
+    if os.path.isdir(io_config.settings.download_work_dir):
+        shutil.rmtree(io_config.settings.download_work_dir)
+
+    os.mkdir(io_config.settings.download_work_dir)
+
+    os.environ["ENV_FOR_DYNACONF"] = "test"
+    os.environ["IO_AVSTATS_POSTGRES_CONNECTION_PORT"] = "5434"
+
+    if platform.system() == "Windows":
+        # pylint: disable=subprocess-run-check
+        subprocess.run(r"scripts\run_setup_postgresql_pytest.bat", shell=False)
+    elif platform.system() == "Linux":
+        # pylint: disable=subprocess-run-check
+        subprocess.run("scripts/run_setup_postgresql_pytest.sh")
+    else:
+        # ERROR.00.908 The operating system '{os}' is not supported
+        io_utils.terminate_fatal(
+            io_glob.ERROR_00_908.replace("{os}", platform.system())
+        )
+
     io_glob.logger.debug(io_glob.LOGGER_END)
 
 
@@ -194,15 +222,3 @@ def get_test_files_source_directory_name():
     io_glob.logger.debug(io_glob.LOGGER_END)
 
     return "tests/__PYTEST_FILES__/"
-
-
-# -----------------------------------------------------------------------------
-# Switch configuration to test mode.
-# -----------------------------------------------------------------------------
-@pytest.fixture(scope="session", autouse=True)
-def set_test_settings() -> None:
-    """Switch configuration to test mode."""
-    io_glob.logger.debug(io_glob.LOGGER_START)
-    io_glob.logger.debug(io_glob.LOGGER_END)
-
-    settings.configure(FORCE_ENV_FOR_DYNACONF="test")

@@ -1,14 +1,12 @@
 # Release Notes
 
-## Version 23.01.01
+## Version 23.01.08
 
-Release Date: 03.01.2023
+Release Date: dd.mm.2023
 
 ### 2. Modified Features
 
-- Introducing download buttons
-- Introducing multi select controls
-- Optional data usage until 1982
+- TODO
 
 ### 3. Applied Software
 
@@ -36,8 +34,8 @@ Release Date: 03.01.2023
 
 #### 4.1 [NTSB - National Transport Safety Board](https://www.ntsb.gov/Pages/home.aspx){:target="_blank"}
 
-##### Data source `up01JAN.zip`
+##### Data source `up08JAN.zip`
 
-- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01KJAN.zip){:target="_blank"}
-- Version: 	1/1/2023 3:00:19 AM
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08JAN.zip){:target="_blank"}
+- Version: 	1/1/2023 3:00:19 AM TODO
 - Purpose: update of aviation accident data available for public use

@@ -17,8 +17,8 @@ export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982=8502
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982=8501
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982=8502
 
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=up
@@ -44,7 +44,8 @@ fi
 echo ""
 echo "Script $0 is now running"
 
-export LOG_FILE=run_docker_compose.log
+now=$(date +"%Y_%m_%d")
+export LOG_FILE=run_docker_compose_${now}.log
 
 echo ""
 echo "You can find the run log in the file ${LOG_FILE}"
@@ -72,8 +73,8 @@ echo "POSTGRES_PGDATA                 : ${IO_AVSTATS_POSTGRES_PGDATA}"
 echo "POSTGRES_USER_ADMIN             : ${IO_AVSTATS_POSTGRES_USER_ADMIN}"
 echo "POSTGRES_VERSION                : ${IO_AVSTATS_POSTGRES_VERSION}"
 echo "STREAMLIT_SERVER_PORT           : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-echo "STREAMLIT_SRRVER_PORT_faaus1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_faaus1982}"
-echo "STREAMLIT_SERVER_PORT_pdus1982  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_pdus1982}"
+echo "STREAMLIT_SRRVER_PORT_AAUS1982  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982}"
+echo "STREAMLIT_SERVER_PORT_PDUS1982  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -85,16 +86,15 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     echo "Docker Containers ........................................... before containers:"
     docker ps -a
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=aaus1982"                              | grep -q . && docker stop aaus1982                              && docker rm -fv aaus1982
     docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
-    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
     echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker images -q --filter "reference=faaus1982:latest"                             | grep -q . && docker rmi --force faaus1982:latest
-    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
+    docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
+    docker images -q --filter "reference=ioaero/aaus1982:latest"       | grep -q . && docker rmi --force ioaero/aaus1982:latest
+    docker images -q --filter "reference=ioaero/pdus1982:latest"       | grep -q . && docker rmi --force ioaero/pdus1982:latest
     echo ............................................................. after images:
     docker images
 
@@ -107,16 +107,15 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     echo "Docker Containers ........................................... before containers:"
     docker ps -a
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=aaus1982"                              | grep -q . && docker stop aaus1982                              && docker rm -fv aaus1982
     docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
-    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
     echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}:latest" | grep -q . && docker rmi --force ${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}:latest
-    docker images -q --filter "reference=faaus1982:latest"                             | grep -q . && docker rmi --force faaus1982:latest
-    docker images -q --filter "reference=pdus1982:latest"                              | grep -q . && docker rmi --force pdus1982:latest
+    docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
+    docker images -q --filter "reference=ioaero/aaus1982:latest"       | grep -q . && docker rmi --force ioaero/aaus1982:latest
+    docker images -q --filter "reference=ioaero/pdus1982:latest"       | grep -q . && docker rmi --force ioaero/pdus1982:latest
     echo ............................................................. after images:
     docker images
 
@@ -127,9 +126,8 @@ elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
     echo "Docker Containers ........................................... before containers:"
     docker ps -a
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=faaus1982"                             | grep -q . && docker stop faaus1982                             && docker rm -fv faaus1982
+    docker ps -q --filter "name=aaus1982"                              | grep -q . && docker stop aaus1982                              && docker rm -fv aaus1982
     docker ps -q --filter "name=pdus1982"                              | grep -q . && docker stop pdus1982                              && docker rm -fv pdus1982
-    docker ps -q --filter "name=portainer"                             | grep -q . && docker stop portainer                             && docker rm -fv portainer
     echo ............................................................. after containers:
     docker ps -a
 

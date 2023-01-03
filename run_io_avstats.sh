@@ -8,10 +8,16 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export ENV_FOR_DYNACONF=dev
+if [ -z "${ENV_FOR_DYNACONF}" ]; then
+    export ENV_FOR_DYNACONF=prod
+fi
 
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
-export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+
+if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
+    export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+fi
+
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
@@ -24,7 +30,7 @@ export IO_AVSTATS_APPLICATION=
 export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
 export IO_AVSTATS_CORRECTION=
 export IO_AVSTATS_TASK=
-export IO_AVSTATS_TASK_DEFAULT=faaus1982
+export IO_AVSTATS_TASK_DEFAULT=aaus1982
 
 if [ -z "$1" ]; then
     echo "========================================================="
@@ -100,8 +106,10 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "faaus1982 - Fatal Aircraft Accidents in the US since 1982"
-        echo "pdus1982  - Profiling Data for the US since 1982"
+        echo "all      - All Streamlit applications"
+        echo "---------------------------------------------------------"
+        echo "aaus1982 - Aircraft Accidents in the US since 1982"
+        echo "pdus1982 - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -182,7 +190,7 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -c "${IO_AVSTATS_CORRECTION}" ); then
+    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -c "${IO_AVSTATS_CORRECTION}".xlsx ); then
         exit 255
     fi
 
@@ -195,7 +203,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Setup the database container.
+# Set up the database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then

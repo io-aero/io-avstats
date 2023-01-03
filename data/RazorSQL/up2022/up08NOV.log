@@ -1,0 +1,130 @@
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : l_n_a
+CORRECTION :
+MSACCESS   : up08NOV
+-----------------------------------------------------------------------
+The current time is: 12:02:35.33
+Enter the new time:
+=======================================================================
+Progress update 2022-12-12 12:02:37.067912 : ===============================================================================.
+Progress update 2022-12-12 12:02:37.068412 : INFO.00.004 Start Launcher.
+Progress update 2022-12-12 12:02:37.070412 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-12 12:02:37.078911 : INFO.00.008 Arguments task='l_n_a' msaccess='up08NOV'.
+Progress update 2022-12-12 12:02:37.078911 : -------------------------------------------------------------------------------.
+Progress update 2022-12-12 12:02:37.078911 : INFO.00.049 Loading NTSB MS Access database data from  file 'up08NOV'.
+Progress update 2022-12-12 12:02:37.078911 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 12:02:37.079411 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08NOV.mdb;'.
+Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
+Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
+Progress update 2022-12-12 12:02:37.246911 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysIMEXSpecs'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysModules2'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupCategories'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroups'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupToObjects'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysNavPaneObjectIDs'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysObjects'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysQueries'.
+Progress update 2022-12-12 12:02:37.247411 : INFO.00.021 The following database table is not processed: 'MSysRelationships'.
+Progress update 2022-12-12 12:02:37.247912 : INFO.00.021 The following database table is not processed: 'Country'.
+Progress update 2022-12-12 12:02:37.247912 : INFO.00.021 The following database table is not processed: 'ct_iaids'.
+Progress update 2022-12-12 12:02:37.247912 : INFO.00.021 The following database table is not processed: 'ct_seqevt'.
+Progress update 2022-12-12 12:02:37.247912 : INFO.00.021 The following database table is not processed: 'eADMSPUB_DataDictionary'.
+Progress update 2022-12-12 12:02:37.247912 : INFO.00.021 The following database table is not processed: 'states'.
+Progress update 2022-12-12 12:02:37.247912 :
+Progress update 2022-12-12 12:02:37.247912 : Database table       : events              <-----------------------------------.
+Progress update 2022-12-12 12:02:40.958256 : Number rows selected :    109.
+Progress update 2022-12-12 12:02:40.958256 : Number rows inserted :     16.
+Progress update 2022-12-12 12:02:40.958256 : Number rows updated  :     93.
+Progress update 2022-12-12 12:02:40.958256 :
+Progress update 2022-12-12 12:02:40.958256 : Database table       : aircraft            <-----------------------------------.
+Progress update 2022-12-12 12:02:48.539133 : Number rows selected :    110.
+Progress update 2022-12-12 12:02:48.539634 : Number rows inserted :     16.
+Progress update 2022-12-12 12:02:48.539634 : Number rows updated  :     94.
+Progress update 2022-12-12 12:02:48.539634 :
+Progress update 2022-12-12 12:02:48.539634 : Database table       : dt_events           <-----------------------------------.
+Progress update 2022-12-12 12:03:06.284331 : Number rows selected :    611.
+Progress update 2022-12-12 12:03:06.284331 : Number rows inserted :    233.
+Progress update 2022-12-12 12:03:06.284831 : Number rows updated  :    378.
+Progress update 2022-12-12 12:03:06.284831 :
+Progress update 2022-12-12 12:03:06.284831 : Database table       : ntsb_admin          <-----------------------------------.
+Progress update 2022-12-12 12:03:09.258693 : Number rows selected :    109.
+Progress update 2022-12-12 12:03:09.258693 : Number rows inserted :     16.
+Progress update 2022-12-12 12:03:09.258693 : Number rows updated  :     93.
+Progress update 2022-12-12 12:03:09.258693 :
+Progress update 2022-12-12 12:03:09.258693 : Database table       : dt_aircraft         <-----------------------------------.
+Progress update 2022-12-12 12:03:42.549457 : Number rows selected :   1155.
+Progress update 2022-12-12 12:03:42.549457 : Number rows inserted :    508.
+Progress update 2022-12-12 12:03:42.549958 : Number rows updated  :    647.
+Progress update 2022-12-12 12:03:42.549958 :
+Progress update 2022-12-12 12:03:42.549958 : Database table       : engines             <-----------------------------------.
+Progress update 2022-12-12 12:03:44.990339 : Number rows selected :     91.
+Progress update 2022-12-12 12:03:44.990339 : Number rows inserted :     61.
+Progress update 2022-12-12 12:03:44.990851 : Number rows updated  :     30.
+Progress update 2022-12-12 12:03:44.990851 :
+Progress update 2022-12-12 12:03:44.990851 : Database table       : events_sequence     <-----------------------------------.
+Progress update 2022-12-12 12:03:49.872554 : Number rows selected :    185.
+Progress update 2022-12-12 12:03:49.872554 : Number rows inserted :     77.
+Progress update 2022-12-12 12:03:49.872554 : Number rows updated  :    108.
+Progress update 2022-12-12 12:03:49.872554 :
+Progress update 2022-12-12 12:03:49.872554 : Database table       : findings            <-----------------------------------.
+Progress update 2022-12-12 12:03:54.937878 : Number rows selected :    188.
+Progress update 2022-12-12 12:03:54.937878 : Number rows inserted :    188.
+Progress update 2022-12-12 12:03:54.938379 :
+Progress update 2022-12-12 12:03:54.938379 : Database table       : flight_crew         <-----------------------------------.
+Progress update 2022-12-12 12:03:58.295176 : Number rows selected :    103.
+Progress update 2022-12-12 12:03:58.295176 : Number rows inserted :     71.
+Progress update 2022-12-12 12:03:58.295700 : Number rows updated  :     32.
+Progress update 2022-12-12 12:03:58.295700 :
+Progress update 2022-12-12 12:03:58.295700 : Database table       : injury              <-----------------------------------.
+Progress update 2022-12-12 12:04:11.841734 : Number rows selected :    475.
+Progress update 2022-12-12 12:04:11.841734 : Number rows inserted :    104.
+Progress update 2022-12-12 12:04:11.841734 : Number rows updated  :    371.
+Progress update 2022-12-12 12:04:11.842235 :
+Progress update 2022-12-12 12:04:11.842235 : Database table       : narratives          <-----------------------------------.
+Progress update 2022-12-12 12:04:15.149132 : Number rows selected :     95.
+Progress update 2022-12-12 12:04:15.149132 : Number rows inserted :     57.
+Progress update 2022-12-12 12:04:15.149132 : Number rows updated  :     38.
+Progress update 2022-12-12 12:04:15.149132 :
+Progress update 2022-12-12 12:04:15.149657 : Database table       : occurrences         <-----------------------------------.
+Progress update 2022-12-12 12:04:15.150156 : Number rows selected :      0.
+Progress update 2022-12-12 12:04:15.150156 :
+Progress update 2022-12-12 12:04:15.150156 : Database table       : dt_flight_crew      <-----------------------------------.
+Progress update 2022-12-12 12:04:31.194343 : Number rows selected :    580.
+Progress update 2022-12-12 12:04:31.194343 : Number rows inserted :    397.
+Progress update 2022-12-12 12:04:31.194343 : Number rows updated  :    183.
+Progress update 2022-12-12 12:04:31.194843 :
+Progress update 2022-12-12 12:04:31.194843 : Database table       : flight_time         <-----------------------------------.
+Progress update 2022-12-12 12:05:13.848956 : Number rows selected :   1426.
+Progress update 2022-12-12 12:05:13.849456 : Number rows inserted :    917.
+Progress update 2022-12-12 12:05:13.849456 : Number rows updated  :    509.
+Progress update 2022-12-12 12:05:13.849456 :
+Progress update 2022-12-12 12:05:13.849957 : Database table       : seq_of_events       <-----------------------------------.
+Progress update 2022-12-12 12:05:13.850456 : Number rows selected :      0.
+Progress update 2022-12-12 12:05:13.952053 : INFO.00.065 Cleansing PostgreSQL data.
+Progress update 2022-12-12 12:05:13.952053 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 12:05:14.008066 : INFO.00.066 Cleansing table 'events' column 'ev_city'.
+Progress update 2022-12-12 12:05:15.883972 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 12:05:15.883972 : INFO.00.066 Cleansing table 'events' column 'ev_site_zipcode'.
+Progress update 2022-12-12 12:05:17.769554 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 12:05:17.770055 : INFO.00.066 Cleansing table 'events' column 'latitude'.
+Progress update 2022-12-12 12:05:19.626455 : --------------------------------------------------------------------------------
+Progress update 2022-12-12 12:05:19.626455 : INFO.00.066 Cleansing table 'events' column 'longitude'.
+Progress update 2022-12-12 12:05:21.459644 : -------------------------------------------------------------------------------.
+Progress update 2022-12-12 12:05:21.460148 :      164,540,237,000 ns - Total time launcher.
+Progress update 2022-12-12 12:05:21.460148 : INFO.00.006 End   Launcher.
+Progress update 2022-12-12 12:05:21.460148 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 12:05:21.64
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================

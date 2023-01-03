@@ -4,7 +4,7 @@
 * git clone https://github.com/io-aero/io-avstats-db
 * git clone https://github.com/io-aero/io-avstats-db-content
 
-# 2. Setup PyCharm - Plugins
+# 2. Set up PyCharm - Plugins
 
 * .ignore
 * Json Helper

@@ -11,6 +11,7 @@ import locale
 import os
 import sys
 import time
+import zipfile
 
 import pyexcel  # type: ignore
 from pyexcel.exceptions import FileTypeNotSupported  # type: ignore
@@ -59,7 +60,7 @@ def _check_arg_correction(args: argparse.Namespace) -> None:
 
     try:
         pyexcel.get_records(file_name=file_name)
-    except FileTypeNotSupported:
+    except (FileTypeNotSupported, zipfile.BadZipFile):
         # ERROR.00.925 '{correction}' is not a valid Microsoft Excel file
         avstats.terminate_fatal(io_glob.ERROR_00_925.replace("{correction}", file_name))
 

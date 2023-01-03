@@ -8,7 +8,7 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set APPLICATION_DEFAULT=faaus1982
+set APPLICATION_DEFAULT=aaus1982
 
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
@@ -17,8 +17,10 @@ set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo faaus1982 - Fatal Aircraft Accidents in the US since 1982
-    echo pdus1982  - Profiling Data for the US since 1982
+    echo all      - All Streamlit applications
+    echo ---------------------------------------------------------
+    echo aaus1982 - Aircraft Accidents in the US since 1982
+    echo pdus1982 - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -74,6 +76,12 @@ rem > %LOG_FILE% 2>&1 (
     echo:| TIME
     echo =======================================================================
 
+    if ["!APPLICATION!"] EQU ["all"]  (
+        call scripts\run_create_image aaus1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image pdus1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        goto END_OF_SCRIPT
+    )
+
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
         docker builder prune --all --force
     )
@@ -104,6 +112,8 @@ rem > %LOG_FILE% 2>&1 (
 
     for /F %%I in ('docker images -q -f "dangling=true" -f "label=autodelete=true"') do (docker rmi -f %%I)
 
+
+    :END_OF_SCRIPT
     echo -----------------------------------------------------------------------
     echo:| TIME
     echo -----------------------------------------------------------------------

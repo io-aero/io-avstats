@@ -10,33 +10,437 @@ Currently, the following Streamlit applications are supported:
 
 | Application | Description                             |
 |-------------|-----------------------------------------|
+| all         | All Streamlit applications              |
 | aaus1982    | Aircraft Accidents in the US since 1982 |
 | pdus1982    | Profiling Data for the US since 1982    |
 
-The **`data/run_create_image`** script can be used to generate a Docker image for each of these applications.
-
-## 2. Zip local files
-
-The **`run_cloud_files_zip`** script zips the required files into the **` cloud.zip`** file.
-The very first thing the script does is stop the PostgreSQL database so that the database files are in a consistent state.
+The script **`run_io_avstats`** with task **`c_d_i`** can be used to create or update the necessary Docker images.
 
 **Example protocol**:
 
 ```
-`...`>scripts\run_cloud_files_zip
+...>run_io_avstats
+=========================================================
+r_s_a   - Run a Streamlit application
+---------------------------------------------------------
+d_n_a   - Download a NTSB MS Access database file
+l_n_a   - Load NTSB MS Access database data into PostgreSQL
+c_l_l   - Correct decimal US latitudes and longitudes
+v_n_d   - Verify selected NTSB data
+r_d_s   - Refresh the PostgreSQL database schema
+---------------------------------------------------------
+c_p_d   - Cleansing PostgreSQL data
+d_s_f   - Download basic simplemaps files
+l_c_d   - Load data from a correction file into PostgreSQL
+l_c_s   - Load country and state data into PostgreSQL
+l_s_d   - Load simplemaps data into PostgreSQL
+l_z_d   - Load ZIP Code Database data into PostgreSQL
+---------------------------------------------------------
+c_d_s   - Create the PostgreSQL database schema
+d_d_f   - Delete the PostgreSQL database files
+d_d_s   - Drop the PostgreSQL database schema
+s_d_c   - Set up the PostgreSQL database container
+u_d_s   - Update the PostgreSQL database schema
+---------------------------------------------------------
+c_d_i   - Create or update a Docker image
+c_d_c   - Run Docker Compose tasks
+c_f_z   - Zip the files for the cloud
+---------------------------------------------------------
+version - Show the IO-AVSTATS-DB version
+---------------------------------------------------------
+Enter the desired task [default: r_s_a] c_d_i
+=========================================================
+all      - All Streamlit applications
+---------------------------------------------------------
+aaus1982 - Aircraft Accidents in the US since 1982
+pdus1982 - Profiling Data for the US since 1982
+---------------------------------------------------------
+Enter the Streamlit application name all
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : c_d_i
+CORRECTION :
+MSACCESS   :
+-----------------------------------------------------------------------
+The current time is:  5:26:55.43
+Enter the new time:
+=======================================================================
+
+Script scripts\run_create_image is now running - Application: all
+
+You can find the run log in the file run_create_image.log
+
+Please wait ...
+
+=======================================================================
+Start scripts\run_create_image
+-----------------------------------------------------------------------
+Create a Docker image for application all
+-----------------------------------------------------------------------
+DOCKER_CLEAR_CACHE       : yes
+DOCKER_HUB_PUSH          : yes
+STREAMLIT_SERVER_PORT    : 8501
+-----------------------------------------------------------------------
+The current time is:  5:26:55.49
+Enter the new time:
+=======================================================================
+
+Script scripts\run_create_image is now running - Application: aaus1982
+
+You can find the run log in the file run_create_image.log
+
+Please wait ...
+
+=======================================================================
+Start scripts\run_create_image
+-----------------------------------------------------------------------
+Create a Docker image for application aaus1982
+-----------------------------------------------------------------------
+DOCKER_CLEAR_CACHE       : yes
+DOCKER_HUB_PUSH          : yes
+STREAMLIT_SERVER_PORT    : 8501
+-----------------------------------------------------------------------
+The current time is:  5:26:55.51
+Enter the new time:
+=======================================================================
+Deleted build cache objects:
+uzxx25i0lxo6i63dn7x6m43sf
+k6ij499naa2h1rato1wusqsnb
+ybs0ov6x6brbw3mza4ebom3tn
+jrl57t6dmkmh16a8cr05eel4v
+mr3hfgjbcvgownt6cgt42hhj8
+v1cew3osiidfg3zjw7oefaxz3
+udbfolcspdf4533lc9km5tlx6
+mpwj560p2a3iao6zvntnb9bmd
+ajtls8cd4v7c2j0145wpdt62m
+qyva0m4glms5i06qpk50ngydn
+0m34yyo0nfo0njcenkvxgbzuo
+cykj0j5z3dspf7qkltlgiehcx
+jhduefpbk7sfzdp3vvw39mcgh
+xee28brnh8940r3yvbt2rvygj
+6b57pxquyoxvqemkpgtwhh0s1
+svwrr9owakmy9jywyvm3zo0zc
+wjiwh0jvnfkv721221wjbmnjd
+uhf3bsyz66ya2dgg812bxpmj3
+8fq8uoy7bul7us3xbc4y7notj
+odzccrtlsypmao8i86phdqbem
+is2due0y1dwyos9twpcy88qmu
+
+Total reclaimed space: 2.785GB
+Docker stop/rm aaus1982 ................................ before containers:
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     io_avstats_db
+2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001->3001/tcp                                     uptime-kuma
+f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 24 minutes             0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
+............................................................. after containers:
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     io_avstats_db
+2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001->3001/tcp                                     uptime-kuma
+f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 24 minutes             0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
+............................................................. before images:
+REPOSITORY               TAG       IMAGE ID       CREATED        SIZE
+ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago   3.71GB
+ioaero/aaus1982          latest    55595e574018   36 hours ago   3.71GB
+louislam/uptime-kuma     1         7a23beca3798   7 days ago     382MB
+postgres                 latest    a26eb6069868   11 days ago    379MB
+louislam/uptime-kuma     <none>    930a7e08142f   2 months ago   350MB
+portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
+ioaero/aaus1982          latest    55595e574018   36 hours ago   3.71GB
+Untagged: ioaero/aaus1982:latest
+Untagged: ioaero/aaus1982@sha256:8e0508754352cf9fbfd5c1957df825aab5703d8ec7ed85d6c44358f0bc701e2d
+Deleted: sha256:55595e574018ea4759bb7a13e51aaea8e869fe84e49c17ff05f5234b0b65f6b0
+Deleted: sha256:119fc70cf352a239f7e323ba1d9b7603fb77e899ca0db5b4bc994b577cb55f45
+Deleted: sha256:8922e3751ae2b60d598394358173719c4043d29ae71e8d709a305a5432f70f36
+Deleted: sha256:6a95257bdb25543436f2741138e8e4cdee6121409b665f51d2f2fdcb3228a8bc
+Deleted: sha256:7c6422e12c7c23e441493c9177661519dd616a418c7cd9ea6c3acfab981b5279
+Deleted: sha256:3539296c13a8b190f45a4d7d66330d3396e5b1d5e81200ae492b0a0b1fe8b914
+Deleted: sha256:06758fe39d1e7343a30e0f4d62d57abd997164a4840c6af6136953f12953f81d
+Deleted: sha256:6a2295de770bec3782f572ee92533e5c120dda4a7a8f07faea3fe21a8fa5b9d2
+Deleted: sha256:82fa1f4f9b491d32fa8f2fda71e7c8223f2ea66d85b92b19869554e4342f2a55
+............................................................. after images:
+REPOSITORY               TAG       IMAGE ID       CREATED        SIZE
+ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago   3.71GB
+louislam/uptime-kuma     1         7a23beca3798   7 days ago     382MB
+postgres                 latest    a26eb6069868   11 days ago    379MB
+louislam/uptime-kuma     <none>    930a7e08142f   2 months ago   350MB
+portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
+[+] Building 126.0s (16/16) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                  0.1s
+ => => transferring dockerfile: 685B                                                                                                                                                  0.0s
+ => [internal] load .dockerignore                                                                                                                                                     0.1s
+ => => transferring context: 2B                                                                                                                                                       0.0s
+ => [internal] load metadata for docker.io/library/python:3.10.9                                                                                                                      1.6s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                     0.1s
+ => => transferring context: 54.51kB                                                                                                                                                  0.0s
+ => [ 1/10] FROM docker.io/library/python:3.10.9@sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6                                                              0.3s
+ => => resolve docker.io/library/python:3.10.9@sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6                                                                0.0s
+ => => sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6 2.36kB / 2.36kB                                                                                        0.0s
+ => => sha256:3aae3bded9cfb06e92d7342abf1833b156fe197522ffbde031363194c429c8d5 8.53kB / 8.53kB                                                                                        0.0s
+ => => sha256:08dfb526b02f1b849ca4ce479b51f100448053a67b64905a63dcdad2fe6802c5 2.22kB / 2.22kB                                                                                        0.0s
+ => [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
+ => [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.0s
+ => [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
+ => [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
+ => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
+ => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
+ => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.0s
+ => [ 9/10] COPY src/streamlit_apps/aaus1982.py ./aaus1982.py                                                                                                                         0.0s
+ => [10/10] RUN make pipenv-prod                                                                                                                                                    116.1s
+ => exporting to image                                                                                                                                                                7.6s
+ => => exporting layers                                                                                                                                                               7.6s
+ => => writing image sha256:9c52d19f49cab5d423d3829c9bf9a275646a6c8102664798439d2f6a8a36ec70                                                                                          0.0s
+ => => naming to docker.io/ioaero/aaus1982                                                                                                                                            0.0s
+Using default tag: latest
+The push refers to repository [docker.io/ioaero/aaus1982]
+e0d3af52dd2a: Pushed
+02cd2263f756: Pushed
+4303b7702627: Pushed
+09bdea621e5d: Pushed
+4fa461cf256d: Pushed
+36b2ed23b0c8: Pushed
+bf522582bcc8: Pushed
+568d53719d94: Pushed
+5f70bf18a086: Layer already exists
+6cda7fb97c48: Layer already exists
+a5ea5c85f053: Layer already exists
+86ee53f76eff: Layer already exists
+248397b6b856: Layer already exists
+fa1175420e6f: Layer already exists
+bb2453e12947: Layer already exists
+7354e83da007: Layer already exists
+c284f546974c: Layer already exists
+4efcd4003c84: Layer already exists
+latest: digest: sha256:7a10f6e705635ba099fc1e7751ce8ba7e8ab42a3effd1c85e5e391e87b3d7713 size: 4090
+-----------------------------------------------------------------------
+The current time is:  5:29:48.32
+Enter the new time:
+-----------------------------------------------------------------------
+End   scripts\run_create_image
+=======================================================================
+
+Script scripts\run_create_image is now running - Application: pdus1982
+
+You can find the run log in the file run_create_image.log
+
+Please wait ...
+
+=======================================================================
+Start scripts\run_create_image
+-----------------------------------------------------------------------
+Create a Docker image for application pdus1982
+-----------------------------------------------------------------------
+DOCKER_CLEAR_CACHE       : yes
+DOCKER_HUB_PUSH          : yes
+STREAMLIT_SERVER_PORT    : 8501
+-----------------------------------------------------------------------
+The current time is:  5:29:48.34
+Enter the new time:
+=======================================================================
+Deleted build cache objects:
+thhicfsjzega5hhfsfhgazo5f
+c0hrwt7xm4gqwku594jwovtxy
+mj3v2y03lne206mx98ck6bs5q
+t91qc536n2yxg4khxtg8ujpy7
+mxil38rm6bwdx496jkxz7mlao
+d8yhfp8fu7c8pyswiomy19unw
+ypkmd6a84ytbkimlxvc5hge2r
+tbn52lkr2rwt8kgl4taocwdq9
+0hhmtdy5632ayhrwjbknd6wmu
+v9nu6ong6kpge0wgy5hw7msd0
+5wab3qctjhthudw31strfmcas
+cvx5a4vxg4wl96bm66r65c3im
+05e4dt4o8ts5myzatdapc3zbp
+rei1avwchsi7rcwwwxyqj5bek
+uuz6tgeqx4aakkd5rk6mviwqw
+kuiq5mq3o4fdr7t1fjh59kf3z
+sz0a79o1lfbfjoffp2xad68d9
+p5srd861jgkz1jim3hlagwy5k
+k9hr87wufmsxkrcn95mvzncx9
+d0y2kal9jkigo3d1iwmnv6c5x
+cop4h1ejwr20j5i6ilnjm2udh
+
+Total reclaimed space: 2.787GB
+Docker stop/rm pdus1982 ................................ before containers:
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001->3001/tcp                                     uptime-kuma
+f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 27 minutes                   0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
+............................................................. after containers:
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001->3001/tcp                                     uptime-kuma
+f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 27 minutes                   0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
+............................................................. before images:
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+ioaero/aaus1982          latest    9c52d19f49ca   53 seconds ago   3.71GB
+ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago     3.71GB
+louislam/uptime-kuma     1         7a23beca3798   7 days ago       382MB
+postgres                 latest    a26eb6069868   11 days ago      379MB
+louislam/uptime-kuma     <none>    930a7e08142f   2 months ago     350MB
+portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
+ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago     3.71GB
+Untagged: ioaero/pdus1982:latest
+Untagged: ioaero/pdus1982@sha256:81275d3926397906a73a897d067081b957a94c944c01fede413eb998916abdb3
+Deleted: sha256:21178cc3b8bc68774299f0015c9aff0ff819078d62174db6e13da31fe8253ece
+Deleted: sha256:b0403dd2d4728d6cdb151bdd2e182b3170de1b0cbf5f0b7e00c17dddcc389f5b
+Deleted: sha256:10742399ddf223a435aaf2674a553baf3c5a1345aad7d6a4f5dabe4a4398ad25
+Deleted: sha256:154ad29ff275517ad1f803aa1efc0bb372ea9f37d7f0273b432ae1dfa8af87c2
+Deleted: sha256:2ffd78873dbaec78fbcf969f45396338bdb809f38c04a41862f74c4d18ded62e
+Deleted: sha256:faf980ada2cc0547773a54a6a55bae285088dd9afb7f29a0f1f36a6230f406c9
+Deleted: sha256:9bbb505d8de414f3da1416a76cd56e6e8144e35652bf06b9b2f389d5ade00aea
+Deleted: sha256:ccd5b1ddd9e1cfb8897f307f303097fafd12e1cf3220603419c03a4394138653
+Deleted: sha256:2be71d95e8f20b84ab51375e52afc7665926a2ac52e22b32b82bb8f374082d13
+............................................................. after images:
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+ioaero/aaus1982          latest    9c52d19f49ca   54 seconds ago   3.71GB
+louislam/uptime-kuma     1         7a23beca3798   7 days ago       382MB
+postgres                 latest    a26eb6069868   11 days ago      379MB
+louislam/uptime-kuma     <none>    930a7e08142f   2 months ago     350MB
+portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
+[+] Building 125.4s (15/15) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                  0.0s
+ => => transferring dockerfile: 685B                                                                                                                                                  0.0s
+ => [internal] load .dockerignore                                                                                                                                                     0.0s
+ => => transferring context: 2B                                                                                                                                                       0.0s
+ => [internal] load metadata for docker.io/library/python:3.10.9                                                                                                                      1.0s
+ => [ 1/10] FROM docker.io/library/python:3.10.9@sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6                                                              0.4s
+ => => resolve docker.io/library/python:3.10.9@sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6                                                                0.0s
+ => => sha256:e18f86de2e5eadcb00af7d57eefeeb377aec81a41d033bf20de426ae6c7bbff6 2.36kB / 2.36kB                                                                                        0.0s
+ => => sha256:08dfb526b02f1b849ca4ce479b51f100448053a67b64905a63dcdad2fe6802c5 2.22kB / 2.22kB                                                                                        0.0s
+ => => sha256:3aae3bded9cfb06e92d7342abf1833b156fe197522ffbde031363194c429c8d5 8.53kB / 8.53kB                                                                                        0.0s
+ => [internal] load build context                                                                                                                                                     0.0s
+ => => transferring context: 43.50kB                                                                                                                                                  0.0s
+ => [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
+ => [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.1s
+ => [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
+ => [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
+ => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
+ => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
+ => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.1s
+ => [ 9/10] COPY src/streamlit_apps/pdus1982.py ./pdus1982.py                                                                                                                         0.0s
+ => [10/10] RUN make pipenv-prod                                                                                                                                                    116.0s
+ => exporting to image                                                                                                                                                                7.6s
+ => => exporting layers                                                                                                                                                               7.6s
+ => => writing image sha256:352591832f346b0b30d89f33e01572eb1710024841c0d6fecd53a74b22ca5c09                                                                                          0.0s
+ => => naming to docker.io/ioaero/pdus1982                                                                                                                                            0.0s
+Using default tag: latest
+The push refers to repository [docker.io/ioaero/pdus1982]
+fcd1849b77ee: Pushed
+9b8fc3075985: Pushed
+23c8d1891816: Pushed
+adebe552f5a4: Pushed
+1dddc5e9e66a: Pushed
+ad5de2585a3a: Pushed
+bf4ee8dfaa14: Pushed
+3e99a612e0bf: Pushed
+5f70bf18a086: Layer already exists
+6cda7fb97c48: Layer already exists
+a5ea5c85f053: Layer already exists
+86ee53f76eff: Layer already exists
+248397b6b856: Layer already exists
+fa1175420e6f: Layer already exists
+bb2453e12947: Layer already exists
+7354e83da007: Layer already exists
+c284f546974c: Layer already exists
+4efcd4003c84: Layer already exists
+latest: digest: sha256:466fe6edd661ee9067d0e77e0fbd1f44acbce0cc6e7f5468dd7e8bf1b6bf05ec size: 4090
+-----------------------------------------------------------------------
+The current time is:  5:32:40.32
+Enter the new time:
+-----------------------------------------------------------------------
+End   scripts\run_create_image
+=======================================================================
+-----------------------------------------------------------------------
+The current time is:  5:32:40.33
+Enter the new time:
+-----------------------------------------------------------------------
+End   scripts\run_create_image
+=======================================================================
+
+-----------------------------------------------------------------------
+The current time is:  5:32:40.34
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+```
+
+## 2. Zip local files
+
+The script **`run_io_avstats`** with task **`c_f_z`** zips the required files into the **` cloud.zip`** file.
+The very first thing the script does is stop the PostgreSQL database so that the database files are in a consistent state.
+Then zip the file directory **`data/postgres`** and rename the zipped file **`postgres.zip`** to **`latest_postgres.zip`**.
+
+**Example protocol**:
+
+```
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
+=========================================================
+r_s_a   - Run a Streamlit application
+---------------------------------------------------------
+d_n_a   - Download a NTSB MS Access database file
+l_n_a   - Load NTSB MS Access database data into PostgreSQL
+c_l_l   - Correct decimal US latitudes and longitudes
+v_n_d   - Verify selected NTSB data
+r_d_s   - Refresh the PostgreSQL database schema
+---------------------------------------------------------
+c_p_d   - Cleansing PostgreSQL data
+d_s_f   - Download basic simplemaps files
+l_c_d   - Load data from a correction file into PostgreSQL
+l_c_s   - Load country and state data into PostgreSQL
+l_s_d   - Load simplemaps data into PostgreSQL
+l_z_d   - Load ZIP Code Database data into PostgreSQL
+---------------------------------------------------------
+c_d_s   - Create the PostgreSQL database schema
+d_d_f   - Delete the PostgreSQL database files
+d_d_s   - Drop the PostgreSQL database schema
+s_d_c   - Set up the PostgreSQL database container
+u_d_s   - Update the PostgreSQL database schema
+---------------------------------------------------------
+c_d_i   - Create or update a Docker image
+c_d_c   - Run Docker Compose tasks
+c_f_z   - Zip the files for the cloud
+---------------------------------------------------------
+version - Show the IO-AVSTATS-DB version
+---------------------------------------------------------
+Enter the desired task [default: r_s_a] c_f_z
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Accident Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH :
+-----------------------------------------------------------------------
+TASK       : c_f_z
+CORRECTION :
+MSACCESS   :
+-----------------------------------------------------------------------
+The current time is:  5:35:14.64
+Enter the new time:
+=======================================================================
 =======================================================================
 Start scripts\run_cloud_files_zip
 -----------------------------------------------------------------------
 File Collection for AWS
 -----------------------------------------------------------------------
-The current time is: 13:04:45.23
+The current time is:  5:35:14.67
 Enter the new time:
 =======================================================================
 
 7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
 
 Scanning the drive:
-3 files, 225736114 bytes (216 MiB)
+3 files, 290463129 bytes (278 MiB)
 
 Creating archive: cloud.zip
 
@@ -44,7 +448,7 @@ Items to compress: 3
 
 
 Files read from disk: 3
-Archive size: 216379120 bytes (207 MiB)
+Archive size: 280942218 bytes (268 MiB)
 Everything is Ok
 
 =======================================================================
@@ -54,29 +458,36 @@ Archive Content
 7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
 
 Scanning the drive for archives:
-1 file, 216379120 bytes (207 MiB)
+1 file, 280942218 bytes (268 MiB)
 
 Listing archive: cloud.zip
 
 --
 Path = cloud.zip
 Type = zip
-Physical Size = 216379120
+Physical Size = 280942218
 
    Date      Time    Attr         Size   Compressed  Name
 ------------------- ----- ------------ ------------  ------------------------
-2022-12-18 08:50:04 ....A    225728618    216377107  data\latest_postgres.zip
-2022-12-14 22:49:01 ....A         1677          443  docker-compose.yml
-2022-12-19 02:59:47 ....A         5819         1070  scripts\run_docker_compose.sh
+2023-01-02 23:47:48 ....A    290453357    280940090  data\latest_postgres.zip
+2022-12-27 01:44:14 ....A         1666          441  docker-compose.yml
+2023-01-01 16:40:06 ....A         8106         1187  scripts\run_docker_compose.sh
 ------------------- ----- ------------ ------------  ------------------------
-2022-12-19 02:59:47          225736114    216378620  3 files
+2023-01-02 23:47:48          290463129    280941718  3 files
 =======================================================================
 
 -----------------------------------------------------------------------
-The current time is: 13:04:52.02
+The current time is:  5:35:23.32
 Enter the new time:
 -----------------------------------------------------------------------
 End   scripts\run_cloud_files_zip
+=======================================================================
+
+-----------------------------------------------------------------------
+The current time is:  5:35:23.33
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
 =======================================================================
 ```
 
@@ -88,7 +499,7 @@ On Windows, the [WinSCP](https://winscp.net/eng/index.php){:target="_blank"} pro
 
 <kbd>![](img/WinSCP_3.png)</kbd>
 
-## 4. Load terminal window
+## 4. Connect to the AWS instance
 
 <kbd>![](img/aws_instance_15.png)</kbd>
 
@@ -113,7 +524,7 @@ Afterwards , a possibly running **IO-AVSTATS** is terminated.
 Next, unzip the database files.
 
 - **`cd data`**
-- **`rm -rf postgres`**
+- **`sudo rm -rf postgres`**
 - **`unzip latest_postgres.zip`**
 
 Finally, clean up unnecessary files.
@@ -125,3 +536,5 @@ Finally, clean up unnecessary files.
 ## 5. Restart ***IO-AVSTATS**
 
 - **`./scripts/run_docker_compose.sh up`**
+
+## 6. Test the Streamlit applications

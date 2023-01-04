@@ -33,6 +33,8 @@ nav:
       - IO-AVSTATS: config_io_avstats.md
       - Logging: config_logging.md
   - Operation: operation.md
+  - Data Analysis:
+      - aaus1982: data_analyis_aaus1982.md
   - How to ...:
       - ... add NTSB accident files: how_to_add_ntsb_accident_files.md
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md

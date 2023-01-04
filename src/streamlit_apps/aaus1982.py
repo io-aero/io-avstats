@@ -7,12 +7,12 @@ import datetime
 import time
 
 import pandas as pd
+import plotly.express as px  # type: ignore
+import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import pydeck as pdk  # type: ignore
-import seaborn as sns  # type: ignore
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
-from matplotlib import pyplot as plt  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
@@ -27,18 +27,25 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 APP_ID = "aaus1982"
 
 # pylint: disable=R0801
+# pylint: disable=too-many-lines
+CHOICE_CHART_TYPE_ACCIDENTS_YEAR = "Accidents per year"
+CHOICE_CHART_TYPE_FATALITIES_YEAR = "Fatalities per year"
+CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART = "Fatalities per year & Far part"
+CHOICE_CHARTS: bool | None = None
+CHOICE_CHARTS_DETAILS: bool | None = None
+CHOICE_CHARTS_HEIGHT: float | None = None
+CHOICE_CHARTS_WIDTH: float | None = None
+CHOICE_CHARTS_TYPES: list[str] = []
 CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
 CHOICE_FILTER_DATA: bool | None = None
-CHOICE_HISTOGRAM: bool | None = None
-CHOICE_HISTOGRAM_HEIGHT: float | None = None
-CHOICE_HISTOGRAM_WIDTH: float | None = None
 CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
 CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
 
 DF_FILTERED: DataFrame = DataFrame()
+DF_FILTERED_CHARTS_YEAR: DataFrame = DataFrame()
 DF_UNFILTERED: DataFrame = DataFrame()
 
 FILTER_ACFT_CATEGORIES: list[str] = []
@@ -62,7 +69,7 @@ LAYER_TYPE = "ScatterplotLayer"
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
 PG_CONN: Connection | None = None
-#  Up/down angle relative to the map’s plane,
+#  Up/down angle relative to the map�s plane,
 #  with 0 being looking directly at the map
 PITCH = 30
 
@@ -338,29 +345,156 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
+# Prepare the yearly chart data.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _prep_chart_data_year(
+    df_filtered: DataFrame,
+) -> DataFrame:
+    """Prepare the yearly chart data."""
+    df_chart = df_filtered[
+        [
+            "ev_year",
+            "fatalities",
+            "far_part_091x_fatalities",
+            "far_part_121_fatalities",
+            "far_part_135_fatalities",
+        ]
+    ]
+
+    df_chart.loc[:, "accidents"] = 1
+
+    return df_chart.groupby("ev_year", as_index=False).sum(
+        [  # type: ignore
+            "fatalities",
+            "far_part_091x_fatalities",
+            "far_part_121_fatalities",
+            "far_part_135_fatalities",
+        ],
+    )
+
+
+# ------------------------------------------------------------------
+# Present the chart accidents per year.
+# ------------------------------------------------------------------
+def _present_chart_accidents_year():
+    """Present the chart accidents per year."""
+    st.subheader("Number of accidents per year")
+
+    fig = px.bar(
+        DF_FILTERED_CHARTS_YEAR,
+        labels={"ev_year": "Year", "accidents": "Accidents"},
+        x="ev_year",
+        y="accidents",
+    )
+
+    fig.update_layout(bargap=0, height=CHOICE_CHARTS_HEIGHT, width=CHOICE_CHARTS_WIDTH)
+
+    st.plotly_chart(
+        fig,
+    )
+
+
+# ------------------------------------------------------------------
+# Present the chart fatalities per year.
+# ------------------------------------------------------------------
+def _present_chart_fatalities_year():
+    """Present the chart accidents per year."""
+    st.subheader("Number of fatalities per year")
+
+    fig = px.bar(
+        DF_FILTERED_CHARTS_YEAR,
+        labels={"ev_year": "Year", "fatalities": "Fatalities"},
+        x="ev_year",
+        y="fatalities",
+    )
+
+    fig.update_layout(
+        bargap=0,
+    )
+
+    st.plotly_chart(
+        fig,
+    )
+
+
+# ------------------------------------------------------------------
+# Present the chart fatalities per year -
+# only with selected FAR parts involved.
+# ------------------------------------------------------------------
+def _present_chart_fatalities_year_far_part():
+    """Present the chart fatalities per year - only with selected FAR parts involved."""
+    st.subheader(
+        "Number of fatalities per year - only with selected FAR parts involved"
+    )
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                marker={"color": "#636EFA"},
+                name="Parts 91, 91F, 91K",
+                x=DF_FILTERED_CHARTS_YEAR["ev_year"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_091x_fatalities"],
+            ),
+            go.Bar(
+                marker={"color": "#00CC96"},
+                name="Part 135",
+                x=DF_FILTERED_CHARTS_YEAR["ev_year"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_135_fatalities"],
+            ),
+            go.Bar(
+                marker={"color": "#EF553B"},
+                name="Part 121",
+                x=DF_FILTERED_CHARTS_YEAR["ev_year"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_121_fatalities"],
+            ),
+        ],
+    )
+
+    fig.update_layout(
+        bargap=0,
+        barmode="stack",
+    )
+
+    st.plotly_chart(
+        fig,
+    )
+
+
+# ------------------------------------------------------------------
+# Present the charts.
+# ------------------------------------------------------------------
+def _present_charts():
+    """Present the charts."""
+    global DF_FILTERED_CHARTS_YEAR  # pylint: disable=global-statement
+
+    if CHOICE_CHART_TYPE_ACCIDENTS_YEAR in CHOICE_CHARTS_TYPES:
+        DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
+        _present_chart_accidents_year()
+
+    if CHOICE_CHART_TYPE_FATALITIES_YEAR in CHOICE_CHARTS_TYPES:
+        DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
+        _present_chart_fatalities_year()
+
+    if CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART in CHOICE_CHARTS_TYPES:
+        DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
+        _present_chart_fatalities_year_far_part()
+
+
+# ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
     """Present the filtered data."""
+    if CHOICE_CHARTS:
+        _present_charts()
+
     if CHOICE_DATA_PROFILE:
         st.subheader("Profiling of the filtered data set")
         _present_data_profile()
 
-    if CHOICE_DETAILS:
-        st.subheader("The filtered data set in detail")
-        st.dataframe(DF_FILTERED)
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED),
-            file_name=APP_ID + ".csv",
-            help="The download includes all data "
-            + "after applying the filter options.",
-            label="Download all data as CSV file",
-            mime="text/csv",
-        )
-
-    if CHOICE_HISTOGRAM:
-        st.subheader("Number of accidents per year")
-        _present_histogram()
+    if CHOICE_DETAILS or CHOICE_CHARTS_DETAILS:
+        _present_details()
 
     if CHOICE_MAP:
         st.subheader("Depicting the accidents on a map of the USA")
@@ -397,18 +531,37 @@ def _present_data_profile():
 
 
 # ------------------------------------------------------------------
-# Present the yearly accidents.
+# Present details.
 # ------------------------------------------------------------------
-def _present_histogram():
-    """Present the yearly accidents."""
-    # noinspection PyUnboundLocalVariable
-    fig, _ax = plt.subplots(figsize=(CHOICE_HISTOGRAM_WIDTH, CHOICE_HISTOGRAM_HEIGHT))
+def _present_details():
+    """Present details."""
+    if CHOICE_DETAILS:
+        st.subheader("Detailed data from database view **`io_app_aaus1982`**")
+        st.dataframe(DF_FILTERED)
+        st.download_button(
+            data=_convert_df_2_csv(DF_FILTERED),
+            file_name=APP_ID + ".csv",
+            help="The download includes all data "
+            + "after applying the filter options.",
+            label="Download the detailed data",
+            mime="text/csv",
+        )
 
-    sns.histplot(DF_FILTERED["ev_year"], discrete=True)
-
-    plt.xlabel("Year")
-
-    st.pyplot(fig)
+    if CHOICE_CHARTS_DETAILS:
+        if (
+            CHOICE_CHART_TYPE_ACCIDENTS_YEAR
+            or CHOICE_CHART_TYPE_FATALITIES_YEAR
+            or CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART
+        ):
+            st.subheader("Aggregated chart data per year")
+            st.dataframe(DF_FILTERED_CHARTS_YEAR)
+            st.download_button(
+                data=_convert_df_2_csv(DF_FILTERED_CHARTS_YEAR),
+                file_name=APP_ID + "_charts_year.csv",
+                help="The download includes the aggregated chart data per year.",
+                label="Download the chart data",
+                mime="text/csv",
+            )
 
 
 # ------------------------------------------------------------------
@@ -582,15 +735,49 @@ def _setup_sidebar():
 # ------------------------------------------------------------------
 def _setup_task_controls():
     """Set up the task controls."""
+    global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPES  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_HISTOGRAM  # pylint: disable=global-statement
-    global CHOICE_HISTOGRAM_HEIGHT  # pylint: disable=global-statement
-    global CHOICE_HISTOGRAM_WIDTH  # pylint: disable=global-statement
+    global CHOICE_CHARTS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
+    global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_MAP  # pylint: disable=global-statement
     global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
     global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
+
+    CHOICE_CHARTS = st.sidebar.checkbox(
+        help="Accidents or fatalities per year (after filtering the data).",
+        label="**`Show charts`**",
+        value=False,
+    )
+
+    if CHOICE_CHARTS:
+        CHOICE_CHARTS_TYPES = st.sidebar.multiselect(
+            default=CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART,
+            label="Select one or more chart types",
+            options=(
+                CHOICE_CHART_TYPE_ACCIDENTS_YEAR,
+                CHOICE_CHART_TYPE_FATALITIES_YEAR,
+                CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART,
+            ),
+        )
+
+        CHOICE_CHARTS_HEIGHT = st.sidebar.slider(
+            label="Chart height", min_value=100, max_value=1000, value=250
+        )
+        CHOICE_CHARTS_WIDTH = st.sidebar.slider(
+            label="Chart width", min_value=100, max_value=1000, value=250
+        )
+
+        CHOICE_CHARTS_DETAILS = st.sidebar.checkbox(
+            help="Tabular representation of the of the data underlying the charts.",
+            label="**`Show detailed chart data`**",
+            value=False,
+        )
+
+    st.sidebar.markdown("""---""")
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the filtered dataset.",
@@ -615,21 +802,9 @@ def _setup_task_controls():
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed data.",
-        label="**`Show details`**",
+        label="**`Show detailed data`**",
         value=False,
     )
-
-    st.sidebar.markdown("""---""")
-
-    CHOICE_HISTOGRAM = st.sidebar.checkbox(
-        help="Accidents per year (after filtering the data).",
-        label="**`Show histogram`**",
-        value=False,
-    )
-
-    if CHOICE_HISTOGRAM:
-        CHOICE_HISTOGRAM_WIDTH = st.sidebar.slider("Histogram width", 1, 25, 11)
-        CHOICE_HISTOGRAM_HEIGHT = st.sidebar.slider("Histogram height", 1, 25, 5)
 
     st.sidebar.markdown("""---""")
 
@@ -752,7 +927,7 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
     """Run the US latitude and longitude query.
 
     Args:
-        pitch (int): Up/down angle relative to the map’s plane.
+        pitch (int): Up/down angle relative to the map�s plane.
         zoom (float): Magnification level of the map.
 
     Returns:

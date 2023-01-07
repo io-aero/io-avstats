@@ -27,42 +27,8 @@ from io_avstats_db import io_utils
 
 ARG_CORRECTION = ""
 ARG_MSACCESS = ""
+ARG_MSEXCEL = ""
 ARG_TASK = ""
-
-
-# -----------------------------------------------------------------------------
-# Check the command line argument: -c / --correction.
-# -----------------------------------------------------------------------------
-def _check_arg_correction(args: argparse.Namespace) -> None:
-    """Check the command line argument: -c / --correction.
-
-    Args:
-        args (argparse.Namespace): Command line arguments.
-    """
-    global ARG_CORRECTION  # pylint: disable=global-statement
-
-    if ARG_TASK == io_glob.ARG_TASK_L_C_D:
-        if not args.correction:
-            # ERROR.00.923 The task '{task}' requires valid
-            # argument '-c' or '--correction'
-            avstats.terminate_fatal(io_glob.ERROR_00_923.replace("{task}", ARG_TASK))
-    else:
-        if args.correction:
-            # ERROR.00.923 The task '{task}' does not require an
-            # argument '-c' or '--correction'
-            avstats.terminate_fatal(io_glob.ERROR_00_924.replace("{task}", ARG_TASK))
-        else:
-            return
-
-    ARG_CORRECTION = args.correction
-
-    file_name = os.path.join(io_config.settings.correction_work_dir, ARG_CORRECTION)
-
-    try:
-        pyexcel.get_records(file_name=file_name)
-    except (FileTypeNotSupported, zipfile.BadZipFile):
-        # ERROR.00.925 '{correction}' is not a valid Microsoft Excel file
-        avstats.terminate_fatal(io_glob.ERROR_00_925.replace("{correction}", file_name))
 
 
 # -----------------------------------------------------------------------------
@@ -137,6 +103,47 @@ def _check_arg_msaccess(args: argparse.Namespace) -> None:
 
 
 # -----------------------------------------------------------------------------
+# Check the command line argument: -e / --msexcel.
+# -----------------------------------------------------------------------------
+def _check_arg_msexcel(args: argparse.Namespace) -> None:
+    """Check the command line argument: -e / --msexcel.
+
+    Args:
+        args (argparse.Namespace): Command line arguments.
+    """
+    global ARG_MSEXCEL  # pylint: disable=global-statement
+
+    if ARG_TASK in [io_glob.ARG_TASK_L_C_D, io_glob.ARG_TASK_L_N_S]:
+        if not args.msexcel:
+            # ERROR.00.923 The task '{task}' requires valid
+            # argument '-e' or '--msexcel'
+            avstats.terminate_fatal(io_glob.ERROR_00_923.replace("{task}", ARG_TASK))
+    else:
+        if args.msexcel:
+            # ERROR.00.924 The task '{task}' does not require an
+            # argument '-e' or '--msexcel'
+            avstats.terminate_fatal(io_glob.ERROR_00_924.replace("{task}", ARG_TASK))
+        else:
+            return
+
+    directory_name = ""
+    if ARG_TASK == io_glob.ARG_TASK_L_C_D:
+        directory_name = io_config.settings.correction_work_dir
+    if ARG_TASK == io_glob.ARG_TASK_L_N_S:
+        directory_name = io_config.settings.ntsb_work_dir
+
+    ARG_MSEXCEL = args.msexcel
+
+    file_name = os.path.join(directory_name, ARG_MSEXCEL + ".xlsx")
+
+    try:
+        pyexcel.get_records(file_name=file_name)
+    except (FileTypeNotSupported, zipfile.BadZipFile):
+        # ERROR.00.925 '{msexcel}' is not a valid Microsoft Excel file
+        avstats.terminate_fatal(io_glob.ERROR_00_925.replace("{msexcel}", file_name))
+
+
+# -----------------------------------------------------------------------------
 # Check the command line argument: -t / --task.
 # -----------------------------------------------------------------------------
 def _check_arg_task(args: argparse.Namespace) -> None:
@@ -163,6 +170,7 @@ def _check_arg_task(args: argparse.Namespace) -> None:
             io_glob.ARG_TASK_L_C_D,
             io_glob.ARG_TASK_L_C_S,
             io_glob.ARG_TASK_L_N_A,
+            io_glob.ARG_TASK_L_N_S,
             io_glob.ARG_TASK_L_S_D,
             io_glob.ARG_TASK_L_Z_D,
             io_glob.ARG_TASK_R_D_S,
@@ -194,6 +202,8 @@ def _check_arg_task(args: argparse.Namespace) -> None:
             + io_glob.ARG_TASK_L_C_S
             + "' nor '"
             + io_glob.ARG_TASK_L_N_A
+            + "' nor '"
+            + io_glob.ARG_TASK_L_N_S
             + "' nor '"
             + io_glob.ARG_TASK_L_S_D
             + "' nor '"
@@ -228,10 +238,10 @@ def _get_args() -> None:
     # Definition of the command line arguments.
     # ------------------------------------------------------------------------
     parser.add_argument(
-        "-c",
-        "--correction",
-        help="the correction data file: '",
-        metavar="correction",
+        "-e",
+        "--msexcel",
+        help="the MS Excel file: '",
+        metavar="msexcel",
         required=False,
         type=str,
     )
@@ -277,6 +287,8 @@ def _get_args() -> None:
         + "' (Load country and state data into PostgreSQL) or '"
         + io_glob.ARG_TASK_L_N_A
         + "' (Load NTSB MS Access database data into PostgreSQL) or '"
+        + io_glob.ARG_TASK_L_N_S
+        + "' (Load NTSB MS Excel statistic data into PostgreSQL) or '"
         + io_glob.ARG_TASK_L_S_D
         + "' (Load simplemaps data into PostgreSQL) or '"
         + io_glob.ARG_TASK_L_Z_D
@@ -301,20 +313,20 @@ def _get_args() -> None:
 
     _check_arg_task(parsed_args)
 
-    _check_arg_correction(parsed_args)
-
     _check_arg_msaccess(parsed_args)
+
+    _check_arg_msexcel(parsed_args)
 
     # --------------------------------------------------------------------------
     # Display the command line arguments.
     # --------------------------------------------------------------------------
-    if parsed_args.correction:
-        # INFO.00.041 Arguments {task}='{value_task}' {correction}='{value_correction}'
+    if parsed_args.msexcel:
+        # INFO.00.041 Arguments {task}='{value_task}' {msexcel}='{value_msexcel}'
         avstats.progress_msg(
             io_glob.INFO_00_041.replace("{task}", io_glob.ARG_TASK)
             .replace("{value_task}", parsed_args.task)
-            .replace("{correction}", io_glob.ARG_CORRECTION)
-            .replace("{value_correction}", parsed_args.correction),
+            .replace("{msexcel}", io_glob.ARG_MSEXCEL)
+            .replace("{value_msexcel}", parsed_args.msexcel),
         )
     elif parsed_args.msaccess:
         # INFO.00.008 Arguments {task}='{value_task}' {msaccess}='{value_msaccess}'
@@ -397,6 +409,8 @@ def main(argv: list[str]) -> None:
     elif ARG_TASK == io_glob.ARG_TASK_L_N_A:
         avstats.load_ntsb_msaccess_data(ARG_MSACCESS)
         avstats.cleansing_postgres_data()
+    elif ARG_TASK == io_glob.ARG_TASK_L_N_S:
+        avstats.load_ntsb_msexcel_data(ARG_MSEXCEL)
     elif ARG_TASK == io_glob.ARG_TASK_L_S_D:
         avstats.load_simplemaps_data()
     elif ARG_TASK == io_glob.ARG_TASK_L_Z_D:

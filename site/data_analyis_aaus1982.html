@@ -18,7 +18,7 @@
         <link rel="prev" href="operation.html">
       
       
-        <link rel="next" href="how_to_add_ntsb_accident_files.html">
+        <link rel="next" href="data_analyis_io_ntsb_2002_2021.html">
       
       <link rel="icon" href="img/IO-Aero Logo.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.2">
@@ -484,6 +484,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_analyis_io_ntsb_2002_2021.html" class="md-nav__link">
+        io_ntsb_2002_2021
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -755,27 +769,27 @@
 
 
 <h1 id="data-analysis-aaus1982">Data Analysis <strong><code>aaus1982</code></strong></h1>
-<p>Status as of Jan. 1, 2003</p>
+<p>Status as of Jan. 1, 2023</p>
 <h2 id="1-totals">1. Totals</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">       </span><span class="s1">&#39;Total accidents since 1982 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">       </span><span class="s1">&#39;Total accidents since 1982&#39;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1982</span><span class="w"> </span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w"> </span><span class="k">UNION</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">       </span><span class="s1">&#39;Total accidents since 2008 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">       </span><span class="s1">&#39;Total accidents since 2008&#39;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span><span class="w"> </span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w"> </span><span class="k">UNION</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 1982 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 1982&#39;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1982</span><span class="w"> </span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w"> </span><span class="k">UNION</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 2008 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 2008&#39;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span><span class="w"> </span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w"> </span><span class="k">UNION</span>
@@ -791,48 +805,48 @@
 <a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 1982 by io_app_aaus1982&#39;</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatalities</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
 <a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w"> </span><span class="k">UNION</span>
 <a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">      </span><span class="s1">&#39;Fatal accidents since 2008 by io_app_aaus1982&#39;</span>
 <a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
 <a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span><span class="w"> </span>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">fatalities</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
 <a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w"> </span><span class="k">UNION</span><span class="w"> </span>
 <a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">inj_tot_f</span><span class="p">),</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 1982 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 1982&#39;</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1982</span>
 <a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w"> </span><span class="k">UNION</span>
 <a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">inj_tot_f</span><span class="p">),</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 2008 by io_accidents_us_1982&#39;</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_accidents_us_1982</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 2008&#39;</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
 <a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span>
 <a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w"> </span><span class="k">UNION</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">fatalities</span><span class="p">),</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">inj_tot_f</span><span class="p">),</span>
 <a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 1982 by io_app_aaus1982&#39;</span>
 <a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
 <a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w"> </span><span class="k">UNION</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">fatalities</span><span class="p">),</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">inj_tot_f</span><span class="p">),</span>
 <a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">       </span><span class="s1">&#39;Total fatalities since 2008 by io_app_aaus1982&#39;</span>
 <a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
 <a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span>
 <a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>count|description                                        |
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>-----+---------------------------------------------------+
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>14683|Fatal accidents since 1982 by io_accidents_us_1982 |
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>14683|Fatal accidents since 1982 by io_app_aaus1982      |
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> 3501|Fatal accidents since 2008 by io_accidents_us_1982 |
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> 3501|Fatal accidents since 2008 by io_app_aaus1982      |
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>81100|Total accidents since 1982 by io_accidents_us_1982 |
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>81100|Total accidents since 1982 by io_app_aaus1982      |
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>20750|Total accidents since 2008 by io_accidents_us_1982 |
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>20750|Total accidents since 2008 by io_app_aaus1982      |
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>28958|Total fatalities since 1982 by io_accidents_us_1982|
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>28958|Total fatalities since 1982 by io_app_aaus1982     |
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a> 5939|Total fatalities since 2008 by io_accidents_us_1982|
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a> 5939|Total fatalities since 2008 by io_app_aaus1982     |
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>count|?column?                                      |
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>-----+----------------------------------------------+
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>17570|Fatal accidents since 1982                    |
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>17570|Fatal accidents since 1982 by io_app_aaus1982 |
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> 5260|Fatal accidents since 2008                    |
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> 5260|Fatal accidents since 2008 by io_app_aaus1982 |
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>88084|Total accidents since 1982                    |
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>88084|Total accidents since 1982 by io_app_aaus1982 |
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>25055|Total accidents since 2008                    |
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>25055|Total accidents since 2008 by io_app_aaus1982 |
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>48672|Total fatalities since 1982                   |
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>48672|Total fatalities since 1982 by io_app_aaus1982|
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>14607|Total fatalities since 2008                   |
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>14607|Total fatalities since 2008 by io_app_aaus1982|
 </code></pre></div>
 <h2 id="2-far-parts">2. FAR parts</h2>
 <h3 id="21-accidents-since-1982">2.1 Accidents since 1982</h3>
@@ -846,138 +860,168 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>count|far_part      |
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----+--------------+
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>   25|{}            |
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>68393|{091}         |
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  814|{091,091}     |
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  693|{}            |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>69370|{091}         |
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  822|{091,091}     |
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    2|{091,091,091} |
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    1|{091,091,091F}|
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    1|{091,091F}    |
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    1|{091,091K}    |
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    5|{091,103}     |
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    2|{091,107}     |
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>   38|{091,121}     |
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>   39|{091,121}     |
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    1|{091,125}     |
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    5|{091,129}     |
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>   57|{091,135}     |
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>   58|{091,135}     |
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>   10|{091,137}     |
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>   12|{091,ARMF}    |
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    5|{091,PUBU}    |
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    4|{091,UNK}     |
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>   34|{091F}        |
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>   13|{091K}        |
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>  184|{103}         |
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    2|{103,103}     |
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    1|{103,135}     |
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    2|{107}         |
-<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    1|{107,135}     |
-<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    1|{107,ARMF}    |
-<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a> 1968|{121}         |
-<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>   81|{121,121}     |
-<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>   20|{121,129}     |
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>   13|{121,135}     |
-<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>    3|{121,ARMF}    |
-<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>    2|{121,PUBU}    |
-<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>    1|{121,UNK}     |
-<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>   20|{125}         |
-<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>  144|{129}         |
-<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    7|{129,129}     |
-<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    2|{129,135}     |
-<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>  441|{133}         |
-<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>    1|{133,133}     |
-<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a> 3433|{135}         |
-<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>   43|{135,135}     |
-<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>    1|{135,ARMF}    |
-<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a> 4686|{137}         |
-<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>   30|{137,137}     |
-<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>    1|{137,ARMF}    |
-<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>    1|{437}         |
-<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>    1|{ARMF}        |
-<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>    1|{ARMF,ARMF}   |
-<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>   15|{NUSC}        |
-<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>    7|{NUSN}        |
-<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>  538|{PUBU}        |
-<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>    3|{PUBU,PUBU}   |
-<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>   21|{UNK}         |
-<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>    1|{UNK,UNK}     |
-<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>    1|{UNK,UNK,UNK} |
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    1|{091,NUSC}    |
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    1|{091,NUSN}    |
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    5|{091,PUBU}    |
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    4|{091,UNK}     |
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>   35|{091F}        |
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>   14|{091K}        |
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>  184|{103}         |
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    2|{103,103}     |
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    1|{103,135}     |
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    3|{107}         |
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>    1|{107,135}     |
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>    1|{107,ARMF}    |
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a> 2315|{121}         |
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>   85|{121,121}     |
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>   24|{121,129}     |
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>   14|{121,135}     |
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>    3|{121,ARMF}    |
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>    5|{121,NUSC}    |
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    1|{121,NUSN}    |
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    2|{121,PUBU}    |
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    1|{121,UNK}     |
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>   26|{125}         |
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>  578|{129}         |
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>   11|{129,129}     |
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>    2|{129,135}     |
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>    1|{129,NUSC}    |
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>    1|{129,NUSN}    |
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>  448|{133}         |
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>    1|{133,133}     |
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a> 3694|{135}         |
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>   45|{135,135}     |
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>    1|{135,ARMF}    |
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a> 4697|{137}         |
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>   30|{137,137}     |
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>    1|{137,ARMF}    |
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>    1|{437}         |
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>   10|{ARMF}        |
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>    1|{ARMF,ARMF}   |
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a> 1507|{NUSC}        |
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>   23|{NUSC,NUSC}   |
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>    8|{NUSC,NUSN}   |
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>    1|{NUSC,PUBU}   |
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a> 2245|{NUSN}        |
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>   26|{NUSN,NUSN}   |
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>  553|{PUBU}        |
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>    3|{PUBU,PUBU}   |
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>    1|{PUBU,UNK}    |
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a>  437|{UNK}         |
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>    7|{UNK,UNK}     |
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>    1|{UNK,UNK,UNK} |
 </code></pre></div>
 <h3 id="22-fatalities-since-1982">2.2 Fatalities since 1982</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">       </span><span class="n">far_part</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1982</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">fatalities</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">far_part</span>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">          </span><span class="mi">2</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>count|far_part     |
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>-----+-------------+
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>12813|{091}        |
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  696|{135}        |
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  438|{137}        |
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  259|{091,091}    |
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  114|{PUBU}       |
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>   91|{133}        |
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>   90|{103}        |
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>   79|{121}        |
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>   22|{091,135}    |
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>   17|{137,137}    |
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>   12|{129}        |
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    8|{091,ARMF}   |
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    7|{091F}       |
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    5|{135,135}    |
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    5|{UNK}        |
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    4|{NUSN}       |
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    3|{091,121}    |
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    3|{091,PUBU}   |
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    3|{NUSC}       |
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    2|{125}        |
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    1|{091,091,091}|
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    1|{091,091F}   |
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    1|{091,103}    |
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    1|{091,129}    |
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    1|{091,UNK}    |
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    1|{103,103}    |
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    1|{103,135}    |
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    1|{121,121}    |
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    1|{121,135}    |
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    1|{135,ARMF}   |
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    1|{437}        |
-<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>    1|{PUBU,PUBU}  |
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>13210|{091}        |
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a> 1376|{NUSN}       |
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  781|{135}        |
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  442|{137}        |
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  421|{NUSC}       |
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  264|{091,091}    |
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  258|{}           |
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  192|{UNK}        |
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  115|{PUBU}       |
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>  103|{129}        |
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>   98|{121}        |
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>   93|{133}        |
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>   90|{103}        |
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>   25|{NUSN,NUSN}  |
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>   22|{091,135}    |
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>   17|{137,137}    |
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    8|{091,ARMF}   |
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    7|{091F}       |
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    6|{135,135}    |
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    4|{125}        |
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    4|{ARMF}       |
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    4|{NUSC,NUSN}  |
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    4|{UNK,UNK}    |
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    3|{091,121}    |
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    3|{091,PUBU}   |
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    3|{NUSC,NUSC}  |
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    1|{091,091,091}|
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    1|{091,091F}   |
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    1|{091,103}    |
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    1|{091,129}    |
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    1|{091,NUSC}   |
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>    1|{091,NUSN}   |
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>    1|{091,UNK}    |
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    1|{103,103}    |
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>    1|{103,135}    |
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>    1|{121,121}    |
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>    1|{121,135}    |
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>    1|{129,129}    |
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>    1|{129,NUSN}   |
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>    1|{135,ARMF}   |
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>    1|{437}        |
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>    1|{PUBU,PUBU}  |
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>    1|{PUBU,UNK}   |
 </code></pre></div>
 <h3 id="23-fatalities-since-2008">2.3 Fatalities since 2008</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">       </span><span class="n">far_part</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2008</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">fatalities</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">far_part</span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">          </span><span class="mi">2</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>count|far_part     |
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>-----+-------------+
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a> 3132|{091}        |
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  113|{135}        |
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  109|{137}        |
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>   51|{091,091}    |
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>   43|{PUBU}       |
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>   25|{133}        |
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    5|{091,135}    |
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    5|{121}        |
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    4|{137,137}    |
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    3|{135,135}    |
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    2|{UNK}        |
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    1|{091,091,091}|
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    1|{091,ARMF}   |
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    1|{103,135}    |
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    1|{125}        |
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    1|{129}        |
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    1|{437}        |
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    1|{NUSC}       |
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    1|{NUSN}       |
-<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    1|{PUBU,PUBU}  |
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a> 3228|{091}        |
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  953|{NUSN}       |
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  258|{}           |
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  212|{NUSC}       |
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  170|{UNK}        |
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  129|{135}        |
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  113|{137}        |
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>   53|{091,091}    |
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>   43|{PUBU}       |
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>   25|{133}        |
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>   22|{129}        |
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>   14|{NUSN,NUSN}  |
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    9|{121}        |
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    5|{091,135}    |
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    4|{137,137}    |
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    4|{UNK,UNK}    |
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    3|{135,135}    |
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    2|{125}        |
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    2|{ARMF}       |
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    2|{NUSC,NUSC}  |
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    2|{NUSC,NUSN}  |
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    1|{091,091,091}|
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>    1|{091,ARMF}   |
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>    1|{103,135}    |
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    1|{129,NUSN}   |
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>    1|{437}        |
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>    1|{PUBU,PUBU}  |
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>    1|{PUBU,UNK}   |
 </code></pre></div>
 
 

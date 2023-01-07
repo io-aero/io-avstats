@@ -12,6 +12,7 @@ if [ -z "${ENV_FOR_DYNACONF}" ]; then
     export ENV_FOR_DYNACONF=prod
 fi
 
+export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
 
 if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
@@ -28,13 +29,14 @@ export IO_AVSTATS_POSTGRES_VERSION=latest
 
 export IO_AVSTATS_APPLICATION=
 export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
-export IO_AVSTATS_CORRECTION=
+export IO_AVSTATS_MSACCESS=
+export IO_AVSTATS_MSEXCEL=
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=aaus1982
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "r_s_a     - Run a Streamlit application"
+    echo "r_s_a   - Run a Streamlit application"
     echo "---------------------------------------------------------"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
     echo "v_n_d   - Verify selected NTSB data"
@@ -50,6 +52,7 @@ if [ -z "$1" ]; then
     echo "---------------------------------------------------------"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "d_d_f   - Delete the PostgreSQL database files"
+    echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
@@ -90,19 +93,6 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
     fi
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
-    if [ -z "$2" ]; then
-        echo "========================================================="
-        ls -ll data/correction/*.mdb
-        echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired correction file " IO_AVSTATS_CORRECTION
-        export IO_AVSTATS_CORRECTION=${IO_AVSTATS_CORRECTION}
-    else
-        export IO_AVSTATS_CORRECTION=$2
-    fi
-fi
-
 if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
@@ -119,6 +109,32 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
     fi
 fi
 
+if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        ls -ll ${IO_AVSTATS_CORRECTION_WORK_DIR}/*.xlsx
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the stem name of the desired correction file " IO_AVSTATS_MSEXCEL
+        export IO_AVSTATS_MSEXCEL=${IO_AVSTATS_MSEXCEL}
+    else
+        export IO_AVSTATS_MSEXCEL=$2
+    fi
+fi
+
+if [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        ls -ll ${IO_AVSTATS_NTSB_WORK_DIR}/*.xlsx
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the stem name of the desired desired NTSB statistic file " IO_AVSTATS_MSEXCEL
+        export IO_AVSTATS_MSEXCEL=${IO_AVSTATS_MSEXCEL}
+    else
+        export IO_AVSTATS_MSEXCEL=$2
+    fi
+fi
+
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
@@ -127,7 +143,8 @@ echo "--------------------------------------------------------------------------
 echo "PYTHONPATH : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
 echo "TASK       : ${IO_AVSTATS_TASK}"
-echo "CORRECTION : ${IO_AVSTATS_CORRECTION}"
+echo "MSACCESS   : ${IO_AVSTATS_MSACCESS}"
+echo "MSEXCEL    : ${IO_AVSTATS_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -190,7 +207,15 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -c "${IO_AVSTATS_CORRECTION}".xlsx ); then
+    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -e "${IO_AVSTATS_MSEXCEL}".xlsx ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Load NTSB MS Excel statistic data into PostgreSQL.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
+    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -e "${IO_AVSTATS_MSEXCEL}".xlsx ); then
         exit 255
     fi
 

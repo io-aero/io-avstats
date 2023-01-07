@@ -8,12 +8,13 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
+set ERRORLEVEL=
+
 if ["!ENV_FOR_DYNACONF!"] EQU [""] (
     set ENV_FOR_DYNACONF=prod
 )
 
-set ERRORLEVEL=
-
+set IO_AVSTATS_CORRECTION_WORK_DIR=data\correction
 set IO_AVSTATS_NTSB_WORK_DIR=data\download
 
 if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
@@ -30,8 +31,8 @@ set IO_AVSTATS_POSTGRES_VERSION=latest
 
 set IO_AVSTATS_APPLICATION=
 set IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
-set IO_AVSTATS_CORRECTION=
 set IO_AVSTATS_MSACCESS=
+set IO_AVSTATS_MSEXCEL=
 set IO_AVSTATS_TASK=
 set IO_AVSTATS_TASK_DEFAULT=r_s_a
 
@@ -58,6 +59,7 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo c_d_s   - Create the PostgreSQL database schema
     echo d_d_f   - Delete the PostgreSQL database files
     echo d_d_s   - Drop the PostgreSQL database schema
+    echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
@@ -109,11 +111,11 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        dir /A:-D /B data\correction\*.xlsx
+        dir /A:-D /B %IO_AVSTATS_CORRECTION_WORK_DIR%\*.xlsx
         echo ---------------------------------------------------------
-        set /P IO_AVSTATS_CORRECTION="Enter the stem name of the desired correction file "
+        set /P IO_AVSTATS_MSEXCEL="Enter the stem name of the desired correction file "
     ) else (
-        set IO_AVSTATS_CORRECTION=%2
+        set IO_AVSTATS_MSEXCEL=%2
     )
 )
 
@@ -139,6 +141,17 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
         set IO_AVSTATS_APPLICATION=%2
+    )
+)
+
+if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        dir /A:-D /B %IO_AVSTATS_NTSB_WORK_DIR%\*.xlsx
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_MSEXCEL="Enter the stem name of the desired NTSB statistic file "
+    ) else (
+        set IO_AVSTATS_MSEXCEL=%2
     )
 )
 
@@ -169,8 +182,8 @@ echo -----------------------------------------------------------------------
 echo PYTHONPATH : %PYTHONPATH%
 echo -----------------------------------------------------------------------
 echo TASK       : %IO_AVSTATS_TASK%
-echo CORRECTION : %IO_AVSTATS_CORRECTION%
 echo MSACCESS   : %IO_AVSTATS_MSACCESS%
+echo MSEXCEL    : %IO_AVSTATS_MSECEL%
 echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
@@ -326,7 +339,7 @@ rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -c "%IO_AVSTATS_CORRECTION%".xlsx
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -e "%IO_AVSTATS_MSEXCEL%".xlsx
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -353,6 +366,19 @@ rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Load NTSB MS Excel statistic data into PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -e "%IO_AVSTATS_MSEXCEL%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

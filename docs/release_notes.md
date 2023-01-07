@@ -4,6 +4,10 @@
 
 Release Date: dd.mm.2023
 
+### 1. New Features
+
+- TODO
+
 ### 2. Modified Features
 
 - TODO
@@ -39,3 +43,13 @@ Release Date: dd.mm.2023
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08JAN.zip){:target="_blank"}
 - Version: 	1/1/2023 3:00:19 AM TODO
 - Purpose: update of aviation accident data available for public use
+
+### 5. Issues
+
+#### 5.1 Plotly express bar chart color
+
+- It is unclear how to define the color of bars. 
+
+#### 5.2 Plotly graph stacked bar chart axis titles
+
+- It is unclear how to define the axis titles of stacked bar charts.

@@ -113,7 +113,7 @@ QUERY_FINDING_CODES = """
 """  # noqa: E501
 
 QUERY_MAX_FATALITIES = """
-    SELECT MAX(fatalities)
+    SELECT MAX(inj_tot_f)
       FROM io_app_aaus1982;
 """
 
@@ -199,8 +199,8 @@ def _apply_filter_controls(
     # noinspection PyUnboundLocalVariable
     if filter_fatalities_from or filter_fatalities_to:
         df_filtered = df_filtered.loc[
-            (df_filtered["fatalities"] >= filter_fatalities_from)
-            & (df_filtered["fatalities"] <= filter_fatalities_to)
+            (df_filtered["inj_tot_f"] >= filter_fatalities_from)
+            & (df_filtered["inj_tot_f"] <= filter_fatalities_to)
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -355,10 +355,10 @@ def _prep_chart_data_year(
     df_chart = df_filtered[
         [
             "ev_year",
-            "fatalities",
-            "far_part_091x_fatalities",
-            "far_part_121_fatalities",
-            "far_part_135_fatalities",
+            "inj_tot_f",
+            "far_part_091x_inj_tot_f",
+            "far_part_121_inj_tot_f",
+            "far_part_135_inj_tot_f",
         ]
     ]
 
@@ -366,10 +366,10 @@ def _prep_chart_data_year(
 
     return df_chart.groupby("ev_year", as_index=False).sum(
         [  # type: ignore
-            "fatalities",
-            "far_part_091x_fatalities",
-            "far_part_121_fatalities",
-            "far_part_135_fatalities",
+            "inj_tot_f",
+            "far_part_091x_inj_tot_f",
+            "far_part_121_inj_tot_f",
+            "far_part_135_inj_tot_f",
         ],
     )
 
@@ -388,7 +388,9 @@ def _present_chart_accidents_year():
         y="accidents",
     )
 
-    fig.update_layout(bargap=0, height=CHOICE_CHARTS_HEIGHT, width=CHOICE_CHARTS_WIDTH)
+    fig.update_layout(
+        bargap=0.02, height=CHOICE_CHARTS_HEIGHT, width=CHOICE_CHARTS_WIDTH
+    )
 
     st.plotly_chart(
         fig,
@@ -404,13 +406,13 @@ def _present_chart_fatalities_year():
 
     fig = px.bar(
         DF_FILTERED_CHARTS_YEAR,
-        labels={"ev_year": "Year", "fatalities": "Fatalities"},
+        labels={"ev_year": "Year", "inj_tot_f": "Fatalities"},
         x="ev_year",
-        y="fatalities",
+        y="inj_tot_f",
     )
 
     fig.update_layout(
-        bargap=0,
+        bargap=0.02, height=CHOICE_CHARTS_HEIGHT, width=CHOICE_CHARTS_WIDTH
     )
 
     st.plotly_chart(
@@ -434,26 +436,28 @@ def _present_chart_fatalities_year_far_part():
                 marker={"color": "#636EFA"},
                 name="Parts 91, 91F, 91K",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
-                y=DF_FILTERED_CHARTS_YEAR["far_part_091x_fatalities"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_091x_inj_tot_f"],
             ),
             go.Bar(
                 marker={"color": "#00CC96"},
                 name="Part 135",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
-                y=DF_FILTERED_CHARTS_YEAR["far_part_135_fatalities"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_135_inj_tot_f"],
             ),
             go.Bar(
                 marker={"color": "#EF553B"},
                 name="Part 121",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
-                y=DF_FILTERED_CHARTS_YEAR["far_part_121_fatalities"],
+                y=DF_FILTERED_CHARTS_YEAR["far_part_121_inj_tot_f"],
             ),
         ],
     )
 
     fig.update_layout(
-        bargap=0,
+        bargap=0.02,
         barmode="stack",
+        height=CHOICE_CHARTS_HEIGHT,
+        width=CHOICE_CHARTS_WIDTH,
     )
 
     st.plotly_chart(
@@ -596,7 +600,7 @@ def _present_map():
                 "html": "<table><tbody>"
                 + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
                 + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
-                + "<tr><td><b>Fatalities</b></td><td>{fatalities}</td></tr>"
+                + "<tr><td><b>Fatalities</b></td><td>{inj_tot_f}</td></tr>"
                 + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
                 + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
                 + "<tr><td><b>Aquired</b></td><td>{latlong_acq}</td></tr>"
@@ -631,7 +635,7 @@ def _setup_filter_controls():
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="Special filter options required.",
-        label="**`Filter data ?`**",
+        label="**Filter data ?**",
         value=True,
     )
 
@@ -718,7 +722,7 @@ def _setup_filter_controls():
 def _setup_page():
     """Set up the page."""
     st.set_page_config(layout="wide")
-    st.header("Aviation Accidents in the US since 1982")
+    st.header("Aviation Accidents since 1982")
 
 
 # ------------------------------------------------------------------
@@ -749,7 +753,7 @@ def _setup_task_controls():
 
     CHOICE_CHARTS = st.sidebar.checkbox(
         help="Accidents or fatalities per year (after filtering the data).",
-        label="**`Show charts`**",
+        label="**Show charts**",
         value=False,
     )
 
@@ -765,15 +769,15 @@ def _setup_task_controls():
         )
 
         CHOICE_CHARTS_HEIGHT = st.sidebar.slider(
-            label="Chart height", min_value=100, max_value=1000, value=250
+            label="Chart height (px)", min_value=100, max_value=1000, value=500
         )
         CHOICE_CHARTS_WIDTH = st.sidebar.slider(
-            label="Chart width", min_value=100, max_value=1000, value=250
+            label="Chart width (px)", min_value=100, max_value=2000, value=1000
         )
 
         CHOICE_CHARTS_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the of the data underlying the charts.",
-            label="**`Show detailed chart data`**",
+            label="Show detailed chart data",
             value=False,
         )
 
@@ -781,7 +785,7 @@ def _setup_task_controls():
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the filtered dataset.",
-        label="**`Show data profile`**",
+        label="**Show data profile**",
         value=False,
     )
 
@@ -802,7 +806,7 @@ def _setup_task_controls():
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed data.",
-        label="**`Show detailed data`**",
+        label="**Show detailed data**",
         value=False,
     )
 
@@ -811,7 +815,7 @@ def _setup_task_controls():
     CHOICE_MAP = st.sidebar.checkbox(
         help="Display of accident events on a map of the USA "
         + "(after filtering the data).",
-        label="**`Show US map`**",
+        label="**Show US map**",
         value=False,
     )
 

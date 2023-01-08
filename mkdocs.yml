@@ -34,8 +34,9 @@ nav:
       - Logging: config_logging.md
   - Operation: operation.md
   - Data Analysis:
-      - aaus1982: data_analyis_aaus1982.md
-      - io_ntsb_2002_2021: data_analyis_io_ntsb_2002_2021.md
+      - Aviation Accident Data Sets: data_analyis_ntsb_accident_data.md
+      - DB Table io_ntsb_2002_2021: data_analyis_io_ntsb_2002_2021.md
+      - DB View aaus1982: data_analyis_aaus1982.md
   - How to ...:
       - ... add NTSB accident files: how_to_add_ntsb_accident_files.md
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md

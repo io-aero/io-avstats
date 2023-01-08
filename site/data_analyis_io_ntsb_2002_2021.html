@@ -1,0 +1,1442 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Accident Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/data_analyis_io_ntsb_2002_2021.html">
+      
+      
+        <link rel="prev" href="data_analyis_ntsb_accident_data.html">
+      
+      
+        <link rel="next" href="data_analyis_aaus1982.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.2">
+    
+    
+      
+        <title>DB Table io_ntsb_2002_2021 - IO-AVSTATS - Aviation Accident Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.f56500e0.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-analysis-db-table-io_ntsb_2002_2021" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Accident Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DB Table io_ntsb_2002_2021
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Accident Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Setup" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Configuration" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Data Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Data Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Data Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_analyis_ntsb_accident_data.html" class="md-nav__link">
+        Aviation Accident Data Sets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DB Table io_ntsb_2002_2021
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data_analyis_io_ntsb_2002_2021.html" class="md-nav__link md-nav__link--active">
+        DB Table io_ntsb_2002_2021
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1worksheet-no-29" class="md-nav__link">
+    1.Worksheet no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="1.Worksheet no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-fatalities" class="md-nav__link">
+    Observation 1 - Fatalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-incidents" class="md-nav__link">
+    Observation 2 - Incidents
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2worksheet-no-10-vs-no-29" class="md-nav__link">
+    2.Worksheet no. 10 vs. no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="2.Worksheet no. 10 vs. no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-search-discrepancy" class="md-nav__link">
+    Observation 2 - Search discrepancy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_analyis_aaus1982.html" class="md-nav__link">
+        DB View aaus1982
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          How to ...
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How to ..." data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How to ...
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
+        ... add NTSB accident files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        ... create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
+        ... set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        ... update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Release Documents
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Release Documents" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Release Documents
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_notes.html" class="md-nav__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_history.html" class="md-nav__link">
+        Release History
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_schedule.html" class="md-nav__link">
+        Release Schedule
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1worksheet-no-29" class="md-nav__link">
+    1.Worksheet no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="1.Worksheet no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-fatalities" class="md-nav__link">
+    Observation 1 - Fatalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-incidents" class="md-nav__link">
+    Observation 2 - Incidents
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2worksheet-no-10-vs-no-29" class="md-nav__link">
+    2.Worksheet no. 10 vs. no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="2.Worksheet no. 10 vs. no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-search-discrepancy" class="md-nav__link">
+    Observation 2 - Search discrepancy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="data-analysis-db-table-io_ntsb_2002_2021">Data Analysis: DB Table <strong><code>io_ntsb_2002_2021</code></strong></h1>
+<p><strong>Note</strong>: The <code>IO-AVSTATS</code> database used here contains NTSB aircraft accident data as of January 1, 2023.</p>
+<p>This report is about comparing the <code>IO-AVSTATS</code> database to common public records for aviation accidents.  </p>
+<p>In the November 17, 2021, news release <a href="https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx" target="_blank">U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020</a>, the NTSB published, among other things, the <a href="https://www.ntsb.gov/safety/Pages/research.aspx" target="_blank">US Civil Aviation Accident Statistics</a>.
+These are available on this website at this <a href="https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx" target="_blank">link</a> as a Microsoft Execel file.</p>
+<h2 id="1worksheet-no-29">1.Worksheet no. 29</h2>
+<p>Worksheet no. 29 obviously contains the detailed events underlying the statistics in the previous worksheets.
+Now, in order to make the data in the <code>IO-AVSTATS</code> database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the <code>IO-AVSTATS</code> database as database table <strong><code>io_ntsb_2002_2021</code></strong>, unchanged.</p>
+<h3 id="observation-1-fatalities">Observation 1 - Fatalities</h3>
+<h4 id="observation-discrepancy-between-fatal-injuries-and-highest-injury-level">Observation: Discrepancy between <code>Fatal Injuries</code> and <code>Highest Injury Level</code>:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                                </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">             </span><span class="ss">&quot;Accidents Fatal 2&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Year|Accidents Fatal 1|Accidents Fatal 2|
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>----+-----------------+-----------------+
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2008|              298|              305|
+</code></pre></div>
+<h4 id="events-affected-table-29">Events affected - Table 29:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="p">,</span><span class="w"> </span><span class="n">highest_injury_level</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ntsb_number|event_date             |fatal_injuries|highest_injury_level|
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----------+-----------------------+--------------+--------------------+
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ANC09FA001 |2008-10-01 00:00:00.000|             2|                    |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>DFW08FA237 |2008-09-28 00:00:00.000|             2|                    |
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>LAX08FA300 |2008-09-28 00:00:00.000|             1|                    |
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>MIA08MA203 |2008-09-27 00:00:00.000|             4|                    |
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>NYC08FA319 |2008-09-23 00:00:00.000|             1|                    |
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>NYC08FA324 |2008-09-26 00:00:00.000|             1|                    |
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>NYC08LA322 |2008-09-23 00:00:00.000|             1|                    |
+</code></pre></div>
+<h4 id="this-problem-does-not-occur-in-the-io-avstats-database">This problem does not occur in the <code>IO-AVSTATS</code> database!</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">inj_f_grnd</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="p">,</span><span class="w"> </span><span class="n">ev_highest_injury</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">inj_f_grnd</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_highest_injury</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;FATL&#39;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ntsb_no|ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>-------+-------+----------+---------+-----------------+
+</code></pre></div>
+<h4 id="the-corrupted-data-in-the-ms-excel-file-looks-correct-in-the-io-avstats-database">The corrupted data in the MS Excel file looks correct in the <code>IO-AVSTATS</code> database:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">inj_f_grnd</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="p">,</span><span class="w"> </span><span class="n">ev_highest_injury</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_no</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">          </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;NYC08FA319&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">              </span><span class="s1">&#39;NYC08LA322&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">              </span><span class="s1">&#39;NYC08FA324&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">              </span><span class="s1">&#39;MIA08MA203&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">              </span><span class="s1">&#39;DFW08FA237&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">              </span><span class="s1">&#39;LAX08FA300&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">              </span><span class="s1">&#39;ANC09FA001&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_no</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ntsb_no   |ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>----------+-------+----------+---------+-----------------+
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>ANC09FA001|   2008|         0|        2|FATL             |
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>DFW08FA237|   2008|         0|        2|FATL             |
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>LAX08FA300|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>MIA08MA203|   2008|         0|        4|FATL             |
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>NYC08FA319|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>NYC08FA324|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>NYC08LA322|   2008|         0|        1|FATL             |
+</code></pre></div>
+<h4 id="conclusion-the-highest-injury-level-column-in-the-ms-excel-file-cannot-be-used-to-determine-fatalities">Conclusion: The <code>Highest Injury Level</code> column in the MS Excel file cannot be used to determine fatalities!</h4>
+<h3 id="observation-2-incidents">Observation 2 - Incidents</h3>
+<h4 id="observation-if-the-worksheet-no-29-also-contains-events-of-type-inc-incident">Observation: If the worksheet no. 29+ also contains events of type <code>INC</code> (incident):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;INC&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ntsb_number|event_date|
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>-----------+----------+
+</code></pre></div>
+<h4 id="conclusion-worksheet-no-29-does-not-contain-any-events-of-type-inc">Conclusion: Worksheet no. 29 does not contain any events of type 'INC'!</h4>
+<h2 id="2worksheet-no-10-vs-no-29">2.Worksheet no. 10 vs. no. 29</h2>
+<p><a href="img/AviationAccidentStatistics_2002-2021_20221208.pdf" target="_blank">Worksheet no. 10</a></p>
+<h3 id="observation-1-completeness">Observation 1 - Completeness</h3>
+<h4 id="observation-are-all-events-from-worksheet-29-included-in-worksheet-10">Observation: Are all events from worksheet 29 included in worksheet 10:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                    </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Year|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>----+-------------+---------------+----------+
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>2002|         1837|            367|       624|
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>2003|         1890|            381|       723|
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>2004|         1735|            346|       648|
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>2005|         1804|            340|       613|
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>2006|         1626|            326|       787|
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>2007|         1765|            308|       551|
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>2008|         1688|            305|       593|
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>2009|         1572|            285|       559|
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>2010|         1527|            284|       491|
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>2011|         1578|            293|       510|
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>2012|         1556|            285|       456|
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>2013|         1306|            238|       436|
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>2014|         1302|            268|       451|
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>2015|         1296|            239|       411|
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>2016|         1355|            228|       427|
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>2017|         1331|            212|       349|
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>2018|         1366|            234|       402|
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>2019|         1322|            255|       467|
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>2020|         1152|            215|       369|
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>2021|         1233|            221|       378|
+</code></pre></div>
+<h4 id="conclusion-worksheet-no-29-always-contains-more-events-than-are-included-in-worksheet-no-10">Conclusion: Worksheet no. 29 always contains more events than are included in Worksheet no. 10!</h4>
+<p><kbd><img alt="" src="img/table_10-table_29.png" /></kbd></p>
+<h3 id="observation-2-search-discrepancy">Observation 2 - Search discrepancy</h3>
+<h4 id="observation-look-for-reasons-for-the-discrepancies">Observation: Look for reasons for the discrepancies:</h4>
+<p><strong><code>state_or_region</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">state_or_region</span><span class="w">                            </span><span class="ss">&quot;State&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_state</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">null</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">state_or_region</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>State        |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>-------------+-------------+---------------+----------+
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>             |           16|              6|        11|
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>Other Foreign|            4|              2|         3|
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Puerto Rico  |            4|              1|         2|
+</code></pre></div>
+<p><strong><code>country</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">country</span><span class="w">                                    </span><span class="ss">&quot;Country&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_state</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">null</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">country</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Country      |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>-------------+-------------+---------------+----------+
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Afghanistan  |            1|              0|          |
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Australia    |            1|              1|         3|
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Bahamas      |            1|              0|          |
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>France       |            3|              2|         5|
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Germany      |            4|              2|         3|
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>Guadeloupe   |            1|              0|          |
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>Guatemala    |            1|              1|         1|
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>Iraq         |            1|              0|          |
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>Ireland      |            1|              0|          |
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>Mexico       |            1|              0|          |
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>Romania      |            1|              0|          |
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>Saudi Arabia |            1|              1|         1|
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>South Africa |            2|              1|         1|
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>United States|            5|              1|         2|
+</code></pre></div>
+<p><strong><code>aircraft_number</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">aircraft_number</span><span class="w">                            </span><span class="ss">&quot;Aircraft Number&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">aircraft_number</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Aircraft Number|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>---------------+-------------+---------------+----------+
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>              1|         1138|            210|       349|
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>              2|           14|              5|        20|
+</code></pre></div>
+<p><strong><code>damage_level</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">damage_level</span><span class="w">                               </span><span class="ss">&quot;Damage Level&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">damage_level</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Damage Level|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>------------+-------------+---------------+----------+
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Destroyed   |          154|            120|       216|
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>Minor       |            4|              0|         0|
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>None        |           15|              0|         0|
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>Substantial |          979|             95|       153|
+</code></pre></div>
+<p><strong><code>registration_number</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">registration_number</span><span class="w">                        </span><span class="ss">&quot;Registration Number&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">registration_number</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;N%&#39;</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">registration_number</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Registration Number|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>-------------------+-------------+---------------+----------+
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>CBP213             |            1|              0|          |
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>CBP233             |            1|              0|          |
+</code></pre></div>
+<p><strong><code>aircraft_category</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">aircraft_category</span><span class="w">                          </span><span class="ss">&quot;Aircraft Category&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">aircraft_category</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Aircraft Category|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>-----------------+-------------+---------------+----------+
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>Airplane         |         1008|            183|       321|
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>Balloon          |            8|              0|          |
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>Glider           |           19|              5|         5|
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>Gyroplane        |            9|              4|         5|
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>Helicopter       |           94|             20|        35|
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>Powered parachute|            3|              0|          |
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>Unknown          |            1|              1|         1|
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>Weight-shift     |           10|              2|         2|
+</code></pre></div>
+<p><strong><code>flight_regulation</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">flight_regulation</span><span class="w">                          </span><span class="ss">&quot;Flight Regulation&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">flight_regulation</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Flight Regulation             |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>------------------------------+-------------+---------------+----------+
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>Non-U.S., non-commercial      |           11|              6|        10|
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>Part 121: Air carrier         |           14|              0|         0|
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>Part 133: Rotorcraft ext. load|           11|              4|         6|
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>Part 135: Air taxi &amp; commuter |           45|              7|        26|
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>Part 137: Agricultural        |           50|              9|         9|
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>Part 91: General aviation     |         1006|            182|       307|
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>Public aircraft               |           12|              5|         7|
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>Unknown                       |            3|              2|         4|
+</code></pre></div>
+<p><strong><code>flight_schedule_type</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">flight_schedule_type</span><span class="w">                       </span><span class="ss">&quot;Flight Schedule Type&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">flight_schedule_type</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Flight Schedule Type|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>--------------------+-------------+---------------+----------+
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>                    |         1043|            194|       326|
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>Non-scheduled       |           94|             20|        38|
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>Scheduled           |           15|              1|         5|
+</code></pre></div>
+<p><strong><code>purpose_of_flight</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">purpose_of_flight</span><span class="w">                          </span><span class="ss">&quot;Purpose of Flight&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">purpose_of_flight</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Purpose of Flight        |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>-------------------------+-------------+---------------+----------+
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>                         |           66|             13|        36|
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>Aerial application       |           51|             10|        10|
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>Aerial observation       |           19|              5|        17|
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>Banner tow               |            4|              0|          |
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>Business                 |           21|              5|        10|
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>Executive/Corporate      |            7|              0|         0|
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>External load            |           11|              4|         6|
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>Ferry                    |            3|              1|         1|
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>Firefighting             |            6|              4|         6|
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>Flight test              |           18|              5|         7|
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>Glider tow               |            2|              1|         1|
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>Instructional            |          153|             12|        20|
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>Other work use           |           11|              1|         1|
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a>Personal                 |          751|            149|       249|
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>Positioning              |           19|              3|         3|
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a>Public aircraft          |            1|              0|          |
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a>Public aircraft - federal|            2|              0|          |
+<a id="__codelineno-29-20" name="__codelineno-29-20" href="#__codelineno-29-20"></a>Public aircraft - local  |            2|              1|         1|
+<a id="__codelineno-29-21" name="__codelineno-29-21" href="#__codelineno-29-21"></a>Public aircraft - state  |            1|              0|          |
+<a id="__codelineno-29-22" name="__codelineno-29-22" href="#__codelineno-29-22"></a>Skydiving                |            1|              0|          |
+<a id="__codelineno-29-23" name="__codelineno-29-23" href="#__codelineno-29-23"></a>Unknown                  |            3|              1|         1|
+</code></pre></div>
+<p><strong><code>intentional_act</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">intentional_act</span><span class="w">                            </span><span class="ss">&quot;Intentional Act&quot;</span><span class="p">,</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">intentional_act</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Intentional Act|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>---------------+-------------+---------------+----------+
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>               |         1152|            215|       369|
+</code></pre></div>
+<p><strong><code>defining_event</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">defining_event</span><span class="w">                             </span><span class="ss">&quot;Defining Event&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">defining_event</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Defining Event                       |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>-------------------------------------+-------------+---------------+----------+
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>                                     |           19|              3|         3|
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>Abnormal Runway Contact              |          148|              0|         0|
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>Abrupt Maneuver                      |            4|              2|         4|
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>Aerodrome                            |            1|              0|          |
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>Bird Strike                          |            3|              1|         1|
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>Cabin Safety Events                  |            1|              0|          |
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>Collision on Takeoff or Landing      |           47|              4|         6|
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>Controlled Flight Into Terrain       |           24|             13|        26|
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>Fire - Non-Impact                    |            5|              1|         2|
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>Fuel Related                         |          108|             18|        23|
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a>Ground Collision                     |           14|              0|         0|
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>Ground Handling                      |            4|              0|          |
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a>Loss of Control In-Flight            |          187|             87|       136|
+<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a>Loss of Control on Ground            |          204|              3|         3|
+<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a>Loss of Lift                         |            7|              0|          |
+<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a>Low Altitude Operation               |           26|              3|         3|
+<a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a>Medical Event                        |            4|              3|         3|
+<a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a>Midair                               |           13|              9|        39|
+<a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a>Navigation Error                     |            4|              1|         1|
+<a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a>Other                                |           43|             12|        20|
+<a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a>Runway Excursion                     |           28|              2|         6|
+<a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a>System/Component Failure - Non-power |           46|              7|        11|
+<a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a>System/Component Failure - Powerplant|          145|             18|        29|
+<a id="__codelineno-33-26" name="__codelineno-33-26" href="#__codelineno-33-26"></a>Turbulence Encounter                 |            8|              0|         0|
+<a id="__codelineno-33-27" name="__codelineno-33-27" href="#__codelineno-33-27"></a>Undershoot/Overshoot                 |           11|              0|         0|
+<a id="__codelineno-33-28" name="__codelineno-33-28" href="#__codelineno-33-28"></a>Unintended Flight Into IMC           |           10|              6|        16|
+<a id="__codelineno-33-29" name="__codelineno-33-29" href="#__codelineno-33-29"></a>Unknown                              |           32|             21|        35|
+<a id="__codelineno-33-30" name="__codelineno-33-30" href="#__codelineno-33-30"></a>Wildlife Encounter                   |            5|              0|         0|
+<a id="__codelineno-33-31" name="__codelineno-33-31" href="#__codelineno-33-31"></a>Windshear/Thunderstorm               |            1|              1|         2|
+</code></pre></div>
+<p><strong><code>phase_of_flight</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">phase_of_flight</span><span class="w">                            </span><span class="ss">&quot;Phase of Flight&quot;</span><span class="p">,</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">phase_of_flight</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Phase of Flight  |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>-----------------+-------------+---------------+----------+
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>                 |            5|              1|         1|
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>Approach         |          139|             39|        61|
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>Emergency Descent|           10|              2|         6|
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>Enroute          |          180|             62|       142|
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>Initial Climb    |           85|             27|        41|
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>Landing          |          378|              4|         4|
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>Maneuvering      |          134|             50|        67|
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>Standing         |           19|              0|         0|
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>Takeoff          |          162|             18|        27|
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>Taxi             |           21|              1|         1|
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>Unknown          |           19|             11|        19|
+</code></pre></div>
+<h4 id="conclusion-todo">Conclusion: TODO!</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;state_or_region&#39;</span><span class="w">                          </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">       </span><span class="n">state_or_region</span><span class="w">                            </span><span class="ss">&quot;State&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_state</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">null</span>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">state_or_region</span>
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;country&#39;</span><span class="w">                                  </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="w">       </span><span class="n">country</span><span class="w">                                    </span><span class="ss">&quot;Country&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_state</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">null</span>
+<a id="__codelineno-36-19" name="__codelineno-36-19" href="#__codelineno-36-19"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">country</span>
+<a id="__codelineno-36-20" name="__codelineno-36-20" href="#__codelineno-36-20"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-21" name="__codelineno-36-21" href="#__codelineno-36-21"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;aircraft_number&#39;</span><span class="w">                          </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-22" name="__codelineno-36-22" href="#__codelineno-36-22"></a><span class="w">       </span><span class="n">aircraft_number</span><span class="p">::</span><span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w">               </span><span class="ss">&quot;Aircraft Number&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-23" name="__codelineno-36-23" href="#__codelineno-36-23"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-24" name="__codelineno-36-24" href="#__codelineno-36-24"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-25" name="__codelineno-36-25" href="#__codelineno-36-25"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-26" name="__codelineno-36-26" href="#__codelineno-36-26"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-27" name="__codelineno-36-27" href="#__codelineno-36-27"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-28" name="__codelineno-36-28" href="#__codelineno-36-28"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">aircraft_number</span>
+<a id="__codelineno-36-29" name="__codelineno-36-29" href="#__codelineno-36-29"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-30" name="__codelineno-36-30" href="#__codelineno-36-30"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;damage_level&#39;</span><span class="w">                             </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-31" name="__codelineno-36-31" href="#__codelineno-36-31"></a><span class="w">       </span><span class="n">damage_level</span><span class="w">                               </span><span class="ss">&quot;Damage Level&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-32" name="__codelineno-36-32" href="#__codelineno-36-32"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-33" name="__codelineno-36-33" href="#__codelineno-36-33"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-34" name="__codelineno-36-34" href="#__codelineno-36-34"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-35" name="__codelineno-36-35" href="#__codelineno-36-35"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-36" name="__codelineno-36-36" href="#__codelineno-36-36"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-37" name="__codelineno-36-37" href="#__codelineno-36-37"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">damage_level</span>
+<a id="__codelineno-36-38" name="__codelineno-36-38" href="#__codelineno-36-38"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-39" name="__codelineno-36-39" href="#__codelineno-36-39"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;registration_number&#39;</span><span class="w">                      </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-40" name="__codelineno-36-40" href="#__codelineno-36-40"></a><span class="w">       </span><span class="n">registration_number</span><span class="w">                        </span><span class="ss">&quot;Registration Number&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-41" name="__codelineno-36-41" href="#__codelineno-36-41"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-42" name="__codelineno-36-42" href="#__codelineno-36-42"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-43" name="__codelineno-36-43" href="#__codelineno-36-43"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-44" name="__codelineno-36-44" href="#__codelineno-36-44"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-45" name="__codelineno-36-45" href="#__codelineno-36-45"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">registration_number</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;N%&#39;</span>
+<a id="__codelineno-36-46" name="__codelineno-36-46" href="#__codelineno-36-46"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">registration_number</span>
+<a id="__codelineno-36-47" name="__codelineno-36-47" href="#__codelineno-36-47"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-48" name="__codelineno-36-48" href="#__codelineno-36-48"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;aircraft_category&#39;</span><span class="w">                        </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-49" name="__codelineno-36-49" href="#__codelineno-36-49"></a><span class="w">       </span><span class="n">aircraft_category</span><span class="w">                          </span><span class="ss">&quot;Aircraft Category&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-50" name="__codelineno-36-50" href="#__codelineno-36-50"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-51" name="__codelineno-36-51" href="#__codelineno-36-51"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-52" name="__codelineno-36-52" href="#__codelineno-36-52"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-53" name="__codelineno-36-53" href="#__codelineno-36-53"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-54" name="__codelineno-36-54" href="#__codelineno-36-54"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-55" name="__codelineno-36-55" href="#__codelineno-36-55"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">aircraft_category</span>
+<a id="__codelineno-36-56" name="__codelineno-36-56" href="#__codelineno-36-56"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-57" name="__codelineno-36-57" href="#__codelineno-36-57"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;flight_regulation&#39;</span><span class="w">                        </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-58" name="__codelineno-36-58" href="#__codelineno-36-58"></a><span class="w">       </span><span class="n">flight_regulation</span><span class="w">                          </span><span class="ss">&quot;Flight Regulation&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-59" name="__codelineno-36-59" href="#__codelineno-36-59"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-60" name="__codelineno-36-60" href="#__codelineno-36-60"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-61" name="__codelineno-36-61" href="#__codelineno-36-61"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-62" name="__codelineno-36-62" href="#__codelineno-36-62"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-63" name="__codelineno-36-63" href="#__codelineno-36-63"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-64" name="__codelineno-36-64" href="#__codelineno-36-64"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">flight_regulation</span>
+<a id="__codelineno-36-65" name="__codelineno-36-65" href="#__codelineno-36-65"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-66" name="__codelineno-36-66" href="#__codelineno-36-66"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;flight_schedule_type&#39;</span><span class="w">                     </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-67" name="__codelineno-36-67" href="#__codelineno-36-67"></a><span class="w">       </span><span class="n">flight_schedule_type</span><span class="w">                       </span><span class="ss">&quot;Flight Schedule Type&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-68" name="__codelineno-36-68" href="#__codelineno-36-68"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-69" name="__codelineno-36-69" href="#__codelineno-36-69"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-70" name="__codelineno-36-70" href="#__codelineno-36-70"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-71" name="__codelineno-36-71" href="#__codelineno-36-71"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-72" name="__codelineno-36-72" href="#__codelineno-36-72"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-73" name="__codelineno-36-73" href="#__codelineno-36-73"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">flight_schedule_type</span>
+<a id="__codelineno-36-74" name="__codelineno-36-74" href="#__codelineno-36-74"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-75" name="__codelineno-36-75" href="#__codelineno-36-75"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;purpose_of_flight&#39;</span><span class="w">                       </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-76" name="__codelineno-36-76" href="#__codelineno-36-76"></a><span class="w">       </span><span class="n">purpose_of_flight</span><span class="w">                          </span><span class="ss">&quot;Purpose of Flight&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-77" name="__codelineno-36-77" href="#__codelineno-36-77"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-78" name="__codelineno-36-78" href="#__codelineno-36-78"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-79" name="__codelineno-36-79" href="#__codelineno-36-79"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-80" name="__codelineno-36-80" href="#__codelineno-36-80"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-81" name="__codelineno-36-81" href="#__codelineno-36-81"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-82" name="__codelineno-36-82" href="#__codelineno-36-82"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">purpose_of_flight</span>
+<a id="__codelineno-36-83" name="__codelineno-36-83" href="#__codelineno-36-83"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-84" name="__codelineno-36-84" href="#__codelineno-36-84"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;intentional_act&#39;</span><span class="w">                          </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-85" name="__codelineno-36-85" href="#__codelineno-36-85"></a><span class="w">       </span><span class="n">intentional_act</span><span class="p">::</span><span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w">               </span><span class="ss">&quot;Intentional Act&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-86" name="__codelineno-36-86" href="#__codelineno-36-86"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-87" name="__codelineno-36-87" href="#__codelineno-36-87"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-88" name="__codelineno-36-88" href="#__codelineno-36-88"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-89" name="__codelineno-36-89" href="#__codelineno-36-89"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-90" name="__codelineno-36-90" href="#__codelineno-36-90"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-91" name="__codelineno-36-91" href="#__codelineno-36-91"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">intentional_act</span>
+<a id="__codelineno-36-92" name="__codelineno-36-92" href="#__codelineno-36-92"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-93" name="__codelineno-36-93" href="#__codelineno-36-93"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;defining_event&#39;</span><span class="w">                           </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-94" name="__codelineno-36-94" href="#__codelineno-36-94"></a><span class="w">       </span><span class="n">defining_event</span><span class="w">                             </span><span class="ss">&quot;Defining Event&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-95" name="__codelineno-36-95" href="#__codelineno-36-95"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-96" name="__codelineno-36-96" href="#__codelineno-36-96"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-97" name="__codelineno-36-97" href="#__codelineno-36-97"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-98" name="__codelineno-36-98" href="#__codelineno-36-98"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-99" name="__codelineno-36-99" href="#__codelineno-36-99"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-100" name="__codelineno-36-100" href="#__codelineno-36-100"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">defining_event</span>
+<a id="__codelineno-36-101" name="__codelineno-36-101" href="#__codelineno-36-101"></a><span class="k">UNION</span><span class="w"> </span>
+<a id="__codelineno-36-102" name="__codelineno-36-102" href="#__codelineno-36-102"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;phase_of_flight&#39;</span><span class="w">                          </span><span class="ss">&quot;Type&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-36-103" name="__codelineno-36-103" href="#__codelineno-36-103"></a><span class="w">       </span><span class="n">phase_of_flight</span><span class="w">                            </span><span class="ss">&quot;Phase of Flight&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-104" name="__codelineno-36-104" href="#__codelineno-36-104"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-105" name="__codelineno-36-105" href="#__codelineno-36-105"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-106" name="__codelineno-36-106" href="#__codelineno-36-106"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-36-107" name="__codelineno-36-107" href="#__codelineno-36-107"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-36-108" name="__codelineno-36-108" href="#__codelineno-36-108"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_YEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<a id="__codelineno-36-109" name="__codelineno-36-109" href="#__codelineno-36-109"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">phase_of_flight</span><span class="p">)</span><span class="w"> </span><span class="n">xx</span>
+<a id="__codelineno-36-110" name="__codelineno-36-110" href="#__codelineno-36-110"></a><span class="k">WHERE</span><span class="w"> </span><span class="ss">&quot;Accidents All&quot;</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">66</span>
+<a id="__codelineno-36-111" name="__codelineno-36-111" href="#__codelineno-36-111"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span>
+<a id="__codelineno-36-112" name="__codelineno-36-112" href="#__codelineno-36-112"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>Type                |State                               |Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>--------------------+------------------------------------+-------------+---------------+----------+
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>aircraft_category   |Unknown                             |            1|              1|         1|
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>country             |Afghanistan                         |            1|              0|          |
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>country             |Australia                           |            1|              1|         3|
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>country             |Bahamas                             |            1|              0|          |
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>country             |Guadeloupe                          |            1|              0|          |
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>country             |Guatemala                           |            1|              1|         1|
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>country             |Iraq                                |            1|              0|          |
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a>country             |Ireland                             |            1|              0|          |
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>country             |Mexico                              |            1|              0|          |
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a>country             |Romania                             |            1|              0|          |
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a>country             |Saudi Arabia                        |            1|              1|         1|
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a>defining_event      |Aerodrome                           |            1|              0|          |
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a>defining_event      |Cabin Safety Events                 |            1|              0|          |
+<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a>defining_event      |Windshear/Thunderstorm              |            1|              1|         2|
+<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a>purpose_of_flight   |Public aircraft                     |            1|              0|          |
+<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a>purpose_of_flight   |Public aircraft - state             |            1|              0|          |
+<a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a>purpose_of_flight   |Skydiving                           |            1|              0|          |
+<a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a>registration_number |CBP213                              |            1|              0|          |
+<a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a>registration_number |CBP233                              |            1|              0|          |
+<a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a>country             |South Africa                        |            2|              1|         1|
+<a id="__codelineno-37-23" name="__codelineno-37-23" href="#__codelineno-37-23"></a>purpose_of_flight   |Glider tow                          |            2|              1|         1|
+<a id="__codelineno-37-24" name="__codelineno-37-24" href="#__codelineno-37-24"></a>purpose_of_flight   |Public aircraft - federal           |            2|              0|          |
+<a id="__codelineno-37-25" name="__codelineno-37-25" href="#__codelineno-37-25"></a>purpose_of_flight   |Public aircraft - local             |            2|              1|         1|
+<a id="__codelineno-37-26" name="__codelineno-37-26" href="#__codelineno-37-26"></a>aircraft_category   |Powered parachute                   |            3|              0|          |
+<a id="__codelineno-37-27" name="__codelineno-37-27" href="#__codelineno-37-27"></a>country             |France                              |            3|              2|         5|
+<a id="__codelineno-37-28" name="__codelineno-37-28" href="#__codelineno-37-28"></a>defining_event      |Bird Strike                         |            3|              1|         1|
+<a id="__codelineno-37-29" name="__codelineno-37-29" href="#__codelineno-37-29"></a>flight_regulation   |Unknown                             |            3|              2|         4|
+<a id="__codelineno-37-30" name="__codelineno-37-30" href="#__codelineno-37-30"></a>purpose_of_flight   |Ferry                               |            3|              1|         1|
+<a id="__codelineno-37-31" name="__codelineno-37-31" href="#__codelineno-37-31"></a>purpose_of_flight   |Unknown                             |            3|              1|         1|
+<a id="__codelineno-37-32" name="__codelineno-37-32" href="#__codelineno-37-32"></a>country             |Germany                             |            4|              2|         3|
+<a id="__codelineno-37-33" name="__codelineno-37-33" href="#__codelineno-37-33"></a>damage_level        |Minor                               |            4|              0|         0|
+<a id="__codelineno-37-34" name="__codelineno-37-34" href="#__codelineno-37-34"></a>defining_event      |Abrupt Maneuver                     |            4|              2|         4|
+<a id="__codelineno-37-35" name="__codelineno-37-35" href="#__codelineno-37-35"></a>defining_event      |Ground Handling                     |            4|              0|          |
+<a id="__codelineno-37-36" name="__codelineno-37-36" href="#__codelineno-37-36"></a>defining_event      |Medical Event                       |            4|              3|         3|
+<a id="__codelineno-37-37" name="__codelineno-37-37" href="#__codelineno-37-37"></a>defining_event      |Navigation Error                    |            4|              1|         1|
+<a id="__codelineno-37-38" name="__codelineno-37-38" href="#__codelineno-37-38"></a>purpose_of_flight   |Banner tow                          |            4|              0|          |
+<a id="__codelineno-37-39" name="__codelineno-37-39" href="#__codelineno-37-39"></a>state_or_region     |Other Foreign                       |            4|              2|         3|
+<a id="__codelineno-37-40" name="__codelineno-37-40" href="#__codelineno-37-40"></a>state_or_region     |Puerto Rico                         |            4|              1|         2|
+<a id="__codelineno-37-41" name="__codelineno-37-41" href="#__codelineno-37-41"></a>country             |United States                       |            5|              1|         2|
+<a id="__codelineno-37-42" name="__codelineno-37-42" href="#__codelineno-37-42"></a>defining_event      |Fire - Non-Impact                   |            5|              1|         2|
+<a id="__codelineno-37-43" name="__codelineno-37-43" href="#__codelineno-37-43"></a>defining_event      |Wildlife Encounter                  |            5|              0|         0|
+<a id="__codelineno-37-44" name="__codelineno-37-44" href="#__codelineno-37-44"></a>phase_of_flight     |                                    |            5|              1|         1|
+<a id="__codelineno-37-45" name="__codelineno-37-45" href="#__codelineno-37-45"></a>purpose_of_flight   |Firefighting                        |            6|              4|         6|
+<a id="__codelineno-37-46" name="__codelineno-37-46" href="#__codelineno-37-46"></a>defining_event      |Loss of Lift                        |            7|              0|          |
+<a id="__codelineno-37-47" name="__codelineno-37-47" href="#__codelineno-37-47"></a>purpose_of_flight   |Executive/Corporate                 |            7|              0|         0|
+<a id="__codelineno-37-48" name="__codelineno-37-48" href="#__codelineno-37-48"></a>aircraft_category   |Balloon                             |            8|              0|          |
+<a id="__codelineno-37-49" name="__codelineno-37-49" href="#__codelineno-37-49"></a>defining_event      |Turbulence Encounter                |            8|              0|         0|
+<a id="__codelineno-37-50" name="__codelineno-37-50" href="#__codelineno-37-50"></a>aircraft_category   |Gyroplane                           |            9|              4|         5|
+<a id="__codelineno-37-51" name="__codelineno-37-51" href="#__codelineno-37-51"></a>aircraft_category   |Weight-shift                        |           10|              2|         2|
+<a id="__codelineno-37-52" name="__codelineno-37-52" href="#__codelineno-37-52"></a>defining_event      |Unintended Flight Into IMC          |           10|              6|        16|
+<a id="__codelineno-37-53" name="__codelineno-37-53" href="#__codelineno-37-53"></a>phase_of_flight     |Emergency Descent                   |           10|              2|         6|
+<a id="__codelineno-37-54" name="__codelineno-37-54" href="#__codelineno-37-54"></a>defining_event      |Undershoot/Overshoot                |           11|              0|         0|
+<a id="__codelineno-37-55" name="__codelineno-37-55" href="#__codelineno-37-55"></a>flight_regulation   |Non-U.S., non-commercial            |           11|              6|        10|
+<a id="__codelineno-37-56" name="__codelineno-37-56" href="#__codelineno-37-56"></a>flight_regulation   |Part 133: Rotorcraft ext. load      |           11|              4|         6|
+<a id="__codelineno-37-57" name="__codelineno-37-57" href="#__codelineno-37-57"></a>purpose_of_flight   |External load                       |           11|              4|         6|
+<a id="__codelineno-37-58" name="__codelineno-37-58" href="#__codelineno-37-58"></a>purpose_of_flight   |Other work use                      |           11|              1|         1|
+<a id="__codelineno-37-59" name="__codelineno-37-59" href="#__codelineno-37-59"></a>flight_regulation   |Public aircraft                     |           12|              5|         7|
+<a id="__codelineno-37-60" name="__codelineno-37-60" href="#__codelineno-37-60"></a>defining_event      |Midair                              |           13|              9|        39|
+<a id="__codelineno-37-61" name="__codelineno-37-61" href="#__codelineno-37-61"></a>aircraft_number     |2                                   |           14|              5|        20|
+<a id="__codelineno-37-62" name="__codelineno-37-62" href="#__codelineno-37-62"></a>defining_event      |Ground Collision                    |           14|              0|         0|
+<a id="__codelineno-37-63" name="__codelineno-37-63" href="#__codelineno-37-63"></a>flight_regulation   |Part 121: Air carrier               |           14|              0|         0|
+<a id="__codelineno-37-64" name="__codelineno-37-64" href="#__codelineno-37-64"></a>damage_level        |None                                |           15|              0|         0|
+<a id="__codelineno-37-65" name="__codelineno-37-65" href="#__codelineno-37-65"></a>flight_schedule_type|Scheduled                           |           15|              1|         5|
+<a id="__codelineno-37-66" name="__codelineno-37-66" href="#__codelineno-37-66"></a>state_or_region     |                                    |           16|              6|        11|
+<a id="__codelineno-37-67" name="__codelineno-37-67" href="#__codelineno-37-67"></a>purpose_of_flight   |Flight test                         |           18|              5|         7|
+<a id="__codelineno-37-68" name="__codelineno-37-68" href="#__codelineno-37-68"></a>aircraft_category   |Glider                              |           19|              5|         5|
+<a id="__codelineno-37-69" name="__codelineno-37-69" href="#__codelineno-37-69"></a>defining_event      |                                    |           19|              3|         3|
+<a id="__codelineno-37-70" name="__codelineno-37-70" href="#__codelineno-37-70"></a>phase_of_flight     |Standing                            |           19|              0|         0|
+<a id="__codelineno-37-71" name="__codelineno-37-71" href="#__codelineno-37-71"></a>purpose_of_flight   |Aerial observation                  |           19|              5|        17|
+<a id="__codelineno-37-72" name="__codelineno-37-72" href="#__codelineno-37-72"></a>purpose_of_flight   |Positioning                         |           19|              3|         3|
+<a id="__codelineno-37-73" name="__codelineno-37-73" href="#__codelineno-37-73"></a>phase_of_flight     |Taxi                                |           21|              1|         1|
+<a id="__codelineno-37-74" name="__codelineno-37-74" href="#__codelineno-37-74"></a>purpose_of_flight   |Business                            |           21|              5|        10|
+<a id="__codelineno-37-75" name="__codelineno-37-75" href="#__codelineno-37-75"></a>defining_event      |Low Altitude Operation              |           26|              3|         3|
+<a id="__codelineno-37-76" name="__codelineno-37-76" href="#__codelineno-37-76"></a>defining_event      |Runway Excursion                    |           28|              2|         6|
+<a id="__codelineno-37-77" name="__codelineno-37-77" href="#__codelineno-37-77"></a>flight_regulation   |Part 135: Air taxi &amp; commuter       |           45|              7|        26|
+<a id="__codelineno-37-78" name="__codelineno-37-78" href="#__codelineno-37-78"></a>defining_event      |System/Component Failure - Non-power|           46|              7|        11|
+<a id="__codelineno-37-79" name="__codelineno-37-79" href="#__codelineno-37-79"></a>defining_event      |Collision on Takeoff or Landing     |           47|              4|         6|
+<a id="__codelineno-37-80" name="__codelineno-37-80" href="#__codelineno-37-80"></a>flight_regulation   |Part 137: Agricultural              |           50|              9|         9|
+<a id="__codelineno-37-81" name="__codelineno-37-81" href="#__codelineno-37-81"></a>purpose_of_flight   |Aerial application                  |           51|             10|        10|
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.5cf534bf.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

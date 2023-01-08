@@ -1406,3 +1406,68 @@ End   run_io_avstats
 
 - Run the script **`scripts/run_cloud_files_zip`**.
 - Upload the resulting **`cloud.zip`** file to the cloud and process it there.
+
+### 2.14 Update **IO-AVSTATS** in the IO-Aero cloud 
+
+```sql
+SELECT count(*)   AS no_rows,
+       'aircraft' AS db_table
+FROM aircraft
+union
+SELECT count(*)      AS no_rows,
+       'dt_aircraft' AS db_table
+FROM dt_aircraft
+union
+SELECT count(*)    AS no_rows,
+       'dt_events' AS db_table
+FROM dt_events
+union
+SELECT count(*)         AS no_rows,
+       'dt_flight_crew' AS db_table
+FROM dt_flight_crew
+union
+SELECT count(*)  AS no_rows,
+       'engines' AS db_table
+FROM engines
+union
+SELECT count(*) AS no_rows,
+       'events' AS db_table
+FROM events
+union
+SELECT count(*)          AS no_rows,
+       'events_sequence' AS db_table
+FROM events_sequence
+union
+SELECT count(*)   AS no_rows,
+       'findings' AS db_table
+FROM findings
+union
+SELECT count(*)      AS no_rows,
+       'flight_crew' AS db_table
+FROM flight_crew
+union
+SELECT count(*)      AS no_rows,
+       'flight_time' AS db_table
+FROM flight_time
+union
+SELECT count(*) AS no_rows,
+       'injury' AS db_table
+FROM injury
+union
+SELECT count(*)     AS no_rows,
+       'narratives' AS db_table
+FROM narratives
+union
+SELECT count(*)     AS no_rows,
+       'ntsb_admin' AS db_table
+FROM ntsb_admin
+union
+SELECT count(*)      AS no_rows,
+       'occurrences' AS db_table
+FROM occurrences
+union
+SELECT count(*)        AS no_rows,
+       'seq_of_events' AS db_table
+FROM seq_of_events
+order by db_table
+```

@@ -28,14 +28,13 @@ APP_ID = "aaus1982"
 
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
-CHOICE_CHART_TYPE_ACCIDENTS_YEAR = "Accidents per year"
-CHOICE_CHART_TYPE_FATALITIES_YEAR = "Fatalities per year"
-CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART = "Fatalities per year & Far part"
+CHOICE_CHARTS_TYPE_ACCIDENTS_YEAR: bool | None = None
+CHOICE_CHARTS_TYPE_ACCIDENTS_FATAL_YEAR: bool | None = None
+CHOICE_CHARTS_TYPE_FATALITIES_YEAR_FAR_PART: bool | None = None
 CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
 CHOICE_CHARTS_WIDTH: float | None = None
-CHOICE_CHARTS_TYPES: list[str] = []
 CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
@@ -468,15 +467,15 @@ def _present_charts():
     """Present the charts."""
     global DF_FILTERED_CHARTS_YEAR  # pylint: disable=global-statement
 
-    if CHOICE_CHART_TYPE_ACCIDENTS_YEAR in CHOICE_CHARTS_TYPES:
+    if CHOICE_CHARTS_TYPE_ACCIDENTS_YEAR:
         DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
         _present_chart_accidents_year()
 
-    if CHOICE_CHART_TYPE_FATALITIES_YEAR in CHOICE_CHARTS_TYPES:
+    if CHOICE_CHARTS_TYPE_ACCIDENTS_FATAL_YEAR:
         DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
         _present_chart_fatalities_year()
 
-    if CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART in CHOICE_CHARTS_TYPES:
+    if CHOICE_CHARTS_TYPE_FATALITIES_YEAR_FAR_PART:
         DF_FILTERED_CHARTS_YEAR = _prep_chart_data_year(DF_FILTERED)
         _present_chart_fatalities_year_far_part()
 
@@ -549,9 +548,9 @@ def _present_details():
 
     if CHOICE_CHARTS_DETAILS:
         if (
-            CHOICE_CHART_TYPE_ACCIDENTS_YEAR
-            or CHOICE_CHART_TYPE_FATALITIES_YEAR
-            or CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART
+            CHOICE_CHARTS_TYPE_ACCIDENTS_YEAR
+            or CHOICE_CHARTS_TYPE_ACCIDENTS_FATAL_YEAR
+            or CHOICE_CHARTS_TYPE_FATALITIES_YEAR_FAR_PART
         ):
             st.subheader("Aggregated chart data per year")
             st.dataframe(DF_FILTERED_CHARTS_YEAR)
@@ -871,14 +870,16 @@ def _setup_sidebar():
 # ------------------------------------------------------------------
 def _setup_task_controls():
     """Set up the task controls."""
+    global CHOICE_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPES  # pylint: disable=global-statement
+    global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_ACCIDENTS_FATAL_YEAR  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_ACCIDENTS_YEAR  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_FATALITIES_YEAR_FAR_PART  # pylint: disable=global-statement
+    global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_CHARTS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
-    global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_MAP  # pylint: disable=global-statement
     global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
     global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
@@ -890,14 +891,20 @@ def _setup_task_controls():
     )
 
     if CHOICE_CHARTS:
-        CHOICE_CHARTS_TYPES = st.sidebar.multiselect(
-            default=CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART,
-            label="Select one or more chart types",
-            options=(
-                CHOICE_CHART_TYPE_ACCIDENTS_YEAR,
-                CHOICE_CHART_TYPE_FATALITIES_YEAR,
-                CHOICE_CHART_TYPE_FATALITIES_YEAR_FAR_PART,
-            ),
+        CHOICE_CHARTS_TYPE_ACCIDENTS_YEAR = st.sidebar.checkbox(
+            help="Accidents per year (after filtering the data).",
+            label="Accidents per year",
+            value=False,
+        )
+        CHOICE_CHARTS_TYPE_ACCIDENTS_FATAL_YEAR = st.sidebar.checkbox(
+            help="Fatal accidents per year (after filtering the data).",
+            label="Fatal accidents per year",
+            value=False,
+        )
+        CHOICE_CHARTS_TYPE_FATALITIES_YEAR_FAR_PART = st.sidebar.checkbox(
+            help="Fatalities per year per selected FAR parts (after filtering the data).",
+            label="Fatalities per year & FAR parts",
+            value=True,
         )
 
         CHOICE_CHARTS_HEIGHT = st.sidebar.slider(

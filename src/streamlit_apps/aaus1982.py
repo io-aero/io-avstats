@@ -44,23 +44,37 @@ CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
 CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
 
+COLOR_LEVEL_1 = "#15535f"  # peacock
+COLOR_LEVEL_2 = "#47a3b5"  # aqua
+COLOR_LEVEL_3 = "#fadc82"  # yellow
+COLOR_LEVEL_4 = "#f1a638"  # orange
+
+COUNTRY_USA = "USA"
+
 DF_FILTERED: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_YEAR: DataFrame = DataFrame()
 DF_UNFILTERED: DataFrame = DataFrame()
 
 FILTER_ACFT_CATEGORIES: list[str] = []
 FILTER_ALT_LOW: bool | None = None
+FILTER_DEST_COUNTRY_USA: bool | None = None
+FILTER_DPRT_COUNTRY_USA: bool | None = None
+FILTER_EV_HIGHEST_INJURY: list[str] = []
+FILTER_EV_TYPE: list[str] = []
+FILTER_EV_YEAR_FROM: int | None = None
+FILTER_EV_YEAR_TO: int | None = None
 FILTER_FAR_PARTS: list[str] = []
-FILTER_FATALITIES_FROM: int | None = None
-FILTER_FATALITIES_TO: int | None = None
 FILTER_FINDING_CODES: list[str] = []
+FILTER_HAS_US_IMPACT: bool | None = None
+FILTER_INJ_F_GRND_FROM: int | None = None
+FILTER_INJ_F_GRND_TO: int | None = None
+FILTER_INJ_TOT_F_FROM: int | None = None
+FILTER_INJ_TOT_F_TO: int | None = None
 FILTER_LATLONG_ACQ: str | None = None
 FILTER_NARR_STALL: bool | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_SPIN_STALL: bool | None = None
-FILTER_US_STATES: list[str] = []
-FILTER_YEAR_FROM: int | None = None
-FILTER_YEAR_TO: int | None = None
+FILTER_STATE: list[str] = []
 
 
 # LAYER_TYPE = "HexagonLayer"
@@ -74,84 +88,8 @@ PG_CONN: Connection | None = None
 PITCH = 30
 
 # ------------------------------------------------------------------
-# Query regarding the aircraft accidents in the US since 1982.
+# Configuration parameters.
 # ------------------------------------------------------------------
-QUERY_ACFT_CATEGORIES = """
-    SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
-      FROM aircraft
-     WHERE acft_category IS NOT NULL
-     ORDER BY 1;
-"""
-
-QUERY_AAUS1982 = """
-    SELECT *
-     FROM io_app_aaus1982
-    ORDER BY ev_id;
-"""
-
-QUERY_FAR_PARTS = """
-    SELECT string_agg(DISTINCT far_part, ',' ORDER BY far_part)
-      FROM aircraft
-    WHERE far_part IS NOT NULL
-    ORDER BY 1;
-"""
-
-QUERY_FINDING_CODES = """
-    SELECT string_agg(DISTINCT finding_code, ',' ORDER BY finding_code)
-      FROM (SELECT CASE WHEN substring(finding_code, 1, 8) = '01062012' THEN 'PARAMS_ALT'
-                        WHEN substring(finding_code, 1, 8) = '01062037' THEN 'PARAMS_DEC_RATE'
-                        WHEN substring(finding_code, 1, 8) = '01062040' THEN 'PARAMS_DEC_APP'
-                        WHEN substring(finding_code, 1, 8) = '01062042' THEN 'PARAMS_AoA'
-                        WHEN substring(finding_code, 1, 6) = '030210' THEN 'ENV_TER'
-                        WHEN substring(finding_code, 1, 6) = '030220' THEN 'ENV_OAS'
-                        ELSE finding_code
-                    END finding_code
-              FROM findings
-             WHERE (substring(finding_code, 1, 8) IN ('01062012', '01062037', '01062040', '01062042')
-                OR substring(finding_code, 1, 6) IN ('030210', '030220'))
-               AND finding_code IS NOT NULL) f
-"""  # noqa: E501
-
-QUERY_MAX_FATALITIES = """
-    SELECT MAX(inj_tot_f)
-      FROM io_app_aaus1982;
-"""
-
-QUERY_OCCURRENCE_CODES = """
-    SELECT string_agg(DISTINCT occurrence_code, ',' ORDER BY occurrence_code)
-      FROM (SELECT CASE WHEN substring(occurrence_code, 1, 3) = '350' THEN 'INIT_CLIMB'
-                        WHEN substring(occurrence_code, 1, 3) = '452' THEN 'MAN_LALT'
-                        WHEN substring(occurrence_code, 1, 3) = '502' THEN 'FINAL_APP'
-                        WHEN substring(occurrence_code, 4, 6) = '120' THEN 'CFIT'
-                        WHEN substring(occurrence_code, 4, 6) = '220' THEN 'LALT'
-                        WHEN substring(occurrence_code, 4, 6) = '240' THEN 'LOC-I'
-                        WHEN substring(occurrence_code, 4, 6) = '241' THEN 'STALL'
-                        WHEN substring(occurrence_code, 4, 6) = '250' THEN 'MIDAIR'
-                        WHEN substring(occurrence_code, 4, 6) = '401' THEN 'UIMC'
-                        WHEN substring(occurrence_code, 4, 6) = '420' THEN 'CAA'
-                        WHEN substring(occurrence_code, 4, 6) = '901' THEN 'BIRD'
-                        ELSE occurrence_code
-                   END
-              FROM events_sequence
-             WHERE (substring(occurrence_code, 1, 3) IN ('350', '452', '502')
-                OR substring(occurrence_code, 4, 6) IN ('120', '220', '240', '241', '250', '401', '420', '901'))
-               AND occurrence_code IS NOT NULL) o
-"""  # noqa: E501
-
-QUERY_US_LL = """
-    SELECT dec_latitude,
-           dec_longitude
-      FROM io_countries
-     WHERE country = 'USA';
-"""
-
-QUERY_US_STATES = """
-    SELECT string_agg(DISTINCT state, ',' ORDER BY state)
-      FROM io_states
-     WHERE country  = 'USA'
-     ORDER BY 1;
-"""
-
 SETTINGS = Dynaconf(
     environments=True,
     envvar_prefix="IO_AVSTATS",
@@ -170,93 +108,40 @@ ZOOM = 4.4
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
 @st.experimental_memo
+# pylint: disable=too-many-locals
 def _apply_filter_controls(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
     filter_alt_low: bool | None,
-    filter_fatalities_from: int | None,
-    filter_fatalities_to: int | None,
+    filter_dest_country_usa: bool | None,
+    filter_dprt_country_usa: bool | None,
+    filter_ev_highest_injury: list | None,
+    filter_ev_type: list | None,
+    filter_ev_year_from: int | None,
+    filter_ev_year_to: int | None,
     filter_far_parts: list | None,
     filter_finding_codes: list | None,
+    filter_has_us_impact: bool | None,
+    filter_inj_f_grnd_from: int | None,
+    filter_inj_f_grnd_to: int | None,
+    filter_inj_tot_f_from: int | None,
+    filter_inj_tot_f_to: int | None,
     filter_latlong_acq: str | None,
     filter_narr_stall: bool | None,
     filter_occurrence_codes: list | None,
     filter_spin_stall: bool | None,
-    filter_us_states: list | None,
-    filter_year_from: int | None,
-    filter_year_to: int | None,
+    filter_state: list | None,
 ) -> DataFrame:
     """Filter the data frame."""
     df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
-    if filter_year_from or filter_year_to:
-        df_filtered = df_filtered.loc[
-            (df_filtered["ev_year"] >= FILTER_YEAR_FROM)
-            & (df_filtered["ev_year"] <= FILTER_YEAR_TO)
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_fatalities_from or filter_fatalities_to:
-        df_filtered = df_filtered.loc[
-            (df_filtered["inj_tot_f"] >= filter_fatalities_from)
-            & (df_filtered["inj_tot_f"] <= filter_fatalities_to)
-        ]
-
-    # noinspection PyUnboundLocalVariable
     if filter_acft_categories:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
-            df_filtered["acft_category"].apply(
+            df_filtered["acft_categories"].apply(
                 lambda x: bool(set(x) & set(filter_acft_categories))  # type: ignore
             )
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_far_parts:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            df_filtered["far_part"].apply(
-                lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
-            )
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_finding_codes:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            df_filtered["finding_code"].apply(
-                lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
-            )
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_occurrence_codes:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            df_filtered["occurrence_code"].apply(
-                lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
-            )
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_us_states:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_us_states))]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_latlong_acq:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            (df_filtered["latlong_acq"] == filter_latlong_acq)
-        ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_spin_stall:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["spin_stall"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -268,12 +153,116 @@ def _apply_filter_controls(
         ]
 
     # noinspection PyUnboundLocalVariable
+    if filter_dest_country_usa:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            # pylint: disable=singleton-comparison
+            (df_filtered["dest_country_usa"] == True)  # noqa: E712
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_dprt_country_usa:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            # pylint: disable=singleton-comparison
+            (df_filtered["dprt_country_usa"] == True)  # noqa: E712
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_ev_highest_injury:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury))
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_ev_type:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[(df_filtered["ev_type"].isin(filter_ev_type))]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_ev_year_from or filter_ev_year_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
+            & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_far_parts:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            df_filtered["far_parts"].apply(
+                lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
+            )
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_finding_codes:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            df_filtered["finding_codes"].apply(
+                lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
+            )
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_has_us_impact:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            # pylint: disable=singleton-comparison
+            (df_filtered["has_us_impact"] == True)  # noqa: E712
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_inj_f_grnd_from or filter_inj_f_grnd_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
+            & (df_filtered["inj_f_grnd"] <= filter_inj_f_grnd_to)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_inj_tot_f_from or filter_inj_tot_f_to:
+        df_filtered = df_filtered.loc[
+            (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
+            & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_latlong_acq:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (df_filtered["latlong_acq"].isin(filter_latlong_acq))
+        ]
+
+    # noinspection PyUnboundLocalVariable
     if filter_narr_stall:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
             (df_filtered["narr_stall"] == True)  # noqa: E712
         ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_occurrence_codes:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            df_filtered["occurrence_codes"].apply(
+                lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
+            )
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_spin_stall:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            # pylint: disable=singleton-comparison
+            (df_filtered["spin_stall"] == True)  # noqa: E712
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_state:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_state))]
 
     return df_filtered
 
@@ -286,7 +275,7 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
     """Convert a dataframe to csv data.
 
     Args:
-        dataframe (DataFrame): The datafarame.
+        dataframe (DataFrame): The dataframe.
 
     Returns:
         bytes: The csv data.
@@ -308,7 +297,14 @@ def _get_data() -> DataFrame:
 
     PG_CONN = _get_postgres_connection()  # type: ignore
 
-    return pd.read_sql(QUERY_AAUS1982, con=_get_engine())
+    return pd.read_sql(
+        """
+    SELECT *
+     FROM io_app_aaus1982
+    ORDER BY ev_id;
+    """,
+        con=_get_engine(),
+    )
 
 
 # ------------------------------------------------------------------
@@ -433,19 +429,19 @@ def _present_chart_fatalities_year_far_part():
     fig = go.Figure(
         data=[
             go.Bar(
-                marker={"color": "#636EFA"},
+                marker={"color": COLOR_LEVEL_1},
                 name="Parts 91, 91F, 91K",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
                 y=DF_FILTERED_CHARTS_YEAR["far_part_091x_inj_tot_f"],
             ),
             go.Bar(
-                marker={"color": "#00CC96"},
+                marker={"color": COLOR_LEVEL_2},
                 name="Part 135",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
                 y=DF_FILTERED_CHARTS_YEAR["far_part_135_inj_tot_f"],
             ),
             go.Bar(
-                marker={"color": "#EF553B"},
+                marker={"color": COLOR_LEVEL_4},
                 name="Part 121",
                 x=DF_FILTERED_CHARTS_YEAR["ev_year"],
                 y=DF_FILTERED_CHARTS_YEAR["far_part_121_inj_tot_f"],
@@ -603,7 +599,7 @@ def _present_map():
                 + "<tr><td><b>Fatalities</b></td><td>{inj_tot_f}</td></tr>"
                 + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
                 + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
-                + "<tr><td><b>Aquired</b></td><td>{latlong_acq}</td></tr>"
+                + "<tr><td><b>Acquired</b></td><td>{latlong_acq}</td></tr>"
                 + "</tbody></table>"
             },
         )
@@ -613,105 +609,241 @@ def _present_map():
 # ------------------------------------------------------------------
 # Set up the filter controls.
 # ------------------------------------------------------------------
+# pylint: disable=too-many-statements
 def _setup_filter_controls():
     """Set up the filter controls."""
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
     global FILTER_ALT_LOW  # pylint: disable=global-statement
+    global FILTER_DEST_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_DPRT_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
+    global FILTER_EV_TYPE  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
     global FILTER_FAR_PARTS  # pylint: disable=global-statement
-    global FILTER_FATALITIES_FROM  # pylint: disable=global-statement
-    global FILTER_FATALITIES_TO  # pylint: disable=global-statement
     global FILTER_FINDING_CODES  # pylint: disable=global-statement
+    global FILTER_HAS_US_IMPACT  # pylint: disable=global-statement
+    global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
+    global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
+    global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
+    global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
     global FILTER_NARR_STALL  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_SPIN_STALL  # pylint: disable=global-statement
-    global FILTER_US_STATES  # pylint: disable=global-statement
-    global FILTER_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_YEAR_TO  # pylint: disable=global-statement
+    global FILTER_STATE  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
 
     PG_CONN = _get_postgres_connection()
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
-        help="Special filter options required.",
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        All selected filter options are applied simultaneously, i.e. they are linked
+        to a logical ***`and`**.
+        """,
         label="**Filter data ?**",
         value=True,
     )
 
-    if CHOICE_FILTER_DATA:
-        FILTER_YEAR_FROM, FILTER_YEAR_TO = st.sidebar.slider(
-            label="Select a time frame",
-            help="Filter over year from to.",
-            min_value=1982,
-            max_value=datetime.date.today().year,
-            value=(2008, datetime.date.today().year - 1),
-        )
+    if not CHOICE_FILTER_DATA:
+        return
 
-        FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
-            help="Filtering via selected aircraft categories.",
-            label="Select one or more aircraft categories",
-            options=_sql_query_acft_categories(),
-        )
+    FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
+        help="""
+        Here, the data can be limited to selected aircraft categories.
+        """,
+        label="**Aircraft categories:**",
+        options=_sql_query_acft_categories(),
+    )
 
-        FILTER_FAR_PARTS = st.sidebar.multiselect(
-            help="Filtering via selected FAR parts.",
-            label="Select one or more FAR parts",
-            options=_sql_query_far_parts(),
-        )
+    st.sidebar.markdown("""---""")
 
-        max_fatalities = _sql_query_max_fatalities()
+    FILTER_EV_TYPE = st.sidebar.multiselect(
+        default="ACC",
+        help="""
+        - **`ACC`**: The event was classified as an accident.
+        - **`INC`**: The event was classified as an incident.
+        """,
+        label="**Event type:**",
+        options=_sql_query_ev_type(),
+    )
 
-        FILTER_FATALITIES_FROM, FILTER_FATALITIES_TO = st.sidebar.slider(
-            label="Filtering over an interval of number of fatalities.",
-            min_value=0,
-            max_value=max_fatalities,
-            value=(1, max_fatalities),
-        )
+    st.sidebar.markdown("""---""")
 
-        FILTER_FINDING_CODES = st.sidebar.multiselect(
-            help="Filtering via selected finding codes.",
-            label="Select one or more finding codes",
-            options=_sql_query_finding_codes(),
-        )
+    FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
+        help="""
+            - **`1982`** is the first year with complete statistics.
+            - **`2008`** changes were made to the data collection mode.
+            """,
+        label="**Event year:**",
+        min_value=1982,
+        max_value=datetime.date.today().year,
+        value=(2008, datetime.date.today().year - 1),
+    )
 
-        FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
-            help="Filtering via selected occurrence codes.",
-            label="Select one or more occurrence codes",
-            options=_sql_query_occurrence_codes(),
-        )
+    st.sidebar.markdown("""---""")
 
-        FILTER_US_STATES = st.sidebar.multiselect(
-            help="Filtering via selected occurrence USPS abbreviations.",
-            label="Select one or more states",
-            options=_sql_query_us_states(),
-        )
+    FILTER_FAR_PARTS = st.sidebar.multiselect(
+        help="""
+        Under which FAR operations parts the accident was conducted.
+        """,
+        label="**FAR operations parts:**",
+        options=_sql_query_far_parts(),
+    )
 
-        FILTER_LATLONG_ACQ = st.sidebar.selectbox(
-            help="Filtering via a specific latitude and longitude "
-            + "determination method.",
-            label="Select optionally a latitude and longitude determination method",
-            options=(
-                "",
-                "EST",
-                "MEAS",
-            ),
-        )
+    st.sidebar.markdown("""---""")
 
-        FILTER_SPIN_STALL = st.sidebar.checkbox(
-            help="Filtering only events with `spin_stall` equals `True`.",
-            label="Only events with aerodynamic spin stalls?",
-        )
+    max_inj_f_grnd = _sql_query_max_inj_f_grnd()
 
-        FILTER_ALT_LOW = st.sidebar.checkbox(
-            help="Filtering only events with `alt_low` equals `True`.",
-            label="Only events with altitude too low?",
-        )
+    FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
+        help="""
+        Number of fatalities on the ground.
+        """,
+        label="**Fatalities on ground:**",
+        min_value=0,
+        max_value=max_inj_f_grnd,
+        value=(0, max_inj_f_grnd),
+    )
 
-        FILTER_NARR_STALL = st.sidebar.checkbox(
-            help="Filtering only events with `narr_stall` equals `True`.",
-            label="Only events stalled according to narrative?",
-        )
+    st.sidebar.markdown("""---""")
+
+    max_inj_tot_f = _sql_query_max_inj_tot_f()
+
+    FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
+        help="""
+        Number of total fatalities.
+        """,
+        label="**Fatalities total:**",
+        min_value=0,
+        max_value=max_inj_tot_f,
+        value=(1, max_inj_tot_f),
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_FINDING_CODES = st.sidebar.multiselect(
+        help="""
+        Here, data can be limited to selected finding codes.
+        """,
+        label="**Finding codes:**",
+        options=_sql_query_finding_codes(),
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
+        default="FATL",
+        help="""
+        Here, the data can be limited to selected injury levels.
+        Those events are selected whose highest injury level matches.
+        """,
+        label="**Highest injury levels:**",
+        options=_sql_query_ev_highest_injury(),
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_SPIN_STALL = st.sidebar.checkbox(
+        help="""
+        For an aerodynamic spin stall, at least one of the following
+        two conditions must be met in the event data:
+        - one of the finding codes contains **`PARAMS_AoA' or one of
+          the occurrence codes contains **`STALL`**, or
+        - one of the occurrence codes contains **`LOC-I`** and there is
+          a stall according to the narrative and none of the occurrence
+          codes contains **`CAA`** or **`CFIT`**, and none of the occurrence
+          codes contains **`CAA`** or **`CFIT`**.
+        """,
+        label="**Incl. aerodynamic spin stalls ?**",
+    )
+
+    st.sidebar.markdown("""---""")
+
+    # flake8: noqa: E501
+    FILTER_ALT_LOW = st.sidebar.checkbox(
+        help="""
+        A too low altitude problem exists when the following conditions are met:
+        - no occurrence code **`MIDAIR`**` or aerodynamic spin stall is present, and
+        - the occurrence code is one of **`CAA`**, **`CFIT`**, **`ENV_TER`**, **`FINAL_APP`**,
+          **`INIT_CLIMB`**, **`LALT`**, **`MAN_LALT`**, **`PARAMS_ALT`**, **`PARAMS_DEC_APP`**,
+          **`PARAMS_DEC_RATE`** or **`ENV_OAS`** and no occurrence code contains **`BIRD`**.
+        """,
+        label="**Incl. altitude too low ?**",
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_NARR_STALL = st.sidebar.checkbox(
+        help="""
+        A stall according to narrative is present if the accepted narrative
+        contains the text **`STALL`**` in any lower or upper case.
+        """,
+        label="**Incl. stalled according narrative ?**",
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_LATLONG_ACQ = st.sidebar.multiselect(
+        help="""
+        - **`EST`**: Latitude and longitude have been estimated.
+        - **`MEAS`**: Latitude and longitude have been measured.
+        """,
+        label="**Latitude / longitude acquisition:**",
+        options=_sql_query_latlong_acq(),
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
+        help="""
+        Here, the data can be limited to selected occurrence codes.
+        """,
+        label="**Occurrence codes:**",
+        options=_sql_query_occurrence_codes(),
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_DPRT_COUNTRY_USA = st.sidebar.checkbox(
+        help="""
+        At least one of the aircraft involved in the event took off from the US.
+        """,
+        label="**Only departure country USA ?**",
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_DEST_COUNTRY_USA = st.sidebar.checkbox(
+        help="""
+        At least one of the aircraft involved in the event has its target in the US.
+        """,
+        label="**Only destination country USA ?**",
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_HAS_US_IMPACT = st.sidebar.checkbox(
+        help="""
+        One of the following conditions is satisfied:
+        - Departure in the USA, or
+        - (Planned) landing in the USA, or
+        - US operator, or
+        - US owner, or
+        - US registration.
+        """,
+        label="**Only US impacted ?**",
+        value=True,
+    )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_STATE = st.sidebar.multiselect(
+        help="Here, data can be limited to selected U.S. states.",
+        label="**States in the US:**",
+        options=_sql_query_us_states(),
+    )
 
     st.sidebar.markdown("""---""")
 
@@ -823,7 +955,7 @@ def _setup_task_controls():
         CHOICE_MAP_MAP_STYLE = st.sidebar.radio(
             help="""
 light: designed to provide geographic context while highlighting the data -
-outdoors: focused on wilderness locations with curated tilesets -
+outdoors: focused on wilderness locations with curated tile sets -
 streets: emphasizes accurate, legible styling of road and transit networks.
         """,
             index=1,
@@ -859,23 +991,59 @@ def _sql_query_acft_categories() -> list[str]:
         list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_ACFT_CATEGORIES)
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
+          FROM aircraft
+         WHERE acft_category IS NOT NULL
+         ORDER BY 1;
+        """
+        )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
-# Determine the maximum number of fatalities.
+# Execute a query that returns the list of injury levels
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _sql_query_max_fatalities() -> int:
-    """Determine the maximum number of fatalities.
+def _sql_query_ev_highest_injury() -> list[str]:
+    """Execute a query that returns a list of injury levels.
 
     Returns:
-        int: Maximum number of fatalities.
+        list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_MAX_FATALITIES)
-        return cur.fetchone()[0]  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT ev_highest_injury, ',' ORDER BY ev_highest_injury)
+          FROM events
+         WHERE ev_highest_injury IS NOT NULL
+         ORDER BY 1;
+        """
+        )
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of event types
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_ev_type() -> list[str]:
+    """Execute a query that returns a list of event types.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT ev_type, ',' ORDER BY ev_type)
+          FROM events
+         WHERE ev_type IS NOT NULL
+         ORDER BY 1;
+        """
+        )
+        return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -883,13 +1051,20 @@ def _sql_query_max_fatalities() -> int:
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _sql_query_far_parts() -> list[str]:
-    """Execute a query that returns a list of FAR part.
+    """Execute a query that returns a list of FAR parts.
 
     Returns:
         list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_FAR_PARTS)
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT far_part, ',' ORDER BY far_part)
+          FROM aircraft
+         WHERE far_part IS NOT NULL
+         ORDER BY 1;
+        """
+        )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -904,7 +1079,88 @@ def _sql_query_finding_codes() -> list[str]:
         list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_FINDING_CODES)
+        # flake8: noqa: E501
+        # pylint: disable=line-too-long
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT finding_code, ',' ORDER BY finding_code)
+          FROM (SELECT CASE WHEN substring(finding_code, 1, 8) = '01062012' THEN 'PARAMS_ALT'
+                            WHEN substring(finding_code, 1, 8) = '01062037' THEN 'PARAMS_DEC_RATE'
+                            WHEN substring(finding_code, 1, 8) = '01062040' THEN 'PARAMS_DEC_APP'
+                            WHEN substring(finding_code, 1, 8) = '01062042' THEN 'PARAMS_AoA'
+                            WHEN substring(finding_code, 1, 6) = '030210' THEN 'ENV_TER'
+                            WHEN substring(finding_code, 1, 6) = '030220' THEN 'ENV_OAS'
+                            ELSE finding_code
+                        END finding_code
+                  FROM findings
+                 WHERE (substring(finding_code, 1, 8) IN ('01062012', '01062037', '01062040', '01062042')
+                    OR substring(finding_code, 1, 6) IN ('030210', '030220'))
+                   AND finding_code IS NOT NULL) f
+        """
+        )  # noqa: E501
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the maximum number of fatalities on ground.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_max_inj_f_grnd() -> int:
+    """Determine the maximum number of total fatalities on ground.
+
+    Returns:
+        int: Maximum number of fatalities on ground.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT MAX(inj_f_grnd)
+          FROM io_app_aaus1982;
+        """
+        )
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the maximum number of fatalities.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_max_inj_tot_f() -> int:
+    """Determine the maximum number of total fatalities.
+
+    Returns:
+        int: Maximum number of total fatalities.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT MAX(inj_tot_f)
+          FROM io_app_aaus1982;
+        """
+        )
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of latitude / longitude
+# acquisition
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_latlong_acq() -> list[str]:
+    """Execute a query that returns a list of latitude / longitude acquisition.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT latlong_acq, ',' ORDER BY latlong_acq)
+          FROM events
+         WHERE latlong_acq IS NOT NULL
+         ORDER BY 1;
+        """
+        )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -919,7 +1175,30 @@ def _sql_query_occurrence_codes() -> list[str]:
         list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_OCCURRENCE_CODES)
+        # flake8: noqa: E501
+        # pylint: disable=line-too-long
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT occurrence_code, ',' ORDER BY occurrence_code)
+        FROM (SELECT CASE WHEN substring(occurrence_code, 1, 3) = '350' THEN 'INIT_CLIMB'
+                            WHEN substring(occurrence_code, 1, 3) = '452' THEN 'MAN_LALT'
+                            WHEN substring(occurrence_code, 1, 3) = '502' THEN 'FINAL_APP'
+                            WHEN substring(occurrence_code, 4, 6) = '120' THEN 'CFIT'
+                            WHEN substring(occurrence_code, 4, 6) = '220' THEN 'LALT'
+                            WHEN substring(occurrence_code, 4, 6) = '240' THEN 'LOC-I'
+                            WHEN substring(occurrence_code, 4, 6) = '241' THEN 'STALL'
+                            WHEN substring(occurrence_code, 4, 6) = '250' THEN 'MIDAIR'
+                            WHEN substring(occurrence_code, 4, 6) = '401' THEN 'UIMC'
+                            WHEN substring(occurrence_code, 4, 6) = '420' THEN 'CAA'
+                            WHEN substring(occurrence_code, 4, 6) = '901' THEN 'BIRD'
+                            ELSE occurrence_code
+                    END
+                FROM events_sequence
+                WHERE (substring(occurrence_code, 1, 3) IN ('350', '452', '502')
+                    OR substring(occurrence_code, 4, 6) IN ('120', '220', '240', '241', '250', '401', '420', '901'))
+                AND occurrence_code IS NOT NULL) o
+        """
+        )  # noqa: E501
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -938,7 +1217,14 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
         pdk.ViewState: Screen focus.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_US_LL)
+        cur.execute(
+            """
+        SELECT dec_latitude,
+               dec_longitude
+          FROM io_countries
+         WHERE country = 'USA';
+        """
+        )
         result = cur.fetchone()
         return pdk.ViewState(
             latitude=result[0],  # type: ignore
@@ -959,7 +1245,14 @@ def _sql_query_us_states() -> list[str]:
         list[str]: Query results in a list.
     """
     with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(QUERY_US_STATES)
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT state, ',' ORDER BY state)
+          FROM io_states
+         WHERE country  = 'USA'
+         ORDER BY 1;
+        """
+        )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -982,17 +1275,24 @@ if CHOICE_FILTER_DATA:
         DF_UNFILTERED,
         FILTER_ACFT_CATEGORIES,
         FILTER_ALT_LOW,
-        FILTER_FATALITIES_FROM,
-        FILTER_FATALITIES_TO,
+        FILTER_DEST_COUNTRY_USA,
+        FILTER_DPRT_COUNTRY_USA,
+        FILTER_EV_HIGHEST_INJURY,
+        FILTER_EV_TYPE,
+        FILTER_EV_YEAR_FROM,
+        FILTER_EV_YEAR_TO,
         FILTER_FAR_PARTS,
         FILTER_FINDING_CODES,
+        FILTER_HAS_US_IMPACT,
+        FILTER_INJ_F_GRND_FROM,
+        FILTER_INJ_F_GRND_TO,
+        FILTER_INJ_TOT_F_FROM,
+        FILTER_INJ_TOT_F_TO,
         FILTER_LATLONG_ACQ,
         FILTER_NARR_STALL,
         FILTER_OCCURRENCE_CODES,
         FILTER_SPIN_STALL,
-        FILTER_US_STATES,
-        FILTER_YEAR_FROM,
-        FILTER_YEAR_TO,
+        FILTER_STATE,
     )
 
 _present_data()

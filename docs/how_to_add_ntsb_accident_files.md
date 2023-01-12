@@ -35,7 +35,7 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 
 ### 2.1 **`d_n_a`** - Download a NTSB MS Access database file
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_chunk_size = 524288
@@ -325,7 +325,7 @@ Progress update 2023-01-12 08:28:18.594395 : ===================================
 
 ### 2.2 **`l_n_a`** - Load NTSB MS Access database data into PostgreSQL
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_work_dir = "data/download"
@@ -570,7 +570,7 @@ Count|Description                            |
 
 ### 2.3 **`d_s_f`** - Download basic simplemaps files
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_chunk_size = 524288
@@ -614,7 +614,7 @@ Only necessary if the file downloaded in the previous step contains changes.
 
 TODO
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_work_dir = "data/download"
@@ -636,7 +636,7 @@ The two formats **`Excel Format (data only)`** and **`CSV Format`** must be down
 The downloaded file **`zip_code_database.csv`** must be checked with the reference files in the file directory **`data/reference`** for a match.
 If there is no mismatch, then the next step can be skipped.
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_work_dir = "data/download"
@@ -648,7 +648,7 @@ Only necessary if the file downloaded in the previous step contains changes.
 
 TODO
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 download_work_dir = "data/download"
@@ -664,7 +664,7 @@ TODO
 
 This step only needs to be performed if modified or new correction files are available.
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 correction_work_dir = "data/correction"
@@ -832,7 +832,7 @@ Count|io_dec_lat_lng_actions                                                    
 
 ### 2.9 **`v_n_d`** - Verify selected NTSB data
 
-**Relevant cofiguration parameters**:
+**Relevant configuration parameters**:
 
 ```
 max_deviation_latitude = 0.01

@@ -362,3 +362,83 @@ The following actions should address these issues:
 Thereby all rows of the NTSB file in the IO-AVSTATS database are provided with the same timestamp in the column **`last_seen_in_avall`**. 
 After loading the NTSB data, all rows since 2008 in the **`IO-AVSTATS`** database that do not contain this timestamp are deleted. 
 3. It is checked when loading the data that no data from before 2008 is affected.
+
+## 4. 
+
+````sql
+SELECT 'aircraft'                                                                                      "DB Table",
+       (SELECT count(*) FROM aircraft WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM aircraft WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM aircraft)                                                                 "Total"
+UNION
+SELECT 'dt_aircraft'                                                                                      "DB Table",
+       (SELECT count(*) FROM dt_aircraft WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM dt_aircraft WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM dt_aircraft)                                                                 "Total"
+UNION
+SELECT 'dt_events'                                                                                      "DB Table",
+       (SELECT count(*) FROM dt_events WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM dt_events WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM dt_events)                                                                 "Total"
+UNION
+SELECT 'dt_flight_crew'                                                                                      "DB Table",
+       (SELECT count(*) FROM dt_flight_crew WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM dt_flight_crew WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM dt_flight_crew)                                                                 "Total"
+UNION
+SELECT 'engines'                                                                                      "DB Table",
+       (SELECT count(*) FROM engines WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM engines WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM engines)                                                                 "Total"
+UNION
+SELECT 'events'                                            "DB Table",
+       (SELECT count(*) FROM events WHERE ev_year < 2008)  "< 2008",
+       (SELECT count(*) FROM events WHERE ev_year >= 2008) ">= 2008",
+       (SELECT count(*) FROM events)                       "Total"
+union
+SELECT 'events_sequence'                                                                                      "DB Table",
+       (SELECT count(*) FROM events_sequence WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM events_sequence WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM events_sequence)                                                                 "Total"
+union
+SELECT 'findings'                                                                                      "DB Table",
+       (SELECT count(*) FROM findings WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM findings WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM findings)                                                                 "Total"
+union
+SELECT 'flight_crew'                                                                                      "DB Table",
+       (SELECT count(*) FROM flight_crew WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM flight_crew WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM flight_crew)                                                                 "Total"
+union
+SELECT 'flight_time'                                                                                      "DB Table",
+       (SELECT count(*) FROM flight_time WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM flight_time WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM flight_time)                                                                 "Total"
+union
+SELECT 'injury'                                                                                      "DB Table",
+       (SELECT count(*) FROM injury WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM injury WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM injury)                                                                 "Total"
+union
+SELECT 'narratives'                                                                                      "DB Table",
+       (SELECT count(*) FROM narratives WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM narratives WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM narratives)                                                                 "Total"
+union
+SELECT 'ntsb_admin'                                                                                      "DB Table",
+       (SELECT count(*) FROM ntsb_admin WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM ntsb_admin WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM ntsb_admin)                                                                 "Total"
+union
+SELECT 'occurrences'                                                                                      "DB Table",
+       (SELECT count(*) FROM occurrences WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM occurrences WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM occurrences)                                                                 "Total"
+union
+SELECT 'seq_of_events'                                                                                      "DB Table",
+       (SELECT count(*) FROM seq_of_events WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year < 2008))  "< 2008",
+       (SELECT count(*) FROM seq_of_events WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
+       (SELECT count(*) FROM seq_of_events)                                                                 "Total"
+ORDER BY 1
+````

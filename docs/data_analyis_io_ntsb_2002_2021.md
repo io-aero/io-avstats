@@ -1,8 +1,8 @@
 # Data Analysis: DB Table **`io_ntsb_2002_2021`**
 
-**Note**: The `IO-AVSTATS` database used here contains NTSB aircraft accident data as of January 1, 2023.
+**Note**: The **`IO-AVSTATS`** database used here contains NTSB aircraft accident data as of January 1, 2023.
 
-This report is about comparing the `IO-AVSTATS` database to common public records for aviation accidents.  
+This report is about comparing the **`IO-AVSTATS`** database to common public records for aviation accidents.  
 
 In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the NTSB published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"}.
 These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as a Microsoft Execel file.
@@ -10,7 +10,7 @@ These are available on this website at this [link](https://www.ntsb.gov/safety/d
 ## 1.Worksheet no. 29
 
 Worksheet no. 29 obviously contains the detailed events underlying the statistics in the previous worksheets.
-Now, in order to make the data in the `IO-AVSTATS` database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the `IO-AVSTATS` database as database table **`io_ntsb_2002_2021`**, unchanged.
+Now, in order to make the data in the **`IO-AVSTATS`** database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the **`IO-AVSTATS`** database as database table **`io_ntsb_2002_2021`**, unchanged.
 
 ### Observation 1 - Fatalities
 
@@ -53,7 +53,7 @@ NYC08FA324 |2008-09-26 00:00:00.000|             1|                    |
 NYC08LA322 |2008-09-23 00:00:00.000|             1|                    |
 ```
 
-#### This problem does not occur in the `IO-AVSTATS` database!
+#### This problem does not occur in the **`IO-AVSTATS`** database!
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury
@@ -68,7 +68,7 @@ ntsb_no|ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
 -------+-------+----------+---------+-----------------+
 ```
 
-#### The corrupted data in the MS Excel file looks correct in the `IO-AVSTATS` database:
+#### The corrupted data in the MS Excel file looks correct in the **`IO-AVSTATS`** database:
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury
@@ -100,7 +100,7 @@ NYC08LA322|   2008|         0|        1|FATL             |
 
 ### Observation 2 - Incidents
 
-#### Observation: If the worksheet no. 29+ also contains events of type `INC` (incident):
+#### Observation: If the worksheet no. 29+ also contains events of type **`INC`** (incident):
 
 ```sql
 SELECT ntsb_number, event_date
@@ -113,7 +113,95 @@ ntsb_number|event_date|
 -----------+----------+
 ```
 
-#### Conclusion: Worksheet no. 29 does not contain any events of type 'INC'!
+#### Conclusion: Worksheet no. 29 does not contain any events of type **`INC`**!
+
+### Observation 3 - Duplicates 1
+
+#### Observation: Are more than 1 line included for the same **`NTSB Number`**:
+
+```sql
+SELECT count(ntsb_number)
+FROM (SELECT count(*), ntsb_number
+      FROM io_ntsb_2002_2021 in2
+      GROUP BY ntsb_number
+      HAVING count(*) > 1) g
+```
+
+```
+count|
+-----+
+  336|
+```
+
+```sql
+SELECT ntsb_number, event_date, state_or_region, city, country, fatal_injuries
+FROM io_ntsb_2002_2021 in3
+WHERE ntsb_number in (SELECT ntsb_number
+                      FROM io_ntsb_2002_2021 in2
+                      GROUP BY ntsb_number
+                      HAVING count(*) > 1)
+ORDER BY ntsb_number
+```
+
+```
+ntsb_number|event_date             |state_or_region     |city                       |country      |fatal_injuries|
+-----------+-----------------------+--------------------+---------------------------+-------------+--------------+
+ANC02LA053 |2002-06-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+ANC02LA053 |2002-06-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+ANC02LA086 |2002-07-30 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+ANC02LA086 |2002-07-30 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+ANC02LA098 |2002-08-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+ANC02LA098 |2002-08-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+ANC03LA005 |2002-10-22 00:00:00.000|Alaska              |BETHEL                     |United States|              |
+ANC03LA005 |2002-10-22 00:00:00.000|Alaska              |BETHEL                     |United States|              |
+ANC04FA016 |2003-12-28 00:00:00.000|Arizona             |Peoria                     |United States|             4|
+ANC04FA016 |2003-12-28 00:00:00.000|Arizona             |Peoria                     |United States|             4|
+ANC06FA048 |2006-04-23 00:00:00.000|Alaska              |Chugiak                    |United States|             5|
+ANC06FA048 |2006-04-23 00:00:00.000|Alaska              |Chugiak                    |United States|             5|
+ANC08LA106 |2008-08-18 00:00:00.000|Alaska              |Bethel                     |United States|              |
+ANC08LA106 |2008-08-18 00:00:00.000|Alaska              |Bethel                     |United States|              |
+ANC09LA004 |2008-10-07 00:00:00.000|Alaska              |Bethel                     |United States|              |
+ANC09LA004 |2008-10-07 00:00:00.000|Alaska              |Bethel                     |United States|              |
+ANC09LA011 |2008-11-14 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+ANC09LA011 |2008-11-14 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+ANC10LA094 |2010-09-15 00:00:00.000|Alaska              |Dillingham                 |United States|              |
+ANC10LA094 |2010-09-15 00:00:00.000|Alaska              |Dillingham                 |United States|              |
+ANC11FA062 |2011-07-10 00:00:00.000|Alaska              |Port Alsworth              |United States|              |
+ANC11FA062 |2011-07-10 00:00:00.000|Alaska              |Port Alsworth              |United States|              |
+```
+
+#### Conclusion: There are 336 events with more than 1 line included in worksheet 29.
+
+
+### Observation 4 - Duplicates 2
+
+#### Observation: How many lines are there in the events with multiple lines:
+
+```sql
+SELECT count(*), ntsb_number, ev_year
+FROM io_ntsb_2002_2021 in2
+GROUP BY ntsb_number, ev_year
+HAVING count(*) > 1
+ORDER BY 1 desc
+```
+
+```
+count|ntsb_number|ev_year|
+-----+-----------+-------+
+    3|CEN10FA115 |   2010|
+    2|ERA11CA296 |   2011|
+    2|WPR12CA163 |   2012|
+    2|MIA04FA043 |   2004|
+    2|LAX08FA265 |   2008|
+    2|NYC07LA209 |   2007|
+    2|ERA09TA466 |   2009|
+    2|GAA19CA346 |   2019|
+    2|SEA07FA264 |   2007|
+    2|DCA15CA012 |   2014|
+    2|ANC02LA086 |   2002|
+```
+
+#### Conclusion: Only in 2010 there is an event with 3 lines, otherwise there are always 2 lines.
 
 ## 2.Worksheet no. 10 vs. no. 29
 
@@ -163,530 +251,225 @@ Year|Accidents All|Accidents Fatal|Fatalities|
 <kbd>![](img/table_10-table_29.png)</kbd>
 
 
-### Observation 2 - Search discrepancy
+### Observation 2 - Duplicates
 
 #### Observation: Look for reasons for the discrepancies:
 
-**`state_or_region`**:
+```sql
+SELECT ev_year                                    "Year",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+FROM io_ntsb_2002_2021
+WHERE ntsb_number IN (SELECT ntsb_number
+                      FROM io_ntsb_2002_2021 in2
+                      GROUP BY ntsb_number
+                      HAVING count(*) > 1)
+GROUP BY ev_year
+ORDER BY ev_year
+```
+
+```
+Year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|           30|              8|        16|
+2003|           42|             16|        48|
+2004|           32|             14|        22|
+2005|           46|             12|        24|
+2006|           30|             10|        26|
+2007|           38|             10|        22|
+2008|           56|             12|        50|
+2009|           28|             12|        36|
+2010|           39|             11|        25|
+2011|           42|             14|        22|
+2012|           32|              8|        12|
+2013|           20|              6|        14|
+2014|           24|             10|        18|
+2015|           30|              2|        10|
+2016|           38|             14|        38|
+2017|           28|              2|         4|
+2018|           38|              6|        14|
+2019|           40|             10|        24|
+2020|           24|             10|        40|
+2021|           16|              2|         4|
+```
+
+#### Conclusion: The ominous existence of duplicates unfortunately does not explain the difference between worksheets no. 10 and no. 29.
+
+## 3.Worksheet no. 29 vs. IO-AVSTATS
+
+### Observation 1 - Missing in IO-AVSTATS
+
+#### Observation: Are all events of worksheet no. 29 contained in IO-AVSTATS:
 
 ```sql
-SELECT state_or_region                            "State",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-  AND ev_state IS null
-GROUP BY state_or_region
-ORDER BY 1
+SELECT ntsb_number, ev_year, city, state_or_region, country, fatal_injuries
+FROM io_ntsb_2002_2021 in3
+WHERE ntsb_number NOT IN (SELECT ntsb_no FROM events)
+ORDER BY ev_year, ntsb_number
 ```
 
 ```
-State        |Accidents All|Accidents Fatal|Fatalities|
--------------+-------------+---------------+----------+
-             |           16|              6|        11|
-Other Foreign|            4|              2|         3|
-Puerto Rico  |            4|              1|         2|
+ntsb_number|ev_year|city    |state_or_region|country      |fatal_injuries|
+-----------+-------+--------+---------------+-------------+--------------+
+CEN21LA236 |   2021|Longmont|Colorado       |United States|              |
 ```
 
-**`country`**:
+#### Conclusion: This minimal difference can certainly be explained by a subsequent correction.
+
+### Observation 2 - Missing in Worksheet
+
+#### Observation: Are all events of IO-AVSTATS contained in worksheet no. 29:
 
 ```sql
-SELECT country                                    "Country",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020 AND ev_state IS null
-GROUP BY country
-ORDER BY 1
+SELECT ntsb_no, ev_id, ev_year, ev_site_zipcode, ev_city, ev_country, inj_tot_f
+FROM events e
+WHERE ev_year >= 2002
+  AND ev_year <= 2021
+  AND ev_type = 'ACC'
+  AND ntsb_no NOT IN (SELECT ntsb_number FROM io_ntsb_2002_2021 in2)
+ORDER BY ev_year, ev_id
 ```
 
 ```
-Country      |Accidents All|Accidents Fatal|Fatalities|
--------------+-------------+---------------+----------+
-Afghanistan  |            1|              0|          |
-Australia    |            1|              1|         3|
-Bahamas      |            1|              0|          |
-France       |            3|              2|         5|
-Germany      |            4|              2|         3|
-Guadeloupe   |            1|              0|          |
-Guatemala    |            1|              1|         1|
-Iraq         |            1|              0|          |
-Ireland      |            1|              0|          |
-Mexico       |            1|              0|          |
-Romania      |            1|              0|          |
-Saudi Arabia |            1|              1|         1|
-South Africa |            2|              1|         1|
-United States|            5|              1|         2|
+ntsb_no   |ev_id         |ev_year|ev_site_zipcode|ev_city                                    |ev_country|inj_tot_f|
+----------+--------------+-------+---------------+-------------------------------------------+----------+---------+
+WAS02WA015|20020109X00049|   2002|00000          |Tarapoto                                   |PE        |         |
+MIA02LA054|20020201X00157|   2002|34142          |Immokalee                                  |USA       |        1|
+LAX02LA072|20020201X00161|   2002|92145          |San Diego                                  |USA       |        2|
+WAS02RA017|20020212X00207|   2002|00000          |Ishpingo                                   |EC        |         |
+WAS02WA019|20020220X00235|   2002|00000          |Santa Elena                                |VE        |         |
+WAS02RA021|20020221X00240|   2002|00000          |CACKCHILA                                  |GT        |        2|
+CHI02WA080|20020225X00253|   2002|               |Libourne                                   |FR        |        3|
+DCA02WA023|20020226X00261|   2002|               |San Juan                                   |AR        |         |
+SEA02LA039|20020228X00289|   2002|97009          |Boring                                     |USA       |        1|
+SEA02LA042|20020228X00290|   2002|98282          |Concrete                                   |USA       |         |
+WAS02WA023|20020301X00296|   2002|               |Indore                                     |IN        |         |
+IAD02WA031|20020302X00298|   2002|               |Zernez                                     |SZ        |        2|
+WAS02WA026|20020306X00311|   2002|00000          |San Antonio                                |PE        |        2|
+MIA02WA065|20020308X00318|   2002|               |Montevideo                                 |UY        |         |
+WAS02RA025|20020308X00319|   2002|00000          |El Tigre                                   |CO        |       26|
 ```
-
-**`aircraft_number`**:
 
 ```sql
-SELECT aircraft_number                            "Aircraft Number",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY aircraft_number
-ORDER BY 1
+SELECT count(*), ev_year
+FROM (SELECT ntsb_no, ev_id, ev_year, ev_site_zipcode, ev_city, ev_country, inj_tot_f
+      FROM events e
+      WHERE ev_year >= 2002
+        AND ev_year <= 2021
+        AND ev_type = 'ACC'
+        AND ntsb_no NOT IN (SELECT ntsb_number FROM io_ntsb_2002_2021 in2)
+      ORDER BY ev_year, ev_id) g
+GROUP BY ev_year
+ORDER BY ev_year
 ```
 
 ```
-Aircraft Number|Accidents All|Accidents Fatal|Fatalities|
----------------+-------------+---------------+----------+
-              1|         1138|            210|       349|
-              2|           14|              5|        20|
+count|ev_year|
+-----+-------+
+  115|   2002|
+  128|   2003|
+  141|   2004|
+  147|   2005|
+  141|   2006|
+  152|   2007|
+  130|   2008|
+  124|   2009|
+  140|   2010|
+  175|   2011|
+  177|   2012|
+  166|   2013|
+  162|   2014|
+  206|   2015|
+  207|   2016|
+  196|   2017|
+  218|   2018|
+  203|   2019|
+  169|   2020|
+  291|   2021|
 ```
 
-**`damage_level`**:
+#### Conclusion: 3388 Events of IO-AVSTATS are not included in worksheet no. 29!
 
-```sql
-SELECT damage_level                               "Damage Level",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY damage_level
-ORDER BY 1
-```
+### Observation 3 - Non-US aircraft registration number
 
-```
-Damage Level|Accidents All|Accidents Fatal|Fatalities|
-------------+-------------+---------------+----------+
-Destroyed   |          154|            120|       216|
-Minor       |            4|              0|         0|
-None        |           15|              0|         0|
-Substantial |          979|             95|       153|
-```
-
-**`registration_number`**:
-
-```sql
-SELECT registration_number                        "Registration Number",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020 AND registration_number NOT LIKE 'N%'
-GROUP BY registration_number
-ORDER BY 1
-```
-
-```
-Registration Number|Accidents All|Accidents Fatal|Fatalities|
--------------------+-------------+---------------+----------+
-CBP213             |            1|              0|          |
-CBP233             |            1|              0|          |
-```
-
-**`aircraft_category`**:
+#### Observation: All events involving only aircraft with missing or non-U.S. registration numbers are missing from Worksheet No. 29.:
 
 ```sql
-SELECT aircraft_category                          "Aircraft Category",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY aircraft_category
-ORDER BY 1
+SELECT ntsb_number,
+       event_date,
+       city,
+       state_or_region,
+       country,
+       aircraft_number,
+       registration_number,
+       fatal_injuries
+FROM io_ntsb_2002_2021 in2
+WHERE ntsb_number IN (SELECT e.ntsb_no
+                      FROM events e
+                               INNER JOIN aircraft a ON (e.ev_id = a.ev_id)
+                      WHERE ev_year >= 2002
+                        AND ev_year <= 2021
+                        AND ev_type = 'ACC'
+                        AND (a.regis_no IS NULL
+                          or upper(a.regis_no) = 'NONE'
+                          or a.regis_no NOT LIKE 'N%')
+                        AND RTRIM(a.owner_country) != 'USA'
+                        AND RTRIM(a.oper_country) != 'USA'
+                        AND RTRIM(a.dprt_country) != 'USA'
+                        AND RTRIM(a.dest_country) != 'USA')
+ORDER BY ev_year, ntsb_number
 ```
 
 ```
-Aircraft Category|Accidents All|Accidents Fatal|Fatalities|
------------------+-------------+---------------+----------+
-Airplane         |         1008|            183|       321|
-Balloon          |            8|              0|          |
-Glider           |           19|              5|         5|
-Gyroplane        |            9|              4|         5|
-Helicopter       |           94|             20|        35|
-Powered parachute|            3|              0|          |
-Unknown          |            1|              1|         1|
-Weight-shift     |           10|              2|         2|
+ntsb_number|event_date             |city           |state_or_region|country   |aircraft_number|registration_number|fatal_injuries|
+-----------+-----------------------+---------------+---------------+----------+---------------+-------------------+--------------+
+ANC08TA028 |2007-12-20 00:00:00.000|McMurdo Station|               |Antarctica|              1|C-FMKB             |              |
 ```
-
-**`flight_regulation`**:
-
-```sql
-SELECT flight_regulation                          "Flight Regulation",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY flight_regulation
-ORDER BY 1
-```
-
-```
-Flight Regulation             |Accidents All|Accidents Fatal|Fatalities|
-------------------------------+-------------+---------------+----------+
-Non-U.S., non-commercial      |           11|              6|        10|
-Part 121: Air carrier         |           14|              0|         0|
-Part 133: Rotorcraft ext. load|           11|              4|         6|
-Part 135: Air taxi & commuter |           45|              7|        26|
-Part 137: Agricultural        |           50|              9|         9|
-Part 91: General aviation     |         1006|            182|       307|
-Public aircraft               |           12|              5|         7|
-Unknown                       |            3|              2|         4|
-```
-
-**`flight_schedule_type`**:
 
 ```sql
-SELECT flight_schedule_type                       "Flight Schedule Type",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY flight_schedule_type
-ORDER BY 1
+SELECT e.ev_id,
+       a.aircraft_key,
+       a.regis_no,
+       a.dprt_country,
+       a.dest_country,
+       a.owner_country,
+       a.oper_country
+FROM events e
+         INNER JOIN aircraft a ON (e.ev_id = a.ev_id)
+WHERE e.ev_year >= 2002
+  AND e.ev_year <= 2021
+  AND a.regis_no LIKE 'N%'
+  AND rtrim(a.dest_country) != 'USA'
+  AND rtrim(a.dprt_country) != 'USA'
+  AND rtrim(a.owner_country) != 'USA'
+  AND rtrim(a.oper_country) != 'USA'
 ```
 
 ```
-Flight Schedule Type|Accidents All|Accidents Fatal|Fatalities|
---------------------+-------------+---------------+----------+
-                    |         1043|            194|       326|
-Non-scheduled       |           94|             20|        38|
-Scheduled           |           15|              1|         5|
+ev_id         |aircraft_key|regis_no|dprt_country|dest_country|owner_country|oper_country|
+--------------+------------+--------+------------+------------+-------------+------------+
+20081202X25642|           1|N400SA  |BR          |BR          |BR           |BR          |
+20081230X00408|           1|N104BN  |BP          |BP          |NH           |NH          |
+20120327X14319|           1|N27TR   |AR          |AR          |AR           |AR          |
+20130305X21219|           1|N471M   |PP          |PP          |NH           |NH          |
+20140922X90145|           1|N1027G  |FR          |UK          |UK           |UK          |
+20150707X14422|           1|N642RM  |RS          |RS          |RS           |RS          |
+20150903X44600|           1|N9068F  |KR          |KR          |NH           |NH          |
+20151112X63511|           1|N692BE  |TU          |LY          |AS           |AS          |
+20160630X91359|           1|N188RU  |CO          |CO          |CO           |CO          |
+20170308X31846|           1|N805LA  |UN          |UN          |NH           |NH          |
+20170728X93637|           1|N1001R  |BR          |BR          |BR           |BR          |
+20180301X63457|           1|N3AD    |CA          |GL          |GE           |GE          |
+20180329X93928|           1|N561LC  |SZ          |UN          |UN           |UN          |
+20180813X53624|           1|N2451J  |DR          |DR          |DR           |DR          |
+20181029X14552|           1|N474CG  |GE          |SZ          |UK           |SZ          |
+20190212X72918|           1|N842CD  |FR          |FR          |FR           |FR          |
+20190708X33047|           1|N3294P  |IC          |IC          |IC           |IC          |
+20190805X10835|           1|N989AE  |CO          |CO          |CB           |CO          |
+20200924X51906|           1|N9056K  |SA          |SA          |SA           |SA          |
+20061214X01789|           1|N79KD   |AU          |GE          |UK           |GE          |
+20090512X15548|           1|N1116G  |CO          |CO          |CO           |CO          |
 ```
 
-**`purpose_of_flight`**:
-
-```sql
-SELECT purpose_of_flight                          "Purpose of Flight",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY purpose_of_flight
-ORDER BY 1
-```
-
-```
-Purpose of Flight        |Accidents All|Accidents Fatal|Fatalities|
--------------------------+-------------+---------------+----------+
-                         |           66|             13|        36|
-Aerial application       |           51|             10|        10|
-Aerial observation       |           19|              5|        17|
-Banner tow               |            4|              0|          |
-Business                 |           21|              5|        10|
-Executive/Corporate      |            7|              0|         0|
-External load            |           11|              4|         6|
-Ferry                    |            3|              1|         1|
-Firefighting             |            6|              4|         6|
-Flight test              |           18|              5|         7|
-Glider tow               |            2|              1|         1|
-Instructional            |          153|             12|        20|
-Other work use           |           11|              1|         1|
-Personal                 |          751|            149|       249|
-Positioning              |           19|              3|         3|
-Public aircraft          |            1|              0|          |
-Public aircraft - federal|            2|              0|          |
-Public aircraft - local  |            2|              1|         1|
-Public aircraft - state  |            1|              0|          |
-Skydiving                |            1|              0|          |
-Unknown                  |            3|              1|         1|
-```
-
-**`intentional_act`**:
-
-```sql
-SELECT intentional_act                            "Intentional Act",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY intentional_act
-ORDER BY 1
-```
-
-```
-Intentional Act|Accidents All|Accidents Fatal|Fatalities|
----------------+-------------+---------------+----------+
-               |         1152|            215|       369|
-```
-
-**`defining_event`**:
-
-```sql
-SELECT defining_event                             "Defining Event",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY defining_event
-ORDER BY 1
-```
-
-```
-Defining Event                       |Accidents All|Accidents Fatal|Fatalities|
--------------------------------------+-------------+---------------+----------+
-                                     |           19|              3|         3|
-Abnormal Runway Contact              |          148|              0|         0|
-Abrupt Maneuver                      |            4|              2|         4|
-Aerodrome                            |            1|              0|          |
-Bird Strike                          |            3|              1|         1|
-Cabin Safety Events                  |            1|              0|          |
-Collision on Takeoff or Landing      |           47|              4|         6|
-Controlled Flight Into Terrain       |           24|             13|        26|
-Fire - Non-Impact                    |            5|              1|         2|
-Fuel Related                         |          108|             18|        23|
-Ground Collision                     |           14|              0|         0|
-Ground Handling                      |            4|              0|          |
-Loss of Control In-Flight            |          187|             87|       136|
-Loss of Control on Ground            |          204|              3|         3|
-Loss of Lift                         |            7|              0|          |
-Low Altitude Operation               |           26|              3|         3|
-Medical Event                        |            4|              3|         3|
-Midair                               |           13|              9|        39|
-Navigation Error                     |            4|              1|         1|
-Other                                |           43|             12|        20|
-Runway Excursion                     |           28|              2|         6|
-System/Component Failure - Non-power |           46|              7|        11|
-System/Component Failure - Powerplant|          145|             18|        29|
-Turbulence Encounter                 |            8|              0|         0|
-Undershoot/Overshoot                 |           11|              0|         0|
-Unintended Flight Into IMC           |           10|              6|        16|
-Unknown                              |           32|             21|        35|
-Wildlife Encounter                   |            5|              0|         0|
-Windshear/Thunderstorm               |            1|              1|         2|
-```
-
-**`phase_of_flight`**:
-
-```sql
-SELECT phase_of_flight                            "Phase of Flight",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY phase_of_flight
-ORDER BY 1
-```
-
-```
-Phase of Flight  |Accidents All|Accidents Fatal|Fatalities|
------------------+-------------+---------------+----------+
-                 |            5|              1|         1|
-Approach         |          139|             39|        61|
-Emergency Descent|           10|              2|         6|
-Enroute          |          180|             62|       142|
-Initial Climb    |           85|             27|        41|
-Landing          |          378|              4|         4|
-Maneuvering      |          134|             50|        67|
-Standing         |           19|              0|         0|
-Takeoff          |          162|             18|        27|
-Taxi             |           21|              1|         1|
-Unknown          |           19|             11|        19|
-```
-
-#### Conclusion: TODO!
-
-```sql
-SELECT * FROM (
-SELECT 'state_or_region'                          "Type", 
-       state_or_region                            "State",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-  AND ev_state IS null
-GROUP BY state_or_region
-UNION 
-SELECT 'country'                                  "Type", 
-       country                                    "Country",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020 AND ev_state IS null
-GROUP BY country
-UNION 
-SELECT 'aircraft_number'                          "Type", 
-       aircraft_number::varchar(10)               "Aircraft Number",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY aircraft_number
-UNION 
-SELECT 'damage_level'                             "Type", 
-       damage_level                               "Damage Level",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY damage_level
-UNION 
-SELECT 'registration_number'                      "Type", 
-       registration_number                        "Registration Number",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020 AND registration_number NOT LIKE 'N%'
-GROUP BY registration_number
-UNION 
-SELECT 'aircraft_category'                        "Type", 
-       aircraft_category                          "Aircraft Category",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY aircraft_category
-UNION 
-SELECT 'flight_regulation'                        "Type", 
-       flight_regulation                          "Flight Regulation",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY flight_regulation
-UNION 
-SELECT 'flight_schedule_type'                     "Type", 
-       flight_schedule_type                       "Flight Schedule Type",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY flight_schedule_type
-UNION 
-SELECT 'purpose_of_flight'                       "Type", 
-       purpose_of_flight                          "Purpose of Flight",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY purpose_of_flight
-UNION 
-SELECT 'intentional_act'                          "Type", 
-       intentional_act::varchar(10)               "Intentional Act",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY intentional_act
-UNION 
-SELECT 'defining_event'                           "Type", 
-       defining_event                             "Defining Event",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY defining_event
-UNION 
-SELECT 'phase_of_flight'                          "Type", 
-       phase_of_flight                            "Phase of Flight",
-       count(*)                                   "Accidents All",
-       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
-       sum(fatal_injuries)                        "Fatalities"
-FROM io_ntsb_2002_2021
-WHERE ev_YEAR = 2020
-GROUP BY phase_of_flight) xx
-WHERE "Accidents All" <= 66
-  AND "Accidents Fatal" <= 10
-ORDER BY 3, 1, 2
-```
-
-```
-Type                |State                               |Accidents All|Accidents Fatal|Fatalities|
---------------------+------------------------------------+-------------+---------------+----------+
-aircraft_category   |Unknown                             |            1|              1|         1|
-country             |Afghanistan                         |            1|              0|          |
-country             |Australia                           |            1|              1|         3|
-country             |Bahamas                             |            1|              0|          |
-country             |Guadeloupe                          |            1|              0|          |
-country             |Guatemala                           |            1|              1|         1|
-country             |Iraq                                |            1|              0|          |
-country             |Ireland                             |            1|              0|          |
-country             |Mexico                              |            1|              0|          |
-country             |Romania                             |            1|              0|          |
-country             |Saudi Arabia                        |            1|              1|         1|
-defining_event      |Aerodrome                           |            1|              0|          |
-defining_event      |Cabin Safety Events                 |            1|              0|          |
-defining_event      |Windshear/Thunderstorm              |            1|              1|         2|
-purpose_of_flight   |Public aircraft                     |            1|              0|          |
-purpose_of_flight   |Public aircraft - state             |            1|              0|          |
-purpose_of_flight   |Skydiving                           |            1|              0|          |
-registration_number |CBP213                              |            1|              0|          |
-registration_number |CBP233                              |            1|              0|          |
-country             |South Africa                        |            2|              1|         1|
-purpose_of_flight   |Glider tow                          |            2|              1|         1|
-purpose_of_flight   |Public aircraft - federal           |            2|              0|          |
-purpose_of_flight   |Public aircraft - local             |            2|              1|         1|
-aircraft_category   |Powered parachute                   |            3|              0|          |
-country             |France                              |            3|              2|         5|
-defining_event      |Bird Strike                         |            3|              1|         1|
-flight_regulation   |Unknown                             |            3|              2|         4|
-purpose_of_flight   |Ferry                               |            3|              1|         1|
-purpose_of_flight   |Unknown                             |            3|              1|         1|
-country             |Germany                             |            4|              2|         3|
-damage_level        |Minor                               |            4|              0|         0|
-defining_event      |Abrupt Maneuver                     |            4|              2|         4|
-defining_event      |Ground Handling                     |            4|              0|          |
-defining_event      |Medical Event                       |            4|              3|         3|
-defining_event      |Navigation Error                    |            4|              1|         1|
-purpose_of_flight   |Banner tow                          |            4|              0|          |
-state_or_region     |Other Foreign                       |            4|              2|         3|
-state_or_region     |Puerto Rico                         |            4|              1|         2|
-country             |United States                       |            5|              1|         2|
-defining_event      |Fire - Non-Impact                   |            5|              1|         2|
-defining_event      |Wildlife Encounter                  |            5|              0|         0|
-phase_of_flight     |                                    |            5|              1|         1|
-purpose_of_flight   |Firefighting                        |            6|              4|         6|
-defining_event      |Loss of Lift                        |            7|              0|          |
-purpose_of_flight   |Executive/Corporate                 |            7|              0|         0|
-aircraft_category   |Balloon                             |            8|              0|          |
-defining_event      |Turbulence Encounter                |            8|              0|         0|
-aircraft_category   |Gyroplane                           |            9|              4|         5|
-aircraft_category   |Weight-shift                        |           10|              2|         2|
-defining_event      |Unintended Flight Into IMC          |           10|              6|        16|
-phase_of_flight     |Emergency Descent                   |           10|              2|         6|
-defining_event      |Undershoot/Overshoot                |           11|              0|         0|
-flight_regulation   |Non-U.S., non-commercial            |           11|              6|        10|
-flight_regulation   |Part 133: Rotorcraft ext. load      |           11|              4|         6|
-purpose_of_flight   |External load                       |           11|              4|         6|
-purpose_of_flight   |Other work use                      |           11|              1|         1|
-flight_regulation   |Public aircraft                     |           12|              5|         7|
-defining_event      |Midair                              |           13|              9|        39|
-aircraft_number     |2                                   |           14|              5|        20|
-defining_event      |Ground Collision                    |           14|              0|         0|
-flight_regulation   |Part 121: Air carrier               |           14|              0|         0|
-damage_level        |None                                |           15|              0|         0|
-flight_schedule_type|Scheduled                           |           15|              1|         5|
-state_or_region     |                                    |           16|              6|        11|
-purpose_of_flight   |Flight test                         |           18|              5|         7|
-aircraft_category   |Glider                              |           19|              5|         5|
-defining_event      |                                    |           19|              3|         3|
-phase_of_flight     |Standing                            |           19|              0|         0|
-purpose_of_flight   |Aerial observation                  |           19|              5|        17|
-purpose_of_flight   |Positioning                         |           19|              3|         3|
-phase_of_flight     |Taxi                                |           21|              1|         1|
-purpose_of_flight   |Business                            |           21|              5|        10|
-defining_event      |Low Altitude Operation              |           26|              3|         3|
-defining_event      |Runway Excursion                    |           28|              2|         6|
-flight_regulation   |Part 135: Air taxi & commuter       |           45|              7|        26|
-defining_event      |System/Component Failure - Non-power|           46|              7|        11|
-defining_event      |Collision on Takeoff or Landing     |           47|              4|         6|
-flight_regulation   |Part 137: Agricultural              |           50|              9|         9|
-purpose_of_flight   |Aerial application                  |           51|             10|        10|
-```
+#### Conclusion: Only events where either an aircraft with a U.S. registration number (N1 - N99999, N1A - N9999Z, N1AA - N999ZZ) is involved or the U.S. is either the departure country, destination country, owner country or operator country are considered. 

@@ -5,7 +5,7 @@
 This report is about comparing the **`IO-AVSTATS`** database to common public records for aviation accidents.  
 
 In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the NTSB published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"}.
-These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as a Microsoft Execel file.
+These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as a Microsoft Excel file.
 
 ## 1.Worksheet no. 29
 
@@ -296,7 +296,208 @@ Year|Accidents All|Accidents Fatal|Fatalities|
 
 #### Conclusion: The ominous existence of duplicates unfortunately does not explain the difference between worksheets no. 10 and no. 29.
 
-## 3.Worksheet no. 29 vs. IO-AVSTATS
+
+
+
+## 3.Worksheet no. 10 vs. IO-AVSTATS
+
+### Observation 1 - Completeness
+
+**Last checked on January 14, 2023**
+
+#### Observation: Are all events from worksheet 10 included in IO-AVSTATS-DB:
+
+```sql
+SELECT ev_year                                    "Year",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+FROM io_ntsb_2002_2021
+where ntsb_number in (select ntsb_no from io_app_aaus1982 where ev_type = 'ACC' and has_us_impact is true)
+GROUP BY ev_year
+ORDER BY ev_year
+```
+
+```
+Year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|         1836|            366|       619|
+2003|         1889|            380|       720|
+2004|         1734|            346|       648|
+2005|         1802|            340|       613|
+2006|         1623|            324|       785|
+2007|         1762|            307|       549|
+2008|         1687|            305|       593|
+2009|         1572|            285|       559|
+2010|         1527|            284|       491|
+2011|         1578|            293|       510|
+2012|         1555|            285|       456|
+2013|         1305|            237|       435|
+2014|         1302|            268|       451|
+2015|         1296|            239|       411|
+2016|         1355|            228|       427|
+2017|         1331|            212|       349|
+2018|         1366|            234|       402|
+2019|         1322|            255|       467|
+2020|         1151|            215|       369|
+2021|         1226|            219|       372|
+```
+
+```sql
+SELECT ev_year                               "Year",
+       count(*)                              "Accidents All",
+       count(*) FILTER (WHERE inj_tot_f > 0) "Accidents Fatal",
+       sum(inj_tot_f)                        "Fatalities"
+FROM io_app_aaus1982 iaa
+where ev_year >= 2002
+  AND ev_year <= 2021
+  AND ev_type = 'ACC'
+  and has_us_impact is true
+GROUP BY ev_year
+ORDER BY ev_year
+```
+
+```
+Year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|         1851|            369|       621|
+2003|         1908|            386|       722|
+2004|         1755|            354|       665|
+2005|         1809|            348|       623|
+2006|         1639|            333|       797|
+2007|         1775|            314|       574|
+2008|         1699|            318|       710|
+2009|         1635|            325|       903|
+2010|         1593|            316|      1137|
+2011|         1649|            336|       762|
+2012|         1631|            325|       718|
+2013|         1377|            281|       570|
+2014|         1353|            296|       861|
+2015|         1369|            280|       648|
+2016|         1438|            272|       661|
+2017|         1424|            279|       494|
+2018|         1496|            309|       827|
+2019|         1410|            313|       800|
+2020|         1222|            249|       597|
+2021|         1253|            227|       388|
+```
+
+```sql
+select iaa.ev_id,
+       iaa.ntsb_no,
+       iaa.ev_year,
+       iaa.country,
+       iaa.city,
+       iaa.inj_tot_f,
+       iaa.dprt_countries,
+       iaa.dest_countries,
+       iaa.regis_countries,
+       iaa.owner_countries,
+       iaa.oper_countries
+FROM io_app_aaus1982 iaa
+         LEFT OUTER JOIN io_ntsb_2002_2021 in2 ON (iaa.ntsb_no = in2.ntsb_number)
+WHERE iaa.ev_year = 2010
+  AND in2.ntsb_number IS NULL
+  AND iaa.has_us_impact IS TRUE
+  AND iaa.ev_type = 'ACC'
+ORDER BY iaa.ev_id desc
+```
+
+```
+ev_id         |ntsb_no   |ev_year|country|city                          |inj_tot_f|dprt_countries|dest_countries|regis_countries|owner_countries|oper_countries|
+--------------+----------+-------+-------+------------------------------+---------+--------------+--------------+---------------+---------------+--------------+
+20111108X10934|DCA11WA114|   2010|KE     |Vipingo Ridge                 |        1|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20110406X32218|CEN11WA269|   2010|CA     |Pickle Lake, Ontario          |        0|{CA}          |{CA}          |{NON-US}       |{USA}          |{USA}         |
+20110113X24716|ENG10RA063|   2010|HK     |Hong Kong                     |        0|{HK}          |{CH}          |{NON-US}       |{HK}           |{USA}         |
+20110107X43553|CEN11WA145|   2010|CS     |Bataan                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20101217X95411|DCA11WA013|   2010|MZ     |Maputo                        |        0|{}            |{}            |{}             |{USA}          |{MZ}          |
+20101213X72824|CEN11WA107|   2010|UK     |Finningley                    |        0|{UK}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+20101213X65626|CEN11WA105|   2010|FR     |Tourrettes-sur-Loup           |        2|{FR}          |{FR}          |{NON-US}       |{USA}          |{USA}         |
+20101213X14827|ERA11WA086|   2010|CI     |Taltal                        |        1|{CI}          |{CI}          |{NON-US}       |{USA}          |{CI}          |
+20101206X53337|CEN11WA096|   2010|SP     |Alcora                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20101206X04031|CEN11WA094|   2010|SW     |Linköping                     |        1|{SW}          |{SW}          |{NON-US}       |{USA}          |{USA}         |
+20101130X61641|ERA11WA075|   2010|BR     |Tapurah City                  |        1|{BR}          |{BR}          |{NON-US}       |{USA}          |{USA}         |
+20101126X14552|ERA11WA073|   2010|PE     |Andahuayias                   |        0|{PE}          |{PE}          |{NON-US}       |{USA}          |{PE}          |
+20101125X11507|WPR11FA059|   2010|USA    |Hollister                     |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{AS}          |
+20101123X92602|CEN11WA080|   2010|PL     |Sekowice                      |        2|{GE}          |{GE}          |{NON-US}       |{USA}          |{USA}         |
+20101122X00226|ERA11WA068|   2010|PE     |Huanuco                       |        0|{PE}          |{PE}          |{USA}          |{USA}          |{PE}          |
+20101116X32303|DCA11WA008|   2010|PK     |Karachi                       |       21|{PK}          |{USA}         |{NON-US}       |{PK}           |{PK}          |
+20101116X12908|WPR11LA049|   2010|USA    |Marana                        |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+20101115X31938|CEN11WA070|   2010|MX     |Minatitlan Veracruz           |        8|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20101110X42226|WPR11WA043|   2010|AS     |Rolleston, Australia          |        1|{AS}          |{AS}          |{NON-US}       |{USA}          |{USA}         |
+20101108X91241|CEN11CA059|   2010|USA    |Breakenridge                  |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+20101031X30917|ERA11LA044|   2010|USA    |Fort Lauderdale               |        0|{CA}          |{USA}         |{NON-US}       |{CA}           |{CA}          |
+20101025X42125|WPR11CA028|   2010|USA    |Wells                         |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+20101020X41300|WPR11WA020|   2010|AS     |Durham Downs, Australia       |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20101012X13907|CEN11WA013|   2010|MX     |Veracruz                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20101004X40949|ENG10WA057|   2010|RS     |Izhma                         |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20101004X24052|DCA11WA002|   2010|UK     |Bristol                       |        0|{MX}          |{UK}          |{NON-US}       |{USA}          |{UK}          |
+20101001X32228|ENG10RA056|   2010|AF     |Shakar Darah District         |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100930X30111|DCA10WA101|   2010|VE     |Cuidad Guayana                |        0|{VE}          |{USA}         |{NON-US}       |{USA}          |{VE}          |
+20100929X01447|CEN10WA574|   2010|MX     |Tuxtlas                       |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100928X21707|CEN10CA570|   2010|USA    |Sarcoxie                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100919X72723|ERA10LA488|   2010|USA    |Halifax                       |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100919X42634|WPR10WA460|   2010|AS     |Geraldton Aerodrome, Australia|        1|{USA}         |{USA}         |{NON-US}       |{AU}           |{AU}          |
+20100918X12923|CEN10WA546|   2010|HO     |San Pedro Sula                |        1|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100916X85029|CEN10CA541|   2010|USA    |Mineola                       |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100914X01342|CEN10WA538|   2010|UK     |Ryde                          |        2|{UK,UK}       |{UK,UK}       |{NON-US,NON-US}|{UK,USA}       |{UK,USA}      |
+20100912X75605|CEN10WA534|   2010|GP     |Pointe a Pitre                |        0|{GP}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100901X85159|CEN10RA511|   2010|CS     |San Jose                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100901X65026|DCA10WA091|   2010|UK     |London                        |        0|{NO}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+20100901X11325|WPR10WA443|   2010|PP     |Bugoiya                       |        4|{PP}          |{PP}          |{NON-US}       |{USA}          |{PP}          |
+20100901X01739|DCA10FA090|   2010|USA    |Dulles                        |        0|{UK}          |{USA}         |{NON-US}       |{UK}           |{USA}         |
+20100825X10814|DCA10WA087|   2010|CH     |Yichun                        |       42|{CH}          |{CH}          |{NON-US}       |{USA}          |{USA}         |
+20100817X40515|ERA10WA430|   2010|AR     |Mercedes                      |        0|{AR}          |{AR}          |{NON-US}       |{USA}          |{USA}         |
+20100803X33417|DCA10WA081|   2010|PK     |Islamabad                     |      157|{PK}          |{PK}          |{NON-US}       |{USA}          |{PK}          |
+20100730X85358|DCA10WA080|   2010|GV     |Conakry                       |        0|{}            |{}            |{}             |{USA}          |{MR}          |
+20100721X34052|DCA10RA079|   2010|SA     |Riyadh                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100714X03542|DCA10WA074|   2010|SP     |Girona                        |        0|{SP}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+20100708X84328|CEN10WA374|   2010|MX     |Piedras Negras                |        8|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100630X72411|ERA10WA340|   2010|CI     |San Felipe                    |        0|{CI}          |{CI}          |{NON-US}       |{USA}          |{USA}         |
+20100627X20107|CEN10RA345|   2010|MX     |Campeche                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100624X50945|WPR10WA309|   2010|AS     |Broken Hill                   |        1|{AS}          |{AS}          |{NON-US}       |{AS}           |{USA}         |
+20100623X13907|DCA10WA070|   2010|CF     |Dima                          |       11|{}            |{}            |{}             |{USA}          |{CF}          |
+20100621X12612|CEN10WA331|   2010|NO     |Sirdal                        |        0|{NO}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100615X95126|DCA10WA068|   2010|SF     |Johannesburg                  |        0|{}            |{}            |{NON-US}       |{USA}          |{SF}          |
+20100614X12305|CEN10RA319|   2010|MX     |Felipe Carrillo Puerto        |        9|{MX}          |{USA}         |{NON-US}       |{MX}           |{MX}          |
+20100603X92434|CEN10WA293|   2010|GE     |Bielefeld                     |        4|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100603X85900|CEN10WA292|   2010|FI     |Emäsalo                       |        1|{}            |{}            |{NON-US}       |{FI}           |{USA}         |
+20100522X50538|DCA10RA063|   2010|IN     |Manglaore                     |      158|{}            |{}            |{NON-US}       |{USA}          |{IN}          |
+20100521X23753|WPR10WA249|   2010|AS     |Traralgon, Australia          |        1|{AS}          |{AS}          |{NON-US}       |{AS}           |{USA}         |
+20100519X65147|ERA10WA272|   2010|BR     |Manaus                        |        6|{BR}          |{BR}          |{NON-US}       |{USA}          |{BR}          |
+20100519X44533|WPR10WA245|   2010|RP     |Lucena City, Philippines      |        4|{RP}          |{RP}          |{NON-US}       |{RP}           |{USA}         |
+20100516X61819|ERA10LA267|   2010|USA    |Clearwater                    |        0|{USA}         |{HA}          |{NON-US}       |{MX}           |{MX}          |
+20100512X53621|DCA10RA059|   2010|LY     |Tripoli                       |      103|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100511X23826|CEN10WA248|   2010|UK     |Old Buckenham                 |        1|{GE}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100511X03836|DCA10WA057|   2010|CO     |Mitu                          |        0|{CO}          |{CO}          |{NON-US}       |{CO}           |{USA}         |
+20100503X31325|CEN10LA234|   2010|USA    |Haysville                     |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100503X01600|ERA10WA252|   2010|BR     |Resende                       |        2|{BR}          |{BR}          |{NON-US}       |{USA}          |{BR}          |
+20100429X00503|ENG10RA025|   2010|RS     |Smolensk                      |       89|{PL}          |{RS}          |{NON-US}       |{USA}          |{USA}         |
+20100428X20315|CEN10CA229|   2010|USA    |Amarillo                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100414X92635|DCA10RA053|   2010|MX     |Monterrey                     |        5|{MX}          |{MX}          |{NON-US}       |{USA}          |{USA}         |
+20100414X90838|DCA10WA051|   2010|ID     |Manokwari                     |        0|{ID}          |{ID}          |{NON-US}       |{USA}          |{ID}          |
+20100414X53531|CEN10WA205|   2010|GT     |Guatemala City                |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100414X14446|ENG10RA022|   2010|AS     |Darwin Aerodrome              |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100413X85237|ERA10WA226|   2010|IT     |Vigne                         |        3|{IT}          |{AU}          |{NON-US}       |{USA}          |{USA}         |
+20100412X43956|DCA10WA050|   2010|WA     |Wlotzkasbaken                 |        1|{}            |{}            |{}             |{USA}          |{USA}         |
+20100412X21857|DCA10WA049|   2010|FR     |Paris                         |        0|{HK}          |{FR}          |{NON-US}       |{USA}          |{USA}         |
+20100409X22252|WPR10RA197|   2010|MY     |Kota Bahru                    |        0|{MY}          |{MY}          |{NON-US}       |{USA}          |{USA}         |
+20100405X44344|DCA10WA045|   2010|CF     |Kinshasa                      |        0|{}            |{}            |{}             |{CF}           |{USA}         |
+20100323X54139|WPR10LA174|   2010|USA    |Hollister                     |        0|{USA}         |{USA}         |{NON-US}       |{AS}           |{AS}          |
+20100312X94247|CEN10WA153|   2010|FR     |Chambery                      |        1|{FR}          |{FR}          |{NON-US}       |{SZ}           |{USA}         |
+20100305X54655|DCA10WA036|   2010|TW     |Taipai                        |        0|{USA}         |{TW}          |{NON-US}       |{TW}           |{TW}          |
+20100203X01641|CEN10WA112|   2010|NL     |Schiphol                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+20100129X92638|DCA10WA025|   2010|LU     |Luxembourg                    |        0|{SP}          |{LU}          |{NON-US}       |{USA}          |{USA}         |
+20100119X95202|ERA10LA119|   2010|USA    |Palmetto                      |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100118X42210|WPR10WA114|   2010|PW     |Palau International Airport   |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+20100111X10557|CEN10LA093|   2010|USA    |Eagle                         |        0|{USA}         |{MX}          |{NON-US}       |{MX}           |{MX}          |
+```
+
+#### Conclusion: IO-AVSTATS-DB always contains more events than are included in Worksheet no. 10!
+
+<kbd>![](img/table_10-io-avstats-db.png)</kbd>
+
+## 4.Worksheet no. 29 vs. IO-AVSTATS
 
 ### Observation 1 - Missing in IO-AVSTATS
 

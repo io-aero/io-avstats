@@ -1,0 +1,1557 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Accident Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/data_analyis_io_ntsb_2002_2021.html">
+      
+      
+        <link rel="prev" href="data_analyis_ntsb_accident_data.html">
+      
+      
+        <link rel="next" href="data_analyis_aaus1982.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.4">
+    
+    
+      
+        <title>DB Table io_ntsb_2002_2021 - IO-AVSTATS - Aviation Accident Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.9c788c91.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-analysis-db-table-io_ntsb_2002_2021" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Accident Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DB Table io_ntsb_2002_2021
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Accident Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Accident Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Accident Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Setup" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" tabindex="0" aria-expanded="false">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Configuration" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" tabindex="0" aria-expanded="true">
+          Data Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Data Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Data Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_analyis_ntsb_accident_data.html" class="md-nav__link">
+        Aviation Accident Data Sets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DB Table io_ntsb_2002_2021
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data_analyis_io_ntsb_2002_2021.html" class="md-nav__link md-nav__link--active">
+        DB Table io_ntsb_2002_2021
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1worksheet-no-29" class="md-nav__link">
+    1.Worksheet no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="1.Worksheet no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-fatalities" class="md-nav__link">
+    Observation 1 - Fatalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-incidents" class="md-nav__link">
+    Observation 2 - Incidents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-3-duplicates-1" class="md-nav__link">
+    Observation 3 - Duplicates 1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-4-duplicates-2" class="md-nav__link">
+    Observation 4 - Duplicates 2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2worksheet-no-10-vs-no-29" class="md-nav__link">
+    2.Worksheet no. 10 vs. no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="2.Worksheet no. 10 vs. no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-duplicates" class="md-nav__link">
+    Observation 2 - Duplicates
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3worksheet-no-10-vs-io-avstats" class="md-nav__link">
+    3.Worksheet no. 10 vs. IO-AVSTATS
+  </a>
+  
+    <nav class="md-nav" aria-label="3.Worksheet no. 10 vs. IO-AVSTATS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness_1" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4worksheet-no-29-vs-io-avstats" class="md-nav__link">
+    4.Worksheet no. 29 vs. IO-AVSTATS
+  </a>
+  
+    <nav class="md-nav" aria-label="4.Worksheet no. 29 vs. IO-AVSTATS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-missing-in-io-avstats" class="md-nav__link">
+    Observation 1 - Missing in IO-AVSTATS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-missing-in-worksheet" class="md-nav__link">
+    Observation 2 - Missing in Worksheet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-3-non-us-aircraft-registration-number" class="md-nav__link">
+    Observation 3 - Non-US aircraft registration number
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_analyis_aaus1982.html" class="md-nav__link">
+        DB View aaus1982
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          How to ...
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How to ..." data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How to ...
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
+        ... add NTSB accident files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        ... create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
+        ... set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        ... update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
+          Release Documents
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Release Documents" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Release Documents
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_notes.html" class="md-nav__link">
+        Release Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_history.html" class="md-nav__link">
+        Release History
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_schedule.html" class="md-nav__link">
+        Release Schedule
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1worksheet-no-29" class="md-nav__link">
+    1.Worksheet no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="1.Worksheet no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-fatalities" class="md-nav__link">
+    Observation 1 - Fatalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-incidents" class="md-nav__link">
+    Observation 2 - Incidents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-3-duplicates-1" class="md-nav__link">
+    Observation 3 - Duplicates 1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-4-duplicates-2" class="md-nav__link">
+    Observation 4 - Duplicates 2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2worksheet-no-10-vs-no-29" class="md-nav__link">
+    2.Worksheet no. 10 vs. no. 29
+  </a>
+  
+    <nav class="md-nav" aria-label="2.Worksheet no. 10 vs. no. 29">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-duplicates" class="md-nav__link">
+    Observation 2 - Duplicates
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3worksheet-no-10-vs-io-avstats" class="md-nav__link">
+    3.Worksheet no. 10 vs. IO-AVSTATS
+  </a>
+  
+    <nav class="md-nav" aria-label="3.Worksheet no. 10 vs. IO-AVSTATS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-completeness_1" class="md-nav__link">
+    Observation 1 - Completeness
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4worksheet-no-29-vs-io-avstats" class="md-nav__link">
+    4.Worksheet no. 29 vs. IO-AVSTATS
+  </a>
+  
+    <nav class="md-nav" aria-label="4.Worksheet no. 29 vs. IO-AVSTATS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observation-1-missing-in-io-avstats" class="md-nav__link">
+    Observation 1 - Missing in IO-AVSTATS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-2-missing-in-worksheet" class="md-nav__link">
+    Observation 2 - Missing in Worksheet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-3-non-us-aircraft-registration-number" class="md-nav__link">
+    Observation 3 - Non-US aircraft registration number
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="data-analysis-db-table-io_ntsb_2002_2021">Data Analysis: DB Table <strong><code>io_ntsb_2002_2021</code></strong></h1>
+<p><strong>Note</strong>: The <strong><code>IO-AVSTATS</code></strong> database used here contains NTSB aircraft accident data as of January 1, 2023.</p>
+<p>This report is about comparing the <strong><code>IO-AVSTATS</code></strong> database to common public records for aviation accidents.  </p>
+<p>In the November 17, 2021, news release <a href="https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx" target="_blank">U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020</a>, the NTSB published, among other things, the <a href="https://www.ntsb.gov/safety/Pages/research.aspx" target="_blank">US Civil Aviation Accident Statistics</a>.
+These are available on this website at this <a href="https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx" target="_blank">link</a> as a Microsoft Excel file.</p>
+<h2 id="1worksheet-no-29">1.Worksheet no. 29</h2>
+<p>Worksheet no. 29 obviously contains the detailed events underlying the statistics in the previous worksheets.
+Now, in order to make the data in the <strong><code>IO-AVSTATS</code></strong> database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the <strong><code>IO-AVSTATS</code></strong> database as database table <strong><code>io_ntsb_2002_2021</code></strong>, unchanged.</p>
+<h3 id="observation-1-fatalities">Observation 1 - Fatalities</h3>
+<h4 id="observation-discrepancy-between-fatal-injuries-and-highest-injury-level">Observation: Discrepancy between <code>Fatal Injuries</code> and <code>Highest Injury Level</code>:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                                </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">             </span><span class="ss">&quot;Accidents Fatal 2&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Year|Accidents Fatal 1|Accidents Fatal 2|
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>----+-----------------+-----------------+
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2008|              298|              305|
+</code></pre></div>
+<h4 id="events-affected-table-29">Events affected - Table 29:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="p">,</span><span class="w"> </span><span class="n">highest_injury_level</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">highest_injury_level</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;Fatal&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ntsb_number|event_date             |fatal_injuries|highest_injury_level|
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----------+-----------------------+--------------+--------------------+
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ANC09FA001 |2008-10-01 00:00:00.000|             2|                    |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>DFW08FA237 |2008-09-28 00:00:00.000|             2|                    |
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>LAX08FA300 |2008-09-28 00:00:00.000|             1|                    |
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>MIA08MA203 |2008-09-27 00:00:00.000|             4|                    |
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>NYC08FA319 |2008-09-23 00:00:00.000|             1|                    |
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>NYC08FA324 |2008-09-26 00:00:00.000|             1|                    |
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>NYC08LA322 |2008-09-23 00:00:00.000|             1|                    |
+</code></pre></div>
+<h4 id="this-problem-does-not-occur-in-the-io-avstats-database">This problem does not occur in the <strong><code>IO-AVSTATS</code></strong> database!</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">inj_f_grnd</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="p">,</span><span class="w"> </span><span class="n">ev_highest_injury</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">inj_f_grnd</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_highest_injury</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;FATL&#39;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ntsb_no|ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>-------+-------+----------+---------+-----------------+
+</code></pre></div>
+<h4 id="the-corrupted-data-in-the-ms-excel-file-looks-correct-in-the-io-avstats-database">The corrupted data in the MS Excel file looks correct in the <strong><code>IO-AVSTATS</code></strong> database:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">inj_f_grnd</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="p">,</span><span class="w"> </span><span class="n">ev_highest_injury</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_no</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">          </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;NYC08FA319&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">              </span><span class="s1">&#39;NYC08LA322&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">              </span><span class="s1">&#39;NYC08FA324&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">              </span><span class="s1">&#39;MIA08MA203&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">              </span><span class="s1">&#39;DFW08FA237&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">              </span><span class="s1">&#39;LAX08FA300&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">              </span><span class="s1">&#39;ANC09FA001&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_no</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ntsb_no   |ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>----------+-------+----------+---------+-----------------+
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>ANC09FA001|   2008|         0|        2|FATL             |
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>DFW08FA237|   2008|         0|        2|FATL             |
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>LAX08FA300|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>MIA08MA203|   2008|         0|        4|FATL             |
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>NYC08FA319|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>NYC08FA324|   2008|         0|        1|FATL             |
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>NYC08LA322|   2008|         0|        1|FATL             |
+</code></pre></div>
+<h4 id="conclusion-the-highest-injury-level-column-in-the-ms-excel-file-cannot-be-used-to-determine-fatalities">Conclusion: The <code>Highest Injury Level</code> column in the MS Excel file cannot be used to determine fatalities!</h4>
+<h3 id="observation-2-incidents">Observation 2 - Incidents</h3>
+<h4 id="observation-if-the-worksheet-no-29-also-contains-events-of-type-inc-incident">Observation: If the worksheet no. 29+ also contains events of type <strong><code>INC</code></strong> (incident):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;INC&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ntsb_number|event_date|
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>-----------+----------+
+</code></pre></div>
+<h4 id="conclusion-worksheet-no-29-does-not-contain-any-events-of-type-inc">Conclusion: Worksheet no. 29 does not contain any events of type <strong><code>INC</code></strong>!</h4>
+<h3 id="observation-3-duplicates-1">Observation 3 - Duplicates 1</h3>
+<h4 id="observation-are-more-than-1-line-included-for-the-same-ntsb-number">Observation: Are more than 1 line included for the same <strong><code>NTSB Number</code></strong>:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="n">ntsb_number</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">      </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">g</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>count|
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>-----+
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  336|
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span><span class="w"> </span><span class="n">state_or_region</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="n">country</span><span class="p">,</span><span class="w"> </span><span class="n">fatal_injuries</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in3</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">                      </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">                      </span><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_number</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ntsb_number|event_date             |state_or_region     |city                       |country      |fatal_injuries|
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>-----------+-----------------------+--------------------+---------------------------+-------------+--------------+
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>ANC02LA053 |2002-06-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>ANC02LA053 |2002-06-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>ANC02LA086 |2002-07-30 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>ANC02LA086 |2002-07-30 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>ANC02LA098 |2002-08-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>ANC02LA098 |2002-08-19 00:00:00.000|Alaska              |Ketchikan                  |United States|              |
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>ANC03LA005 |2002-10-22 00:00:00.000|Alaska              |BETHEL                     |United States|              |
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>ANC03LA005 |2002-10-22 00:00:00.000|Alaska              |BETHEL                     |United States|              |
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>ANC04FA016 |2003-12-28 00:00:00.000|Arizona             |Peoria                     |United States|             4|
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>ANC04FA016 |2003-12-28 00:00:00.000|Arizona             |Peoria                     |United States|             4|
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>ANC06FA048 |2006-04-23 00:00:00.000|Alaska              |Chugiak                    |United States|             5|
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>ANC06FA048 |2006-04-23 00:00:00.000|Alaska              |Chugiak                    |United States|             5|
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>ANC08LA106 |2008-08-18 00:00:00.000|Alaska              |Bethel                     |United States|              |
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>ANC08LA106 |2008-08-18 00:00:00.000|Alaska              |Bethel                     |United States|              |
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>ANC09LA004 |2008-10-07 00:00:00.000|Alaska              |Bethel                     |United States|              |
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>ANC09LA004 |2008-10-07 00:00:00.000|Alaska              |Bethel                     |United States|              |
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>ANC09LA011 |2008-11-14 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>ANC09LA011 |2008-11-14 00:00:00.000|Alaska              |Fairbanks                  |United States|              |
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>ANC10LA094 |2010-09-15 00:00:00.000|Alaska              |Dillingham                 |United States|              |
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>ANC10LA094 |2010-09-15 00:00:00.000|Alaska              |Dillingham                 |United States|              |
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>ANC11FA062 |2011-07-10 00:00:00.000|Alaska              |Port Alsworth              |United States|              |
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>ANC11FA062 |2011-07-10 00:00:00.000|Alaska              |Port Alsworth              |United States|              |
+</code></pre></div>
+<h4 id="conclusion-there-are-336-events-with-more-than-1-line-included-in-worksheet-29">Conclusion: There are 336 events with more than 1 line included in worksheet 29.</h4>
+<h3 id="observation-4-duplicates-2">Observation 4 - Duplicates 2</h3>
+<h4 id="observation-how-many-lines-are-there-in-the-events-with-multiple-lines">Observation: How many lines are there in the events with multiple lines:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">desc</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>count|ntsb_number|ev_year|
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>-----+-----------+-------+
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    3|CEN10FA115 |   2010|
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    2|ERA11CA296 |   2011|
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    2|WPR12CA163 |   2012|
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    2|MIA04FA043 |   2004|
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    2|LAX08FA265 |   2008|
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    2|NYC07LA209 |   2007|
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    2|ERA09TA466 |   2009|
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    2|GAA19CA346 |   2019|
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    2|SEA07FA264 |   2007|
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    2|DCA15CA012 |   2014|
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    2|ANC02LA086 |   2002|
+</code></pre></div>
+<h4 id="conclusion-only-in-2010-there-is-an-event-with-3-lines-otherwise-there-are-always-2-lines">Conclusion: Only in 2010 there is an event with 3 lines, otherwise there are always 2 lines.</h4>
+<h2 id="2worksheet-no-10-vs-no-29">2.Worksheet no. 10 vs. no. 29</h2>
+<p><a href="img/AviationAccidentStatistics_2002-2021_20221208.pdf" target="_blank">Worksheet no. 10</a></p>
+<h3 id="observation-1-completeness">Observation 1 - Completeness</h3>
+<h4 id="observation-are-all-events-from-worksheet-29-included-in-worksheet-10">Observation: Are all events from worksheet 29 included in worksheet 10:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                    </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Year|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>----+-------------+---------------+----------+
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>2002|         1837|            367|       624|
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>2003|         1890|            381|       723|
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>2004|         1735|            346|       648|
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>2005|         1804|            340|       613|
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>2006|         1626|            326|       787|
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>2007|         1765|            308|       551|
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>2008|         1688|            305|       593|
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>2009|         1572|            285|       559|
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>2010|         1527|            284|       491|
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>2011|         1578|            293|       510|
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>2012|         1556|            285|       456|
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>2013|         1306|            238|       436|
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>2014|         1302|            268|       451|
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>2015|         1296|            239|       411|
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>2016|         1355|            228|       427|
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>2017|         1331|            212|       349|
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>2018|         1366|            234|       402|
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>2019|         1322|            255|       467|
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>2020|         1152|            215|       369|
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>2021|         1233|            221|       378|
+</code></pre></div>
+<h4 id="conclusion-worksheet-no-29-always-contains-more-events-than-are-included-in-worksheet-no-10">Conclusion: Worksheet no. 29 always contains more events than are included in Worksheet no. 10!</h4>
+<p><kbd><img alt="" src="img/table_10-table_29.png" /></kbd></p>
+<h3 id="observation-2-duplicates">Observation 2 - Duplicates</h3>
+<h4 id="observation-look-for-reasons-for-the-discrepancies">Observation: Look for reasons for the discrepancies:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                    </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">                      </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ntsb_number</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">                      </span><span class="k">HAVING</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Year|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>----+-------------+---------------+----------+
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>2002|           30|              8|        16|
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>2003|           42|             16|        48|
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>2004|           32|             14|        22|
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>2005|           46|             12|        24|
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>2006|           30|             10|        26|
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>2007|           38|             10|        22|
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>2008|           56|             12|        50|
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>2009|           28|             12|        36|
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>2010|           39|             11|        25|
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>2011|           42|             14|        22|
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>2012|           32|              8|        12|
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>2013|           20|              6|        14|
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>2014|           24|             10|        18|
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>2015|           30|              2|        10|
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>2016|           38|             14|        38|
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>2017|           28|              2|         4|
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>2018|           38|              6|        14|
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>2019|           40|             10|        24|
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>2020|           24|             10|        40|
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>2021|           16|              2|         4|
+</code></pre></div>
+<h4 id="conclusion-the-ominous-existence-of-duplicates-unfortunately-does-not-explain-the-difference-between-worksheets-no-10-and-no-29">Conclusion: The ominous existence of duplicates unfortunately does not explain the difference between worksheets no. 10 and no. 29.</h4>
+<h2 id="3worksheet-no-10-vs-io-avstats">3.Worksheet no. 10 vs. IO-AVSTATS</h2>
+<h3 id="observation-1-completeness_1">Observation 1 - Completeness</h3>
+<p><strong>Last checked on January 14, 2023</strong></p>
+<h4 id="observation-are-all-events-from-worksheet-10-included-in-io-avstats-db">Observation: Are all events from worksheet 10 included in IO-AVSTATS-DB:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                                    </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                                   </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="k">where</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span><span class="p">)</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Year|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>----+-------------+---------------+----------+
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>2002|         1836|            366|       619|
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>2003|         1889|            380|       720|
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>2004|         1734|            346|       648|
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>2005|         1802|            340|       613|
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>2006|         1623|            324|       785|
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>2007|         1762|            307|       549|
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>2008|         1687|            305|       593|
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>2009|         1572|            285|       559|
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>2010|         1527|            284|       491|
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>2011|         1578|            293|       510|
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>2012|         1555|            285|       456|
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>2013|         1305|            237|       435|
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>2014|         1302|            268|       451|
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>2015|         1296|            239|       411|
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>2016|         1355|            228|       427|
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>2017|         1331|            212|       349|
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>2018|         1366|            234|       402|
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>2019|         1322|            255|       467|
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>2020|         1151|            215|       369|
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>2021|         1226|            219|       372|
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_year</span><span class="w">                               </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                              </span><span class="ss">&quot;Accidents All&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">inj_tot_f</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">inj_tot_f</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="k">where</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Year|Accidents All|Accidents Fatal|Fatalities|
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>----+-------------+---------------+----------+
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>2002|         1851|            369|       621|
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>2003|         1908|            386|       722|
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>2004|         1755|            354|       665|
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>2005|         1809|            348|       623|
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>2006|         1639|            333|       797|
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>2007|         1775|            314|       574|
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>2008|         1699|            318|       710|
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>2009|         1635|            325|       903|
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>2010|         1593|            316|      1137|
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>2011|         1649|            336|       762|
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>2012|         1631|            325|       718|
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>2013|         1377|            281|       570|
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>2014|         1353|            296|       861|
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>2015|         1369|            280|       648|
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>2016|         1438|            272|       661|
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>2017|         1424|            279|       494|
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>2018|         1496|            309|       827|
+<a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>2019|         1410|            313|       800|
+<a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>2020|         1222|            249|       597|
+<a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a>2021|         1253|            227|       388|
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">select</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_id</span><span class="p">,</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">ntsb_no</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_year</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">country</span><span class="p">,</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">city</span><span class="p">,</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">inj_tot_f</span><span class="p">,</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">dprt_countries</span><span class="p">,</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">dest_countries</span><span class="p">,</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">regis_countries</span><span class="p">,</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">owner_countries</span><span class="p">,</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">       </span><span class="n">iaa</span><span class="p">.</span><span class="n">oper_countries</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_app_aaus1982</span><span class="w"> </span><span class="n">iaa</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="w">         </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">iaa</span><span class="p">.</span><span class="n">ntsb_no</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in2</span><span class="p">.</span><span class="n">ntsb_number</span><span class="p">)</span>
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2010</span>
+<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">in2</span><span class="p">.</span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">TRUE</span>
+<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_id</span><span class="w"> </span><span class="k">desc</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>ev_id         |ntsb_no   |ev_year|country|city                          |inj_tot_f|dprt_countries|dest_countries|regis_countries|owner_countries|oper_countries|
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>--------------+----------+-------+-------+------------------------------+---------+--------------+--------------+---------------+---------------+--------------+
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>20111108X10934|DCA11WA114|   2010|KE     |Vipingo Ridge                 |        1|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>20110406X32218|CEN11WA269|   2010|CA     |Pickle Lake, Ontario          |        0|{CA}          |{CA}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>20110113X24716|ENG10RA063|   2010|HK     |Hong Kong                     |        0|{HK}          |{CH}          |{NON-US}       |{HK}           |{USA}         |
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>20110107X43553|CEN11WA145|   2010|CS     |Bataan                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>20101217X95411|DCA11WA013|   2010|MZ     |Maputo                        |        0|{}            |{}            |{}             |{USA}          |{MZ}          |
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>20101213X72824|CEN11WA107|   2010|UK     |Finningley                    |        0|{UK}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>20101213X65626|CEN11WA105|   2010|FR     |Tourrettes-sur-Loup           |        2|{FR}          |{FR}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>20101213X14827|ERA11WA086|   2010|CI     |Taltal                        |        1|{CI}          |{CI}          |{NON-US}       |{USA}          |{CI}          |
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>20101206X53337|CEN11WA096|   2010|SP     |Alcora                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>20101206X04031|CEN11WA094|   2010|SW     |Linköping                     |        1|{SW}          |{SW}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>20101130X61641|ERA11WA075|   2010|BR     |Tapurah City                  |        1|{BR}          |{BR}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>20101126X14552|ERA11WA073|   2010|PE     |Andahuayias                   |        0|{PE}          |{PE}          |{NON-US}       |{USA}          |{PE}          |
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>20101125X11507|WPR11FA059|   2010|USA    |Hollister                     |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{AS}          |
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>20101123X92602|CEN11WA080|   2010|PL     |Sekowice                      |        2|{GE}          |{GE}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>20101122X00226|ERA11WA068|   2010|PE     |Huanuco                       |        0|{PE}          |{PE}          |{USA}          |{USA}          |{PE}          |
+<a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>20101116X32303|DCA11WA008|   2010|PK     |Karachi                       |       21|{PK}          |{USA}         |{NON-US}       |{PK}           |{PK}          |
+<a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>20101116X12908|WPR11LA049|   2010|USA    |Marana                        |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+<a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>20101115X31938|CEN11WA070|   2010|MX     |Minatitlan Veracruz           |        8|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>20101110X42226|WPR11WA043|   2010|AS     |Rolleston, Australia          |        1|{AS}          |{AS}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a>20101108X91241|CEN11CA059|   2010|USA    |Breakenridge                  |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+<a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>20101031X30917|ERA11LA044|   2010|USA    |Fort Lauderdale               |        0|{CA}          |{USA}         |{NON-US}       |{CA}           |{CA}          |
+<a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>20101025X42125|WPR11CA028|   2010|USA    |Wells                         |        0|{USA}         |{USA}         |{NON-US}       |{CA}           |{CA}          |
+<a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a>20101020X41300|WPR11WA020|   2010|AS     |Durham Downs, Australia       |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-26" name="__codelineno-25-26" href="#__codelineno-25-26"></a>20101012X13907|CEN11WA013|   2010|MX     |Veracruz                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-27" name="__codelineno-25-27" href="#__codelineno-25-27"></a>20101004X40949|ENG10WA057|   2010|RS     |Izhma                         |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-28" name="__codelineno-25-28" href="#__codelineno-25-28"></a>20101004X24052|DCA11WA002|   2010|UK     |Bristol                       |        0|{MX}          |{UK}          |{NON-US}       |{USA}          |{UK}          |
+<a id="__codelineno-25-29" name="__codelineno-25-29" href="#__codelineno-25-29"></a>20101001X32228|ENG10RA056|   2010|AF     |Shakar Darah District         |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-30" name="__codelineno-25-30" href="#__codelineno-25-30"></a>20100930X30111|DCA10WA101|   2010|VE     |Cuidad Guayana                |        0|{VE}          |{USA}         |{NON-US}       |{USA}          |{VE}          |
+<a id="__codelineno-25-31" name="__codelineno-25-31" href="#__codelineno-25-31"></a>20100929X01447|CEN10WA574|   2010|MX     |Tuxtlas                       |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-32" name="__codelineno-25-32" href="#__codelineno-25-32"></a>20100928X21707|CEN10CA570|   2010|USA    |Sarcoxie                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-33" name="__codelineno-25-33" href="#__codelineno-25-33"></a>20100919X72723|ERA10LA488|   2010|USA    |Halifax                       |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-34" name="__codelineno-25-34" href="#__codelineno-25-34"></a>20100919X42634|WPR10WA460|   2010|AS     |Geraldton Aerodrome, Australia|        1|{USA}         |{USA}         |{NON-US}       |{AU}           |{AU}          |
+<a id="__codelineno-25-35" name="__codelineno-25-35" href="#__codelineno-25-35"></a>20100918X12923|CEN10WA546|   2010|HO     |San Pedro Sula                |        1|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-36" name="__codelineno-25-36" href="#__codelineno-25-36"></a>20100916X85029|CEN10CA541|   2010|USA    |Mineola                       |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-37" name="__codelineno-25-37" href="#__codelineno-25-37"></a>20100914X01342|CEN10WA538|   2010|UK     |Ryde                          |        2|{UK,UK}       |{UK,UK}       |{NON-US,NON-US}|{UK,USA}       |{UK,USA}      |
+<a id="__codelineno-25-38" name="__codelineno-25-38" href="#__codelineno-25-38"></a>20100912X75605|CEN10WA534|   2010|GP     |Pointe a Pitre                |        0|{GP}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-39" name="__codelineno-25-39" href="#__codelineno-25-39"></a>20100901X85159|CEN10RA511|   2010|CS     |San Jose                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-40" name="__codelineno-25-40" href="#__codelineno-25-40"></a>20100901X65026|DCA10WA091|   2010|UK     |London                        |        0|{NO}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-41" name="__codelineno-25-41" href="#__codelineno-25-41"></a>20100901X11325|WPR10WA443|   2010|PP     |Bugoiya                       |        4|{PP}          |{PP}          |{NON-US}       |{USA}          |{PP}          |
+<a id="__codelineno-25-42" name="__codelineno-25-42" href="#__codelineno-25-42"></a>20100901X01739|DCA10FA090|   2010|USA    |Dulles                        |        0|{UK}          |{USA}         |{NON-US}       |{UK}           |{USA}         |
+<a id="__codelineno-25-43" name="__codelineno-25-43" href="#__codelineno-25-43"></a>20100825X10814|DCA10WA087|   2010|CH     |Yichun                        |       42|{CH}          |{CH}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-44" name="__codelineno-25-44" href="#__codelineno-25-44"></a>20100817X40515|ERA10WA430|   2010|AR     |Mercedes                      |        0|{AR}          |{AR}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-45" name="__codelineno-25-45" href="#__codelineno-25-45"></a>20100803X33417|DCA10WA081|   2010|PK     |Islamabad                     |      157|{PK}          |{PK}          |{NON-US}       |{USA}          |{PK}          |
+<a id="__codelineno-25-46" name="__codelineno-25-46" href="#__codelineno-25-46"></a>20100730X85358|DCA10WA080|   2010|GV     |Conakry                       |        0|{}            |{}            |{}             |{USA}          |{MR}          |
+<a id="__codelineno-25-47" name="__codelineno-25-47" href="#__codelineno-25-47"></a>20100721X34052|DCA10RA079|   2010|SA     |Riyadh                        |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-48" name="__codelineno-25-48" href="#__codelineno-25-48"></a>20100714X03542|DCA10WA074|   2010|SP     |Girona                        |        0|{SP}          |{UK}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-49" name="__codelineno-25-49" href="#__codelineno-25-49"></a>20100708X84328|CEN10WA374|   2010|MX     |Piedras Negras                |        8|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-50" name="__codelineno-25-50" href="#__codelineno-25-50"></a>20100630X72411|ERA10WA340|   2010|CI     |San Felipe                    |        0|{CI}          |{CI}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-51" name="__codelineno-25-51" href="#__codelineno-25-51"></a>20100627X20107|CEN10RA345|   2010|MX     |Campeche                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-52" name="__codelineno-25-52" href="#__codelineno-25-52"></a>20100624X50945|WPR10WA309|   2010|AS     |Broken Hill                   |        1|{AS}          |{AS}          |{NON-US}       |{AS}           |{USA}         |
+<a id="__codelineno-25-53" name="__codelineno-25-53" href="#__codelineno-25-53"></a>20100623X13907|DCA10WA070|   2010|CF     |Dima                          |       11|{}            |{}            |{}             |{USA}          |{CF}          |
+<a id="__codelineno-25-54" name="__codelineno-25-54" href="#__codelineno-25-54"></a>20100621X12612|CEN10WA331|   2010|NO     |Sirdal                        |        0|{NO}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-55" name="__codelineno-25-55" href="#__codelineno-25-55"></a>20100615X95126|DCA10WA068|   2010|SF     |Johannesburg                  |        0|{}            |{}            |{NON-US}       |{USA}          |{SF}          |
+<a id="__codelineno-25-56" name="__codelineno-25-56" href="#__codelineno-25-56"></a>20100614X12305|CEN10RA319|   2010|MX     |Felipe Carrillo Puerto        |        9|{MX}          |{USA}         |{NON-US}       |{MX}           |{MX}          |
+<a id="__codelineno-25-57" name="__codelineno-25-57" href="#__codelineno-25-57"></a>20100603X92434|CEN10WA293|   2010|GE     |Bielefeld                     |        4|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-58" name="__codelineno-25-58" href="#__codelineno-25-58"></a>20100603X85900|CEN10WA292|   2010|FI     |Emäsalo                       |        1|{}            |{}            |{NON-US}       |{FI}           |{USA}         |
+<a id="__codelineno-25-59" name="__codelineno-25-59" href="#__codelineno-25-59"></a>20100522X50538|DCA10RA063|   2010|IN     |Manglaore                     |      158|{}            |{}            |{NON-US}       |{USA}          |{IN}          |
+<a id="__codelineno-25-60" name="__codelineno-25-60" href="#__codelineno-25-60"></a>20100521X23753|WPR10WA249|   2010|AS     |Traralgon, Australia          |        1|{AS}          |{AS}          |{NON-US}       |{AS}           |{USA}         |
+<a id="__codelineno-25-61" name="__codelineno-25-61" href="#__codelineno-25-61"></a>20100519X65147|ERA10WA272|   2010|BR     |Manaus                        |        6|{BR}          |{BR}          |{NON-US}       |{USA}          |{BR}          |
+<a id="__codelineno-25-62" name="__codelineno-25-62" href="#__codelineno-25-62"></a>20100519X44533|WPR10WA245|   2010|RP     |Lucena City, Philippines      |        4|{RP}          |{RP}          |{NON-US}       |{RP}           |{USA}         |
+<a id="__codelineno-25-63" name="__codelineno-25-63" href="#__codelineno-25-63"></a>20100516X61819|ERA10LA267|   2010|USA    |Clearwater                    |        0|{USA}         |{HA}          |{NON-US}       |{MX}           |{MX}          |
+<a id="__codelineno-25-64" name="__codelineno-25-64" href="#__codelineno-25-64"></a>20100512X53621|DCA10RA059|   2010|LY     |Tripoli                       |      103|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-65" name="__codelineno-25-65" href="#__codelineno-25-65"></a>20100511X23826|CEN10WA248|   2010|UK     |Old Buckenham                 |        1|{GE}          |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-66" name="__codelineno-25-66" href="#__codelineno-25-66"></a>20100511X03836|DCA10WA057|   2010|CO     |Mitu                          |        0|{CO}          |{CO}          |{NON-US}       |{CO}           |{USA}         |
+<a id="__codelineno-25-67" name="__codelineno-25-67" href="#__codelineno-25-67"></a>20100503X31325|CEN10LA234|   2010|USA    |Haysville                     |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-68" name="__codelineno-25-68" href="#__codelineno-25-68"></a>20100503X01600|ERA10WA252|   2010|BR     |Resende                       |        2|{BR}          |{BR}          |{NON-US}       |{USA}          |{BR}          |
+<a id="__codelineno-25-69" name="__codelineno-25-69" href="#__codelineno-25-69"></a>20100429X00503|ENG10RA025|   2010|RS     |Smolensk                      |       89|{PL}          |{RS}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-70" name="__codelineno-25-70" href="#__codelineno-25-70"></a>20100428X20315|CEN10CA229|   2010|USA    |Amarillo                      |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-71" name="__codelineno-25-71" href="#__codelineno-25-71"></a>20100414X92635|DCA10RA053|   2010|MX     |Monterrey                     |        5|{MX}          |{MX}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-72" name="__codelineno-25-72" href="#__codelineno-25-72"></a>20100414X90838|DCA10WA051|   2010|ID     |Manokwari                     |        0|{ID}          |{ID}          |{NON-US}       |{USA}          |{ID}          |
+<a id="__codelineno-25-73" name="__codelineno-25-73" href="#__codelineno-25-73"></a>20100414X53531|CEN10WA205|   2010|GT     |Guatemala City                |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-74" name="__codelineno-25-74" href="#__codelineno-25-74"></a>20100414X14446|ENG10RA022|   2010|AS     |Darwin Aerodrome              |        2|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-75" name="__codelineno-25-75" href="#__codelineno-25-75"></a>20100413X85237|ERA10WA226|   2010|IT     |Vigne                         |        3|{IT}          |{AU}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-76" name="__codelineno-25-76" href="#__codelineno-25-76"></a>20100412X43956|DCA10WA050|   2010|WA     |Wlotzkasbaken                 |        1|{}            |{}            |{}             |{USA}          |{USA}         |
+<a id="__codelineno-25-77" name="__codelineno-25-77" href="#__codelineno-25-77"></a>20100412X21857|DCA10WA049|   2010|FR     |Paris                         |        0|{HK}          |{FR}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-78" name="__codelineno-25-78" href="#__codelineno-25-78"></a>20100409X22252|WPR10RA197|   2010|MY     |Kota Bahru                    |        0|{MY}          |{MY}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-79" name="__codelineno-25-79" href="#__codelineno-25-79"></a>20100405X44344|DCA10WA045|   2010|CF     |Kinshasa                      |        0|{}            |{}            |{}             |{CF}           |{USA}         |
+<a id="__codelineno-25-80" name="__codelineno-25-80" href="#__codelineno-25-80"></a>20100323X54139|WPR10LA174|   2010|USA    |Hollister                     |        0|{USA}         |{USA}         |{NON-US}       |{AS}           |{AS}          |
+<a id="__codelineno-25-81" name="__codelineno-25-81" href="#__codelineno-25-81"></a>20100312X94247|CEN10WA153|   2010|FR     |Chambery                      |        1|{FR}          |{FR}          |{NON-US}       |{SZ}           |{USA}         |
+<a id="__codelineno-25-82" name="__codelineno-25-82" href="#__codelineno-25-82"></a>20100305X54655|DCA10WA036|   2010|TW     |Taipai                        |        0|{USA}         |{TW}          |{NON-US}       |{TW}           |{TW}          |
+<a id="__codelineno-25-83" name="__codelineno-25-83" href="#__codelineno-25-83"></a>20100203X01641|CEN10WA112|   2010|NL     |Schiphol                      |        0|{}            |{}            |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-84" name="__codelineno-25-84" href="#__codelineno-25-84"></a>20100129X92638|DCA10WA025|   2010|LU     |Luxembourg                    |        0|{SP}          |{LU}          |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-85" name="__codelineno-25-85" href="#__codelineno-25-85"></a>20100119X95202|ERA10LA119|   2010|USA    |Palmetto                      |        1|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-86" name="__codelineno-25-86" href="#__codelineno-25-86"></a>20100118X42210|WPR10WA114|   2010|PW     |Palau International Airport   |        0|{USA}         |{USA}         |{NON-US}       |{USA}          |{USA}         |
+<a id="__codelineno-25-87" name="__codelineno-25-87" href="#__codelineno-25-87"></a>20100111X10557|CEN10LA093|   2010|USA    |Eagle                         |        0|{USA}         |{MX}          |{NON-US}       |{MX}           |{MX}          |
+</code></pre></div>
+<h4 id="conclusion-io-avstats-db-always-contains-more-events-than-are-included-in-worksheet-no-10">Conclusion: IO-AVSTATS-DB always contains more events than are included in Worksheet no. 10!</h4>
+<p><kbd><img alt="" src="img/table_10-io-avstats-db.png" /></kbd></p>
+<h2 id="4worksheet-no-29-vs-io-avstats">4.Worksheet no. 29 vs. IO-AVSTATS</h2>
+<h3 id="observation-1-missing-in-io-avstats">Observation 1 - Missing in IO-AVSTATS</h3>
+<h4 id="observation-are-all-events-of-worksheet-no-29-contained-in-io-avstats">Observation: Are all events of worksheet no. 29 contained in IO-AVSTATS:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="n">state_or_region</span><span class="p">,</span><span class="w"> </span><span class="n">country</span><span class="p">,</span><span class="w"> </span><span class="n">fatal_injuries</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in3</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="p">)</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ntsb_number</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>ntsb_number|ev_year|city    |state_or_region|country      |fatal_injuries|
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>-----------+-------+--------+---------------+-------------+--------------+
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>CEN21LA236 |   2021|Longmont|Colorado       |United States|              |
+</code></pre></div>
+<h4 id="conclusion-this-minimal-difference-can-certainly-be-explained-by-a-subsequent-correction">Conclusion: This minimal difference can certainly be explained by a subsequent correction.</h4>
+<h3 id="observation-2-missing-in-worksheet">Observation 2 - Missing in Worksheet</h3>
+<h4 id="observation-are-all-events-of-io-avstats-contained-in-worksheet-no-29">Observation: Are all events of IO-AVSTATS contained in worksheet no. 29:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_id</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ev_site_zipcode</span><span class="p">,</span><span class="w"> </span><span class="n">ev_city</span><span class="p">,</span><span class="w"> </span><span class="n">ev_country</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="w"> </span><span class="n">e</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span><span class="p">)</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ev_id</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ntsb_no   |ev_id         |ev_year|ev_site_zipcode|ev_city                                    |ev_country|inj_tot_f|
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>----------+--------------+-------+---------------+-------------------------------------------+----------+---------+
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>WAS02WA015|20020109X00049|   2002|00000          |Tarapoto                                   |PE        |         |
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>MIA02LA054|20020201X00157|   2002|34142          |Immokalee                                  |USA       |        1|
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>LAX02LA072|20020201X00161|   2002|92145          |San Diego                                  |USA       |        2|
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>WAS02RA017|20020212X00207|   2002|00000          |Ishpingo                                   |EC        |         |
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>WAS02WA019|20020220X00235|   2002|00000          |Santa Elena                                |VE        |         |
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>WAS02RA021|20020221X00240|   2002|00000          |CACKCHILA                                  |GT        |        2|
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>CHI02WA080|20020225X00253|   2002|               |Libourne                                   |FR        |        3|
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>DCA02WA023|20020226X00261|   2002|               |San Juan                                   |AR        |         |
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>SEA02LA039|20020228X00289|   2002|97009          |Boring                                     |USA       |        1|
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>SEA02LA042|20020228X00290|   2002|98282          |Concrete                                   |USA       |         |
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>WAS02WA023|20020301X00296|   2002|               |Indore                                     |IN        |         |
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>IAD02WA031|20020302X00298|   2002|               |Zernez                                     |SZ        |        2|
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>WAS02WA026|20020306X00311|   2002|00000          |San Antonio                                |PE        |        2|
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a>MIA02WA065|20020308X00318|   2002|               |Montevideo                                 |UY        |         |
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>WAS02RA025|20020308X00319|   2002|00000          |El Tigre                                   |CO        |       26|
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_no</span><span class="p">,</span><span class="w"> </span><span class="n">ev_id</span><span class="p">,</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ev_site_zipcode</span><span class="p">,</span><span class="w"> </span><span class="n">ev_city</span><span class="p">,</span><span class="w"> </span><span class="n">ev_country</span><span class="p">,</span><span class="w"> </span><span class="n">inj_tot_f</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="w"> </span><span class="n">e</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">      </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span><span class="p">)</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">      </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ev_id</span><span class="p">)</span><span class="w"> </span><span class="k">g</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>count|ev_year|
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>-----+-------+
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>  115|   2002|
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>  128|   2003|
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>  141|   2004|
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>  147|   2005|
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>  141|   2006|
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>  152|   2007|
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>  130|   2008|
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>  124|   2009|
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>  140|   2010|
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>  175|   2011|
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>  177|   2012|
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>  166|   2013|
+<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>  162|   2014|
+<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>  206|   2015|
+<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>  207|   2016|
+<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a>  196|   2017|
+<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a>  218|   2018|
+<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a>  203|   2019|
+<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a>  169|   2020|
+<a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a>  291|   2021|
+</code></pre></div>
+<h4 id="conclusion-3388-events-of-io-avstats-are-not-included-in-worksheet-no-29">Conclusion: 3388 Events of IO-AVSTATS are not included in worksheet no. 29!</h4>
+<h3 id="observation-3-non-us-aircraft-registration-number">Observation 3 - Non-US aircraft registration number</h3>
+<h4 id="observation-all-events-involving-only-aircraft-with-missing-or-non-us-registration-numbers-are-missing-from-worksheet-no-29">Observation: All events involving only aircraft with missing or non-U.S. registration numbers are missing from Worksheet No. 29.:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">ntsb_number</span><span class="p">,</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">       </span><span class="n">event_date</span><span class="p">,</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">       </span><span class="n">city</span><span class="p">,</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">       </span><span class="n">state_or_region</span><span class="p">,</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">       </span><span class="n">country</span><span class="p">,</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="w">       </span><span class="n">aircraft_number</span><span class="p">,</span>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">       </span><span class="n">registration_number</span><span class="p">,</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="w">       </span><span class="n">fatal_injuries</span>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">ntsb_no</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="w"> </span><span class="n">e</span>
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="w">                               </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">aircraft</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">ev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">ev_id</span><span class="p">)</span>
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="w">                      </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">regis_no</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="w">                          </span><span class="k">or</span><span class="w"> </span><span class="k">upper</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">regis_no</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;NONE&#39;</span>
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a><span class="w">                          </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">regis_no</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;N%&#39;</span><span class="p">)</span>
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">RTRIM</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">owner_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">RTRIM</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">oper_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">RTRIM</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">dprt_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a><span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">RTRIM</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">dest_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span><span class="p">)</span>
+<a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span><span class="p">,</span><span class="w"> </span><span class="n">ntsb_number</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>ntsb_number|event_date             |city           |state_or_region|country   |aircraft_number|registration_number|fatal_injuries|
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>-----------+-----------------------+---------------+---------------+----------+---------------+-------------------+--------------+
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>ANC08TA028 |2007-12-20 00:00:00.000|McMurdo Station|               |Antarctica|              1|C-FMKB             |              |
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">ev_id</span><span class="p">,</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">aircraft_key</span><span class="p">,</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">regis_no</span><span class="p">,</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">dprt_country</span><span class="p">,</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">dest_country</span><span class="p">,</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">owner_country</span><span class="p">,</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="w">       </span><span class="n">a</span><span class="p">.</span><span class="n">oper_country</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="w"> </span><span class="n">e</span>
+<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="w">         </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">aircraft</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">ev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">ev_id</span><span class="p">)</span>
+<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
+<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
+<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">regis_no</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;N%&#39;</span>
+<a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">rtrim</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">dest_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">rtrim</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">dprt_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">rtrim</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">owner_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+<a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">rtrim</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">oper_country</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;USA&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>ev_id         |aircraft_key|regis_no|dprt_country|dest_country|owner_country|oper_country|
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>--------------+------------+--------+------------+------------+-------------+------------+
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>20081202X25642|           1|N400SA  |BR          |BR          |BR           |BR          |
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>20081230X00408|           1|N104BN  |BP          |BP          |NH           |NH          |
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>20120327X14319|           1|N27TR   |AR          |AR          |AR           |AR          |
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>20130305X21219|           1|N471M   |PP          |PP          |NH           |NH          |
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>20140922X90145|           1|N1027G  |FR          |UK          |UK           |UK          |
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>20150707X14422|           1|N642RM  |RS          |RS          |RS           |RS          |
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>20150903X44600|           1|N9068F  |KR          |KR          |NH           |NH          |
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>20151112X63511|           1|N692BE  |TU          |LY          |AS           |AS          |
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>20160630X91359|           1|N188RU  |CO          |CO          |CO           |CO          |
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>20170308X31846|           1|N805LA  |UN          |UN          |NH           |NH          |
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>20170728X93637|           1|N1001R  |BR          |BR          |BR           |BR          |
+<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>20180301X63457|           1|N3AD    |CA          |GL          |GE           |GE          |
+<a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a>20180329X93928|           1|N561LC  |SZ          |UN          |UN           |UN          |
+<a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a>20180813X53624|           1|N2451J  |DR          |DR          |DR           |DR          |
+<a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a>20181029X14552|           1|N474CG  |GE          |SZ          |UK           |SZ          |
+<a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a>20190212X72918|           1|N842CD  |FR          |FR          |FR           |FR          |
+<a id="__codelineno-35-19" name="__codelineno-35-19" href="#__codelineno-35-19"></a>20190708X33047|           1|N3294P  |IC          |IC          |IC           |IC          |
+<a id="__codelineno-35-20" name="__codelineno-35-20" href="#__codelineno-35-20"></a>20190805X10835|           1|N989AE  |CO          |CO          |CB           |CO          |
+<a id="__codelineno-35-21" name="__codelineno-35-21" href="#__codelineno-35-21"></a>20200924X51906|           1|N9056K  |SA          |SA          |SA           |SA          |
+<a id="__codelineno-35-22" name="__codelineno-35-22" href="#__codelineno-35-22"></a>20061214X01789|           1|N79KD   |AU          |GE          |UK           |GE          |
+<a id="__codelineno-35-23" name="__codelineno-35-23" href="#__codelineno-35-23"></a>20090512X15548|           1|N1116G  |CO          |CO          |CO           |CO          |
+</code></pre></div>
+<h4 id="conclusion-only-events-where-either-an-aircraft-with-a-us-registration-number-n1-n99999-n1a-n9999z-n1aa-n999zz-is-involved-or-the-us-is-either-the-departure-country-destination-country-owner-country-or-operator-country-are-considered">Conclusion: Only events where either an aircraft with a U.S. registration number (N1 - N99999, N1A - N9999Z, N1AA - N999ZZ) is involved or the U.S. is either the departure country, destination country, owner country or operator country are considered.</h4>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

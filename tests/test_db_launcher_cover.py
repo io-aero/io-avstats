@@ -395,12 +395,12 @@ def test_launcher_l_c_d_wrong_format():
     if platform.system() == "Windows":
         os.system(
             r"pipenv run python src\launcher.py -t l_c_d "
-            + "-c correction_wrong_format.xlsx"
+            + "-e correction_wrong_format.xlsx"
         )
     elif platform.system() == "Linux":
         os.system(
             "pipenv run python src/launcher.py -t l_c_d "
-            + "-c correction_wrong_format.xlsx"
+            + "-e correction_wrong_format.xlsx"
         )
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
@@ -473,11 +473,11 @@ def test_launcher_l_z_d_wrong_correction():
 
     if platform.system() == "Windows":
         os.system(
-            r"pipenv run python src\launcher.py -t l_z_d -c correction_pytest.xlsx"
+            r"pipenv run python src\launcher.py -t l_z_d -e correction_pytest.xlsx"
         )
     elif platform.system() == "Linux":
         os.system(
-            "pipenv run python src/launcher.py -t l_z_d -c correction_pytest.xlsx"
+            "pipenv run python src/launcher.py -t l_z_d -e correction_pytest.xlsx"
         )
     else:
         # ERROR.00.908 The operating system '{os}' is not supported

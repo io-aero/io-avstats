@@ -2,7 +2,6 @@
 
 * git clone https://github.com/io-aero/io-avstats
 * git clone https://github.com/io-aero/io-avstats-db
-* git clone https://github.com/io-aero/io-avstats-db-content
 
 # 2. Set up PyCharm - Plugins
 

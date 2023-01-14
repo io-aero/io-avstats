@@ -196,11 +196,6 @@ QUERIES = {
                  i.inj_person_category,
                  i.injury_level;
     """,
-    "io_accidents_us_1982": """
-        SELECT *
-          FROM io_accidents_us_1982
-        ORDER BY ev_id;
-    """,
     "io_app_aaus1982": """
         SELECT *
           FROM io_app_aaus1982
@@ -464,7 +459,7 @@ def _setup_filter_controls():
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
-        label="**`Filter data ?`**",
+        label="**Filter data ?**",
         value=True,
     )
 
@@ -510,7 +505,7 @@ def _setup_task_controls():
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
-        label="**`Show data profile`**",
+        label="**Show data profile**",
         value=False,
     )
 
@@ -531,7 +526,7 @@ def _setup_task_controls():
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the selected detailed data.",
-        label="**`Show details`**",
+        label="**Show details**",
         value=True,
     )
 
@@ -540,7 +535,7 @@ def _setup_task_controls():
     CHOICE_TABLE_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
         index=5,
-        label="**`Database table`**",
+        label="**Database table**",
         options=(QUERIES.keys()),
     )
 

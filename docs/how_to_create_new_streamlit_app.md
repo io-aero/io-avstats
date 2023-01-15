@@ -4,8 +4,8 @@
 
 | Identification | Header                                  |
 |----------------|-----------------------------------------|
-| aaus1982       | Aircraft Accidents in the US since 1982 |
-| pdus1982       | Profiling Data for the US since 1982    |
+| ae1982       | Aircraft Accidents in the US since 1982 |
+| pd1982       | Profiling Data for the US since 1982    |
 
 ## 2. Coding
 
@@ -55,8 +55,8 @@ see file directory **`docs`**
 
 ```
 ...
-| streamlit_server_port_aaus1982          | 8501                                          | Streamlit port number for application aaus1982                           |
-| streamlit_server_port_pdus1982          | 8502                                          | Streamlit port number for application pdus1982                           |
+| streamlit_server_port_ae1982          | 8501                                          | Streamlit port number for application ae1982                           |
+| streamlit_server_port_pd1982          | 8502                                          | Streamlit port number for application pd1982                           |
 ...
 ```
 
@@ -71,8 +71,8 @@ Currently, the following Streamlit applications are supported:
 
 | Port | Application                                        |
 |------|----------------------------------------------------|
-| 8501 | aaus1982 - Aircraft Accidents in the US since 1982 |
-| 8502 | pdus1982 - Profiling Data for the US since 1982    |
+| 8501 | ae1982 - Aircraft Accidents in the US since 1982 |
+| 8502 | pd1982 - Profiling Data for the US since 1982    |
 ...
 ```
 
@@ -86,8 +86,8 @@ Currently, the following Streamlit applications are supported:
 
 | Application | Description                             |
 |-------------|-----------------------------------------|
-| aaus1982    | Aircraft Accidents in the US since 1982 |
-| pdus1982    | Profiling Data for the US since 1982    |
+| ae1982    | Aircraft Accidents in the US since 1982 |
+| pd1982    | Profiling Data for the US since 1982    |
 ...
 ```
 
@@ -97,8 +97,8 @@ Currently, the following Streamlit applications are supported:
 ...
 Currently, it includes the following applications:
 
-- aaus1982 - Aircraft Accidents in the US since 1982
-- pdus1982 - Profiling Data for the US since 1982
+- ae1982 - Aircraft Accidents in the US since 1982
+- pd1982 - Profiling Data for the US since 1982
 ...
 ```
 
@@ -117,25 +117,25 @@ TODO
 ```
 ...
   # ------------------------------------------------------------------------------
-  # aaus1982 - Aircraft Accidents in the US since 1982.
+  # ae1982 - Aircraft Accidents in the US since 1982.
   # ------------------------------------------------------------------------------
-  app_aaus1982:
-    container_name: aaus1982
+  app_ae1982:
+    container_name: ae1982
     depends_on:
       - db
-    image: ioaero/aaus1982:latest
+    image: ioaero/ae1982:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
-  # pdus1982 - Profiling Data for the US since 1982.
+  # pd1982 - Profiling Data for the US since 1982.
   # ------------------------------------------------------------------------------
-  app_pdus1982:
-    container_name: pdus1982
+  app_pd1982:
+    container_name: pd1982
     depends_on:
       - db
-    image: ioaero/pdus1982:latest
+    image: ioaero/pd1982:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
@@ -146,8 +146,8 @@ TODO
 
 ```
 ...
-streamlit_server_port_aaus1982 = 8501
-streamlit_server_port_pdus1982 = 8502
+streamlit_server_port_ae1982 = 8501
+streamlit_server_port_pd1982 = 8502
 ...
 ```
 
@@ -162,8 +162,8 @@ streamlit_server_port_pdus1982 = 8502
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-		echo aaus1982 - Aircraft Accidents in the US since 1982
-		echo pdus1982 - Profiling Data for the US since 1982
+		echo ae1982 - Aircraft Accidents in the US since 1982
+		echo pd1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -180,8 +180,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "aaus1982 - Aircraft Accidents in the US since 1982"
-        echo "pdus1982 - Profiling Data for the US since 1982"
+        echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "pd1982 - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -205,8 +205,8 @@ fi
 ...
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo aaus1982 - Aircraft Accidents in the US since 1982
-    echo pdus1982 - Profiling Data for the US since 1982
+    echo ae1982 - Aircraft Accidents in the US since 1982
+    echo pd1982 - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -225,8 +225,8 @@ if ["%1"] EQU [""] (
 ...
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "aaus1982 - Aircraft Accidents in the US since 1982"
-    echo "pdus1982 - Profiling Data for the US since 1982"
+    echo "ae1982 - Aircraft Accidents in the US since 1982"
+    echo "pd1982 - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}

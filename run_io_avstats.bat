@@ -135,8 +135,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo =========================================================
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
-        echo aaus1982 - Aircraft Accidents in the US since 1982
-        echo pdus1982 - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -158,8 +158,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo aaus1982 - Aircraft Accidents in the US since 1982
-        echo pdus1982 - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (

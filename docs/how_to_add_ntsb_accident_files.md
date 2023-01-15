@@ -1093,7 +1093,7 @@ Progress update 2023-01-12 10:20:37.005535 : INFO.00.005 Argument task='r_d_s'.
 Progress update 2023-01-12 10:20:37.005535 : -------------------------------------------------------------------------------.
 Progress update 2023-01-12 10:20:37.005535 : INFO.00.071 Refreshing the database schema.
 Progress update 2023-01-12 10:20:37.005535 : --------------------------------------------------------------------------------
-Progress update 2023-01-12 10:21:04.010845 : INFO.00.069 Materialized database view is refreshed: io_app_aaus1982.
+Progress update 2023-01-12 10:21:04.010845 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
 Progress update 2023-01-12 10:21:04.010845 : -------------------------------------------------------------------------------.
 Progress update 2023-01-12 10:21:04.011346 :       27,136,309,100 ns - Total time launcher.
 Progress update 2023-01-12 10:21:04.011346 : INFO.00.006 End   Launcher.

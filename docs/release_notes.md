@@ -10,7 +10,12 @@ Release Date: dd.mm.2023
 
 ### 2. Modified Features
 
-- TODO
+- Application aaus1982 renamed to ae1982.
+- Application pdus1982 renamed to pd1982.
+- Package streamlit_apps renamed to ioavstats.
+- TODO: Complete the documentation.
+- TODO: Increase the test coverage.
+- TODO: clear PANDAS warnings
 
 ### 3. Applied Software
 

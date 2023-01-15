@@ -1,16 +1,1182 @@
 # Data Analysis: DB Table **`io_ntsb_2002_2021`**
 
-**Note**: The **`IO-AVSTATS`** database used here contains NTSB aircraft accident data as of January 1, 2023.
+**Note**: The **`IO-AVSTATS`** database used here contains **NTSB** aircraft event data as of January 8, 2023.
 
-This report is about comparing the **`IO-AVSTATS`** database to common public records for aviation accidents.  
+## 1. Introduction
 
-In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the NTSB published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"}.
-These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as a Microsoft Excel file.
+The **NTSB** makes available on its website statistical data on flight events since 1982 in the form of MS Access database files.
+Events are classified as accidents and incidents according to [§ 830.2 Definitions](https://www.ecfr.gov/current/title-49/section-830.2) in the Code of Federal Regulations.
+The following file contents can be downloaded from the website ([link](https://data.ntsb.gov/avdata)):
 
-## 1.Worksheet no. 29
+- `Pre2008.zip`: data from events that happened before the year 2008.
+- `avall.zip`: data of events that happened since 2008 until the current beginning of the month.
+- `up99MON.zip`: At the 1st, 8th, 15th and 22nd of each month an update file with new or changed events. These updates are available for one year.
+
+**IO-Aero** has loaded the data from the MS Access files `Pre2008` and `avall` once into the PostgreSQL database **IO-AVSTATS-DB** in November 2022 and since then regularly updates the **IO-AVSTATS-DB* with the update files provided by **NTSB**,
+
+In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the **NTSB** published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"} - hereinafter referred to as **20-year statistics*.
+These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as an MS Excel file.
+This file contains 28 worksheets (Table 1 through Table 28) of accumulated data, and in Worksheet 29 (Table 29) (most likely) the underlying event details. 
+
+#### Beginning of file:
+
+<kbd>![](img/NTSB_MS_Excel_10_Stat_1.png)</kbd>
+
+<kbd>![](img/NTSB_MS_Excel_10_Stat_2.png)</kbd>
+
+<kbd>![](img/NTSB_MS_Excel_10_Stat_3.png)</kbd>
+
+<kbd>![](img/NTSB_MS_Excel_10_Stat_4.png)</kbd>
+
+Unfortunately, **NTSB** does not provide sufficient documentation on the statistical data provided. 
+For this reason, a project was started at **IO-Aero** to gain more information about the structure of the statistical data. 
+In the first step, the data from worksheet 29 of the MS Excel file were loaded unchanged into a new table of the database **IO-AVSTATS-DB**.
+On this basis, the following three questions were now investigated:
+
+1. how are the data in worksheet 29 structured, e.g. with regard to categorization?
+2. how can accumulated data, e.g. in worksheet 10, be derived from the data in worksheet 29?
+3. how can the data in the MS Excel file be compared with the data in the MS Access files in the period 2002 to 2021?  
+
+## 2.DB table `io_ntsb_2002_2021`
+
+To store the data from Worksheet 29 of the MS Excel file containing the **20-year statistics** in the **IO-AVSTATS-DB** database, the new database table `io_ntsb_2002_2021` was defined as follows:
+
+<kbd>![](img/ddl_io_ntsb_2002_2021.png)</kbd>
+
+The data from the MS Excel file were loaded unchanged into the new database table.
+To simplify the use of the database table, only the columns `ev_year`, `ev_state` and `ev_country`, derived from the columns `event_date`, `state_or_region` and `country`, were added.
+The header lines and the empty lines for the loading process were ignored but recorded in the log file: 
+
+```
+Progress update 2023-01-15 12:46:10.973510 : ===============================================================================.
+Progress update 2023-01-15 12:46:10.973510 : INFO.00.004 Start Launcher.
+Progress update 2023-01-15 12:46:10.979008 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-01-15 12:46:18.297008 : INFO.00.041 Arguments task='l_n_s' {msexecel}='AviationAccidentStatistics_2002-2021_20221208'.
+Progress update 2023-01-15 12:46:18.297008 : -------------------------------------------------------------------------------.
+Progress update 2023-01-15 12:46:18.297008 : INFO.00.072 Loading NTSB MS Ecel statistic data from file 'AviationAccidentStatistics_2002-2021_20221208'.
+Progress update 2023-01-15 12:46:18.297508 : --------------------------------------------------------------------------------
+Unprocessed row #     1: Table 29. Accident Aircraft, 2002 through 2021, US Civil Aviation | None | None | ...
+Unprocessed row #     2: None | None | None | ...
+Unprocessed row #     3: NTSB Number | Accident Report | Event Date | ...
+Progress update 2023-01-15 12:48:30.355445 : Number of rows so far read :   5000.
+Progress update 2023-01-15 12:50:35.554697 : Number of rows so far read :  10000.
+Progress update 2023-01-15 12:52:39.895361 : Number of rows so far read :  15000.
+Progress update 2023-01-15 12:54:44.828003 : Number of rows so far read :  20000.
+Progress update 2023-01-15 12:56:47.277567 : Number of rows so far read :  25000.
+Progress update 2023-01-15 12:58:50.693799 : Number of rows so far read :  30000.
+Unprocessed row # 30245: None | None | None | ...
+...
+Unprocessed row # 30729: None | None | None | ...
+Progress update 2023-01-15 12:58:59.416221 : Number rows selected :  30729.
+Progress update 2023-01-15 12:58:59.416723 : Number rows inserted :  30241.
+Progress update 2023-01-15 12:58:59.416723 : Number rows updated  :  90723.
+Progress update 2023-01-15 12:58:59.416723 : -------------------------------------------------------------------------------.
+Progress update 2023-01-15 12:58:59.417222 :      768,612,714,000 ns - Total time launcher.
+Progress update 2023-01-15 12:58:59.417222 : INFO.00.006 End   Launcher.
+Progress update 2023-01-15 12:58:59.417222 : ===============================================================================.
+```
+
+According to the log file, 30'241 rows were loaded into the database table which exactly matches the MS Excel file where the data is stored in Excel rows 4 to 30'244.
+
+## 3.Data Characteristic of Worksheet no. 29
+
+The number of data rows in Worksheet 29 in the MS Excel file is 30,241 (row #4 to row #30,244 inclusive), and summing the columns `Fatal Injuries` (I) and `Serious Injuries` (J) gives 10,245 and 5,700 respectively.
+These numbers can be confirmed with the following query in the database table `io_ntsb_2002_2021`:
+
+```sql92
+    SELECT count(*)              "Accidents All",
+           sum(fatal_injuries)   "Fatal Injuries",
+           sum(serious_injuries) "Serious Injuries"
+    FROM io_ntsb_2002_2021
+```
+
+```
+    Accidents All|Fatal Injuries|Serious Injuries|
+    -------------+--------------+----------------+
+            30241|         10245|            5700|
+```
+
+An appropriate adaption of the following database query was used to analyze the data categories:
+
+```sql92
+    SELECT <category>                                 "<category>",
+           count(*)                                   "Accidents All",
+           count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+           sum(fatal_injuries)                        "Fatalities"
+      FROM io_ntsb_2002_2021
+     GROUP BY <category>
+     ORDER BY 1
+```
+
+On the data categorization view, the following picture emerges:
+
+### 3.1 `aircraft_category`
+
+```
+aircraft_category|Accidents All|Accidents Fatal|Fatalities|
+-----------------+-------------+---------------+----------+
+                 |            1|              1|        12|
+Airplane         |        25995|           4880|      8956|
+Balloon          |          241|             25|        49|
+Blimp            |            3|              0|          |
+Glider           |          536|            104|       121|
+Gyroplane        |          174|             46|        54|
+Helicopter       |         3050|            509|       971|
+Powered-lift     |            3|              0|          |
+Powered parachute|           74|             12|        15|
+Ultralight       |           13|              2|         3|
+Unknown          |            1|              1|         1|
+Weight-shift     |          150|             50|        63|
+```
+
+### 3.2 `aircraft_number`
+
+```
+aircraft_number|Accidents All|Accidents Fatal|Fatalities|
+---------------+-------------+---------------+----------+
+              1|        29887|           5530|      9850|
+              2|          347|             97|       388|
+              3|            6|              2|         6|
+              4|            1|              1|         1|
+```
+
+#### I. Duplication of events per aircraft involved
+
+- The same event is included in the MS Excel file for each aircraft involved. It must be ensured that these events differ only in the aircraft data:
+
+```sql92
+    SELECT ntsb_number, count(*)
+      FROM io_ntsb_2002_2021 in2
+     WHERE ntsb_number IN (SELECT in3.ntsb_number
+                          FROM io_ntsb_2002_2021 in3
+                          GROUP BY in3.ntsb_number
+                          HAVING count(*) > 1)
+     GROUP BY ntsb_number, event_date, city, state_or_region, country,
+              latitude, longitude, fatal_injuries, serious_injuries, highest_injury_level
+    HAVING count(*) = 1
+     ORDER BY ntsb_number
+```
+
+```
+    ntsb_number|count|
+    -----------+-----+
+```
+
+No inconsistencies found.
+
+### 3.3 `country`
+
+(sorted by `Accidents All` descending)
+
+```
+country                       |Accidents All|Accidents Fatal|Fatalities|
+------------------------------+-------------+---------------+----------+
+United States                 |        29697|           5357|      9453|
+Bahamas                       |           57|             30|        82|
+Mexico                        |           48|             33|        70|
+Canada                        |           46|             25|        47|
+France                        |           38|             22|        55|
+Germany                       |           28|             15|        29|
+United Kingdom                |           28|             13|        28|
+Dominican Republic            |           17|             12|        25|
+Italy                         |           15|              7|         8|
+                              |           13|              5|        11|
+Guatemala                     |           11|              7|        13|
+Japan                         |           11|              2|         4|
+Colombia                      |           11|              6|        12|
+Brazil                        |            9|              5|       165|
+Venezuela                     |            9|              3|         7|
+Unknown                       |            9|              3|         5|
+Spain                         |            9|              6|        15|
+Switzerland                   |            7|              4|         6|
+Argentina                     |            7|              2|         6|
+China                         |            6|              2|         2|
+Austria                       |            6|              4|        10|
+Costa Rica                    |            6|              4|        16|
+Afghanistan                   |            6|              3|        16|
+Guadeloupe                    |            5|              0|          |
+Ireland                       |            5|              2|         4|
+Netherlands Antilles          |            5|              1|         2|
+Panama                        |            5|              2|        13|
+Malaysia                      |            5|              2|         4|
+Iceland                       |            5|              4|         6|
+Poland                        |            4|              2|        12|
+South Africa                  |            4|              3|        11|
+Belgium                       |            4|              2|         7|
+Honduras                      |            4|              3|        12|
+British Virgin Islands        |            4|              1|         1|
+Philippines                   |            3|              0|         0|
+Turks And Caicos Islands      |            3|              2|        16|
+American Samoa                |            3|              1|         2|
+Romania                       |            3|              1|         1|
+Greenland                     |            3|              3|         3|
+United Arab Emirates          |            3|              2|         6|
+El Salvador                   |            3|              2|         5|
+Uruguay                       |            3|              1|         1|
+Hungary                       |            3|              0|          |
+Australia                     |            3|              1|         3|
+Chile                         |            2|              1|         1|
+Dominica                      |            2|              1|         2|
+Kiribati                      |            2|              1|         1|
+Congo                         |            2|              2|         5|
+Bermuda                       |            2|              0|          |
+Nicaragua                     |            2|              0|          |
+Guyana                        |            2|              2|         5|
+Sweden                        |            2|              0|          |
+Haiti                         |            2|              2|         7|
+St Kitts And Nevis            |            2|              0|          |
+Cuba                          |            2|              0|          |
+Antarctica                    |            2|              0|          |
+Peru                          |            2|              1|         2|
+Jamaica                       |            2|              1|         3|
+Iraq                          |            2|              1|         3|
+Nigeria                       |            2|              1|         2|
+Northern Mariana Islands      |            2|              0|          |
+New Zealand                   |            2|              1|         2|
+Russia                        |            2|              0|          |
+Indonesia                     |            2|              1|         1|
+Netherlands                   |            2|              0|          |
+Republic Of Korea             |            1|              0|          |
+Czech Republic                |            1|              1|         1|
+Jordan                        |            1|              0|          |
+Singapore                     |            1|              0|          |
+Papua New Guinea              |            1|              1|         1|
+Barbados                      |            1|              0|          |
+Saudi Arabia                  |            1|              1|         1|
+Cayman Islands                |            1|              0|          |
+Marshall Islands              |            1|              0|          |
+Slovenia                      |            1|              1|         4|
+Greece                        |            1|              0|          |
+India                         |            1|              0|          |
+Israel                        |            1|              0|          |
+Suriname                      |            1|              0|          |
+Denmark                       |            1|              0|          |
+Mozambique                    |            1|              0|          |
+Qatar                         |            1|              1|         1|
+Paraguay                      |            1|              1|         1|
+Federated States Of Micronesia|            1|              0|          |
+Martinique                    |            1|              0|          |
+Angola                        |            1|              0|          |
+Lithuania                     |            1|              1|         1|
+Sudan                         |            1|              1|         2|
+Morocco                       |            1|              1|         4|
+Solomon Islands               |            1|              1|         1|
+```
+
+Without duplication of events caused by involved aircraft, i.e. only including events with the value '1' in the column `aircraft_number`:
+
+```
+country                       |Accidents All|Accidents Fatal|Fatalities|
+------------------------------+-------------+---------------+----------+
+United States                 |        29347|           5261|      9217|
+Bahamas                       |           57|             30|        82|
+Mexico                        |           48|             33|        70|
+Canada                        |           44|             23|        43|
+France                        |           38|             22|        55|
+Germany                       |           28|             15|        29|
+United Kingdom                |           28|             13|        28|
+Dominican Republic            |           17|             12|        25|
+Italy                         |           15|              7|         8|
+                              |           13|              5|        11|
+Japan                         |           11|              2|         4|
+Colombia                      |           11|              6|        12|
+Guatemala                     |           11|              7|        13|
+Unknown                       |            9|              3|         5|
+Venezuela                     |            9|              3|         7|
+Spain                         |            9|              6|        15|
+Brazil                        |            8|              4|        11|
+Argentina                     |            7|              2|         6|
+Switzerland                   |            7|              4|         6|
+China                         |            6|              2|         2|
+Costa Rica                    |            6|              4|        16|
+Austria                       |            6|              4|        10|
+Afghanistan                   |            6|              3|        16|
+Ireland                       |            5|              2|         4|
+Malaysia                      |            5|              2|         4|
+Iceland                       |            5|              4|         6|
+Guadeloupe                    |            5|              0|          |
+Netherlands Antilles          |            5|              1|         2|
+Panama                        |            5|              2|        13|
+Belgium                       |            4|              2|         7|
+South Africa                  |            4|              3|        11|
+Honduras                      |            4|              3|        12|
+Poland                        |            4|              2|        12|
+British Virgin Islands        |            4|              1|         1|
+Philippines                   |            3|              0|         0|
+Turks And Caicos Islands      |            3|              2|        16|
+American Samoa                |            3|              1|         2|
+Greenland                     |            3|              3|         3|
+El Salvador                   |            3|              2|         5|
+Australia                     |            3|              1|         3|
+Hungary                       |            3|              0|          |
+Uruguay                       |            3|              1|         1|
+United Arab Emirates          |            3|              2|         6|
+Chile                         |            2|              1|         1|
+Dominica                      |            2|              1|         2|
+Kiribati                      |            2|              1|         1|
+Congo                         |            2|              2|         5|
+Bermuda                       |            2|              0|          |
+Nicaragua                     |            2|              0|          |
+Guyana                        |            2|              2|         5|
+Sweden                        |            2|              0|          |
+Haiti                         |            2|              2|         7|
+St Kitts And Nevis            |            2|              0|          |
+Cuba                          |            2|              0|          |
+Antarctica                    |            2|              0|          |
+Peru                          |            2|              1|         2|
+Jamaica                       |            2|              1|         3|
+Iraq                          |            2|              1|         3|
+Nigeria                       |            2|              1|         2|
+Northern Mariana Islands      |            2|              0|          |
+New Zealand                   |            2|              1|         2|
+Russia                        |            2|              0|          |
+Indonesia                     |            2|              1|         1|
+Netherlands                   |            2|              0|          |
+Romania                       |            2|              0|          |
+Republic Of Korea             |            1|              0|          |
+Czech Republic                |            1|              1|         1|
+Jordan                        |            1|              0|          |
+Papua New Guinea              |            1|              1|         1|
+Singapore                     |            1|              0|          |
+Barbados                      |            1|              0|          |
+Saudi Arabia                  |            1|              1|         1|
+Cayman Islands                |            1|              0|          |
+Marshall Islands              |            1|              0|          |
+Slovenia                      |            1|              1|         4|
+Greece                        |            1|              0|          |
+India                         |            1|              0|          |
+Israel                        |            1|              0|          |
+Suriname                      |            1|              0|          |
+Denmark                       |            1|              0|          |
+Mozambique                    |            1|              0|          |
+Qatar                         |            1|              1|         1|
+Paraguay                      |            1|              1|         1|
+Federated States Of Micronesia|            1|              0|          |
+Martinique                    |            1|              0|          |
+Angola                        |            1|              0|          |
+Lithuania                     |            1|              1|         1|
+Sudan                         |            1|              1|         2|
+Morocco                       |            1|              1|         4|
+Solomon Islands               |            1|              1|         1|
+```
+
+### 3.4 `damage_level`
+
+```
+damage_level|Accidents All|Accidents Fatal|Fatalities|
+------------+-------------+---------------+----------+
+            |            2|              2|         2|
+Destroyed   |         3586|           2797|      5674|
+Minor       |          256|             35|       195|
+None        |          493|             37|        44|
+Substantial |        25900|           2759|      4330|
+Unknown     |            4|              0|          |
+```
+
+### 3.5 `defining_event`
+
+```
+defining_event                       |Accidents All|Accidents Fatal|Fatalities|
+-------------------------------------+-------------+---------------+----------+
+                                     |        10870|           2142|      4097|
+Abnormal Runway Contact              |         2522|             34|        43|
+Abrupt Maneuver                      |          136|             55|       105|
+Aerodrome                            |           21|              1|         1|
+Air Traffic Management               |            2|              1|         2|
+Bird Strike                          |          128|              9|        28|
+Cabin Safety Events                  |           54|              2|         2|
+Collision on Takeoff or Landing      |          487|             48|       105|
+Controlled Flight Into Terrain       |          527|            294|       588|
+Evacuation                           |            2|              0|          |
+External Load                        |           22|              7|         8|
+Fire - Non-Impact                    |          135|             21|        40|
+Fire - Post-Impact                   |            1|              0|          |
+Fuel Related                         |         1137|            135|       204|
+Glider Towing                        |           15|              3|         5|
+Ground Collision                     |          376|              6|        15|
+Ground Handling                      |          121|             18|        24|
+Icing                                |           24|             10|        15|
+Loss of Control In-Flight            |         3403|           1486|      2625|
+Loss of Control on Ground            |         2923|             35|        53|
+Loss of Lift                         |          137|              9|        19|
+Low Altitude Operation               |          341|            116|       166|
+Medical Event                        |           14|             11|        12|
+Midair                               |          213|            111|       296|
+Navigation Error                     |           13|              3|         4|
+Other                                |          959|            171|       274|
+Runway Excursion                     |          442|             11|        28|
+Runway Incursion - Vehicle           |           15|              4|         6|
+Security Related                     |           11|              7|         8|
+Simulated/training event             |           11|              2|         3|
+System/Component Failure - Non-power |          886|            139|       247|
+System/Component Failure - Powerplant|         3169|            335|       504|
+Turbulence Encounter                 |          205|             16|        22|
+Undershoot/Overshoot                 |          252|              3|         9|
+Unintended Flight Into IMC           |          249|            173|       317|
+Unknown                              |          284|            189|       323|
+Wildlife Encounter                   |           58|              0|         0|
+Windshear/Thunderstorm               |           76|             23|        47|
+```
+
+### 3.6 `ev_year` via `event_date`
+
+```
+ev_year|Accidents All|Accidents Fatal|Fatalities|
+-------+-------------+---------------+----------+
+   2002|         1837|            367|       624|
+   2003|         1890|            381|       723|
+   2004|         1735|            346|       648|
+   2005|         1804|            340|       613|
+   2006|         1626|            326|       787|
+   2007|         1765|            308|       551|
+   2008|         1688|            305|       593|
+   2009|         1572|            285|       559|
+   2010|         1527|            284|       491|
+   2011|         1578|            293|       510|
+   2012|         1556|            285|       456|
+   2013|         1306|            238|       436|
+   2014|         1302|            268|       451|
+   2015|         1296|            239|       411|
+   2016|         1355|            228|       427|
+   2017|         1331|            212|       349|
+   2018|         1366|            234|       402|
+   2019|         1322|            255|       467|
+   2020|         1152|            215|       369|
+   2021|         1233|            221|       378|
+```
+
+Without duplication of events caused by involved aircraft, i.e. only including events with the value '1' in the column `aircraft_number`:
+
+```
+ev_year|Accidents All|Accidents Fatal|Fatalities|
+-------+-------------+---------------+----------+
+   2002|         1821|            362|       615|
+   2003|         1869|            373|       699|
+   2004|         1719|            339|       637|
+   2005|         1779|            332|       598|
+   2006|         1609|            320|       620|
+   2007|         1745|            303|       540|
+   2008|         1660|            299|       568|
+   2009|         1558|            279|       541|
+   2010|         1507|            278|       477|
+   2011|         1556|            286|       499|
+   2012|         1538|            281|       450|
+   2013|         1296|            235|       429|
+   2014|         1290|            263|       442|
+   2015|         1281|            238|       406|
+   2016|         1336|            221|       408|
+   2017|         1316|            211|       347|
+   2018|         1346|            230|       394|
+   2019|         1302|            250|       455|
+   2020|         1138|            210|       349|
+   2021|         1221|            220|       376|
+```
+
+### 3.7 `fatal_injuries`
+
+```
+fatal_injuries|Accidents All|Accidents Fatal|Fatalities|
+--------------+-------------+---------------+----------+
+             0|          715|              0|         0|
+             1|         3072|           3072|      3072|
+             2|         1622|           1622|      3244|
+             3|          481|            481|      1443|
+             4|          266|            266|      1064|
+             5|          101|            101|       505|
+             6|           37|             37|       222|
+             7|           19|             19|       133|
+             8|            6|              6|        48|
+             9|            8|              8|        72|
+            10|            6|              6|        60|
+            11|            3|              3|        33|
+            12|            1|              1|        12|
+            13|            1|              1|        13|
+            14|            1|              1|        14|
+            16|            1|              1|        16|
+            20|            1|              1|        20|
+            21|            1|              1|        21|
+            49|            1|              1|        49|
+            50|            1|              1|        50|
+           154|            1|              1|       154|
+              |        23896|              0|          |
+```
+
+Without duplication of events caused by involved aircraft, i.e. only including events with the value '1' in the column `aircraft_number`:
+
+```
+fatal_injuries|Accidents All|Accidents Fatal|Fatalities|
+--------------+-------------+---------------+----------+
+             0|          708|              0|         0|
+             1|         3038|           3038|      3038|
+             2|         1593|           1593|      3186|
+             3|          463|            463|      1389|
+             4|          259|            259|      1036|
+             5|           95|             95|       475|
+             6|           36|             36|       216|
+             7|           17|             17|       119|
+             8|            5|              5|        40|
+             9|            7|              7|        63|
+            10|            6|              6|        60|
+            11|            3|              3|        33|
+            12|            1|              1|        12|
+            13|            1|              1|        13|
+            14|            1|              1|        14|
+            16|            1|              1|        16|
+            20|            1|              1|        20|
+            21|            1|              1|        21|
+            49|            1|              1|        49|
+            50|            1|              1|        50|
+              |        23649|              0|          |
+```
+
+### 3.8 `flight_regulation`
+
+```
+flight_regulation             |Accidents All|Accidents Fatal|Fatalities|
+------------------------------+-------------+---------------+----------+
+Armed Forces                  |            1|              0|          |
+Non-U.S., non-commercial      |          288|            171|       394|
+Part 121: Air carrier         |          657|             20|       180|
+Part 125: 20+ pax,6000+ lbs   |            9|              3|         5|
+Part 133: Rotorcraft ext. load|          151|             36|        42|
+Part 135: Air taxi & commuter |         1054|            233|       621|
+Part 137: Agricultural        |         1442|            157|       164|
+Part 91: General aviation     |        26256|           4925|      8665|
+Part 91 subpart k: Fractional |            8|              0|         0|
+Public aircraft               |          349|             70|       125|
+Unknown                       |           26|             15|        49|
+```
+
+### 3.9 `flight_schedule_type`
+
+```
+flight_schedule_type|Accidents All|Accidents Fatal|Fatalities|
+--------------------+-------------+---------------+----------+
+                    |        28266|           5319|      9349|
+Non-scheduled       |         1292|            290|       710|
+Scheduled           |          683|             21|       186|
+```
+
+### 3.10 `highest_injury_level`
+
+```
+highest_injury_level|Accidents All|Accidents Fatal|Fatalities|
+--------------------+-------------+---------------+----------+
+                    |           96|              7|        12|
+Fatal               |         5623|           5623|     10233|
+Minor               |         4577|              0|         0|
+None                |        16426|              0|         0|
+Serious             |         3519|              0|         0|
+```
+
+Without duplication of events caused by involved aircraft, i.e. only including events with the value '1' in the column `aircraft_number`:
+
+```
+highest_injury_level|Accidents All|Accidents Fatal|Fatalities|
+--------------------+-------------+---------------+----------+
+                    |           94|              7|        12|
+Fatal               |         5523|           5523|      9838|
+Minor               |         4548|              0|         0|
+None                |        16221|              0|         0|
+Serious             |         3501|              0|         0|
+```
+
+The question here is whether the values in the three columns `highest_injury_level`, `fatal_injuries` and `serious_injuries` are consistent: 
+
+#### I. `highest_injury_level` and `fatal_injuries`
+
+- For each column where `highest_injury_level` equals `Fatal` the value of the column `fatal_injuries` must be greater than zero:
+
+```sql92
+    SELECT ntsb_number, highest_injury_level, fatal_injuries
+      FROM io_ntsb_2002_2021 in2
+     WHERE highest_injury_level = 'Fatal'
+       AND fatal_injuries = 0
+     ORDER BY 1
+```
+
+```
+    ntsb_number|highest_injury_level|fatal_injuries|
+    -----------+--------------------+--------------+
+```
+
+No inconsistencies found.
+
+- For each column where `fatal_injuries` greater than zero the value of the column `highest_injury_level` must be `Fatal`:
+
+```sql92
+    SELECT ntsb_number, highest_injury_level, fatal_injuries
+      FROM io_ntsb_2002_2021 in2
+     WHERE fatal_injuries > 0
+       AND highest_injury_level != 'Fatal'
+     ORDER BY 1
+```
+
+```
+    ntsb_number|highest_injury_level|fatal_injuries|
+    -----------+--------------------+--------------+
+    ANC09FA001 |                    |             2|
+    DFW08FA237 |                    |             2|
+    LAX08FA300 |                    |             1|
+    MIA08MA203 |                    |             4|
+    NYC08FA319 |                    |             1|
+    NYC08FA324 |                    |             1|
+    NYC08LA322 |                    |             1|
+```
+
+Found 7 rows with inconsistent data.
+
+#### II. `highest_injury_level` and `serious_injuries`
+
+- For each column where `highest_injury_level` equals `Serious` the value of the column `serious_injuries` must be greater than zero:
+
+```sql92
+    SELECT ntsb_number, highest_injury_level, serious_injuries
+      FROM io_ntsb_2002_2021 in2
+     WHERE highest_injury_level = 'Serious'
+       AND fatal_injuries = 0
+       AND serious_injuries = 0
+     ORDER BY 1
+```
+
+```
+    ntsb_number|highest_injury_level|serious_injuries|
+    -----------+--------------------+----------------+
+```
+
+No inconsistencies found.
+
+- For each column where `serious_injuries` greater than zero the value of the column `highest_injury_level` must be `Serious`:
+
+```sql92
+    SELECT ntsb_number, highest_injury_level, serious_injuries
+      FROM io_ntsb_2002_2021 in2
+     WHERE fatal_injuries = 0
+       AND serious_injuries > 0 
+       AND highest_injury_level != 'Serious'
+     ORDER BY 1
+```
+
+```
+    ntsb_number|highest_injury_level|serious_injuries|
+    -----------+--------------------+----------------+
+```
+
+No inconsistencies found.
+
+### 3.11 `intentional_act`
+
+```
+intentional_act|Accidents All|Accidents Fatal|Fatalities|
+---------------+-------------+---------------+----------+
+true           |           55|             32|        39|
+               |        30186|           5598|     10206|
+```
+
+### 3.12 `phase_of_flight`
+
+```
+phase_of_flight     |Accidents All|Accidents Fatal|Fatalities|
+--------------------+-------------+---------------+----------+
+                    |        10822|           2135|      4086|
+Approach            |         2147|            569|      1089|
+Emergency Descent   |          200|             36|        58|
+Enroute             |         3150|            906|      1728|
+Initial Climb       |         1870|            529|       938|
+Landing             |         6112|            101|       141|
+Maneuvering         |         2536|            985|      1562|
+Post-Impact         |            6|              0|          |
+Pushback/Tow        |           24|              0|          |
+Standing            |          392|             35|        47|
+Takeoff             |         2205|            205|       368|
+Taxi                |          569|              6|        10|
+Uncontrolled Descent|           42|             24|        44|
+Unknown             |          166|             99|       174|
+```
+
+### 3.13 `purpose_of_flight`
+
+```
+purpose_of_flight        |Accidents All|Accidents Fatal|Fatalities|
+-------------------------+-------------+---------------+----------+
+                         |         1808|            318|       969|
+Aerial application       |         1442|            167|       177|
+Aerial observation       |          342|             90|       168|
+Air drop                 |            8|              2|         3|
+Air race/show            |          147|             63|        81|
+Banner tow               |           98|             15|        18|
+Business                 |          778|            194|       403|
+Executive/Corporate      |          139|             35|       126|
+External load            |          109|             25|        30|
+Ferry                    |          160|             42|       211|
+Firefighting             |           28|              9|        14|
+Flight test              |          338|             69|        99|
+Glider tow               |           53|             15|        20|
+Instructional            |         4030|            374|       675|
+Other work use           |          502|             92|       180|
+Personal                 |        18909|           3826|      6538|
+Positioning              |          688|            156|       262|
+Public aircraft          |          152|             28|        43|
+Public aircraft - federal|           94|             18|        33|
+Public aircraft - local  |           74|              9|        13|
+Public aircraft - state  |           61|             12|        23|
+Skydiving                |          128|             19|        52|
+Unknown                  |          153|             52|       107|
+```
+
+### 3.14 `serious_injuries`
+
+```
+serious_injuries|Accidents All|Accidents Fatal|Fatalities|
+----------------+-------------+---------------+----------+
+               0|          736|            169|       288|
+               1|         3288|            553|       866|
+               2|          758|            112|       210|
+               3|          149|             50|        88|
+               4|           53|             17|        44|
+               5|           13|              6|        14|
+               6|            6|              2|         6|
+               7|            5|              1|         5|
+               8|            1|              1|         1|
+               9|            3|              3|        16|
+              66|            1|              1|        11|
+                |        25228|           4715|      8696|
+```
+
+Without duplication of events caused by involved aircraft, i.e. only including events with the value '1' in the column `aircraft_number`:
+
+```
+serious_injuries|Accidents All|Accidents Fatal|Fatalities|
+----------------+-------------+---------------+----------+
+               0|          729|            169|       288|
+               1|         3258|            536|       838|
+               2|          753|            111|       208|
+               3|          147|             49|        87|
+               4|           53|             17|        44|
+               5|           13|              6|        14|
+               6|            6|              2|         6|
+               7|            5|              1|         5|
+               8|            1|              1|         1|
+               9|            2|              2|        10|
+              66|            1|              1|        11|
+                |        24919|           4635|      8338|
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 5. Legacy stuff
+
 
 Worksheet no. 29 obviously contains the detailed events underlying the statistics in the previous worksheets.
 Now, in order to make the data in the **`IO-AVSTATS`** database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the **`IO-AVSTATS`** database as database table **`io_ntsb_2002_2021`**, unchanged.
+
+### Totals
+
+#### From Table 10
+
+```
+accidents_all|accidents_fatal|fatalities_total|fatalities_aboard|
+-------------+---------------+----------------+-----------------+
+        28255|           5291|            9248|             8991|
+```
+
+#### Total
+
+```sql
+SELECT count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2 
+```
+
+```
+accidents_all|accidents_fatal|fatalities_total|
+-------------+---------------+----------------+
+        30241|           5630|           10245|
+```
+
+```sql
+SELECT count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2 
+WHERE aircraft_number = 1
+```
+
+```
+accidents_all|accidents_fatal|fatalities_total|
+-------------+---------------+----------------+
+        29887|           5530|            9850|
+```
+
+```sql
+SELECT count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2 
+WHERE country = 'United States'
+```
+
+```
+accidents_all|accidents_fatal|fatalities_total|
+-------------+---------------+----------------+
+        29697|           5357|            9453|
+```
+
+```sql
+SELECT count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2 
+WHERE aircraft_number = 1
+  AND country IN ('Bahamas', 'United States')
+```
+
+```
+accidents_all|accidents_fatal|fatalities_total|
+-------------+---------------+----------------+
+        29347|           5261|            9217|
+```
+
+```sql
+SELECT country,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY country  
+ORDER BY 3 DESC
+```
+
+
+
+
+
+
+
+```sql
+SELECT aircraft_number,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+GROUP BY aircraft_number  
+ORDER BY 1```
+
+```
+aircraft_number|accidents_all|accidents_fatal_hil|accidents_fatal_fi|fatalities_total|
+---------------+-------------+-------------------+------------------+----------------+
+              1|        29887|               5523|              5530|            9850|
+              2|          347|                 97|                97|             388|
+              3|            6|                  2|                 2|               6|
+              4|            1|                  1|                 1|               1|
+```
+
+```sql
+SELECT country,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+  AND country = 'United States'
+GROUP BY country  
+ORDER BY 1
+```
+
+```
+country      |accidents_all|accidents_fatal_hil|accidents_fatal_fi|fatalities_total|
+-------------+-------------+-------------------+------------------+----------------+
+United States|        29347|               5254|              5261|            9217|
+```
+
+
+#### Total by Country
+
+```sql
+SELECT country,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY country  
+ORDER BY 3 DESC
+```
+
+```
+country                       |accidents_all|accidents_fatal|fatalities_total|
+------------------------------+-------------+---------------+----------------+
+United States                 |        29347|           5261|            9217|
+Mexico                        |           48|             33|              70|
+Bahamas                       |           57|             30|              82|
+Canada                        |           44|             23|              43|
+France                        |           38|             22|              55|
+Germany                       |           28|             15|              29|
+United Kingdom                |           28|             13|              28|
+Dominican Republic            |           17|             12|              25|
+Guatemala                     |           11|              7|              13|
+Italy                         |           15|              7|               8|
+Spain                         |            9|              6|              15|
+Colombia                      |           11|              6|              12|
+                              |           13|              5|              11|
+Costa Rica                    |            6|              4|              16|
+Iceland                       |            5|              4|               6|
+Switzerland                   |            7|              4|               6|
+Austria                       |            6|              4|              10|
+Brazil                        |            8|              4|              11|
+Honduras                      |            4|              3|              12|
+Venezuela                     |            9|              3|               7|
+...
+```
+
+
+#### Total by Flight Regulation
+
+```sql
+SELECT flight_regulation ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY flight_regulation  
+ORDER BY 3 DESC
+```
+
+```
+flight_regulation             |accidents_all|accidents_fatal|fatalities_total|
+------------------------------+-------------+---------------+----------------+
+Part 91: General aviation     |        25981|           4840|            8309|
+Part 135: Air taxi & commuter |         1033|            227|             595|
+Non-U.S., non-commercial      |          286|            169|             390|
+Part 137: Agricultural        |         1427|            152|             158|
+Public aircraft               |          345|             68|             122|
+Part 133: Rotorcraft ext. load|          151|             36|              42|
+Part 121: Air carrier         |          620|             20|             180|
+Unknown                       |           26|             15|              49|
+Part 125: 20+ pax,6000+ lbs   |            9|              3|               5|
+Part 91 subpart k: Fractional |            8|              0|               0|
+Armed Forces                  |            1|              0|                |
+```
+
+```sql
+SELECT flight_regulation ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+GROUP BY flight_regulation  
+ORDER BY 3 DESC
+```
+
+```
+flight_regulation             |accidents_all|accidents_fatal|fatalities_total|
+------------------------------+-------------+---------------+----------------+
+Part 91: General aviation     |        26256|           4925|            8665|
+Part 135: Air taxi & commuter |         1054|            233|             621|
+Non-U.S., non-commercial      |          288|            171|             394|
+Part 137: Agricultural        |         1442|            157|             164|
+Public aircraft               |          349|             70|             125|
+Part 133: Rotorcraft ext. load|          151|             36|              42|
+Part 121: Air carrier         |          657|             20|             180|
+Unknown                       |           26|             15|              49|
+Part 125: 20+ pax,6000+ lbs   |            9|              3|               5|
+Part 91 subpart k: Fractional |            8|              0|               0|
+Armed Forces                  |            1|              0|                |
+```
+
+#### Total by Flight Schedule Type
+
+```sql
+SELECT flight_schedule_type  ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY flight_schedule_type  
+ORDER BY 3 DESC
+```
+
+```
+flight_schedule_type|accidents_all|accidents_fatal|fatalities_total|
+--------------------+-------------+---------------+----------------+
+                    |        27976|           5226|            8981|
+Non-scheduled       |         1269|            283|             683|
+Scheduled           |          642|             21|             186|
+```
+
+
+#### Total by Purpose of Flight
+
+```sql
+SELECT purpose_of_flight  ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY purpose_of_flight  
+ORDER BY 3 DESC
+```
+
+```
+purpose_of_flight        |accidents_all|accidents_fatal|fatalities_total|
+-------------------------+-------------+---------------+----------------+
+Personal                 |        18744|           3776|            6422|
+Instructional            |         3971|            360|             636|
+                         |         1749|            311|             942|
+Business                 |          770|            192|             399|
+Aerial application       |         1427|            162|             171|
+Positioning              |          679|            153|             258|
+Aerial observation       |          340|             89|             160|
+Other work use           |          494|             87|             162|
+Flight test              |          338|             69|              99|
+Air race/show            |          130|             55|              70|
+Unknown                  |          153|             52|             107|
+Ferry                    |          158|             40|              56|
+Executive/Corporate      |          139|             35|             126|
+Public aircraft          |          151|             28|              43|
+External load            |          109|             25|              30|
+Skydiving                |          125|             19|              52|
+Public aircraft - federal|           94|             18|              33|
+Banner tow               |           98|             15|              18|
+Glider tow               |           49|             13|              15|
+Public aircraft - state  |           61|             12|              23|
+Public aircraft - local  |           73|              9|              13|
+Firefighting             |           27|              8|              12|
+Air drop                 |            8|              2|               3|
+```
+
+#### Total by Intentional Act
+
+```sql
+SELECT intentional_act  ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY intentional_act  
+ORDER BY 3 DESC```
+
+```
+intentional_act|accidents_all|accidents_fatal|fatalities_total|
+---------------+-------------+---------------+----------------+
+               |        29832|           5498|            9811|
+true           |           55|             32|              39|
+```
+
+#### Total by Defining Event
+
+```sql
+SELECT defining_event  ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY defining_event  
+ORDER BY 3 DESC
+```
+
+```
+defining_event                       |accidents_all|accidents_fatal|fatalities_total|
+-------------------------------------+-------------+---------------+----------------+
+                                     |        10746|           2101|            3857|
+Loss of Control In-Flight            |         3402|           1486|            2625|
+System/Component Failure - Powerplant|         3169|            335|             504|
+Controlled Flight Into Terrain       |          527|            294|             588|
+Unknown                              |          284|            189|             323|
+Unintended Flight Into IMC           |          249|            173|             317|
+Other                                |          954|            170|             273|
+System/Component Failure - Non-power |          885|            139|             247|
+Fuel Related                         |         1137|            135|             204|
+Low Altitude Operation               |          341|            116|             166|
+Midair                               |          111|             58|             152|
+Abrupt Maneuver                      |          136|             55|             105|
+Collision on Takeoff or Landing      |          478|             46|             102|
+Loss of Control on Ground            |         2921|             35|              53|
+Abnormal Runway Contact              |         2522|             34|              43|
+Windshear/Thunderstorm               |           76|             23|              47|
+Fire - Non-Impact                    |          135|             21|              40|
+Ground Handling                      |          119|             18|              24|
+Turbulence Encounter                 |          205|             16|              22|
+Medical Event                        |           14|             11|              12|
+Runway Excursion                     |          442|             11|              28|
+Icing                                |           24|             10|              15|
+Loss of Lift                         |          137|              9|              19|
+Bird Strike                          |          128|              9|              28|
+Security Related                     |           11|              7|               8|
+External Load                        |           22|              7|               8|
+Ground Collision                     |          273|              5|              12|
+Navigation Error                     |           13|              3|               4|
+Runway Incursion - Vehicle           |           13|              3|               5|
+Undershoot/Overshoot                 |          252|              3|               9|
+Simulated/training event             |           11|              2|               3|
+Glider Towing                        |           14|              2|               2|
+Cabin Safety Events                  |           54|              2|               2|
+Aerodrome                            |           19|              1|               1|
+Air Traffic Management               |            2|              1|               2|
+Wildlife Encounter                   |           58|              0|               0|
+Fire - Post-Impact                   |            1|              0|                |
+Evacuation                           |            2|              0|                |
+```
+
+
+#### Total by Phase of Flight
+
+```sql
+SELECT phase_of_flight  ,
+       count(*)                                   accidents_all,
+       count(*) FILTER (WHERE fatal_injuries > 0) accidents_fatal,
+       sum(fatal_injuries)                        fatalities_total
+ FROM io_ntsb_2002_2021 in2
+WHERE aircraft_number = 1
+GROUP BY phase_of_flight  
+ORDER BY 3 DESC
+```
+
+```
+phase_of_flight     |accidents_all|accidents_fatal|fatalities_total|
+--------------------+-------------+---------------+----------------+
+                    |        10698|           2094|            3846|
+Maneuvering         |         2500|            964|            1518|
+Enroute             |         3118|            885|            1665|
+Approach            |         2121|            558|            1052|
+Initial Climb       |         1861|            527|             934|
+Takeoff             |         2202|            205|             368|
+Unknown             |          166|             99|             174|
+Landing             |         6089|             98|             137|
+Emergency Descent   |          200|             36|              58|
+Standing            |          347|             35|              47|
+Uncontrolled Descent|           42|             24|              44|
+Taxi                |          516|              5|               7|
+Post-Impact         |            6|              0|                |
+Pushback/Tow        |           21|              0|                |
+```
 
 ### Observation 1 - Fatalities
 
@@ -57,7 +1223,7 @@ NYC08LA322 |2008-09-23 00:00:00.000|             1|                    |
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury
-FROM io_app_aaus1982 iaa
+FROM io_app_ae1982 iaa
 WHERE (inj_f_grnd > 0 OR inj_tot_f > 0)
   AND ev_highest_injury != 'FATL'
 ORDER BY ntsb_no 
@@ -72,7 +1238,7 @@ ntsb_no|ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury
-FROM io_app_aaus1982 iaa
+FROM io_app_ae1982 iaa
 WHERE ntsb_no
           IN ('NYC08FA319',
               'NYC08LA322',
@@ -105,7 +1271,7 @@ NYC08LA322|   2008|         0|        1|FATL             |
 ```sql
 SELECT ntsb_number, event_date
 FROM io_ntsb_2002_2021
-WHERE ntsb_number IN (SELECT ntsb_no FROM io_app_aaus1982 WHERE ev_type = 'INC')
+WHERE ntsb_number IN (SELECT ntsb_no FROM io_app_ae1982 WHERE ev_type = 'INC')
 ```
 
 ```
@@ -313,7 +1479,7 @@ SELECT ev_year                                    "Year",
        count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
        sum(fatal_injuries)                        "Fatalities"
 FROM io_ntsb_2002_2021
-where ntsb_number in (select ntsb_no from io_app_aaus1982 where ev_type = 'ACC' and has_us_impact is true)
+where ntsb_number in (select ntsb_no from io_app_ae1982 where ev_type = 'ACC' and has_us_impact is true)
 GROUP BY ev_year
 ORDER BY ev_year
 ```
@@ -348,7 +1514,7 @@ SELECT ev_year                               "Year",
        count(*)                              "Accidents All",
        count(*) FILTER (WHERE inj_tot_f > 0) "Accidents Fatal",
        sum(inj_tot_f)                        "Fatalities"
-FROM io_app_aaus1982 iaa
+FROM io_app_ae1982 iaa
 where ev_year >= 2002
   AND ev_year <= 2021
   AND ev_type = 'ACC'
@@ -394,7 +1560,7 @@ select iaa.ev_id,
        iaa.regis_countries,
        iaa.owner_countries,
        iaa.oper_countries
-FROM io_app_aaus1982 iaa
+FROM io_app_ae1982 iaa
          LEFT OUTER JOIN io_ntsb_2002_2021 in2 ON (iaa.ntsb_no = in2.ntsb_number)
 WHERE iaa.ev_year = 2010
   AND in2.ntsb_number IS NULL

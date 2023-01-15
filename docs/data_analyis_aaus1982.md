@@ -1,4 +1,4 @@
-# Data Analysis: DB View **`aaus1982`**
+# Data Analysis: DB View **`ae1982`**
 
 Status as of Jan. 1, 2023
 
@@ -28,22 +28,22 @@ SELECT count(*),
    AND inj_tot_f > 0
  UNION
 SELECT count(*),
-       'Total accidents since 1982 by io_app_aaus1982'
-  FROM io_app_aaus1982
+       'Total accidents since 1982 by io_app_ae1982'
+  FROM io_app_ae1982
  UNION
 SELECT count(*),
-       'Total accidents since 2008 by io_app_aaus1982'
-  FROM io_app_aaus1982
+       'Total accidents since 2008 by io_app_ae1982'
+  FROM io_app_ae1982
  WHERE ev_year >= 2008 
  UNION
 SELECT count(*),
-      'Fatal accidents since 1982 by io_app_aaus1982'
-  FROM io_app_aaus1982
+      'Fatal accidents since 1982 by io_app_ae1982'
+  FROM io_app_ae1982
  WHERE inj_tot_f > 0
  UNION
 SELECT count(*),
-      'Fatal accidents since 2008 by io_app_aaus1982'
-  FROM io_app_aaus1982
+      'Fatal accidents since 2008 by io_app_ae1982'
+  FROM io_app_ae1982
  WHERE ev_year >= 2008 
    AND inj_tot_f > 0
  UNION 
@@ -58,12 +58,12 @@ SELECT sum(inj_tot_f),
  WHERE ev_year >= 2008
  UNION
 SELECT sum(inj_tot_f),
-       'Total fatalities since 1982 by io_app_aaus1982'
-  FROM io_app_aaus1982
+       'Total fatalities since 1982 by io_app_ae1982'
+  FROM io_app_ae1982
  UNION
 SELECT sum(inj_tot_f),
-       'Total fatalities since 2008 by io_app_aaus1982'
-  FROM io_app_aaus1982
+       'Total fatalities since 2008 by io_app_ae1982'
+  FROM io_app_ae1982
  WHERE ev_year >= 2008
  ORDER BY 2 
 ```
@@ -72,17 +72,17 @@ SELECT sum(inj_tot_f),
 count|?column?                                      |
 -----+----------------------------------------------+
 17570|Fatal accidents since 1982                    |
-17570|Fatal accidents since 1982 by io_app_aaus1982 |
+17570|Fatal accidents since 1982 by io_app_ae1982 |
  5260|Fatal accidents since 2008                    |
- 5260|Fatal accidents since 2008 by io_app_aaus1982 |
+ 5260|Fatal accidents since 2008 by io_app_ae1982 |
 88084|Total accidents since 1982                    |
-88084|Total accidents since 1982 by io_app_aaus1982 |
+88084|Total accidents since 1982 by io_app_ae1982 |
 25055|Total accidents since 2008                    |
-25055|Total accidents since 2008 by io_app_aaus1982 |
+25055|Total accidents since 2008 by io_app_ae1982 |
 48672|Total fatalities since 1982                   |
-48672|Total fatalities since 1982 by io_app_aaus1982|
+48672|Total fatalities since 1982 by io_app_ae1982|
 14607|Total fatalities since 2008                   |
-14607|Total fatalities since 2008 by io_app_aaus1982|
+14607|Total fatalities since 2008 by io_app_ae1982|
 ```
 
 ## 2. FAR parts
@@ -92,7 +92,7 @@ count|?column?                                      |
 ```sql
 SELECT count(*),
        far_part
-  FROM io_app_aaus1982
+  FROM io_app_ae1982
  WHERE ev_year >= 1982
  GROUP BY far_part
  ORDER BY 2,
@@ -174,7 +174,7 @@ count|far_part      |
 ```sql
 SELECT count(*),
        far_part
-  FROM io_app_aaus1982
+  FROM io_app_ae1982
  WHERE ev_year >= 1982
    AND inj_tot_f > 0 
  GROUP BY far_part
@@ -235,7 +235,7 @@ count|far_part     |
 ```sql
 SELECT count(*),
        far_part
-  FROM io_app_aaus1982
+  FROM io_app_ae1982
  WHERE ev_year >= 2008
    AND inj_tot_f > 0 
  GROUP BY far_part

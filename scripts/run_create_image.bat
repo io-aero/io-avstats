@@ -8,7 +8,7 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set APPLICATION_DEFAULT=aaus1982
+set APPLICATION_DEFAULT=ae1982
 
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
@@ -19,8 +19,8 @@ if ["%1"] EQU [""] (
     echo =========================================================
     echo all      - All Streamlit applications
     echo ---------------------------------------------------------
-    echo aaus1982 - Aircraft Accidents in the US since 1982
-    echo pdus1982 - Profiling Data for the US since 1982
+    echo ae1982 - Aircraft Accidents in the US since 1982
+    echo pd1982 - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -77,8 +77,8 @@ rem > %LOG_FILE% 2>&1 (
     echo =======================================================================
 
     if ["!APPLICATION!"] EQU ["all"]  (
-        call scripts\run_create_image aaus1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image pdus1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image ae1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image pd1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
     )
 

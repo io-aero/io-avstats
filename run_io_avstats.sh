@@ -32,7 +32,7 @@ export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
 export IO_AVSTATS_MSACCESS=
 export IO_AVSTATS_MSEXCEL=
 export IO_AVSTATS_TASK=
-export IO_AVSTATS_TASK_DEFAULT=aaus1982
+export IO_AVSTATS_TASK_DEFAULT=ae1982
 
 if [ -z "$1" ]; then
     echo "========================================================="
@@ -98,8 +98,8 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "========================================================="
         echo "all      - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "aaus1982 - Aircraft Accidents in the US since 1982"
-        echo "pdus1982 - Profiling Data for the US since 1982"
+        echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "pd1982 - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION

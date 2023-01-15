@@ -21,7 +21,7 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-APP_ID = "pdus1982"
+APP_ID = "pd1982"
 
 # pylint: disable=R0801
 CHOICE_DATA_PROFILE: bool | None = None
@@ -196,9 +196,9 @@ QUERIES = {
                  i.inj_person_category,
                  i.injury_level;
     """,
-    "io_app_aaus1982": """
+    "io_app_ae1982": """
         SELECT *
-          FROM io_app_aaus1982
+          FROM io_app_ae1982
         ORDER BY ev_id;
     """,
     "io_countries": """

@@ -25,7 +25,7 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-APP_ID = "aaus1982"
+APP_ID = "ae1982"
 
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
@@ -311,7 +311,7 @@ def _get_data() -> DataFrame:
     return pd.read_sql(
         """
     SELECT *
-     FROM io_app_aaus1982
+     FROM io_app_ae1982
     ORDER BY ev_id;
     """,
         con=_get_engine(),
@@ -406,7 +406,7 @@ def _prep_data_charts_eyt(
         ]
     ]
 
-    df_chart.rename(
+    df_chart.loc["ev_year","ev_counter"] = df_chart.rename(
         columns={
             "ev_year": "year",
             "ev_counter": "events",
@@ -897,7 +897,7 @@ def _present_data_profile():
 def _present_details():
     """Present details."""
     if CHOICE_DETAILS:
-        st.subheader("Detailed data from database view **`io_app_aaus1982`**")
+        st.subheader("Detailed data from database view **`io_app_ae1982`**")
         st.dataframe(DF_FILTERED)
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
@@ -1613,7 +1613,7 @@ def _sql_query_max_inj_f_grnd() -> int:
         cur.execute(
             """
         SELECT MAX(inj_f_grnd)
-          FROM io_app_aaus1982;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1633,7 +1633,7 @@ def _sql_query_max_inj_tot_f() -> int:
         cur.execute(
             """
         SELECT MAX(inj_tot_f)
-          FROM io_app_aaus1982;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore

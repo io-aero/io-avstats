@@ -431,7 +431,7 @@ rem Run a Streamlit application.
 rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
-    pipenv run streamlit run src\streamlit_apps\%IO_AVSTATS_APPLICATION%.py
+    pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

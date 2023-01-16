@@ -19,9 +19,9 @@ import subprocess
 
 import pytest
 
-from io_avstats_db import io_config
-from io_avstats_db import io_glob
-from io_avstats_db import io_utils
+from ioavstatsdb import io_config
+from ioavstatsdb import io_glob
+from ioavstatsdb import io_utils
 
 # Constants & Globals.
 # -----------------------------------------------------------------------------

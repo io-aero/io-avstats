@@ -406,7 +406,7 @@ def _prep_data_charts_eyt(
         ]
     ]
 
-    df_chart.loc["ev_year","ev_counter"] = df_chart.rename(
+    df_chart.loc["ev_year", "ev_counter"] = df_chart.rename(
         columns={
             "ev_year": "year",
             "ev_counter": "events",

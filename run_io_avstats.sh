@@ -223,7 +223,7 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # Run a Streamlit application.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
-    if ! ( pipenv run streamlit run src/streamlit_apps/${IO_AVSTATS_Application}.py ); then
+    if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_Application}.py ); then
         exit 255
     fi
 

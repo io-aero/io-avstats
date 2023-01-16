@@ -32,7 +32,7 @@ export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
 export IO_AVSTATS_MSACCESS=
 export IO_AVSTATS_MSEXCEL=
 export IO_AVSTATS_TASK=
-export IO_AVSTATS_TASK_DEFAULT=ae1982
+export IO_AVSTATS_TASK_DEFAULT=r_s_a
 
 if [ -z "$1" ]; then
     echo "========================================================="
@@ -42,18 +42,18 @@ if [ -z "$1" ]; then
     echo "v_n_d   - Verify selected NTSB data"
     echo "r_d_s   - Refresh the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_s_f   - Download basic simplemaps files"
-#   echo "d_z_f   - Download the ZIP Code Database file"
-    echo "l_c_d   - Load data from a correction file into PostgreSQL"
-    echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_d   - Load simplemaps data into PostgreSQL"
+#   echo "d_z_f   - Download the ZIP Code Database file"
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
+    echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
     echo "c_d_s   - Create the PostgreSQL database schema"
+    echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_f   - Delete the PostgreSQL database files"
     echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "d_d_s   - Drop the PostgreSQL database schema"
+    echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"

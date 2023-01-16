@@ -533,23 +533,23 @@ Further details can be found [here](https://github.com/io-aero/io-avstats-db/blo
 
 Example protocol:
 
-    Progress update 2022-11-27 14:59:11.670613 : ===============================================================================.
-    Progress update 2022-11-27 14:59:11.670613 : INFO.00.004 Start Launcher.
-    Progress update 2022-11-27 14:59:11.672613 : INFO.00.001 The logger is configured and ready.
-    Progress update 2022-11-27 14:59:11.681113 : INFO.00.005 Argument task='d_s_f'.
-    Progress update 2022-11-27 14:59:11.681113 : -------------------------------------------------------------------------------.
-    Progress update 2022-11-27 14:59:11.681113 : INFO.00.048 Downloading basic simplemaps files.
-    Progress update 2022-11-27 14:59:11.681113 : --------------------------------------------------------------------------------
-    Progress update 2022-11-27 14:59:11.917087 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
-    Progress update 2022-11-27 14:59:14.671525 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
-    Progress update 2022-11-27 14:59:14.705528 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
-    Progress update 2022-11-27 14:59:14.916882 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
-    Progress update 2022-11-27 14:59:15.642184 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
-    Progress update 2022-11-27 14:59:15.675685 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
-    Progress update 2022-11-27 14:59:15.676184 : -------------------------------------------------------------------------------.
-    Progress update 2022-11-27 14:59:15.676184 :        4,151,071,300 ns - Total time launcher.
-    Progress update 2022-11-27 14:59:15.676184 : INFO.00.006 End   Launcher.
-    Progress update 2022-11-27 14:59:15.676184 : ===============================================================================.
+    Progress update 2023-01-16 08:52:42.402122 : ===============================================================================.
+    Progress update 2023-01-16 08:52:42.402622 : INFO.00.004 Start Launcher.
+    Progress update 2023-01-16 08:52:42.407122 : INFO.00.001 The logger is configured and ready.
+    Progress update 2023-01-16 08:52:42.416122 : INFO.00.005 Argument task='d_s_f'.
+    Progress update 2023-01-16 08:52:42.416122 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-16 08:52:42.416122 : INFO.00.048 Downloading basic simplemaps files.
+    Progress update 2023-01-16 08:52:42.416122 : --------------------------------------------------------------------------------
+    Progress update 2023-01-16 08:52:42.614735 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
+    Progress update 2023-01-16 08:52:42.707338 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
+    Progress update 2023-01-16 08:52:42.740839 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
+    Progress update 2023-01-16 08:52:42.907725 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
+    Progress update 2023-01-16 08:52:43.003439 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
+    Progress update 2023-01-16 08:52:43.037441 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
+    Progress update 2023-01-16 08:52:43.037441 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-16 08:52:43.037441 :          787,318,600 ns - Total time launcher.
+    Progress update 2023-01-16 08:52:43.037441 : INFO.00.006 End   Launcher.
+    Progress update 2023-01-16 08:52:43.037939 : ===============================================================================.
 
 ### 1.8 **`d_z_f`** - Download the ZIP Code Database file
 

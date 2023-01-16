@@ -29,6 +29,7 @@ APP_ID = "ae1982"
 
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
+CHOICE_ABOUT: bool | None = None
 CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
@@ -553,6 +554,25 @@ def _prep_data_charts_tffp(
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by Injury Level.
 # ------------------------------------------------------------------
+def _present_about():
+    file_name, processed = _sql_query_last_file_name()
+
+    about_msg = "IO-AVSTATS Application: **ae1982**"
+    about_msg = about_msg + "<br/>"
+    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
+    about_msg = about_msg + "<br/>"
+    about_msg = (
+        about_msg
+        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
+        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
+    )
+
+    st.markdown(about_msg, unsafe_allow_html=True)
+
+
+# ------------------------------------------------------------------
+# Present the chart: Events per Year by Injury Level.
+# ------------------------------------------------------------------
 def _present_chart_eyil():
     """Present the chart: Events per Year by Injury Level."""
     st.subheader(f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level")
@@ -844,8 +864,16 @@ def _present_charts():
 # ------------------------------------------------------------------
 def _present_data():
     """Present the filtered data."""
+
+    col1, _col2, col3 = st.columns([1, 1, 1])
+
     if CHOICE_FILTER_CONDITIONS:
-        st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+        with col1:
+            st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+
+    if CHOICE_ABOUT:
+        with col3:
+            _present_about()
 
     if CHOICE_CHARTS:
         _present_charts()
@@ -1305,8 +1333,9 @@ def _setup_filter_controls():
 # ------------------------------------------------------------------
 def _setup_page():
     """Set up the page."""
-    global EVENT_TYPE_DESC  # pylint: disable=global-statement
+    global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
+    global EVENT_TYPE_DESC  # pylint: disable=global-statement
 
     if FILTER_EV_TYPE == ["ACC"]:
         EVENT_TYPE_DESC = "Accidents"
@@ -1319,10 +1348,20 @@ def _setup_page():
         f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
     )
 
+    col1, _col2, col3 = st.columns([1, 1, 1])
+
     if CHOICE_FILTER_DATA:
-        CHOICE_FILTER_CONDITIONS = st.checkbox(
-            help="Show the selected filter conditions.",
-            label="**Show filter conditions**",
+        with col1:
+            CHOICE_FILTER_CONDITIONS = st.checkbox(
+                help="Show the selected filter conditions.",
+                label="**Show filter conditions**",
+                value=False,
+            )
+
+    with col3:
+        CHOICE_ABOUT = st.checkbox(
+            help="Software owner and release information.",
+            label="**About this Application**",
             value=False,
         )
 
@@ -1597,6 +1636,28 @@ def _sql_query_finding_codes() -> list[str]:
         """
         )  # noqa: E501
         return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the last processed update file.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_last_file_name() -> tuple[str, str]:
+    """Determine the last processed update file.
+
+    Returns:
+        tuple[str, str]: File name and processing date.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
+          FROM io_processed_files
+         ORDER BY first_processed DESC ;
+        """
+        )
+
+        return cur.fetchone()  # type: ignore
 
 
 # ------------------------------------------------------------------

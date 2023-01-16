@@ -11,8 +11,8 @@ Currently, the following Streamlit applications are supported:
 | Application | Description                             |
 |-------------|-----------------------------------------|
 | all         | All Streamlit applications              |
-| aaus1982    | Aircraft Accidents in the US since 1982 |
-| pdus1982    | Profiling Data for the US since 1982    |
+| ae1982    | Aircraft Accidents in the US since 1982 |
+| pd1982    | Profiling Data for the US since 1982    |
 
 The script **`run_io_avstats`** with task **`c_d_i`** can be used to create or update the necessary Docker images.
 
@@ -52,8 +52,8 @@ Enter the desired task [default: r_s_a] c_d_i
 =========================================================
 all      - All Streamlit applications
 ---------------------------------------------------------
-aaus1982 - Aircraft Accidents in the US since 1982
-pdus1982 - Profiling Data for the US since 1982
+ae1982 - Aircraft Accidents in the US since 1982
+pd1982 - Profiling Data for the US since 1982
 ---------------------------------------------------------
 Enter the Streamlit application name all
 
@@ -92,7 +92,7 @@ The current time is:  5:26:55.49
 Enter the new time:
 =======================================================================
 
-Script scripts\run_create_image is now running - Application: aaus1982
+Script scripts\run_create_image is now running - Application: ae1982
 
 You can find the run log in the file run_create_image.log
 
@@ -101,7 +101,7 @@ Please wait ...
 =======================================================================
 Start scripts\run_create_image
 -----------------------------------------------------------------------
-Create a Docker image for application aaus1982
+Create a Docker image for application ae1982
 -----------------------------------------------------------------------
 DOCKER_CLEAR_CACHE       : yes
 DOCKER_HUB_PUSH          : yes
@@ -134,7 +134,7 @@ odzccrtlsypmao8i86phdqbem
 is2due0y1dwyos9twpcy88qmu
 
 Total reclaimed space: 2.785GB
-Docker stop/rm aaus1982 ................................ before containers:
+Docker stop/rm ae1982 ................................ before containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
 9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     io_avstats_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001->3001/tcp                                     uptime-kuma
@@ -146,15 +146,15 @@ CONTAINER ID   IMAGE                    COMMAND                  CREATED        
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 24 minutes             0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. before images:
 REPOSITORY               TAG       IMAGE ID       CREATED        SIZE
-ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago   3.71GB
-ioaero/aaus1982          latest    55595e574018   36 hours ago   3.71GB
+ioaero/pd1982          latest    21178cc3b8bc   36 hours ago   3.71GB
+ioaero/ae1982          latest    55595e574018   36 hours ago   3.71GB
 louislam/uptime-kuma     1         7a23beca3798   7 days ago     382MB
 postgres                 latest    a26eb6069868   11 days ago    379MB
 louislam/uptime-kuma     <none>    930a7e08142f   2 months ago   350MB
 portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
-ioaero/aaus1982          latest    55595e574018   36 hours ago   3.71GB
-Untagged: ioaero/aaus1982:latest
-Untagged: ioaero/aaus1982@sha256:8e0508754352cf9fbfd5c1957df825aab5703d8ec7ed85d6c44358f0bc701e2d
+ioaero/ae1982          latest    55595e574018   36 hours ago   3.71GB
+Untagged: ioaero/ae1982:latest
+Untagged: ioaero/ae1982@sha256:8e0508754352cf9fbfd5c1957df825aab5703d8ec7ed85d6c44358f0bc701e2d
 Deleted: sha256:55595e574018ea4759bb7a13e51aaea8e869fe84e49c17ff05f5234b0b65f6b0
 Deleted: sha256:119fc70cf352a239f7e323ba1d9b7603fb77e899ca0db5b4bc994b577cb55f45
 Deleted: sha256:8922e3751ae2b60d598394358173719c4043d29ae71e8d709a305a5432f70f36
@@ -166,7 +166,7 @@ Deleted: sha256:6a2295de770bec3782f572ee92533e5c120dda4a7a8f07faea3fe21a8fa5b9d2
 Deleted: sha256:82fa1f4f9b491d32fa8f2fda71e7c8223f2ea66d85b92b19869554e4342f2a55
 ............................................................. after images:
 REPOSITORY               TAG       IMAGE ID       CREATED        SIZE
-ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago   3.71GB
+ioaero/pd1982          latest    21178cc3b8bc   36 hours ago   3.71GB
 louislam/uptime-kuma     1         7a23beca3798   7 days ago     382MB
 postgres                 latest    a26eb6069868   11 days ago    379MB
 louislam/uptime-kuma     <none>    930a7e08142f   2 months ago   350MB
@@ -192,14 +192,14 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
  => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
  => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.0s
- => [ 9/10] COPY src/streamlit_apps/aaus1982.py ./aaus1982.py                                                                                                                         0.0s
+ => [ 9/10] COPY src/streamlit_apps/ae1982.py ./ae1982.py                                                                                                                         0.0s
  => [10/10] RUN make pipenv-prod                                                                                                                                                    116.1s
  => exporting to image                                                                                                                                                                7.6s
  => => exporting layers                                                                                                                                                               7.6s
  => => writing image sha256:9c52d19f49cab5d423d3829c9bf9a275646a6c8102664798439d2f6a8a36ec70                                                                                          0.0s
- => => naming to docker.io/ioaero/aaus1982                                                                                                                                            0.0s
+ => => naming to docker.io/ioaero/ae1982                                                                                                                                            0.0s
 Using default tag: latest
-The push refers to repository [docker.io/ioaero/aaus1982]
+The push refers to repository [docker.io/ioaero/ae1982]
 e0d3af52dd2a: Pushed
 02cd2263f756: Pushed
 4303b7702627: Pushed
@@ -226,7 +226,7 @@ Enter the new time:
 End   scripts\run_create_image
 =======================================================================
 
-Script scripts\run_create_image is now running - Application: pdus1982
+Script scripts\run_create_image is now running - Application: pd1982
 
 You can find the run log in the file run_create_image.log
 
@@ -235,7 +235,7 @@ Please wait ...
 =======================================================================
 Start scripts\run_create_image
 -----------------------------------------------------------------------
-Create a Docker image for application pdus1982
+Create a Docker image for application pd1982
 -----------------------------------------------------------------------
 DOCKER_CLEAR_CACHE       : yes
 DOCKER_HUB_PUSH          : yes
@@ -268,7 +268,7 @@ d0y2kal9jkigo3d1iwmnv6c5x
 cop4h1ejwr20j5i6ilnjm2udh
 
 Total reclaimed space: 2.787GB
-Docker stop/rm pdus1982 ................................ before containers:
+Docker stop/rm pd1982 ................................ before containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
 9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001->3001/tcp                                     uptime-kuma
@@ -280,15 +280,15 @@ CONTAINER ID   IMAGE                    COMMAND                  CREATED        
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 27 minutes                   0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. before images:
 REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
-ioaero/aaus1982          latest    9c52d19f49ca   53 seconds ago   3.71GB
-ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago     3.71GB
+ioaero/ae1982          latest    9c52d19f49ca   53 seconds ago   3.71GB
+ioaero/pd1982          latest    21178cc3b8bc   36 hours ago     3.71GB
 louislam/uptime-kuma     1         7a23beca3798   7 days ago       382MB
 postgres                 latest    a26eb6069868   11 days ago      379MB
 louislam/uptime-kuma     <none>    930a7e08142f   2 months ago     350MB
 portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
-ioaero/pdus1982          latest    21178cc3b8bc   36 hours ago     3.71GB
-Untagged: ioaero/pdus1982:latest
-Untagged: ioaero/pdus1982@sha256:81275d3926397906a73a897d067081b957a94c944c01fede413eb998916abdb3
+ioaero/pd1982          latest    21178cc3b8bc   36 hours ago     3.71GB
+Untagged: ioaero/pd1982:latest
+Untagged: ioaero/pd1982@sha256:81275d3926397906a73a897d067081b957a94c944c01fede413eb998916abdb3
 Deleted: sha256:21178cc3b8bc68774299f0015c9aff0ff819078d62174db6e13da31fe8253ece
 Deleted: sha256:b0403dd2d4728d6cdb151bdd2e182b3170de1b0cbf5f0b7e00c17dddcc389f5b
 Deleted: sha256:10742399ddf223a435aaf2674a553baf3c5a1345aad7d6a4f5dabe4a4398ad25
@@ -300,7 +300,7 @@ Deleted: sha256:ccd5b1ddd9e1cfb8897f307f303097fafd12e1cf3220603419c03a4394138653
 Deleted: sha256:2be71d95e8f20b84ab51375e52afc7665926a2ac52e22b32b82bb8f374082d13
 ............................................................. after images:
 REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
-ioaero/aaus1982          latest    9c52d19f49ca   54 seconds ago   3.71GB
+ioaero/ae1982          latest    9c52d19f49ca   54 seconds ago   3.71GB
 louislam/uptime-kuma     1         7a23beca3798   7 days ago       382MB
 postgres                 latest    a26eb6069868   11 days ago      379MB
 louislam/uptime-kuma     <none>    930a7e08142f   2 months ago     350MB
@@ -325,14 +325,14 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
  => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
  => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.1s
- => [ 9/10] COPY src/streamlit_apps/pdus1982.py ./pdus1982.py                                                                                                                         0.0s
+ => [ 9/10] COPY src/streamlit_apps/pd1982.py ./pd1982.py                                                                                                                         0.0s
  => [10/10] RUN make pipenv-prod                                                                                                                                                    116.0s
  => exporting to image                                                                                                                                                                7.6s
  => => exporting layers                                                                                                                                                               7.6s
  => => writing image sha256:352591832f346b0b30d89f33e01572eb1710024841c0d6fecd53a74b22ca5c09                                                                                          0.0s
- => => naming to docker.io/ioaero/pdus1982                                                                                                                                            0.0s
+ => => naming to docker.io/ioaero/pd1982                                                                                                                                            0.0s
 Using default tag: latest
-The push refers to repository [docker.io/ioaero/pdus1982]
+The push refers to repository [docker.io/ioaero/pd1982]
 fcd1849b77ee: Pushed
 9b8fc3075985: Pushed
 23c8d1891816: Pushed

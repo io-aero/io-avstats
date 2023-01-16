@@ -533,23 +533,23 @@ Further details can be found [here](https://github.com/io-aero/io-avstats-db/blo
 
 Example protocol:
 
-    Progress update 2022-11-27 14:59:11.670613 : ===============================================================================.
-    Progress update 2022-11-27 14:59:11.670613 : INFO.00.004 Start Launcher.
-    Progress update 2022-11-27 14:59:11.672613 : INFO.00.001 The logger is configured and ready.
-    Progress update 2022-11-27 14:59:11.681113 : INFO.00.005 Argument task='d_s_f'.
-    Progress update 2022-11-27 14:59:11.681113 : -------------------------------------------------------------------------------.
-    Progress update 2022-11-27 14:59:11.681113 : INFO.00.048 Downloading basic simplemaps files.
-    Progress update 2022-11-27 14:59:11.681113 : --------------------------------------------------------------------------------
-    Progress update 2022-11-27 14:59:11.917087 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
-    Progress update 2022-11-27 14:59:14.671525 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
-    Progress update 2022-11-27 14:59:14.705528 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
-    Progress update 2022-11-27 14:59:14.916882 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
-    Progress update 2022-11-27 14:59:15.642184 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
-    Progress update 2022-11-27 14:59:15.675685 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
-    Progress update 2022-11-27 14:59:15.676184 : -------------------------------------------------------------------------------.
-    Progress update 2022-11-27 14:59:15.676184 :        4,151,071,300 ns - Total time launcher.
-    Progress update 2022-11-27 14:59:15.676184 : INFO.00.006 End   Launcher.
-    Progress update 2022-11-27 14:59:15.676184 : ===============================================================================.
+    Progress update 2023-01-16 08:52:42.402122 : ===============================================================================.
+    Progress update 2023-01-16 08:52:42.402622 : INFO.00.004 Start Launcher.
+    Progress update 2023-01-16 08:52:42.407122 : INFO.00.001 The logger is configured and ready.
+    Progress update 2023-01-16 08:52:42.416122 : INFO.00.005 Argument task='d_s_f'.
+    Progress update 2023-01-16 08:52:42.416122 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-16 08:52:42.416122 : INFO.00.048 Downloading basic simplemaps files.
+    Progress update 2023-01-16 08:52:42.416122 : --------------------------------------------------------------------------------
+    Progress update 2023-01-16 08:52:42.614735 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
+    Progress update 2023-01-16 08:52:42.707338 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
+    Progress update 2023-01-16 08:52:42.740839 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
+    Progress update 2023-01-16 08:52:42.907725 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
+    Progress update 2023-01-16 08:52:43.003439 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
+    Progress update 2023-01-16 08:52:43.037441 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
+    Progress update 2023-01-16 08:52:43.037441 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-16 08:52:43.037441 :          787,318,600 ns - Total time launcher.
+    Progress update 2023-01-16 08:52:43.037441 : INFO.00.006 End   Launcher.
+    Progress update 2023-01-16 08:52:43.037939 : ===============================================================================.
 
 ### 1.8 **`d_z_f`** - Download the ZIP Code Database file
 
@@ -659,7 +659,40 @@ Example protocol:
     Progress update 2022-11-27 14:15:57.570593 : INFO.00.006 End   Launcher.
     Progress update 2022-11-27 14:15:57.571096 : ===============================================================================.
 
-### 1.12 **`l_s_d`** - Load **simplemaps** data into PostgreSQL
+### 1.12 **`l_n_s`** - Load **NTSB** MS Excel statistic data into PostgreSQL
+
+TODO
+
+Example protocol:
+
+    Progress update 2023-01-15 12:46:10.973510 : ===============================================================================.
+    Progress update 2023-01-15 12:46:10.973510 : INFO.00.004 Start Launcher.
+    Progress update 2023-01-15 12:46:10.979008 : INFO.00.001 The logger is configured and ready.
+    Progress update 2023-01-15 12:46:18.297008 : INFO.00.041 Arguments task='l_n_s' {msexecel}='AviationAccidentStatistics_2002-2021_20221208'.
+    Progress update 2023-01-15 12:46:18.297008 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-15 12:46:18.297008 : INFO.00.072 Loading NTSB MS Ecel statistic data from file 'AviationAccidentStatistics_2002-2021_20221208'.
+    Progress update 2023-01-15 12:46:18.297508 : --------------------------------------------------------------------------------
+    Unprocessed row #     1: Table 29. Accident Aircraft, 2002 through 2021, US Civil Aviation | None | None | ...
+    Unprocessed row #     2: None | None | None | ...
+    Unprocessed row #     3: NTSB Number | Accident Report | Event Date | ...
+    Progress update 2023-01-15 12:48:30.355445 : Number of rows so far read :   5000.
+    Progress update 2023-01-15 12:50:35.554697 : Number of rows so far read :  10000.
+    Progress update 2023-01-15 12:52:39.895361 : Number of rows so far read :  15000.
+    Progress update 2023-01-15 12:54:44.828003 : Number of rows so far read :  20000.
+    Progress update 2023-01-15 12:56:47.277567 : Number of rows so far read :  25000.
+    Progress update 2023-01-15 12:58:50.693799 : Number of rows so far read :  30000.
+    Unprocessed row # 30245: None | None | None | ...
+    ...
+    Unprocessed row # 30729: None | None | None | ...
+    Progress update 2023-01-15 12:58:59.416221 : Number rows selected :  30729.
+    Progress update 2023-01-15 12:58:59.416723 : Number rows inserted :  30241.
+    Progress update 2023-01-15 12:58:59.416723 : Number rows updated  :  90723.
+    Progress update 2023-01-15 12:58:59.416723 : -------------------------------------------------------------------------------.
+    Progress update 2023-01-15 12:58:59.417222 :      768,612,714,000 ns - Total time launcher.
+    Progress update 2023-01-15 12:58:59.417222 : INFO.00.006 End   Launcher.
+    Progress update 2023-01-15 12:58:59.417222 : ===============================================================================.
+
+### 1.13 **`l_s_d`** - Load **simplemaps** data into PostgreSQL
 
 TODO
 
@@ -728,7 +761,7 @@ Example protocol:
         Progress update 2022-11-21 19:56:52.003903 : INFO.00.006 End   Launcher.
         Progress update 2022-11-21 19:56:52.003903 : ===============================================================================.
 
-### 1.13 **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
+### 1.14 **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
 
 TODO
 
@@ -782,14 +815,14 @@ Example protocol:
     Progress update 2022-11-29 14:26:07.090743 : INFO.00.006 End   Launcher.
     Progress update 2022-11-29 14:26:07.090743 : ===============================================================================.
 
-### 1.14 **`r_d_s`** - Refresh the PostgreSQL database schema
+### 1.15 **`r_d_s`** - Refresh the PostgreSQL database schema
 
 Hereby changes can be made to the database schema.
 The task can be executed several times without problems, since before a change is always first checked whether this has already been done.
 
 1. Materialized database view
 
-- **`io_app_aaus1982`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
+- **`io_app_ae1982`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
 
 Example protocol:
 
@@ -799,13 +832,13 @@ Example protocol:
     Progress update 2022-12-19 08:37:09.352180 : -------------------------------------------------------------------------------.
     Progress update 2022-12-19 08:37:09.352180 : INFO.00.071 Refreshing the database schema.
     Progress update 2022-12-19 08:37:09.352180 : --------------------------------------------------------------------------------
-    Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_aaus1982.
+    Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
     Progress update 2022-12-19 08:37:19.366370 : -------------------------------------------------------------------------------.
     Progress update 2022-12-19 08:37:19.366370 :       10,187,690,800 ns - Total time launcher.
     Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
     Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
 
-### 1.15 **`s_d_c`** - Set up the PostgreSQL database container
+### 1.16 **`s_d_c`** - Set up the PostgreSQL database container
 
 The default installation of the PostgreSQL database is done using the official Docker images from Dockerhub - see [here](https://hub.docker.com/_/postgres){:target="_blank"}.
 
@@ -886,7 +919,7 @@ Example protocol:
     a4469ea39fdd   postgres:latest          "docker-entrypoint.s…"   2 weeks ago      Up 10 hours     0.0.0.0:5432->5432/tcp                                     io_avstats_container
     f67eb28b8888   portainer/portainer-ce   "/portainer"             4 weeks ago      Up 10 hours     0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 
-### 1.16 **`u_d_s`** - Update the PostgreSQL database schema
+### 1.17 **`u_d_s`** - Update the PostgreSQL database schema
 
 Hereby changes can be made to the database schema.
 The task can be executed several times without problems, since before a change is always first checked whether this has already been done.
@@ -946,7 +979,7 @@ Example protocol:
     Progress update 2022-11-27 13:37:14.403313 : INFO.00.006 End   Launcher.
     Progress update 2022-11-27 13:37:14.403313 : ===============================================================================.
 
-### 1.17 **`v_n_d`** - Verify selected **NTSB** data
+### 1.18 **`v_n_d`** - Verify selected **NTSB** data
 
 This task can be used to perform a plausibility check for the following columns in the database table **`events`**:
 

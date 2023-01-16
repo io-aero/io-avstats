@@ -4,17 +4,17 @@ ifeq ($(OS),Windows_NT)
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=src\\streamlit_apps
-	export PYTHONPATH_DEV=src\\streamlit_apps
-	export PYTHONPATH_MYPY=src\\streamlit_apps
+	export PYTHONPATH=src\\ioavstats
+	export PYTHONPATH_DEV=src\\ioavstats
+	export PYTHONPATH_MYPY=src\\ioavstats
 	export PYTHONPATH_PYTEST=src
 else
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=src/streamlit_apps
-	export PYTHONPATH_DEV=src/streamlit_apps
-	export PYTHONPATH_MYPY=src/streamlit_apps
+	export PYTHONPATH=src/ioavstats
+	export PYTHONPATH_DEV=src/ioavstats
+	export PYTHONPATH_MYPY=src/ioavstats
 	export PYTHONPATH_PYTEST=src
 endif
 

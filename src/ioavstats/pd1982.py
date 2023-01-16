@@ -21,9 +21,10 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-APP_ID = "pdus1982"
+APP_ID = "pd1982"
 
 # pylint: disable=R0801
+CHOICE_ABOUT: bool | None = None
 CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
@@ -196,9 +197,9 @@ QUERIES = {
                  i.inj_person_category,
                  i.injury_level;
     """,
-    "io_app_aaus1982": """
+    "io_app_ae1982": """
         SELECT *
-          FROM io_app_aaus1982
+          FROM io_app_ae1982
         ORDER BY ev_id;
     """,
     "io_countries": """
@@ -398,6 +399,25 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
+# Present the chart: Events per Year by Injury Level.
+# ------------------------------------------------------------------
+def _present_about():
+    file_name, processed = _sql_query_last_file_name()
+
+    about_msg = "IO-AVSTATS Application: **pd1982**"
+    about_msg = about_msg + "<br/>"
+    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
+    about_msg = about_msg + "<br/>"
+    about_msg = (
+        about_msg
+        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
+        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
+    )
+
+    st.markdown(about_msg, unsafe_allow_html=True)
+
+
+# ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
@@ -405,6 +425,18 @@ def _present_data():
     if CHOICE_DATA_PROFILE:
         st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
         _present_data_data_profile()
+
+    _col1, _col2, col3 = st.columns(
+        [
+            1,
+            1,
+            1,
+        ]
+    )
+
+    if CHOICE_ABOUT:
+        with col3:
+            _present_about()
 
     if CHOICE_DETAILS:
         st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
@@ -480,8 +512,26 @@ def _setup_filter_controls():
 # ------------------------------------------------------------------
 def _setup_page():
     """Set up the page."""
+    global CHOICE_ABOUT  # pylint: disable=global-statement
+
     st.set_page_config(layout="wide")
+
     st.header("Profiling Data for the US since 1982")
+
+    _col1, _col2, col3 = st.columns(
+        [
+            1,
+            1,
+            1,
+        ]
+    )
+
+    with col3:
+        CHOICE_ABOUT = st.checkbox(
+            help="Software owner and release information.",
+            label="**About this Application**",
+            value=False,
+        )
 
 
 # ------------------------------------------------------------------
@@ -540,6 +590,32 @@ def _setup_task_controls():
     )
 
     st.sidebar.markdown("""---""")
+
+
+# ------------------------------------------------------------------
+# Determine the last processed update file.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_last_file_name() -> tuple[str, str]:
+    """Determine the last processed update file.
+
+    Returns:
+        tuple[str, str]: File name and processing date.
+    """
+    global PG_CONN  # pylint: disable=global-statement
+
+    PG_CONN = _get_postgres_connection()  # type: ignore
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
+          FROM io_processed_files
+         ORDER BY first_processed DESC ;
+        """
+        )
+
+        return cur.fetchone()  # type: ignore
 
 
 # ------------------------------------------------------------------

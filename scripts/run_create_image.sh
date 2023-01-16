@@ -8,7 +8,7 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export APPLICATION_DEFAULT=aaus1982
+export APPLICATION_DEFAULT=ae1982
 
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=yes
@@ -19,8 +19,8 @@ if [ -z "$1" ]; then
     echo "========================================================="
     echo "all      - All Streamlit applications"
     echo "---------------------------------------------------------"
-    echo "aaus1982 - Aircraft Accidents in the US since 1982"
-    echo "pdus1982 - Profiling Data for the US since 1982"
+    echo "ae1982 - Aircraft Accidents in the US since 1982"
+    echo "pd1982 - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}
@@ -79,8 +79,8 @@ echo "==========================================================================
     fi
 
 if [ "${APPLICATION}" = "all" ]; then
-    ( ./scripts\run_create_image.sh aaus1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts\run_create_image.sh pdus1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts\run_create_image.sh ae1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts\run_create_image.sh pd1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     goto END_OF_SCRIPT
 else
     if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then

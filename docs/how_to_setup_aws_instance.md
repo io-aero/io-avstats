@@ -58,8 +58,8 @@ Currently, the following Streamlit applications are supported:
 
 | Port | Application                                        |
 |------|----------------------------------------------------|
-| 8501 | aaus1982 - Aircraft Accidents in the US since 1982 |
-| 8502 | pdus1982 - Profiling Data for the US since 1982    |
+| 8501 | ae1982 - Aircraft Accidents in the US since 1982 |
+| 8502 | pd1982 - Profiling Data for the US since 1982    |
 
 ### 2.1 Determine the security
 

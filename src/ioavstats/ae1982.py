@@ -25,10 +25,11 @@ from streamlit_pandas_profiling import st_profile_report  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-APP_ID = "aaus1982"
+APP_ID = "ae1982"
 
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
+CHOICE_ABOUT: bool | None = None
 CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
@@ -311,7 +312,7 @@ def _get_data() -> DataFrame:
     return pd.read_sql(
         """
     SELECT *
-     FROM io_app_aaus1982
+     FROM io_app_ae1982
     ORDER BY ev_id;
     """,
         con=_get_engine(),
@@ -406,7 +407,7 @@ def _prep_data_charts_eyt(
         ]
     ]
 
-    df_chart.rename(
+    df_chart.loc["ev_year", "ev_counter"] = df_chart.rename(
         columns={
             "ev_year": "year",
             "ev_counter": "events",
@@ -548,6 +549,25 @@ def _prep_data_charts_tffp(
         df_chart["far_part_121_inj_tot_f"].sum(),
         df_chart["far_part_135_inj_tot_f"].sum(),
     ]
+
+
+# ------------------------------------------------------------------
+# Present the chart: Events per Year by Injury Level.
+# ------------------------------------------------------------------
+def _present_about():
+    file_name, processed = _sql_query_last_file_name()
+
+    about_msg = "IO-AVSTATS Application: **ae1982**"
+    about_msg = about_msg + "<br/>"
+    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
+    about_msg = about_msg + "<br/>"
+    about_msg = (
+        about_msg
+        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
+        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
+    )
+
+    st.markdown(about_msg, unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------
@@ -844,8 +864,16 @@ def _present_charts():
 # ------------------------------------------------------------------
 def _present_data():
     """Present the filtered data."""
+
+    col1, _col2, col3 = st.columns([1, 1, 1])
+
     if CHOICE_FILTER_CONDITIONS:
-        st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+        with col1:
+            st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+
+    if CHOICE_ABOUT:
+        with col3:
+            _present_about()
 
     if CHOICE_CHARTS:
         _present_charts()
@@ -897,7 +925,7 @@ def _present_data_profile():
 def _present_details():
     """Present details."""
     if CHOICE_DETAILS:
-        st.subheader("Detailed data from database view **`io_app_aaus1982`**")
+        st.subheader("Detailed data from database view **`io_app_ae1982`**")
         st.dataframe(DF_FILTERED)
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
@@ -1305,8 +1333,9 @@ def _setup_filter_controls():
 # ------------------------------------------------------------------
 def _setup_page():
     """Set up the page."""
-    global EVENT_TYPE_DESC  # pylint: disable=global-statement
+    global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
+    global EVENT_TYPE_DESC  # pylint: disable=global-statement
 
     if FILTER_EV_TYPE == ["ACC"]:
         EVENT_TYPE_DESC = "Accidents"
@@ -1319,10 +1348,20 @@ def _setup_page():
         f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
     )
 
+    col1, _col2, col3 = st.columns([1, 1, 1])
+
     if CHOICE_FILTER_DATA:
-        CHOICE_FILTER_CONDITIONS = st.checkbox(
-            help="Show the selected filter conditions.",
-            label="**Show filter conditions**",
+        with col1:
+            CHOICE_FILTER_CONDITIONS = st.checkbox(
+                help="Show the selected filter conditions.",
+                label="**Show filter conditions**",
+                value=False,
+            )
+
+    with col3:
+        CHOICE_ABOUT = st.checkbox(
+            help="Software owner and release information.",
+            label="**About this Application**",
             value=False,
         )
 
@@ -1600,6 +1639,28 @@ def _sql_query_finding_codes() -> list[str]:
 
 
 # ------------------------------------------------------------------
+# Determine the last processed update file.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_last_file_name() -> tuple[str, str]:
+    """Determine the last processed update file.
+
+    Returns:
+        tuple[str, str]: File name and processing date.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
+          FROM io_processed_files
+         ORDER BY first_processed DESC ;
+        """
+        )
+
+        return cur.fetchone()  # type: ignore
+
+
+# ------------------------------------------------------------------
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
 @st.experimental_memo
@@ -1613,7 +1674,7 @@ def _sql_query_max_inj_f_grnd() -> int:
         cur.execute(
             """
         SELECT MAX(inj_f_grnd)
-          FROM io_app_aaus1982;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1633,7 +1694,7 @@ def _sql_query_max_inj_tot_f() -> int:
         cur.execute(
             """
         SELECT MAX(inj_tot_f)
-          FROM io_app_aaus1982;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore

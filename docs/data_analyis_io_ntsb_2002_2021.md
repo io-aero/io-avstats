@@ -1,22 +1,22 @@
 # Data Analysis: DB Table **`io_ntsb_2002_2021`**
 
-**Note**: The **`IO-AVSTATS`** database used here contains **NTSB** aircraft event data as of January 8, 2023.
+**Note**: The **IO-AVSTATS-DB** database used here contains **NTSB** aircraft event data as of January 8, 2023.
 
 ## 1. Introduction
 
 The **NTSB** makes available on its website statistical data on flight events since 1982 in the form of MS Access database files.
 Events are classified as accidents and incidents according to [§ 830.2 Definitions](https://www.ecfr.gov/current/title-49/section-830.2) in the Code of Federal Regulations.
-The following file contents can be downloaded from the website ([link](https://data.ntsb.gov/avdata)):
+The following file types can be downloaded from the website ([link](https://data.ntsb.gov/avdata)):
 
-- `Pre2008.zip`: data from events that happened before the year 2008.
-- `avall.zip`: data of events that happened since 2008 until the current beginning of the month.
+- `Pre2008.zip`: contains data from events that happened before the year 2008.
+- `avall.zip`: contains data of events that happened since 2008 until the current beginning of the month.
 - `up99MON.zip`: At the 1st, 8th, 15th and 22nd of each month an update file with new or changed events. These updates are available for one year.
 
-**IO-Aero** has loaded the data from the MS Access files `Pre2008` and `avall` once into the PostgreSQL database **IO-AVSTATS-DB** in November 2022 and since then regularly updates the **IO-AVSTATS-DB* with the update files provided by **NTSB**,
+**IO-Aero** has loaded the data from the MS Access files `Pre2008` and `avall` once into the PostgreSQL database **IO-AVSTATS-DB** in November 2022 and since then regularly updates the **IO-AVSTATS-DB** with the update files provided by **NTSB**,
 
-In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the **NTSB** published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"} - hereinafter referred to as **20-year statistics*.
+In the November 17, 2021, news release [U.S. Civil Aviation Fatalities and Flight Activity Decreased in 2020](https://www.ntsb.gov/news/press-releases/Pages/NR20211117.aspx){:target="_blank"}, the **NTSB** published, among other things, the [US Civil Aviation Accident Statistics](https://www.ntsb.gov/safety/Pages/research.aspx){:target="_blank"} - hereinafter referred to as **20-Year Statistics**.
 These are available on this website at this [link](https://www.ntsb.gov/safety/data/Documents/AviationAccidentStatistics_2002-2021_20221208.xlsx){:target="_blank"} as an MS Excel file.
-This file contains 28 worksheets (Table 1 through Table 28) of accumulated data, and in Worksheet 29 (Table 29) (most likely) the underlying event details. 
+This file contains 28 worksheets (Table 1 through Table 28) of accumulated data, and in Worksheet 29 (Table 29. Accident Aircraft, 2002 through 2021, US Civil Aviation) (most likely) the underlying event and aircraft details. 
 
 #### Beginning of file:
 
@@ -37,9 +37,9 @@ On this basis, the following three questions were now investigated:
 2. how can accumulated data, e.g. in worksheet 10, be derived from the data in worksheet 29?
 3. how can the data in the MS Excel file be compared with the data in the MS Access files in the period 2002 to 2021?  
 
-## 2.DB table `io_ntsb_2002_2021`
+## 2. DB Table `io_ntsb_2002_2021`
 
-To store the data from Worksheet 29 of the MS Excel file containing the **20-year statistics** in the **IO-AVSTATS-DB** database, the new database table `io_ntsb_2002_2021` was defined as follows:
+To store the data from Worksheet 29 of the MS Excel file containing the **20-Year Statistics** in the **IO-AVSTATS-DB** database, the new database table `io_ntsb_2002_2021` was defined as follows:
 
 <kbd>![](img/ddl_io_ntsb_2002_2021.png)</kbd>
 
@@ -76,11 +76,9 @@ Progress update 2023-01-15 12:58:59.417222 : INFO.00.006 End   Launcher.
 Progress update 2023-01-15 12:58:59.417222 : ===============================================================================.
 ```
 
-According to the log file, 30'241 rows were loaded into the database table which exactly matches the MS Excel file where the data is stored in Excel rows 4 to 30'244.
+### 2.1 Data Migration Verification
 
-## 3.Data Characteristic of Worksheet no. 29
-
-The number of data rows in Worksheet 29 in the MS Excel file is 30,241 (row #4 to row #30,244 inclusive), and summing the columns `Fatal Injuries` (I) and `Serious Injuries` (J) gives 10,245 and 5,700 respectively.
+According to the log file, 30'241 rows were loaded into the database table which exactly matches the MS Excel file where the data is stored in Excel rows 4 to 30'244.Summing the columns `Fatal Injuries` (I) and `Serious Injuries` (J) gives 10,245 and 5,700 respectively.
 These numbers can be confirmed with the following query in the database table `io_ntsb_2002_2021`:
 
 ```sql92
@@ -89,12 +87,33 @@ These numbers can be confirmed with the following query in the database table `i
            sum(serious_injuries) "Serious Injuries"
     FROM io_ntsb_2002_2021
 ```
-
+Results:
 ```
     Accidents All|Fatal Injuries|Serious Injuries|
     -------------+--------------+----------------+
             30241|         10245|            5700|
 ```
+
+The following database query can be used to verify that the **20-Year Statistics** data is still contained in the current MS Access databases:
+
+```sql92
+    SELECT ntsb_number, ev_year
+    FROM io_ntsb_2002_2021 in2
+    WHERE (ntsb_number, aircraft_number) NOT IN (SELECT e.ntsb_no, a.aircraft_key
+                                                   FROM events e INNER JOIN aircraft a 
+                                                                 ON e.ev_id = a.ev_id)
+```
+Results:
+```
+ntsb_number|ev_year|
+-----------+-------+
+CEN21LA236 |   2021|
+```
+
+This one event is actually missing from the MS Access databases, although the report is still available. 
+This one case can certainly be neglected, but it clearly shows that the data on which the **20-Year Statistics** are based could have been changed afterwards.
+
+## 3. Data Characteristic of Worksheet no. 29
 
 An appropriate adaption of the following database query was used to analyze the data categories:
 
@@ -156,7 +175,7 @@ aircraft_number|Accidents All|Accidents Fatal|Fatalities|
     HAVING count(*) = 1
      ORDER BY ntsb_number
 ```
-
+Results:
 ```
     ntsb_number|count|
     -----------+-----+
@@ -594,7 +613,7 @@ The question here is whether the values in the three columns `highest_injury_lev
        AND fatal_injuries = 0
      ORDER BY 1
 ```
-
+Results:
 ```
     ntsb_number|highest_injury_level|fatal_injuries|
     -----------+--------------------+--------------+
@@ -611,7 +630,7 @@ No inconsistencies found.
        AND highest_injury_level != 'Fatal'
      ORDER BY 1
 ```
-
+Results:
 ```
     ntsb_number|highest_injury_level|fatal_injuries|
     -----------+--------------------+--------------+
@@ -638,7 +657,7 @@ Found 7 rows with inconsistent data.
        AND serious_injuries = 0
      ORDER BY 1
 ```
-
+Results:
 ```
     ntsb_number|highest_injury_level|serious_injuries|
     -----------+--------------------+----------------+
@@ -656,7 +675,7 @@ No inconsistencies found.
        AND highest_injury_level != 'Serious'
      ORDER BY 1
 ```
-
+Results:
 ```
     ntsb_number|highest_injury_level|serious_injuries|
     -----------+--------------------+----------------+
@@ -724,7 +743,35 @@ Skydiving                |          128|             19|        52|
 Unknown                  |          153|             52|       107|
 ```
 
-### 3.14 `serious_injuries`
+### 3.14 `registration_number`
+
+```
+SELECT registration_number                        "registration_number",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+FROM (SELECT CASE
+                 WHEN i.registration_number = 'UNREG' THEN i.registration_number
+                 WHEN upper(i.registration_number) ~ '^N[1-9][0-9][0-9][0-9][0-9]$' THEN 'USA'
+                 WHEN upper(i.registration_number) ~ '^N[1-9][0-9][0-9][0-9][A-Z]$' THEN 'USA'
+                 WHEN upper(i.registration_number) ~ '^N[1-9][0-9][0-9][A-Z][A-Z]$' THEN 'USA'
+                 ELSE 'NON-US'
+                 END registration_number,
+             i.fatal_injuries
+        FROM io_ntsb_2002_2021 i) j
+GROUP BY registration_number
+ORDER BY 1 
+```
+Result:
+```
+registration_number|Accidents All|Accidents Fatal|Fatalities|
+-------------------+-------------+---------------+----------+
+NON-US             |         4585|           1050|      1848|
+UNREG              |            3|              0|          |
+USA                |        25653|           4580|      8397|
+```
+
+### 3.15 `serious_injuries`
 
 ```
 serious_injuries|Accidents All|Accidents Fatal|Fatalities|
@@ -762,6 +809,311 @@ serious_injuries|Accidents All|Accidents Fatal|Fatalities|
                 |        24919|           4635|      8338|
 ```
 
+## 4. Derivation Rules for the Aggregated Worksheets
+
+### 4.1 Table 1
+
+**Accidents, Fatalities, and Rates, 2021 Statistics, 
+US Aviation**
+
+#### I. `flight_regulation`
+
+```sql92
+SELECT flight_regulation                          "flight_regulation",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE ev_year = 2021
+ GROUP BY flight_regulation
+ ORDER BY 1
+```
+Results:
+```
+flight_regulation             |Accidents All|Accidents Fatal|Fatalities|
+------------------------------+-------------+---------------+----------+
+Armed Forces                  |            1|              0|          |
+Non-U.S., non-commercial      |           23|              7|        19|
+Part 121: Air carrier         |           26|              0|         0|
+Part 133: Rotorcraft ext. load|            7|              0|         0|
+Part 135: Air taxi & commuter |           44|             10|        32|
+Part 137: Agricultural        |           56|             12|        12|
+Part 91: General aviation     |         1056|            189|       310|
+Part 91 subpart k: Fractional |            1|              0|         0|
+Public aircraft               |           13|              2|         3|
+Unknown                       |            6|              1|         2|
+```
+
+#### II. `flight_schedule_type`
+
+```sql92
+SELECT flight_schedule_type                       "flight_schedule_type",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE ev_year = 2021
+ GROUP BY flight_schedule_type
+ ORDER BY 1
+```
+Results:
+```
+flight_schedule_type|Accidents All|Accidents Fatal|Fatalities|
+--------------------+-------------+---------------+----------+
+                    |         1050|            190|       324|
+Non-scheduled       |          147|             30|        52|
+Scheduled           |           36|              1|         2|
+```
+
+#### III. `flight_regulation` & `flight_schedule_type`
+
+```sql92
+SELECT flight_regulation                          "flight_regulation",
+       flight_schedule_type                       "flight_schedule_type",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE ev_year = 2021
+ GROUP BY flight_regulation, flight_schedule_type
+ ORDER BY 1, 2
+```
+Results:
+```
+flight_regulation             |flight_schedule_type|Accidents All|Accidents Fatal|Fatalities|
+------------------------------+--------------------+-------------+---------------+----------+
+Armed Forces                  |                    |            1|              0|          |
+Non-U.S., non-commercial      |                    |           23|              7|        19|
+Part 121: Air carrier         |Non-scheduled       |            3|              0|          | ok
+Part 121: Air carrier         |Scheduled           |           23|              0|         0|
+Part 133: Rotorcraft ext. load|                    |            4|              0|          |
+Part 133: Rotorcraft ext. load|Non-scheduled       |            2|              0|         0|
+Part 133: Rotorcraft ext. load|Scheduled           |            1|              0|          |
+Part 135: Air taxi & commuter |                    |            1|              1|         5|
+Part 135: Air taxi & commuter |Non-scheduled       |           32|              8|        25| ok
+Part 135: Air taxi & commuter |Scheduled           |           11|              1|         2| ok
+Part 137: Agricultural        |                    |           45|              9|         9|
+Part 137: Agricultural        |Non-scheduled       |           11|              3|         3|
+Part 91: General aviation     |                    |          958|            170|       286|
+Part 91: General aviation     |Non-scheduled       |           97|             19|        24|
+Part 91: General aviation     |Scheduled           |            1|              0|          |
+Part 91 subpart k: Fractional |Non-scheduled       |            1|              0|         0|
+Public aircraft               |                    |           12|              2|         3|
+Public aircraft               |Non-scheduled       |            1|              0|          |
+Unknown                       |                    |            6|              1|         2|
+```
+Table 1:
+
+<kbd>![](img/20_Years_Table_01.png)</kbd>
+
+### 4.2 Table 9
+
+**Accidents, Fatalities, and Rates, 2002 through 2021, 
+for US Air Carriers Operating Under 14 CFR 135, 
+On-Demand Operationsa**
+
+#### I.  `flight_regulation` & `flight_schedule_type`
+
+```sql92
+SELECT ev_year                                    "year",  
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE flight_regulation = 'Part 135: Air taxi & commuter'
+   AND flight_schedule_type = 'Non-scheduled'
+ GROUP BY ev_year
+ ORDER BY 1
+```
+Results:
+```
+year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|           64|             18|        35|
+2003|           74|             18|        42|
+2004|           66|             23|        64|
+2005|           65|             11|        18|
+2006|           52|             10|        16|
+2007|           63|             14|        43|
+2008|           59|             21|        76|
+2009|           47|              2|        17|
+2010|           31|              6|        17|
+2011|           51|             17|        42|
+2012|           39|              8|        12|
+2013|           45|             10|        25|
+2014|           36|              8|        20|
+2015|           39|              7|        27|
+2016|           29|              7|        19|
+2017|           44|              8|        16|
+2018|           40|              7|        16|
+2019|           34|             13|        38|
+2020|           39|              6|        21|
+2021|           32|              8|        25|
+```
+Table 9:
+
+<kbd>![](img/20_Years_Table_09.png)</kbd>
+
+### 4.3 Table 10
+
+**Accidents, Fatalities, and Rates, 2002 through 2021, 
+US General Aviation**
+
+#### I.  `flight_regulation` & `flight_schedule_type`
+
+```sql92
+SELECT ev_year                                    "year",  
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE flight_regulation in ('Part 91: General aviation', 
+                             'Part 135: Air taxi & commuter', 
+                             'Part 137: Agricultural', 
+                             'Part 91 subpart k: Fractional')
+ GROUP BY ev_year
+ ORDER BY 1
+```
+Results:
+```
+year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|         1751|            351|       590|
+2003|         1790|            366|       682|
+2004|         1661|            327|       610|
+2005|         1726|            321|       551|
+2006|         1545|            312|       715|
+2007|         1702|            296|       533|
+2008|         1622|            288|       541|
+2009|         1505|            268|       481|
+2010|         1447|            266|       453|
+2011|         1505|            279|       486|
+2012|         1475|            269|       411|
+2013|         1240|            213|       379|
+2014|         1216|            251|       401|
+2015|         1234|            228|       394|
+2016|         1279|            210|       390|
+2017|         1260|            203|       334|
+2018|         1295|            218|       368|
+2019|         1249|            240|       435|
+2020|         1101|            198|       342|
+2021|         1157|            211|       354|
+```
+Table 10:
+
+<kbd>![](img/20_Years_Table_10.png)</kbd>
+
+**2 aircraft involved:**
+
+```sql92
+SELECT ev_year                                    "year",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE flight_regulation in ('Part 91: General aviation',
+                            'Part 135: Air taxi & commuter',
+                            'Part 137: Agricultural',
+                            'Part 91 subpart k: Fractional')
+   AND ntsb_number IN (SELECT ntsb_number
+                      FROM io_ntsb_2002_2021 in2
+                      GROUP BY ntsb_number
+                      HAVING count(*) = 3)
+ GROUP BY ev_year
+ ORDER BY 1
+```
+Results:
+```
+year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2002|           29|              8|        16|
+2003|           41|             16|        48|
+2004|           32|             14|        22|
+2005|           35|             10|        20|
+2006|           24|             10|        26|
+2007|           36|             10|        22|
+2008|           48|             12|        50|
+2009|           27|             12|        36|
+2010|           30|              8|        16|
+2011|           36|             14|        22|
+2012|           30|              8|        12|
+2013|           20|              6|        14|
+2014|           21|             10|        18|
+2015|           29|              2|        10|
+2016|           36|             14|        38|
+2017|           20|              2|         4|
+2018|           36|              6|        14|
+2019|           32|             10|        24|
+2020|           22|              8|        36|
+2021|           12|              2|         4|
+```
+
+**3 aircraft involved:**
+
+```sql92
+SELECT ev_year                                    "year",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
+       sum(fatal_injuries)                        "Fatalities"
+  FROM io_ntsb_2002_2021
+ WHERE flight_regulation in ('Part 91: General aviation',
+                            'Part 135: Air taxi & commuter',
+                            'Part 137: Agricultural',
+                            'Part 91 subpart k: Fractional')
+   AND ntsb_number IN (SELECT ntsb_number
+                      FROM io_ntsb_2002_2021 in2
+                      GROUP BY ntsb_number
+                      HAVING count(*) = 3)
+ GROUP BY ev_year
+ ORDER BY 1
+```
+Results:
+```
+year|Accidents All|Accidents Fatal|Fatalities|
+----+-------------+---------------+----------+
+2010|            3|              3|         9|
+```
+
+
+### 4.3 Table 13
+
+**Defining Event for Accidents in 2021,  
+for US Air Carriers Operating Under 14 CFR 121**
+
+#### I.  `flight_regulation` & `flight_schedule_type`
+
+```sql92
+SELECT defining_event                             "defining_event",
+       count(*)                                   "Accidents All",
+       count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal"
+  FROM io_ntsb_2002_2021
+ WHERE ev_year = 2021
+   AND flight_regulation = 'Part 121: Air carrier'     
+ GROUP BY defining_event
+```
+Results:
+```
+defining_event                       |Accidents All|Accidents Fatal|
+-------------------------------------+-------------+---------------+
+Turbulence Encounter                 |            6|              0| ok
+Ground Collision                     |            5|              0| ok
+Abnormal Runway Contact              |            4|              0| ok
+Abrupt Maneuver                      |            2|              0| ok
+System/Component Failure - Non-power |            2|              0| ok
+Cabin Safety Events                  |            1|              0| ok
+Evacuation                           |            1|              0| ok
+Ground Handling                      |            1|              0| ok
+System/Component Failure - Powerplant|            1|              0| ok
+                                     |            3|              0| ok
+```
+Table 13:
+
+<kbd>![](img/20_Years_Table_13.png)</kbd>
+
+
+
 
 
 
@@ -788,7 +1140,7 @@ serious_injuries|Accidents All|Accidents Fatal|Fatalities|
 
 
 Worksheet no. 29 obviously contains the detailed events underlying the statistics in the previous worksheets.
-Now, in order to make the data in the **`IO-AVSTATS`** database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the **`IO-AVSTATS`** database as database table **`io_ntsb_2002_2021`**, unchanged.
+Now, in order to make the data in the **IO-AVSTATS-DB** database comparable to this MS Excel file, the data from Worksheet no. 29 was loaded into the **IO-AVSTATS-DB** database as database table **`io_ntsb_2002_2021`**, unchanged.
 
 ### Totals
 
@@ -1219,7 +1571,7 @@ NYC08FA324 |2008-09-26 00:00:00.000|             1|                    |
 NYC08LA322 |2008-09-23 00:00:00.000|             1|                    |
 ```
 
-#### This problem does not occur in the **`IO-AVSTATS`** database!
+#### This problem does not occur in the **IO-AVSTATS-DB** database!
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury
@@ -1234,7 +1586,7 @@ ntsb_no|ev_year|inj_f_grnd|inj_tot_f|ev_highest_injury|
 -------+-------+----------+---------+-----------------+
 ```
 
-#### The corrupted data in the MS Excel file looks correct in the **`IO-AVSTATS`** database:
+#### The corrupted data in the MS Excel file looks correct in the **IO-AVSTATS-DB** database:
 
 ```sql
 SELECT ntsb_no, ev_year, inj_f_grnd, inj_tot_f, ev_highest_injury

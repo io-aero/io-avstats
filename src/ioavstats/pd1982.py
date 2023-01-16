@@ -514,9 +514,9 @@ def _setup_page():
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
 
-    st.set_page_config(layout="wide")
-
-    st.header("Profiling Data for the US since 1982")
+    st.header(
+        f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}"
+    )
 
     _col1, _col2, col3 = st.columns(
         [
@@ -624,9 +624,11 @@ def _sql_query_last_file_name() -> tuple[str, str]:
 # Start time measurement.
 start_time = time.time_ns()
 
-_setup_page()
+st.set_page_config(layout="wide")
 
 _setup_sidebar()
+
+_setup_page()
 
 DF_UNFILTERED = _get_data(CHOICE_TABLE_SELECTION)
 

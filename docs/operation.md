@@ -1,5 +1,10 @@
 # Operation
 
+
+Please see [here](https://github.com/io-aero/io-avstats/blob/main/docs/operation.md){:target="_blank"}
+
+
+
 The main tool for operating **IO-AVSTATS** is the **`run_io_avstats`** script. 
 The script is available in a Windows command line version and in a Linux bash shell version.
 

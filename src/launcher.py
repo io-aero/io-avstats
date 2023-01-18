@@ -83,6 +83,8 @@ def main(argv: list[str]) -> None:
         avstats.load_ntsb_msexcel_data(avstats.ARG_MSEXCEL)
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_D:
         avstats.load_simplemaps_data()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_E:
+        avstats.load_sequence_of_events()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_Z_D:
         avstats.load_zip_code_db_data()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_R_D_S:

@@ -4,6 +4,7 @@ database_commit_size = 5000
 download_chunk_size = 524288
 download_file_aviation_occurrence_categories_xlsx = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 download_file_countries_states_json = "data/Countries_States/countries_states.json"
+download_file_sequence_of_events_csv = "data/Sequence_of_Events/CICTT_SOE_MAP.csv"
 download_file_simplemaps_us_cities_xlsx = "uscities.xlsx"
 download_file_simplemaps_us_cities_zip = "simplemaps_uscities_basicv1.75.zip"
 download_file_simplemaps_us_zips_xlsx = "uszips.xlsx"

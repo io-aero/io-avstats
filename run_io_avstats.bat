@@ -63,6 +63,7 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo d_d_s   - Drop the PostgreSQL database schema
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
+    echo l_s_e   - Load sequence of events data into PostgreSQL
     echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
@@ -418,7 +419,20 @@ rem ----------------------------------------------------------------------------
 rem Load simplemaps data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_s_d"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Load sequence of events data into PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["l_s_e"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -431,7 +445,7 @@ rem ----------------------------------------------------------------------------
 rem Load ZIP Code Database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_z_d"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

@@ -1,0 +1,98 @@
+eventsoe_no,meaning,CICTT_Code,CICTT_Description
+0,Unknown or undetermined,UNK,Unknown
+10,Aircraft loading event,RAMP,Ground Handling
+20,Aircraft servicing event,RAMP,Ground Handling
+30,Preflight or dispatch event,,
+40,Aircraft maintenance event,,
+50,Aircraft inspection event,,
+60,Attempted remediation/recovery,,
+70,Airport occurrence,ADRM,Aerodrome
+80,Ground handling event,RAMP,Ground Handling
+81,AC/prop/rotor contact w person,RAMP,Ground Handling
+82,Prop/jet/rotor blast/suction,RAMP,Ground Handling
+90,Abnormal runway contact,ARC,Abnormal Runway Contact
+91,Tailstrike,ARC,Abnormal Runway Contact
+92,Hard landing,ARC,Abnormal Runway Contact
+93,Dragged wing/rotor/float/other,ARC,Abnormal Runway Contact
+94,Landing gear collapse,ARC,Abnormal Runway Contact
+95,Landing gear not configured,ARC,Abnormal Runway Contact
+96,Nose over/nose down,ARC,Abnormal Runway Contact
+97,Roll over,ARC,Abnormal Runway Contact
+100,Air traffic event,ATM,Air Traffic Management
+110,Cabin safety event,CABIN,Cabin Safety Events
+120,Controlled flight into terr/obj (CFIT),CFIT,Controlled Flight Into Terrain
+130,Emergency descent initiated,,
+140,Engine shutdown,,
+150,Fire/smoke (non-impact),F-NI,Fire - Non-Impact
+160,Explosion (non-impact),F-NI,Fire - Non-Impact
+170,Fire/smoke (post-impact),F-POST,Fire - Post-Impact
+180,Explosion (post-impact),F-POST,Fire - Post-Impact
+190,Fuel related,FUEL,Fuel Related
+191,Fuel starvation,FUEL,Fuel Related
+192,Fuel exhaustion,FUEL,Fuel Related
+193,Fuel contamination,FUEL,Fuel Related
+194,Wrong fuel,FUEL,Fuel Related
+200,Ground collision,GCOL,Ground Collision
+210,Structural icing,ICE,Icing
+220,Low altitude operation/event,LALT,Low Altitude Operation
+230,Loss of control on ground,LOC-G,Loss of Control on Ground
+231,Dynamic rollover,LOC-G,Loss of Control on Ground
+232,Ground resonance,LOC-G,Loss of Control on Ground
+240,Loss of control in flight,LOC-I,Loss of Control In-Flight
+241,Aerodynamic stall/spin,LOC-I,Loss of Control In-Flight
+242,Loss of tail rotor effectiveness,LOC-I,Loss of Control In-Flight
+243,Retreating blade stall,LOC-I,Loss of Control In-Flight
+244,Settling with power/vortex ring state,LOC-I,Loss of Control In-Flight
+245,Mast bumping,LOC-I,Loss of Control In-Flight
+250,Midair collision,MAC,Midair
+260,Near midair/TCAS alert/loss of separation,MAC,Midair
+270,Abrupt maneuver,AMAN,Abrupt Maneuver
+271,Inflight upset,AMAN,Abrupt Maneuver
+280,Navigation error,NAV,Navigation Error
+281,Course deviation,NAV,Navigation Error
+282,Altitude deviation,NAV,Navigation Error
+283,Airspace incursion,NAV,Navigation Error
+284,Wrong surface or wrong airport,NAV,Navigation Error
+300,Runway excursion,RE,Runway Excursion
+310,Wildlife encounter (non-bird),WILD,Wildlife Encounter
+320,Runway incursion veh/AC/person,RI-VAP,Runway Incursion - Vehicle
+330,Sys/Comp malf/fail (non-power),SCF-NP,System/Component Failure - Non-power
+331,Pressure/environ sys malf/fail,SCF-NP,System/Component Failure - Non-power
+332,Electrical system malf/failure,SCF-NP,System/Component Failure - Non-power
+333,Flight control sys malf/fail,SCF-NP,System/Component Failure - Non-power
+334,Flight instrument malf/fail,SCF-NP,System/Component Failure - Non-power
+335,Nav system malfunction/failure,SCF-NP,System/Component Failure - Non-power
+336,Comm system malf/failure,SCF-NP,System/Component Failure - Non-power
+337,Aircraft structural failure,SCF-NP,System/Component Failure - Non-power
+338,Part(s) separation from AC,SCF-NP,System/Component Failure - Non-power
+340,Powerplant sys/comp malf/fail,SCF-PP,System/Component Failure - Powerplant
+341,Loss of engine power (total),SCF-PP,System/Component Failure - Powerplant
+342,Loss of engine power (partial),SCF-PP,System/Component Failure - Powerplant
+343,Uncontained engine failure,SCF-PP,System/Component Failure - Powerplant
+350,Security/criminal event,SEC,Security Related
+360,Turbulence encounter,TURB,Turbulence Encounter
+361,Aircraft wake turb encounter,TURB,Turbulence Encounter
+362,Clear air turbulence encounter,TURB,Turbulence Encounter
+370,Landing area undershoot,USOS,Undershoot/Overshoot
+380,Landing area overshoot,USOS,Undershoot/Overshoot
+390,Windshear or thunderstorm,WSTRW,Windshear/Thunderstorm
+400,Other weather encounter,,
+401,VFR encounter with IMC,UIMC,Unintended Flight Into IMC
+402,Loss of visual reference,UIMC,Unintended Flight Into IMC
+410,Terrain avoidance alert,,
+420,Collision avoidance alert,,
+430,Stall warn/stick-shaker/pusher,,
+440,Off-field or emergency landing,,
+441,Ditching,,
+450,Hazardous material leak/spill,OTHR,Other
+460,Evacuation,EVAC,Evacuation
+470,Collision with terr/obj (non-CFIT),OTHR,Other
+480,External load event (Rotorcraft),EXTL,External Load
+490,Collision during takeoff/land,CTOL,Collision on Takeoff or Landing
+500,Loss of lift,LOLI,Loss of Lift
+510,Glider tow event,GTOW,Glider Towing
+600,Simulated/training event,SIMU,Simulated/training event
+850,Medical event,MED,Medical Event
+900,Miscellaneous/other,OTHR,Other
+901,Birdstrike,BIRD,Bird Strike
+990,Missing aircraft,UNK,Unknown

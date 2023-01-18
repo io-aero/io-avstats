@@ -13,7 +13,7 @@ Release Date: dd.mm.2023
 - TODO: Clear PANDAS warnings
 - TODO: Complete the documentation.
 - TODO: Increase the test coverage.
-- TODO: improve AE1982 performnc.
+- TODO: Improve AE1982 performance.
 
 ### 3. Applied Software
 

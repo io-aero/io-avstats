@@ -20,7 +20,7 @@ endif
 
 ##                                                                            .
 ## =============================================================================
-## IO-AVSTATS - Aviation Accident Statistics - make Documentation.
+## IO-AVSTATS - Aviation Event Statistics - make Documentation.
 ##                -------------------------------------------------------------
 ##                The purpose of this Makefile is to support the whole software
 ##                development process for io-avstats. It contains also the

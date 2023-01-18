@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Aviation Accidents in the US since 1982."""
+"""Aviation Events in the US since 1982."""
 import datetime
 import time
 

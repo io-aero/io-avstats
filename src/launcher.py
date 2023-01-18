@@ -52,7 +52,9 @@ def main(argv: list[str]) -> None:
     avstats.progress_msg("-" * 79)
 
     # Perform the processing
-    if avstats.ARG_TASK == io_glob.ARG_TASK_C_D_S:
+    if avstats.ARG_TASK == io_glob.ARG_TASK_A_O_C:
+        avstats.load_aviation_occurrence_categories()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_C_D_S:
         avstats.create_db_schema()
         io_utils.progress_msg("-" * 80)
         avstats.update_db_schema()

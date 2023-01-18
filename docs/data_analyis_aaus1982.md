@@ -85,7 +85,7 @@ count|?column?                                      |
 14607|Total fatalities since 2008 by io_app_ae1982|
 ```
 
-## 2. FAR parts
+## 2. FAR operations parts
 
 ### 2.1 Accidents since 1982
 

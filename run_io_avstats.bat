@@ -56,6 +56,7 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo l_z_d   - Load ZIP Code Database data into PostgreSQL
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
+    echo a_o_c   - Load aviation occurrence categories into PostgreSQL
     echo c_d_s   - Create the PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo d_d_f   - Delete the PostgreSQL database files
@@ -190,7 +191,7 @@ if exist logging_io_avstats.log (
 echo =======================================================================
 echo Start %0
 echo -----------------------------------------------------------------------
-echo IO-AVSTATS - Aviation Accident Statistics.
+echo IO-AVSTATS - Aviation Event Statistics.
 echo -----------------------------------------------------------------------
 echo PYTHONPATH : %PYTHONPATH%
 echo -----------------------------------------------------------------------
@@ -200,6 +201,19 @@ echo MSEXCEL    : %IO_AVSTATS_MSECEL%
 echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
+
+rem ----------------------------------------------------------------------------
+rem Load aviation occurrence categories into PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["a_o_c"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
 
 rem ----------------------------------------------------------------------------
 rem Run Docker Compose tasks.
@@ -365,7 +379,7 @@ rem ----------------------------------------------------------------------------
 rem Load country and state data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_s"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

@@ -427,13 +427,13 @@ def _prep_data_charts_eyt(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Fatalities per Year by FAR Parts.
+# Prepare the chart data: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _prep_data_charts_fyfp(
     df_filtered: DataFrame,
 ) -> DataFrame:
-    """Prepare the chart data: Fatalities per Year by FAR Parts."""
+    """Prepare the chart data: Fatalities per Year under FAR Operations Parts."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -518,13 +518,13 @@ def _prep_data_charts_tet(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Total Fatalities by FAR Parts.
+# Prepare the chart data: Total Fatalities under FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _prep_data_charts_tffp(
     df_filtered: DataFrame,
 ) -> list[int]:
-    """Prepare the chart data: Total Fatalities by FAR Parts."""
+    """Prepare the chart data: Total Fatalities under FAR Operations Parts."""
     df_chart = df_filtered[
         [
             "far_part_091x",
@@ -681,11 +681,11 @@ def _present_chart_eyt():
 
 
 # ------------------------------------------------------------------
-# Present the chart: Fatalities per Year by FAR Part.
+# Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
 def _present_chart_fyfp():
-    """Present the chart: Fatalities per Year by FAR Part."""
-    st.subheader("Number of Fatalities per Year by Selected FAR Parts")
+    """Present the chart: Fatalities per Year under FAR Operations Parts."""
+    st.subheader("Number of Fatalities per Year by Selected FAR Operations Parts")
 
     fig = go.Figure(
         data=[
@@ -789,11 +789,11 @@ def _present_chart_tet():
 
 
 # ------------------------------------------------------------------
-# Present the chart: Fatalities per Year by FAR Part.
+# Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
 def _present_chart_tffp():
-    """Present the chart: Fatalities per Year by FAR Part."""
-    st.subheader("Total Number of Fatalities by Selected FAR Parts")
+    """Present the chart: Fatalities per Year under FAR Operations Parts."""
+    st.subheader("Total Number of Fatalities by Selected FAR Operations Parts")
 
     fig = px.pie(
         color=[
@@ -838,7 +838,7 @@ def _present_charts():
         DF_FILTERED_CHARTS_EYIL = _prep_data_charts_eyil(DF_FILTERED)
         _present_chart_eyil()
 
-    # Fatalities per Year by FAR Parts
+    # Fatalities per Year under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_FYFP:
         DF_FILTERED_CHARTS_FYFP = _prep_data_charts_fyfp(DF_FILTERED)
         _present_chart_fyfp()
@@ -853,7 +853,7 @@ def _present_charts():
         DF_FILTERED_CHARTS_TEIL = _prep_data_charts_teil(DF_FILTERED)
         _present_chart_teil()
 
-    # Total Fatalities by FAR Parts
+    # Total Fatalities under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_TFFP:
         DF_FILTERED_CHARTS_TFFP = _prep_data_charts_tffp(DF_FILTERED)
         _present_chart_tffp()
@@ -1430,8 +1430,8 @@ def _setup_task_controls():
             value=False,
         )
         CHOICE_CHARTS_TYPE_FYFP = st.sidebar.checkbox(
-            help="Fatalities per year by selected FAR parts (after filtering the data).",
-            label="Fatalities per Year by FAR Parts",
+            help="Fatalities per year by selected FAR Operations Parts (after filtering the data).",
+            label="Fatalities per Year under FAR Operations Parts",
             value=True,
         )
         CHOICE_CHARTS_TYPE_TET = st.sidebar.checkbox(
@@ -1445,8 +1445,8 @@ def _setup_task_controls():
             value=False,
         )
         CHOICE_CHARTS_TYPE_TFFP = st.sidebar.checkbox(
-            help="Total fatalities by selected FAR parts (after filtering the data).",
-            label="Total Fatalities by FAR Parts",
+            help="Total fatalities by selected FAR Operations Parts (after filtering the data).",
+            label="Total Fatalities under FAR Operations Parts",
             value=True,
         )
 
@@ -1584,11 +1584,11 @@ def _sql_query_ev_type() -> list[str]:
 
 
 # ------------------------------------------------------------------
-# Execute a query that returns the list of FAR parts.
+# Execute a query that returns the list of FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _sql_query_far_parts() -> list[str]:
-    """Execute a query that returns a list of FAR parts.
+    """Execute a query that returns a list of FAR Operations Parts.
 
     Returns:
         list[str]: Query results in a list.

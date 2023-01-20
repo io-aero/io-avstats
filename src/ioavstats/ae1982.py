@@ -78,11 +78,11 @@ FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FILTER_FAR_PARTS: list[str] = []
 FILTER_FINDING_CODES: list[str] = []
-FILTER_HAS_US_IMPACT: bool | None = None
 FILTER_INJ_F_GRND_FROM: int | None = None
 FILTER_INJ_F_GRND_TO: int | None = None
 FILTER_INJ_TOT_F_FROM: int | None = None
 FILTER_INJ_TOT_F_TO: int | None = None
+FILTER_IS_US_AVIATION: bool | None = None
 FILTER_LATLONG_ACQ: str | None = None
 FILTER_NARR_STALL: bool | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
@@ -133,11 +133,11 @@ def _apply_filter_controls(
     filter_ev_year_to: int | None,
     filter_far_parts: list | None,
     filter_finding_codes: list | None,
-    filter_has_us_impact: bool | None,
     filter_inj_f_grnd_from: int | None,
     filter_inj_f_grnd_to: int | None,
     filter_inj_tot_f_from: int | None,
     filter_inj_tot_f_to: int | None,
+    filter_is_us_aviation: bool | None,
     filter_latlong_acq: str | None,
     filter_narr_stall: bool | None,
     filter_occurrence_codes: list | None,
@@ -218,14 +218,6 @@ def _apply_filter_controls(
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_has_us_impact:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["has_us_impact"] == True)  # noqa: E712
-        ]
-
-    # noinspection PyUnboundLocalVariable
     if filter_inj_f_grnd_from or filter_inj_f_grnd_to:
         df_filtered = df_filtered.loc[
             (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
@@ -237,6 +229,14 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
             & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
+        ]
+
+    # noinspection PyUnboundLocalVariable
+    if filter_is_us_aviation:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            # pylint: disable=singleton-comparison
+            (df_filtered["is_us_aviation"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -997,7 +997,7 @@ def _setup_filter_controls():
     global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
     global FILTER_FAR_PARTS  # pylint: disable=global-statement
     global FILTER_FINDING_CODES  # pylint: disable=global-statement
-    global FILTER_HAS_US_IMPACT  # pylint: disable=global-statement
+    global FILTER_IS_US_AVIATION  # pylint: disable=global-statement
     global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
     global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
@@ -1292,23 +1292,24 @@ def _setup_filter_controls():
 
     st.sidebar.markdown("""---""")
 
-    FILTER_HAS_US_IMPACT = st.sidebar.checkbox(
+    FILTER_IS_US_AVIATION = st.sidebar.checkbox(
         help="""
         One of the following conditions is satisfied:
+        - Country is the USA, or
         - Departure in the USA, or
         - (Planned) landing in the USA, or
         - US operator, or
         - US owner, or
         - US registration.
         """,
-        label="**Only US impacted ?**",
+        label="**Only US aviation ?**",
         value=True,
     )
 
-    if FILTER_HAS_US_IMPACT:
+    if FILTER_IS_US_AVIATION:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only US impacted ?**: **`{FILTER_HAS_US_IMPACT}`**"
+            + f"\n- **Only US aviation ?**: **`{FILTER_IS_US_AVIATION}`**"
         )
 
     st.sidebar.markdown("""---""")
@@ -1844,7 +1845,7 @@ if CHOICE_FILTER_DATA:
         FILTER_EV_YEAR_TO,
         FILTER_FAR_PARTS,
         FILTER_FINDING_CODES,
-        FILTER_HAS_US_IMPACT,
+        FILTER_IS_US_AVIATION,
         FILTER_INJ_F_GRND_FROM,
         FILTER_INJ_F_GRND_TO,
         FILTER_INJ_TOT_F_FROM,

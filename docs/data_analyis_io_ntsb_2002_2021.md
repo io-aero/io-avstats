@@ -1831,7 +1831,7 @@ SELECT ev_year                                    "Year",
        count(*) FILTER (WHERE fatal_injuries > 0) "Accidents Fatal",
        sum(fatal_injuries)                        "Fatalities"
 FROM io_ntsb_2002_2021
-where ntsb_number in (select ntsb_no from io_app_ae1982 where ev_type = 'ACC' and has_us_impact is true)
+where ntsb_number in (select ntsb_no from io_app_ae1982 where ev_type = 'ACC' and is_us_aviation is true)
 GROUP BY ev_year
 ORDER BY ev_year
 ```
@@ -1870,7 +1870,7 @@ FROM io_app_ae1982 iaa
 where ev_year >= 2002
   AND ev_year <= 2021
   AND ev_type = 'ACC'
-  and has_us_impact is true
+  and is_us_aviation is true
 GROUP BY ev_year
 ORDER BY ev_year
 ```
@@ -1916,7 +1916,7 @@ FROM io_app_ae1982 iaa
          LEFT OUTER JOIN io_ntsb_2002_2021 in2 ON (iaa.ntsb_no = in2.ntsb_number)
 WHERE iaa.ev_year = 2010
   AND in2.ntsb_number IS NULL
-  AND iaa.has_us_impact IS TRUE
+  AND iaa.is_us_aviation IS TRUE
   AND iaa.ev_type = 'ACC'
 ORDER BY iaa.ev_id desc
 ```

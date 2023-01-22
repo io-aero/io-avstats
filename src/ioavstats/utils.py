@@ -30,6 +30,11 @@ def present_about(pg_conn: Connection, app_name: str) -> None:
         + f"\n**:copyright: 2022-{datetime.date.today().year} - "
         + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
     )
+    about_msg = (
+        about_msg
+        + """\n<a href="https://www.io-aero.com" target="_blank">Disclaimer</a>
+          """
+    )
 
     st.markdown(about_msg, unsafe_allow_html=True)
 

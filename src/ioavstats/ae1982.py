@@ -13,6 +13,7 @@ import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import pydeck as pdk  # type: ignore
 import streamlit as st
+import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
@@ -21,8 +22,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
-
-import utils
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -97,7 +96,7 @@ LAYER_TYPE = "ScatterplotLayer"
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
 PG_CONN: Connection | None = None
-#  Up/down angle relative to the map�s plane,
+#  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
 PITCH = 30
 
@@ -435,7 +434,8 @@ def _prep_data_charts_eyt(
 def _prep_data_charts_fyfp(
     df_filtered: DataFrame,
 ) -> DataFrame:
-    """Prepare the chart data: Fatalities per Year under FAR Operations Parts."""
+    """Prepare the chart data: Fatalities per Year under FAR Operations
+    Parts."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -558,7 +558,9 @@ def _prep_data_charts_tffp(
 # ------------------------------------------------------------------
 def _present_chart_eyil():
     """Present the chart: Events per Year by Injury Level."""
-    st.subheader(f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level")
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -590,9 +592,11 @@ def _present_chart_eyil():
     )
 
     fig.update_layout(
+        autosize=True,
         bargap=0.05,
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
+        title=chart_title,
         width=CHOICE_CHARTS_WIDTH,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": EVENT_TYPE_DESC}},
@@ -619,7 +623,9 @@ def _present_chart_eyil():
 # ------------------------------------------------------------------
 def _present_chart_eyt():
     """Present the chart: Events per Year by Type."""
-    st.subheader(f"Number of {EVENT_TYPE_DESC} per Year by Type")
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Type"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -642,6 +648,7 @@ def _present_chart_eyt():
         bargap=0.05,
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
+        title=chart_title,
         width=CHOICE_CHARTS_WIDTH,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": EVENT_TYPE_DESC}},
@@ -668,7 +675,9 @@ def _present_chart_eyt():
 # ------------------------------------------------------------------
 def _present_chart_fyfp():
     """Present the chart: Fatalities per Year under FAR Operations Parts."""
-    st.subheader("Number of Fatalities per Year by Selected FAR Operations Parts")
+    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -698,6 +707,7 @@ def _present_chart_fyfp():
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
         width=CHOICE_CHARTS_WIDTH,
+        title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": "Fatalities"}},
     )
@@ -723,7 +733,9 @@ def _present_chart_fyfp():
 # ------------------------------------------------------------------
 def _present_chart_teil():
     """Present the chart: Total Events by Injury Level."""
-    st.subheader(f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level")
+    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -740,6 +752,7 @@ def _present_chart_teil():
         },
         hole=0.3,
         names=["Fatal", "Minor", "None", "Serious"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TEIL,
     )
 
@@ -753,7 +766,9 @@ def _present_chart_teil():
 # ------------------------------------------------------------------
 def _present_chart_tet():
     """Present the chart: Total Events by Type."""
-    st.subheader(f"Total Number of {EVENT_TYPE_DESC} by Type")
+    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Type"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -763,6 +778,7 @@ def _present_chart_tet():
         color_discrete_map={"Accidents": COLOR_LEVEL_1, "Incidents": COLOR_LEVEL_2},
         hole=0.3,
         names=["Accidents", "Incidents"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TET,
     )
 
@@ -776,7 +792,9 @@ def _present_chart_tet():
 # ------------------------------------------------------------------
 def _present_chart_tffp():
     """Present the chart: Fatalities per Year under FAR Operations Parts."""
-    st.subheader("Total Number of Fatalities by Selected FAR Operations Parts")
+    chart_title = "Total Number of Fatalities by Selected FAR Operations Parts"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -791,6 +809,7 @@ def _present_chart_tffp():
         },
         hole=0.3,
         names=["Parts 091x", "Parts 121", "Parts 135"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TFFP,
     )
 
@@ -862,14 +881,12 @@ def _present_data():
         _present_charts()
 
     if CHOICE_DATA_PROFILE:
-        st.subheader("Profiling of the filtered data set")
         _present_data_profile()
 
     if CHOICE_DETAILS or CHOICE_CHARTS_DETAILS:
         _present_details()
 
     if CHOICE_MAP:
-        st.subheader("Depicting the accidents on a map of the USA")
         _present_map()
 
 
@@ -878,6 +895,8 @@ def _present_data():
 # ------------------------------------------------------------------
 def _present_data_profile():
     """Present data profile."""
+    st.subheader("Profiling of the filtered data set")
+
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
         profile_report = ProfileReport(
@@ -926,6 +945,8 @@ def _present_details():
 def _present_map():
     """Present the accidents on the US map."""
     global DF_FILTERED  # pylint: disable=global-statement
+
+    st.subheader("Depicting the accidents on a map of the USA")
 
     # noinspection PyUnboundLocalVariable
     DF_FILTERED = DF_FILTERED.loc[
@@ -1731,7 +1752,7 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
     """Run the US latitude and longitude query.
 
     Args:
-        pitch (int): Up/down angle relative to the map�s plane.
+        pitch (int): Up/down angle relative to the maps plane.
         zoom (float): Magnification level of the map.
 
     Returns:

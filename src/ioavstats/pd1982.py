@@ -9,7 +9,7 @@ import time
 import pandas as pd
 import psycopg2
 import streamlit as st
-import utils
+import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore

@@ -22,6 +22,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
+import utils
+
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
@@ -69,9 +71,6 @@ DF_UNFILTERED: DataFrame = DataFrame()
 EVENT_TYPE_DESC: str
 
 FILTER_ACFT_CATEGORIES: list[str] = []
-FILTER_ALT_LOW: bool | None = None
-FILTER_DEST_COUNTRY_USA: bool | None = None
-FILTER_DPRT_COUNTRY_USA: bool | None = None
 FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_TYPE: list[str] = []
 FILTER_EV_YEAR_FROM: int | None = None
@@ -82,11 +81,14 @@ FILTER_INJ_F_GRND_FROM: int | None = None
 FILTER_INJ_F_GRND_TO: int | None = None
 FILTER_INJ_TOT_F_FROM: int | None = None
 FILTER_INJ_TOT_F_TO: int | None = None
+FILTER_IS_ALTITUDE_LOW: bool | None = None
+FILTER_IS_DEST_COUNTRY_USA: bool | None = None
+FILTER_IS_DPRT_COUNTRY_USA: bool | None = None
+FILTER_IS_NARRATIVE_STALL: bool | None = None
+FILTER_IS_SPIN_STALL: bool | None = None
 FILTER_IS_US_AVIATION: bool | None = None
 FILTER_LATLONG_ACQ: str | None = None
-FILTER_NARR_STALL: bool | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
-FILTER_SPIN_STALL: bool | None = None
 FILTER_STATE: list[str] = []
 
 # LAYER_TYPE = "HexagonLayer"
@@ -124,9 +126,6 @@ ZOOM = 4.4
 def _apply_filter_controls(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
-    filter_alt_low: bool | None,
-    filter_dest_country_usa: bool | None,
-    filter_dprt_country_usa: bool | None,
     filter_ev_highest_injury: list | None,
     filter_ev_type: list | None,
     filter_ev_year_from: int | None,
@@ -137,11 +136,14 @@ def _apply_filter_controls(
     filter_inj_f_grnd_to: int | None,
     filter_inj_tot_f_from: int | None,
     filter_inj_tot_f_to: int | None,
+    filter_is_altitude_low: bool | None,
+    filter_is_dest_country_usa: bool | None,
+    filter_is_dprt_country_usa: bool | None,
+    filter_is_narrative_stall: bool | None,
+    filter_is_spin_stall: bool | None,
     filter_is_us_aviation: bool | None,
     filter_latlong_acq: str | None,
-    filter_narr_stall: bool | None,
     filter_occurrence_codes: list | None,
-    filter_spin_stall: bool | None,
     filter_state: list | None,
 ) -> DataFrame:
     """Filter the data frame."""
@@ -157,27 +159,27 @@ def _apply_filter_controls(
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_alt_low:
+    if filter_is_altitude_low:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["alt_low"] == True)  # noqa: E712
+            (df_filtered["is_altitude_low"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_dest_country_usa:
+    if filter_is_dest_country_usa:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["dest_country_usa"] == True)  # noqa: E712
+            (df_filtered["is_dest_country_usa"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_dprt_country_usa:
+    if filter_is_dprt_country_usa:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["dprt_country_usa"] == True)  # noqa: E712
+            (df_filtered["is_dprt_country_usa"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -247,11 +249,11 @@ def _apply_filter_controls(
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_narr_stall:
+    if filter_is_narrative_stall:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["narr_stall"] == True)  # noqa: E712
+            (df_filtered["is_narrative_stall"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -264,11 +266,11 @@ def _apply_filter_controls(
         ]
 
     # noinspection PyUnboundLocalVariable
-    if filter_spin_stall:
+    if filter_is_spin_stall:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["spin_stall"] == True)  # noqa: E712
+            (df_filtered["is_spin_stall"] == True)  # noqa: E712
         ]
 
     # noinspection PyUnboundLocalVariable
@@ -437,9 +439,9 @@ def _prep_data_charts_fyfp(
     df_chart = df_filtered[
         [
             "ev_year",
-            "far_part_091x",
-            "far_part_121",
-            "far_part_135",
+            "is_far_part_091x",
+            "is_far_part_121",
+            "is_far_part_135",
             "inj_tot_f",
         ]
     ]
@@ -452,13 +454,13 @@ def _prep_data_charts_fyfp(
     )
 
     df_chart["far_part_091x_inj_tot_f"] = np.where(
-        df_chart.far_part_091x, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_091x, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_121_inj_tot_f"] = np.where(
-        df_chart.far_part_121, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_121, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_135_inj_tot_f"] = np.where(
-        df_chart.far_part_135, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_135, df_chart.inj_tot_f, 0
     )
 
     return df_chart.groupby("year", as_index=False).sum(
@@ -527,21 +529,21 @@ def _prep_data_charts_tffp(
     """Prepare the chart data: Total Fatalities under FAR Operations Parts."""
     df_chart = df_filtered[
         [
-            "far_part_091x",
-            "far_part_121",
-            "far_part_135",
+            "is_far_part_091x",
+            "is_far_part_121",
+            "is_far_part_135",
             "inj_tot_f",
         ]
     ]
 
     df_chart["far_part_091x_inj_tot_f"] = np.where(
-        df_chart.far_part_091x, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_091x, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_121_inj_tot_f"] = np.where(
-        df_chart.far_part_121, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_121, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_135_inj_tot_f"] = np.where(
-        df_chart.far_part_135, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_135, df_chart.inj_tot_f, 0
     )
 
     return [
@@ -549,25 +551,6 @@ def _prep_data_charts_tffp(
         df_chart["far_part_121_inj_tot_f"].sum(),
         df_chart["far_part_135_inj_tot_f"].sum(),
     ]
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Injury Level.
-# ------------------------------------------------------------------
-def _present_about():
-    file_name, processed = _sql_query_last_file_name()
-
-    about_msg = "IO-AVSTATS Application: **ae1982**"
-    about_msg = about_msg + "<br/>"
-    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
-    about_msg = about_msg + "<br/>"
-    about_msg = (
-        about_msg
-        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
-        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
-    )
-
-    st.markdown(about_msg, unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------
@@ -873,7 +856,7 @@ def _present_data():
 
     if CHOICE_ABOUT:
         with col3:
-            _present_about()
+            utils.present_about(PG_CONN, APP_ID)
 
     if CHOICE_CHARTS:
         _present_charts()
@@ -988,9 +971,9 @@ def _setup_filter_controls():
     global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
-    global FILTER_ALT_LOW  # pylint: disable=global-statement
-    global FILTER_DEST_COUNTRY_USA  # pylint: disable=global-statement
-    global FILTER_DPRT_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_IS_ALTITUDE_LOW  # pylint: disable=global-statement
+    global FILTER_IS_DEST_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_IS_DPRT_COUNTRY_USA  # pylint: disable=global-statement
     global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
     global FILTER_EV_TYPE  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -1003,9 +986,9 @@ def _setup_filter_controls():
     global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
-    global FILTER_NARR_STALL  # pylint: disable=global-statement
+    global FILTER_IS_NARRATIVE_STALL  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
-    global FILTER_SPIN_STALL  # pylint: disable=global-statement
+    global FILTER_IS_SPIN_STALL  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
 
@@ -1171,7 +1154,7 @@ def _setup_filter_controls():
 
     st.sidebar.markdown("""---""")
 
-    FILTER_SPIN_STALL = st.sidebar.checkbox(
+    FILTER_IS_SPIN_STALL = st.sidebar.checkbox(
         help="""
         For an aerodynamic spin stall, at least one of the following
         two conditions must be met in the event data:
@@ -1185,16 +1168,16 @@ def _setup_filter_controls():
         label="**Incl. aerodynamic spin stalls ?**",
     )
 
-    if FILTER_SPIN_STALL:
+    if FILTER_IS_SPIN_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_SPIN_STALL}`**"
+            + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_IS_SPIN_STALL}`**"
         )
 
     st.sidebar.markdown("""---""")
 
     # flake8: noqa: E501
-    FILTER_ALT_LOW = st.sidebar.checkbox(
+    FILTER_IS_ALTITUDE_LOW = st.sidebar.checkbox(
         help="""
         A too low altitude problem exists when the following conditions are met:
         - no occurrence code **`MIDAIR`**` or aerodynamic spin stall is present, and
@@ -1205,15 +1188,15 @@ def _setup_filter_controls():
         label="**Incl. altitude too low ?**",
     )
 
-    if FILTER_ALT_LOW:
+    if FILTER_IS_ALTITUDE_LOW:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. altitude too low ?**: **`{FILTER_ALT_LOW}`**"
+            + f"\n- **Incl. altitude too low ?**: **`{FILTER_IS_ALTITUDE_LOW}`**"
         )
 
     st.sidebar.markdown("""---""")
 
-    FILTER_NARR_STALL = st.sidebar.checkbox(
+    FILTER_IS_NARRATIVE_STALL = st.sidebar.checkbox(
         help="""
         A stall according to narrative is present if the accepted narrative
         contains the text **`STALL`**` in any lower or upper case.
@@ -1221,10 +1204,10 @@ def _setup_filter_controls():
         label="**Incl. stalled according narrative ?**",
     )
 
-    if FILTER_NARR_STALL:
+    if FILTER_IS_NARRATIVE_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_NARR_STALL}`**"
+            + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_IS_NARRATIVE_STALL}`**"
         )
 
     st.sidebar.markdown("""---""")
@@ -1262,32 +1245,32 @@ def _setup_filter_controls():
 
     st.sidebar.markdown("""---""")
 
-    FILTER_DPRT_COUNTRY_USA = st.sidebar.checkbox(
+    FILTER_IS_DPRT_COUNTRY_USA = st.sidebar.checkbox(
         help="""
         At least one of the aircraft involved in the event took off from the US.
         """,
         label="**Only departure country USA ?**",
     )
 
-    if FILTER_DPRT_COUNTRY_USA:
+    if FILTER_IS_DPRT_COUNTRY_USA:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only departure country USA ?**: **`{FILTER_DPRT_COUNTRY_USA}`**"
+            + f"\n- **Only departure country USA ?**: **`{FILTER_IS_DPRT_COUNTRY_USA}`**"
         )
 
     st.sidebar.markdown("""---""")
 
-    FILTER_DEST_COUNTRY_USA = st.sidebar.checkbox(
+    FILTER_IS_DEST_COUNTRY_USA = st.sidebar.checkbox(
         help="""
         At least one of the aircraft involved in the event has its target in the US.
         """,
         label="**Only destination country USA ?**",
     )
 
-    if FILTER_DEST_COUNTRY_USA:
+    if FILTER_IS_DEST_COUNTRY_USA:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only destination country USA ?**: **`{FILTER_DEST_COUNTRY_USA}`**"
+            + f"\n- **Only destination country USA ?**: **`{FILTER_IS_DEST_COUNTRY_USA}`**"
         )
 
     st.sidebar.markdown("""---""")
@@ -1640,28 +1623,6 @@ def _sql_query_finding_codes() -> list[str]:
 
 
 # ------------------------------------------------------------------
-# Determine the last processed update file.
-# ------------------------------------------------------------------
-@st.experimental_memo
-def _sql_query_last_file_name() -> tuple[str, str]:
-    """Determine the last processed update file.
-
-    Returns:
-        tuple[str, str]: File name and processing date.
-    """
-    with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(
-            """
-        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
-          FROM io_processed_files
-         ORDER BY first_processed DESC ;
-        """
-        )
-
-        return cur.fetchone()  # type: ignore
-
-
-# ------------------------------------------------------------------
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
 @st.experimental_memo
@@ -1836,24 +1797,24 @@ if CHOICE_FILTER_DATA:
     DF_FILTERED = _apply_filter_controls(
         DF_UNFILTERED,
         FILTER_ACFT_CATEGORIES,
-        FILTER_ALT_LOW,
-        FILTER_DEST_COUNTRY_USA,
-        FILTER_DPRT_COUNTRY_USA,
         FILTER_EV_HIGHEST_INJURY,
         FILTER_EV_TYPE,
         FILTER_EV_YEAR_FROM,
         FILTER_EV_YEAR_TO,
         FILTER_FAR_PARTS,
         FILTER_FINDING_CODES,
-        FILTER_IS_US_AVIATION,
         FILTER_INJ_F_GRND_FROM,
         FILTER_INJ_F_GRND_TO,
         FILTER_INJ_TOT_F_FROM,
         FILTER_INJ_TOT_F_TO,
+        FILTER_IS_ALTITUDE_LOW,
+        FILTER_IS_DEST_COUNTRY_USA,
+        FILTER_IS_DPRT_COUNTRY_USA,
+        FILTER_IS_NARRATIVE_STALL,
+        FILTER_IS_SPIN_STALL,
+        FILTER_IS_US_AVIATION,
         FILTER_LATLONG_ACQ,
-        FILTER_NARR_STALL,
         FILTER_OCCURRENCE_CODES,
-        FILTER_SPIN_STALL,
         FILTER_STATE,
     )
 

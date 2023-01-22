@@ -44,5 +44,5 @@ Release Date: dd.mm.2023
 ##### Data source `up22JAN.zip`
 
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22JAN.zip){:target="_blank"}
-- Version: 	1/15/2023 3:00:20 AM
+- Version: 1/22/2023 3:00:31 AM
 - Purpose: update of aviation accident data available for public use

@@ -46,6 +46,8 @@ nav:
     - Release Notes: release_notes.md
     - Release History: release_history.md
     - Release Schedule: release_schedule.md
+    - Update Log Files:
+        - 2023.01.22: update_log_2023_01_22.md
   - License: LICENSE.md
 
 plugins:

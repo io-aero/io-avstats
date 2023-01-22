@@ -18,6 +18,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
+import utils
+
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
@@ -337,7 +339,7 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
     """Convert a dataframe to csv data.
 
     Args:
-        dataframe (DataFrame): The datafarame.
+        dataframe (DataFrame): The dataframe.
 
     Returns:
         bytes: The csv data.
@@ -399,25 +401,6 @@ def _get_postgres_connection() -> connection:
 
 
 # ------------------------------------------------------------------
-# Present the chart: Events per Year by Injury Level.
-# ------------------------------------------------------------------
-def _present_about():
-    file_name, processed = _sql_query_last_file_name()
-
-    about_msg = "IO-AVSTATS Application: **pd1982**"
-    about_msg = about_msg + "<br/>"
-    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
-    about_msg = about_msg + "<br/>"
-    about_msg = (
-        about_msg
-        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
-        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
-    )
-
-    st.markdown(about_msg, unsafe_allow_html=True)
-
-
-# ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
@@ -436,7 +419,7 @@ def _present_data():
 
     if CHOICE_ABOUT:
         with col3:
-            _present_about()
+            utils.present_about(PG_CONN, APP_ID)
 
     if CHOICE_DETAILS:
         st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
@@ -514,9 +497,7 @@ def _setup_page():
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
 
-    st.header(
-        f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}"
-    )
+    st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
 
     _col1, _col2, col3 = st.columns(
         [
@@ -590,32 +571,6 @@ def _setup_task_controls():
     )
 
     st.sidebar.markdown("""---""")
-
-
-# ------------------------------------------------------------------
-# Determine the last processed update file.
-# ------------------------------------------------------------------
-@st.experimental_memo
-def _sql_query_last_file_name() -> tuple[str, str]:
-    """Determine the last processed update file.
-
-    Returns:
-        tuple[str, str]: File name and processing date.
-    """
-    global PG_CONN  # pylint: disable=global-statement
-
-    PG_CONN = _get_postgres_connection()  # type: ignore
-
-    with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(
-            """
-        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
-          FROM io_processed_files
-         ORDER BY first_processed DESC ;
-        """
-        )
-
-        return cur.fetchone()  # type: ignore
 
 
 # ------------------------------------------------------------------

@@ -18,7 +18,7 @@
         <link rel="prev" href="data_analyis_ntsb_accident_data.html">
       
       
-        <link rel="next" href="how_to_add_ntsb_accident_files.html">
+        <link rel="next" href="data_analyis_ae1982.html">
       
       <link rel="icon" href="img/IO-Aero Logo.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.5">
@@ -781,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="data_analyis_ae1982.md" class="md-nav__link">
+      <a href="data_analyis_ae1982.html" class="md-nav__link">
         DB View ae1982
       </a>
     </li>
@@ -952,6 +952,54 @@
       <a href="release_schedule.html" class="md-nav__link">
         Release Schedule
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4" tabindex="0" aria-expanded="false">
+          Update Log Files
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Update Log Files" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Update Log Files
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update_log_2023_01_22.html" class="md-nav__link">
+        2023.01.22
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -2832,7 +2880,7 @@ true           |           55|             32|              39|
 <a id="__codelineno-101-3" name="__codelineno-101-3" href="#__codelineno-101-3"></a><span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">fatal_injuries</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;Accidents Fatal&quot;</span><span class="p">,</span>
 <a id="__codelineno-101-4" name="__codelineno-101-4" href="#__codelineno-101-4"></a><span class="w">       </span><span class="k">sum</span><span class="p">(</span><span class="n">fatal_injuries</span><span class="p">)</span><span class="w">                        </span><span class="ss">&quot;Fatalities&quot;</span>
 <a id="__codelineno-101-5" name="__codelineno-101-5" href="#__codelineno-101-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span>
-<a id="__codelineno-101-6" name="__codelineno-101-6" href="#__codelineno-101-6"></a><span class="k">where</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">io_app_ae1982</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span><span class="p">)</span>
+<a id="__codelineno-101-6" name="__codelineno-101-6" href="#__codelineno-101-6"></a><span class="k">where</span><span class="w"> </span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">ntsb_no</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">io_app_ae1982</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">is_us_aviation</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span><span class="p">)</span>
 <a id="__codelineno-101-7" name="__codelineno-101-7" href="#__codelineno-101-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
 <a id="__codelineno-101-8" name="__codelineno-101-8" href="#__codelineno-101-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
 </code></pre></div>
@@ -2867,7 +2915,7 @@ true           |           55|             32|              39|
 <a id="__codelineno-103-6" name="__codelineno-103-6" href="#__codelineno-103-6"></a><span class="k">where</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2002</span>
 <a id="__codelineno-103-7" name="__codelineno-103-7" href="#__codelineno-103-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_year</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2021</span>
 <a id="__codelineno-103-8" name="__codelineno-103-8" href="#__codelineno-103-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
-<a id="__codelineno-103-9" name="__codelineno-103-9" href="#__codelineno-103-9"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span>
+<a id="__codelineno-103-9" name="__codelineno-103-9" href="#__codelineno-103-9"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">is_us_aviation</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">true</span>
 <a id="__codelineno-103-10" name="__codelineno-103-10" href="#__codelineno-103-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
 <a id="__codelineno-103-11" name="__codelineno-103-11" href="#__codelineno-103-11"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ev_year</span>
 </code></pre></div>
@@ -2909,7 +2957,7 @@ true           |           55|             32|              39|
 <a id="__codelineno-105-13" name="__codelineno-105-13" href="#__codelineno-105-13"></a><span class="w">         </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">io_ntsb_2002_2021</span><span class="w"> </span><span class="n">in2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">iaa</span><span class="p">.</span><span class="n">ntsb_no</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in2</span><span class="p">.</span><span class="n">ntsb_number</span><span class="p">)</span>
 <a id="__codelineno-105-14" name="__codelineno-105-14" href="#__codelineno-105-14"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2010</span>
 <a id="__codelineno-105-15" name="__codelineno-105-15" href="#__codelineno-105-15"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">in2</span><span class="p">.</span><span class="n">ntsb_number</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
-<a id="__codelineno-105-16" name="__codelineno-105-16" href="#__codelineno-105-16"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">has_us_impact</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">TRUE</span>
+<a id="__codelineno-105-16" name="__codelineno-105-16" href="#__codelineno-105-16"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">is_us_aviation</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">TRUE</span>
 <a id="__codelineno-105-17" name="__codelineno-105-17" href="#__codelineno-105-17"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACC&#39;</span>
 <a id="__codelineno-105-18" name="__codelineno-105-18" href="#__codelineno-105-18"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">iaa</span><span class="p">.</span><span class="n">ev_id</span><span class="w"> </span><span class="k">desc</span>
 </code></pre></div>

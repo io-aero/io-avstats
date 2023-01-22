@@ -9,6 +9,7 @@ import time
 import pandas as pd
 import psycopg2
 import streamlit as st
+import utils
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
@@ -17,8 +18,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
-
-import utils
 
 # ------------------------------------------------------------------
 # Global constants and variables.

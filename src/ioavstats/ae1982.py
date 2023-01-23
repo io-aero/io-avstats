@@ -3,7 +3,6 @@
 # be found in the LICENSE.md file.
 
 """Aviation Events in the US since 1982."""
-import ast
 import datetime
 import time
 
@@ -37,9 +36,11 @@ CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
 CHOICE_CHARTS_TYPE_EYIL: bool | None = None
+CHOICE_CHARTS_TYPE_EYRSS: bool | None = None
 CHOICE_CHARTS_TYPE_EYT: bool | None = None
 CHOICE_CHARTS_TYPE_FYFP: bool | None = None
 CHOICE_CHARTS_TYPE_TEIL: bool | None = None
+CHOICE_CHARTS_TYPE_TERSS: bool | None = None
 CHOICE_CHARTS_TYPE_TET: bool | None = None
 CHOICE_CHARTS_TYPE_TFFP: bool | None = None
 CHOICE_CHARTS_WIDTH: float | None = None
@@ -62,9 +63,11 @@ COUNTRY_USA = "USA"
 
 DF_FILTERED: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_EYIL: DataFrame = DataFrame()
+DF_FILTERED_CHARTS_EYRSS: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_EYT: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_FYFP: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_TEIL: list[int] = []
+DF_FILTERED_CHARTS_TERSS: list[int] = []
 DF_FILTERED_CHARTS_TET: list[int] = []
 DF_FILTERED_CHARTS_TFFP: list[int] = []
 DF_UNFILTERED: DataFrame = DataFrame()
@@ -89,6 +92,11 @@ FILTER_IS_NARRATIVE_STALL: bool | None = None
 FILTER_IS_SPIN_STALL: bool | None = None
 FILTER_LATLONG_ACQ: list[str] = []
 FILTER_OCCURRENCE_CODES: list[str] = []
+FILTER_RSS: list[str] = []
+FILTER_RSS_AIRBORNE_COLLISION = "Airborne Collision Avoidance"
+FILTER_RSS_FORCED_LANDING = "Forced Landing"
+FILTER_RSS_SPIN_STALL = "Spin Stall Prevention and Recovery"
+FILTER_RSS_TERRAIN = "Terrain Collision Avoidance"
 FILTER_STATE: list[str] = []
 FILTER_US_AVIATION: list[str] = []
 FILTER_US_AVIATION_COUNTRY = "Event Country USA"
@@ -154,6 +162,7 @@ def _apply_filter(
     filter_is_spin_stall: bool | None,
     filter_latlong_acq: list | None,
     filter_occurrence_codes: list | None,
+    filter_rss: list | None,
     filter_state: list | None,
     filter_us_aviation: list | None,
 ) -> DataFrame:
@@ -294,6 +303,10 @@ def _apply_filter(
         _print_timestamp("_apply_filter() - filter_is_spin_stall")
 
     # noinspection PyUnboundLocalVariable
+    if filter_rss:
+        df_filtered = _apply_filter_rss(df_filtered, filter_rss)
+
+    # noinspection PyUnboundLocalVariable
     if filter_state:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_state))]
@@ -309,12 +322,52 @@ def _apply_filter(
 
 
 # ------------------------------------------------------------------
+# Filter the data frame - Required safety systems.
+# ------------------------------------------------------------------
+# @st.experimental_memo
+def _apply_filter_rss(
+    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    filter_rss: list | None,
+) -> DataFrame:
+    """Filter the data frame - US aviation."""
+    _print_timestamp("_apply_filter_rss() - Start")
+
+    filter_cmd = "df_unfiltered.loc["
+    filter_cmd_or = ""
+
+    if FILTER_RSS_AIRBORNE_COLLISION in filter_rss:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_RSS_FORCED_LANDING in filter_rss:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_rss_forced_landing'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_RSS_SPIN_STALL in filter_rss:  # type: ignore
+        filter_cmd += (
+            filter_cmd_or
+            + "(df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
+        )
+        filter_cmd_or = " | "
+
+    if FILTER_RSS_TERRAIN in filter_rss:  # type: ignore
+        filter_cmd += (
+            filter_cmd_or
+            + "(df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
+        )
+
+    filter_cmd += "]"
+
+    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
+
+    _print_timestamp("_apply_filter_rss() - End")
+
+    return df_filtered
+
+
+# ------------------------------------------------------------------
 # Filter the data frame - US aviation.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-arguments
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 # @st.experimental_memo
 def _apply_filter_us_aviation(
     df_unfiltered: DataFrame,  # pylint: disable=unused-argument
@@ -351,7 +404,7 @@ def _apply_filter_us_aviation(
 
     filter_cmd += "]"
 
-    df_filtered = eval(filter_cmd)
+    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
 
     _print_timestamp("_apply_filter_us_aviation() - End")
 
@@ -469,6 +522,56 @@ def _prep_data_charts_eyil(
 
 
 # ------------------------------------------------------------------
+# Prepare the chart data: Number of Events per Year by Required Safety Systems.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _prep_data_charts_eyrss(
+    df_filtered: DataFrame,
+) -> DataFrame:
+    """Prepare the chart data: Number of Events per Year by Required Safety
+    Systems Parts."""
+    df_chart = df_filtered[
+        [
+            "ev_year",
+            "ev_counter",
+            "is_midair_collision",
+            "is_rss_forced_landing",
+            "is_rss_spin_stall_prevention_and_recovery",
+            "is_rss_terrain_collision_avoidance",
+        ]
+    ]
+
+    df_chart.rename(
+        columns={
+            "ev_year": "year",
+        },
+        inplace=True,
+    )
+
+    df_chart["is_rss_terrain_collision_avoidance_ev_counter"] = np.where(
+        df_chart.is_rss_terrain_collision_avoidance, df_chart.ev_counter, 0
+    )
+    df_chart["is_rss_spin_stall_prevention_and_recovery_ev_counter"] = np.where(
+        df_chart.is_rss_spin_stall_prevention_and_recovery, df_chart.ev_counter, 0
+    )
+    df_chart["is_rss_forced_landing_ev_counter"] = np.where(
+        df_chart.is_rss_forced_landing, df_chart.ev_counter, 0
+    )
+    df_chart["is_midair_collision_ev_counter"] = np.where(
+        df_chart.is_midair_collision, df_chart.ev_counter, 0
+    )
+
+    return df_chart.groupby("year", as_index=False).sum(
+        [  # type: ignore
+            "is_rss_terrain_collision_avoidance_ev_counter",
+            "is_rss_spin_stall_prevention_and_recovery_ev_counter",
+            "is_rss_forced_landing_ev_counter",
+            "is_midair_collision_ev_counter",
+        ],
+    )
+
+
+# ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Type.
 # ------------------------------------------------------------------
 @st.experimental_memo
@@ -572,6 +675,45 @@ def _prep_data_charts_teil(
         df_chart["minor"].sum(),
         df_chart["none"].sum(),
         df_chart["serious"].sum(),
+    ]
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Events by Required Safety Systems.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _prep_data_charts_terss(
+    df_filtered: DataFrame,
+) -> list[int]:
+    """Prepare the chart data: Total Events by Required Safety Systems."""
+    df_chart = df_filtered[
+        [
+            "ev_counter",
+            "is_midair_collision",
+            "is_rss_forced_landing",
+            "is_rss_spin_stall_prevention_and_recovery",
+            "is_rss_terrain_collision_avoidance",
+        ]
+    ]
+
+    df_chart["is_midair_collision_ev_counter"] = np.where(
+        df_chart.is_midair_collision, df_chart.ev_counter, 0
+    )
+    df_chart["is_rss_forced_landing_ev_counter"] = np.where(
+        df_chart.is_rss_forced_landing, df_chart.ev_counter, 0
+    )
+    df_chart["is_rss_spin_stall_prevention_and_recovery_ev_counter"] = np.where(
+        df_chart.is_rss_spin_stall_prevention_and_recovery, df_chart.ev_counter, 0
+    )
+    df_chart["is_rss_terrain_collision_avoidance_ev_counter"] = np.where(
+        df_chart.is_rss_terrain_collision_avoidance, df_chart.ev_counter, 0
+    )
+
+    return [
+        df_chart["is_midair_collision_ev_counter"].sum(),
+        df_chart["is_rss_forced_landing_ev_counter"].sum(),
+        df_chart["is_rss_spin_stall_prevention_and_recovery_ev_counter"].sum(),
+        df_chart["is_rss_terrain_collision_avoidance_ev_counter"].sum(),
     ]
 
 
@@ -688,6 +830,74 @@ def _present_chart_eyil() -> None:
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYIL),
             file_name=APP_ID + "_charts_eyil.csv",
+            help="The download includes the detailed chart data.",
+            label="Download the chart data",
+            mime="text/csv",
+        )
+
+
+# ------------------------------------------------------------------
+# Present the chart: Events per Year by Required Safety Systems.
+# ------------------------------------------------------------------
+def _present_chart_eyrss() -> None:
+    """Present the chart: Events per Year by Required Safety Systems."""
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
+
+    st.subheader(chart_title)
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                marker={"color": COLOR_LEVEL_1},
+                name="Terrain Collision Avoidance",
+                x=DF_FILTERED_CHARTS_EYRSS["year"],
+                y=DF_FILTERED_CHARTS_EYRSS[
+                    "is_rss_terrain_collision_avoidance_ev_counter"
+                ],
+            ),
+            go.Bar(
+                marker={"color": COLOR_LEVEL_2},
+                name="Spin Stall Prevention and Recovery",
+                x=DF_FILTERED_CHARTS_EYRSS["year"],
+                y=DF_FILTERED_CHARTS_EYRSS[
+                    "is_rss_spin_stall_prevention_and_recovery_ev_counter"
+                ],
+            ),
+            go.Bar(
+                marker={"color": COLOR_LEVEL_3},
+                name="Forced Landing",
+                x=DF_FILTERED_CHARTS_EYRSS["year"],
+                y=DF_FILTERED_CHARTS_EYRSS["is_rss_forced_landing_ev_counter"],
+            ),
+            go.Bar(
+                marker={"color": COLOR_LEVEL_4},
+                name="Airborne Collision Avoidance",
+                x=DF_FILTERED_CHARTS_EYRSS["year"],
+                y=DF_FILTERED_CHARTS_EYRSS["is_midair_collision_ev_counter"],
+            ),
+        ],
+    )
+
+    fig.update_layout(
+        bargap=0.05,
+        barmode="stack",
+        height=CHOICE_CHARTS_HEIGHT,
+        width=CHOICE_CHARTS_WIDTH,
+        title=chart_title,
+        xaxis={"title": {"text": "Year"}},
+        yaxis={"title": {"text": "Events"}},
+    )
+
+    st.plotly_chart(
+        fig,
+    )
+
+    if CHOICE_CHARTS_DETAILS:
+        st.subheader("Detailed chart data")
+        st.dataframe(DF_FILTERED_CHARTS_EYRSS)
+        st.download_button(
+            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYRSS),
+            file_name=APP_ID + "_charts_eyrss.csv",
             help="The download includes the detailed chart data.",
             label="Download the chart data",
             mime="text/csv",
@@ -838,6 +1048,44 @@ def _present_chart_teil() -> None:
 
 
 # ------------------------------------------------------------------
+# Present the chart: Total Number of Events by Required Safety Systems.
+# ------------------------------------------------------------------
+def _present_chart_terss() -> None:
+    """Present the chart: Total Number of Events by Required Safety Systems."""
+    chart_title = f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems"
+
+    st.subheader(chart_title)
+
+    fig = px.pie(
+        color=[
+            "Airborne Collision Avoidance",
+            "Forced Landing",
+            "Spin Stall Prevention and Recovery",
+            "Terrain Collision Avoidance",
+        ],
+        color_discrete_map={
+            "Airborne Collision Avoidance": COLOR_LEVEL_4,
+            "Forced Landing": COLOR_LEVEL_2,
+            "Spin Stall Prevention and Recovery": COLOR_LEVEL_3,
+            "Terrain Collision Avoidance": COLOR_LEVEL_1,
+        },
+        hole=0.3,
+        names=[
+            "Airborne Collision Avoidanc",
+            "Forced Landing",
+            "Spin Stall Prevention and Recovery",
+            "Terrain Collision Avoidance",
+        ],
+        title=chart_title,
+        values=DF_FILTERED_CHARTS_TERSS,
+    )
+
+    st.plotly_chart(
+        fig,
+    )
+
+
+# ------------------------------------------------------------------
 # Present the chart: Total Events by Type.
 # ------------------------------------------------------------------
 def _present_chart_tet() -> None:
@@ -900,9 +1148,11 @@ def _present_chart_tffp() -> None:
 def _present_charts() -> None:
     """Present the charts."""
     global DF_FILTERED_CHARTS_EYIL  # pylint: disable=global-statement
+    global DF_FILTERED_CHARTS_EYRSS  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_EYT  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_FYFP  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_TEIL  # pylint: disable=global-statement
+    global DF_FILTERED_CHARTS_TERSS  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_TET  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_TFFP  # pylint: disable=global-statement
 
@@ -921,6 +1171,11 @@ def _present_charts() -> None:
         DF_FILTERED_CHARTS_FYFP = _prep_data_charts_fyfp(DF_FILTERED)
         _present_chart_fyfp()
 
+    # Required Safety Systems per Year
+    if CHOICE_CHARTS_TYPE_EYRSS:
+        DF_FILTERED_CHARTS_EYRSS = _prep_data_charts_eyrss(DF_FILTERED)
+        _present_chart_eyrss()
+
     # Total Events by Type
     if CHOICE_CHARTS_TYPE_TET:
         DF_FILTERED_CHARTS_TET = _prep_data_charts_tet(DF_FILTERED)
@@ -935,6 +1190,11 @@ def _present_charts() -> None:
     if CHOICE_CHARTS_TYPE_TFFP:
         DF_FILTERED_CHARTS_TFFP = _prep_data_charts_tffp(DF_FILTERED)
         _present_chart_tffp()
+
+    # Total Required Safety Systems
+    if CHOICE_CHARTS_TYPE_TERSS:
+        DF_FILTERED_CHARTS_TERSS = _prep_data_charts_terss(DF_FILTERED)
+        _present_chart_terss()
 
 
 # ------------------------------------------------------------------
@@ -1121,6 +1381,7 @@ def _setup_filter() -> None:
     global FILTER_IS_SPIN_STALL  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
+    global FILTER_RSS  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
     global FILTER_US_AVIATION  # pylint: disable=global-statement
 
@@ -1433,6 +1694,29 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
+    FILTER_RSS = st.sidebar.multiselect(
+        help="""
+        **High level safety system save requirements.
+        """,
+        label="**Required safety systems:**",
+        options=[
+            FILTER_RSS_AIRBORNE_COLLISION,
+            FILTER_RSS_FORCED_LANDING,
+            FILTER_RSS_SPIN_STALL,
+            FILTER_RSS_TERRAIN,
+        ],
+    )
+    _print_timestamp("_setup_filter - FILTER_RSS - 1")
+
+    if FILTER_RSS:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **Required safety system criteria**: **`{','.join(FILTER_RSS)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_RSS - 2")
+
+    st.sidebar.markdown("""---""")
+
     FILTER_STATE = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
         label="**State(s) in the US:**",
@@ -1549,9 +1833,11 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EYIL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EYRSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EYT  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_FYFP  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TEIL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TERSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TET  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TFFP  # pylint: disable=global-statement
     global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
@@ -1594,6 +1880,11 @@ def _setup_task_controls() -> None:
             label="Events per Year by Injury Level",
             value=False,
         )
+        CHOICE_CHARTS_TYPE_EYRSS = st.sidebar.checkbox(
+            help="Events per year by required security systems (after filtering the data).",
+            label="Events per Year by Required Security System",
+            value=False,
+        )
         CHOICE_CHARTS_TYPE_FYFP = st.sidebar.checkbox(
             help="Fatalities per year by selected FAR Operations Parts (after filtering the data).",
             label="Fatalities per Year under FAR Operations Parts",
@@ -1607,6 +1898,11 @@ def _setup_task_controls() -> None:
         CHOICE_CHARTS_TYPE_TEIL = st.sidebar.checkbox(
             help="Total events by highest injury level (after filtering the data).",
             label="Total Events by Injury Level",
+            value=False,
+        )
+        CHOICE_CHARTS_TYPE_TERSS = st.sidebar.checkbox(
+            help="Total events by required safety systems (after filtering the data).",
+            label="Total Events by Required Safety Systems",
             value=False,
         )
         CHOICE_CHARTS_TYPE_TFFP = st.sidebar.checkbox(
@@ -2000,6 +2296,7 @@ if CHOICE_FILTER_DATA:
         FILTER_IS_SPIN_STALL,
         FILTER_LATLONG_ACQ,
         FILTER_OCCURRENCE_CODES,
+        FILTER_RSS,
         FILTER_STATE,
         FILTER_US_AVIATION,
     )

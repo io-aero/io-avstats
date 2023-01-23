@@ -3,6 +3,7 @@
 # be found in the LICENSE.md file.
 
 """Aviation Events in the US since 1982."""
+import ast
 import datetime
 import time
 
@@ -86,10 +87,16 @@ FILTER_IS_DEST_COUNTRY_USA: bool | None = None
 FILTER_IS_DPRT_COUNTRY_USA: bool | None = None
 FILTER_IS_NARRATIVE_STALL: bool | None = None
 FILTER_IS_SPIN_STALL: bool | None = None
-FILTER_IS_US_AVIATION: bool | None = None
 FILTER_LATLONG_ACQ: list[str] = []
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_STATE: list[str] = []
+FILTER_US_AVIATION: list[str] = []
+FILTER_US_AVIATION_COUNTRY = "Event Country USA"
+FILTER_US_AVIATION_DEPARTURE = "US Departure"
+FILTER_US_AVIATION_DESTINATION = "US Destination"
+FILTER_US_AVIATION_OPERATOR = "US Operator"
+FILTER_US_AVIATION_OWNER = "US Owner"
+FILTER_US_AVIATION_REGISTRATION = "US Registration"
 
 IS_TIMEKEEPING = False
 
@@ -126,8 +133,8 @@ ZOOM = 4.4
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
-@st.experimental_memo
-def _apply_filter_controls(
+# @st.experimental_memo
+def _apply_filter(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
     filter_ev_highest_injury: list | None,
@@ -145,13 +152,13 @@ def _apply_filter_controls(
     filter_is_dprt_country_usa: bool | None,
     filter_is_narrative_stall: bool | None,
     filter_is_spin_stall: bool | None,
-    filter_is_us_aviation: bool | None,
     filter_latlong_acq: list | None,
     filter_occurrence_codes: list | None,
     filter_state: list | None,
+    filter_us_aviation: list | None,
 ) -> DataFrame:
     """Filter the data frame."""
-    _print_timestamp("_apply_filter_controls() - Start")
+    _print_timestamp("_apply_filter() - Start")
 
     df_filtered = df_unfiltered
 
@@ -163,7 +170,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_acft_categories))  # type: ignore
             )
         ]
-        _print_timestamp("_apply_filter_controls() - filter_acft_categories")
+        _print_timestamp("_apply_filter() - filter_acft_categories")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_altitude_low:
@@ -172,7 +179,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_altitude_low"] == True)  # noqa: E712
         ]
-        _print_timestamp("_apply_filter_controls() - filter_is_altitude_low")
+        _print_timestamp("_apply_filter() - filter_is_altitude_low")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_dest_country_usa:
@@ -181,7 +188,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_dest_country_usa"] == True)  # noqa: E712
         ]
-        _print_timestamp("_apply_filter_controls() - filter_is_dest_country_usa")
+        _print_timestamp("_apply_filter() - filter_is_dest_country_usa")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_dprt_country_usa:
@@ -190,7 +197,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_dprt_country_usa"] == True)  # noqa: E712
         ]
-        _print_timestamp("_apply_filter_controls() - filter_is_dprt_country_usa")
+        _print_timestamp("_apply_filter() - filter_is_dprt_country_usa")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_highest_injury:
@@ -198,13 +205,13 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury))
         ]
-        _print_timestamp("_apply_filter_controls() - filter_ev_highest_injury")
+        _print_timestamp("_apply_filter() - filter_ev_highest_injury")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_type:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["ev_type"].isin(filter_ev_type))]
-        _print_timestamp("_apply_filter_controls() - filter_ev_type")
+        _print_timestamp("_apply_filter() - filter_ev_type")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_year_from or filter_ev_year_to:
@@ -212,7 +219,7 @@ def _apply_filter_controls(
             (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
-        _print_timestamp("_apply_filter_controls() - filter_ev_year_from")
+        _print_timestamp("_apply_filter() - filter_ev_year_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_far_parts:
@@ -222,7 +229,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
             )
         ]
-        _print_timestamp("_apply_filter_controls() - filter_far_parts")
+        _print_timestamp("_apply_filter() - filter_far_parts")
 
     # noinspection PyUnboundLocalVariable
     if filter_finding_codes:
@@ -232,7 +239,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
             )
         ]
-        _print_timestamp("_apply_filter_controls() - filter_finding_codes")
+        _print_timestamp("_apply_filter() - filter_finding_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_f_grnd_from or filter_inj_f_grnd_to:
@@ -240,7 +247,7 @@ def _apply_filter_controls(
             (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
             & (df_filtered["inj_f_grnd"] <= filter_inj_f_grnd_to)
         ]
-        _print_timestamp("_apply_filter_controls() - filter_inj_f_grnd_from")
+        _print_timestamp("_apply_filter() - filter_inj_f_grnd_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_tot_f_from or filter_inj_tot_f_to:
@@ -248,16 +255,7 @@ def _apply_filter_controls(
             (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
             & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
         ]
-        _print_timestamp("_apply_filter_controls() - filter_inj_tot_f_from")
-
-    # noinspection PyUnboundLocalVariable
-    if filter_is_us_aviation:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_us_aviation"] == True)  # noqa: E712
-        ]
-        _print_timestamp("_apply_filter_controls() - filter_is_us_aviation")
+        _print_timestamp("_apply_filter() - filter_inj_tot_f_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_latlong_acq:
@@ -265,7 +263,7 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["latlong_acq"].isin(filter_latlong_acq))
         ]
-        _print_timestamp("_apply_filter_controls() - filter_latlong_acq")
+        _print_timestamp("_apply_filter() - filter_latlong_acq")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_narrative_stall:
@@ -274,7 +272,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_narrative_stall"] == True)  # noqa: E712
         ]
-        _print_timestamp("_apply_filter_controls() - filter_is_narrative_stall")
+        _print_timestamp("_apply_filter() - filter_is_narrative_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_occurrence_codes:
@@ -284,7 +282,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
             )
         ]
-        _print_timestamp("_apply_filter_controls() - filter_occurrence_codes")
+        _print_timestamp("_apply_filter() - filter_occurrence_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_spin_stall:
@@ -293,15 +291,69 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_spin_stall"] == True)  # noqa: E712
         ]
-        _print_timestamp("_apply_filter_controls() - filter_is_spin_stall")
+        _print_timestamp("_apply_filter() - filter_is_spin_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_state:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_state))]
-        _print_timestamp("_apply_filter_controls() - filter_state")
+        _print_timestamp("_apply_filter() - filter_state")
 
-    _print_timestamp("_apply_filter_controls() - End")
+    # noinspection PyUnboundLocalVariable
+    if filter_us_aviation:
+        df_filtered = _apply_filter_us_aviation(df_filtered, filter_us_aviation)
+
+    _print_timestamp("_apply_filter() - End")
+
+    return df_filtered
+
+
+# ------------------------------------------------------------------
+# Filter the data frame - US aviation.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-branches
+# pylint: disable=too-many-locals
+# pylint: disable=too-many-statements
+# @st.experimental_memo
+def _apply_filter_us_aviation(
+    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    filter_us_aviation: list | None,
+) -> DataFrame:
+    """Filter the data frame - US aviation."""
+    _print_timestamp("_apply_filter_us_aviation() - Start")
+
+    filter_cmd = "df_unfiltered.loc["
+    filter_cmd_or = ""
+
+    if FILTER_US_AVIATION_COUNTRY in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['country'] == COUNTRY_USA)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_DESTINATION in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dest_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_DEPARTURE in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dprt_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_OPERATOR in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_oper_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_OWNER in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_owner_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_REGISTRATION in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_regis_country_usa'] == True)"
+
+    filter_cmd += "]"
+
+    df_filtered = eval(filter_cmd)
+
+    _print_timestamp("_apply_filter_us_aviation() - End")
 
     return df_filtered
 
@@ -1047,7 +1099,7 @@ def _print_timestamp(identifier: str) -> None:
 # Set up the filter controls.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
-def _setup_filter_controls() -> None:
+def _setup_filter() -> None:
     """Set up the filter controls."""
     global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
@@ -1067,12 +1119,12 @@ def _setup_filter_controls() -> None:
     global FILTER_IS_DPRT_COUNTRY_USA  # pylint: disable=global-statement
     global FILTER_IS_NARRATIVE_STALL  # pylint: disable=global-statement
     global FILTER_IS_SPIN_STALL  # pylint: disable=global-statement
-    global FILTER_IS_US_AVIATION  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
+    global FILTER_US_AVIATION  # pylint: disable=global-statement
 
-    _print_timestamp("_setup_filter_controls() - Start")
+    _print_timestamp("_setup_filter - Start")
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -1096,14 +1148,14 @@ def _setup_filter_controls() -> None:
         label="**Aircraft categories:**",
         options=_sql_query_acft_categories(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_ACFT_CATEGORIES - 1")
+    _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
 
     if FILTER_ACFT_CATEGORIES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_ACFT_CATEGORIES - 2")
+        _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1116,14 +1168,14 @@ def _setup_filter_controls() -> None:
         label="**Event type(s):**",
         options=_sql_query_ev_type(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_EV_TYPE - 1")
+    _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
 
     if FILTER_EV_TYPE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_EV_TYPE - 2")
+        _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1144,9 +1196,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
-        _print_timestamp(
-            "_setup_filter_controls() - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO"
-        )
+        _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1157,19 +1207,19 @@ def _setup_filter_controls() -> None:
         label="**FAR operations parts:**",
         options=_sql_query_far_parts(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_FAR_PARTS - 1")
+    _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 1")
 
     if FILTER_FAR_PARTS:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_FAR_PARTS - 2")
+        _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
 
     st.sidebar.markdown("""---""")
 
     max_inj_f_grnd = _sql_query_max_inj_f_grnd()
-    _print_timestamp("_setup_filter_controls() - _sql_query_max_inj_f_grnd()")
+    _print_timestamp("_setup_filter - _sql_query_max_inj_f_grnd()")
 
     FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
         help="""
@@ -1188,13 +1238,13 @@ def _setup_filter_controls() -> None:
             + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
         )
         _print_timestamp(
-            "_setup_filter_controls() - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO"
+            "_setup_filter - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO"
         )
 
     st.sidebar.markdown("""---""")
 
     max_inj_tot_f = _sql_query_max_inj_tot_f()
-    _print_timestamp("_setup_filter_controls() - _sql_query_max_inj_tot_f()")
+    _print_timestamp("_setup_filter - _sql_query_max_inj_tot_f()")
 
     FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
         help="""
@@ -1212,7 +1262,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_INJ_TOT_F_TO")
+        _print_timestamp("_setup_filter - FILTER_INJ_TOT_F_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1223,14 +1273,14 @@ def _setup_filter_controls() -> None:
         label="**Finding code(s):**",
         options=_sql_query_finding_codes(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_FINDING_CODES - 1")
+    _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 1")
 
     if FILTER_FINDING_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Finding code(s)**: **`{','.join(FILTER_FINDING_CODES)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_FINDING_CODES - 2")
+        _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1242,14 +1292,14 @@ def _setup_filter_controls() -> None:
         label="**Highest injury level(s):**",
         options=_sql_query_ev_highest_injury(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_EV_HIGHEST_INJURY - 1")
+    _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 1")
 
     if FILTER_EV_HIGHEST_INJURY:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_EV_HIGHEST_INJURY - 2")
+        _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1272,7 +1322,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_IS_SPIN_STALL}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_SPIN_STALL")
+        _print_timestamp("_setup_filter - FILTER_IS_SPIN_STALL")
 
     st.sidebar.markdown("""---""")
 
@@ -1293,7 +1343,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. altitude too low ?**: **`{FILTER_IS_ALTITUDE_LOW}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_ALTITUDE_LOW")
+        _print_timestamp("_setup_filter - FILTER_IS_ALTITUDE_LOW")
 
     st.sidebar.markdown("""---""")
 
@@ -1310,7 +1360,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_IS_NARRATIVE_STALL}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_NARRATIVE_STALL")
+        _print_timestamp("_setup_filter - FILTER_IS_NARRATIVE_STALL")
 
     st.sidebar.markdown("""---""")
 
@@ -1322,14 +1372,14 @@ def _setup_filter_controls() -> None:
         label="**Latitude / longitude acquisition:**",
         options=_sql_query_latlong_acq(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_LATLONG_ACQ - 1")
+    _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 1")
 
     if FILTER_LATLONG_ACQ:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_LATLONG_ACQ - 2")
+        _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1340,14 +1390,14 @@ def _setup_filter_controls() -> None:
         label="**Occurrence code(s):**",
         options=_sql_query_occurrence_codes(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_OCCURRENCE_CODES - 1")
+    _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 1")
 
     if FILTER_OCCURRENCE_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_OCCURRENCE_CODES - 2")
+        _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1363,7 +1413,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Only departure country USA ?**: **`{FILTER_IS_DPRT_COUNTRY_USA}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_DPRT_COUNTRY_USA")
+        _print_timestamp("_setup_filter - FILTER_IS_DPRT_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
@@ -1379,30 +1429,7 @@ def _setup_filter_controls() -> None:
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Only destination country USA ?**: **`{FILTER_IS_DEST_COUNTRY_USA}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_DEST_COUNTRY_USA")
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_IS_US_AVIATION = st.sidebar.checkbox(
-        help="""
-        One of the following conditions is satisfied:
-        - Country is the USA, or
-        - Departure in the USA, or
-        - (Planned) landing in the USA, or
-        - US operator, or
-        - US owner, or
-        - US registration.
-        """,
-        label="**Only US aviation ?**",
-        value=True,
-    )
-
-    if FILTER_IS_US_AVIATION:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only US aviation ?**: **`{FILTER_IS_US_AVIATION}`**"
-        )
-        _print_timestamp("_setup_filter_controls() - FILTER_IS_US_AVIATION")
+        _print_timestamp("_setup_filter - FILTER_IS_DEST_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
@@ -1411,18 +1438,52 @@ def _setup_filter_controls() -> None:
         label="**State(s) in the US:**",
         options=_sql_query_us_states(),
     )
-    _print_timestamp("_setup_filter_controls() - FILTER_STATE - 1")
+    _print_timestamp("_setup_filter - FILTER_STATE - 1")
 
     if FILTER_STATE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_STATE - 2")
+        _print_timestamp("_setup_filter - FILTER_STATE - 2")
 
     st.sidebar.markdown("""---""")
 
-    _print_timestamp("_setup_filter_controls() - End")
+    FILTER_US_AVIATION = st.sidebar.multiselect(
+        default=[
+            FILTER_US_AVIATION_COUNTRY,
+            FILTER_US_AVIATION_DEPARTURE,
+            FILTER_US_AVIATION_DESTINATION,
+            FILTER_US_AVIATION_OPERATOR,
+            FILTER_US_AVIATION_OWNER,
+            FILTER_US_AVIATION_REGISTRATION,
+        ],
+        help="""
+        **US aviation** means that either the event occurred on US soil or 
+        the departure, destination, owner, operator or registration is US.
+        """,
+        label="**US aviation criteria:**",
+        options=[
+            FILTER_US_AVIATION_COUNTRY,
+            FILTER_US_AVIATION_DEPARTURE,
+            FILTER_US_AVIATION_DESTINATION,
+            FILTER_US_AVIATION_OPERATOR,
+            FILTER_US_AVIATION_OWNER,
+            FILTER_US_AVIATION_REGISTRATION,
+        ],
+    )
+    _print_timestamp("_setup_filter - FILTER_US_AVIATION - 1")
+
+    if FILTER_US_AVIATION:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
+
+    st.sidebar.markdown("""---""")
+
+    _print_timestamp("_setup_filter - End")
 
 
 # ------------------------------------------------------------------
@@ -1473,8 +1534,8 @@ def _setup_sidebar() -> None:
     _setup_task_controls()
     _print_timestamp("_setup_sidebar() - _setup_task_controls()")
 
-    _setup_filter_controls()
-    _print_timestamp("_setup_sidebar() - _setup_filter_controls()")
+    _setup_filter()
+    _print_timestamp("_setup_sidebar() - _setup_filter")
 
     _print_timestamp("_setup_sidebar() - End")
 
@@ -1906,7 +1967,7 @@ start_time = time.time_ns()
 st.set_page_config(layout="wide")
 
 PG_CONN = _get_postgres_connection()
-_print_timestamp("_setup_filter_controls() - got DB connection")
+_print_timestamp("_setup_filter - got DB connection")
 
 _setup_sidebar()
 _print_timestamp("_setup_sidebar()")
@@ -1919,7 +1980,7 @@ DF_FILTERED = DF_UNFILTERED
 _print_timestamp("_get_data()")
 
 if CHOICE_FILTER_DATA:
-    DF_FILTERED = _apply_filter_controls(
+    DF_FILTERED = _apply_filter(
         DF_UNFILTERED,
         FILTER_ACFT_CATEGORIES,
         FILTER_EV_HIGHEST_INJURY,
@@ -1937,12 +1998,12 @@ if CHOICE_FILTER_DATA:
         FILTER_IS_DPRT_COUNTRY_USA,
         FILTER_IS_NARRATIVE_STALL,
         FILTER_IS_SPIN_STALL,
-        FILTER_IS_US_AVIATION,
         FILTER_LATLONG_ACQ,
         FILTER_OCCURRENCE_CODES,
         FILTER_STATE,
+        FILTER_US_AVIATION,
     )
-    _print_timestamp("_apply_filter_controls()")
+    _print_timestamp("_apply_filter()")
 
 _present_data()
 _print_timestamp("_present_data()")

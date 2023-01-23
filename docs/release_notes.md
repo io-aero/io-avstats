@@ -2,18 +2,12 @@
 
 ## Version 23.01.22
 
-Release Date: dd.mm.2023
+Release Date: 23.01.2023
 
-### 1. New Features
+### 1. Modified Features
 
-- TODO
-
-### 2. Modified Features
-
-- TODO: Clear PANDAS warnings
-- TODO: Complete the documentation.
-- TODO: Increase the test coverage.
-- TODO: Improve AE1982 performance.
+- Cleared PANDAS warnings.
+- Improved AE1982 performance.
 
 ### 3. Applied Software
 

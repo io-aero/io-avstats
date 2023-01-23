@@ -3,6 +3,6 @@
 # be found in the LICENSE.md file.
 
 """Module stub file."""
-from sqlalchemy.engine import Connection
+from psycopg2.extensions import connection
 
-def present_about(pg_conn: Connection, app_name: str) -> None: ...
+def present_about(pg_conn: connection, app_name: str) -> None: ...

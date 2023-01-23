@@ -47,6 +47,7 @@ nav:
     - Release History: release_history.md
     - Release Schedule: release_schedule.md
     - Update Log Files:
+        - 2023.02.01: update_log_2023_02_01.md
         - 2023.01.22: update_log_2023_01_22.md
   - License: LICENSE.md
 

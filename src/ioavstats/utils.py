@@ -32,7 +32,7 @@ def present_about(pg_conn: Connection, app_name: str) -> None:
     )
     about_msg = (
         about_msg
-        + """\n<a href="https://www.io-aero.com" target="_blank">Disclaimer</a>
+        + """\n<a href="https://www.io-aero.com/disclaimer" target="_blank">Disclaimer</a>
           """
     )
 
@@ -54,9 +54,10 @@ def _sql_query_last_file_name(pg_conn: Connection) -> tuple[str, str]:
     with pg_conn.cursor() as cur:  # type: ignore
         cur.execute(
             """
-        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
+        SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
           FROM io_processed_files
-         ORDER BY first_processed DESC ;
+         WHERE file_name LIKE 'up%' 
+         ORDER BY COALESCE(last_processed, first_processed) DESC;
         """
         )
 

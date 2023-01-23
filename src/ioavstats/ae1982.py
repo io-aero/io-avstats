@@ -23,6 +23,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
+pd.options.mode.chained_assignment = None  # default='warn'
+
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
@@ -90,6 +92,9 @@ FILTER_LATLONG_ACQ: str | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_STATE: list[str] = []
 
+IS_TIMEKEEPING = True
+
+LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
 
@@ -120,8 +125,8 @@ ZOOM = 4.4
 # ------------------------------------------------------------------
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
-@st.experimental_memo
 # pylint: disable=too-many-locals
+@st.experimental_memo
 def _apply_filter_controls(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
@@ -146,6 +151,8 @@ def _apply_filter_controls(
     filter_state: list | None,
 ) -> DataFrame:
     """Filter the data frame."""
+    _print_timestamp("_apply_filter_controls() - Start")
+
     df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
@@ -156,6 +163,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_acft_categories))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter_controls() - filter_acft_categories")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_altitude_low:
@@ -164,6 +172,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_altitude_low"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_altitude_low")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_dest_country_usa:
@@ -172,6 +181,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_dest_country_usa"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_dest_country_usa")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_dprt_country_usa:
@@ -180,6 +190,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_dprt_country_usa"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_dprt_country_usa")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_highest_injury:
@@ -187,11 +198,13 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury))
         ]
+        _print_timestamp("_apply_filter_controls() - filter_ev_highest_injury")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_type:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["ev_type"].isin(filter_ev_type))]
+        _print_timestamp("_apply_filter_controls() - filter_ev_type")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_year_from or filter_ev_year_to:
@@ -199,6 +212,7 @@ def _apply_filter_controls(
             (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
+        _print_timestamp("_apply_filter_controls() - filter_ev_year_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_far_parts:
@@ -208,6 +222,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter_controls() - filter_far_parts")
 
     # noinspection PyUnboundLocalVariable
     if filter_finding_codes:
@@ -217,6 +232,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter_controls() - filter_finding_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_f_grnd_from or filter_inj_f_grnd_to:
@@ -224,6 +240,7 @@ def _apply_filter_controls(
             (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
             & (df_filtered["inj_f_grnd"] <= filter_inj_f_grnd_to)
         ]
+        _print_timestamp("_apply_filter_controls() - filter_inj_f_grnd_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_tot_f_from or filter_inj_tot_f_to:
@@ -231,6 +248,7 @@ def _apply_filter_controls(
             (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
             & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
         ]
+        _print_timestamp("_apply_filter_controls() - filter_inj_tot_f_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_us_aviation:
@@ -239,6 +257,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_us_aviation"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_us_aviation")
 
     # noinspection PyUnboundLocalVariable
     if filter_latlong_acq:
@@ -246,6 +265,7 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["latlong_acq"].isin(filter_latlong_acq))
         ]
+        _print_timestamp("_apply_filter_controls() - filter_latlong_acq")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_narrative_stall:
@@ -254,6 +274,7 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_narrative_stall"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_narrative_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_occurrence_codes:
@@ -263,6 +284,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter_controls() - filter_occurrence_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_is_spin_stall:
@@ -271,11 +293,15 @@ def _apply_filter_controls(
             # pylint: disable=singleton-comparison
             (df_filtered["is_spin_stall"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter_controls() - filter_is_spin_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_state:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_state))]
+        _print_timestamp("_apply_filter_controls() - filter_state")
+
+    _print_timestamp("_apply_filter_controls() - End")
 
     return df_filtered
 
@@ -308,7 +334,9 @@ def _get_data() -> DataFrame:
     """
     global PG_CONN  # pylint: disable=global-statement
 
+    _print_timestamp("_get_data() - Start")
     PG_CONN = _get_postgres_connection()  # type: ignore
+    _print_timestamp("_get_data() - got DB connection")
 
     return pd.read_sql(
         """
@@ -556,7 +584,7 @@ def _prep_data_charts_tffp(
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by Injury Level.
 # ------------------------------------------------------------------
-def _present_chart_eyil():
+def _present_chart_eyil() -> None:
     """Present the chart: Events per Year by Injury Level."""
     chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level"
 
@@ -621,7 +649,7 @@ def _present_chart_eyil():
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by Type.
 # ------------------------------------------------------------------
-def _present_chart_eyt():
+def _present_chart_eyt() -> None:
     """Present the chart: Events per Year by Type."""
     chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Type"
 
@@ -673,7 +701,7 @@ def _present_chart_eyt():
 # ------------------------------------------------------------------
 # Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
-def _present_chart_fyfp():
+def _present_chart_fyfp() -> None:
     """Present the chart: Fatalities per Year under FAR Operations Parts."""
     chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
 
@@ -731,7 +759,7 @@ def _present_chart_fyfp():
 # ------------------------------------------------------------------
 # Present the chart: Total Events by Injury Level.
 # ------------------------------------------------------------------
-def _present_chart_teil():
+def _present_chart_teil() -> None:
     """Present the chart: Total Events by Injury Level."""
     chart_title = f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level"
 
@@ -764,7 +792,7 @@ def _present_chart_teil():
 # ------------------------------------------------------------------
 # Present the chart: Total Events by Type.
 # ------------------------------------------------------------------
-def _present_chart_tet():
+def _present_chart_tet() -> None:
     """Present the chart: Total Events by Type."""
     chart_title = f"Total Number of {EVENT_TYPE_DESC} by Type"
 
@@ -790,7 +818,7 @@ def _present_chart_tet():
 # ------------------------------------------------------------------
 # Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
-def _present_chart_tffp():
+def _present_chart_tffp() -> None:
     """Present the chart: Fatalities per Year under FAR Operations Parts."""
     chart_title = "Total Number of Fatalities by Selected FAR Operations Parts"
 
@@ -821,7 +849,7 @@ def _present_chart_tffp():
 # ------------------------------------------------------------------
 # Present the charts.
 # ------------------------------------------------------------------
-def _present_charts():
+def _present_charts() -> None:
     """Present the charts."""
     global DF_FILTERED_CHARTS_EYIL  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_EYT  # pylint: disable=global-statement
@@ -864,36 +892,45 @@ def _present_charts():
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
-def _present_data():
+def _present_data() -> None:
     """Present the filtered data."""
+    _print_timestamp("_present_data() - Start")
 
     col1, _col2, col3 = st.columns([1, 1, 1])
 
     if CHOICE_FILTER_CONDITIONS:
         with col1:
             st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+            _print_timestamp("_present_data() - CHOICE_FILTER_CONDITIONS")
 
     if CHOICE_ABOUT:
         with col3:
             utils.present_about(PG_CONN, APP_ID)
+            _print_timestamp("_present_data() - CHOICE_ABOUT")
 
     if CHOICE_CHARTS:
         _present_charts()
+        _print_timestamp("_present_data() - CHOICE_CHARTS")
 
     if CHOICE_DATA_PROFILE:
         _present_data_profile()
+        _print_timestamp("_present_data() - CHOICE_DATA_PROFILE")
 
     if CHOICE_DETAILS or CHOICE_CHARTS_DETAILS:
         _present_details()
+        _print_timestamp("_present_data() - CHOICE_DETAILS or CHOICE_CHARTS_DETAILS")
 
     if CHOICE_MAP:
         _present_map()
+        _print_timestamp("_present_data() - CHOICE_MAP")
+
+    _print_timestamp("_present_data() - End")
 
 
 # ------------------------------------------------------------------
 # Present data profile.
 # ------------------------------------------------------------------
-def _present_data_profile():
+def _present_data_profile() -> None:
     """Present data profile."""
     st.subheader("Profiling of the filtered data set")
 
@@ -924,7 +961,7 @@ def _present_data_profile():
 # ------------------------------------------------------------------
 # Present details.
 # ------------------------------------------------------------------
-def _present_details():
+def _present_details() -> None:
     """Present details."""
     if CHOICE_DETAILS:
         st.subheader("Detailed data from database view **`io_app_ae1982`**")
@@ -942,7 +979,7 @@ def _present_details():
 # ------------------------------------------------------------------
 # Present the accidents on the US map.
 # ------------------------------------------------------------------
-def _present_map():
+def _present_map() -> None:
     """Present the accidents on the US map."""
     global DF_FILTERED  # pylint: disable=global-statement
 
@@ -984,10 +1021,37 @@ def _present_map():
 
 
 # ------------------------------------------------------------------
+# Print a timestamp.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-statements
+def _print_timestamp(identifier: str) -> None:
+    """Print a timestamp."""
+    global LAST_READING  # pylint: disable=global-statement
+
+    if not IS_TIMEKEEPING:
+        return
+
+    if not LAST_READING:
+        LAST_READING = start_time
+
+    current_time = time.time_ns()
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{current_time - LAST_READING:,}':>20} ns - "
+        + f"{APP_ID} - {identifier}",
+        flush=True,
+    )
+
+    LAST_READING = current_time
+
+
+# ------------------------------------------------------------------
 # Set up the filter controls.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
-def _setup_filter_controls():
+def _setup_filter_controls() -> None:
     """Set up the filter controls."""
     global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
@@ -1013,7 +1077,10 @@ def _setup_filter_controls():
     global FILTER_STATE  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
 
+    _print_timestamp("_setup_filter_controls() - Start")
+
     PG_CONN = _get_postgres_connection()
+    _print_timestamp("_setup_filter_controls() - got DB connection")
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -1037,12 +1104,15 @@ def _setup_filter_controls():
         label="**Aircraft categories:**",
         options=_sql_query_acft_categories(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_ACFT_CATEGORIES - 1")
+
 
     if FILTER_ACFT_CATEGORIES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_ACFT_CATEGORIES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1055,12 +1125,14 @@ def _setup_filter_controls():
         label="**Event type(s):**",
         options=_sql_query_ev_type(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_EV_TYPE - 1")
 
     if FILTER_EV_TYPE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_EV_TYPE - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1075,12 +1147,14 @@ def _setup_filter_controls():
         value=(2008, datetime.date.today().year - 1),
     )
 
+
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
         # pylint: disable=line-too-long
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1091,16 +1165,19 @@ def _setup_filter_controls():
         label="**FAR operations parts:**",
         options=_sql_query_far_parts(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_FAR_PARTS - 1")
 
     if FILTER_FAR_PARTS:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_FAR_PARTS - 2")
 
     st.sidebar.markdown("""---""")
 
     max_inj_f_grnd = _sql_query_max_inj_f_grnd()
+    _print_timestamp("_setup_filter_controls() - _sql_query_max_inj_f_grnd()")
 
     FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
         help="""
@@ -1112,16 +1189,19 @@ def _setup_filter_controls():
         value=(0, max_inj_f_grnd),
     )
 
+
     if FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO:
         # pylint: disable=line-too-long
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO")
 
     st.sidebar.markdown("""---""")
 
     max_inj_tot_f = _sql_query_max_inj_tot_f()
+    _print_timestamp("_setup_filter_controls() - _sql_query_max_inj_tot_f()")
 
     FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
         help="""
@@ -1133,12 +1213,14 @@ def _setup_filter_controls():
         value=(0, max_inj_tot_f),
     )
 
+
     if FILTER_INJ_TOT_F_FROM or FILTER_INJ_TOT_F_TO:
         # pylint: disable=line-too-long
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_INJ_TOT_F_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1149,12 +1231,14 @@ def _setup_filter_controls():
         label="**Finding code(s):**",
         options=_sql_query_finding_codes(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_FINDING_CODES - 1")
 
     if FILTER_FINDING_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Finding code(s)**: **`{','.join(FILTER_FINDING_CODES)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_FINDING_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1166,12 +1250,14 @@ def _setup_filter_controls():
         label="**Highest injury level(s):**",
         options=_sql_query_ev_highest_injury(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_EV_HIGHEST_INJURY - 1")
 
     if FILTER_EV_HIGHEST_INJURY:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_EV_HIGHEST_INJURY - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1189,11 +1275,13 @@ def _setup_filter_controls():
         label="**Incl. aerodynamic spin stalls ?**",
     )
 
+
     if FILTER_IS_SPIN_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_IS_SPIN_STALL}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_SPIN_STALL")
 
     st.sidebar.markdown("""---""")
 
@@ -1214,6 +1302,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. altitude too low ?**: **`{FILTER_IS_ALTITUDE_LOW}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_ALTITUDE_LOW")
 
     st.sidebar.markdown("""---""")
 
@@ -1230,6 +1319,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_IS_NARRATIVE_STALL}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_NARRATIVE_STALL")
 
     st.sidebar.markdown("""---""")
 
@@ -1241,12 +1331,14 @@ def _setup_filter_controls():
         label="**Latitude / longitude acquisition:**",
         options=_sql_query_latlong_acq(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_LATLONG_ACQ - 1")
 
     if FILTER_LATLONG_ACQ:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_LATLONG_ACQ - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1257,12 +1349,14 @@ def _setup_filter_controls():
         label="**Occurrence code(s):**",
         options=_sql_query_occurrence_codes(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_OCCURRENCE_CODES - 1")
 
     if FILTER_OCCURRENCE_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_OCCURRENCE_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1278,6 +1372,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Only departure country USA ?**: **`{FILTER_IS_DPRT_COUNTRY_USA}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_DPRT_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
@@ -1293,6 +1388,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Only destination country USA ?**: **`{FILTER_IS_DEST_COUNTRY_USA}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_DEST_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
@@ -1315,6 +1411,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Only US aviation ?**: **`{FILTER_IS_US_AVIATION}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_IS_US_AVIATION")
 
     st.sidebar.markdown("""---""")
 
@@ -1323,20 +1420,24 @@ def _setup_filter_controls():
         label="**State(s) in the US:**",
         options=_sql_query_us_states(),
     )
+    _print_timestamp("_setup_filter_controls() - FILTER_STATE - 1")
 
     if FILTER_STATE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
         )
+        _print_timestamp("_setup_filter_controls() - FILTER_STATE - 2")
 
     st.sidebar.markdown("""---""")
+
+    _print_timestamp("_setup_filter_controls() - End")
 
 
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
-def _setup_page():
+def _setup_page() -> None:
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
@@ -1374,16 +1475,24 @@ def _setup_page():
 # ------------------------------------------------------------------
 # Set up the sidebar.
 # ------------------------------------------------------------------
-def _setup_sidebar():
+def _setup_sidebar() -> None:
     """Set up the sidebar."""
+    _print_timestamp("_setup_sidebar() - Start")
+
     _setup_task_controls()
+    _print_timestamp("_setup_sidebar() - _setup_task_controls()")
+
     _setup_filter_controls()
+    _print_timestamp("_setup_sidebar() - _setup_filter_controls()")
+
+    _print_timestamp("_setup_sidebar() - End")
+
 
 
 # ------------------------------------------------------------------
 # Set up the task controls.
 # ------------------------------------------------------------------
-def _setup_task_controls():
+def _setup_task_controls() -> None:
     """Set up the task controls."""
     global CHOICE_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
@@ -1807,12 +1916,14 @@ start_time = time.time_ns()
 st.set_page_config(layout="wide")
 
 _setup_sidebar()
+_print_timestamp("_setup_sidebar()")
 
 _setup_page()
+_print_timestamp("_setup_page()")
 
 DF_UNFILTERED = _get_data()
-
 DF_FILTERED = DF_UNFILTERED
+_print_timestamp("_get_data()")
 
 if CHOICE_FILTER_DATA:
     DF_FILTERED = _apply_filter_controls(
@@ -1838,8 +1949,10 @@ if CHOICE_FILTER_DATA:
         FILTER_OCCURRENCE_CODES,
         FILTER_STATE,
     )
+    _print_timestamp("_apply_filter_controls()")
 
 _present_data()
+_print_timestamp("_present_data()")
 
 # Stop time measurement.
 print(

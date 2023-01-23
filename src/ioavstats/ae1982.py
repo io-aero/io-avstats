@@ -91,7 +91,7 @@ FILTER_LATLONG_ACQ: list[str] = []
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_STATE: list[str] = []
 
-IS_TIMEKEEPING = True
+IS_TIMEKEEPING = False
 
 LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"

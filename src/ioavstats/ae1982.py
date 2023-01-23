@@ -19,11 +19,10 @@ from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
-pd.options.mode.chained_assignment = None  # default='warn'
+pd.options.mode.chained_assignment: str | None = None  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -88,7 +87,7 @@ FILTER_IS_DPRT_COUNTRY_USA: bool | None = None
 FILTER_IS_NARRATIVE_STALL: bool | None = None
 FILTER_IS_SPIN_STALL: bool | None = None
 FILTER_IS_US_AVIATION: bool | None = None
-FILTER_LATLONG_ACQ: str | None = None
+FILTER_LATLONG_ACQ: list[str] = []
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_STATE: list[str] = []
 
@@ -100,7 +99,7 @@ LAYER_TYPE = "ScatterplotLayer"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
-PG_CONN: Connection | None = None
+PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
 PITCH = 30
@@ -126,6 +125,7 @@ ZOOM = 4.4
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
+# pylint: disable=too-many-statements
 @st.experimental_memo
 def _apply_filter_controls(
     df_unfiltered: DataFrame,
@@ -146,7 +146,7 @@ def _apply_filter_controls(
     filter_is_narrative_stall: bool | None,
     filter_is_spin_stall: bool | None,
     filter_is_us_aviation: bool | None,
-    filter_latlong_acq: str | None,
+    filter_latlong_acq: list | None,
     filter_occurrence_codes: list | None,
     filter_state: list | None,
 ) -> DataFrame:
@@ -332,11 +332,7 @@ def _get_data() -> DataFrame:
     Returns:
         DataFrame: The unfiltered dataframe.
     """
-    global PG_CONN  # pylint: disable=global-statement
-
     _print_timestamp("_get_data() - Start")
-    PG_CONN = _get_postgres_connection()  # type: ignore
-    _print_timestamp("_get_data() - got DB connection")
 
     return pd.read_sql(
         """
@@ -950,7 +946,7 @@ def _present_data_profile() -> None:
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",  # type: ignore
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -1075,12 +1071,8 @@ def _setup_filter_controls() -> None:
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
 
     _print_timestamp("_setup_filter_controls() - Start")
-
-    PG_CONN = _get_postgres_connection()
-    _print_timestamp("_setup_filter_controls() - got DB connection")
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -1105,7 +1097,6 @@ def _setup_filter_controls() -> None:
         options=_sql_query_acft_categories(),
     )
     _print_timestamp("_setup_filter_controls() - FILTER_ACFT_CATEGORIES - 1")
-
 
     if FILTER_ACFT_CATEGORIES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
@@ -1147,14 +1138,15 @@ def _setup_filter_controls() -> None:
         value=(2008, datetime.date.today().year - 1),
     )
 
-
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
         # pylint: disable=line-too-long
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
+        _print_timestamp(
+            "_setup_filter_controls() - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO"
+        )
 
     st.sidebar.markdown("""---""")
 
@@ -1189,14 +1181,15 @@ def _setup_filter_controls() -> None:
         value=(0, max_inj_f_grnd),
     )
 
-
     if FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO:
         # pylint: disable=line-too-long
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
         )
-        _print_timestamp("_setup_filter_controls() - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO")
+        _print_timestamp(
+            "_setup_filter_controls() - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO"
+        )
 
     st.sidebar.markdown("""---""")
 
@@ -1212,7 +1205,6 @@ def _setup_filter_controls() -> None:
         max_value=max_inj_tot_f,
         value=(0, max_inj_tot_f),
     )
-
 
     if FILTER_INJ_TOT_F_FROM or FILTER_INJ_TOT_F_TO:
         # pylint: disable=line-too-long
@@ -1274,7 +1266,6 @@ def _setup_filter_controls() -> None:
         """,
         label="**Incl. aerodynamic spin stalls ?**",
     )
-
 
     if FILTER_IS_SPIN_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
@@ -1486,7 +1477,6 @@ def _setup_sidebar() -> None:
     _print_timestamp("_setup_sidebar() - _setup_filter_controls()")
 
     _print_timestamp("_setup_sidebar() - End")
-
 
 
 # ------------------------------------------------------------------
@@ -1914,6 +1904,9 @@ def _sql_query_us_states() -> list[str]:
 start_time = time.time_ns()
 
 st.set_page_config(layout="wide")
+
+PG_CONN = _get_postgres_connection()
+_print_timestamp("_setup_filter_controls() - got DB connection")
 
 _setup_sidebar()
 _print_timestamp("_setup_sidebar()")

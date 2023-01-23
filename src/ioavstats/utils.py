@@ -6,17 +6,18 @@
 import datetime
 
 import streamlit as st
-from sqlalchemy.engine import Connection
+from psycopg2.extensions import connection
 
 
 # ------------------------------------------------------------------
 # Present the 'about' information.
 # ------------------------------------------------------------------
-def present_about(pg_conn: Connection, app_name: str) -> None:
+# flake8: noqa: E501
+def present_about(pg_conn: connection, app_name: str) -> None:
     """Present the 'about' information.
 
     Args:
-        pg_conn (Connection): Database connection.
+        pg_conn (connection): Database connection.
         app_name (str): Application name.
     """
     file_name, processed = _sql_query_last_file_name(pg_conn)
@@ -32,6 +33,7 @@ def present_about(pg_conn: Connection, app_name: str) -> None:
     )
     about_msg = (
         about_msg
+        # pylint: disable=line-too-long
         + """\n<a href="https://www.io-aero.com/disclaimer" target="_blank">Disclaimer</a>
           """
     )
@@ -42,21 +44,23 @@ def present_about(pg_conn: Connection, app_name: str) -> None:
 # ------------------------------------------------------------------
 # Determine the last processed update file.
 # ------------------------------------------------------------------
-def _sql_query_last_file_name(pg_conn: Connection) -> tuple[str, str]:
+# flake8: noqa: E501
+def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
     """Determine the last processed update file.
 
     Args:
-        pg_conn (Connection): Database connection.
+        pg_conn (connection): Database connection.
 
     Returns:
         tuple[str, str]: File name and processing date.
     """
     with pg_conn.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
         cur.execute(
             """
         SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
           FROM io_processed_files
-         WHERE file_name LIKE 'up%' 
+         WHERE file_name LIKE 'up%'
          ORDER BY COALESCE(last_processed, first_processed) DESC;
         """
         )

@@ -34,7 +34,7 @@ nav:
       - Logging: config_logging.md
   - Operation: operation.md
   - Data Analysis:
-      - Aviation Accident Data Sets: data_analyis_ntsb_accident_data.md
+      - Aviation Event Data Sets: data_analyis_ntsb_accident_data.md
       - DB Table io_ntsb_2002_2021: data_analyis_io_ntsb_2002_2021.md
       - DB View ae1982: data_analyis_ae1982.md
   - How to ...:
@@ -46,6 +46,8 @@ nav:
     - Release Notes: release_notes.md
     - Release History: release_history.md
     - Release Schedule: release_schedule.md
+    - Update Log Files:
+        - 2023.01.22: update_log_2023_01_22.md
   - License: LICENSE.md
 
 plugins:
@@ -65,9 +67,9 @@ plugins:
 repo_name: GitHub
 repo_url: https://github.com/io-aero/io-avstats
 
-site_name: IO-AVSTATS - Aviation Accident Statistics
+site_name: IO-AVSTATS - Aviation Event Statistics
 site_url: https://io-aero.com/
-site_description: Aviation Accident Statistics
+site_description: Aviation Event Statistics
 site_author: IO-Aero Team
 
 theme:

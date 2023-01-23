@@ -20,6 +20,7 @@ COPY Makefile ./
 COPY Pipfile ./
 COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml
 COPY src/ioavstats/${APP}.py ./${APP}.py
+COPY src/ioavstats/utils.py ./utils.py
 
 RUN make pipenv-prod
 

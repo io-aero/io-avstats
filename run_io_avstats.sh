@@ -48,12 +48,14 @@ if [ -z "$1" ]; then
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
+    echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_f   - Delete the PostgreSQL database files"
     echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "l_c_s   - Load country and state data into PostgreSQL"
+    echo "l_s_e   - Load sequence of events data into PostgreSQL"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
@@ -138,7 +140,7 @@ fi
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
-echo "IO-AVSTATS - Aviation Accident Statistics."
+echo "IO-AVSTATS - Aviation Event Statistics."
 echo "--------------------------------------------------------------------------------"
 echo "PYTHONPATH : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
@@ -150,20 +152,23 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
+# a_o_c: Load aviation occurrence categories into PostgreSQL.
 # c_d_s: Create the PostgreSQL database schema.
-# c_l_i: Correct decimal US latitudes and longitudes.
+# c_l_l: Correct decimal US latitudes and longitudes.
+# c_p_d: Cleansing PostgreSQL data.
 # d_d_s: Drop the PostgreSQL database schema.
 # d_s_f: Download basic simplemaps files.
 # d_z_f: Download the ZIP Code Database file.
 # l_c_s: Load country and state data into PostgreSQL.
 # l_s_d: Load simplemaps data into PostgreSQL.
+# l_s_e: Load sequence of events data into PostgreSQL.
 # l_z_d: Load US Zip code data.
 # r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi

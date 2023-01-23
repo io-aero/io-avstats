@@ -1,8 +1,8 @@
-# Data Analysis: Aviation Accident Data Sets
+# Data Analysis: Aviation Event Data Sets
 
 **Note**: The **`IO-AVSTATS`** database used here contains NTSB aircraft accident data as of January 1, 2023.
 
-This report is about comparing the NTSB Census of US Civil Aviation Accidents and the **`IO-AVSTATS`** database  for consistency.  
+This report is about comparing the NTSB Census of US Civil Aviation Events and the **`IO-AVSTATS`** database  for consistency.  
 
 The NTSB provides U.S. aviation accident data in Microsoft Acces format on its website at the following [link](https://data.ntsb.gov/avdata).
 There are three file types to distinguish:

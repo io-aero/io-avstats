@@ -1,4 +1,4 @@
-# IO-AVSTATS - Aviation Accident Statistics
+# IO-AVSTATS - Aviation Event Statistics
 
 TODO by lho
 

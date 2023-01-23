@@ -2,7 +2,8 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Aviation Accidents in the US since 1982."""
+"""Aviation Events in the US since 1982."""
+import ast
 import datetime
 import time
 
@@ -13,14 +14,16 @@ import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import pydeck as pdk  # type: ignore
 import streamlit as st
+import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
+
+pd.options.mode.chained_assignment: str | None = None  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -69,33 +72,42 @@ DF_UNFILTERED: DataFrame = DataFrame()
 EVENT_TYPE_DESC: str
 
 FILTER_ACFT_CATEGORIES: list[str] = []
-FILTER_ALT_LOW: bool | None = None
-FILTER_DEST_COUNTRY_USA: bool | None = None
-FILTER_DPRT_COUNTRY_USA: bool | None = None
 FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_TYPE: list[str] = []
 FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FILTER_FAR_PARTS: list[str] = []
 FILTER_FINDING_CODES: list[str] = []
-FILTER_HAS_US_IMPACT: bool | None = None
 FILTER_INJ_F_GRND_FROM: int | None = None
 FILTER_INJ_F_GRND_TO: int | None = None
 FILTER_INJ_TOT_F_FROM: int | None = None
 FILTER_INJ_TOT_F_TO: int | None = None
-FILTER_LATLONG_ACQ: str | None = None
-FILTER_NARR_STALL: bool | None = None
+FILTER_IS_ALTITUDE_LOW: bool | None = None
+FILTER_IS_DEST_COUNTRY_USA: bool | None = None
+FILTER_IS_DPRT_COUNTRY_USA: bool | None = None
+FILTER_IS_NARRATIVE_STALL: bool | None = None
+FILTER_IS_SPIN_STALL: bool | None = None
+FILTER_LATLONG_ACQ: list[str] = []
 FILTER_OCCURRENCE_CODES: list[str] = []
-FILTER_SPIN_STALL: bool | None = None
 FILTER_STATE: list[str] = []
+FILTER_US_AVIATION: list[str] = []
+FILTER_US_AVIATION_COUNTRY = "Event Country USA"
+FILTER_US_AVIATION_DEPARTURE = "US Departure"
+FILTER_US_AVIATION_DESTINATION = "US Destination"
+FILTER_US_AVIATION_OPERATOR = "US Operator"
+FILTER_US_AVIATION_OWNER = "US Owner"
+FILTER_US_AVIATION_REGISTRATION = "US Registration"
 
+IS_TIMEKEEPING = False
+
+LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
-PG_CONN: Connection | None = None
-#  Up/down angle relative to the map�s plane,
+PG_CONN: connection | None = None
+#  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
 PITCH = 30
 
@@ -119,32 +131,35 @@ ZOOM = 4.4
 # ------------------------------------------------------------------
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
-@st.experimental_memo
 # pylint: disable=too-many-locals
-def _apply_filter_controls(
+# pylint: disable=too-many-statements
+# @st.experimental_memo
+def _apply_filter(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
-    filter_alt_low: bool | None,
-    filter_dest_country_usa: bool | None,
-    filter_dprt_country_usa: bool | None,
     filter_ev_highest_injury: list | None,
     filter_ev_type: list | None,
     filter_ev_year_from: int | None,
     filter_ev_year_to: int | None,
     filter_far_parts: list | None,
     filter_finding_codes: list | None,
-    filter_has_us_impact: bool | None,
     filter_inj_f_grnd_from: int | None,
     filter_inj_f_grnd_to: int | None,
     filter_inj_tot_f_from: int | None,
     filter_inj_tot_f_to: int | None,
-    filter_latlong_acq: str | None,
-    filter_narr_stall: bool | None,
+    filter_is_altitude_low: bool | None,
+    filter_is_dest_country_usa: bool | None,
+    filter_is_dprt_country_usa: bool | None,
+    filter_is_narrative_stall: bool | None,
+    filter_is_spin_stall: bool | None,
+    filter_latlong_acq: list | None,
     filter_occurrence_codes: list | None,
-    filter_spin_stall: bool | None,
     filter_state: list | None,
+    filter_us_aviation: list | None,
 ) -> DataFrame:
     """Filter the data frame."""
+    _print_timestamp("_apply_filter() - Start")
+
     df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
@@ -155,30 +170,34 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_acft_categories))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter() - filter_acft_categories")
 
     # noinspection PyUnboundLocalVariable
-    if filter_alt_low:
+    if filter_is_altitude_low:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["alt_low"] == True)  # noqa: E712
+            (df_filtered["is_altitude_low"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter() - filter_is_altitude_low")
 
     # noinspection PyUnboundLocalVariable
-    if filter_dest_country_usa:
+    if filter_is_dest_country_usa:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["dest_country_usa"] == True)  # noqa: E712
+            (df_filtered["is_dest_country_usa"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter() - filter_is_dest_country_usa")
 
     # noinspection PyUnboundLocalVariable
-    if filter_dprt_country_usa:
+    if filter_is_dprt_country_usa:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["dprt_country_usa"] == True)  # noqa: E712
+            (df_filtered["is_dprt_country_usa"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter() - filter_is_dprt_country_usa")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_highest_injury:
@@ -186,11 +205,13 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury))
         ]
+        _print_timestamp("_apply_filter() - filter_ev_highest_injury")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_type:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["ev_type"].isin(filter_ev_type))]
+        _print_timestamp("_apply_filter() - filter_ev_type")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_year_from or filter_ev_year_to:
@@ -198,6 +219,7 @@ def _apply_filter_controls(
             (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
+        _print_timestamp("_apply_filter() - filter_ev_year_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_far_parts:
@@ -207,6 +229,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_far_parts))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter() - filter_far_parts")
 
     # noinspection PyUnboundLocalVariable
     if filter_finding_codes:
@@ -216,14 +239,7 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_finding_codes))  # type: ignore
             )
         ]
-
-    # noinspection PyUnboundLocalVariable
-    if filter_has_us_impact:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["has_us_impact"] == True)  # noqa: E712
-        ]
+        _print_timestamp("_apply_filter() - filter_finding_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_f_grnd_from or filter_inj_f_grnd_to:
@@ -231,6 +247,7 @@ def _apply_filter_controls(
             (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
             & (df_filtered["inj_f_grnd"] <= filter_inj_f_grnd_to)
         ]
+        _print_timestamp("_apply_filter() - filter_inj_f_grnd_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_tot_f_from or filter_inj_tot_f_to:
@@ -238,6 +255,7 @@ def _apply_filter_controls(
             (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
             & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
         ]
+        _print_timestamp("_apply_filter() - filter_inj_tot_f_from")
 
     # noinspection PyUnboundLocalVariable
     if filter_latlong_acq:
@@ -245,14 +263,16 @@ def _apply_filter_controls(
         df_filtered = df_filtered.loc[
             (df_filtered["latlong_acq"].isin(filter_latlong_acq))
         ]
+        _print_timestamp("_apply_filter() - filter_latlong_acq")
 
     # noinspection PyUnboundLocalVariable
-    if filter_narr_stall:
+    if filter_is_narrative_stall:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["narr_stall"] == True)  # noqa: E712
+            (df_filtered["is_narrative_stall"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter() - filter_is_narrative_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_occurrence_codes:
@@ -262,19 +282,78 @@ def _apply_filter_controls(
                 lambda x: bool(set(x) & set(filter_occurrence_codes))  # type: ignore
             )
         ]
+        _print_timestamp("_apply_filter() - filter_occurrence_codes")
 
     # noinspection PyUnboundLocalVariable
-    if filter_spin_stall:
+    if filter_is_spin_stall:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             # pylint: disable=singleton-comparison
-            (df_filtered["spin_stall"] == True)  # noqa: E712
+            (df_filtered["is_spin_stall"] == True)  # noqa: E712
         ]
+        _print_timestamp("_apply_filter() - filter_is_spin_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_state:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[(df_filtered["state"].isin(filter_state))]
+        _print_timestamp("_apply_filter() - filter_state")
+
+    # noinspection PyUnboundLocalVariable
+    if filter_us_aviation:
+        df_filtered = _apply_filter_us_aviation(df_filtered, filter_us_aviation)
+
+    _print_timestamp("_apply_filter() - End")
+
+    return df_filtered
+
+
+# ------------------------------------------------------------------
+# Filter the data frame - US aviation.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-branches
+# pylint: disable=too-many-locals
+# pylint: disable=too-many-statements
+# @st.experimental_memo
+def _apply_filter_us_aviation(
+    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    filter_us_aviation: list | None,
+) -> DataFrame:
+    """Filter the data frame - US aviation."""
+    _print_timestamp("_apply_filter_us_aviation() - Start")
+
+    filter_cmd = "df_unfiltered.loc["
+    filter_cmd_or = ""
+
+    if FILTER_US_AVIATION_COUNTRY in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['country'] == COUNTRY_USA)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_DESTINATION in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dest_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_DEPARTURE in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dprt_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_OPERATOR in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_oper_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_OWNER in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_owner_country_usa'] == True)"
+        filter_cmd_or = " | "
+
+    if FILTER_US_AVIATION_REGISTRATION in filter_us_aviation:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_regis_country_usa'] == True)"
+
+    filter_cmd += "]"
+
+    df_filtered = eval(filter_cmd)
+
+    _print_timestamp("_apply_filter_us_aviation() - End")
 
     return df_filtered
 
@@ -305,9 +384,7 @@ def _get_data() -> DataFrame:
     Returns:
         DataFrame: The unfiltered dataframe.
     """
-    global PG_CONN  # pylint: disable=global-statement
-
-    PG_CONN = _get_postgres_connection()  # type: ignore
+    _print_timestamp("_get_data() - Start")
 
     return pd.read_sql(
         """
@@ -427,19 +504,20 @@ def _prep_data_charts_eyt(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Fatalities per Year by FAR Parts.
+# Prepare the chart data: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _prep_data_charts_fyfp(
     df_filtered: DataFrame,
 ) -> DataFrame:
-    """Prepare the chart data: Fatalities per Year by FAR Parts."""
+    """Prepare the chart data: Fatalities per Year under FAR Operations
+    Parts."""
     df_chart = df_filtered[
         [
             "ev_year",
-            "far_part_091x",
-            "far_part_121",
-            "far_part_135",
+            "is_far_part_091x",
+            "is_far_part_121",
+            "is_far_part_135",
             "inj_tot_f",
         ]
     ]
@@ -452,13 +530,13 @@ def _prep_data_charts_fyfp(
     )
 
     df_chart["far_part_091x_inj_tot_f"] = np.where(
-        df_chart.far_part_091x, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_091x, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_121_inj_tot_f"] = np.where(
-        df_chart.far_part_121, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_121, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_135_inj_tot_f"] = np.where(
-        df_chart.far_part_135, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_135, df_chart.inj_tot_f, 0
     )
 
     return df_chart.groupby("year", as_index=False).sum(
@@ -518,30 +596,30 @@ def _prep_data_charts_tet(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Total Fatalities by FAR Parts.
+# Prepare the chart data: Total Fatalities under FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _prep_data_charts_tffp(
     df_filtered: DataFrame,
 ) -> list[int]:
-    """Prepare the chart data: Total Fatalities by FAR Parts."""
+    """Prepare the chart data: Total Fatalities under FAR Operations Parts."""
     df_chart = df_filtered[
         [
-            "far_part_091x",
-            "far_part_121",
-            "far_part_135",
+            "is_far_part_091x",
+            "is_far_part_121",
+            "is_far_part_135",
             "inj_tot_f",
         ]
     ]
 
     df_chart["far_part_091x_inj_tot_f"] = np.where(
-        df_chart.far_part_091x, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_091x, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_121_inj_tot_f"] = np.where(
-        df_chart.far_part_121, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_121, df_chart.inj_tot_f, 0
     )
     df_chart["far_part_135_inj_tot_f"] = np.where(
-        df_chart.far_part_135, df_chart.inj_tot_f, 0
+        df_chart.is_far_part_135, df_chart.inj_tot_f, 0
     )
 
     return [
@@ -554,28 +632,11 @@ def _prep_data_charts_tffp(
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by Injury Level.
 # ------------------------------------------------------------------
-def _present_about():
-    file_name, processed = _sql_query_last_file_name()
-
-    about_msg = "IO-AVSTATS Application: **ae1982**"
-    about_msg = about_msg + "<br/>"
-    about_msg = about_msg + f"\nLastest NTSB database: **{file_name} - {processed}**"
-    about_msg = about_msg + "<br/>"
-    about_msg = (
-        about_msg
-        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
-        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
-    )
-
-    st.markdown(about_msg, unsafe_allow_html=True)
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Injury Level.
-# ------------------------------------------------------------------
-def _present_chart_eyil():
+def _present_chart_eyil() -> None:
     """Present the chart: Events per Year by Injury Level."""
-    st.subheader(f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level")
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -607,9 +668,11 @@ def _present_chart_eyil():
     )
 
     fig.update_layout(
+        autosize=True,
         bargap=0.05,
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
+        title=chart_title,
         width=CHOICE_CHARTS_WIDTH,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": EVENT_TYPE_DESC}},
@@ -634,9 +697,11 @@ def _present_chart_eyil():
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by Type.
 # ------------------------------------------------------------------
-def _present_chart_eyt():
+def _present_chart_eyt() -> None:
     """Present the chart: Events per Year by Type."""
-    st.subheader(f"Number of {EVENT_TYPE_DESC} per Year by Type")
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Type"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -659,6 +724,7 @@ def _present_chart_eyt():
         bargap=0.05,
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
+        title=chart_title,
         width=CHOICE_CHARTS_WIDTH,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": EVENT_TYPE_DESC}},
@@ -681,11 +747,13 @@ def _present_chart_eyt():
 
 
 # ------------------------------------------------------------------
-# Present the chart: Fatalities per Year by FAR Part.
+# Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
-def _present_chart_fyfp():
-    """Present the chart: Fatalities per Year by FAR Part."""
-    st.subheader("Number of Fatalities per Year by Selected FAR Parts")
+def _present_chart_fyfp() -> None:
+    """Present the chart: Fatalities per Year under FAR Operations Parts."""
+    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
+
+    st.subheader(chart_title)
 
     fig = go.Figure(
         data=[
@@ -715,6 +783,7 @@ def _present_chart_fyfp():
         barmode="stack",
         height=CHOICE_CHARTS_HEIGHT,
         width=CHOICE_CHARTS_WIDTH,
+        title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={"title": {"text": "Fatalities"}},
     )
@@ -738,9 +807,11 @@ def _present_chart_fyfp():
 # ------------------------------------------------------------------
 # Present the chart: Total Events by Injury Level.
 # ------------------------------------------------------------------
-def _present_chart_teil():
+def _present_chart_teil() -> None:
     """Present the chart: Total Events by Injury Level."""
-    st.subheader(f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level")
+    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -757,6 +828,7 @@ def _present_chart_teil():
         },
         hole=0.3,
         names=["Fatal", "Minor", "None", "Serious"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TEIL,
     )
 
@@ -768,9 +840,11 @@ def _present_chart_teil():
 # ------------------------------------------------------------------
 # Present the chart: Total Events by Type.
 # ------------------------------------------------------------------
-def _present_chart_tet():
+def _present_chart_tet() -> None:
     """Present the chart: Total Events by Type."""
-    st.subheader(f"Total Number of {EVENT_TYPE_DESC} by Type")
+    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Type"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -780,6 +854,7 @@ def _present_chart_tet():
         color_discrete_map={"Accidents": COLOR_LEVEL_1, "Incidents": COLOR_LEVEL_2},
         hole=0.3,
         names=["Accidents", "Incidents"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TET,
     )
 
@@ -789,11 +864,13 @@ def _present_chart_tet():
 
 
 # ------------------------------------------------------------------
-# Present the chart: Fatalities per Year by FAR Part.
+# Present the chart: Fatalities per Year under FAR Operations Parts.
 # ------------------------------------------------------------------
-def _present_chart_tffp():
-    """Present the chart: Fatalities per Year by FAR Part."""
-    st.subheader("Total Number of Fatalities by Selected FAR Parts")
+def _present_chart_tffp() -> None:
+    """Present the chart: Fatalities per Year under FAR Operations Parts."""
+    chart_title = "Total Number of Fatalities by Selected FAR Operations Parts"
+
+    st.subheader(chart_title)
 
     fig = px.pie(
         color=[
@@ -808,6 +885,7 @@ def _present_chart_tffp():
         },
         hole=0.3,
         names=["Parts 091x", "Parts 121", "Parts 135"],
+        title=chart_title,
         values=DF_FILTERED_CHARTS_TFFP,
     )
 
@@ -819,7 +897,7 @@ def _present_chart_tffp():
 # ------------------------------------------------------------------
 # Present the charts.
 # ------------------------------------------------------------------
-def _present_charts():
+def _present_charts() -> None:
     """Present the charts."""
     global DF_FILTERED_CHARTS_EYIL  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_EYT  # pylint: disable=global-statement
@@ -838,7 +916,7 @@ def _present_charts():
         DF_FILTERED_CHARTS_EYIL = _prep_data_charts_eyil(DF_FILTERED)
         _present_chart_eyil()
 
-    # Fatalities per Year by FAR Parts
+    # Fatalities per Year under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_FYFP:
         DF_FILTERED_CHARTS_FYFP = _prep_data_charts_fyfp(DF_FILTERED)
         _present_chart_fyfp()
@@ -853,7 +931,7 @@ def _present_charts():
         DF_FILTERED_CHARTS_TEIL = _prep_data_charts_teil(DF_FILTERED)
         _present_chart_teil()
 
-    # Total Fatalities by FAR Parts
+    # Total Fatalities under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_TFFP:
         DF_FILTERED_CHARTS_TFFP = _prep_data_charts_tffp(DF_FILTERED)
         _present_chart_tffp()
@@ -862,39 +940,48 @@ def _present_charts():
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
-def _present_data():
+def _present_data() -> None:
     """Present the filtered data."""
+    _print_timestamp("_present_data() - Start")
 
     col1, _col2, col3 = st.columns([1, 1, 1])
 
     if CHOICE_FILTER_CONDITIONS:
         with col1:
             st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
+            _print_timestamp("_present_data() - CHOICE_FILTER_CONDITIONS")
 
     if CHOICE_ABOUT:
         with col3:
-            _present_about()
+            utils.present_about(PG_CONN, APP_ID)
+            _print_timestamp("_present_data() - CHOICE_ABOUT")
 
     if CHOICE_CHARTS:
         _present_charts()
+        _print_timestamp("_present_data() - CHOICE_CHARTS")
 
     if CHOICE_DATA_PROFILE:
-        st.subheader("Profiling of the filtered data set")
         _present_data_profile()
+        _print_timestamp("_present_data() - CHOICE_DATA_PROFILE")
 
     if CHOICE_DETAILS or CHOICE_CHARTS_DETAILS:
         _present_details()
+        _print_timestamp("_present_data() - CHOICE_DETAILS or CHOICE_CHARTS_DETAILS")
 
     if CHOICE_MAP:
-        st.subheader("Depicting the accidents on a map of the USA")
         _present_map()
+        _print_timestamp("_present_data() - CHOICE_MAP")
+
+    _print_timestamp("_present_data() - End")
 
 
 # ------------------------------------------------------------------
 # Present data profile.
 # ------------------------------------------------------------------
-def _present_data_profile():
+def _present_data_profile() -> None:
     """Present data profile."""
+    st.subheader("Profiling of the filtered data set")
+
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
         profile_report = ProfileReport(
@@ -911,7 +998,7 @@ def _present_data_profile():
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",  # type: ignore
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -922,7 +1009,7 @@ def _present_data_profile():
 # ------------------------------------------------------------------
 # Present details.
 # ------------------------------------------------------------------
-def _present_details():
+def _present_details() -> None:
     """Present details."""
     if CHOICE_DETAILS:
         st.subheader("Detailed data from database view **`io_app_ae1982`**")
@@ -940,9 +1027,11 @@ def _present_details():
 # ------------------------------------------------------------------
 # Present the accidents on the US map.
 # ------------------------------------------------------------------
-def _present_map():
+def _present_map() -> None:
     """Present the accidents on the US map."""
     global DF_FILTERED  # pylint: disable=global-statement
+
+    st.subheader("Depicting the accidents on a map of the USA")
 
     # noinspection PyUnboundLocalVariable
     DF_FILTERED = DF_FILTERED.loc[
@@ -980,36 +1069,62 @@ def _present_map():
 
 
 # ------------------------------------------------------------------
+# Print a timestamp.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-statements
+def _print_timestamp(identifier: str) -> None:
+    """Print a timestamp."""
+    global LAST_READING  # pylint: disable=global-statement
+
+    if not IS_TIMEKEEPING:
+        return
+
+    if not LAST_READING:
+        LAST_READING = start_time
+
+    current_time = time.time_ns()
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{current_time - LAST_READING:,}':>20} ns - "
+        + f"{APP_ID} - {identifier}",
+        flush=True,
+    )
+
+    LAST_READING = current_time
+
+
+# ------------------------------------------------------------------
 # Set up the filter controls.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
-def _setup_filter_controls():
+def _setup_filter() -> None:
     """Set up the filter controls."""
     global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
-    global FILTER_ALT_LOW  # pylint: disable=global-statement
-    global FILTER_DEST_COUNTRY_USA  # pylint: disable=global-statement
-    global FILTER_DPRT_COUNTRY_USA  # pylint: disable=global-statement
     global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
     global FILTER_EV_TYPE  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
     global FILTER_FAR_PARTS  # pylint: disable=global-statement
     global FILTER_FINDING_CODES  # pylint: disable=global-statement
-    global FILTER_HAS_US_IMPACT  # pylint: disable=global-statement
     global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
     global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
+    global FILTER_IS_ALTITUDE_LOW  # pylint: disable=global-statement
+    global FILTER_IS_DEST_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_IS_DPRT_COUNTRY_USA  # pylint: disable=global-statement
+    global FILTER_IS_NARRATIVE_STALL  # pylint: disable=global-statement
+    global FILTER_IS_SPIN_STALL  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
-    global FILTER_NARR_STALL  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
-    global FILTER_SPIN_STALL  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
+    global FILTER_US_AVIATION  # pylint: disable=global-statement
 
-    PG_CONN = _get_postgres_connection()
+    _print_timestamp("_setup_filter - Start")
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -1033,12 +1148,14 @@ def _setup_filter_controls():
         label="**Aircraft categories:**",
         options=_sql_query_acft_categories(),
     )
+    _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
 
     if FILTER_ACFT_CATEGORIES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1051,12 +1168,14 @@ def _setup_filter_controls():
         label="**Event type(s):**",
         options=_sql_query_ev_type(),
     )
+    _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
 
     if FILTER_EV_TYPE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1077,6 +1196,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1087,16 +1207,19 @@ def _setup_filter_controls():
         label="**FAR operations parts:**",
         options=_sql_query_far_parts(),
     )
+    _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 1")
 
     if FILTER_FAR_PARTS:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
 
     st.sidebar.markdown("""---""")
 
     max_inj_f_grnd = _sql_query_max_inj_f_grnd()
+    _print_timestamp("_setup_filter - _sql_query_max_inj_f_grnd()")
 
     FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
         help="""
@@ -1114,10 +1237,14 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
         )
+        _print_timestamp(
+            "_setup_filter - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO"
+        )
 
     st.sidebar.markdown("""---""")
 
     max_inj_tot_f = _sql_query_max_inj_tot_f()
+    _print_timestamp("_setup_filter - _sql_query_max_inj_tot_f()")
 
     FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
         help="""
@@ -1135,6 +1262,7 @@ def _setup_filter_controls():
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_INJ_TOT_F_TO")
 
     st.sidebar.markdown("""---""")
 
@@ -1145,12 +1273,14 @@ def _setup_filter_controls():
         label="**Finding code(s):**",
         options=_sql_query_finding_codes(),
     )
+    _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 1")
 
     if FILTER_FINDING_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Finding code(s)**: **`{','.join(FILTER_FINDING_CODES)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1162,16 +1292,18 @@ def _setup_filter_controls():
         label="**Highest injury level(s):**",
         options=_sql_query_ev_highest_injury(),
     )
+    _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 1")
 
     if FILTER_EV_HIGHEST_INJURY:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
 
     st.sidebar.markdown("""---""")
 
-    FILTER_SPIN_STALL = st.sidebar.checkbox(
+    FILTER_IS_SPIN_STALL = st.sidebar.checkbox(
         help="""
         For an aerodynamic spin stall, at least one of the following
         two conditions must be met in the event data:
@@ -1185,16 +1317,17 @@ def _setup_filter_controls():
         label="**Incl. aerodynamic spin stalls ?**",
     )
 
-    if FILTER_SPIN_STALL:
+    if FILTER_IS_SPIN_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_SPIN_STALL}`**"
+            + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_IS_SPIN_STALL}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_IS_SPIN_STALL")
 
     st.sidebar.markdown("""---""")
 
     # flake8: noqa: E501
-    FILTER_ALT_LOW = st.sidebar.checkbox(
+    FILTER_IS_ALTITUDE_LOW = st.sidebar.checkbox(
         help="""
         A too low altitude problem exists when the following conditions are met:
         - no occurrence code **`MIDAIR`**` or aerodynamic spin stall is present, and
@@ -1205,15 +1338,16 @@ def _setup_filter_controls():
         label="**Incl. altitude too low ?**",
     )
 
-    if FILTER_ALT_LOW:
+    if FILTER_IS_ALTITUDE_LOW:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. altitude too low ?**: **`{FILTER_ALT_LOW}`**"
+            + f"\n- **Incl. altitude too low ?**: **`{FILTER_IS_ALTITUDE_LOW}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_IS_ALTITUDE_LOW")
 
     st.sidebar.markdown("""---""")
 
-    FILTER_NARR_STALL = st.sidebar.checkbox(
+    FILTER_IS_NARRATIVE_STALL = st.sidebar.checkbox(
         help="""
         A stall according to narrative is present if the accepted narrative
         contains the text **`STALL`**` in any lower or upper case.
@@ -1221,11 +1355,12 @@ def _setup_filter_controls():
         label="**Incl. stalled according narrative ?**",
     )
 
-    if FILTER_NARR_STALL:
+    if FILTER_IS_NARRATIVE_STALL:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_NARR_STALL}`**"
+            + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_IS_NARRATIVE_STALL}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_IS_NARRATIVE_STALL")
 
     st.sidebar.markdown("""---""")
 
@@ -1237,12 +1372,14 @@ def _setup_filter_controls():
         label="**Latitude / longitude acquisition:**",
         options=_sql_query_latlong_acq(),
     )
+    _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 1")
 
     if FILTER_LATLONG_ACQ:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1253,63 +1390,46 @@ def _setup_filter_controls():
         label="**Occurrence code(s):**",
         options=_sql_query_occurrence_codes(),
     )
+    _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 1")
 
     if FILTER_OCCURRENCE_CODES:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
-    FILTER_DPRT_COUNTRY_USA = st.sidebar.checkbox(
+    FILTER_IS_DPRT_COUNTRY_USA = st.sidebar.checkbox(
         help="""
         At least one of the aircraft involved in the event took off from the US.
         """,
         label="**Only departure country USA ?**",
     )
 
-    if FILTER_DPRT_COUNTRY_USA:
+    if FILTER_IS_DPRT_COUNTRY_USA:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only departure country USA ?**: **`{FILTER_DPRT_COUNTRY_USA}`**"
+            + f"\n- **Only departure country USA ?**: **`{FILTER_IS_DPRT_COUNTRY_USA}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_IS_DPRT_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
-    FILTER_DEST_COUNTRY_USA = st.sidebar.checkbox(
+    FILTER_IS_DEST_COUNTRY_USA = st.sidebar.checkbox(
         help="""
         At least one of the aircraft involved in the event has its target in the US.
         """,
         label="**Only destination country USA ?**",
     )
 
-    if FILTER_DEST_COUNTRY_USA:
+    if FILTER_IS_DEST_COUNTRY_USA:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only destination country USA ?**: **`{FILTER_DEST_COUNTRY_USA}`**"
+            + f"\n- **Only destination country USA ?**: **`{FILTER_IS_DEST_COUNTRY_USA}`**"
         )
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_HAS_US_IMPACT = st.sidebar.checkbox(
-        help="""
-        One of the following conditions is satisfied:
-        - Departure in the USA, or
-        - (Planned) landing in the USA, or
-        - US operator, or
-        - US owner, or
-        - US registration.
-        """,
-        label="**Only US impacted ?**",
-        value=True,
-    )
-
-    if FILTER_HAS_US_IMPACT:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only US impacted ?**: **`{FILTER_HAS_US_IMPACT}`**"
-        )
+        _print_timestamp("_setup_filter - FILTER_IS_DEST_COUNTRY_USA")
 
     st.sidebar.markdown("""---""")
 
@@ -1318,20 +1438,58 @@ def _setup_filter_controls():
         label="**State(s) in the US:**",
         options=_sql_query_us_states(),
     )
+    _print_timestamp("_setup_filter - FILTER_STATE - 1")
 
     if FILTER_STATE:
         CHOICE_FILTER_CONDITIONS_TEXT = (
             CHOICE_FILTER_CONDITIONS_TEXT
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_STATE - 2")
 
     st.sidebar.markdown("""---""")
+
+    FILTER_US_AVIATION = st.sidebar.multiselect(
+        default=[
+            FILTER_US_AVIATION_COUNTRY,
+            FILTER_US_AVIATION_DEPARTURE,
+            FILTER_US_AVIATION_DESTINATION,
+            FILTER_US_AVIATION_OPERATOR,
+            FILTER_US_AVIATION_OWNER,
+            FILTER_US_AVIATION_REGISTRATION,
+        ],
+        help="""
+        **US aviation** means that either the event occurred on US soil or 
+        the departure, destination, owner, operator or registration is US.
+        """,
+        label="**US aviation criteria:**",
+        options=[
+            FILTER_US_AVIATION_COUNTRY,
+            FILTER_US_AVIATION_DEPARTURE,
+            FILTER_US_AVIATION_DESTINATION,
+            FILTER_US_AVIATION_OPERATOR,
+            FILTER_US_AVIATION_OWNER,
+            FILTER_US_AVIATION_REGISTRATION,
+        ],
+    )
+    _print_timestamp("_setup_filter - FILTER_US_AVIATION - 1")
+
+    if FILTER_US_AVIATION:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
+
+    st.sidebar.markdown("""---""")
+
+    _print_timestamp("_setup_filter - End")
 
 
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
-def _setup_page():
+def _setup_page() -> None:
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
@@ -1369,16 +1527,23 @@ def _setup_page():
 # ------------------------------------------------------------------
 # Set up the sidebar.
 # ------------------------------------------------------------------
-def _setup_sidebar():
+def _setup_sidebar() -> None:
     """Set up the sidebar."""
+    _print_timestamp("_setup_sidebar() - Start")
+
     _setup_task_controls()
-    _setup_filter_controls()
+    _print_timestamp("_setup_sidebar() - _setup_task_controls()")
+
+    _setup_filter()
+    _print_timestamp("_setup_sidebar() - _setup_filter")
+
+    _print_timestamp("_setup_sidebar() - End")
 
 
 # ------------------------------------------------------------------
 # Set up the task controls.
 # ------------------------------------------------------------------
-def _setup_task_controls():
+def _setup_task_controls() -> None:
     """Set up the task controls."""
     global CHOICE_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
@@ -1430,8 +1595,8 @@ def _setup_task_controls():
             value=False,
         )
         CHOICE_CHARTS_TYPE_FYFP = st.sidebar.checkbox(
-            help="Fatalities per year by selected FAR parts (after filtering the data).",
-            label="Fatalities per Year by FAR Parts",
+            help="Fatalities per year by selected FAR Operations Parts (after filtering the data).",
+            label="Fatalities per Year under FAR Operations Parts",
             value=True,
         )
         CHOICE_CHARTS_TYPE_TET = st.sidebar.checkbox(
@@ -1445,8 +1610,8 @@ def _setup_task_controls():
             value=False,
         )
         CHOICE_CHARTS_TYPE_TFFP = st.sidebar.checkbox(
-            help="Total fatalities by selected FAR parts (after filtering the data).",
-            label="Total Fatalities by FAR Parts",
+            help="Total fatalities by selected FAR Operations Parts (after filtering the data).",
+            label="Total Fatalities under FAR Operations Parts",
             value=True,
         )
 
@@ -1584,11 +1749,11 @@ def _sql_query_ev_type() -> list[str]:
 
 
 # ------------------------------------------------------------------
-# Execute a query that returns the list of FAR parts.
+# Execute a query that returns the list of FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _sql_query_far_parts() -> list[str]:
-    """Execute a query that returns a list of FAR parts.
+    """Execute a query that returns a list of FAR Operations Parts.
 
     Returns:
         list[str]: Query results in a list.
@@ -1636,28 +1801,6 @@ def _sql_query_finding_codes() -> list[str]:
         """
         )  # noqa: E501
         return (cur.fetchone()[0]).split(",")  # type: ignore
-
-
-# ------------------------------------------------------------------
-# Determine the last processed update file.
-# ------------------------------------------------------------------
-@st.experimental_memo
-def _sql_query_last_file_name() -> tuple[str, str]:
-    """Determine the last processed update file.
-
-    Returns:
-        tuple[str, str]: File name and processing date.
-    """
-    with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(
-            """
-        SELECT file_name, TO_CHAR(first_processed, 'DD.MM.YYYY')
-          FROM io_processed_files
-         ORDER BY first_processed DESC ;
-        """
-        )
-
-        return cur.fetchone()  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -1769,7 +1912,7 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
     """Run the US latitude and longitude query.
 
     Args:
-        pitch (int): Up/down angle relative to the map�s plane.
+        pitch (int): Up/down angle relative to the maps plane.
         zoom (float): Magnification level of the map.
 
     Returns:
@@ -1823,40 +1966,47 @@ start_time = time.time_ns()
 
 st.set_page_config(layout="wide")
 
+PG_CONN = _get_postgres_connection()
+_print_timestamp("_setup_filter - got DB connection")
+
 _setup_sidebar()
+_print_timestamp("_setup_sidebar()")
 
 _setup_page()
+_print_timestamp("_setup_page()")
 
 DF_UNFILTERED = _get_data()
-
 DF_FILTERED = DF_UNFILTERED
+_print_timestamp("_get_data()")
 
 if CHOICE_FILTER_DATA:
-    DF_FILTERED = _apply_filter_controls(
+    DF_FILTERED = _apply_filter(
         DF_UNFILTERED,
         FILTER_ACFT_CATEGORIES,
-        FILTER_ALT_LOW,
-        FILTER_DEST_COUNTRY_USA,
-        FILTER_DPRT_COUNTRY_USA,
         FILTER_EV_HIGHEST_INJURY,
         FILTER_EV_TYPE,
         FILTER_EV_YEAR_FROM,
         FILTER_EV_YEAR_TO,
         FILTER_FAR_PARTS,
         FILTER_FINDING_CODES,
-        FILTER_HAS_US_IMPACT,
         FILTER_INJ_F_GRND_FROM,
         FILTER_INJ_F_GRND_TO,
         FILTER_INJ_TOT_F_FROM,
         FILTER_INJ_TOT_F_TO,
+        FILTER_IS_ALTITUDE_LOW,
+        FILTER_IS_DEST_COUNTRY_USA,
+        FILTER_IS_DPRT_COUNTRY_USA,
+        FILTER_IS_NARRATIVE_STALL,
+        FILTER_IS_SPIN_STALL,
         FILTER_LATLONG_ACQ,
-        FILTER_NARR_STALL,
         FILTER_OCCURRENCE_CODES,
-        FILTER_SPIN_STALL,
         FILTER_STATE,
+        FILTER_US_AVIATION,
     )
+    _print_timestamp("_apply_filter()")
 
 _present_data()
+_print_timestamp("_present_data()")
 
 # Stop time measurement.
 print(

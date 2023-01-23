@@ -52,7 +52,9 @@ def main(argv: list[str]) -> None:
     avstats.progress_msg("-" * 79)
 
     # Perform the processing
-    if avstats.ARG_TASK == io_glob.ARG_TASK_C_D_S:
+    if avstats.ARG_TASK == io_glob.ARG_TASK_A_O_C:
+        avstats.load_aviation_occurrence_categories()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_C_D_S:
         avstats.create_db_schema()
         io_utils.progress_msg("-" * 80)
         avstats.update_db_schema()
@@ -81,6 +83,8 @@ def main(argv: list[str]) -> None:
         avstats.load_ntsb_msexcel_data(avstats.ARG_MSEXCEL)
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_D:
         avstats.load_simplemaps_data()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_E:
+        avstats.load_sequence_of_events()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_Z_D:
         avstats.load_zip_code_db_data()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_R_D_S:

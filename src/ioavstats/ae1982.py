@@ -75,6 +75,7 @@ DF_UNFILTERED: DataFrame = DataFrame()
 EVENT_TYPE_DESC: str
 
 FILTER_ACFT_CATEGORIES: list[str] = []
+FILTER_CICTT_CODES: list[str] = []
 FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_TYPE: list[str] = []
 FILTER_EV_YEAR_FROM: int | None = None
@@ -85,18 +86,13 @@ FILTER_INJ_F_GRND_FROM: int | None = None
 FILTER_INJ_F_GRND_TO: int | None = None
 FILTER_INJ_TOT_F_FROM: int | None = None
 FILTER_INJ_TOT_F_TO: int | None = None
-FILTER_IS_ALTITUDE_LOW: bool | None = None
-FILTER_IS_DEST_COUNTRY_USA: bool | None = None
-FILTER_IS_DPRT_COUNTRY_USA: bool | None = None
-FILTER_IS_NARRATIVE_STALL: bool | None = None
-FILTER_IS_SPIN_STALL: bool | None = None
 FILTER_LATLONG_ACQ: list[str] = []
+FILTER_LOGICAL_PARAMETERS_AND: list[str] = []
+FILTER_LOGICAL_PARAMETERS_OR: list[str] = []
+FILTER_NO_AIRCRAFT_FROM: int | None = None
+FILTER_NO_AIRCRAFT_TO: int | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_RSS: list[str] = []
-FILTER_RSS_AIRBORNE_COLLISION = "Airborne Collision Avoidance"
-FILTER_RSS_FORCED_LANDING = "Forced Landing"
-FILTER_RSS_SPIN_STALL = "Spin Stall Prevention and Recovery"
-FILTER_RSS_TERRAIN = "Terrain Collision Avoidance"
 FILTER_STATE: list[str] = []
 FILTER_US_AVIATION: list[str] = []
 FILTER_US_AVIATION_COUNTRY = "Event Country USA"
@@ -111,6 +107,32 @@ IS_TIMEKEEPING = False
 LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
+
+LEGEND_FP_091X = "General Operations (Parts 091x)"
+LEGEND_FP_121 = "Regular Scheduled Air Carriers (Parts 121)"
+LEGEND_FP_135 = "Charter Type Services (Parts 135)"
+LEGEND_IL_FATAL = "Fatal"
+LEGEND_IL_MINOR = "Minor"
+LEGEND_IL_NONE = "None"
+LEGEND_IL_SERIOUS = "Serious"
+LEGEND_LP_ALTITUDE_CONTROLLABLE = "Aircraft can climb"
+LEGEND_LP_ALTITUDE_LOW = "Altitude too low"
+LEGEND_LP_ATTITUDE = "Attitude is controllable"
+LEGEND_LP_EMERGENCY = "Aircraft has degraded control failure"
+LEGEND_LP_MIDAIR = "Midair collision"
+LEGEND_LP_NARRATIVE = "Stall in narrative"
+LEGEND_LP_PILOT = "Pilot is able to perform maneuver"
+LEGEND_LP_RSS_AIRBORNE = "Airborne collision avoidance"
+LEGEND_LP_RSS_FORCED = "Forced landing"
+LEGEND_LP_RSS_SPIN = "Spin / stall prevention and recovery"
+LEGEND_LP_RSS_TERRAIN = "Terrain collision avoidance"
+LEGEND_LP_SPIN = "Aerodynamic spin / stall"
+LEGEND_RSS_AIRBORNE = "Airborne Collision Avoidance"
+LEGEND_RSS_FORCED = "Forced Landing"
+LEGEND_RSS_SPIN = "Spin Stall Prevention and Recovery"
+LEGEND_RSS_TERRAIN = "Terrain Collision Avoidance"
+LEGEND_T_ACC = "Accident"
+LEGEND_T_INC = "Incident"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
@@ -141,10 +163,11 @@ ZOOM = 4.4
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
-# @st.experimental_memo
+@st.experimental_memo
 def _apply_filter(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
+    filter_cictt_codes: list | None,
     filter_ev_highest_injury: list | None,
     filter_ev_type: list | None,
     filter_ev_year_from: int | None,
@@ -155,12 +178,11 @@ def _apply_filter(
     filter_inj_f_grnd_to: int | None,
     filter_inj_tot_f_from: int | None,
     filter_inj_tot_f_to: int | None,
-    filter_is_altitude_low: bool | None,
-    filter_is_dest_country_usa: bool | None,
-    filter_is_dprt_country_usa: bool | None,
-    filter_is_narrative_stall: bool | None,
-    filter_is_spin_stall: bool | None,
     filter_latlong_acq: list | None,
+    filter_logical_parameters_and: list | None,
+    filter_logical_parameters_or: list | None,
+    filter_no_aircraft_from: int | None,
+    filter_no_aircraft_to: int | None,
     filter_occurrence_codes: list | None,
     filter_rss: list | None,
     filter_state: list | None,
@@ -182,31 +204,14 @@ def _apply_filter(
         _print_timestamp("_apply_filter() - filter_acft_categories")
 
     # noinspection PyUnboundLocalVariable
-    if filter_is_altitude_low:
+    if filter_cictt_codes:
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_altitude_low"] == True)  # noqa: E712
+            df_filtered["cictt_codes"].apply(
+                lambda x: bool(set(x) & set(filter_cictt_codes))  # type: ignore
+            )
         ]
-        _print_timestamp("_apply_filter() - filter_is_altitude_low")
-
-    # noinspection PyUnboundLocalVariable
-    if filter_is_dest_country_usa:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_dest_country_usa"] == True)  # noqa: E712
-        ]
-        _print_timestamp("_apply_filter() - filter_is_dest_country_usa")
-
-    # noinspection PyUnboundLocalVariable
-    if filter_is_dprt_country_usa:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_dprt_country_usa"] == True)  # noqa: E712
-        ]
-        _print_timestamp("_apply_filter() - filter_is_dprt_country_usa")
+        _print_timestamp("_apply_filter() - filter_cictt_codes")
 
     # noinspection PyUnboundLocalVariable
     if filter_ev_highest_injury:
@@ -228,7 +233,7 @@ def _apply_filter(
             (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
-        _print_timestamp("_apply_filter() - filter_ev_year_from")
+        _print_timestamp("_apply_filter() - filter_ev_year_from/to")
 
     # noinspection PyUnboundLocalVariable
     if filter_far_parts:
@@ -256,7 +261,7 @@ def _apply_filter(
             (df_filtered["inj_f_grnd"] >= filter_inj_f_grnd_from)
             & (df_filtered["inj_f_grnd"] <= filter_inj_f_grnd_to)
         ]
-        _print_timestamp("_apply_filter() - filter_inj_f_grnd_from")
+        _print_timestamp("_apply_filter() - filter_inj_f_grnd_from/to")
 
     # noinspection PyUnboundLocalVariable
     if filter_inj_tot_f_from or filter_inj_tot_f_to:
@@ -264,7 +269,7 @@ def _apply_filter(
             (df_filtered["inj_tot_f"] >= filter_inj_tot_f_from)
             & (df_filtered["inj_tot_f"] <= filter_inj_tot_f_to)
         ]
-        _print_timestamp("_apply_filter() - filter_inj_tot_f_from")
+        _print_timestamp("_apply_filter() - filter_inj_tot_f_from/to")
 
     # noinspection PyUnboundLocalVariable
     if filter_latlong_acq:
@@ -275,13 +280,28 @@ def _apply_filter(
         _print_timestamp("_apply_filter() - filter_latlong_acq")
 
     # noinspection PyUnboundLocalVariable
-    if filter_is_narrative_stall:
-        # noinspection PyUnboundLocalVariable
+    if filter_logical_parameters_and:
+        df_filtered = _apply_filter_logical_params(
+            df_filtered,
+            filter_logical_parameters_and,
+            " & ",
+        )
+
+    # noinspection PyUnboundLocalVariable
+    if filter_logical_parameters_or:
+        df_filtered = _apply_filter_logical_params(
+            df_filtered,
+            filter_logical_parameters_or,
+            " | ",
+        )
+
+    # noinspection PyUnboundLocalVariable
+    if filter_no_aircraft_from or filter_no_aircraft_to:
         df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_narrative_stall"] == True)  # noqa: E712
+            (df_filtered["no_aircraft"] >= filter_no_aircraft_from)
+            & (df_filtered["no_aircraft"] <= filter_no_aircraft_to)
         ]
-        _print_timestamp("_apply_filter() - filter_is_narrative_stall")
+        _print_timestamp("_apply_filter() - filter_no_aircraft_from/to")
 
     # noinspection PyUnboundLocalVariable
     if filter_occurrence_codes:
@@ -292,15 +312,6 @@ def _apply_filter(
             )
         ]
         _print_timestamp("_apply_filter() - filter_occurrence_codes")
-
-    # noinspection PyUnboundLocalVariable
-    if filter_is_spin_stall:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[
-            # pylint: disable=singleton-comparison
-            (df_filtered["is_spin_stall"] == True)  # noqa: E712
-        ]
-        _print_timestamp("_apply_filter() - filter_is_spin_stall")
 
     # noinspection PyUnboundLocalVariable
     if filter_rss:
@@ -322,12 +333,93 @@ def _apply_filter(
 
 
 # ------------------------------------------------------------------
+# Filter the data frame - Logical parameters.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _apply_filter_logical_params(
+    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    filter_params: list | None,
+    operand: str,
+) -> DataFrame:
+    """Filter the data frame - US aviation."""
+    _print_timestamp("_apply_filter_logical_params() - Start")
+
+    filter_cmd = "df_unfiltered.loc["
+    filter_cmd_or = ""
+
+    if LEGEND_LP_ALTITUDE_CONTROLLABLE in filter_params:  # type: ignore
+        filter_cmd += (
+            "(df_unfiltered['is_altitude_controllable'] == True)"
+        )
+        filter_cmd_or = operand
+
+    if LEGEND_LP_ALTITUDE_LOW in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_altitude_low'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_ATTITUDE in filter_params:  # type: ignore
+        filter_cmd += (
+            filter_cmd_or + "(df_unfiltered['is_attitude_controllable'] == True)"
+        )
+        filter_cmd_or = operand
+
+    if LEGEND_LP_EMERGENCY in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_emergency_landing'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_MIDAIR in filter_params or LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_NARRATIVE in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_narrative_stall'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_PILOT in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_pilot_issue'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd_or = operand
+
+    if LEGEND_LP_RSS_FORCED in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_rss_forced_landing'] == True)"
+        filter_cmd_or = " | "
+
+    if LEGEND_LP_RSS_SPIN in filter_params:  # type: ignore
+        filter_cmd += (
+            filter_cmd_or
+            + "(df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
+        )
+        filter_cmd_or = operand
+
+    if LEGEND_LP_RSS_TERRAIN in filter_params:  # type: ignore
+        filter_cmd += (
+            filter_cmd_or
+            + "(df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
+        )
+        filter_cmd_or = operand
+
+    if LEGEND_LP_SPIN in filter_params:  # type: ignore
+        filter_cmd += filter_cmd_or + "(df_unfiltered['is_spin_stall'] == True)"
+
+    filter_cmd += "]"
+
+    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
+
+    _print_timestamp("_apply_filter_logical_params() - End")
+
+    return df_filtered
+
+
+# ------------------------------------------------------------------
 # Filter the data frame - Required safety systems.
 # ------------------------------------------------------------------
-# @st.experimental_memo
+@st.experimental_memo
 def _apply_filter_rss(
     df_unfiltered: DataFrame,  # pylint: disable=unused-argument
-    filter_rss: list | None,
+    filter_params: list | None,
 ) -> DataFrame:
     """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_rss() - Start")
@@ -335,22 +427,22 @@ def _apply_filter_rss(
     filter_cmd = "df_unfiltered.loc["
     filter_cmd_or = ""
 
-    if FILTER_RSS_AIRBORNE_COLLISION in filter_rss:  # type: ignore
+    if LEGEND_RSS_AIRBORNE in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_RSS_FORCED_LANDING in filter_rss:  # type: ignore
+    if LEGEND_RSS_FORCED in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_rss_forced_landing'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_RSS_SPIN_STALL in filter_rss:  # type: ignore
+    if LEGEND_RSS_SPIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
         )
         filter_cmd_or = " | "
 
-    if FILTER_RSS_TERRAIN in filter_rss:  # type: ignore
+    if LEGEND_RSS_TERRAIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
@@ -368,10 +460,10 @@ def _apply_filter_rss(
 # ------------------------------------------------------------------
 # Filter the data frame - US aviation.
 # ------------------------------------------------------------------
-# @st.experimental_memo
+@st.experimental_memo
 def _apply_filter_us_aviation(
     df_unfiltered: DataFrame,  # pylint: disable=unused-argument
-    filter_us_aviation: list | None,
+    filter_params: list | None,
 ) -> DataFrame:
     """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_us_aviation() - Start")
@@ -379,27 +471,27 @@ def _apply_filter_us_aviation(
     filter_cmd = "df_unfiltered.loc["
     filter_cmd_or = ""
 
-    if FILTER_US_AVIATION_COUNTRY in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_COUNTRY in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['country'] == COUNTRY_USA)"
         filter_cmd_or = " | "
 
-    if FILTER_US_AVIATION_DESTINATION in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_DESTINATION in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_dest_country_usa'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_US_AVIATION_DEPARTURE in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_DEPARTURE in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_dprt_country_usa'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_US_AVIATION_OPERATOR in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_OPERATOR in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_oper_country_usa'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_US_AVIATION_OWNER in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_OWNER in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_owner_country_usa'] == True)"
         filter_cmd_or = " | "
 
-    if FILTER_US_AVIATION_REGISTRATION in filter_us_aviation:  # type: ignore
+    if FILTER_US_AVIATION_REGISTRATION in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(df_unfiltered['is_regis_country_usa'] == True)"
 
     filter_cmd += "]"
@@ -784,25 +876,25 @@ def _present_chart_eyil() -> None:
         data=[
             go.Bar(
                 marker={"color": COLOR_LEVEL_1},
-                name="Fatal",
+                name=LEGEND_IL_FATAL,
                 x=DF_FILTERED_CHARTS_EYIL["year"],
                 y=DF_FILTERED_CHARTS_EYIL["fatal"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_2},
-                name="Serious",
+                name=LEGEND_IL_SERIOUS,
                 x=DF_FILTERED_CHARTS_EYIL["year"],
                 y=DF_FILTERED_CHARTS_EYIL["serious"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_3},
-                name="Minor",
+                name=LEGEND_IL_MINOR,
                 x=DF_FILTERED_CHARTS_EYIL["year"],
                 y=DF_FILTERED_CHARTS_EYIL["minor"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_4},
-                name="None",
+                name=LEGEND_IL_NONE,
                 x=DF_FILTERED_CHARTS_EYIL["year"],
                 y=DF_FILTERED_CHARTS_EYIL["none"],
             ),
@@ -849,7 +941,7 @@ def _present_chart_eyrss() -> None:
         data=[
             go.Bar(
                 marker={"color": COLOR_LEVEL_1},
-                name="Terrain Collision Avoidance",
+                name=LEGEND_RSS_TERRAIN,
                 x=DF_FILTERED_CHARTS_EYRSS["year"],
                 y=DF_FILTERED_CHARTS_EYRSS[
                     "is_rss_terrain_collision_avoidance_ev_counter"
@@ -857,7 +949,7 @@ def _present_chart_eyrss() -> None:
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_2},
-                name="Spin Stall Prevention and Recovery",
+                name=LEGEND_RSS_SPIN,
                 x=DF_FILTERED_CHARTS_EYRSS["year"],
                 y=DF_FILTERED_CHARTS_EYRSS[
                     "is_rss_spin_stall_prevention_and_recovery_ev_counter"
@@ -865,13 +957,13 @@ def _present_chart_eyrss() -> None:
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_3},
-                name="Forced Landing",
+                name=LEGEND_RSS_FORCED,
                 x=DF_FILTERED_CHARTS_EYRSS["year"],
                 y=DF_FILTERED_CHARTS_EYRSS["is_rss_forced_landing_ev_counter"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_4},
-                name="Airborne Collision Avoidance",
+                name=LEGEND_RSS_AIRBORNE,
                 x=DF_FILTERED_CHARTS_EYRSS["year"],
                 y=DF_FILTERED_CHARTS_EYRSS["is_midair_collision_ev_counter"],
             ),
@@ -917,13 +1009,13 @@ def _present_chart_eyt() -> None:
         data=[
             go.Bar(
                 marker={"color": COLOR_LEVEL_1},
-                name="Accidents",
+                name=LEGEND_T_ACC,
                 x=DF_FILTERED_CHARTS_EYT["year"],
                 y=DF_FILTERED_CHARTS_EYT["accidents"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_2},
-                name="Incidents",
+                name=LEGEND_T_INC,
                 x=DF_FILTERED_CHARTS_EYT["year"],
                 y=DF_FILTERED_CHARTS_EYT["incidents"],
             ),
@@ -969,19 +1061,19 @@ def _present_chart_fyfp() -> None:
         data=[
             go.Bar(
                 marker={"color": COLOR_LEVEL_1},
-                name="Parts 091x",
+                name=LEGEND_FP_091X,
                 x=DF_FILTERED_CHARTS_FYFP["year"],
                 y=DF_FILTERED_CHARTS_FYFP["far_part_091x_inj_tot_f"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_2},
-                name="Parts 135",
+                name=LEGEND_FP_135,
                 x=DF_FILTERED_CHARTS_FYFP["year"],
                 y=DF_FILTERED_CHARTS_FYFP["far_part_135_inj_tot_f"],
             ),
             go.Bar(
                 marker={"color": COLOR_LEVEL_4},
-                name="Parts 121",
+                name=LEGEND_FP_121,
                 x=DF_FILTERED_CHARTS_FYFP["year"],
                 y=DF_FILTERED_CHARTS_FYFP["far_part_121_inj_tot_f"],
             ),
@@ -1025,19 +1117,19 @@ def _present_chart_teil() -> None:
 
     fig = px.pie(
         color=[
-            "Fatal",
-            "Minor",
-            "None",
-            "Serious",
+            LEGEND_IL_FATAL,
+            LEGEND_IL_MINOR,
+            LEGEND_IL_NONE,
+            LEGEND_IL_SERIOUS,
         ],
         color_discrete_map={
-            "Fatal": COLOR_LEVEL_1,
-            "Minor": COLOR_LEVEL_3,
-            "None": COLOR_LEVEL_4,
-            "Serious": COLOR_LEVEL_2,
+            LEGEND_IL_FATAL: COLOR_LEVEL_1,
+            LEGEND_IL_MINOR: COLOR_LEVEL_3,
+            LEGEND_IL_NONE: COLOR_LEVEL_4,
+            LEGEND_IL_SERIOUS: COLOR_LEVEL_2,
         },
         hole=0.3,
-        names=["Fatal", "Minor", "None", "Serious"],
+        names=[LEGEND_IL_FATAL, LEGEND_IL_MINOR, LEGEND_IL_NONE, LEGEND_IL_SERIOUS],
         title=chart_title,
         values=DF_FILTERED_CHARTS_TEIL,
     )
@@ -1058,23 +1150,23 @@ def _present_chart_terss() -> None:
 
     fig = px.pie(
         color=[
-            "Airborne Collision Avoidance",
-            "Forced Landing",
-            "Spin Stall Prevention and Recovery",
-            "Terrain Collision Avoidance",
+            LEGEND_RSS_AIRBORNE,
+            LEGEND_RSS_FORCED,
+            LEGEND_RSS_SPIN,
+            LEGEND_RSS_TERRAIN,
         ],
         color_discrete_map={
-            "Airborne Collision Avoidance": COLOR_LEVEL_4,
-            "Forced Landing": COLOR_LEVEL_2,
-            "Spin Stall Prevention and Recovery": COLOR_LEVEL_3,
-            "Terrain Collision Avoidance": COLOR_LEVEL_1,
+            LEGEND_RSS_AIRBORNE: COLOR_LEVEL_4,
+            LEGEND_RSS_FORCED: COLOR_LEVEL_2,
+            LEGEND_RSS_SPIN: COLOR_LEVEL_3,
+            LEGEND_RSS_TERRAIN: COLOR_LEVEL_1,
         },
         hole=0.3,
         names=[
-            "Airborne Collision Avoidanc",
-            "Forced Landing",
-            "Spin Stall Prevention and Recovery",
-            "Terrain Collision Avoidance",
+            LEGEND_RSS_AIRBORNE,
+            LEGEND_RSS_FORCED,
+            LEGEND_RSS_SPIN,
+            LEGEND_RSS_TERRAIN,
         ],
         title=chart_title,
         values=DF_FILTERED_CHARTS_TERSS,
@@ -1096,12 +1188,12 @@ def _present_chart_tet() -> None:
 
     fig = px.pie(
         color=[
-            "Accidents",
-            "Incidents",
+            LEGEND_T_ACC,
+            LEGEND_T_INC,
         ],
-        color_discrete_map={"Accidents": COLOR_LEVEL_1, "Incidents": COLOR_LEVEL_2},
+        color_discrete_map={LEGEND_T_ACC: COLOR_LEVEL_1, LEGEND_T_INC: COLOR_LEVEL_2},
         hole=0.3,
-        names=["Accidents", "Incidents"],
+        names=[LEGEND_T_ACC, LEGEND_T_INC],
         title=chart_title,
         values=DF_FILTERED_CHARTS_TET,
     )
@@ -1122,17 +1214,17 @@ def _present_chart_tffp() -> None:
 
     fig = px.pie(
         color=[
-            "Parts 091x",
-            "Parts 121",
-            "Parts 135",
+            LEGEND_FP_091X,
+            LEGEND_FP_121,
+            LEGEND_FP_135,
         ],
         color_discrete_map={
-            "Parts 091x": COLOR_LEVEL_1,
-            "Parts 121": COLOR_LEVEL_4,
-            "Parts 135": COLOR_LEVEL_2,
+            LEGEND_FP_091X: COLOR_LEVEL_1,
+            LEGEND_FP_121: COLOR_LEVEL_4,
+            LEGEND_FP_135: COLOR_LEVEL_2,
         },
         hole=0.3,
-        names=["Parts 091x", "Parts 121", "Parts 135"],
+        names=[LEGEND_FP_091X, LEGEND_FP_121, LEGEND_FP_135],
         title=chart_title,
         values=DF_FILTERED_CHARTS_TFFP,
     )
@@ -1364,6 +1456,7 @@ def _setup_filter() -> None:
     global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
+    global FILTER_CICTT_CODES  # pylint: disable=global-statement
     global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
     global FILTER_EV_TYPE  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -1374,12 +1467,11 @@ def _setup_filter() -> None:
     global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
     global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
-    global FILTER_IS_ALTITUDE_LOW  # pylint: disable=global-statement
-    global FILTER_IS_DEST_COUNTRY_USA  # pylint: disable=global-statement
-    global FILTER_IS_DPRT_COUNTRY_USA  # pylint: disable=global-statement
-    global FILTER_IS_NARRATIVE_STALL  # pylint: disable=global-statement
-    global FILTER_IS_SPIN_STALL  # pylint: disable=global-statement
     global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
+    global FILTER_LOGICAL_PARAMETERS_AND  # pylint: disable=global-statement
+    global FILTER_LOGICAL_PARAMETERS_OR  # pylint: disable=global-statement
+    global FILTER_NO_AIRCRAFT_FROM  # pylint: disable=global-statement
+    global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_RSS  # pylint: disable=global-statement
     global FILTER_STATE  # pylint: disable=global-statement
@@ -1417,6 +1509,52 @@ def _setup_filter() -> None:
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
+
+    st.sidebar.markdown("""---""")
+
+    max_no_aircraft = _sql_query_max_no_aircraft()
+    _print_timestamp("_setup_filter - _sql_query_max_no_aircraft()")
+
+    min_no_aircraft = _sql_query_min_no_aircraft()
+    _print_timestamp("_setup_filter - _sql_query_min_no_aircraft()")
+
+    FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
+        help="""
+        Number of aircraft involved.
+        """,
+        label="**Aircraft involved:**",
+        min_value=min_no_aircraft,
+        max_value=max_no_aircraft,
+        value=(min_no_aircraft, max_no_aircraft),
+    )
+
+    if FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO:
+        # pylint: disable=line-too-long
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
+        )
+        _print_timestamp(
+            "_setup_filter - FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_CICTT_CODES = st.sidebar.multiselect(
+        help="""
+        Here, data can be limited to selected CICTT codes.
+        """,
+        label="**CICTT code(s):**",
+        options=_sql_query_cictt_codes(),
+    )
+    _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 1")
+
+    if FILTER_CICTT_CODES:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **CICTT code(s)**: **`{','.join(FILTER_CICTT_CODES)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1564,67 +1702,6 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
-    FILTER_IS_SPIN_STALL = st.sidebar.checkbox(
-        help="""
-        For an aerodynamic spin stall, at least one of the following
-        two conditions must be met in the event data:
-        - one of the finding codes contains **`PARAMS_AoA' or one of
-          the occurrence codes contains **`STALL`**, or
-        - one of the occurrence codes contains **`LOC-I`** and there is
-          a stall according to the narrative and none of the occurrence
-          codes contains **`CAA`** or **`CFIT`**, and none of the occurrence
-          codes contains **`CAA`** or **`CFIT`**.
-        """,
-        label="**Incl. aerodynamic spin stalls ?**",
-    )
-
-    if FILTER_IS_SPIN_STALL:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. aerodynamic spin stalls ?**: **`{FILTER_IS_SPIN_STALL}`**"
-        )
-        _print_timestamp("_setup_filter - FILTER_IS_SPIN_STALL")
-
-    st.sidebar.markdown("""---""")
-
-    # flake8: noqa: E501
-    FILTER_IS_ALTITUDE_LOW = st.sidebar.checkbox(
-        help="""
-        A too low altitude problem exists when the following conditions are met:
-        - no occurrence code **`MIDAIR`**` or aerodynamic spin stall is present, and
-        - the occurrence code is one of **`CAA`**, **`CFIT`**, **`ENV_TER`**, **`FINAL_APP`**,
-          **`INIT_CLIMB`**, **`LALT`**, **`MAN_LALT`**, **`PARAMS_ALT`**, **`PARAMS_DEC_APP`**,
-          **`PARAMS_DEC_RATE`** or **`ENV_OAS`** and no occurrence code contains **`BIRD`**.
-        """,
-        label="**Incl. altitude too low ?**",
-    )
-
-    if FILTER_IS_ALTITUDE_LOW:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. altitude too low ?**: **`{FILTER_IS_ALTITUDE_LOW}`**"
-        )
-        _print_timestamp("_setup_filter - FILTER_IS_ALTITUDE_LOW")
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_IS_NARRATIVE_STALL = st.sidebar.checkbox(
-        help="""
-        A stall according to narrative is present if the accepted narrative
-        contains the text **`STALL`**` in any lower or upper case.
-        """,
-        label="**Incl. stalled according narrative ?**",
-    )
-
-    if FILTER_IS_NARRATIVE_STALL:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Incl. stalled according narrative ?**: **`{FILTER_IS_NARRATIVE_STALL}`**"
-        )
-        _print_timestamp("_setup_filter - FILTER_IS_NARRATIVE_STALL")
-
-    st.sidebar.markdown("""---""")
-
     FILTER_LATLONG_ACQ = st.sidebar.multiselect(
         help="""
         - **`EST`**: Latitude and longitude have been estimated.
@@ -1641,6 +1718,56 @@ def _setup_filter() -> None:
             + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
+
+    st.sidebar.markdown("""---""")
+
+    logical_params_help = """
+        - **`EST`**: Latitude and longitude have been estimated.
+        - **`MEAS`**: Latitude and longitude have been measured.
+        """
+    logical_params_options = [
+            LEGEND_LP_SPIN,
+            LEGEND_LP_RSS_AIRBORNE,
+            LEGEND_LP_ALTITUDE_CONTROLLABLE,
+            LEGEND_LP_EMERGENCY,
+            LEGEND_LP_ALTITUDE_LOW,
+            LEGEND_LP_ATTITUDE,
+            LEGEND_LP_RSS_FORCED,
+            LEGEND_LP_MIDAIR,
+            LEGEND_LP_PILOT,
+            LEGEND_LP_RSS_SPIN,
+            LEGEND_LP_NARRATIVE,
+            LEGEND_LP_RSS_TERRAIN,
+        ]
+
+    FILTER_LOGICAL_PARAMETERS_AND = st.sidebar.multiselect(
+        help=logical_params_help,
+        label="**Logical parameter(s AND):**",
+        options=logical_params_options,
+    )
+    _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_AND - 1")
+
+    if FILTER_LOGICAL_PARAMETERS_AND:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **Logical parameters (OR)**: **`{','.join(FILTER_LOGICAL_PARAMETERS_AND)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_AND - 2")
+
+
+    FILTER_LOGICAL_PARAMETERS_OR = st.sidebar.multiselect(
+        help=logical_params_help,
+        label="**Logical parameter(s OR):**",
+        options=logical_params_options,
+    )
+    _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_OR - 1")
+
+    if FILTER_LOGICAL_PARAMETERS_OR:
+        CHOICE_FILTER_CONDITIONS_TEXT = (
+            CHOICE_FILTER_CONDITIONS_TEXT
+            + f"\n- **Logical parameters (OR)**: **`{','.join(FILTER_LOGICAL_PARAMETERS_OR)}`**"
+        )
+        _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_OR - 2")
 
     st.sidebar.markdown("""---""")
 
@@ -1662,48 +1789,16 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
-    FILTER_IS_DPRT_COUNTRY_USA = st.sidebar.checkbox(
-        help="""
-        At least one of the aircraft involved in the event took off from the US.
-        """,
-        label="**Only departure country USA ?**",
-    )
-
-    if FILTER_IS_DPRT_COUNTRY_USA:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only departure country USA ?**: **`{FILTER_IS_DPRT_COUNTRY_USA}`**"
-        )
-        _print_timestamp("_setup_filter - FILTER_IS_DPRT_COUNTRY_USA")
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_IS_DEST_COUNTRY_USA = st.sidebar.checkbox(
-        help="""
-        At least one of the aircraft involved in the event has its target in the US.
-        """,
-        label="**Only destination country USA ?**",
-    )
-
-    if FILTER_IS_DEST_COUNTRY_USA:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
-            + f"\n- **Only destination country USA ?**: **`{FILTER_IS_DEST_COUNTRY_USA}`**"
-        )
-        _print_timestamp("_setup_filter - FILTER_IS_DEST_COUNTRY_USA")
-
-    st.sidebar.markdown("""---""")
-
     FILTER_RSS = st.sidebar.multiselect(
         help="""
         **High level safety system save requirements.
         """,
-        label="**Required safety systems:**",
+        label="**Required safety system(s):**",
         options=[
-            FILTER_RSS_AIRBORNE_COLLISION,
-            FILTER_RSS_FORCED_LANDING,
-            FILTER_RSS_SPIN_STALL,
-            FILTER_RSS_TERRAIN,
+            LEGEND_RSS_AIRBORNE,
+            LEGEND_RSS_FORCED,
+            LEGEND_RSS_SPIN,
+            LEGEND_RSS_TERRAIN,
         ],
     )
     _print_timestamp("_setup_filter - FILTER_RSS - 1")
@@ -1778,6 +1873,11 @@ def _setup_page() -> None:
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
     global EVENT_TYPE_DESC  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
+
+    FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else "1982"
+    FILTER_EV_YEAR_TO = FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else str(datetime.date.today().year - 1)
 
     if FILTER_EV_TYPE == ["ACC"]:
         EVENT_TYPE_DESC = "Accidents"
@@ -1967,9 +2067,8 @@ streets: emphasizes accurate, legible styling of road and transit networks.
             ),
         )
         CHOICE_MAP_RADIUS = st.sidebar.slider(
-            label="Accident radius in meters",
-            help="Radius for displaying the accident events - "
-            + "default value is 2 miles.",
+            label="Event radius in meters",
+            help="Radius for displaying the events - " + "default value is 2 miles.",
             min_value=10,
             max_value=1609 * 4,
             value=(1609 * 2),
@@ -1993,8 +2092,27 @@ def _sql_query_acft_categories() -> list[str]:
             """
         SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
           FROM aircraft
-         WHERE acft_category IS NOT NULL
-         ORDER BY 1;
+         WHERE acft_category IS NOT NULL;
+        """
+        )
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of CICTT codes.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_cictt_codes() -> list[str]:
+    """Execute a query that returns a list of CICTT codes.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(cictt_code, ',' ORDER BY cictt_code)
+          FROM io_aviation_occurrence_categories;
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -2015,8 +2133,7 @@ def _sql_query_ev_highest_injury() -> list[str]:
             """
         SELECT string_agg(DISTINCT ev_highest_injury, ',' ORDER BY ev_highest_injury)
           FROM events
-         WHERE ev_highest_injury IS NOT NULL
-         ORDER BY 1;
+         WHERE ev_highest_injury IS NOT NULL;
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -2037,8 +2154,7 @@ def _sql_query_ev_type() -> list[str]:
             """
         SELECT string_agg(DISTINCT ev_type, ',' ORDER BY ev_type)
           FROM events
-         WHERE ev_type IS NOT NULL
-         ORDER BY 1;
+         WHERE ev_type IS NOT NULL;
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -2059,8 +2175,7 @@ def _sql_query_far_parts() -> list[str]:
             """
         SELECT string_agg(DISTINCT far_part, ',' ORDER BY far_part)
           FROM aircraft
-         WHERE far_part IS NOT NULL
-         ORDER BY 1;
+         WHERE far_part IS NOT NULL;
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -2100,6 +2215,28 @@ def _sql_query_finding_codes() -> list[str]:
 
 
 # ------------------------------------------------------------------
+# Execute a query that returns the list of latitude / longitude
+# acquisition
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_latlong_acq() -> list[str]:
+    """Execute a query that returns a list of latitude / longitude acquisition.
+
+    Returns:
+        list[str]: Query results in a list.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(DISTINCT latlong_acq, ',' ORDER BY latlong_acq)
+          FROM events
+         WHERE latlong_acq IS NOT NULL;
+        """
+        )
+        return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
 @st.experimental_memo
@@ -2113,6 +2250,46 @@ def _sql_query_max_inj_f_grnd() -> int:
         cur.execute(
             """
         SELECT MAX(inj_f_grnd)
+          FROM io_app_ae1982;
+        """
+        )
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the maximum number of involved aircraft.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_max_no_aircraft() -> int:
+    """Determine the maximum number of involved aircraft.
+
+    Returns:
+        int: Maximum number of involved aircraft.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT MAX(no_aircraft)
+          FROM io_app_ae1982;
+        """
+        )
+        return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Determine the minimum number of involved aircraft.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _sql_query_min_no_aircraft() -> int:
+    """Determine the minimum number of involved aircraft.
+
+    Returns:
+        int: Maximum number of involved aircraft.
+    """
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT MIN(no_aircraft)
           FROM io_app_ae1982;
         """
         )
@@ -2137,29 +2314,6 @@ def _sql_query_max_inj_tot_f() -> int:
         """
         )
         return cur.fetchone()[0]  # type: ignore
-
-
-# ------------------------------------------------------------------
-# Execute a query that returns the list of latitude / longitude
-# acquisition
-# ------------------------------------------------------------------
-@st.experimental_memo
-def _sql_query_latlong_acq() -> list[str]:
-    """Execute a query that returns a list of latitude / longitude acquisition.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
-    with PG_CONN.cursor() as cur:  # type: ignore
-        cur.execute(
-            """
-        SELECT string_agg(DISTINCT latlong_acq, ',' ORDER BY latlong_acq)
-          FROM events
-         WHERE latlong_acq IS NOT NULL
-         ORDER BY 1;
-        """
-        )
-        return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -2247,8 +2401,7 @@ def _sql_query_us_states() -> list[str]:
             """
         SELECT string_agg(DISTINCT state, ',' ORDER BY state)
           FROM io_states
-         WHERE country  = 'USA'
-         ORDER BY 1;
+         WHERE country  = 'USA';
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -2279,6 +2432,7 @@ if CHOICE_FILTER_DATA:
     DF_FILTERED = _apply_filter(
         DF_UNFILTERED,
         FILTER_ACFT_CATEGORIES,
+        FILTER_CICTT_CODES,
         FILTER_EV_HIGHEST_INJURY,
         FILTER_EV_TYPE,
         FILTER_EV_YEAR_FROM,
@@ -2289,12 +2443,11 @@ if CHOICE_FILTER_DATA:
         FILTER_INJ_F_GRND_TO,
         FILTER_INJ_TOT_F_FROM,
         FILTER_INJ_TOT_F_TO,
-        FILTER_IS_ALTITUDE_LOW,
-        FILTER_IS_DEST_COUNTRY_USA,
-        FILTER_IS_DPRT_COUNTRY_USA,
-        FILTER_IS_NARRATIVE_STALL,
-        FILTER_IS_SPIN_STALL,
         FILTER_LATLONG_ACQ,
+        FILTER_LOGICAL_PARAMETERS_AND,
+        FILTER_LOGICAL_PARAMETERS_OR,
+        FILTER_NO_AIRCRAFT_FROM,
+        FILTER_NO_AIRCRAFT_TO,
         FILTER_OCCURRENCE_CODES,
         FILTER_RSS,
         FILTER_STATE,

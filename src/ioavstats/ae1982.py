@@ -174,7 +174,7 @@ ZOOM = 4.4
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
-@st.experimental_memo
+# @st.experimental_memo
 def _apply_filter(
     df_unfiltered: DataFrame,
     filter_acft_categories: list | None,
@@ -346,7 +346,7 @@ def _apply_filter(
 # ------------------------------------------------------------------
 # Filter the data frame - Logical parameters.
 # ------------------------------------------------------------------
-@st.experimental_memo
+# @st.experimental_memo
 def _apply_filter_logical_params(
     _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
@@ -355,63 +355,63 @@ def _apply_filter_logical_params(
     """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_logical_params() - Start")
 
-    filter_cmd = "df_unfiltered.loc["
+    filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
     if LEGEND_LP_ALTITUDE_CONTROLLABLE in filter_params:  # type: ignore
-        filter_cmd += "(df_unfiltered['is_altitude_controllable'] == True)"
+        filter_cmd += "(_df_unfiltered['is_altitude_controllable'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_ALTITUDE_LOW in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_altitude_low'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_altitude_low'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_ATTITUDE in filter_params:  # type: ignore
         filter_cmd += (
-            filter_cmd_or + "(df_unfiltered['is_attitude_controllable'] == True)"
+            filter_cmd_or + "(_df_unfiltered['is_attitude_controllable'] == True)"
         )
         filter_cmd_or = operand
 
     if LEGEND_LP_EMERGENCY in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_emergency_landing'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_emergency_landing'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_MIDAIR in filter_params or LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_NARRATIVE in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_narrative_stall'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_narrative_stall'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_PILOT in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_pilot_issue'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_pilot_issue'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_RSS_FORCED in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_rss_forced_landing'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_rss_forced_landing'] == True)"
         filter_cmd_or = " | "
 
     if LEGEND_LP_RSS_SPIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
-            + "(df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
+            + "(_df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
         )
         filter_cmd_or = operand
 
     if LEGEND_LP_RSS_TERRAIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
-            + "(df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
+            + "(_df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
         )
         filter_cmd_or = operand
 
     if LEGEND_LP_SPIN in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_spin_stall'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_spin_stall'] == True)"
 
     filter_cmd += "]"
 
@@ -425,7 +425,7 @@ def _apply_filter_logical_params(
 # ------------------------------------------------------------------
 # Filter the data frame - Required safety systems.
 # ------------------------------------------------------------------
-@st.experimental_memo
+# @st.experimental_memo
 def _apply_filter_rss(
     _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
@@ -433,28 +433,28 @@ def _apply_filter_rss(
     """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_rss() - Start")
 
-    filter_cmd = "df_unfiltered.loc["
+    filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
     if LEGEND_RSS_AIRBORNE in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_midair_collision'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = " | "
 
     if LEGEND_RSS_FORCED in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_rss_forced_landing'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_rss_forced_landing'] == True)"
         filter_cmd_or = " | "
 
     if LEGEND_RSS_SPIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
-            + "(df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
+            + "(_df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
         )
         filter_cmd_or = " | "
 
     if LEGEND_RSS_TERRAIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
-            + "(df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
+            + "(_df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
         )
 
     filter_cmd += "]"
@@ -469,7 +469,7 @@ def _apply_filter_rss(
 # ------------------------------------------------------------------
 # Filter the data frame - US aviation.
 # ------------------------------------------------------------------
-@st.experimental_memo
+# @st.experimental_memo
 def _apply_filter_us_aviation(
     _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
@@ -477,31 +477,31 @@ def _apply_filter_us_aviation(
     """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_us_aviation() - Start")
 
-    filter_cmd = "df_unfiltered.loc["
+    filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
     if FILTER_US_AVIATION_COUNTRY in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['country'] == COUNTRY_USA)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['country'] == COUNTRY_USA)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_DESTINATION in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dest_country_usa'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_dest_country_usa'] == True)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_DEPARTURE in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_dprt_country_usa'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_dprt_country_usa'] == True)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_OPERATOR in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_oper_country_usa'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_oper_country_usa'] == True)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_OWNER in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_owner_country_usa'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_owner_country_usa'] == True)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_REGISTRATION in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(df_unfiltered['is_regis_country_usa'] == True)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['is_regis_country_usa'] == True)"
 
     filter_cmd += "]"
 
@@ -1697,6 +1697,7 @@ def _setup_filter() -> None:
     st.sidebar.markdown("""---""")
 
     FILTER_FAR_PARTS = st.sidebar.multiselect(
+        default=["091","091F","091K",],
         help="""
         Under which FAR operations parts the accident was conducted.
         """,

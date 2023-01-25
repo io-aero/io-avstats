@@ -68,7 +68,7 @@ COLOR_MAP: list[str] = [
     "#fadc82",  # yellow
     "#f1a638",  # orange
 ]
-COLOR_MAP_NOT_APPLICABLE = "#000000"  # black
+COLOR_MAP_NONE = "#000000"  # black
 COLOR_MAP_SIZE = len(COLOR_MAP)
 
 COUNTRY_USA = "USA"
@@ -144,7 +144,7 @@ LEGEND_T_INC = "Incident"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
-NAME_NOT_APPLICABLE = "n/a"
+NAME_NONE = "None"
 
 PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
@@ -348,7 +348,7 @@ def _apply_filter(
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _apply_filter_logical_params(
-    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
     operand: str,
 ) -> DataFrame:
@@ -427,7 +427,7 @@ def _apply_filter_logical_params(
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _apply_filter_rss(
-    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
 ) -> DataFrame:
     """Filter the data frame - US aviation."""
@@ -471,7 +471,7 @@ def _apply_filter_rss(
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _apply_filter_us_aviation(
-    df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
 ) -> DataFrame:
     """Filter the data frame - US aviation."""
@@ -1011,15 +1011,15 @@ def _prep_pie_chart(
     total_filter: int,
     total_pie: int,
     name_value: list[tuple[str, int]],
-    threshhold: float = 0,
+    threshold: float = 0,
 ) -> tuple[list[str], list[int], dict[str, str]]:
-    value_threshhold = total_pie * threshhold
+    value_threshold = total_pie * threshold
 
     name_sum_adj = []
     total_pie_adj = 0
 
     for (name, value) in name_value:
-        if value > value_threshhold:
+        if value > value_threshold:
             name_sum_adj.append((name, value))
             total_pie_adj += value
 
@@ -1038,8 +1038,8 @@ def _prep_pie_chart(
             pos += 1
 
     if total_pie_adj < total_filter:
-        color_discrete_map[NAME_NOT_APPLICABLE] = COLOR_MAP_NOT_APPLICABLE
-        names.append(NAME_NOT_APPLICABLE)
+        color_discrete_map[NAME_NONE] = COLOR_MAP_NONE
+        names.append(NAME_NONE)
         values.append(total_filter - total_pie)
 
     return names, values, color_discrete_map

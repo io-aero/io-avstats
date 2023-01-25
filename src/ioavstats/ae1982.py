@@ -5,6 +5,7 @@
 """Aviation Events in the US since 1982."""
 import datetime
 import time
+from operator import itemgetter
 
 import numpy as np
 import pandas as pd
@@ -39,9 +40,11 @@ CHOICE_CHARTS_TYPE_EYIL: bool | None = None
 CHOICE_CHARTS_TYPE_EYRSS: bool | None = None
 CHOICE_CHARTS_TYPE_EYT: bool | None = None
 CHOICE_CHARTS_TYPE_FYFP: bool | None = None
+CHOICE_CHARTS_TYPE_TAOC: bool | None = None
 CHOICE_CHARTS_TYPE_TEIL: bool | None = None
 CHOICE_CHARTS_TYPE_TERSS: bool | None = None
 CHOICE_CHARTS_TYPE_TET: bool | None = None
+CHOICE_CHARTS_TYPE_TETLP: bool | None = None
 CHOICE_CHARTS_TYPE_TFFP: bool | None = None
 CHOICE_CHARTS_WIDTH: float | None = None
 CHOICE_DATA_PROFILE: bool | None = None
@@ -59,6 +62,15 @@ COLOR_LEVEL_2 = "#47a3b5"  # aqua
 COLOR_LEVEL_3 = "#fadc82"  # yellow
 COLOR_LEVEL_4 = "#f1a638"  # orange
 
+COLOR_MAP: list[str] = [
+    "#15535f",  # peacock
+    "#47a3b5",  # aqua
+    "#fadc82",  # yellow
+    "#f1a638",  # orange
+]
+COLOR_MAP_NOT_APPLICABLE = "#000000"  # black
+COLOR_MAP_SIZE = len(COLOR_MAP)
+
 COUNTRY_USA = "USA"
 
 DF_FILTERED: DataFrame = DataFrame()
@@ -66,10 +78,6 @@ DF_FILTERED_CHARTS_EYIL: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_EYRSS: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_EYT: DataFrame = DataFrame()
 DF_FILTERED_CHARTS_FYFP: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_TEIL: list[int] = []
-DF_FILTERED_CHARTS_TERSS: list[int] = []
-DF_FILTERED_CHARTS_TET: list[int] = []
-DF_FILTERED_CHARTS_TFFP: list[int] = []
 DF_UNFILTERED: DataFrame = DataFrame()
 
 EVENT_TYPE_DESC: str
@@ -136,6 +144,8 @@ LEGEND_T_INC = "Incident"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 
+NAME_NOT_APPLICABLE = "n/a"
+
 PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
@@ -149,6 +159,7 @@ SETTINGS = Dynaconf(
     envvar_prefix="IO_AVSTATS",
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
+START_TIME: int = 0
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
@@ -348,9 +359,7 @@ def _apply_filter_logical_params(
     filter_cmd_or = ""
 
     if LEGEND_LP_ALTITUDE_CONTROLLABLE in filter_params:  # type: ignore
-        filter_cmd += (
-            "(df_unfiltered['is_altitude_controllable'] == True)"
-        )
+        filter_cmd += "(df_unfiltered['is_altitude_controllable'] == True)"
         filter_cmd_or = operand
 
     if LEGEND_LP_ALTITUDE_LOW in filter_params:  # type: ignore
@@ -744,30 +753,76 @@ def _prep_data_charts_fyfp(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Total Events by Injury Level.
+# Prepare the chart data: Total Events by CICTT Codes.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _prep_data_charts_taoc(
+    df_filtered: DataFrame,
+) -> tuple[list[str], list[int], dict[str, str]]:
+    #   """Prepare the chart data: Total Events by CICTT Codes."""
+    df_chart = df_filtered[
+        [
+            "cictt_codes",
+        ]
+    ]
+
+    name_value = []
+    total_pie = 0
+
+    for name in _sql_query_cictt_codes():
+        df_chart[name] = np.where(
+            df_chart.cictt_codes.apply(lambda x, n=name: bool(set(x) & {n})),
+            1,
+            0,
+        )
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value, 0.015)
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Events by Injury Levels.
 # ------------------------------------------------------------------
 @st.experimental_memo
 def _prep_data_charts_teil(
     df_filtered: DataFrame,
-) -> list[int]:
-    """Prepare the chart data: Total Events by Injury Level."""
+) -> tuple[list[str], list[int], dict[str, str]]:
+    """Prepare the chart data: Total Events by Injury Levels."""
     df_chart = df_filtered[
         [
             "ev_highest_injury",
         ]
     ]
 
-    df_chart["fatal"] = np.where(df_chart.ev_highest_injury == "FATL", 1, 0)
-    df_chart["minor"] = np.where(df_chart.ev_highest_injury == "MINR", 1, 0)
-    df_chart["none"] = np.where(df_chart.ev_highest_injury == "NONE", 1, 0)
-    df_chart["serious"] = np.where(df_chart.ev_highest_injury == "SERS", 1, 0)
+    name_value = []
+    total_pie = 0
 
-    return [
-        df_chart["fatal"].sum(),
-        df_chart["minor"].sum(),
-        df_chart["none"].sum(),
-        df_chart["serious"].sum(),
-    ]
+    for name, name_df in [
+        (
+            "fatal",
+            "FATL",
+        ),
+        (
+            "minor",
+            "MINR",
+        ),
+        (
+            "none",
+            "NONE",
+        ),
+        (
+            "serious",
+            "SERS",
+        ),
+    ]:
+        df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value)
 
 
 # ------------------------------------------------------------------
@@ -776,11 +831,10 @@ def _prep_data_charts_teil(
 @st.experimental_memo
 def _prep_data_charts_terss(
     df_filtered: DataFrame,
-) -> list[int]:
+) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Required Safety Systems."""
     df_chart = df_filtered[
         [
-            "ev_counter",
             "is_midair_collision",
             "is_rss_forced_landing",
             "is_rss_spin_stall_prevention_and_recovery",
@@ -788,25 +842,33 @@ def _prep_data_charts_terss(
         ]
     ]
 
-    df_chart["is_midair_collision_ev_counter"] = np.where(
-        df_chart.is_midair_collision, df_chart.ev_counter, 0
-    )
-    df_chart["is_rss_forced_landing_ev_counter"] = np.where(
-        df_chart.is_rss_forced_landing, df_chart.ev_counter, 0
-    )
-    df_chart["is_rss_spin_stall_prevention_and_recovery_ev_counter"] = np.where(
-        df_chart.is_rss_spin_stall_prevention_and_recovery, df_chart.ev_counter, 0
-    )
-    df_chart["is_rss_terrain_collision_avoidance_ev_counter"] = np.where(
-        df_chart.is_rss_terrain_collision_avoidance, df_chart.ev_counter, 0
-    )
+    name_value = []
+    total_pie = 0
 
-    return [
-        df_chart["is_midair_collision_ev_counter"].sum(),
-        df_chart["is_rss_forced_landing_ev_counter"].sum(),
-        df_chart["is_rss_spin_stall_prevention_and_recovery_ev_counter"].sum(),
-        df_chart["is_rss_terrain_collision_avoidance_ev_counter"].sum(),
-    ]
+    for name, name_df in [
+        (
+            LEGEND_RSS_AIRBORNE,
+            "is_midair_collision",
+        ),
+        (
+            LEGEND_RSS_FORCED,
+            "is_rss_forced_landing",
+        ),
+        (
+            LEGEND_RSS_SPIN,
+            "is_rss_spin_stall_prevention_and_recovery",
+        ),
+        (
+            LEGEND_RSS_TERRAIN,
+            "is_rss_terrain_collision_avoidance",
+        ),
+    ]:
+        df_chart[name] = np.where(df_chart[name_df], 1, 0)
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value)
 
 
 # ------------------------------------------------------------------
@@ -815,7 +877,7 @@ def _prep_data_charts_terss(
 @st.experimental_memo
 def _prep_data_charts_tet(
     df_filtered: DataFrame,
-) -> list[int]:
+) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Type."""
     df_chart = df_filtered[
         [
@@ -823,10 +885,81 @@ def _prep_data_charts_tet(
         ]
     ]
 
-    df_chart["accidents"] = np.where(df_chart.ev_type == "ACC", 1, 0)
-    df_chart["incidents"] = np.where(df_chart.ev_type == "INC", 1, 0)
+    name_value = []
+    total_pie = 0
 
-    return [df_chart["accidents"].sum(), df_chart["incidents"].sum()]
+    for name, name_df in [
+        (
+            LEGEND_T_ACC,
+            "ACC",
+        ),
+        (
+            LEGEND_T_INC,
+            "INC",
+        ),
+    ]:
+        df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value)
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Events by Top Level Logical Parameters.
+# ------------------------------------------------------------------
+@st.experimental_memo
+def _prep_data_charts_tetlp(
+    df_filtered: DataFrame,
+) -> tuple[list[str], list[int], dict[str, str]]:
+    """Prepare the chart data: Total Events by Top Level Logical Parameters."""
+    df_chart = df_filtered[
+        [
+            "is_altitude_controllable",
+            "is_altitude_low",
+            "is_attitude_controllable",
+            "is_emergency_landing",
+            "is_pilot_issue",
+            "is_spin_stall",
+        ]
+    ]
+
+    name_value = []
+    total_pie = 0
+
+    for name, name_df in [
+        (
+            LEGEND_LP_SPIN,
+            "is_spin_stall",
+        ),
+        (
+            LEGEND_LP_ALTITUDE_LOW,
+            "is_altitude_low",
+        ),
+        (
+            LEGEND_LP_ATTITUDE,
+            "is_attitude_controllable",
+        ),
+        (
+            LEGEND_LP_ALTITUDE_CONTROLLABLE,
+            "is_altitude_controllable",
+        ),
+        (
+            LEGEND_LP_EMERGENCY,
+            "is_emergency_landing",
+        ),
+        (
+            LEGEND_LP_PILOT,
+            "is_pilot_issue",
+        ),
+    ]:
+        df_chart[name] = np.where(df_chart[name_df], 1, 0)
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value)
 
 
 # ------------------------------------------------------------------
@@ -835,7 +968,7 @@ def _prep_data_charts_tet(
 @st.experimental_memo
 def _prep_data_charts_tffp(
     df_filtered: DataFrame,
-) -> list[int]:
+) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Fatalities under FAR Operations Parts."""
     df_chart = df_filtered[
         [
@@ -846,21 +979,70 @@ def _prep_data_charts_tffp(
         ]
     ]
 
-    df_chart["far_part_091x_inj_tot_f"] = np.where(
-        df_chart.is_far_part_091x, df_chart.inj_tot_f, 0
-    )
-    df_chart["far_part_121_inj_tot_f"] = np.where(
-        df_chart.is_far_part_121, df_chart.inj_tot_f, 0
-    )
-    df_chart["far_part_135_inj_tot_f"] = np.where(
-        df_chart.is_far_part_135, df_chart.inj_tot_f, 0
-    )
+    name_value = []
+    total_pie = 0
 
-    return [
-        df_chart["far_part_091x_inj_tot_f"].sum(),
-        df_chart["far_part_121_inj_tot_f"].sum(),
-        df_chart["far_part_135_inj_tot_f"].sum(),
-    ]
+    for name, name_df in [
+        (
+            LEGEND_FP_091X,
+            "is_far_part_091x",
+        ),
+        (
+            LEGEND_FP_121,
+            "is_far_part_121",
+        ),
+        (
+            LEGEND_FP_135,
+            "is_far_part_135",
+        ),
+    ]:
+        df_chart[name] = np.where(df_chart[name_df], df_chart.inj_tot_f, 0)
+        value = df_chart[name].sum()
+        name_value.append((name, value))
+        total_pie += value
+
+    return _prep_pie_chart(len(df_chart.index), total_pie, name_value)
+
+
+# ------------------------------------------------------------------
+# Prepare the pie chart.
+# ------------------------------------------------------------------
+def _prep_pie_chart(
+    total_filter: int,
+    total_pie: int,
+    name_value: list[tuple[str, int]],
+    threshhold: float = 0,
+) -> tuple[list[str], list[int], dict[str, str]]:
+    value_threshhold = total_pie * threshhold
+
+    name_sum_adj = []
+    total_pie_adj = 0
+
+    for (name, value) in name_value:
+        if value > value_threshhold:
+            name_sum_adj.append((name, value))
+            total_pie_adj += value
+
+    name_sum_adj.sort(key=itemgetter(1), reverse=True)
+
+    color_discrete_map = {}
+    names = []
+    pos = 0
+    values = []
+
+    for (name, value) in name_sum_adj:
+        names.append(name)
+        values.append(value)
+        if pos < COLOR_MAP_SIZE:
+            color_discrete_map[name] = COLOR_MAP[pos]
+            pos += 1
+
+    if total_pie_adj < total_filter:
+        color_discrete_map[NAME_NOT_APPLICABLE] = COLOR_MAP_NOT_APPLICABLE
+        names.append(NAME_NOT_APPLICABLE)
+        values.append(total_filter - total_pie)
+
+    return names, values, color_discrete_map
 
 
 # ------------------------------------------------------------------
@@ -868,7 +1050,7 @@ def _prep_data_charts_tffp(
 # ------------------------------------------------------------------
 def _present_chart_eyil() -> None:
     """Present the chart: Events per Year by Injury Level."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Level"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Levels"
 
     st.subheader(chart_title)
 
@@ -1107,134 +1289,6 @@ def _present_chart_fyfp() -> None:
 
 
 # ------------------------------------------------------------------
-# Present the chart: Total Events by Injury Level.
-# ------------------------------------------------------------------
-def _present_chart_teil() -> None:
-    """Present the chart: Total Events by Injury Level."""
-    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Level"
-
-    st.subheader(chart_title)
-
-    fig = px.pie(
-        color=[
-            LEGEND_IL_FATAL,
-            LEGEND_IL_MINOR,
-            LEGEND_IL_NONE,
-            LEGEND_IL_SERIOUS,
-        ],
-        color_discrete_map={
-            LEGEND_IL_FATAL: COLOR_LEVEL_1,
-            LEGEND_IL_MINOR: COLOR_LEVEL_3,
-            LEGEND_IL_NONE: COLOR_LEVEL_4,
-            LEGEND_IL_SERIOUS: COLOR_LEVEL_2,
-        },
-        hole=0.3,
-        names=[LEGEND_IL_FATAL, LEGEND_IL_MINOR, LEGEND_IL_NONE, LEGEND_IL_SERIOUS],
-        title=chart_title,
-        values=DF_FILTERED_CHARTS_TEIL,
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Total Number of Events by Required Safety Systems.
-# ------------------------------------------------------------------
-def _present_chart_terss() -> None:
-    """Present the chart: Total Number of Events by Required Safety Systems."""
-    chart_title = f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems"
-
-    st.subheader(chart_title)
-
-    fig = px.pie(
-        color=[
-            LEGEND_RSS_AIRBORNE,
-            LEGEND_RSS_FORCED,
-            LEGEND_RSS_SPIN,
-            LEGEND_RSS_TERRAIN,
-        ],
-        color_discrete_map={
-            LEGEND_RSS_AIRBORNE: COLOR_LEVEL_4,
-            LEGEND_RSS_FORCED: COLOR_LEVEL_2,
-            LEGEND_RSS_SPIN: COLOR_LEVEL_3,
-            LEGEND_RSS_TERRAIN: COLOR_LEVEL_1,
-        },
-        hole=0.3,
-        names=[
-            LEGEND_RSS_AIRBORNE,
-            LEGEND_RSS_FORCED,
-            LEGEND_RSS_SPIN,
-            LEGEND_RSS_TERRAIN,
-        ],
-        title=chart_title,
-        values=DF_FILTERED_CHARTS_TERSS,
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Total Events by Type.
-# ------------------------------------------------------------------
-def _present_chart_tet() -> None:
-    """Present the chart: Total Events by Type."""
-    chart_title = f"Total Number of {EVENT_TYPE_DESC} by Type"
-
-    st.subheader(chart_title)
-
-    fig = px.pie(
-        color=[
-            LEGEND_T_ACC,
-            LEGEND_T_INC,
-        ],
-        color_discrete_map={LEGEND_T_ACC: COLOR_LEVEL_1, LEGEND_T_INC: COLOR_LEVEL_2},
-        hole=0.3,
-        names=[LEGEND_T_ACC, LEGEND_T_INC],
-        title=chart_title,
-        values=DF_FILTERED_CHARTS_TET,
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Fatalities per Year under FAR Operations Parts.
-# ------------------------------------------------------------------
-def _present_chart_tffp() -> None:
-    """Present the chart: Fatalities per Year under FAR Operations Parts."""
-    chart_title = "Total Number of Fatalities by Selected FAR Operations Parts"
-
-    st.subheader(chart_title)
-
-    fig = px.pie(
-        color=[
-            LEGEND_FP_091X,
-            LEGEND_FP_121,
-            LEGEND_FP_135,
-        ],
-        color_discrete_map={
-            LEGEND_FP_091X: COLOR_LEVEL_1,
-            LEGEND_FP_121: COLOR_LEVEL_4,
-            LEGEND_FP_135: COLOR_LEVEL_2,
-        },
-        hole=0.3,
-        names=[LEGEND_FP_091X, LEGEND_FP_121, LEGEND_FP_135],
-        title=chart_title,
-        values=DF_FILTERED_CHARTS_TFFP,
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-
-# ------------------------------------------------------------------
 # Present the charts.
 # ------------------------------------------------------------------
 def _present_charts() -> None:
@@ -1243,10 +1297,6 @@ def _present_charts() -> None:
     global DF_FILTERED_CHARTS_EYRSS  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_EYT  # pylint: disable=global-statement
     global DF_FILTERED_CHARTS_FYFP  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_TEIL  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_TERSS  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_TET  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_TFFP  # pylint: disable=global-statement
 
     # Events per Year by Type
     if CHOICE_CHARTS_TYPE_EYT:
@@ -1270,23 +1320,45 @@ def _present_charts() -> None:
 
     # Total Events by Type
     if CHOICE_CHARTS_TYPE_TET:
-        DF_FILTERED_CHARTS_TET = _prep_data_charts_tet(DF_FILTERED)
-        _present_chart_tet()
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by Type",
+            _prep_data_charts_tet(DF_FILTERED),
+        )
 
-    # Total Events by Injury Level
+    # Total Events by CICTT Code
+    if CHOICE_CHARTS_TYPE_TAOC:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
+            _prep_data_charts_taoc(DF_FILTERED),
+        )
+
+    # Total Events by Injury Levels
     if CHOICE_CHARTS_TYPE_TEIL:
-        DF_FILTERED_CHARTS_TEIL = _prep_data_charts_teil(DF_FILTERED)
-        _present_chart_teil()
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
+            _prep_data_charts_teil(DF_FILTERED),
+        )
 
     # Total Fatalities under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_TFFP:
-        DF_FILTERED_CHARTS_TFFP = _prep_data_charts_tffp(DF_FILTERED)
-        _present_chart_tffp()
+        _present_pie_chart(
+            "Total Number of Fatalities by Selected FAR Operations Parts",
+            _prep_data_charts_tffp(DF_FILTERED),
+        )
 
     # Total Required Safety Systems
     if CHOICE_CHARTS_TYPE_TERSS:
-        DF_FILTERED_CHARTS_TERSS = _prep_data_charts_terss(DF_FILTERED)
-        _present_chart_terss()
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems",
+            _prep_data_charts_terss(DF_FILTERED),
+        )
+
+    # Top Level logical Parameter
+    if CHOICE_CHARTS_TYPE_TETLP:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
+            _prep_data_charts_tetlp(DF_FILTERED),
+        )
 
 
 # ------------------------------------------------------------------
@@ -1421,6 +1493,31 @@ def _present_map() -> None:
 
 
 # ------------------------------------------------------------------
+# Present the pie chart.
+# ------------------------------------------------------------------
+def _present_pie_chart(
+    chart_title: str, pie_chart_data: tuple[list[str], list[int], dict[str, str]]
+) -> None:
+    """Present the pie chart."""
+    st.subheader(chart_title)
+
+    names, values, color_discrete_map = pie_chart_data
+
+    fig = px.pie(
+        color=names,
+        color_discrete_map=color_discrete_map,
+        hole=0.3,
+        names=names,
+        title=chart_title,
+        values=values,
+    )
+
+    st.plotly_chart(
+        fig,
+    )
+
+
+# ------------------------------------------------------------------
 # Print a timestamp.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
@@ -1432,7 +1529,7 @@ def _print_timestamp(identifier: str) -> None:
         return
 
     if not LAST_READING:
-        LAST_READING = start_time
+        LAST_READING = START_TIME
 
     current_time = time.time_ns()
 
@@ -1726,19 +1823,19 @@ def _setup_filter() -> None:
         - **`MEAS`**: Latitude and longitude have been measured.
         """
     logical_params_options = [
-            LEGEND_LP_SPIN,
-            LEGEND_LP_RSS_AIRBORNE,
-            LEGEND_LP_ALTITUDE_CONTROLLABLE,
-            LEGEND_LP_EMERGENCY,
-            LEGEND_LP_ALTITUDE_LOW,
-            LEGEND_LP_ATTITUDE,
-            LEGEND_LP_RSS_FORCED,
-            LEGEND_LP_MIDAIR,
-            LEGEND_LP_PILOT,
-            LEGEND_LP_RSS_SPIN,
-            LEGEND_LP_NARRATIVE,
-            LEGEND_LP_RSS_TERRAIN,
-        ]
+        LEGEND_LP_SPIN,
+        LEGEND_LP_RSS_AIRBORNE,
+        LEGEND_LP_ALTITUDE_CONTROLLABLE,
+        LEGEND_LP_EMERGENCY,
+        LEGEND_LP_ALTITUDE_LOW,
+        LEGEND_LP_ATTITUDE,
+        LEGEND_LP_RSS_FORCED,
+        LEGEND_LP_MIDAIR,
+        LEGEND_LP_PILOT,
+        LEGEND_LP_RSS_SPIN,
+        LEGEND_LP_NARRATIVE,
+        LEGEND_LP_RSS_TERRAIN,
+    ]
 
     FILTER_LOGICAL_PARAMETERS_AND = st.sidebar.multiselect(
         help=logical_params_help,
@@ -1753,7 +1850,6 @@ def _setup_filter() -> None:
             + f"\n- **Logical parameters (OR)**: **`{','.join(FILTER_LOGICAL_PARAMETERS_AND)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_AND - 2")
-
 
     FILTER_LOGICAL_PARAMETERS_OR = st.sidebar.multiselect(
         help=logical_params_help,
@@ -1876,13 +1972,15 @@ def _setup_page() -> None:
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
 
-    FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else "1982"
-    FILTER_EV_YEAR_TO = FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else str(datetime.date.today().year - 1)
+    FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
+    FILTER_EV_YEAR_TO = (
+        FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else datetime.date.today().year - 1
+    )
 
     if FILTER_EV_TYPE == ["ACC"]:
-        EVENT_TYPE_DESC = "Accidents"
+        EVENT_TYPE_DESC = LEGEND_T_ACC
     elif FILTER_EV_TYPE == ["INC"]:
-        EVENT_TYPE_DESC = "Incidents"
+        EVENT_TYPE_DESC = LEGEND_T_INC
     else:
         EVENT_TYPE_DESC = "Events"
 
@@ -1936,9 +2034,11 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_EYRSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EYT  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_FYFP  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TAOC  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TEIL  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TERSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TET  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TETLP  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TFFP  # pylint: disable=global-statement
     global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
@@ -1995,14 +2095,24 @@ def _setup_task_controls() -> None:
             label="Total Events by Type",
             value=False,
         )
+        CHOICE_CHARTS_TYPE_TAOC = st.sidebar.checkbox(
+            help="Total events by CICTT Codes (after filtering the data).",
+            label="Total Events by CICTT Codes",
+            value=False,
+        )
         CHOICE_CHARTS_TYPE_TEIL = st.sidebar.checkbox(
             help="Total events by highest injury level (after filtering the data).",
-            label="Total Events by Injury Level",
+            label="Total Events by Injury Levels",
             value=False,
         )
         CHOICE_CHARTS_TYPE_TERSS = st.sidebar.checkbox(
             help="Total events by required safety systems (after filtering the data).",
             label="Total Events by Required Safety Systems",
+            value=False,
+        )
+        CHOICE_CHARTS_TYPE_TETLP = st.sidebar.checkbox(
+            help="Total events by top level logical parameters (after filtering the data).",
+            label="Total Events by Top Level Logical Parameters",
             value=False,
         )
         CHOICE_CHARTS_TYPE_TFFP = st.sidebar.checkbox(
@@ -2410,58 +2520,71 @@ def _sql_query_us_states() -> list[str]:
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
-# Start time measurement.
-start_time = time.time_ns()
+def _streamlit_flow() -> None:
+    """Streamlit flow."""
+    global DF_FILTERED  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+    global START_TIME  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
 
-st.set_page_config(layout="wide")
+    # Start time measurement.
+    START_TIME = time.time_ns()
 
-PG_CONN = _get_postgres_connection()
-_print_timestamp("_setup_filter - got DB connection")
+    st.set_page_config(layout="wide")
 
-_setup_sidebar()
-_print_timestamp("_setup_sidebar()")
+    PG_CONN = _get_postgres_connection()
+    _print_timestamp("_setup_filter - got DB connection")
 
-_setup_page()
-_print_timestamp("_setup_page()")
+    _setup_sidebar()
+    _print_timestamp("_setup_sidebar()")
 
-DF_UNFILTERED = _get_data()
-DF_FILTERED = DF_UNFILTERED
-_print_timestamp("_get_data()")
+    _setup_page()
+    _print_timestamp("_setup_page()")
 
-if CHOICE_FILTER_DATA:
-    DF_FILTERED = _apply_filter(
-        DF_UNFILTERED,
-        FILTER_ACFT_CATEGORIES,
-        FILTER_CICTT_CODES,
-        FILTER_EV_HIGHEST_INJURY,
-        FILTER_EV_TYPE,
-        FILTER_EV_YEAR_FROM,
-        FILTER_EV_YEAR_TO,
-        FILTER_FAR_PARTS,
-        FILTER_FINDING_CODES,
-        FILTER_INJ_F_GRND_FROM,
-        FILTER_INJ_F_GRND_TO,
-        FILTER_INJ_TOT_F_FROM,
-        FILTER_INJ_TOT_F_TO,
-        FILTER_LATLONG_ACQ,
-        FILTER_LOGICAL_PARAMETERS_AND,
-        FILTER_LOGICAL_PARAMETERS_OR,
-        FILTER_NO_AIRCRAFT_FROM,
-        FILTER_NO_AIRCRAFT_TO,
-        FILTER_OCCURRENCE_CODES,
-        FILTER_RSS,
-        FILTER_STATE,
-        FILTER_US_AVIATION,
+    DF_UNFILTERED = _get_data()
+    DF_FILTERED = DF_UNFILTERED
+    _print_timestamp("_get_data()")
+
+    if CHOICE_FILTER_DATA:
+        DF_FILTERED = _apply_filter(
+            DF_UNFILTERED,
+            FILTER_ACFT_CATEGORIES,
+            FILTER_CICTT_CODES,
+            FILTER_EV_HIGHEST_INJURY,
+            FILTER_EV_TYPE,
+            FILTER_EV_YEAR_FROM,
+            FILTER_EV_YEAR_TO,
+            FILTER_FAR_PARTS,
+            FILTER_FINDING_CODES,
+            FILTER_INJ_F_GRND_FROM,
+            FILTER_INJ_F_GRND_TO,
+            FILTER_INJ_TOT_F_FROM,
+            FILTER_INJ_TOT_F_TO,
+            FILTER_LATLONG_ACQ,
+            FILTER_LOGICAL_PARAMETERS_AND,
+            FILTER_LOGICAL_PARAMETERS_OR,
+            FILTER_NO_AIRCRAFT_FROM,
+            FILTER_NO_AIRCRAFT_TO,
+            FILTER_OCCURRENCE_CODES,
+            FILTER_RSS,
+            FILTER_STATE,
+            FILTER_US_AVIATION,
+        )
+        _print_timestamp("_apply_filter()")
+
+    _present_data()
+    _print_timestamp("_present_data()")
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application "
+        + APP_ID,
+        flush=True,
     )
-    _print_timestamp("_apply_filter()")
 
-_present_data()
-_print_timestamp("_present_data()")
 
-# Stop time measurement.
-print(
-    str(datetime.datetime.now())
-    + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application "
-    + APP_ID,
-    flush=True,
-)
+# -----------------------------------------------------------------------------
+# Program start.
+# -----------------------------------------------------------------------------
+_streamlit_flow()

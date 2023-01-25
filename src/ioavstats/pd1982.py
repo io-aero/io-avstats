@@ -15,7 +15,6 @@ from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
@@ -38,7 +37,7 @@ DF_UNFILTERED: DataFrame = DataFrame()
 FILTER_YEAR_FROM: int | None = None
 FILTER_YEAR_TO: int | None = None
 
-PG_CONN: Connection | None = None
+PG_CONN: connection | None = None
 
 # ------------------------------------------------------------------
 # Query data for the US since 1982.
@@ -359,10 +358,6 @@ def _get_data(table_name: str) -> DataFrame:
     Returns:
         DataFrame: The unfiltered dataframe.
     """
-    global PG_CONN  # pylint: disable=global-statement
-
-    PG_CONN = _get_postgres_connection()  # type: ignore
-
     return pd.read_sql(QUERIES[table_name], con=_get_engine())  # type: ignore
 
 
@@ -495,6 +490,13 @@ def _setup_filter_controls():
 def _setup_page():
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
+    global FILTER_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_YEAR_TO  # pylint: disable=global-statement
+
+    FILTER_YEAR_FROM = FILTER_YEAR_FROM if FILTER_YEAR_FROM else 1982
+    FILTER_YEAR_TO = (
+        FILTER_YEAR_TO if FILTER_YEAR_TO else datetime.date.today().year - 1
+    )
 
     st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
 
@@ -575,36 +577,51 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
-# Start time measurement.
-start_time = time.time_ns()
+def _streamlit_flow() -> None:
+    """Streamlit flow."""
+    global DF_FILTERED  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
 
-st.set_page_config(layout="wide")
+    # Start time measurement.
+    start_time = time.time_ns()
 
-_setup_sidebar()
+    st.set_page_config(layout="wide")
 
-_setup_page()
+    PG_CONN = _get_postgres_connection()  # type: ignore
 
-DF_UNFILTERED = _get_data(CHOICE_TABLE_SELECTION)
+    _setup_sidebar()
 
-DF_FILTERED = DF_UNFILTERED
+    _setup_page()
 
-if CHOICE_TABLE_SELECTION not in [
-    "io_countries",
-    "io_processed_files",
-    "io_lat_lng",
-    "io_states",
-]:
-    if CHOICE_FILTER_DATA:
-        DF_FILTERED = _apply_filter_controls(
-            DF_UNFILTERED, FILTER_YEAR_FROM, FILTER_YEAR_TO
-        )
+    DF_UNFILTERED = _get_data(CHOICE_TABLE_SELECTION)
 
-_present_data()
+    DF_FILTERED = DF_UNFILTERED
 
-# Stop time measurement.
-print(
-    str(datetime.datetime.now())
-    + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application "
-    + APP_ID,
-    flush=True,
-)
+    if CHOICE_TABLE_SELECTION not in [
+        "io_countries",
+        "io_processed_files",
+        "io_lat_lng",
+        "io_states",
+    ]:
+        if CHOICE_FILTER_DATA:
+            DF_FILTERED = _apply_filter_controls(
+                DF_UNFILTERED, FILTER_YEAR_FROM, FILTER_YEAR_TO
+            )
+
+    _present_data()
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - "
+        + "Total runtime for application "
+        + APP_ID,
+        flush=True,
+    )
+
+
+# -----------------------------------------------------------------------------
+# Program start.
+# -----------------------------------------------------------------------------
+_streamlit_flow()

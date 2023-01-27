@@ -606,7 +606,7 @@ def _get_postgres_connection() -> connection:
 @st.experimental_memo
 def _prep_data_charts_eyaoc(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by CICTT Codes."""
     df_chart = df_filtered[
         [
@@ -622,7 +622,19 @@ def _prep_data_charts_eyaoc(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
+        (
+            LEGEND_AOC_LOC_I,
+            LEGEND_AOC_LOC_I,
+        ),
+        (
+            LEGEND_AOC_SCF_PP,
+            LEGEND_AOC_SCF_PP,
+        ),
+        (
+            LEGEND_AOC_LOC_G,
+            LEGEND_AOC_LOC_G,
+        ),
         (
             LEGEND_AOC_ARC,
             LEGEND_AOC_ARC,
@@ -632,14 +644,6 @@ def _prep_data_charts_eyaoc(
             LEGEND_AOC_FUEL,
         ),
         (
-            LEGEND_AOC_LOC_G,
-            LEGEND_AOC_LOC_G,
-        ),
-        (
-            LEGEND_AOC_LOC_I,
-            LEGEND_AOC_LOC_I,
-        ),
-        (
             LEGEND_AOC_OTHR,
             LEGEND_AOC_OTHR,
         ),
@@ -647,16 +651,14 @@ def _prep_data_charts_eyaoc(
             LEGEND_AOC_SCF_NP,
             LEGEND_AOC_SCF_NP,
         ),
-        (
-            LEGEND_AOC_SCF_PP,
-            LEGEND_AOC_SCF_PP,
-        ),
-    ]:
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(
             df_chart.cictt_codes.apply(lambda x, n=name_df: bool(set(x) & {n})), 1, 0
         )
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -665,7 +667,7 @@ def _prep_data_charts_eyaoc(
 @st.experimental_memo
 def _prep_data_charts_eyil(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Events per Year by Injury Level."""
     df_chart = df_filtered[
         [
@@ -681,10 +683,14 @@ def _prep_data_charts_eyil(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
         (
             LEGEND_IL_FATAL,
             "FATL",
+        ),
+        (
+            LEGEND_IL_SERIOUS,
+            "SERS",
         ),
         (
             LEGEND_IL_MINOR,
@@ -694,14 +700,12 @@ def _prep_data_charts_eyil(
             LEGEND_IL_NONE,
             "NONE",
         ),
-        (
-            LEGEND_IL_SERIOUS,
-            "SERS",
-        ),
-    ]:
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -711,7 +715,7 @@ def _prep_data_charts_eyil(
 @st.experimental_memo
 def _prep_data_charts_eyrss(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by Required Safety
     Systems."""
     df_chart = df_filtered[
@@ -731,27 +735,29 @@ def _prep_data_charts_eyrss(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
         (
-            LEGEND_RSS_AIRBORNE,
-            "is_midair_collision",
-        ),
-        (
-            LEGEND_RSS_FORCED,
-            "is_rss_forced_landing",
+            LEGEND_RSS_TERRAIN,
+            "is_rss_terrain_collision_avoidance",
         ),
         (
             LEGEND_RSS_SPIN,
             "is_rss_spin_stall_prevention_and_recovery",
         ),
         (
-            LEGEND_RSS_TERRAIN,
-            "is_rss_terrain_collision_avoidance",
+            LEGEND_RSS_FORCED,
+            "is_rss_forced_landing",
         ),
-    ]:
+        (
+            LEGEND_RSS_AIRBORNE,
+            "is_midair_collision",
+        ),
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -760,7 +766,7 @@ def _prep_data_charts_eyrss(
 @st.experimental_memo
 def _prep_data_charts_eyt(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Events per Year by Event Types."""
     df_chart = df_filtered[
         [
@@ -776,7 +782,7 @@ def _prep_data_charts_eyt(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
         (
             LEGEND_T_ACC,
             "ACC",
@@ -785,10 +791,12 @@ def _prep_data_charts_eyt(
             LEGEND_T_INC,
             "INC",
         ),
-    ]:
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -798,7 +806,7 @@ def _prep_data_charts_eyt(
 @st.experimental_memo
 def _prep_data_charts_eytlp(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by Top Level Logical
     Parameters."""
     df_chart = df_filtered[
@@ -820,7 +828,7 @@ def _prep_data_charts_eytlp(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
         (
             LEGEND_LP_SPIN,
             "is_spin_stall",
@@ -834,21 +842,23 @@ def _prep_data_charts_eytlp(
             "is_altitude_controllable",
         ),
         (
-            LEGEND_LP_EMERGENCY,
-            "is_emergency_landing",
-        ),
-        (
             LEGEND_LP_ALTITUDE_CONTROLLABLE,
             "is_altitude_controllable",
+        ),
+        (
+            LEGEND_LP_EMERGENCY,
+            "is_emergency_landing",
         ),
         (
             LEGEND_LP_PILOT,
             "is_pilot_issue",
         ),
-    ]:
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -858,7 +868,7 @@ def _prep_data_charts_eytlp(
 @st.experimental_memo
 def _prep_data_charts_fyfp(
     df_filtered: DataFrame,
-) -> DataFrame:
+) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Fatalities per Year under FAR Operations
     Parts."""
     df_chart = df_filtered[
@@ -878,23 +888,25 @@ def _prep_data_charts_fyfp(
         inplace=True,
     )
 
-    for name, name_df in [
+    attributes = [
         (
             LEGEND_FP_091X,
             "is_far_part_091x",
         ),
         (
-            LEGEND_FP_121,
-            "is_far_part_121",
-        ),
-        (
             LEGEND_FP_135,
             "is_far_part_135",
         ),
-    ]:
+        (
+            LEGEND_FP_121,
+            "is_far_part_121",
+        ),
+    ]
+
+    for name, name_df in attributes:
         df_chart[name] = np.where(df_chart[name_df], df_chart.inj_tot_f, 0)
 
-    return df_chart.groupby("year", as_index=False).sum()
+    return attributes, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -1195,57 +1207,30 @@ def _prep_pie_chart(
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by CICTT Codes.
 # ------------------------------------------------------------------
-def _present_chart_eyaoc() -> None:
+def _present_bar_chart(chart_title, file_id, prep_result) -> None:
     """Present the chart: Events per Year by CICTT Codes."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
+    attributes, df_filtered_charts = prep_result
 
     st.subheader(chart_title)
 
+    color_no = 0
+    data = []
+    details = []
+
+    for name, _name_df in attributes:
+        data.append(
+            go.Bar(
+                marker={"color": COLOR_MAP[color_no % COLOR_MAP_SIZE]},
+                name=name,
+                x=df_filtered_charts["year"],
+                y=df_filtered_charts[name],
+            )
+        )
+        details.append(name)
+        color_no += 1
+
     fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_AOC_LOC_I,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_LOC_I],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_AOC_SCF_PP,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_SCF_PP],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_3},
-                name=LEGEND_AOC_LOC_G,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_LOC_G],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_4},
-                name=LEGEND_AOC_ARC,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_ARC],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_AOC_FUEL,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_FUEL],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_AOC_OTHR,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_OTHR],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_AOC_SCF_NP,
-                x=DF_FILTERED_CHARTS_EYAOC["year"],
-                y=DF_FILTERED_CHARTS_EYAOC[LEGEND_AOC_SCF_NP],
-            ),
-        ],
+        data,
     )
 
     fig.update_layout(
@@ -1255,7 +1240,9 @@ def _present_chart_eyaoc() -> None:
         width=CHOICE_CHARTS_WIDTH,
         title=chart_title,
         xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": EVENT_TYPE_DESC}},
+        yaxis={
+            "title": {"text": "Fatalities" if file_id in ["fyfp"] else EVENT_TYPE_DESC}
+        },
     )
 
     st.plotly_chart(
@@ -1264,397 +1251,16 @@ def _present_chart_eyaoc() -> None:
 
     if CHOICE_CHARTS_DETAILS:
         st.subheader("Detailed chart data")
+        details.insert(0, "year")
         st.dataframe(
-            DF_FILTERED_CHARTS_EYAOC.loc[
+            df_filtered_charts.loc[
                 :,
-                [
-                    "year",
-                    LEGEND_AOC_ARC,
-                    LEGEND_AOC_FUEL,
-                    LEGEND_AOC_LOC_G,
-                    LEGEND_AOC_LOC_I,
-                    LEGEND_AOC_OTHR,
-                    LEGEND_AOC_SCF_NP,
-                    LEGEND_AOC_SCF_PP,
-                ],
+                details,
             ]
         )
         st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYAOC),
-            file_name=APP_ID + "_charts_eyaoc.csv",
-            help="The download includes the detailed chart data.",
-            label="Download the chart data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Injury Level.
-# ------------------------------------------------------------------
-def _present_chart_eyil() -> None:
-    """Present the chart: Events per Year by Injury Level."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Levels"
-
-    st.subheader(chart_title)
-
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_IL_FATAL,
-                x=DF_FILTERED_CHARTS_EYIL["year"],
-                y=DF_FILTERED_CHARTS_EYIL[LEGEND_IL_FATAL],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_IL_SERIOUS,
-                x=DF_FILTERED_CHARTS_EYIL["year"],
-                y=DF_FILTERED_CHARTS_EYIL[LEGEND_IL_SERIOUS],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_3},
-                name=LEGEND_IL_MINOR,
-                x=DF_FILTERED_CHARTS_EYIL["year"],
-                y=DF_FILTERED_CHARTS_EYIL[LEGEND_IL_MINOR],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_4},
-                name=LEGEND_IL_NONE,
-                x=DF_FILTERED_CHARTS_EYIL["year"],
-                y=DF_FILTERED_CHARTS_EYIL[LEGEND_IL_NONE],
-            ),
-        ],
-    )
-
-    fig.update_layout(
-        autosize=True,
-        bargap=0.05,
-        barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT,
-        title=chart_title,
-        width=CHOICE_CHARTS_WIDTH,
-        xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": EVENT_TYPE_DESC}},
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-    if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
-        st.dataframe(
-            DF_FILTERED_CHARTS_EYIL.loc[
-                :,
-                [
-                    "year",
-                    LEGEND_IL_FATAL,
-                    LEGEND_IL_MINOR,
-                    LEGEND_IL_NONE,
-                    LEGEND_IL_SERIOUS,
-                ],
-            ]
-        )
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYIL),
-            file_name=APP_ID + "_charts_eyil.csv",
-            help="The download includes the detailed chart data.",
-            label="Download the chart data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Required Safety Systems.
-# ------------------------------------------------------------------
-def _present_chart_eyrss() -> None:
-    """Present the chart: Events per Year by Required Safety Systems."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
-
-    st.subheader(chart_title)
-
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_RSS_TERRAIN,
-                x=DF_FILTERED_CHARTS_EYRSS["year"],
-                y=DF_FILTERED_CHARTS_EYRSS[LEGEND_RSS_TERRAIN],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_RSS_SPIN,
-                x=DF_FILTERED_CHARTS_EYRSS["year"],
-                y=DF_FILTERED_CHARTS_EYRSS[LEGEND_RSS_SPIN],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_3},
-                name=LEGEND_RSS_FORCED,
-                x=DF_FILTERED_CHARTS_EYRSS["year"],
-                y=DF_FILTERED_CHARTS_EYRSS[LEGEND_RSS_FORCED],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_4},
-                name=LEGEND_RSS_AIRBORNE,
-                x=DF_FILTERED_CHARTS_EYRSS["year"],
-                y=DF_FILTERED_CHARTS_EYRSS[LEGEND_RSS_AIRBORNE],
-            ),
-        ],
-    )
-
-    fig.update_layout(
-        bargap=0.05,
-        barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT,
-        width=CHOICE_CHARTS_WIDTH,
-        title=chart_title,
-        xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": EVENT_TYPE_DESC}},
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-    if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
-        st.dataframe(
-            DF_FILTERED_CHARTS_EYRSS.loc[
-                :,
-                [
-                    "year",
-                    LEGEND_RSS_AIRBORNE,
-                    LEGEND_RSS_FORCED,
-                    LEGEND_RSS_SPIN,
-                    LEGEND_RSS_TERRAIN,
-                ],
-            ]
-        )
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYRSS),
-            file_name=APP_ID + "_charts_eyrss.csv",
-            help="The download includes the detailed chart data.",
-            label="Download the chart data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Event Types.
-# ------------------------------------------------------------------
-def _present_chart_eyt() -> None:
-    """Present the chart: Events per Year by Event Types."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
-
-    st.subheader(chart_title)
-
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_T_ACC,
-                x=DF_FILTERED_CHARTS_EYT["year"],
-                y=DF_FILTERED_CHARTS_EYT[LEGEND_T_ACC],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_T_INC,
-                x=DF_FILTERED_CHARTS_EYT["year"],
-                y=DF_FILTERED_CHARTS_EYT[LEGEND_T_INC],
-            ),
-        ],
-    )
-
-    fig.update_layout(
-        bargap=0.05,
-        barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT,
-        title=chart_title,
-        width=CHOICE_CHARTS_WIDTH,
-        xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": EVENT_TYPE_DESC}},
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-    if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
-        st.dataframe(
-            DF_FILTERED_CHARTS_EYT.loc[
-                :,
-                [
-                    "year",
-                    LEGEND_T_ACC,
-                    LEGEND_T_INC,
-                ],
-            ]
-        )
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYT),
-            file_name=APP_ID + "_charts_eyt.csv",
-            help="The download includes the detailed chart data.",
-            label="Download the chart data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Events per Year by Top Logical Parameters.
-# ------------------------------------------------------------------
-def _present_chart_eytlp() -> None:
-    """Present the chart: Events per Year by Top Logical Parameters."""
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
-
-    st.subheader(chart_title)
-
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_LP_SPIN,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_SPIN],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_LP_ALTITUDE_LOW,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_ALTITUDE_LOW],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_3},
-                name=LEGEND_LP_ATTITUDE,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_ATTITUDE],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_4},
-                name=LEGEND_LP_ALTITUDE_CONTROLLABLE,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_ALTITUDE_CONTROLLABLE],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_LP_EMERGENCY,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_EMERGENCY],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_LP_PILOT,
-                x=DF_FILTERED_CHARTS_EYTLP["year"],
-                y=DF_FILTERED_CHARTS_EYTLP[LEGEND_LP_PILOT],
-            ),
-        ],
-    )
-
-    fig.update_layout(
-        bargap=0.05,
-        barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT,
-        title=chart_title,
-        width=CHOICE_CHARTS_WIDTH,
-        xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": EVENT_TYPE_DESC}},
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-    if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
-        st.dataframe(
-            DF_FILTERED_CHARTS_EYTLP.loc[
-                :,
-                [
-                    "year",
-                    LEGEND_LP_SPIN,
-                    LEGEND_LP_ALTITUDE_LOW,
-                    LEGEND_LP_ATTITUDE,
-                    LEGEND_LP_ALTITUDE_CONTROLLABLE,
-                    LEGEND_LP_EMERGENCY,
-                    LEGEND_LP_PILOT,
-                ],
-            ]
-        )
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_EYTLP),
-            file_name=APP_ID + "_charts_eytlp.csv",
-            help="The download includes the detailed chart data.",
-            label="Download the chart data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present the chart: Fatalities per Year under FAR Operations Parts.
-# ------------------------------------------------------------------
-def _present_chart_fyfp() -> None:
-    """Present the chart: Fatalities per Year under FAR Operations Parts."""
-    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
-
-    st.subheader(chart_title)
-
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                marker={"color": COLOR_LEVEL_1},
-                name=LEGEND_FP_091X,
-                x=DF_FILTERED_CHARTS_FYFP["year"],
-                y=DF_FILTERED_CHARTS_FYFP[LEGEND_FP_091X],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_2},
-                name=LEGEND_FP_135,
-                x=DF_FILTERED_CHARTS_FYFP["year"],
-                y=DF_FILTERED_CHARTS_FYFP[LEGEND_FP_135],
-            ),
-            go.Bar(
-                marker={"color": COLOR_LEVEL_4},
-                name=LEGEND_FP_121,
-                x=DF_FILTERED_CHARTS_FYFP["year"],
-                y=DF_FILTERED_CHARTS_FYFP[LEGEND_FP_121],
-            ),
-        ],
-    )
-
-    fig.update_layout(
-        bargap=0.05,
-        barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT
-        if CHOICE_CHARTS_HEIGHT
-        else CHOICE_CHARTS_HEIGHT_DEFAULT,
-        width=CHOICE_CHARTS_WIDTH
-        if CHOICE_CHARTS_WIDTH
-        else CHOICE_CHARTS_WIDTH_DEFAULT,
-        title=chart_title,
-        xaxis={"title": {"text": "Year"}},
-        yaxis={"title": {"text": "Fatalities"}},
-    )
-
-    st.plotly_chart(
-        fig,
-    )
-
-    if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
-        st.dataframe(
-            DF_FILTERED_CHARTS_FYFP.loc[
-                :,
-                [
-                    "year",
-                    LEGEND_FP_091X,
-                    LEGEND_FP_121,
-                    LEGEND_FP_135,
-                ],
-            ]
-        )
-        st.download_button(
-            data=_convert_df_2_csv(DF_FILTERED_CHARTS_FYFP),
-            file_name=APP_ID + "_charts_fyfp.csv",
+            data=_convert_df_2_csv(df_filtered_charts),
+            file_name=APP_ID + "_charts_" + file_id + ".csv",
             help="The download includes the detailed chart data.",
             label="Download the chart data",
             mime="text/csv",
@@ -1666,42 +1272,53 @@ def _present_chart_fyfp() -> None:
 # ------------------------------------------------------------------
 def _present_charts() -> None:
     """Present the charts."""
-    global DF_FILTERED_CHARTS_EYAOC  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_EYIL  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_EYRSS  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_EYT  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_EYTLP  # pylint: disable=global-statement
-    global DF_FILTERED_CHARTS_FYFP  # pylint: disable=global-statement
-
     # Events per Year by CICTT Codes
     if CHOICE_CHARTS_TYPE_EYAOC:
-        DF_FILTERED_CHARTS_EYAOC = _prep_data_charts_eyaoc(DF_FILTERED)
-        _present_chart_eyaoc()
+        _present_bar_chart(
+            f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes",
+            "eyaoc",
+            _prep_data_charts_eyaoc(DF_FILTERED),
+        )
 
     # Events per Year by Injury Level
     if CHOICE_CHARTS_TYPE_EYIL:
-        DF_FILTERED_CHARTS_EYIL = _prep_data_charts_eyil(DF_FILTERED)
-        _present_chart_eyil()
+        _present_bar_chart(
+            f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Levels",
+            "eyil",
+            _prep_data_charts_eyil(DF_FILTERED),
+        )
 
     # Events per Year by Required Safety Systems
     if CHOICE_CHARTS_TYPE_EYRSS:
-        DF_FILTERED_CHARTS_EYRSS = _prep_data_charts_eyrss(DF_FILTERED)
-        _present_chart_eyrss()
+        _present_bar_chart(
+            f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems",
+            "eyrss",
+            _prep_data_charts_eyrss(DF_FILTERED),
+        )
 
     # Events per Year by Event Types
     if CHOICE_CHARTS_TYPE_EYT:
-        DF_FILTERED_CHARTS_EYT = _prep_data_charts_eyt(DF_FILTERED)
-        _present_chart_eyt()
+        _present_bar_chart(
+            f"Number of {EVENT_TYPE_DESC} per Year by Event Types",
+            "eyt",
+            _prep_data_charts_eyt(DF_FILTERED),
+        )
 
     # Events per Year by Top Level Logical Parameters
     if CHOICE_CHARTS_TYPE_EYTLP:
-        DF_FILTERED_CHARTS_EYTLP = _prep_data_charts_eytlp(DF_FILTERED)
-        _present_chart_eytlp()
+        _present_bar_chart(
+            f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters",
+            "eytlp",
+            _prep_data_charts_eytlp(DF_FILTERED),
+        )
 
     # Fatalities per Year under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_FYFP:
-        DF_FILTERED_CHARTS_FYFP = _prep_data_charts_fyfp(DF_FILTERED)
-        _present_chart_fyfp()
+        _present_bar_chart(
+            "Number of Fatalities per Year by Selected FAR Operations Parts",
+            "fyfp",
+            _prep_data_charts_fyfp(DF_FILTERED),
+        )
 
     # Total Events by CICTT Code
     if CHOICE_CHARTS_TYPE_TAOC:
@@ -2418,11 +2035,19 @@ def _setup_page() -> None:
     else:
         EVENT_TYPE_DESC = "Events"
 
-    st.header(
-        f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
-    )
-
     col1, _col2, col3 = st.columns([1, 1, 1])
+
+    with col1:
+        st.header(
+            f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
+        )
+
+    with col3:
+        # pylint: disable=line-too-long
+        st.image(
+            "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+            width=200,
+        )
 
     if CHOICE_FILTER_DATA:
         with col1:
@@ -3007,7 +2632,12 @@ def _streamlit_flow() -> None:
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
 
-    st.set_page_config(layout="wide")
+    st.set_page_config(
+        layout="wide",
+        # pylint: disable=line-too-long
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_title="ae1982 by IO-Aero",
+    )
 
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

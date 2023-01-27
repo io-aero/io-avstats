@@ -497,15 +497,24 @@ def _setup_page():
         FILTER_YEAR_TO if FILTER_YEAR_TO else datetime.date.today().year - 1
     )
 
-    st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
-
-    _col1, _col2, col3 = st.columns(
+    col1, _col2, col3 = st.columns(
         [
             1,
             1,
             1,
         ]
     )
+
+    with col1:
+        st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
+
+    with col3:
+        # flake8: noqa: E501
+        # pylint: disable=line-too-long
+        st.image(
+            "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+            width=200,
+        )
 
     with col3:
         CHOICE_ABOUT = st.checkbox(
@@ -585,7 +594,13 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    st.set_page_config(layout="wide")
+    st.set_page_config(
+        layout="wide",
+        # flake8: noqa: E501
+        # pylint: disable=line-too-long
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_title="pd1982 by IO-Aero",
+    )
 
     PG_CONN = _get_postgres_connection()  # type: ignore
 

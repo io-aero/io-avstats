@@ -3,10 +3,14 @@ FROM python:3.10.9 as base
 LABEL maintainer="IO-Aero"
 
 ARG APP
+ARG MODE
 ARG SERVER_ADDRESS
 ARG SERVER_PORT
+
 ENV APP=${APP}
+ENV MODE=${MODE}
 ENV SERVER_PORT=${SERVER_PORT}
+
 SHELL ["/bin/bash", "-c"]
 
 EXPOSE ${SERVER_PORT}
@@ -24,4 +28,4 @@ COPY src/ioavstats/utils.py ./utils.py
 
 RUN make pipenv-prod
 
-ENTRYPOINT ["pipenv", "run", "streamlit", "run", "${APP}.py", "--server.port=${SERVER_PORT}"]
+ENTRYPOINT pipenv run streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --mode ${MODE}

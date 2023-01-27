@@ -9,18 +9,18 @@ set -e
 # ------------------------------------------------------------------------------
 
 export APPLICATION_DEFAULT=ae1982
-
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=yes
-
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+export MODE=n/a
 
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "all      - All Streamlit applications"
     echo "---------------------------------------------------------"
-    echo "ae1982 - Aircraft Accidents in the US since 1982"
-    echo "pd1982 - Profiling Data for the US since 1982"
+    echo "ae1982     - Aircraft Accidents in the US since 1982"
+    echo "ae1982_ltd - Aircraft Accidents in the US since 1982"
+    echo "pd1982     - Profiling Data for the US since 1982"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}
@@ -74,17 +74,19 @@ echo "--------------------------------------------------------------------------
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
-    if ! ( ./scripts/run_docker_compose.sh ${IO_AVSTATS_COMPOSE_TASK} ); then
-        exit 255
-    fi
-
-if [ "${APPLICATION}" = "all" ]; then
-    ( ./scripts\run_create_image.sh ae1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts\run_create_image.sh pd1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    goto END_OF_SCRIPT
-else
-    if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
-        docker builder prune --all --force
+    if [ "${APPLICATION}" = "all" ]; then
+        ( ./scripts/run_create_image.sh ae1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+        ( ./scripts/run_create_image.sh ae1982_ltd ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+        ( ./scripts/run_create_image.sh pd1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+        goto END_OF_SCRIPT
+    else
+        if [ "${APPLICATION}" = "ae1982_ltd" ]; then
+            export MODE=Ltd
+            copy -i src/ioavstats/ae1982.py src/ioavstats/ae1982_ltd.py
+        fi
+        if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
+            docker builder prune --all --force
+        fi
     fi
 
     echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
@@ -99,7 +101,12 @@ else
     echo "............................................................. after images:"
     docker image ls
 
+    if [ "${APPLICATION}" = "ae1982" ]; then
+        export MODE=Std
+    fi
+
     docker build --build-arg APP=${APPLICATION} \
+                 --build-arg MODE=${MODE} \
                  --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
                  -t ioaero/${APPLICATION} .
 

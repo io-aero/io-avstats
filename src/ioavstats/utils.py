@@ -3,10 +3,50 @@
 # be found in the LICENSE.md file.
 
 """Application Utilities."""
+import argparse
 import datetime
 
 import streamlit as st
 from psycopg2.extensions import connection
+
+
+# -----------------------------------------------------------------------------
+# Load the command line arguments into the memory.
+# -----------------------------------------------------------------------------
+def get_args() -> str:
+    """Load the command line arguments into the memory."""
+
+    parser = argparse.ArgumentParser(
+        description="Streamlit Applications",
+        prog="streamlit",
+        prefix_chars="--",
+        usage="%(prog)s options",
+    )
+
+    # -------------------------------------------------------------------------
+    # Definition of the command line arguments.
+    # ------------------------------------------------------------------------
+    parser.add_argument(
+        "--mode",
+        help="the execution mode: '"
+        + "ltd' (The limited demo version) or '"
+        + "std' (The full version)",
+        metavar="mode",
+        required=False,
+        type=str,
+    )
+
+    # -------------------------------------------------------------------------
+    # Load and check the command line arguments.
+    # -------------------------------------------------------------------------
+    parsed_args = parser.parse_args()
+
+    mode = "Ltd"
+    if parsed_args.mode is not None:
+        if parsed_args.mode == "Std":
+            mode = parsed_args.mode
+
+    return mode
 
 
 # ------------------------------------------------------------------

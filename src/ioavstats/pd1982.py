@@ -303,7 +303,6 @@ SETTINGS = Dynaconf(
 # Filter the data frame.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
-@st.experimental_memo
 def _apply_filter_controls(
     df_unfiltered: DataFrame, filter_year_from: int | None, filter_year_to: int | None
 ) -> DataFrame:

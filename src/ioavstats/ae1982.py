@@ -37,18 +37,184 @@ CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
 CHOICE_CHARTS_HEIGHT_DEFAULT: float = 500
-CHOICE_CHARTS_TYPE_EYAOC: bool | None = None
-CHOICE_CHARTS_TYPE_EYIL: bool | None = None
-CHOICE_CHARTS_TYPE_EYRSS: bool | None = None
-CHOICE_CHARTS_TYPE_EYT: bool | None = None
-CHOICE_CHARTS_TYPE_EYTLP: bool | None = None
-CHOICE_CHARTS_TYPE_FYFP: bool | None = None
-CHOICE_CHARTS_TYPE_TAOC: bool | None = None
-CHOICE_CHARTS_TYPE_TEIL: bool | None = None
-CHOICE_CHARTS_TYPE_TERSS: bool | None = None
-CHOICE_CHARTS_TYPE_TET: bool | None = None
-CHOICE_CHARTS_TYPE_TETLP: bool | None = None
-CHOICE_CHARTS_TYPE_TFFP: bool | None = None
+
+CHOICE_CHARTS_LEGEND_FP_091X = "General Operations (Parts 091x)"
+CHOICE_CHARTS_LEGEND_FP_121 = "Regular Scheduled Air Carriers (Parts 121)"
+CHOICE_CHARTS_LEGEND_FP_135 = "Charter Type Services (Parts 135)"
+CHOICE_CHARTS_LEGEND_IL_FATAL = "Fatal"
+CHOICE_CHARTS_LEGEND_IL_MINOR = "Minor"
+CHOICE_CHARTS_LEGEND_IL_NONE = "None"
+CHOICE_CHARTS_LEGEND_IL_SERIOUS = "Serious"
+CHOICE_CHARTS_LEGEND_LP_ALTITUDE_CONTROLLABLE = "Aircraft can climb"
+CHOICE_CHARTS_LEGEND_LP_ALTITUDE_LOW = "Altitude too low"
+CHOICE_CHARTS_LEGEND_LP_ATTITUDE = "Attitude is controllable"
+CHOICE_CHARTS_LEGEND_LP_EMERGENCY = "Aircraft has degraded control failure"
+CHOICE_CHARTS_LEGEND_LP_MIDAIR = "Midair collision"
+CHOICE_CHARTS_LEGEND_LP_NARRATIVE = "Stall in narrative"
+CHOICE_CHARTS_LEGEND_LP_PILOT = "Pilot is able to perform maneuver"
+CHOICE_CHARTS_LEGEND_LP_RSS_AIRBORNE = "Airborne collision avoidance"
+CHOICE_CHARTS_LEGEND_LP_RSS_FORCED = "Forced landing"
+CHOICE_CHARTS_LEGEND_LP_RSS_SPIN = "Spin / stall prevention and recovery"
+CHOICE_CHARTS_LEGEND_LP_RSS_TERRAIN = "Terrain collision avoidance"
+CHOICE_CHARTS_LEGEND_LP_SPIN = "Aerodynamic spin / stall"
+CHOICE_CHARTS_LEGEND_RSS_AIRBORNE = "Airborne Collision Avoidance"
+CHOICE_CHARTS_LEGEND_RSS_FORCED = "Forced Landing"
+CHOICE_CHARTS_LEGEND_RSS_SPIN = "Spin Stall Prevention and Recovery"
+CHOICE_CHARTS_LEGEND_RSS_TERRAIN = "Terrain Collision Avoidance"
+CHOICE_CHARTS_LEGEND_T_ACC = "Accident"
+CHOICE_CHARTS_LEGEND_T_INC = "Incident"
+
+CHOICE_CHARTS_TYPE_EY_AOC: bool | None = None
+CHOICE_CHARTS_TYPE_EY_IL: bool | None = None
+CHOICE_CHARTS_TYPE_EY_RSS: bool | None = None
+CHOICE_CHARTS_TYPE_EY_T: bool | None = None
+CHOICE_CHARTS_TYPE_EY_TLP: bool | None = None
+CHOICE_CHARTS_TYPE_FY_FP: bool | None = None
+
+CHOICE_CHARTS_TYPE_N_AOC: list[tuple[str, str]] = [
+    (
+        "LOC-I",
+        "LOC-I",
+    ),
+    (
+        "UNK",
+        "UNK",
+    ),
+    (
+        "SCF-PP",
+        "SCF-PP",
+    ),
+    (
+        "CFIT",
+        "CFIT",
+    ),
+    (
+        "OTHR",
+        "OTHR",
+    ),
+    (
+        "UIMC",
+        "UIMC",
+    ),
+    (
+        "SCF-NP",
+        "SCF-NP",
+    ),
+    (
+        "FUEL",
+        "FUEL",
+    ),
+    (
+        "LALT",
+        "LALT",
+    ),
+    (
+        "MAC",
+        "MAC",
+    ),
+    (
+        "CTOL",
+        "CTOL",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_N_IL: list[tuple[str, str]] = [
+    (
+        CHOICE_CHARTS_LEGEND_IL_FATAL,
+        "FATL",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_IL_SERIOUS,
+        "SERS",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_IL_MINOR,
+        "MINR",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_IL_NONE,
+        "NONE",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_N_RSS: list[tuple[str, str]] = [
+    (
+        CHOICE_CHARTS_LEGEND_RSS_TERRAIN,
+        "is_rss_terrain_collision_avoidance",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_RSS_SPIN,
+        "is_rss_spin_stall_prevention_and_recovery",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_RSS_FORCED,
+        "is_rss_forced_landing",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_RSS_AIRBORNE,
+        "is_midair_collision",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_N_T: list[tuple[str, str]] = [
+    (
+        CHOICE_CHARTS_LEGEND_T_ACC,
+        "ACC",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_T_INC,
+        "INC",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_N_TLP: list[tuple[str, str]] = [
+    (
+        CHOICE_CHARTS_LEGEND_LP_ATTITUDE,
+        "is_attitude_controllable",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_LP_ALTITUDE_CONTROLLABLE,
+        "is_altitude_controllable",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_LP_ALTITUDE_LOW,
+        "is_altitude_low",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_LP_EMERGENCY,
+        "is_emergency_landing",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_LP_SPIN,
+        "is_spin_stall",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_LP_PILOT,
+        "is_pilot_issue",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_N_FP: list[tuple[str, str]] = [
+    (
+        CHOICE_CHARTS_LEGEND_FP_091X,
+        "is_far_part_091x",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_FP_135,
+        "is_far_part_135",
+    ),
+    (
+        CHOICE_CHARTS_LEGEND_FP_121,
+        "is_far_part_121",
+    ),
+]
+
+CHOICE_CHARTS_TYPE_TE_AOC: bool | None = None
+CHOICE_CHARTS_TYPE_TE_IL: bool | None = None
+CHOICE_CHARTS_TYPE_TE_RSS: bool | None = None
+CHOICE_CHARTS_TYPE_TE_T: bool | None = None
+CHOICE_CHARTS_TYPE_TE_TLP: bool | None = None
+CHOICE_CHARTS_TYPE_TF_FP: bool | None = None
 CHOICE_CHARTS_WIDTH: float | None = None
 CHOICE_CHARTS_WIDTH_DEFAULT: float = 1000
 CHOICE_DATA_PROFILE: bool | None = None
@@ -80,12 +246,6 @@ COLOR_MAP_SIZE = len(COLOR_MAP)
 COUNTRY_USA = "USA"
 
 DF_FILTERED: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_EYAOC: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_EYIL: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_EYRSS: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_EYT: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_EYTLP: DataFrame = DataFrame()
-DF_FILTERED_CHARTS_FYFP: DataFrame = DataFrame()
 DF_UNFILTERED: DataFrame = DataFrame()
 
 EVENT_TYPE_DESC: str
@@ -124,38 +284,6 @@ LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
 
-LEGEND_AOC_ARC = "ARC"
-LEGEND_AOC_FUEL = "FUEL"
-LEGEND_AOC_LOC_G = "LOC-G"
-LEGEND_AOC_LOC_I = "LOC-I"
-LEGEND_AOC_OTHR = "OTHR"
-LEGEND_AOC_SCF_NP = "SCF-NP"
-LEGEND_AOC_SCF_PP = "SCF-PP"
-LEGEND_FP_091X = "General Operations (Parts 091x)"
-LEGEND_FP_121 = "Regular Scheduled Air Carriers (Parts 121)"
-LEGEND_FP_135 = "Charter Type Services (Parts 135)"
-LEGEND_IL_FATAL = "Fatal"
-LEGEND_IL_MINOR = "Minor"
-LEGEND_IL_NONE = "None"
-LEGEND_IL_SERIOUS = "Serious"
-LEGEND_LP_ALTITUDE_CONTROLLABLE = "Aircraft can climb"
-LEGEND_LP_ALTITUDE_LOW = "Altitude too low"
-LEGEND_LP_ATTITUDE = "Attitude is controllable"
-LEGEND_LP_EMERGENCY = "Aircraft has degraded control failure"
-LEGEND_LP_MIDAIR = "Midair collision"
-LEGEND_LP_NARRATIVE = "Stall in narrative"
-LEGEND_LP_PILOT = "Pilot is able to perform maneuver"
-LEGEND_LP_RSS_AIRBORNE = "Airborne collision avoidance"
-LEGEND_LP_RSS_FORCED = "Forced landing"
-LEGEND_LP_RSS_SPIN = "Spin / stall prevention and recovery"
-LEGEND_LP_RSS_TERRAIN = "Terrain collision avoidance"
-LEGEND_LP_SPIN = "Aerodynamic spin / stall"
-LEGEND_RSS_AIRBORNE = "Airborne Collision Avoidance"
-LEGEND_RSS_FORCED = "Forced Landing"
-LEGEND_RSS_SPIN = "Spin Stall Prevention and Recovery"
-LEGEND_RSS_TERRAIN = "Terrain Collision Avoidance"
-LEGEND_T_ACC = "Accident"
-LEGEND_T_INC = "Incident"
 
 MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 MODE_STANDARD: bool | None = None
@@ -372,61 +500,64 @@ def _apply_filter_logical_params(
     filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
-    if LEGEND_LP_ALTITUDE_CONTROLLABLE in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_ALTITUDE_CONTROLLABLE in filter_params:  # type: ignore
         filter_cmd += "(_df_unfiltered['is_altitude_controllable'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_ALTITUDE_LOW in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_ALTITUDE_LOW in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_altitude_low'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_ATTITUDE in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_ATTITUDE in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or + "(_df_unfiltered['is_attitude_controllable'] == True)"
         )
         filter_cmd_or = operand
 
-    if LEGEND_LP_EMERGENCY in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_EMERGENCY in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_emergency_landing'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_MIDAIR in filter_params or LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
+    if (
+        CHOICE_CHARTS_LEGEND_LP_MIDAIR in filter_params  # type: ignore
+        or CHOICE_CHARTS_LEGEND_LP_RSS_AIRBORNE in filter_params  # type: ignore
+    ):
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_NARRATIVE in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_NARRATIVE in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_narrative_stall'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_PILOT in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_PILOT in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_pilot_issue'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_RSS_AIRBORNE in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = operand
 
-    if LEGEND_LP_RSS_FORCED in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_RSS_FORCED in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or + "(_df_unfiltered['is_rss_forced_landing'] == True)"
         )
         filter_cmd_or = " | "
 
-    if LEGEND_LP_RSS_SPIN in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_RSS_SPIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(_df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
         )
         filter_cmd_or = operand
 
-    if LEGEND_LP_RSS_TERRAIN in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_RSS_TERRAIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(_df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
         )
         filter_cmd_or = operand
 
-    if LEGEND_LP_SPIN in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_LP_SPIN in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_spin_stall'] == True)"
 
     filter_cmd += "]"
@@ -451,24 +582,24 @@ def _apply_filter_rss(
     filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
-    if LEGEND_RSS_AIRBORNE in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_RSS_AIRBORNE in filter_params:  # type: ignore
         filter_cmd += filter_cmd_or + "(_df_unfiltered['is_midair_collision'] == True)"
         filter_cmd_or = " | "
 
-    if LEGEND_RSS_FORCED in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_RSS_FORCED in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or + "(_df_unfiltered['is_rss_forced_landing'] == True)"
         )
         filter_cmd_or = " | "
 
-    if LEGEND_RSS_SPIN in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_RSS_SPIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(_df_unfiltered['is_rss_spin_stall_prevention_and_recovery'] == True)"
         )
         filter_cmd_or = " | "
 
-    if LEGEND_RSS_TERRAIN in filter_params:  # type: ignore
+    if CHOICE_CHARTS_LEGEND_RSS_TERRAIN in filter_params:  # type: ignore
         filter_cmd += (
             filter_cmd_or
             + "(_df_unfiltered['is_rss_terrain_collision_avoidance'] == True)"
@@ -604,7 +735,7 @@ def _get_postgres_connection() -> connection:
 # CICTT Codes.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_eyaoc(
+def _prep_data_charts_ey_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by CICTT Codes."""
@@ -622,50 +753,26 @@ def _prep_data_charts_eyaoc(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_AOC_LOC_I,
-            LEGEND_AOC_LOC_I,
-        ),
-        (
-            LEGEND_AOC_SCF_PP,
-            LEGEND_AOC_SCF_PP,
-        ),
-        (
-            LEGEND_AOC_LOC_G,
-            LEGEND_AOC_LOC_G,
-        ),
-        (
-            LEGEND_AOC_ARC,
-            LEGEND_AOC_ARC,
-        ),
-        (
-            LEGEND_AOC_FUEL,
-            LEGEND_AOC_FUEL,
-        ),
-        (
-            LEGEND_AOC_OTHR,
-            LEGEND_AOC_OTHR,
-        ),
-        (
-            LEGEND_AOC_SCF_NP,
-            LEGEND_AOC_SCF_NP,
-        ),
-    ]
+    if FILTER_CICTT_CODES:
+        names = []
+        for cictt_code in FILTER_CICTT_CODES:
+            names.append((cictt_code, cictt_code))
+    else:
+        names = CHOICE_CHARTS_TYPE_N_AOC
 
-    for name, name_df in attributes:
+    for name, name_df in names:
         df_chart[name] = np.where(
             df_chart.cictt_codes.apply(lambda x, n=name_df: bool(set(x) & {n})), 1, 0
         )
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return names, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Injury Level.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_eyil(
+def _prep_data_charts_ey_il(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Events per Year by Injury Level."""
@@ -683,29 +790,10 @@ def _prep_data_charts_eyil(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_IL_FATAL,
-            "FATL",
-        ),
-        (
-            LEGEND_IL_SERIOUS,
-            "SERS",
-        ),
-        (
-            LEGEND_IL_MINOR,
-            "MINR",
-        ),
-        (
-            LEGEND_IL_NONE,
-            "NONE",
-        ),
-    ]
-
-    for name, name_df in attributes:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_IL:
         df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return CHOICE_CHARTS_TYPE_N_IL, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -713,7 +801,7 @@ def _prep_data_charts_eyil(
 # Required Safety Systems.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_eyrss(
+def _prep_data_charts_ey_rss(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by Required Safety
@@ -735,36 +823,17 @@ def _prep_data_charts_eyrss(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_RSS_TERRAIN,
-            "is_rss_terrain_collision_avoidance",
-        ),
-        (
-            LEGEND_RSS_SPIN,
-            "is_rss_spin_stall_prevention_and_recovery",
-        ),
-        (
-            LEGEND_RSS_FORCED,
-            "is_rss_forced_landing",
-        ),
-        (
-            LEGEND_RSS_AIRBORNE,
-            "is_midair_collision",
-        ),
-    ]
-
-    for name, name_df in attributes:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_RSS:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return CHOICE_CHARTS_TYPE_N_RSS, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Event Types.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_eyt(
+def _prep_data_charts_ey_t(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Events per Year by Event Types."""
@@ -782,21 +851,10 @@ def _prep_data_charts_eyt(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_T_ACC,
-            "ACC",
-        ),
-        (
-            LEGEND_T_INC,
-            "INC",
-        ),
-    ]
-
-    for name, name_df in attributes:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_T:
         df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return CHOICE_CHARTS_TYPE_N_T, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -804,7 +862,7 @@ def _prep_data_charts_eyt(
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_eytlp(
+def _prep_data_charts_ey_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by Top Level Logical
@@ -828,37 +886,10 @@ def _prep_data_charts_eytlp(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_LP_SPIN,
-            "is_spin_stall",
-        ),
-        (
-            LEGEND_LP_ALTITUDE_LOW,
-            "is_altitude_low",
-        ),
-        (
-            LEGEND_LP_ATTITUDE,
-            "is_altitude_controllable",
-        ),
-        (
-            LEGEND_LP_ALTITUDE_CONTROLLABLE,
-            "is_altitude_controllable",
-        ),
-        (
-            LEGEND_LP_EMERGENCY,
-            "is_emergency_landing",
-        ),
-        (
-            LEGEND_LP_PILOT,
-            "is_pilot_issue",
-        ),
-    ]
-
-    for name, name_df in attributes:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_TLP:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return CHOICE_CHARTS_TYPE_N_TLP, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
@@ -866,7 +897,7 @@ def _prep_data_charts_eytlp(
 # FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_fyfp(
+def _prep_data_charts_fy_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Fatalities per Year under FAR Operations
@@ -888,32 +919,17 @@ def _prep_data_charts_fyfp(
         inplace=True,
     )
 
-    attributes = [
-        (
-            LEGEND_FP_091X,
-            "is_far_part_091x",
-        ),
-        (
-            LEGEND_FP_135,
-            "is_far_part_135",
-        ),
-        (
-            LEGEND_FP_121,
-            "is_far_part_121",
-        ),
-    ]
-
-    for name, name_df in attributes:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_FP:
         df_chart[name] = np.where(df_chart[name_df], df_chart.inj_tot_f, 0)
 
-    return attributes, df_chart.groupby("year", as_index=False).sum()
+    return CHOICE_CHARTS_TYPE_N_FP, df_chart.groupby("year", as_index=False).sum()
 
 
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by CICTT Codes.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_taoc(
+def _prep_data_charts_te_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     #   """Prepare the chart data: Total Events by CICTT Codes."""
@@ -943,7 +959,7 @@ def _prep_data_charts_taoc(
 # Prepare the chart data: Total Events by Highest Injury Levels.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_teil(
+def _prep_data_charts_te_il(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Highest Injury Levels."""
@@ -956,24 +972,7 @@ def _prep_data_charts_teil(
     name_value = []
     total_pie = 0
 
-    for name, name_df in [
-        (
-            LEGEND_IL_FATAL,
-            "FATL",
-        ),
-        (
-            LEGEND_IL_MINOR,
-            "MINR",
-        ),
-        (
-            LEGEND_IL_NONE,
-            "NONE",
-        ),
-        (
-            LEGEND_IL_SERIOUS,
-            "SERS",
-        ),
-    ]:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_IL:
         df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
         value = df_chart[name].sum()
         name_value.append((name, value))
@@ -986,7 +985,7 @@ def _prep_data_charts_teil(
 # Prepare the chart data: Total Events by Required Safety Systems.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_terss(
+def _prep_data_charts_te_rss(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Required Safety Systems."""
@@ -1002,24 +1001,7 @@ def _prep_data_charts_terss(
     name_value = []
     total_pie = 0
 
-    for name, name_df in [
-        (
-            LEGEND_RSS_AIRBORNE,
-            "is_midair_collision",
-        ),
-        (
-            LEGEND_RSS_FORCED,
-            "is_rss_forced_landing",
-        ),
-        (
-            LEGEND_RSS_SPIN,
-            "is_rss_spin_stall_prevention_and_recovery",
-        ),
-        (
-            LEGEND_RSS_TERRAIN,
-            "is_rss_terrain_collision_avoidance",
-        ),
-    ]:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_RSS:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
         value = df_chart[name].sum()
         name_value.append((name, value))
@@ -1032,7 +1014,7 @@ def _prep_data_charts_terss(
 # Prepare the chart data: Total Events by Event Types.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_tet(
+def _prep_data_charts_te_t(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Event Types."""
@@ -1045,16 +1027,7 @@ def _prep_data_charts_tet(
     name_value = []
     total_pie = 0
 
-    for name, name_df in [
-        (
-            LEGEND_T_ACC,
-            "ACC",
-        ),
-        (
-            LEGEND_T_INC,
-            "INC",
-        ),
-    ]:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_T:
         df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
         value = df_chart[name].sum()
         name_value.append((name, value))
@@ -1068,7 +1041,7 @@ def _prep_data_charts_tet(
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_tetlp(
+def _prep_data_charts_te_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Events by Top Level Logical Parameters."""
@@ -1086,32 +1059,7 @@ def _prep_data_charts_tetlp(
     name_value = []
     total_pie = 0
 
-    for name, name_df in [
-        (
-            LEGEND_LP_SPIN,
-            "is_spin_stall",
-        ),
-        (
-            LEGEND_LP_ALTITUDE_LOW,
-            "is_altitude_low",
-        ),
-        (
-            LEGEND_LP_ATTITUDE,
-            "is_attitude_controllable",
-        ),
-        (
-            LEGEND_LP_ALTITUDE_CONTROLLABLE,
-            "is_altitude_controllable",
-        ),
-        (
-            LEGEND_LP_EMERGENCY,
-            "is_emergency_landing",
-        ),
-        (
-            LEGEND_LP_PILOT,
-            "is_pilot_issue",
-        ),
-    ]:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_TLP:
         df_chart[name] = np.where(df_chart[name_df], 1, 0)
         value = df_chart[name].sum()
         name_value.append((name, value))
@@ -1125,7 +1073,7 @@ def _prep_data_charts_tetlp(
 # FAR Operations Parts.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _prep_data_charts_tffp(
+def _prep_data_charts_tf_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str]]:
     """Prepare the chart data: Total Fatalities under FAR Operations Parts."""
@@ -1141,20 +1089,7 @@ def _prep_data_charts_tffp(
     name_value = []
     total_pie = 0
 
-    for name, name_df in [
-        (
-            LEGEND_FP_091X,
-            "is_far_part_091x",
-        ),
-        (
-            LEGEND_FP_121,
-            "is_far_part_121",
-        ),
-        (
-            LEGEND_FP_135,
-            "is_far_part_135",
-        ),
-    ]:
+    for name, name_df in CHOICE_CHARTS_TYPE_N_FP:
         df_chart[name] = np.where(df_chart[name_df], df_chart.inj_tot_f, 0)
         value = df_chart[name].sum()
         name_value.append((name, value))
@@ -1209,7 +1144,7 @@ def _prep_pie_chart(
 # ------------------------------------------------------------------
 def _present_bar_chart(chart_title, file_id, prep_result) -> None:
     """Present the chart: Events per Year by CICTT Codes."""
-    attributes, df_filtered_charts = prep_result
+    names, df_filtered_charts = prep_result
 
     st.subheader(chart_title)
 
@@ -1217,7 +1152,7 @@ def _present_bar_chart(chart_title, file_id, prep_result) -> None:
     data = []
     details = []
 
-    for name, _name_df in attributes:
+    for name, _name_df in names:
         data.append(
             go.Bar(
                 marker={"color": COLOR_MAP[color_no % COLOR_MAP_SIZE]},
@@ -1236,8 +1171,12 @@ def _present_bar_chart(chart_title, file_id, prep_result) -> None:
     fig.update_layout(
         bargap=0.05,
         barmode="stack",
-        height=CHOICE_CHARTS_HEIGHT,
-        width=CHOICE_CHARTS_WIDTH,
+        height=CHOICE_CHARTS_HEIGHT
+        if CHOICE_CHARTS_HEIGHT
+        else CHOICE_CHARTS_HEIGHT_DEFAULT,
+        width=CHOICE_CHARTS_WIDTH
+        if CHOICE_CHARTS_WIDTH
+        else CHOICE_CHARTS_WIDTH_DEFAULT,
         title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={
@@ -1273,93 +1212,93 @@ def _present_bar_chart(chart_title, file_id, prep_result) -> None:
 def _present_charts() -> None:
     """Present the charts."""
     # Events per Year by CICTT Codes
-    if CHOICE_CHARTS_TYPE_EYAOC:
+    if CHOICE_CHARTS_TYPE_EY_AOC:
         _present_bar_chart(
             f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes",
             "eyaoc",
-            _prep_data_charts_eyaoc(DF_FILTERED),
+            _prep_data_charts_ey_aoc(DF_FILTERED),
         )
 
     # Events per Year by Injury Level
-    if CHOICE_CHARTS_TYPE_EYIL:
+    if CHOICE_CHARTS_TYPE_EY_IL:
         _present_bar_chart(
             f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Levels",
             "eyil",
-            _prep_data_charts_eyil(DF_FILTERED),
+            _prep_data_charts_ey_il(DF_FILTERED),
         )
 
     # Events per Year by Required Safety Systems
-    if CHOICE_CHARTS_TYPE_EYRSS:
+    if CHOICE_CHARTS_TYPE_EY_RSS:
         _present_bar_chart(
             f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems",
             "eyrss",
-            _prep_data_charts_eyrss(DF_FILTERED),
+            _prep_data_charts_ey_rss(DF_FILTERED),
         )
 
     # Events per Year by Event Types
-    if CHOICE_CHARTS_TYPE_EYT:
+    if CHOICE_CHARTS_TYPE_EY_T:
         _present_bar_chart(
             f"Number of {EVENT_TYPE_DESC} per Year by Event Types",
             "eyt",
-            _prep_data_charts_eyt(DF_FILTERED),
+            _prep_data_charts_ey_t(DF_FILTERED),
         )
 
     # Events per Year by Top Level Logical Parameters
-    if CHOICE_CHARTS_TYPE_EYTLP:
+    if CHOICE_CHARTS_TYPE_EY_TLP:
         _present_bar_chart(
             f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters",
             "eytlp",
-            _prep_data_charts_eytlp(DF_FILTERED),
+            _prep_data_charts_ey_tlp(DF_FILTERED),
         )
 
     # Fatalities per Year under FAR Operations Parts
-    if CHOICE_CHARTS_TYPE_FYFP:
+    if CHOICE_CHARTS_TYPE_FY_FP:
         _present_bar_chart(
             "Number of Fatalities per Year by Selected FAR Operations Parts",
             "fyfp",
-            _prep_data_charts_fyfp(DF_FILTERED),
+            _prep_data_charts_fy_fp(DF_FILTERED),
         )
 
     # Total Events by CICTT Code
-    if CHOICE_CHARTS_TYPE_TAOC:
+    if CHOICE_CHARTS_TYPE_TE_AOC:
         _present_pie_chart(
             f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
-            _prep_data_charts_taoc(DF_FILTERED),
+            _prep_data_charts_te_aoc(DF_FILTERED),
         )
 
     # Total Events by Highest Injury Levels
-    if CHOICE_CHARTS_TYPE_TEIL:
+    if CHOICE_CHARTS_TYPE_TE_IL:
         _present_pie_chart(
             f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
-            _prep_data_charts_teil(DF_FILTERED),
+            _prep_data_charts_te_il(DF_FILTERED),
         )
 
     # Total Events by Required Safety Systems
-    if CHOICE_CHARTS_TYPE_TERSS:
+    if CHOICE_CHARTS_TYPE_TE_RSS:
         _present_pie_chart(
             f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems",
-            _prep_data_charts_terss(DF_FILTERED),
+            _prep_data_charts_te_rss(DF_FILTERED),
         )
 
     # Total Events by Event Types
-    if CHOICE_CHARTS_TYPE_TET:
+    if CHOICE_CHARTS_TYPE_TE_T:
         _present_pie_chart(
             f"Total Number of {EVENT_TYPE_DESC} by Event Types",
-            _prep_data_charts_tet(DF_FILTERED),
+            _prep_data_charts_te_t(DF_FILTERED),
         )
 
     # Total Events by Top Level logical Parameter
-    if CHOICE_CHARTS_TYPE_TETLP:
+    if CHOICE_CHARTS_TYPE_TE_TLP:
         _present_pie_chart(
             f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
-            _prep_data_charts_tetlp(DF_FILTERED),
+            _prep_data_charts_te_tlp(DF_FILTERED),
         )
 
     # Total Fatalities under FAR Operations Parts
-    if CHOICE_CHARTS_TYPE_TFFP:
+    if CHOICE_CHARTS_TYPE_TF_FP:
         _present_pie_chart(
             "Total Number of Fatalities by Selected FAR Operations Parts",
-            _prep_data_charts_tffp(DF_FILTERED),
+            _prep_data_charts_tf_fp(DF_FILTERED),
         )
 
 
@@ -1868,18 +1807,18 @@ def _setup_filter() -> None:
 
     if CHOICE_EXTENDED_VERSION:
         logical_params_options = [
-            LEGEND_LP_SPIN,
-            LEGEND_LP_RSS_AIRBORNE,
-            LEGEND_LP_ALTITUDE_CONTROLLABLE,
-            LEGEND_LP_EMERGENCY,
-            LEGEND_LP_ALTITUDE_LOW,
-            LEGEND_LP_ATTITUDE,
-            LEGEND_LP_RSS_FORCED,
-            LEGEND_LP_MIDAIR,
-            LEGEND_LP_PILOT,
-            LEGEND_LP_RSS_SPIN,
-            LEGEND_LP_NARRATIVE,
-            LEGEND_LP_RSS_TERRAIN,
+            CHOICE_CHARTS_LEGEND_LP_SPIN,
+            CHOICE_CHARTS_LEGEND_LP_RSS_AIRBORNE,
+            CHOICE_CHARTS_LEGEND_LP_ALTITUDE_CONTROLLABLE,
+            CHOICE_CHARTS_LEGEND_LP_EMERGENCY,
+            CHOICE_CHARTS_LEGEND_LP_ALTITUDE_LOW,
+            CHOICE_CHARTS_LEGEND_LP_ATTITUDE,
+            CHOICE_CHARTS_LEGEND_LP_RSS_FORCED,
+            CHOICE_CHARTS_LEGEND_LP_MIDAIR,
+            CHOICE_CHARTS_LEGEND_LP_PILOT,
+            CHOICE_CHARTS_LEGEND_LP_RSS_SPIN,
+            CHOICE_CHARTS_LEGEND_LP_NARRATIVE,
+            CHOICE_CHARTS_LEGEND_LP_RSS_TERRAIN,
         ]
 
         FILTER_LOGICAL_PARAMETERS_AND = st.sidebar.multiselect(
@@ -1942,10 +1881,10 @@ def _setup_filter() -> None:
         """,
         label="**Required safety system(s):**",
         options=[
-            LEGEND_RSS_AIRBORNE,
-            LEGEND_RSS_FORCED,
-            LEGEND_RSS_SPIN,
-            LEGEND_RSS_TERRAIN,
+            CHOICE_CHARTS_LEGEND_RSS_AIRBORNE,
+            CHOICE_CHARTS_LEGEND_RSS_FORCED,
+            CHOICE_CHARTS_LEGEND_RSS_SPIN,
+            CHOICE_CHARTS_LEGEND_RSS_TERRAIN,
         ],
     )
     _print_timestamp("_setup_filter - FILTER_RSS - 1")
@@ -2089,18 +2028,18 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EYAOC  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EYIL  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EYRSS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EYT  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EYTLP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_FYFP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TAOC  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TEIL  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TERSS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TET  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TETLP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TFFP  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_AOC  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_RSS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_T  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_TLP  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_FY_FP  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_AOC  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_IL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_RSS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_T  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_TLP  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TF_FP  # pylint: disable=global-statement
     global CHOICE_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
@@ -2143,33 +2082,33 @@ def _setup_task_controls() -> None:
             st.sidebar.markdown("""---""")
 
         if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_EYAOC = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_EY_AOC = st.sidebar.checkbox(
                 help="Events per year by CICTT codes (after filtering the data).",
                 label="Events per Year by CICTT Codes",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_EYT = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_EY_T = st.sidebar.checkbox(
                 help="Events per year by event types (after filtering the data).",
                 label="Events per Year by Event Types",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_EYIL = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_EY_IL = st.sidebar.checkbox(
                 help="Events per year by highest injury level (after filtering the data).",
                 label="Events per Year by Highest Injury Levels",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_EYRSS = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_EY_RSS = st.sidebar.checkbox(
                 help="Events per year by required security systems (after filtering the data).",
                 label="Events per Year by Required Security Systems",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_EYTLP = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_EY_TLP = st.sidebar.checkbox(
                 help="Events per year by top level logical parameters (after filtering the data).",
                 label="Events per Year by Top Level Logical Parameters",
                 value=False,
             )
 
-        CHOICE_CHARTS_TYPE_FYFP = st.sidebar.checkbox(
+        CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
             help="Fatalities per year by selected FAR Operations Parts (after filtering the data).",
             label="Fatalities per Year under FAR Operations Parts",
             value=True,
@@ -2178,33 +2117,33 @@ def _setup_task_controls() -> None:
         st.sidebar.markdown("""---""")
 
         if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_TAOC = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_TE_AOC = st.sidebar.checkbox(
                 help="Total events by CICTT codes (after filtering the data).",
                 label="Total Events by CICTT Codes",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_TET = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_TE_T = st.sidebar.checkbox(
                 help="Total events by event types (after filtering the data).",
                 label="Total Events by Event Types",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_TEIL = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_TE_IL = st.sidebar.checkbox(
                 help="Total events by highest injury levels (after filtering the data).",
                 label="Total Events by Highest Injury Levels",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_TERSS = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_TE_RSS = st.sidebar.checkbox(
                 help="Total events by required safety systems (after filtering the data).",
                 label="Total Events by Required Safety Systems",
                 value=False,
             )
-            CHOICE_CHARTS_TYPE_TETLP = st.sidebar.checkbox(
+            CHOICE_CHARTS_TYPE_TE_TLP = st.sidebar.checkbox(
                 help="Total events by top level logical parameters (after filtering the data).",
                 label="Total Events by Top Level Logical Parameters",
                 value=False,
             )
 
-        CHOICE_CHARTS_TYPE_TFFP = st.sidebar.checkbox(
+        CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
             help="Total fatalities by selected FAR operations parts (after filtering the data).",
             label="Total Fatalities under FAR Operations Parts",
             value=True,

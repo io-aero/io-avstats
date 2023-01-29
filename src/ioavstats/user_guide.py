@@ -90,16 +90,14 @@ Der populistische Ex-Regierungschef
 # ------------------------------------------------------------------
 def get_pd1982_app() -> None:
     """pd1982 - Create the application user guide."""
-    """Diese Anwendung stellt zum einen die Daten der Tabellen und Views der
-    Datenbank **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum
-    Herunterladen als **`csv`** Datei zur Verfügung.
-
-    Zum anderen ist es auch möglich eine explorative Datenanalyse von einzelnen Tabellen oder Views mithilfe von [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) durchzuführen und das Ergebnis wahlweise als **`HTML`** Datei herunterzuladen.
-
-    Die Datenbank **IO-AVSTATS-DB** beruht hauptsachlich auf den von der [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in Form von Microsoft Access Datenbanken [hier]( https://data.ntsb.gov/avdata) zur Verfügung gestellten Flugverkehrsunfallzahlen.
-
-    Detaillierte Informationen zur Anwendung **`pd1982`** finden sich [hier](https://io-aero.github.io/io-avstats-shared/).
-    """
+    # """Diese Anwendung stellt zum einen die Daten der Tabellen und Views der Datenbank **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum Herunterladen als **`csv`** Datei zur Verfügung.
+    #
+    # Zum anderen ist es auch möglich eine explorative Datenanalyse von einzelnen Tabellen oder Views mithilfe von [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) durchzuführen und das Ergebnis wahlweise als **`HTML`** Datei herunterzuladen.
+    #
+    # Die Datenbank **IO-AVSTATS-DB** beruht hauptsachlich auf den von der [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in Form von Microsoft Access Datenbanken [hier]( https://data.ntsb.gov/avdata) zur Verfügung gestellten Flugverkehrsunfallzahlen.
+    #
+    # Detaillierte Informationen zur Anwendung **`pd1982`** finden sich [hier](https://io-aero.github.io/io-avstats-shared/).
+    # """
     user_guide = (
         _generic_header_section("User Guide Application `pd1982`")
         + f"""
@@ -137,17 +135,12 @@ def get_pd1982_data_profile() -> None:
 # ------------------------------------------------------------------
 def get_pd1982_details() -> None:
     """pd1982 - Create the details user guide."""
-    """Diese Anwendung stellt die Daten der Tabellen und Views der Datenbank.
-
-    **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum Herunterladen
-    als **`csv`** Datei zur Verfügung.
-
-    Die anzuzeigenden Reihen können bei den Filteroptionen auf ein
-    Intervall von Ereignisjahren beschränkt werden. Die Reihenfolge der
-    Datenanzeige richtet sich nach dem jeweiligen Primärschlüssel der
-    Datenbanktabelle. Die Datenbankspalten der ausgewählten Reihen
-    werden immer vollständig angezeigt.
-    """
+    # """Diese Anwendung stellt die Daten der Tabellen und Views der Datenbank **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum Herunterladen als **`csv`** Datei zur Verfügung.
+    #
+    # Die anzuzeigenden Reihen können bei den Filteroptionen auf ein Intervall von Ereignisjahren beschränkt werden.
+    # Die Reihenfolge der Datenanzeige richtet sich nach dem jeweiligen Primärschlüssel der Datenbanktabelle.
+    # Die Datenbankspalten der ausgewählten Reihen werden immer vollständig angezeigt.
+    # """
     user_guide = (
         _generic_header_section("User Guide Details")
         + """

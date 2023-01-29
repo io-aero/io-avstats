@@ -1,4 +1,4 @@
-# Copyright (c) 2022 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -9,6 +9,7 @@ import time
 import pandas as pd
 import psycopg2
 import streamlit as st
+import user_guide  # type: ignore
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
@@ -25,11 +26,14 @@ APP_ID = "pd1982"
 
 # pylint: disable=R0801
 CHOICE_ABOUT: bool | None = None
-CHOICE_DATA_PROFILE: bool | None = None
-CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
 CHOICE_FILTER_DATA: bool | None = None
+CHOICE_PROFILING: bool | None = None
+CHOICE_PROFILING_TYPE: str | None = None
 CHOICE_TABLE_SELECTION: str = ""
+CHOICE_UG_APP: bool | None = None
+CHOICE_UG_DETAILS: bool | None = None
+CHOICE_UG_PROFILING: bool | None = None
 
 DF_FILTERED: DataFrame = DataFrame()
 DF_UNFILTERED: DataFrame = DataFrame()
@@ -398,25 +402,54 @@ def _get_postgres_connection() -> connection:
 # ------------------------------------------------------------------
 def _present_data():
     """Present the filtered data."""
-    if CHOICE_DATA_PROFILE:
-        st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
+    global CHOICE_UG_DETAILS  # pylint: disable=global-statement
+    global CHOICE_UG_PROFILING  # pylint: disable=global-statement
+
+    if CHOICE_PROFILING:
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
+        with col2:
+            CHOICE_UG_PROFILING = st.checkbox(
+                help="Explanations and operating instructions related to profiling "
+                + "of the database tables.",
+                label="**User Guide Profiling**",
+                value=False,
+            )
+
+        if CHOICE_UG_PROFILING:
+            user_guide.get_pd1982_data_profile()
+
         _present_data_data_profile()
 
-    _col1, _col2, col3 = st.columns(
-        [
-            1,
-            1,
-            1,
-        ]
-    )
-
-    if CHOICE_ABOUT:
-        with col3:
-            utils.present_about(PG_CONN, APP_ID)
-
     if CHOICE_DETAILS:
-        st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
+        with col2:
+            CHOICE_UG_DETAILS = st.checkbox(
+                help="Explanations and operating instructions related to the detailed view.",
+                label="**User Guide Details**",
+                value=False,
+            )
+
+        if CHOICE_UG_DETAILS:
+            user_guide.get_pd1982_details()
+
         st.dataframe(DF_FILTERED)
+
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_" + CHOICE_TABLE_SELECTION + ".csv",
@@ -433,7 +466,7 @@ def _present_data():
 def _present_data_data_profile():
     """Present the data profile."""
     # noinspection PyUnboundLocalVariable
-    if CHOICE_DATA_PROFILE_TYPE == "explorative":
+    if CHOICE_PROFILING_TYPE == "explorative":
         profile_report = ProfileReport(
             DF_FILTERED,
             explorative=True,
@@ -448,7 +481,7 @@ def _present_data_data_profile():
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        file_name=APP_ID + "_" + CHOICE_PROFILING_TYPE + ".html",
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -489,6 +522,7 @@ def _setup_filter_controls():
 def _setup_page():
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
+    global CHOICE_UG_APP  # pylint: disable=global-statement
     global FILTER_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_YEAR_TO  # pylint: disable=global-statement
 
@@ -497,7 +531,9 @@ def _setup_page():
         FILTER_YEAR_TO if FILTER_YEAR_TO else datetime.date.today().year - 1
     )
 
-    col1, _col2, col3 = st.columns(
+    st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
+
+    _col1, col2, col3 = st.columns(
         [
             1,
             1,
@@ -505,23 +541,32 @@ def _setup_page():
         ]
     )
 
-    with col1:
-        st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
-
-    with col3:
-        # flake8: noqa: E501
-        # pylint: disable=line-too-long
-        st.image(
-            "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-            width=200,
-        )
-
-    with col3:
+    with col2:
         CHOICE_ABOUT = st.checkbox(
             help="Software owner and release information.",
             label="**About this Application**",
             value=False,
         )
+
+    with col3:
+        CHOICE_UG_APP = st.checkbox(
+            help="Explanations and operating instructions related to the whole application.",
+            label="**User Guide Application**",
+            value=False,
+        )
+
+    if CHOICE_ABOUT:
+        _col1, col2 = st.columns(
+            [
+                1,
+                2,
+            ]
+        )
+        with col2:
+            utils.present_about(PG_CONN, APP_ID)
+
+    if CHOICE_UG_APP:
+        user_guide.get_pd1982_app()
 
 
 # ------------------------------------------------------------------
@@ -538,19 +583,25 @@ def _setup_sidebar():
 # ------------------------------------------------------------------
 def _setup_task_controls():
     """Set up the task controls."""
-    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
+    global CHOICE_PROFILING  # pylint: disable=global-statement
+    global CHOICE_PROFILING_TYPE  # pylint: disable=global-statement
     global CHOICE_TABLE_SELECTION  # pylint: disable=global-statement
 
-    CHOICE_DATA_PROFILE = st.sidebar.checkbox(
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    CHOICE_PROFILING = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**Show data profile**",
         value=False,
     )
 
-    if CHOICE_DATA_PROFILE:
-        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
+    if CHOICE_PROFILING:
+        CHOICE_PROFILING_TYPE = st.sidebar.radio(
             help="explorative: thorough but also slow - minimal: minimal but faster.",
             index=1,
             label="Data profile type",

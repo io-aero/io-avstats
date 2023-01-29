@@ -1,4 +1,4 @@
-# Copyright (c) 2022 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -14,6 +14,7 @@ import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import pydeck as pdk  # type: ignore
 import streamlit as st
+import user_guide  # type: ignore
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
@@ -23,8 +24,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
-pd.options.mode.chained_assignment: str | None = None  # type: ignore
-
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
@@ -33,6 +32,7 @@ APP_ID = "ae1982"
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
 CHOICE_ABOUT: bool | None = None
+
 CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
@@ -41,10 +41,12 @@ CHOICE_CHARTS_HEIGHT_DEFAULT: float = 500
 CHOICE_CHARTS_LEGEND_FP_091X = "General Operations (Parts 091x)"
 CHOICE_CHARTS_LEGEND_FP_121 = "Regular Scheduled Air Carriers (Parts 121)"
 CHOICE_CHARTS_LEGEND_FP_135 = "Charter Type Services (Parts 135)"
+
 CHOICE_CHARTS_LEGEND_IL_FATAL = "Fatal"
 CHOICE_CHARTS_LEGEND_IL_MINOR = "Minor"
 CHOICE_CHARTS_LEGEND_IL_NONE = "None"
 CHOICE_CHARTS_LEGEND_IL_SERIOUS = "Serious"
+
 CHOICE_CHARTS_LEGEND_LP_ALTITUDE_CONTROLLABLE = "Aircraft can climb"
 CHOICE_CHARTS_LEGEND_LP_ALTITUDE_LOW = "Altitude too low"
 CHOICE_CHARTS_LEGEND_LP_ATTITUDE = "Attitude is controllable"
@@ -57,10 +59,12 @@ CHOICE_CHARTS_LEGEND_LP_RSS_FORCED = "Forced landing"
 CHOICE_CHARTS_LEGEND_LP_RSS_SPIN = "Spin / stall prevention and recovery"
 CHOICE_CHARTS_LEGEND_LP_RSS_TERRAIN = "Terrain collision avoidance"
 CHOICE_CHARTS_LEGEND_LP_SPIN = "Aerodynamic spin / stall"
+
 CHOICE_CHARTS_LEGEND_RSS_AIRBORNE = "Airborne Collision Avoidance"
 CHOICE_CHARTS_LEGEND_RSS_FORCED = "Forced Landing"
 CHOICE_CHARTS_LEGEND_RSS_SPIN = "Spin Stall Prevention and Recovery"
 CHOICE_CHARTS_LEGEND_RSS_TERRAIN = "Terrain Collision Avoidance"
+
 CHOICE_CHARTS_LEGEND_T_ACC = "Accident"
 CHOICE_CHARTS_LEGEND_T_INC = "Incident"
 
@@ -215,6 +219,20 @@ CHOICE_CHARTS_TYPE_TE_RSS: bool | None = None
 CHOICE_CHARTS_TYPE_TE_T: bool | None = None
 CHOICE_CHARTS_TYPE_TE_TLP: bool | None = None
 CHOICE_CHARTS_TYPE_TF_FP: bool | None = None
+
+CHOICE_CHARTS_UG_EY_AOC: bool | None = None
+CHOICE_CHARTS_UG_EY_IL: bool | None = None
+CHOICE_CHARTS_UG_EY_RSS: bool | None = None
+CHOICE_CHARTS_UG_EY_T: bool | None = None
+CHOICE_CHARTS_UG_EY_TLP: bool | None = None
+CHOICE_CHARTS_UG_FY_FP: bool | None = None
+CHOICE_CHARTS_UG_TE_AOC: bool | None = None
+CHOICE_CHARTS_UG_TE_IL: bool | None = None
+CHOICE_CHARTS_UG_TE_RSS: bool | None = None
+CHOICE_CHARTS_UG_TE_T: bool | None = None
+CHOICE_CHARTS_UG_TE_TLP: bool | None = None
+CHOICE_CHARTS_UG_TF_FP: bool | None = None
+
 CHOICE_CHARTS_WIDTH: float | None = None
 CHOICE_CHARTS_WIDTH_DEFAULT: float = 1000
 CHOICE_DATA_PROFILE: bool | None = None
@@ -224,21 +242,29 @@ CHOICE_EXTENDED_VERSION: bool | None = None
 CHOICE_FILTER_CONDITIONS: bool | None = None
 CHOICE_FILTER_CONDITIONS_TEXT: str = ""
 CHOICE_FILTER_DATA: bool | None = None
+
 CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
 CHOICE_MAP_MAP_STYLE_DEFAULT: str = "outdoors-v12"
 CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
 
-COLOR_LEVEL_1 = "#15535f"  # peacock
-COLOR_LEVEL_2 = "#47a3b5"  # aqua
-COLOR_LEVEL_3 = "#fadc82"  # yellow
-COLOR_LEVEL_4 = "#f1a638"  # orange
+CHOICE_UG_APP: bool | None = None
+CHOICE_UG_CHART_FY_FP: bool | None = None
 
 COLOR_MAP: list[str] = [
     "#15535f",  # peacock
     "#47a3b5",  # aqua
     "#fadc82",  # yellow
-    "#f1a638",  # orange
+    "#f18c2c",  # orange
+    "#778b4a",  # olive
+    "#eb6081",  # raspberry
+    "#c4e5f4",  # pale blue
+    "#d43724",  # red
+    "#bcd284",  # pale green
+    "#5f4b8b",  # purple
+    "#f8d2d5",  # pink
+    "#795339",  # brown
+    "#40484f",  # charcoal
 ]
 COLOR_MAP_NONE = "#000000"  # black
 COLOR_MAP_SIZE = len(COLOR_MAP)
@@ -765,7 +791,7 @@ def _prep_data_charts_ey_aoc(
             df_chart.cictt_codes.apply(lambda x, n=name_df: bool(set(x) & {n})), 1, 0
         )
 
-    return names, df_chart.groupby("year", as_index=False).sum()
+    return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
 
 
 # ------------------------------------------------------------------
@@ -1120,16 +1146,15 @@ def _prep_pie_chart(
     name_sum_adj.sort(key=itemgetter(1), reverse=True)
 
     color_discrete_map = {}
+    color_no = 0
     names = []
-    pos = 0
     values = []
 
     for (name, value) in name_sum_adj:
         names.append(name)
         values.append(value)
-        if pos < COLOR_MAP_SIZE:
-            color_discrete_map[name] = COLOR_MAP[pos]
-            pos += 1
+        color_discrete_map[name] = COLOR_MAP[color_no % COLOR_MAP_SIZE]
+        color_no += 1
 
     if total_pie_adj < total_filter:
         color_discrete_map[NAME_NONE] = COLOR_MAP_NONE
@@ -1142,11 +1167,9 @@ def _prep_pie_chart(
 # ------------------------------------------------------------------
 # Present the chart: Events per Year by CICTT Codes.
 # ------------------------------------------------------------------
-def _present_bar_chart(chart_title, file_id, prep_result) -> None:
+def _present_bar_chart(chart_id, chart_title, prep_result):
     """Present the chart: Events per Year by CICTT Codes."""
     names, df_filtered_charts = prep_result
-
-    st.subheader(chart_title)
 
     color_no = 0
     data = []
@@ -1180,7 +1203,7 @@ def _present_bar_chart(chart_title, file_id, prep_result) -> None:
         title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={
-            "title": {"text": "Fatalities" if file_id in ["fyfp"] else EVENT_TYPE_DESC}
+            "title": {"text": "Fatalities" if chart_id in ["fyfp"] else EVENT_TYPE_DESC}
         },
     )
 
@@ -1199,11 +1222,182 @@ def _present_bar_chart(chart_title, file_id, prep_result) -> None:
         )
         st.download_button(
             data=_convert_df_2_csv(df_filtered_charts),
-            file_name=APP_ID + "_charts_" + file_id + ".csv",
+            file_name=APP_ID + "_charts_" + chart_id + ".csv",
             help="The download includes the detailed chart data.",
             label="Download the chart data",
             mime="text/csv",
         )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by CICTT Codes.
+# ------------------------------------------------------------------
+def _present_chart_ey_aoc() -> None:
+    """Present chart: Events per Year by CICTT Codes."""
+    global CHOICE_CHARTS_UG_EY_AOC  # pylint: disable=global-statement
+
+    if CHOICE_CHARTS_TYPE_EY_AOC:
+        chart_id = "ey_aoc"
+        chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.subheader(chart_title)
+        with col2:
+            CHOICE_CHARTS_UG_EY_AOC = st.checkbox(
+                help="Explanations and operating instructions related to this bar chart.",
+                key=chart_title,
+                label="**User Guide Chart**",
+                value=False,
+            )
+        # if CHOICE_CHARTS_UG_EY_AOC:
+        #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+        _present_bar_chart(
+            chart_id,
+            chart_title,
+            _prep_data_charts_ey_aoc(DF_FILTERED),
+        )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Injury Levels.
+# ------------------------------------------------------------------
+def _present_chart_ey_il() -> None:
+    """Present chart: Events per Year by Injury Levels."""
+    global CHOICE_CHARTS_UG_EY_IL  # pylint: disable=global-statement
+
+    chart_id = "ey_il"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader(chart_title)
+    with col2:
+        CHOICE_CHARTS_UG_EY_IL = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide Chart**",
+            value=False,
+        )
+    # if CHOICE_CHARTS_UG_EY_IL:
+    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_il(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Required Safety Systems.
+# ------------------------------------------------------------------
+def _present_chart_ey_rss() -> None:
+    """Present chart: Events per Year by Required Safety Systems."""
+    global CHOICE_CHARTS_UG_EY_RSS  # pylint: disable=global-statement
+
+    chart_id = "ey_rss"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader(chart_title)
+    with col2:
+        CHOICE_CHARTS_UG_EY_RSS = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide Chart**",
+            value=False,
+        )
+    # if CHOICE_CHARTS_UG_EY_RSS:
+    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_rss(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Event Types.
+# ------------------------------------------------------------------
+def _present_chart_ey_t() -> None:
+    """Present chart: Events per Year by Event Types."""
+    global CHOICE_CHARTS_UG_EY_T  # pylint: disable=global-statement
+
+    chart_id = "ey_t"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader(chart_title)
+    with col2:
+        CHOICE_CHARTS_UG_EY_T = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide Chart**",
+            value=False,
+        )
+    # if CHOICE_CHARTS_UG_EY_T:
+    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_t(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Top Logical Parameters.
+# ------------------------------------------------------------------
+def _present_chart_ey_tlp() -> None:
+    """Present chart: Events per Year by Top Logical Parameters."""
+    global CHOICE_CHARTS_UG_EY_TLP  # pylint: disable=global-statement
+
+    chart_id = "ey_tlp"
+    chart_tlpitle = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader(chart_tlpitle)
+    with col2:
+        CHOICE_CHARTS_UG_EY_TLP = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_tlpitle,
+            label="**User Guide Chart**",
+            value=False,
+        )
+    # if CHOICE_CHARTS_UG_EY_TLP:
+    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    _present_bar_chart(
+        chart_id,
+        chart_tlpitle,
+        _prep_data_charts_ey_tlp(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Number of Fatalities per Year by
+# Selected FAR Operations Parts.
+# ------------------------------------------------------------------
+def _present_chart_fy_fp() -> None:
+    """Present chart: Number of Fatalities per Year by Selected FAR Operations
+    Parts."""
+    global CHOICE_CHARTS_UG_FY_FP  # pylint: disable=global-statement
+
+    chart_id = "fy_fp"
+    chart_tlpitle = "Number of Fatalities per Year by Selected FAR Operations Parts"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader(chart_tlpitle)
+    with col2:
+        CHOICE_CHARTS_UG_FY_FP = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_tlpitle,
+            label="**User Guide Chart**",
+            value=False,
+        )
+    # if CHOICE_CHARTS_UG_FY_FP:
+    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    _present_bar_chart(
+        chart_id,
+        chart_tlpitle,
+        _prep_data_charts_fy_fp(DF_FILTERED),
+    )
 
 
 # ------------------------------------------------------------------
@@ -1213,51 +1407,27 @@ def _present_charts() -> None:
     """Present the charts."""
     # Events per Year by CICTT Codes
     if CHOICE_CHARTS_TYPE_EY_AOC:
-        _present_bar_chart(
-            f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes",
-            "eyaoc",
-            _prep_data_charts_ey_aoc(DF_FILTERED),
-        )
+        _present_chart_ey_aoc()
 
     # Events per Year by Injury Level
     if CHOICE_CHARTS_TYPE_EY_IL:
-        _present_bar_chart(
-            f"Number of {EVENT_TYPE_DESC} per Year by Highest Injury Levels",
-            "eyil",
-            _prep_data_charts_ey_il(DF_FILTERED),
-        )
+        _present_chart_ey_il()
 
     # Events per Year by Required Safety Systems
     if CHOICE_CHARTS_TYPE_EY_RSS:
-        _present_bar_chart(
-            f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems",
-            "eyrss",
-            _prep_data_charts_ey_rss(DF_FILTERED),
-        )
+        _present_chart_ey_rss()
 
     # Events per Year by Event Types
     if CHOICE_CHARTS_TYPE_EY_T:
-        _present_bar_chart(
-            f"Number of {EVENT_TYPE_DESC} per Year by Event Types",
-            "eyt",
-            _prep_data_charts_ey_t(DF_FILTERED),
-        )
+        _present_chart_ey_t()
 
     # Events per Year by Top Level Logical Parameters
     if CHOICE_CHARTS_TYPE_EY_TLP:
-        _present_bar_chart(
-            f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters",
-            "eytlp",
-            _prep_data_charts_ey_tlp(DF_FILTERED),
-        )
+        _present_chart_ey_tlp()
 
     # Fatalities per Year under FAR Operations Parts
     if CHOICE_CHARTS_TYPE_FY_FP:
-        _present_bar_chart(
-            "Number of Fatalities per Year by Selected FAR Operations Parts",
-            "fyfp",
-            _prep_data_charts_fy_fp(DF_FILTERED),
-        )
+        _present_chart_fy_fp()
 
     # Total Events by CICTT Code
     if CHOICE_CHARTS_TYPE_TE_AOC:
@@ -1309,15 +1479,18 @@ def _present_data() -> None:
     """Present the filtered data."""
     _print_timestamp("_present_data() - Start")
 
-    col1, _col2, col3 = st.columns([1, 1, 1])
-
     if CHOICE_FILTER_CONDITIONS:
-        with col1:
-            st.markdown(CHOICE_FILTER_CONDITIONS_TEXT)
-            _print_timestamp("_present_data() - CHOICE_FILTER_CONDITIONS")
+        st.warning(CHOICE_FILTER_CONDITIONS_TEXT)
+        _print_timestamp("_present_data() - CHOICE_FILTER_CONDITIONS")
 
     if CHOICE_ABOUT:
-        with col3:
+        _col1, col2 = st.columns(
+            [
+                1,
+                2,
+            ]
+        )
+        with col2:
             if not MODE_STANDARD:
                 extension = " - limited version"
             elif CHOICE_EXTENDED_VERSION:
@@ -1326,6 +1499,9 @@ def _present_data() -> None:
                 extension = " (Standard version)"
             utils.present_about(PG_CONN, APP_ID + extension)
             _print_timestamp("_present_data() - CHOICE_ABOUT")
+
+    if CHOICE_UG_APP:
+        st.info(user_guide.get_ae1982_app())
 
     if CHOICE_CHARTS:
         _present_charts()
@@ -1958,6 +2134,7 @@ def _setup_page() -> None:
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
+    global CHOICE_UG_APP  # pylint: disable=global-statement
     global EVENT_TYPE_DESC  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
     global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
@@ -1974,32 +2151,31 @@ def _setup_page() -> None:
     else:
         EVENT_TYPE_DESC = "Events"
 
-    col1, _col2, col3 = st.columns([1, 1, 1])
+    st.header(
+        f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
+    )
 
-    with col1:
-        st.header(
-            f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
-        )
-
-    with col3:
-        # pylint: disable=line-too-long
-        st.image(
-            "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-            width=200,
-        )
+    col1, col2, col3 = st.columns([1, 1, 1])
 
     if CHOICE_FILTER_DATA:
         with col1:
             CHOICE_FILTER_CONDITIONS = st.checkbox(
                 help="Show the selected filter conditions.",
-                label="**Show filter conditions**",
+                label="**Show Active Filter(s)**",
                 value=False,
             )
 
-    with col3:
+    with col2:
         CHOICE_ABOUT = st.checkbox(
             help="Software owner and release information.",
             label="**About this Application**",
+            value=False,
+        )
+
+    with col3:
+        CHOICE_UG_APP = st.checkbox(
+            help="Explanations and operating instructions related to the whole application.",
+            label="**User Guide Application**",
             value=False,
         )
 
@@ -2048,6 +2224,12 @@ def _setup_task_controls() -> None:
     global CHOICE_MAP  # pylint: disable=global-statement
     global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
     global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
+
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
 
     if MODE_STANDARD:
         CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
@@ -2567,7 +2749,7 @@ def _streamlit_flow() -> None:
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
         mode = utils.get_args()
-        print(f"command line argunent mode={mode}")
+        print(f"command line argument mode={mode}")
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
 

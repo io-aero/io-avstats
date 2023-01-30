@@ -24,6 +24,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
+# SettingWithCopyWarning
+pd.options.mode.chained_assignment: str | None = None  # type: ignore
+
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
@@ -32,6 +35,8 @@ APP_ID = "ae1982"
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
 CHOICE_ABOUT: bool | None = None
+CHOICE_ACTIVE_FILTERS: bool | None = None
+CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 
 CHOICE_CHARTS: bool | None = None
 CHOICE_CHARTS_DETAILS: bool | None = None
@@ -239,8 +244,6 @@ CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
 CHOICE_EXTENDED_VERSION: bool | None = None
-CHOICE_FILTER_CONDITIONS: bool | None = None
-CHOICE_FILTER_CONDITIONS_TEXT: str = ""
 CHOICE_FILTER_DATA: bool | None = None
 
 CHOICE_MAP: bool | None = None
@@ -251,6 +254,7 @@ CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
 CHOICE_UG_APP: bool | None = None
 CHOICE_UG_CHART_FY_FP: bool | None = None
 
+COLOR_HEADER: str = "#357f8f"
 COLOR_MAP: list[str] = [
     "#15535f",  # peacock
     "#47a3b5",  # aqua
@@ -303,6 +307,8 @@ FILTER_US_AVIATION_DESTINATION = "US Destination"
 FILTER_US_AVIATION_OPERATOR = "US Operator"
 FILTER_US_AVIATION_OWNER = "US Owner"
 FILTER_US_AVIATION_REGISTRATION = "US Registration"
+FONT_SIZE_HEADER = 48
+FONT_SIZE_SUBHEADER = 36
 
 IS_TIMEKEEPING = False
 
@@ -1212,7 +1218,11 @@ def _present_bar_chart(chart_id, chart_title, prep_result):
     )
 
     if CHOICE_CHARTS_DETAILS:
-        st.subheader("Detailed chart data")
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: bold;border-radius:2%;">Detailed Chart Data</p>',
+            unsafe_allow_html=True,
+        )
         details.insert(0, "year")
         st.dataframe(
             df_filtered_charts.loc[
@@ -1241,7 +1251,11 @@ def _present_chart_ey_aoc() -> None:
         chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
         col1, col2 = st.columns([2, 1])
         with col1:
-            st.subheader(chart_title)
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+                unsafe_allow_html=True,
+            )
         with col2:
             CHOICE_CHARTS_UG_EY_AOC = st.checkbox(
                 help="Explanations and operating instructions related to this bar chart.",
@@ -1249,8 +1263,11 @@ def _present_chart_ey_aoc() -> None:
                 label="**User Guide Chart**",
                 value=False,
             )
-        # if CHOICE_CHARTS_UG_EY_AOC:
-        #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+        if CHOICE_CHARTS_UG_EY_AOC:
+            user_guide.get_ae1982_chart(
+                chart_id,
+                chart_title,
+            ),
         _present_bar_chart(
             chart_id,
             chart_title,
@@ -1269,7 +1286,11 @@ def _present_chart_ey_il() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.subheader(chart_title)
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
     with col2:
         CHOICE_CHARTS_UG_EY_IL = st.checkbox(
             help="Explanations and operating instructions related to this bar chart.",
@@ -1277,8 +1298,11 @@ def _present_chart_ey_il() -> None:
             label="**User Guide Chart**",
             value=False,
         )
-    # if CHOICE_CHARTS_UG_EY_IL:
-    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    if CHOICE_CHARTS_UG_EY_IL:
+        user_guide.get_ae1982_chart(
+            chart_id,
+            chart_title,
+        ),
     _present_bar_chart(
         chart_id,
         chart_title,
@@ -1297,7 +1321,11 @@ def _present_chart_ey_rss() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.subheader(chart_title)
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
     with col2:
         CHOICE_CHARTS_UG_EY_RSS = st.checkbox(
             help="Explanations and operating instructions related to this bar chart.",
@@ -1305,8 +1333,11 @@ def _present_chart_ey_rss() -> None:
             label="**User Guide Chart**",
             value=False,
         )
-    # if CHOICE_CHARTS_UG_EY_RSS:
-    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    if CHOICE_CHARTS_UG_EY_RSS:
+        user_guide.get_ae1982_chart(
+            chart_id,
+            chart_title,
+        ),
     _present_bar_chart(
         chart_id,
         chart_title,
@@ -1325,7 +1356,11 @@ def _present_chart_ey_t() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.subheader(chart_title)
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
     with col2:
         CHOICE_CHARTS_UG_EY_T = st.checkbox(
             help="Explanations and operating instructions related to this bar chart.",
@@ -1333,8 +1368,11 @@ def _present_chart_ey_t() -> None:
             label="**User Guide Chart**",
             value=False,
         )
-    # if CHOICE_CHARTS_UG_EY_T:
-    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    if CHOICE_CHARTS_UG_EY_T:
+        user_guide.get_ae1982_chart(
+            chart_id,
+            chart_title,
+        ),
     _present_bar_chart(
         chart_id,
         chart_title,
@@ -1350,22 +1388,29 @@ def _present_chart_ey_tlp() -> None:
     global CHOICE_CHARTS_UG_EY_TLP  # pylint: disable=global-statement
 
     chart_id = "ey_tlp"
-    chart_tlpitle = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.subheader(chart_tlpitle)
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
     with col2:
         CHOICE_CHARTS_UG_EY_TLP = st.checkbox(
             help="Explanations and operating instructions related to this bar chart.",
-            key=chart_tlpitle,
+            key=chart_title,
             label="**User Guide Chart**",
             value=False,
         )
-    # if CHOICE_CHARTS_UG_EY_TLP:
-    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    if CHOICE_CHARTS_UG_EY_TLP:
+        user_guide.get_ae1982_chart(
+            chart_id,
+            chart_title,
+        ),
     _present_bar_chart(
         chart_id,
-        chart_tlpitle,
+        chart_title,
         _prep_data_charts_ey_tlp(DF_FILTERED),
     )
 
@@ -1380,22 +1425,29 @@ def _present_chart_fy_fp() -> None:
     global CHOICE_CHARTS_UG_FY_FP  # pylint: disable=global-statement
 
     chart_id = "fy_fp"
-    chart_tlpitle = "Number of Fatalities per Year by Selected FAR Operations Parts"
+    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.subheader(chart_tlpitle)
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
     with col2:
         CHOICE_CHARTS_UG_FY_FP = st.checkbox(
             help="Explanations and operating instructions related to this bar chart.",
-            key=chart_tlpitle,
+            key=chart_title,
             label="**User Guide Chart**",
             value=False,
         )
-    # if CHOICE_CHARTS_UG_FY_FP:
-    #     st.info(user_guide.get_ae1982_chart(chart_id,chart_title,)),
+    if CHOICE_CHARTS_UG_FY_FP:
+        user_guide.get_ae1982_chart(
+            chart_id,
+            chart_title,
+        ),
     _present_bar_chart(
         chart_id,
-        chart_tlpitle,
+        chart_title,
         _prep_data_charts_fy_fp(DF_FILTERED),
     )
 
@@ -1479,9 +1531,9 @@ def _present_data() -> None:
     """Present the filtered data."""
     _print_timestamp("_present_data() - Start")
 
-    if CHOICE_FILTER_CONDITIONS:
-        st.warning(CHOICE_FILTER_CONDITIONS_TEXT)
-        _print_timestamp("_present_data() - CHOICE_FILTER_CONDITIONS")
+    if CHOICE_ACTIVE_FILTERS:
+        st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
+        _print_timestamp("_present_data() - CHOICE_ACTIVE_FILTERS")
 
     if CHOICE_ABOUT:
         _col1, col2 = st.columns(
@@ -1501,7 +1553,7 @@ def _present_data() -> None:
             _print_timestamp("_present_data() - CHOICE_ABOUT")
 
     if CHOICE_UG_APP:
-        st.info(user_guide.get_ae1982_app())
+        user_guide.get_ae1982_app()
 
     if CHOICE_CHARTS:
         _present_charts()
@@ -1527,7 +1579,11 @@ def _present_data() -> None:
 # ------------------------------------------------------------------
 def _present_data_profile() -> None:
     """Present data profile."""
-    st.subheader("Profiling of the filtered data set")
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+        + 'font-weight: bold;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
+        unsafe_allow_html=True,
+    )
 
     # noinspection PyUnboundLocalVariable
     if CHOICE_DATA_PROFILE_TYPE == "explorative":
@@ -1559,7 +1615,11 @@ def _present_data_profile() -> None:
 def _present_details() -> None:
     """Present details."""
     if CHOICE_DETAILS:
-        st.subheader("Detailed data from database view **`io_app_ae1982`**")
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: bold;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
+            unsafe_allow_html=True,
+        )
         st.dataframe(DF_FILTERED)
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
@@ -1578,7 +1638,11 @@ def _present_map() -> None:
     """Present the accidents on the US map."""
     global DF_FILTERED  # pylint: disable=global-statement
 
-    st.subheader("Depicting the accidents on a map of the USA")
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+        + 'font-weight: bold;border-radius:2%;">Depicting the accidents on a map of the USA</p>',
+        unsafe_allow_html=True,
+    )
 
     # noinspection PyUnboundLocalVariable
     DF_FILTERED = DF_FILTERED.loc[
@@ -1627,7 +1691,11 @@ def _present_pie_chart(
     chart_title: str, pie_chart_data: tuple[list[str], list[int], dict[str, str]]
 ) -> None:
     """Present the pie chart."""
-    st.subheader(chart_title)
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+        + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+        unsafe_allow_html=True,
+    )
 
     names, values, color_discrete_map = pie_chart_data
 
@@ -1678,7 +1746,7 @@ def _print_timestamp(identifier: str) -> None:
 # pylint: disable=too-many-statements
 def _setup_filter() -> None:
     """Set up the filter controls."""
-    global CHOICE_FILTER_CONDITIONS_TEXT  # pylint: disable=global-statement
+    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
     global FILTER_CICTT_CODES  # pylint: disable=global-statement
@@ -1721,7 +1789,7 @@ def _setup_filter() -> None:
         CHOICE_FILTER_DATA = True
         st.sidebar.markdown("**Filter data:**")
 
-    CHOICE_FILTER_CONDITIONS_TEXT = ""
+    CHOICE_ACTIVE_FILTERS_TEXT = ""
 
     FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
         help="""
@@ -1733,8 +1801,8 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
 
     if FILTER_ACFT_CATEGORIES:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
@@ -1765,8 +1833,8 @@ def _setup_filter() -> None:
             and FILTER_NO_AIRCRAFT_TO != max_no_aircraft
         ):
             # pylint: disable=line-too-long
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
             )
             _print_timestamp(
@@ -1786,8 +1854,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 1")
 
         if FILTER_CICTT_CODES:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **CICTT code(s)**: **`{','.join(FILTER_CICTT_CODES)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 2")
@@ -1807,8 +1875,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
 
         if FILTER_EV_TYPE:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
@@ -1828,8 +1896,8 @@ def _setup_filter() -> None:
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
         # pylint: disable=line-too-long
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
         _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
@@ -1850,8 +1918,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 1")
 
         if FILTER_FAR_PARTS:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
@@ -1879,8 +1947,8 @@ def _setup_filter() -> None:
             and FILTER_INJ_F_GRND_TO != max_inj_f_grnd
         ):
             # pylint: disable=line-too-long
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
             )
             _print_timestamp(
@@ -1908,8 +1976,8 @@ def _setup_filter() -> None:
             and FILTER_INJ_TOT_F_TO != max_inj_tot_f
         ):
             # pylint: disable=line-too-long
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
             )
             _print_timestamp("_setup_filter - FILTER_INJ_TOT_F_TO")
@@ -1933,8 +2001,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 1")
 
         if FILTER_FINDING_CODES:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Finding code(s)**: **`{','.join(FILTER_FINDING_CODES)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
@@ -1953,8 +2021,8 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 1")
 
     if FILTER_EV_HIGHEST_INJURY:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
@@ -1973,8 +2041,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 1")
 
         if FILTER_LATLONG_ACQ:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
@@ -2007,8 +2075,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_AND - 1")
 
         if FILTER_LOGICAL_PARAMETERS_AND:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + "\n- **Logical parameters (OR)**: **"
                 + f"`{','.join(FILTER_LOGICAL_PARAMETERS_AND)}`**"
             )
@@ -2024,8 +2092,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_OR - 1")
 
         if FILTER_LOGICAL_PARAMETERS_OR:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Logical parameters (OR)**: **`{','.join(FILTER_LOGICAL_PARAMETERS_OR)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_LOGICAL_PARAMETERS_OR - 2")
@@ -2043,8 +2111,8 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 1")
 
         if FILTER_OCCURRENCE_CODES:
-            CHOICE_FILTER_CONDITIONS_TEXT = (
-                CHOICE_FILTER_CONDITIONS_TEXT
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
@@ -2066,8 +2134,8 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - FILTER_RSS - 1")
 
     if FILTER_RSS:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Required safety system criteria**: **`{','.join(FILTER_RSS)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_RSS - 2")
@@ -2082,8 +2150,8 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - FILTER_STATE - 1")
 
     if FILTER_STATE:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_STATE - 2")
@@ -2116,8 +2184,8 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - FILTER_US_AVIATION - 1")
 
     if FILTER_US_AVIATION:
-        CHOICE_FILTER_CONDITIONS_TEXT = (
-            CHOICE_FILTER_CONDITIONS_TEXT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
         )
         _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
@@ -2133,7 +2201,7 @@ def _setup_filter() -> None:
 def _setup_page() -> None:
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
-    global CHOICE_FILTER_CONDITIONS  # pylint: disable=global-statement
+    global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
     global CHOICE_UG_APP  # pylint: disable=global-statement
     global EVENT_TYPE_DESC  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -2151,15 +2219,18 @@ def _setup_page() -> None:
     else:
         EVENT_TYPE_DESC = "Events"
 
-    st.header(
-        f"Aviation {EVENT_TYPE_DESC} between {FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}"
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
+        + f'font-weight: bold;border-radius:2%;">Aviation {EVENT_TYPE_DESC} between '
+        + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+        unsafe_allow_html=True,
     )
 
     col1, col2, col3 = st.columns([1, 1, 1])
 
     if CHOICE_FILTER_DATA:
         with col1:
-            CHOICE_FILTER_CONDITIONS = st.checkbox(
+            CHOICE_ACTIVE_FILTERS = st.checkbox(
                 help="Show the selected filter conditions.",
                 label="**Show Active Filter(s)**",
                 value=False,

@@ -1,21 +1,21 @@
-# Copyright (c) 2022 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Profiling Data for the US since 1982."""
+"""IO-AVSTATS-DB Data since 1982."""
 import datetime
 import time
 
 import pandas as pd
 import psycopg2
 import streamlit as st
+import user_guide  # type: ignore
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Connection
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 
@@ -26,19 +26,29 @@ APP_ID = "pd1982"
 
 # pylint: disable=R0801
 CHOICE_ABOUT: bool | None = None
-CHOICE_DATA_PROFILE: bool | None = None
-CHOICE_DATA_PROFILE_TYPE: str | None = None
+CHOICE_ACTIVE_FILTERS: bool | None = None
+CHOICE_ACTIVE_FILTERS_TEXT: str = ""
+CHOICE_DDL_OBJECT_SELECTED: str = ""
+CHOICE_DDL_OBJECT_SELECTION: str = ""
 CHOICE_DETAILS: bool | None = None
 CHOICE_FILTER_DATA: bool | None = None
-CHOICE_TABLE_SELECTION: str = ""
+CHOICE_PROFILING: bool | None = None
+CHOICE_PROFILING_TYPE: str | None = None
+CHOICE_UG_APP: bool | None = None
+CHOICE_UG_DETAILS: bool | None = None
+CHOICE_UG_PROFILING: bool | None = None
+
+COLOR_HEADER: str = "#357f8f"
 
 DF_FILTERED: DataFrame = DataFrame()
 DF_UNFILTERED: DataFrame = DataFrame()
 
-FILTER_YEAR_FROM: int | None = None
-FILTER_YEAR_TO: int | None = None
+FILTER_EV_YEAR_FROM: int | None = None
+FILTER_EV_YEAR_TO: int | None = None
+FONT_SIZE_HEADER = 48
+FONT_SIZE_SUBHEADER = 36
 
-PG_CONN: Connection | None = None
+PG_CONN: connection | None = None
 
 # ------------------------------------------------------------------
 # Query data for the US since 1982.
@@ -304,7 +314,6 @@ SETTINGS = Dynaconf(
 # Filter the data frame.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
-@st.experimental_memo
 def _apply_filter_controls(
     df_unfiltered: DataFrame, filter_year_from: int | None, filter_year_to: int | None
 ) -> DataFrame:
@@ -350,20 +359,16 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
 # Read the data.
 # ------------------------------------------------------------------
 @st.experimental_memo
-def _get_data(table_name: str) -> DataFrame:
+def _get_data(ddl_object_name: str) -> DataFrame:
     """Read the data.
 
     Args:
-        table_name (str): Name of the database table.
+        ddl_object_name (str): Name of the database table or view.
 
     Returns:
         DataFrame: The unfiltered dataframe.
     """
-    global PG_CONN  # pylint: disable=global-statement
-
-    PG_CONN = _get_postgres_connection()  # type: ignore
-
-    return pd.read_sql(QUERIES[table_name], con=_get_engine())  # type: ignore
+    return pd.read_sql(QUERIES[ddl_object_name], con=_get_engine())  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -404,30 +409,86 @@ def _get_postgres_connection() -> connection:
 # ------------------------------------------------------------------
 def _present_data():
     """Present the filtered data."""
-    if CHOICE_DATA_PROFILE:
-        st.subheader(f"Profiling of the database table `{CHOICE_TABLE_SELECTION}`")
-        _present_data_data_profile()
+    global CHOICE_UG_DETAILS  # pylint: disable=global-statement
+    global CHOICE_UG_PROFILING  # pylint: disable=global-statement
 
-    _col1, _col2, col3 = st.columns(
-        [
-            1,
-            1,
-            1,
-        ]
-    )
+    if CHOICE_ACTIVE_FILTERS:
+        st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
 
     if CHOICE_ABOUT:
-        with col3:
+        _col1, col2 = st.columns(
+            [
+                1,
+                2,
+            ]
+        )
+        with col2:
             utils.present_about(PG_CONN, APP_ID)
 
+    if CHOICE_UG_APP:
+        user_guide.get_pd1982_app()
+
+    if CHOICE_PROFILING:
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + 'font-weight: normal;border-radius:2%;">Profiling Database '
+                + f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
+                unsafe_allow_html=True,
+            )
+        with col2:
+            CHOICE_UG_PROFILING = st.checkbox(
+                help="Explanations and operating instructions related to profiling "
+                + "of the database tables or views.",
+                label="**User Guide 'Show data profile'**",
+                value=False,
+            )
+
+        if CHOICE_UG_PROFILING:
+            user_guide.get_pd1982_data_profile()
+
+        _present_data_data_profile()
+
     if CHOICE_DETAILS:
-        st.subheader(f"The database table `{CHOICE_TABLE_SELECTION}` in detail")
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + 'font-weight: normal;border-radius:2%;">Detailed Database '
+                + f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
+                unsafe_allow_html=True,
+            )
+
+        with col2:
+            CHOICE_UG_DETAILS = st.checkbox(
+                help="Explanations and operating instructions related to the detailed view.",
+                label="**User Guide 'Show details'**",
+                value=False,
+            )
+
+        if CHOICE_UG_DETAILS:
+            user_guide.get_pd1982_details()
+
         st.dataframe(DF_FILTERED)
+
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
-            file_name=APP_ID + "_" + CHOICE_TABLE_SELECTION + ".csv",
-            help="The download includes all data of the selected table "
-            + "after applying the filter options.",
+            file_name=APP_ID + "_" + CHOICE_DDL_OBJECT_SELECTION + ".csv",
+            help="The download includes all data of the selected "
+            + f"{CHOICE_DDL_OBJECT_SELECTED.lower()} after applying the filter options.",
             label="Download all data as CSV file",
             mime="text/csv",
         )
@@ -439,7 +500,7 @@ def _present_data():
 def _present_data_data_profile():
     """Present the data profile."""
     # noinspection PyUnboundLocalVariable
-    if CHOICE_DATA_PROFILE_TYPE == "explorative":
+    if CHOICE_PROFILING_TYPE == "explorative":
         profile_report = ProfileReport(
             DF_FILTERED,
             explorative=True,
@@ -454,7 +515,7 @@ def _present_data_data_profile():
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        file_name=APP_ID + "_" + CHOICE_PROFILING_TYPE + ".html",
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -467,23 +528,40 @@ def _present_data_data_profile():
 # ------------------------------------------------------------------
 def _setup_filter_controls():
     """Set up the filter controls."""
+    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
-    global FILTER_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_YEAR_TO  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
-        help="Pandas profiling of the dataset.",
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        """,
         label="**Filter data ?**",
         value=True,
     )
 
-    if CHOICE_FILTER_DATA:
-        FILTER_YEAR_FROM, FILTER_YEAR_TO = st.sidebar.slider(
-            label="Select a time frame",
-            help="Data available from 1982 to the current year.",
-            min_value=1982,
-            max_value=datetime.date.today().year,
-            value=(2008, datetime.date.today().year - 1),
+    if not CHOICE_FILTER_DATA:
+        return
+
+    CHOICE_ACTIVE_FILTERS_TEXT = ""
+
+    FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
+        help="""
+            - **`1982`** is the first year with complete statistics.
+            - **`2008`** changes were made to the data collection mode.
+            """,
+        label="**Event year(s):**",
+        min_value=1982,
+        max_value=datetime.date.today().year,
+        value=(2008, datetime.date.today().year - 1),
+    )
+
+    if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
+        # pylint: disable=line-too-long
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
 
     st.sidebar.markdown("""---""")
@@ -495,10 +573,24 @@ def _setup_filter_controls():
 def _setup_page():
     """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
+    global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
+    global CHOICE_UG_APP  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
 
-    st.header(f"Profiling Data from Year {FILTER_YEAR_FROM} to {FILTER_YEAR_TO}")
+    FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
+    FILTER_EV_YEAR_TO = (
+        FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else datetime.date.today().year - 1
+    )
 
-    _col1, _col2, col3 = st.columns(
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
+        + 'font-weight: normal;border-radius:2%;">IO-AVSTATS-DB Data from Year '
+        + f"{FILTER_EV_YEAR_FROM} to {FILTER_EV_YEAR_TO}</p>",
+        unsafe_allow_html=True,
+    )
+
+    col1, col2, col3 = st.columns(
         [
             1,
             1,
@@ -506,10 +598,25 @@ def _setup_page():
         ]
     )
 
-    with col3:
+    if CHOICE_FILTER_DATA:
+        with col1:
+            CHOICE_ACTIVE_FILTERS = st.checkbox(
+                help="Show the selected filter conditions.",
+                label="**Show Active Filter(s)**",
+                value=False,
+            )
+
+    with col2:
         CHOICE_ABOUT = st.checkbox(
             help="Software owner and release information.",
             label="**About this Application**",
+            value=False,
+        )
+
+    with col3:
+        CHOICE_UG_APP = st.checkbox(
+            help="Explanations and operating instructions related to the whole application.",
+            label="**User Guide 'Application'**",
             value=False,
         )
 
@@ -528,19 +635,26 @@ def _setup_sidebar():
 # ------------------------------------------------------------------
 def _setup_task_controls():
     """Set up the task controls."""
-    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
+    global CHOICE_DDL_OBJECT_SELECTED  # pylint: disable=global-statement
+    global CHOICE_DDL_OBJECT_SELECTION  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_TABLE_SELECTION  # pylint: disable=global-statement
+    global CHOICE_PROFILING  # pylint: disable=global-statement
+    global CHOICE_PROFILING_TYPE  # pylint: disable=global-statement
 
-    CHOICE_DATA_PROFILE = st.sidebar.checkbox(
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    CHOICE_PROFILING = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**Show data profile**",
         value=False,
     )
 
-    if CHOICE_DATA_PROFILE:
-        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
+    if CHOICE_PROFILING:
+        CHOICE_PROFILING_TYPE = st.sidebar.radio(
             help="explorative: thorough but also slow - minimal: minimal but faster.",
             index=1,
             label="Data profile type",
@@ -562,11 +676,17 @@ def _setup_task_controls():
 
     st.sidebar.markdown("""---""")
 
-    CHOICE_TABLE_SELECTION = st.sidebar.radio(
+    CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
         index=5,
-        label="**Database table**",
+        label="**Database tables and views**",
         options=(QUERIES.keys()),
+    )
+
+    CHOICE_DDL_OBJECT_SELECTED = (
+        "View"
+        if CHOICE_DDL_OBJECT_SELECTION in ["io_app_ae1982", "io_lat_long_issues"]
+        else "Table"
     )
 
     st.sidebar.markdown("""---""")
@@ -575,36 +695,57 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
-# Start time measurement.
-start_time = time.time_ns()
+def _streamlit_flow() -> None:
+    """Streamlit flow."""
+    global DF_FILTERED  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
 
-st.set_page_config(layout="wide")
+    # Start time measurement.
+    start_time = time.time_ns()
 
-_setup_sidebar()
+    st.set_page_config(
+        layout="wide",
+        # flake8: noqa: E501
+        # pylint: disable=line-too-long
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_title="pd1982 by IO-Aero",
+    )
 
-_setup_page()
+    PG_CONN = _get_postgres_connection()  # type: ignore
 
-DF_UNFILTERED = _get_data(CHOICE_TABLE_SELECTION)
+    _setup_sidebar()
 
-DF_FILTERED = DF_UNFILTERED
+    _setup_page()
 
-if CHOICE_TABLE_SELECTION not in [
-    "io_countries",
-    "io_processed_files",
-    "io_lat_lng",
-    "io_states",
-]:
-    if CHOICE_FILTER_DATA:
-        DF_FILTERED = _apply_filter_controls(
-            DF_UNFILTERED, FILTER_YEAR_FROM, FILTER_YEAR_TO
-        )
+    DF_UNFILTERED = _get_data(CHOICE_DDL_OBJECT_SELECTION)
 
-_present_data()
+    DF_FILTERED = DF_UNFILTERED
 
-# Stop time measurement.
-print(
-    str(datetime.datetime.now())
-    + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application "
-    + APP_ID,
-    flush=True,
-)
+    if CHOICE_DDL_OBJECT_SELECTION not in [
+        "io_countries",
+        "io_processed_files",
+        "io_lat_lng",
+        "io_states",
+    ]:
+        if CHOICE_FILTER_DATA:
+            DF_FILTERED = _apply_filter_controls(
+                DF_UNFILTERED, FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO
+            )
+
+    _present_data()
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - "
+        + "Total runtime for application "
+        + APP_ID,
+        flush=True,
+    )
+
+
+# -----------------------------------------------------------------------------
+# Program start.
+# -----------------------------------------------------------------------------
+_streamlit_flow()

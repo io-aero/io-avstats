@@ -20,7 +20,7 @@ services:
       - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
 
   # ------------------------------------------------------------------------------
-  # ae1982 - Aircraft Accidents in the US since 1982.
+  # ae1982 - Aircraft Events since 1982.
   # ------------------------------------------------------------------------------
   app_ae1982:
     container_name: ae1982
@@ -28,11 +28,23 @@ services:
       - db
     image: ioaero/ae1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
-  # pd1982 - Profiling Data for the US since 1982.
+  # ae1982_ltd - Aircraft Events since 1982.
+  # ------------------------------------------------------------------------------
+  app_ae1982_ltd:
+    container_name: ae1982_ltd
+    depends_on:
+      - db
+    image: ioaero/ae1982_ltd:latest
+    ports:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982_LTD}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always
+
+  # ------------------------------------------------------------------------------
+  # pd1982 - Profiling Data since 1982.
   # ------------------------------------------------------------------------------
   app_pd1982:
     container_name: pd1982
@@ -40,5 +52,5 @@ services:
       - db
     image: ioaero/pd1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always

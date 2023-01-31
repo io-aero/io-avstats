@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://io-aero.com/how_to_create_new_streamlit_app.html">
       
       
-        <link rel="prev" href="how_to_add_ntsb_accident_files.html">
+        <link rel="prev" href="how_to_compare_ntsb_and_io_db.html">
       
       
         <link rel="next" href="how_to_setup_aws_instance.html">
@@ -493,6 +493,20 @@
               
   
   
+  
+    <li class="md-nav__item">
+      <a href="how_to_compare_ntsb_and_io_db.html" class="md-nav__link">
+        ... compare NTSB and IO-AVSTATS-DB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
     
   
   
@@ -694,120 +708,10 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
-          Release Documents
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Release Documents" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
-          <span class="md-nav__icon md-icon"></span>
-          Release Documents
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="release_notes.html" class="md-nav__link">
-        Release Notes
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="release_history.html" class="md-nav__link">
-        Release History
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
     <li class="md-nav__item">
       <a href="release_schedule.html" class="md-nav__link">
         Release Schedule
       </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6_4" tabindex="0" aria-expanded="false">
-          Update Log Files
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Update Log Files" data-md-level="2">
-        <label class="md-nav__title" for="__nav_6_4">
-          <span class="md-nav__icon md-icon"></span>
-          Update Log Files
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update_log_2023_01_22.html" class="md-nav__link">
-        2023.01.22
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -1099,7 +1003,7 @@
 <a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>      - db
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    image: ioaero/ae1982:latest
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    ports:
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    restart: always
 <a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
 <a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  # ------------------------------------------------------------------------------
@@ -1111,7 +1015,7 @@
 <a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>      - db
 <a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    image: ioaero/pd1982:latest
 <a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    ports:
-<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
 <a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    restart: always
 <a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>...
 </code></pre></div>
@@ -1195,20 +1099,20 @@
 <h4 id="522-scriptsrun_docker_compose">5.2.2 scripts/run_docker_compose</h4>
 <p><strong>cmd</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>...
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982=8501
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982=8502
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>...
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>echo STREAMLIT_SRRVER_PORT_AAUS1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982%
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>echo STREAMLIT_SERVER_PORT_PDUS1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982%
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>echo STREAMLIT_SRRVER_PORT_AE1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>echo STREAMLIT_SERVER_PORT_PD1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>...
 </code></pre></div>
 <p><strong>bash</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>...
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982=8501
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982=8502
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>...
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>echo &quot;STREAMLIT_SRRVER_PORT_AAUS1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AAUS1982}&quot;
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>echo &quot;STREAMLIT_SERVER_PORT_PDUS1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PDUS1982}&quot;
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>echo &quot;STREAMLIT_SRRVER_PORT_AE1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}&quot;
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>echo &quot;STREAMLIT_SERVER_PORT_PD1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}&quot;
 <a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>...
 </code></pre></div>
 

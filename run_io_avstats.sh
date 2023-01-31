@@ -100,8 +100,9 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "========================================================="
         echo "all      - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "ae1982 - Aircraft Accidents in the US since 1982"
-        echo "pd1982 - Profiling Data for the US since 1982"
+        echo "ae1982     - Aircraft Accidents in the US since 1982"
+        echo "ae1982_ltd - Aircraft Accidents in the US since 1982"
+        echo "pd1982     - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -228,8 +229,18 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # Run a Streamlit application.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
-    if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_Application}.py ); then
-        exit 255
+    if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
+        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py -- --mode Std ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "ae1982_ltd" ]; then
+        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py ); then
+            exit 255
+        fi
+    else
+        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py ); then
+            exit 255
+        fi
     fi
 
 # ------------------------------------------------------------------------------

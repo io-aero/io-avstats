@@ -1,12 +1,52 @@
-# Copyright (c) 2022 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
 """Application Utilities."""
+import argparse
 import datetime
 
 import streamlit as st
 from psycopg2.extensions import connection
+
+
+# -----------------------------------------------------------------------------
+# Load the command line arguments into the memory.
+# -----------------------------------------------------------------------------
+def get_args() -> str:
+    """Load the command line arguments into the memory."""
+
+    parser = argparse.ArgumentParser(
+        description="Streamlit Applications",
+        prog="streamlit",
+        prefix_chars="--",
+        usage="%(prog)s options",
+    )
+
+    # -------------------------------------------------------------------------
+    # Definition of the command line arguments.
+    # ------------------------------------------------------------------------
+    parser.add_argument(
+        "--mode",
+        help="the execution mode: '"
+        + "ltd' (The limited demo version) or '"
+        + "std' (The full version)",
+        metavar="mode",
+        required=False,
+        type=str,
+    )
+
+    # -------------------------------------------------------------------------
+    # Load and check the command line arguments.
+    # -------------------------------------------------------------------------
+    parsed_args = parser.parse_args()
+
+    mode = "Ltd"
+    if parsed_args.mode is not None:
+        if parsed_args.mode == "Std":
+            mode = parsed_args.mode
+
+    return mode
 
 
 # ------------------------------------------------------------------
@@ -22,23 +62,17 @@ def present_about(pg_conn: connection, app_name: str) -> None:
     """
     file_name, processed = _sql_query_last_file_name(pg_conn)
 
-    about_msg = f"IO-AVSTATS Application: **{app_name}**"
-    about_msg = about_msg + "<br/>"
-    about_msg = about_msg + f"\nLatest NTSB database: **{file_name} - {processed}**"
-    about_msg = about_msg + "<br/>"
-    about_msg = (
-        about_msg
-        + f"\n**:copyright: 2022-{datetime.date.today().year} - "
-        + "IO AERONAUTICAL AUTONOMY LABS, LLC**"
-    )
-    about_msg = (
-        about_msg
-        # pylint: disable=line-too-long
-        + """\n<a href="https://www.io-aero.com/disclaimer" target="_blank">Disclaimer</a>
-          """
-    )
+    st.warning(
+        f"""
+IO-AVSTATS Application: **{app_name}
 
-    st.markdown(about_msg, unsafe_allow_html=True)
+Latest NTSB database: **{file_name} - {processed}**
+
+**:copyright: 2022-{datetime.date.today().year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
+
+[Disclaimer](https://www.io-aero.com/disclaimer)
+    """
+    )
 
 
 # ------------------------------------------------------------------

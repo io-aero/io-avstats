@@ -9,18 +9,18 @@ rem ----------------------------------------------------------------------------
 setlocal EnableDelayedExpansion
 
 set APPLICATION_DEFAULT=ae1982
-
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
-
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+set MODE=n/a
 
 if ["%1"] EQU [""] (
     echo =========================================================
     echo all      - All Streamlit applications
     echo ---------------------------------------------------------
-    echo ae1982 - Aircraft Accidents in the US since 1982
-    echo pd1982 - Profiling Data for the US since 1982
+    echo ae1982     - Aircraft Accidents in the US since 1982
+    echo ae1982_ltd - Aircraft Accidents in the US since 1982
+    echo pd1982     - Profiling Data for the US since 1982
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -77,9 +77,15 @@ rem > %LOG_FILE% 2>&1 (
     echo =======================================================================
 
     if ["!APPLICATION!"] EQU ["all"]  (
-        call scripts\run_create_image ae1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image pd1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image ae1982     !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image ae1982_ltd !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image pd1982     !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
+    )
+
+    if ["!APPLICATION!"] EQU ["ae1982_ltd"]  (
+        set MODE=Ltd
+        copy /Y src\ioavstats\ae1982.py src\ioavstats\ae1982_ltd.py
     )
 
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
@@ -98,7 +104,13 @@ rem > %LOG_FILE% 2>&1 (
     echo ............................................................. after images:
     docker image ls
 
+
+    if ["!APPLICATION!"] EQU ["ae1982"]  (
+        set MODE=Std
+    )
+
     docker build --build-arg APP=!APPLICATION! ^
+                 --build-arg MODE=%MODE% ^
                  --build-arg SERVER_PORT=%IO_AVSTATS_STREAMLIT_SERVER_PORT% ^
                  -t ioaero/!APPLICATION! .
 
@@ -112,6 +124,9 @@ rem > %LOG_FILE% 2>&1 (
 
     for /F %%I in ('docker images -q -f "dangling=true" -f "label=autodelete=true"') do (docker rmi -f %%I)
 
+    if ["!APPLICATION!"] EQU ["ae1982_ltd"]  (
+        del /s src\ioavstats\ae1982_ltd.py
+    )
 
     :END_OF_SCRIPT
     echo -----------------------------------------------------------------------

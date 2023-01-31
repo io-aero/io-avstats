@@ -615,3 +615,69 @@ Count|Description              |
 ### No. 23 -  **`c_f_z`** - Zip the files for the cloud 
 
 - Upload the resulting **`cloud.zip`** file to the cloud and process it there.
+
+**Example protocol**:
+
+```
+=======================================================================
+Start scripts\run_cloud_files_zip
+-----------------------------------------------------------------------
+File Collection for AWS
+-----------------------------------------------------------------------
+The current time is: 13:01:26.05
+Enter the new time:
+=======================================================================
+
+7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
+
+Scanning the drive:
+3 files, 339154065 bytes (324 MiB)
+
+Creating archive: cloud.zip
+
+Items to compress: 3
+
+
+Files read from disk: 3
+Archive size: 328965173 bytes (314 MiB)
+Everything is Ok
+
+=======================================================================
+Archive Content
+-----------------------------------------------------------------------
+
+7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
+
+Scanning the drive for archives:
+1 file, 328965173 bytes (314 MiB)
+
+Listing archive: cloud.zip
+
+--
+Path = cloud.zip
+Type = zip
+Physical Size = 328965173
+
+   Date      Time    Attr         Size   Compressed  Name
+------------------- ----- ------------ ------------  ------------------------
+2023-01-31 12:57:21 ....A    339143116    328962979  data\latest_postgres.zip
+2023-01-27 06:55:21 ....A         2070          453  docker-compose.yml
+2023-01-27 12:31:21 ....A         8879         1241  scripts\run_docker_compose.sh
+------------------- ----- ------------ ------------  ------------------------
+2023-01-31 12:57:21          339154065    328964673  3 files
+=======================================================================
+
+-----------------------------------------------------------------------
+The current time is: 13:01:35.98
+Enter the new time:
+-----------------------------------------------------------------------
+End   scripts\run_cloud_files_zip
+=======================================================================
+
+-----------------------------------------------------------------------
+The current time is: 13:01:35.99
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+```

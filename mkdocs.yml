@@ -43,13 +43,7 @@ nav:
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
       - ... set up an AWS instance: how_to_setup_aws_instance.md
       - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
-  - Release Documents:
-    - Release Notes: release_notes.md
-    - Release History: release_history.md
-    - Release Schedule: release_schedule.md
-    - Update Log Files:
-        - 2023.02.01: update_log_2023_02_01.md
-        - 2023.01.22: update_log_2023_01_22.md
+  - Release Schedule: release_schedule.md
   - License: LICENSE.md
 
 plugins:

@@ -51,7 +51,7 @@ def _generic_header_section(header: str) -> str:
 def get_ae1982_app() -> None:
     """ae1982 - Creates the user guide for the whole application."""
     # """
-    # TODO
+    # ...
     # """
     user_guide = (
         _generic_header_section("User Guide 'Application'")
@@ -73,7 +73,7 @@ def get_ae1982_bar_chart(
 ) -> None:
     """ae1982 - Creates the user guide for bar charts."""
     # """
-    # TODO
+    # ...
     # """
     user_guide = (
         _generic_header_section(f"User Guide 'Bar chart {chart_id}'")

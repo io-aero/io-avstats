@@ -74,54 +74,57 @@ echo "--------------------------------------------------------------------------
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
-    if [ "${APPLICATION}" = "all" ]; then
-        ( ./scripts/run_create_image.sh ae1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-        ( ./scripts/run_create_image.sh ae1982_ltd ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-        ( ./scripts/run_create_image.sh pd1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-        goto END_OF_SCRIPT
-    else
-        if [ "${APPLICATION}" = "ae1982_ltd" ]; then
-            export MODE=Ltd
-            copy -i src/ioavstats/ae1982.py src/ioavstats/ae1982_ltd.py
-        fi
-        if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
-            docker builder prune --all --force
-        fi
+if [ "${APPLICATION}" = "all" ]; then
+    ( ./scripts/run_create_image.sh ae1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh ae1982_ltd ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh pd1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    goto END_OF_SCRIPT
+else
+    if [ "${APPLICATION}" = "ae1982_ltd" ]; then
+        export MODE=Ltd
+        copy -i src/ioavstats/ae1982.py src/ioavstats/ae1982_ltd.py
     fi
-
-    echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
-    docker ps -a
-    docker ps    | find "${APPLICATION}" && docker stop ${APPLICATION}
-    docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
-    echo "............................................................. after containers:"
-    docker ps -a
-    echo "............................................................. before images:"
-    docker image ls
-    docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/${APPLICATION}
-    echo "............................................................. after images:"
-    docker image ls
-
-    if [ "${APPLICATION}" = "ae1982" ]; then
-        export MODE=Std
+    if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
+        docker builder prune --all --force
     fi
+fi
 
-    docker build --build-arg APP=${APPLICATION} \
-                 --build-arg MODE=${MODE} \
-                 --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
-                 -t ioaero/${APPLICATION} .
+echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
+docker ps -a
+docker ps    | find "${APPLICATION}" && docker stop ${APPLICATION}
+docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
+echo "............................................................. after containers:"
+docker ps -a
+echo "............................................................. before images:"
+docker image ls
+docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/${APPLICATION}
+echo "............................................................. after images:"
+docker image ls
 
-    docker tag ioaero/${APPLICATION} ioaero/${APPLICATION}
+if [ "${APPLICATION}" = "ae1982" ]; then
+    export MODE=Std
+fi
 
-    if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
-        docker push ioaero/${APPLICATION}
-    fi
+docker build --build-arg APP=${APPLICATION} \
+             --build-arg MODE=${MODE} \
+             --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
+             -t ioaero/${APPLICATION} .
 
-    docker images -q -f "dangling=true" -f "label=autodelete=true"
+docker tag ioaero/${APPLICATION} ioaero/${APPLICATION}
 
-    for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
-    do
-        docker rmi -f ${IMAGE}
-    done
+if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
+    docker push ioaero/${APPLICATION}
+fi
+
+docker images -q -f "dangling=true" -f "label=autodelete=true"
+
+for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
+do
+    docker rmi -f ${IMAGE}
+done
+
+if [ "${APPLICATION}" = "ae1982_ltd" ]; then
+    rm -f src/ioavstats/ae1982_ltd.py
 fi
 
 echo ""

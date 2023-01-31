@@ -1,19 +1,24 @@
 # How to add NTSB accident files
 
-Aviation accident data provided by NTSB can be found at the following [website](https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx){:target="_blank"} under **Downloadable data sets**:
+Aviation accident data provided by **NTSB** can be found at the following [website](https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx){:target="_blank"} under **Downloadable data sets**:
 
 <kbd>![](img/how_to_add_ntsb_01.png)</kbd>
 
-In the database table **`io_processed_files`** you can find the previously processed files:
+**NTSB** provides update databases every month on the 1st, 8th 15th, and 22nd. 
+In addition, an up-to-date **avall** database is provided on the first of every month.
+
+In the database table **`io_processed_files`** you can find the files already processed by **IO-Aero**:
 
 <kbd>![](img/io_processed_files.png)</kbd>
 
-Any file can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.
+Any file provided by **NTSB** can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.
 
 All necessary processing steps can be executed with the **`run_io_avstats`** script.
 The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22.04 bash shell.
 
 ## 1. Quick reference
+
+The following processing steps are performed only on the first of each month:
 
 | No. | Task  | Description                                                    |
 |----:|-------|----------------------------------------------------------------|
@@ -22,26 +27,28 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 |   3 |       | Download the ZIP Code Database file                            |
 |   4 | l_z_d | **Optional**: Load ZIP Code Database data into PostgreSQL      |
 |   5 | l_c_d | **Optional**: Load data from a correction file into PostgreSQL |
-|     |       |                                                                |
+
+The following processing steps are performed on each of the change files delivered on the 1st, 8th, 15th and 22nd:
+
+| No. | Task  | Description                                                    |
+|----:|-------|----------------------------------------------------------------|
 |  11 | u_p_d | Download a NTSB MS Access database file                        |
 |     |       | Load NTSB MS Access database data into PostgreSQL              |
 |     |       | Correct decimal US latitudes and longitudes                    |
 |     |       | Verify selected NTSB data                                      |
 |     |       | Refresh the PostgreSQL database schema                         |
-|     |       |                                                                |
-|  11 | d_n_a | Download a NTSB MS Access database file                        |
-|  12 | l_n_a | Load NTSB MS Access database data into PostgreSQL              |
-|  13 | c_l_l | Correct decimal US latitudes and longitudes                    |
-|  14 | v_n_d | Verify selected NTSB data                                      |
-|  15 | r_d_s | Refresh the PostgreSQL database schema                         |
-|     |       |                                                                |
+
+The following steps are used to back up and to update the database in the cloud:
+
+| No. | Task  | Description                                                    |
+|----:|-------|----------------------------------------------------------------|
 |  21 |       | Backup the file directory **`data/postgres`**                  |
 |  22 |       | Update the Google Drive                                        |
 |  23 |       | Update **IO-AVSTATS** in the IO-Aero cloud                     |
 
 ## 2. Detailed description
 
-### 2.1 **`d_s_f`** - Download basic simplemaps files
+### No. 1 - **`d_s_f`** - Download basic simplemaps files
 
 **Relevant configuration parameters**:
 
@@ -81,7 +88,7 @@ Progress update 2023-01-12 08:52:59.872506 : ===================================
 The downloaded files **`uscities.csv`** and **`uszips.xlsx`** must be checked with the reference files in the file directory **`data/reference`** for a match.
 If there is no mismatch, then the next step can be skipped.
 
-### 2.2 **`l_s_d`** - Load simplemaps data into PostgreSQL
+### No. 2 - **`l_s_d`** - Load simplemaps data into PostgreSQL
 
 Only necessary if the file downloaded in the previous step contains changes.
 
@@ -99,7 +106,7 @@ download_work_dir = "data/download"
 TODO
 ```
 
-### 2.3 Download the ZIP Code Database file
+### No.3 - Download the ZIP Code Database file
 
 The **`Personal Free`** version of the ZIP Code Database file must be downloaded manually from the **`https://www.unitedstateszipcodes.org/zip-code-database/`** website to the file directory according to the **`download_work_dir`** configuration parameter.
 

@@ -38,7 +38,20 @@ CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 
-CHOICE_CHARTS: bool | None = None
+CHOICE_BAR_CHARTS: bool | None = None
+CHOICE_BAR_CHARTS_UG_EY_AOC: bool | None = None
+CHOICE_BAR_CHARTS_UG_EY_IL: bool | None = None
+CHOICE_BAR_CHARTS_UG_EY_RSS: bool | None = None
+CHOICE_BAR_CHARTS_UG_EY_T: bool | None = None
+CHOICE_BAR_CHARTS_UG_EY_TLP: bool | None = None
+CHOICE_BAR_CHARTS_UG_FY_FP: bool | None = None
+CHOICE_BAR_CHARTS_UG_TE_AOC: bool | None = None
+CHOICE_BAR_CHARTS_UG_TE_IL: bool | None = None
+CHOICE_BAR_CHARTS_UG_TE_RSS: bool | None = None
+CHOICE_BAR_CHARTS_UG_TE_T: bool | None = None
+CHOICE_BAR_CHARTS_UG_TE_TLP: bool | None = None
+CHOICE_BAR_CHARTS_UG_TF_FP: bool | None = None
+
 CHOICE_CHARTS_DETAILS: bool | None = None
 CHOICE_CHARTS_HEIGHT: float | None = None
 CHOICE_CHARTS_HEIGHT_DEFAULT: float = 500
@@ -225,19 +238,6 @@ CHOICE_CHARTS_TYPE_TE_T: bool | None = None
 CHOICE_CHARTS_TYPE_TE_TLP: bool | None = None
 CHOICE_CHARTS_TYPE_TF_FP: bool | None = None
 
-CHOICE_CHARTS_UG_EY_AOC: bool | None = None
-CHOICE_CHARTS_UG_EY_IL: bool | None = None
-CHOICE_CHARTS_UG_EY_RSS: bool | None = None
-CHOICE_CHARTS_UG_EY_T: bool | None = None
-CHOICE_CHARTS_UG_EY_TLP: bool | None = None
-CHOICE_CHARTS_UG_FY_FP: bool | None = None
-CHOICE_CHARTS_UG_TE_AOC: bool | None = None
-CHOICE_CHARTS_UG_TE_IL: bool | None = None
-CHOICE_CHARTS_UG_TE_RSS: bool | None = None
-CHOICE_CHARTS_UG_TE_T: bool | None = None
-CHOICE_CHARTS_UG_TE_TLP: bool | None = None
-CHOICE_CHARTS_UG_TF_FP: bool | None = None
-
 CHOICE_CHARTS_WIDTH: float | None = None
 CHOICE_CHARTS_WIDTH_DEFAULT: float = 1000
 CHOICE_DATA_PROFILE: bool | None = None
@@ -250,6 +250,8 @@ CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
 CHOICE_MAP_MAP_STYLE_DEFAULT: str = "outdoors-v12"
 CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
+
+CHOICE_PIE_CHARTS: bool | None = None
 
 CHOICE_UG_APP: bool | None = None
 CHOICE_UG_CHART_FY_FP: bool | None = None
@@ -1220,7 +1222,7 @@ def _present_bar_chart(chart_id, chart_title, prep_result):
     if CHOICE_CHARTS_DETAILS:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: bold;border-radius:2%;">Detailed Chart Data</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed Chart Data</p>',
             unsafe_allow_html=True,
         )
         details.insert(0, "year")
@@ -1240,223 +1242,10 @@ def _present_bar_chart(chart_id, chart_title, prep_result):
 
 
 # ------------------------------------------------------------------
-# Present chart: Events per Year by CICTT Codes.
+# Present the bar charts.
 # ------------------------------------------------------------------
-def _present_chart_ey_aoc() -> None:
-    """Present chart: Events per Year by CICTT Codes."""
-    global CHOICE_CHARTS_UG_EY_AOC  # pylint: disable=global-statement
-
-    if CHOICE_CHARTS_TYPE_EY_AOC:
-        chart_id = "ey_aoc"
-        chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-                unsafe_allow_html=True,
-            )
-        with col2:
-            CHOICE_CHARTS_UG_EY_AOC = st.checkbox(
-                help="Explanations and operating instructions related to this bar chart.",
-                key=chart_title,
-                label="**User Guide Chart**",
-                value=False,
-            )
-        if CHOICE_CHARTS_UG_EY_AOC:
-            user_guide.get_ae1982_chart(
-                chart_id,
-                chart_title,
-            ),
-        _present_bar_chart(
-            chart_id,
-            chart_title,
-            _prep_data_charts_ey_aoc(DF_FILTERED),
-        )
-
-
-# ------------------------------------------------------------------
-# Present chart: Events per Year by Injury Levels.
-# ------------------------------------------------------------------
-def _present_chart_ey_il() -> None:
-    """Present chart: Events per Year by Injury Levels."""
-    global CHOICE_CHARTS_UG_EY_IL  # pylint: disable=global-statement
-
-    chart_id = "ey_il"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-            unsafe_allow_html=True,
-        )
-    with col2:
-        CHOICE_CHARTS_UG_EY_IL = st.checkbox(
-            help="Explanations and operating instructions related to this bar chart.",
-            key=chart_title,
-            label="**User Guide Chart**",
-            value=False,
-        )
-    if CHOICE_CHARTS_UG_EY_IL:
-        user_guide.get_ae1982_chart(
-            chart_id,
-            chart_title,
-        ),
-    _present_bar_chart(
-        chart_id,
-        chart_title,
-        _prep_data_charts_ey_il(DF_FILTERED),
-    )
-
-
-# ------------------------------------------------------------------
-# Present chart: Events per Year by Required Safety Systems.
-# ------------------------------------------------------------------
-def _present_chart_ey_rss() -> None:
-    """Present chart: Events per Year by Required Safety Systems."""
-    global CHOICE_CHARTS_UG_EY_RSS  # pylint: disable=global-statement
-
-    chart_id = "ey_rss"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-            unsafe_allow_html=True,
-        )
-    with col2:
-        CHOICE_CHARTS_UG_EY_RSS = st.checkbox(
-            help="Explanations and operating instructions related to this bar chart.",
-            key=chart_title,
-            label="**User Guide Chart**",
-            value=False,
-        )
-    if CHOICE_CHARTS_UG_EY_RSS:
-        user_guide.get_ae1982_chart(
-            chart_id,
-            chart_title,
-        ),
-    _present_bar_chart(
-        chart_id,
-        chart_title,
-        _prep_data_charts_ey_rss(DF_FILTERED),
-    )
-
-
-# ------------------------------------------------------------------
-# Present chart: Events per Year by Event Types.
-# ------------------------------------------------------------------
-def _present_chart_ey_t() -> None:
-    """Present chart: Events per Year by Event Types."""
-    global CHOICE_CHARTS_UG_EY_T  # pylint: disable=global-statement
-
-    chart_id = "ey_t"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-            unsafe_allow_html=True,
-        )
-    with col2:
-        CHOICE_CHARTS_UG_EY_T = st.checkbox(
-            help="Explanations and operating instructions related to this bar chart.",
-            key=chart_title,
-            label="**User Guide Chart**",
-            value=False,
-        )
-    if CHOICE_CHARTS_UG_EY_T:
-        user_guide.get_ae1982_chart(
-            chart_id,
-            chart_title,
-        ),
-    _present_bar_chart(
-        chart_id,
-        chart_title,
-        _prep_data_charts_ey_t(DF_FILTERED),
-    )
-
-
-# ------------------------------------------------------------------
-# Present chart: Events per Year by Top Logical Parameters.
-# ------------------------------------------------------------------
-def _present_chart_ey_tlp() -> None:
-    """Present chart: Events per Year by Top Logical Parameters."""
-    global CHOICE_CHARTS_UG_EY_TLP  # pylint: disable=global-statement
-
-    chart_id = "ey_tlp"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-            unsafe_allow_html=True,
-        )
-    with col2:
-        CHOICE_CHARTS_UG_EY_TLP = st.checkbox(
-            help="Explanations and operating instructions related to this bar chart.",
-            key=chart_title,
-            label="**User Guide Chart**",
-            value=False,
-        )
-    if CHOICE_CHARTS_UG_EY_TLP:
-        user_guide.get_ae1982_chart(
-            chart_id,
-            chart_title,
-        ),
-    _present_bar_chart(
-        chart_id,
-        chart_title,
-        _prep_data_charts_ey_tlp(DF_FILTERED),
-    )
-
-
-# ------------------------------------------------------------------
-# Present chart: Number of Fatalities per Year by
-# Selected FAR Operations Parts.
-# ------------------------------------------------------------------
-def _present_chart_fy_fp() -> None:
-    """Present chart: Number of Fatalities per Year by Selected FAR Operations
-    Parts."""
-    global CHOICE_CHARTS_UG_FY_FP  # pylint: disable=global-statement
-
-    chart_id = "fy_fp"
-    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
-            unsafe_allow_html=True,
-        )
-    with col2:
-        CHOICE_CHARTS_UG_FY_FP = st.checkbox(
-            help="Explanations and operating instructions related to this bar chart.",
-            key=chart_title,
-            label="**User Guide Chart**",
-            value=False,
-        )
-    if CHOICE_CHARTS_UG_FY_FP:
-        user_guide.get_ae1982_chart(
-            chart_id,
-            chart_title,
-        ),
-    _present_bar_chart(
-        chart_id,
-        chart_title,
-        _prep_data_charts_fy_fp(DF_FILTERED),
-    )
-
-
-# ------------------------------------------------------------------
-# Present the charts.
-# ------------------------------------------------------------------
-def _present_charts() -> None:
-    """Present the charts."""
+def _present_bar_charts() -> None:
+    """Present the bar charts."""
     # Events per Year by CICTT Codes
     if CHOICE_CHARTS_TYPE_EY_AOC:
         _present_chart_ey_aoc()
@@ -1481,47 +1270,218 @@ def _present_charts() -> None:
     if CHOICE_CHARTS_TYPE_FY_FP:
         _present_chart_fy_fp()
 
-    # Total Events by CICTT Code
-    if CHOICE_CHARTS_TYPE_TE_AOC:
-        _present_pie_chart(
-            f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
-            _prep_data_charts_te_aoc(DF_FILTERED),
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by CICTT Codes.
+# ------------------------------------------------------------------
+def _present_chart_ey_aoc() -> None:
+    """Present chart: Events per Year by CICTT Codes."""
+    global CHOICE_BAR_CHARTS_UG_EY_AOC  # pylint: disable=global-statement
+
+    if CHOICE_CHARTS_TYPE_EY_AOC:
+        chart_id = "ey_aoc"
+        chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+                unsafe_allow_html=True,
+            )
+        with col2:
+            CHOICE_BAR_CHARTS_UG_EY_AOC = st.checkbox(
+                help="Explanations and operating instructions related to this bar chart.",
+                key=chart_title,
+                label="**User Guide 'Bar chart'**",
+                value=False,
+            )
+        if CHOICE_BAR_CHARTS_UG_EY_AOC:
+            user_guide.get_ae1982_bar_chart(
+                chart_id,
+                chart_title,
+            )
+        _present_bar_chart(
+            chart_id,
+            chart_title,
+            _prep_data_charts_ey_aoc(DF_FILTERED),
         )
 
-    # Total Events by Highest Injury Levels
-    if CHOICE_CHARTS_TYPE_TE_IL:
-        _present_pie_chart(
-            f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
-            _prep_data_charts_te_il(DF_FILTERED),
-        )
 
-    # Total Events by Required Safety Systems
-    if CHOICE_CHARTS_TYPE_TE_RSS:
-        _present_pie_chart(
-            f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems",
-            _prep_data_charts_te_rss(DF_FILTERED),
-        )
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Injury Levels.
+# ------------------------------------------------------------------
+def _present_chart_ey_il() -> None:
+    """Present chart: Events per Year by Injury Levels."""
+    global CHOICE_BAR_CHARTS_UG_EY_IL  # pylint: disable=global-statement
 
-    # Total Events by Event Types
-    if CHOICE_CHARTS_TYPE_TE_T:
-        _present_pie_chart(
-            f"Total Number of {EVENT_TYPE_DESC} by Event Types",
-            _prep_data_charts_te_t(DF_FILTERED),
+    chart_id = "ey_il"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
         )
+    with col2:
+        CHOICE_BAR_CHARTS_UG_EY_IL = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide 'Bar chart'**",
+            value=False,
+        )
+    if CHOICE_BAR_CHARTS_UG_EY_IL:
+        user_guide.get_ae1982_bar_chart(
+            chart_id,
+            chart_title,
+        )
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_il(DF_FILTERED),
+    )
 
-    # Total Events by Top Level logical Parameter
-    if CHOICE_CHARTS_TYPE_TE_TLP:
-        _present_pie_chart(
-            f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
-            _prep_data_charts_te_tlp(DF_FILTERED),
-        )
 
-    # Total Fatalities under FAR Operations Parts
-    if CHOICE_CHARTS_TYPE_TF_FP:
-        _present_pie_chart(
-            "Total Number of Fatalities by Selected FAR Operations Parts",
-            _prep_data_charts_tf_fp(DF_FILTERED),
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Required Safety Systems.
+# ------------------------------------------------------------------
+def _present_chart_ey_rss() -> None:
+    """Present chart: Events per Year by Required Safety Systems."""
+    global CHOICE_BAR_CHARTS_UG_EY_RSS  # pylint: disable=global-statement
+
+    chart_id = "ey_rss"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Required Safety Systems"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
         )
+    with col2:
+        CHOICE_BAR_CHARTS_UG_EY_RSS = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide 'Bar chart'**",
+            value=False,
+        )
+    if CHOICE_BAR_CHARTS_UG_EY_RSS:
+        user_guide.get_ae1982_bar_chart(
+            chart_id,
+            chart_title,
+        )
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_rss(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Event Types.
+# ------------------------------------------------------------------
+def _present_chart_ey_t() -> None:
+    """Present chart: Events per Year by Event Types."""
+    global CHOICE_BAR_CHARTS_UG_EY_T  # pylint: disable=global-statement
+
+    chart_id = "ey_t"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        CHOICE_BAR_CHARTS_UG_EY_T = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide 'Bar chart'**",
+            value=False,
+        )
+    if CHOICE_BAR_CHARTS_UG_EY_T:
+        user_guide.get_ae1982_bar_chart(
+            chart_id,
+            chart_title,
+        )
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_t(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Top Logical Parameters.
+# ------------------------------------------------------------------
+def _present_chart_ey_tlp() -> None:
+    """Present chart: Events per Year by Top Logical Parameters."""
+    global CHOICE_BAR_CHARTS_UG_EY_TLP  # pylint: disable=global-statement
+
+    chart_id = "ey_tlp"
+    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        CHOICE_BAR_CHARTS_UG_EY_TLP = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide 'Bar chart'**",
+            value=False,
+        )
+    if CHOICE_BAR_CHARTS_UG_EY_TLP:
+        user_guide.get_ae1982_bar_chart(
+            chart_id,
+            chart_title,
+        )
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_ey_tlp(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Number of Fatalities per Year by
+# Selected FAR Operations Parts.
+# ------------------------------------------------------------------
+def _present_chart_fy_fp() -> None:
+    """Present chart: Number of Fatalities per Year by Selected FAR Operations
+    Parts."""
+    global CHOICE_BAR_CHARTS_UG_FY_FP  # pylint: disable=global-statement
+
+    chart_id = "fy_fp"
+    chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        CHOICE_BAR_CHARTS_UG_FY_FP = st.checkbox(
+            help="Explanations and operating instructions related to this bar chart.",
+            key=chart_title,
+            label="**User Guide 'Bar chart'**",
+            value=False,
+        )
+    if CHOICE_BAR_CHARTS_UG_FY_FP:
+        user_guide.get_ae1982_bar_chart(
+            chart_id,
+            chart_title,
+        )
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_charts_fy_fp(DF_FILTERED),
+    )
 
 
 # ------------------------------------------------------------------
@@ -1555,9 +1515,13 @@ def _present_data() -> None:
     if CHOICE_UG_APP:
         user_guide.get_ae1982_app()
 
-    if CHOICE_CHARTS:
-        _present_charts()
-        _print_timestamp("_present_data() - CHOICE_CHARTS")
+    if CHOICE_BAR_CHARTS:
+        _present_bar_charts()
+        _print_timestamp("_present_data() - CHOICE_BAR_CHARTS")
+
+    if CHOICE_PIE_CHARTS:
+        _present_pie_charts()
+        _print_timestamp("_present_data() - CHOICE_PIE_CHARTS")
 
     if CHOICE_DATA_PROFILE:
         _present_data_profile()
@@ -1581,7 +1545,7 @@ def _present_data_profile() -> None:
     """Present data profile."""
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-        + 'font-weight: bold;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
+        + 'font-weight: normal;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
         unsafe_allow_html=True,
     )
 
@@ -1617,7 +1581,7 @@ def _present_details() -> None:
     if CHOICE_DETAILS:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: bold;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
             unsafe_allow_html=True,
         )
         st.dataframe(DF_FILTERED)
@@ -1640,7 +1604,7 @@ def _present_map() -> None:
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-        + 'font-weight: bold;border-radius:2%;">Depicting the accidents on a map of the USA</p>',
+        + 'font-weight: normal;border-radius:2%;">Depicting the accidents on a map of the USA</p>',
         unsafe_allow_html=True,
     )
 
@@ -1693,7 +1657,7 @@ def _present_pie_chart(
     """Present the pie chart."""
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-        + f'font-weight: bold;border-radius:2%;">{chart_title}</p>',
+        + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
         unsafe_allow_html=True,
     )
 
@@ -1711,6 +1675,54 @@ def _present_pie_chart(
     st.plotly_chart(
         fig,
     )
+
+
+# ------------------------------------------------------------------
+# Present the pie charts.
+# ------------------------------------------------------------------
+def _present_pie_charts() -> None:
+    """Present the pie charts."""
+    # Total Events by CICTT Code
+    if CHOICE_CHARTS_TYPE_TE_AOC:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
+            _prep_data_charts_te_aoc(DF_FILTERED),
+        )
+
+    # Total Events by Highest Injury Levels
+    if CHOICE_CHARTS_TYPE_TE_IL:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
+            _prep_data_charts_te_il(DF_FILTERED),
+        )
+
+    # Total Events by Required Safety Systems
+    if CHOICE_CHARTS_TYPE_TE_RSS:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC}  by Required Safety Systems",
+            _prep_data_charts_te_rss(DF_FILTERED),
+        )
+
+    # Total Events by Event Types
+    if CHOICE_CHARTS_TYPE_TE_T:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC} by Event Types",
+            _prep_data_charts_te_t(DF_FILTERED),
+        )
+
+    # Total Events by Top Level logical Parameter
+    if CHOICE_CHARTS_TYPE_TE_TLP:
+        _present_pie_chart(
+            f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
+            _prep_data_charts_te_tlp(DF_FILTERED),
+        )
+
+    # Total Fatalities under FAR Operations Parts
+    if CHOICE_CHARTS_TYPE_TF_FP:
+        _present_pie_chart(
+            "Total Number of Fatalities by Selected FAR Operations Parts",
+            _prep_data_charts_tf_fp(DF_FILTERED),
+        )
 
 
 # ------------------------------------------------------------------
@@ -2221,7 +2233,7 @@ def _setup_page() -> None:
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + f'font-weight: bold;border-radius:2%;">Aviation {EVENT_TYPE_DESC} between '
+        + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} between '
         + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
@@ -2246,7 +2258,7 @@ def _setup_page() -> None:
     with col3:
         CHOICE_UG_APP = st.checkbox(
             help="Explanations and operating instructions related to the whole application.",
-            label="**User Guide Application**",
+            label="**User Guide 'Application'**",
             value=False,
         )
 
@@ -2272,9 +2284,10 @@ def _setup_sidebar() -> None:
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
     """Set up the task controls."""
-    global CHOICE_CHARTS  # pylint: disable=global-statement
+    global CHOICE_BAR_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_CHARTS_HEIGHT  # pylint: disable=global-statement
+    global CHOICE_PIE_CHARTS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_AOC  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_RSS  # pylint: disable=global-statement
@@ -2311,13 +2324,13 @@ def _setup_task_controls() -> None:
 
         st.sidebar.markdown("""---""")
 
-    CHOICE_CHARTS = st.sidebar.checkbox(
-        help="Accidents or fatalities per year (after filtering the data).",
-        label="**Show charts**",
+    CHOICE_BAR_CHARTS = st.sidebar.checkbox(
+        help="Events or fatalities per year (after filtering the data).",
+        label="**Show bar charts**",
         value=True,
     )
 
-    if CHOICE_CHARTS:
+    if CHOICE_BAR_CHARTS:
         if MODE_STANDARD:
             CHOICE_CHARTS_HEIGHT = st.sidebar.slider(
                 label="Chart height (px)", min_value=100, max_value=1000, value=500
@@ -2327,7 +2340,7 @@ def _setup_task_controls() -> None:
             )
 
             CHOICE_CHARTS_DETAILS = st.sidebar.checkbox(
-                help="Tabular representation of the of the data underlying the charts.",
+                help="Tabular representation of the of the data underlying the bar charts.",
                 label="Show detailed chart data",
                 value=False,
             )
@@ -2367,8 +2380,15 @@ def _setup_task_controls() -> None:
             value=True,
         )
 
-        st.sidebar.markdown("""---""")
+    st.sidebar.markdown("""---""")
 
+    CHOICE_PIE_CHARTS = st.sidebar.checkbox(
+        help="Total Events or fatalities (after filtering the data).",
+        label="**Show pie charts**",
+        value=True,
+    )
+
+    if CHOICE_PIE_CHARTS:
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_TE_AOC = st.sidebar.checkbox(
                 help="Total events by CICTT codes (after filtering the data).",

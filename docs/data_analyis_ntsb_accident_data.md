@@ -441,4 +441,68 @@ SELECT 'seq_of_events'                                                          
        (SELECT count(*) FROM seq_of_events WHERE ev_id IN (SELECT ev_id FROM events WHERE ev_year >= 2008)) ">= 2008",
        (SELECT count(*) FROM seq_of_events)                                                                 "Total"
 ORDER BY 1
-````
+```
+
+
+```
+SELECT 'aircraft' AS db_table,
+       count(*)   AS total
+FROM aircraft
+UNION
+SELECT 'dt_aircraft' AS db_table,
+       count(*)      AS total
+FROM dt_aircraft
+UNION
+SELECT 'dt_events' AS db_table,
+       count(*)    AS total
+FROM dt_events
+UNION
+SELECT 'dt_flight_crew' AS db_table,
+       count(*)         AS total
+FROM dt_flight_crew
+UNION
+SELECT 'engines' AS db_table,
+       count(*)  AS total
+FROM engines
+UNION
+SELECT 'events' AS db_table,
+       count(*) AS total
+FROM events
+UNION
+SELECT 'events_sequence' AS db_table,
+       count(*)          AS total
+FROM events_sequence
+UNION
+SELECT 'findings' AS db_table,
+       count(*)   AS total
+FROM findings
+UNION
+SELECT 'flight_crew' AS db_table,
+       count(*)      AS total
+FROM flight_crew
+UNION
+SELECT 'flight_time' AS db_table,
+       count(*)      AS total
+FROM flight_time
+UNION
+SELECT 'injury' AS db_table,
+       count(*) AS total
+FROM injury
+UNION
+SELECT 'narratives' AS db_table,
+       count(*)     AS total
+FROM narratives
+UNION
+SELECT 'ntsb_admin' AS db_table,
+       count(*)     AS total
+FROM ntsb_admin
+UNION
+SELECT 'occurrences' AS db_table,
+       count(*)      AS total
+FROM occurrences
+UNION
+SELECT 'seq_of_events' AS db_table,
+       count(*)        AS total
+FROM seq_of_events
+ORDER BY 1
+```

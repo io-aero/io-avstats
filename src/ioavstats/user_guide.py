@@ -65,18 +65,18 @@ def get_ae1982_app() -> None:
 
 
 # ------------------------------------------------------------------
-# ae1982 - Creates the user guide for charts.
+# ae1982 - Creates the user guide for bar charts.
 # ------------------------------------------------------------------
-def get_ae1982_chart(
+def get_ae1982_bar_chart(
     chart_id: str,
     chart_title: str,
 ) -> None:
-    """ae1982 - Creates the user guide for charts."""
+    """ae1982 - Creates the user guide for bar charts."""
     # """
     # TODO
     # """
     user_guide = (
-        _generic_header_section(f"User Guide 'Chart {chart_id}'")
+        _generic_header_section(f"User Guide 'Bar chart {chart_id}'")
         + f"""
 {chart_title}
         

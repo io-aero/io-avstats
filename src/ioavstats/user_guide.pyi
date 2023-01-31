@@ -5,7 +5,7 @@
 """Module stub file."""
 
 def get_ae1982_app() -> None: ...
-def get_ae1982_chart(
+def get_ae1982_bar_chart(
     chart_id: str,
     chart_title: str,
 ) -> None: ...

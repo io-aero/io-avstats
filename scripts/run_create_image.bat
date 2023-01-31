@@ -124,6 +124,9 @@ rem > %LOG_FILE% 2>&1 (
 
     for /F %%I in ('docker images -q -f "dangling=true" -f "label=autodelete=true"') do (docker rmi -f %%I)
 
+    if ["!APPLICATION!"] EQU ["ae1982_ltd"]  (
+        del /s src\ioavstats\ae1982_ltd.py
+    )
 
     :END_OF_SCRIPT
     echo -----------------------------------------------------------------------

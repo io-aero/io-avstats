@@ -39,6 +39,7 @@ nav:
       - DB View ae1982: data_analyis_ae1982.md
   - How to ...:
       - ... add NTSB accident files: how_to_add_ntsb_accident_files.md
+      - ... compare NTSB and IO-AVSTATS-DB: how_to_compare_ntsb_and_io_db.md
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
       - ... set up an AWS instance: how_to_setup_aws_instance.md
       - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md

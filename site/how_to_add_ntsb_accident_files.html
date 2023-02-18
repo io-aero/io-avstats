@@ -1,0 +1,1593 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Event Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/how_to_add_ntsb_accident_files.html">
+      
+      
+        <link rel="prev" href="operation.html">
+      
+      
+        <link rel="next" href="how_to_create_new_streamlit_app.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+    
+    
+      
+        <title>... add NTSB accident files - IO-AVSTATS - Aviation Event Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-add-ntsb-accident-files" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Event Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ... add NTSB accident files
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Event Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          How to ...
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How to ...
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          ... add NTSB accident files
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link md-nav__link--active">
+        ... add NTSB accident files
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-reference" class="md-nav__link">
+    1. Quick reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-description" class="md-nav__link">
+    2. Detailed description
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-1-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
+    No. 1 - d_s_f - Download basic simplemaps files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-2-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
+    No. 2 - l_s_d - Load simplemaps data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no3-download-the-zip-code-database-file" class="md-nav__link">
+    No.3 - Download the ZIP Code Database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-4-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
+    No. 4 - l_z_d - Load ZIP Code Database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-5-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
+    No. 5 -  l_c_d - Load data from a correction file into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-111-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
+    No. 11.1 - d_n_a - Download a NTSB MS Access database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-112-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
+    No. 11.2 - l_n_a - Load NTSB MS Access database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-113-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
+    No. 11.3 - c_l_l - Correct decimal US latitudes and longitudes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-114-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
+    No. 11.4 - v_n_d - Verify selected NTSB data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-115-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
+    No. 11.5 - r_d_s - Refresh the PostgreSQL database schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-event-completeness" class="md-nav__link">
+    Optional data quality check: Event completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-latitude-longitude" class="md-nav__link">
+    Optional data quality check: Latitude &amp;longitude
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-issue-summary" class="md-nav__link">
+    Optional data quality check: Issue summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-21-backup-the-file-directory-datapostgres" class="md-nav__link">
+    No. 21 - Backup the file directory data/postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-22-update-the-google-drive" class="md-nav__link">
+    No. 22 - Update the Google Drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-23-c_f_z-zip-the-files-for-the-cloud" class="md-nav__link">
+    No. 23 -  c_f_z - Zip the files for the cloud
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        ... create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
+        ... set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        ... update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Reconciliation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reconciliation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
+        NTSB vs. IO-AVSTATS-DB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_reconc_event_related.html" class="md-nav__link">
+        Event-related
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_reconc_fatality_related.html" class="md-nav__link">
+        Fatality-related
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-reference" class="md-nav__link">
+    1. Quick reference
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-description" class="md-nav__link">
+    2. Detailed description
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-1-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
+    No. 1 - d_s_f - Download basic simplemaps files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-2-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
+    No. 2 - l_s_d - Load simplemaps data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no3-download-the-zip-code-database-file" class="md-nav__link">
+    No.3 - Download the ZIP Code Database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-4-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
+    No. 4 - l_z_d - Load ZIP Code Database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-5-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
+    No. 5 -  l_c_d - Load data from a correction file into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-111-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
+    No. 11.1 - d_n_a - Download a NTSB MS Access database file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-112-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
+    No. 11.2 - l_n_a - Load NTSB MS Access database data into PostgreSQL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-113-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
+    No. 11.3 - c_l_l - Correct decimal US latitudes and longitudes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-114-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
+    No. 11.4 - v_n_d - Verify selected NTSB data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-115-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
+    No. 11.5 - r_d_s - Refresh the PostgreSQL database schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-event-completeness" class="md-nav__link">
+    Optional data quality check: Event completeness
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-latitude-longitude" class="md-nav__link">
+    Optional data quality check: Latitude &amp;longitude
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-data-quality-check-issue-summary" class="md-nav__link">
+    Optional data quality check: Issue summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-21-backup-the-file-directory-datapostgres" class="md-nav__link">
+    No. 21 - Backup the file directory data/postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-22-update-the-google-drive" class="md-nav__link">
+    No. 22 - Update the Google Drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-23-c_f_z-zip-the-files-for-the-cloud" class="md-nav__link">
+    No. 23 -  c_f_z - Zip the files for the cloud
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="how-to-add-ntsb-accident-files">How to add NTSB accident files</h1>
+<p>Aviation accident data provided by <strong>NTSB</strong> can be found at the following <a href="https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx" target="_blank">website</a> under <strong>Downloadable data sets</strong>:</p>
+<p><kbd><img alt="" src="img/how_to_add_ntsb_01.png" /></kbd></p>
+<p><strong>NTSB</strong> provides update databases every month on the 1st, 8th 15th, and 22nd. 
+In addition, an up-to-date <strong>avall</strong> database is provided on the first of every month.</p>
+<p>In the database table <strong><code>io_processed_files</code></strong> you can find the files already processed by <strong>IO-Aero</strong>:</p>
+<p><kbd><img alt="" src="img/io_processed_files.png" /></kbd></p>
+<p>Any file provided by <strong>NTSB</strong> can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.</p>
+<p>All necessary processing steps can be executed with the <strong><code>run_io_avstats</code></strong> script.
+The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22.04 bash shell.</p>
+<h2 id="1-quick-reference">1. Quick reference</h2>
+<p>The following processing steps are performed only on the first of each month:</p>
+<table>
+<thead>
+<tr>
+<th align="right">No.</th>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">1</td>
+<td>d_s_f</td>
+<td>Download basic simplemaps files</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>l_s_d</td>
+<td><strong>Optional</strong>: Load simplemaps data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td></td>
+<td>Download the ZIP Code Database file</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>l_z_d</td>
+<td><strong>Optional</strong>: Load ZIP Code Database data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>l_c_d</td>
+<td><strong>Optional</strong>: Load data from a correction file into PostgreSQL</td>
+</tr>
+</tbody>
+</table>
+<p>The following processing steps are performed on each of the change files delivered on the 1st, 8th, 15th and 22nd:</p>
+<table>
+<thead>
+<tr>
+<th align="right">No.</th>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">11.0</td>
+<td>u_p_d</td>
+<td>Download a NTSB MS Access database file</td>
+</tr>
+<tr>
+<td align="right">11.1</td>
+<td></td>
+<td>Load NTSB MS Access database data into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">11.2</td>
+<td></td>
+<td>Correct decimal US latitudes and longitudes</td>
+</tr>
+<tr>
+<td align="right">11.3</td>
+<td></td>
+<td>Verify selected NTSB data</td>
+</tr>
+<tr>
+<td align="right">11.4</td>
+<td></td>
+<td>Refresh the PostgreSQL database schema</td>
+</tr>
+<tr>
+<td align="right">11.5</td>
+<td></td>
+<td>Optional data quality checks</td>
+</tr>
+</tbody>
+</table>
+<p>The following steps are used to back up and to update the database in the cloud:</p>
+<table>
+<thead>
+<tr>
+<th align="right">No.</th>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">21</td>
+<td></td>
+<td>Backup the file directory <strong><code>data/postgres</code></strong></td>
+</tr>
+<tr>
+<td align="right">22</td>
+<td></td>
+<td>Update the Google Drive</td>
+</tr>
+<tr>
+<td align="right">23</td>
+<td>c_f_z</td>
+<td>Zip the files for the cloud</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-detailed-description">2. Detailed description</h2>
+<h3 id="no-1-d_s_f-download-basic-simplemaps-files">No. 1 - <strong><code>d_s_f</code></strong> - Download basic simplemaps files</h3>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>download_chunk_size = 524288
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>download_timeout = 10
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>download_file_simplemaps_us_cities_xlsx = &quot;uscities.xlsx&quot;
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>download_file_simplemaps_us_cities_zip = &quot;simplemaps_uscities_basicv1.75.zip&quot;
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>download_file_simplemaps_us_zips_xlsx = &quot;uszips.xlsx&quot;
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>download_file_simplemaps_us_zips_zip = &quot;simplemaps_uszips_basicv1.81.zip&quot;
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>...\io-avstats&gt;run_io_avstats
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Progress update 2023-01-12 08:52:58.915135 : ===============================================================================.
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Progress update 2023-01-12 08:52:58.915635 : INFO.00.004 Start Launcher.
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Progress update 2023-01-12 08:52:58.917636 : INFO.00.001 The logger is configured and ready.
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Progress update 2023-01-12 08:52:58.925635 : INFO.00.005 Argument task=&#39;d_s_f&#39;.
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Progress update 2023-01-12 08:52:58.925635 : -------------------------------------------------------------------------------.
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Progress update 2023-01-12 08:52:58.926135 : INFO.00.048 Downloading basic simplemaps files.
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Progress update 2023-01-12 08:52:58.926135 : --------------------------------------------------------------------------------
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Progress update 2023-01-12 08:52:59.124166 : INFO.00.030 The connection to the US city file &#39;simplemaps_uscities_basicv1.75.zip&#39; on the simplemaps download page was successfully established.
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Progress update 2023-01-12 08:52:59.625371 : INFO.00.023 From the file &#39;simplemaps_uscities_basicv1.75.zip&#39; 8 chunks were downloaded.
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>Progress update 2023-01-12 08:52:59.658871 : INFO.00.024 The file &#39;simplemaps_uscities_basicv1.75.zip&#39; was successfully unpacked.
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>Progress update 2023-01-12 08:52:59.736875 : INFO.00.022 The connection to the US zip code file &#39;simplemaps_uszips_basicv1.81.zip&#39; on the simplemaps download page was successfully established.
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Progress update 2023-01-12 08:52:59.838506 : INFO.00.023 From the file &#39;simplemaps_uszips_basicv1.81.zip&#39; 8 chunks were downloaded.
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>Progress update 2023-01-12 08:52:59.872006 : INFO.00.024 The file &#39;simplemaps_uszips_basicv1.81.zip&#39; was successfully unpacked.
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>Progress update 2023-01-12 08:52:59.872506 : -------------------------------------------------------------------------------.
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>Progress update 2023-01-12 08:52:59.872506 :        1,075,371,000 ns - Total time launcher.
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>Progress update 2023-01-12 08:52:59.872506 : INFO.00.006 End   Launcher.
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>Progress update 2023-01-12 08:52:59.872506 : ===============================================================================.
+</code></pre></div>
+<p>The downloaded files <strong><code>uscities.csv</code></strong> and <strong><code>uszips.xlsx</code></strong> must be checked with the reference files in the file directory <strong><code>data/reference</code></strong> for a match.
+If there is no mismatch, then the next step can be skipped.</p>
+<h3 id="no-2-l_s_d-load-simplemaps-data-into-postgresql">No. 2 - <strong><code>l_s_d</code></strong> - Load simplemaps data into PostgreSQL</h3>
+<p>Only necessary if the file downloaded in the previous step contains changes.</p>
+<p>TODO</p>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>TODO
+</code></pre></div>
+<h3 id="no3-download-the-zip-code-database-file">No.3 - Download the ZIP Code Database file</h3>
+<p>The <strong><code>Personal Free</code></strong> version of the ZIP Code Database file must be downloaded manually from the <strong><code>https://www.unitedstateszipcodes.org/zip-code-database/</code></strong> website to the file directory according to the <strong><code>download_work_dir</code></strong> configuration parameter.</p>
+<p><kbd><img alt="" src="img/Zip%20Codes.org%20Verify%20License%20Terms.png" /></kbd></p>
+<p>The two formats <strong><code>Excel Format (data only)</code></strong> and <strong><code>CSV Format</code></strong> must be downloaded one after the other.
+The downloaded file <strong><code>zip_code_database.csv</code></strong> must be checked with the reference files in the file directory <strong><code>data/reference</code></strong> for a match.
+If there is no mismatch, then the next step can be skipped.</p>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<h3 id="no-4-l_z_d-load-zip-code-database-data-into-postgresql">No. 4 - <strong><code>l_z_d</code></strong> - Load ZIP Code Database data into PostgreSQL</h3>
+<p>Only necessary if the file downloaded in the previous step contains changes.</p>
+<p>TODO</p>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>TODO
+</code></pre></div>
+<h3 id="no-5-l_c_d-load-data-from-a-correction-file-into-postgresql">No. 5 -  <strong><code>l_c_d</code></strong> - Load data from a correction file into PostgreSQL</h3>
+<p>This step only needs to be performed if modified or new correction files are available.</p>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>correction_work_dir = &quot;data/correction&quot;
+</code></pre></div>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>TODO
+</code></pre></div>
+<h3 id="no-111-d_n_a-download-a-ntsb-ms-access-database-file">No. 11.1 - <strong><code>d_n_a</code></strong> - Download a NTSB MS Access database file</h3>
+<p>The execution protocol for the entire step 11 is available <a href="https://io-aero.github.io/io-avstats-shared/" target="_blank">here</a> under: <strong>Applications</strong> - <strong>Update Log Files</strong></p>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>download_chunk_size = 524288
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>download_timeout = 10
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>download_url_ntsb_prefix = &quot;https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<h3 id="no-112-l_n_a-load-ntsb-ms-access-database-data-into-postgresql">No. 11.2 - <strong><code>l_n_a</code></strong> - Load NTSB MS Access database data into PostgreSQL</h3>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>download_work_dir = &quot;data/download&quot;
+</code></pre></div>
+<h3 id="no-113-c_l_l-correct-decimal-us-latitudes-and-longitudes">No. 11.3 - <strong><code>c_l_l</code></strong> - Correct decimal US latitudes and longitudes</h3>
+<h3 id="no-114-v_n_d-verify-selected-ntsb-data">No. 11.4 - <strong><code>v_n_d</code></strong> - Verify selected NTSB data</h3>
+<p><strong>Relevant configuration parameters</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>max_deviation_latitude = 0.01
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>max_deviation_longitude = 0.01
+</code></pre></div>
+<h3 id="no-115-r_d_s-refresh-the-postgresql-database-schema">No. 11.5 - <strong><code>r_d_s</code></strong> - Refresh the PostgreSQL database schema</h3>
+<h3 id="optional-data-quality-check-event-completeness">Optional data quality check: Event completeness</h3>
+<p><strong>Query</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>       &#39;Events Total&#39; &quot;Description&quot;
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  FROM events e
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a> UNION
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>SELECT count(*) ,
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>       &#39;Events Total with Fatalities&#39;
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  FROM events e
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a> WHERE inj_tot_f &gt; 0
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a> UNION
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>SELECT count(*) ,
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>       &#39;Events US&#39;
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>  FROM events e
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a> WHERE ev_state IS NOT NULL
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>                      FROM io_states is2)
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a> UNION
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>SELECT count(*) ,
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>       &#39;Events US with Fatalities&#39;
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>  FROM events e
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a> WHERE inj_tot_f &gt; 0
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>                      FROM io_states is2)
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a> UNION
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>       &#39;Events Total since 1982&#39; &quot;Description&quot;
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>  FROM events e
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a> WHERE ev_year &gt;= 1982
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a> UNION
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>SELECT count(*) ,
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>       &#39;Events Total with Fatalities since 1982&#39;
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>  FROM events e
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a> WHERE ev_year &gt;= 1982
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a> UNION
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>SELECT count(*) ,
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>       &#39;Events US since 1982&#39;
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>  FROM events e
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a> WHERE ev_year &gt;= 1982
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>                      FROM io_states is2)
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a> UNION
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>SELECT count(*) ,
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>       &#39;Events US with Fatalities since 1982&#39;
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>  FROM events e
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a> WHERE ev_year &gt;= 1982
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>                      FROM io_states is2)
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a> UNION
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>       &#39;Events Total since 2008&#39; &quot;Description&quot;
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>  FROM events e
+<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a> UNION
+<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>SELECT count(*) ,
+<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>       &#39;Events Total with Fatalities since 2008&#39;
+<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>  FROM events e
+<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a> UNION
+<a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>SELECT count(*) ,
+<a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a>       &#39;Events US since 2008&#39;
+<a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a>  FROM events e
+<a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-12-68" name="__codelineno-12-68" href="#__codelineno-12-68"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-12-69" name="__codelineno-12-69" href="#__codelineno-12-69"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-70" name="__codelineno-12-70" href="#__codelineno-12-70"></a>                      FROM io_states is2)
+<a id="__codelineno-12-71" name="__codelineno-12-71" href="#__codelineno-12-71"></a> UNION
+<a id="__codelineno-12-72" name="__codelineno-12-72" href="#__codelineno-12-72"></a>SELECT count(*) ,
+<a id="__codelineno-12-73" name="__codelineno-12-73" href="#__codelineno-12-73"></a>       &#39;Events US with Fatalities since 2008&#39;
+<a id="__codelineno-12-74" name="__codelineno-12-74" href="#__codelineno-12-74"></a>  FROM events e
+<a id="__codelineno-12-75" name="__codelineno-12-75" href="#__codelineno-12-75"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-12-76" name="__codelineno-12-76" href="#__codelineno-12-76"></a>   AND inj_tot_f &gt; 0
+<a id="__codelineno-12-77" name="__codelineno-12-77" href="#__codelineno-12-77"></a>   AND ev_state IS NOT NULL
+<a id="__codelineno-12-78" name="__codelineno-12-78" href="#__codelineno-12-78"></a>   AND ev_state IN (SELECT state
+<a id="__codelineno-12-79" name="__codelineno-12-79" href="#__codelineno-12-79"></a>                      FROM io_states is2)
+<a id="__codelineno-12-80" name="__codelineno-12-80" href="#__codelineno-12-80"></a> ORDER BY 2
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Count|Description                            |
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>-----+---------------------------------------+
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>88137|Events Total                           |
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>88130|Events Total since 1982                |
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>25101|Events Total since 2008                |
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>17585|Events Total with Fatalities           |
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>17579|Events Total with Fatalities since 1982|
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a> 5269|Events Total with Fatalities since 2008|
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>81137|Events US                              |
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>81130|Events US since 1982                   |
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>20780|Events US since 2008                   |
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>14695|Events US with Fatalities              |
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>14689|Events US with Fatalities since 1982   |
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a> 3507|Events US with Fatalities since 2008   | 
+</code></pre></div>
+<h3 id="optional-data-quality-check-latitude-longitude">Optional data quality check: Latitude &amp;longitude</h3>
+<p><strong>Query Total:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>       io_dec_lat_lng_actions
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  FROM events 
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a> WHERE io_dec_lat_lng_actions IS NOT NULL 
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a> GROUP BY io_dec_lat_lng_actions 
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a> ORDER BY io_dec_lat_lng_actions
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                                                                                                                         |
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  510|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                           |
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a> 4087|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  585|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                                                              |
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    5|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                      |
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    4|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                      |
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>   13|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                                                         |
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>   14|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                                                         |
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    8|ERROR.00.922 Invalid US state id &amp; INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    3|ERROR.00.922 Invalid US state id &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>   91|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    1|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00|
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    2|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                              |
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>42684|INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a> 1293|INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              |
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>10959|INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>  101|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string                                                                                                                                                                  |
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>    4|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                   |
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>   64|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; INFO.00.033 Correction based on US zip code                                                                            |
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>  123|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                                                                 |  
+</code></pre></div>
+<p><strong>Query Total since 1982:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>       io_dec_lat_lng_actions
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  FROM events 
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a> WHERE ev_year &gt;= 1982
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>   AND io_dec_lat_lng_actions IS NOT NULL 
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a> GROUP BY io_dec_lat_lng_actions 
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a> ORDER BY io_dec_lat_lng_actions
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                                                                                                                         |
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  510|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                           |
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a> 4087|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  585|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                                                                                                                              |
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    5|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                      |
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    4|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                      |
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>   13|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country                                                                                                         |
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>   14|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                                                                                                                         |
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    8|ERROR.00.922 Invalid US state id &amp; INFO.00.033 Correction based on US zip code                                                                                                                                                                                 |
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    3|ERROR.00.922 Invalid US state id &amp; INFO.00.034 Correction based on US state and city                                                                                                                                                                           |
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>   91|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                      |
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    1|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00|
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    2|ERROR.00.922 Invalid US state id &amp; INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                              |
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>42680|INFO.00.033 Correction based on US zip code                                                                                                                                                                                                                    |
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a> 1292|INFO.00.034 Correction based on US state and city                                                                                                                                                                                                              |
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>10957|INFO.00.037 Correction based on latitude and longitude                                                                                                                                                                                                         |
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>  101|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string                                                                                                                                                                  |
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    4|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                   |
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>   64|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.920 Invalid latitude string &amp; ERROR.00.921 Invalid longitude string &amp; INFO.00.033 Correction based on US zip code                                                                            |
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>  123|INFO.00.037 Correction based on latitude and longitude &amp; ERROR.00.921 Invalid longitude string                                                                                                                                                                 |  
+</code></pre></div>
+<p><strong>Query Total since 2008:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>       io_dec_lat_lng_actions
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  FROM events 
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>   AND io_dec_lat_lng_actions IS NOT NULL 
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a> GROUP BY io_dec_lat_lng_actions 
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a> ORDER BY io_dec_lat_lng_actions
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Count|io_dec_lat_lng_actions                                                                                                                                   |
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>-----+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    1|ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                     |
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    6|ERROR.00.915 Unknown US zip code &amp; INFO.00.034 Correction based on US state and city                                                                     |
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    5|ERROR.00.916 Unknown US state and city &amp; INFO.00.035 Correction based on US state                                                                        |
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    1|ERROR.00.922 Invalid US state id &amp; ERROR.00.915 Unknown US zip code &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country|
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    7|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; ERROR.00.917 Unknown US state &amp; INFO.00.036 Correction based on US country   |
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>   10|ERROR.00.922 Invalid US state id &amp; ERROR.00.916 Unknown US state and city &amp; INFO.00.036 Correction based on US country                                   |
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>   13|INFO.00.033 Correction based on US zip code                                                                                                              |
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>   33|INFO.00.034 Correction based on US state and city                                                                                                        |   
+</code></pre></div>
+<h3 id="optional-data-quality-check-issue-summary">Optional data quality check: Issue summary</h3>
+<p><strong>Query Total:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  FROM events e
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a> WHERE io_dec_latitude_deviating IS NOT NULL 
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a> UNION
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>SELECT count(*),
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>       &#39;Longitude deviation&#39;
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>  FROM events e
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a> WHERE io_dec_longitude_deviating IS NOT NULL 
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a> UNION
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>SELECT count(*) ,
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>       &#39;Invalid Latitude&#39;
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>  FROM events e
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a> WHERE io_invalid_latitude IS NOT NULL 
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a> UNION
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>SELECT count(*) ,
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>       &#39;Invalid Longitude&#39;
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>  FROM events e
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a> WHERE io_invalid_longitude IS NOT NULL 
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a> UNION
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a>SELECT count(*) ,
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>       &#39;Invalid US City&#39;
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a>  FROM events e
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a> WHERE io_invalid_us_city IS NOT NULL 
+<a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a> UNION
+<a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a>SELECT count(*) ,
+<a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a>       &#39;Invalid US City &amp; Zipcode&#39;
+<a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a>  FROM events e
+<a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a> WHERE io_invalid_us_city_zipcode IS NOT NULL 
+<a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a> UNION
+<a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a>SELECT count(*) ,
+<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a>       &#39;Invalid US State&#39;
+<a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a>  FROM events e
+<a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a> WHERE io_invalid_us_state IS NOT NULL 
+<a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a> UNION
+<a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a>SELECT count(*) ,
+<a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a>       &#39;Invalid US Zipcode&#39;
+<a id="__codelineno-20-38" name="__codelineno-20-38" href="#__codelineno-20-38"></a>  FROM events e
+<a id="__codelineno-20-39" name="__codelineno-20-39" href="#__codelineno-20-39"></a> WHERE io_invalid_us_zipcode IS NOT NULL 
+<a id="__codelineno-20-40" name="__codelineno-20-40" href="#__codelineno-20-40"></a> ORDER BY 2
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Count|Description              |
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>-----+-------------------------+
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a> 3807|Invalid Latitude         |
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a> 4131|Invalid Longitude        |
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a> 6042|Invalid US City          |
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>16531|Invalid US City &amp; Zipcode|
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>  290|Invalid US State         |
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a> 6039|Invalid US Zipcode       |
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a> 3726|Latitude deviation       |
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a> 3655|Longitude deviation      | 
+</code></pre></div>
+<p><strong>Query US until 2008:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>  FROM events e
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>   AND io_dec_latitude_deviating IS NOT NULL 
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a> UNION
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>SELECT count(*),
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>       &#39;Longitude deviation&#39;
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>  FROM events e
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>   AND io_dec_longitude_deviating IS NOT NULL 
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a> UNION
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>SELECT count(*) ,
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>       &#39;Invalid Latitude&#39;
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>  FROM events e
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>   AND io_invalid_latitude IS NOT NULL 
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a> UNION
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a>SELECT count(*) ,
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>       &#39;Invalid Longitude&#39;
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>  FROM events e
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>   AND io_invalid_longitude IS NOT NULL 
+<a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a> UNION
+<a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a>SELECT count(*) ,
+<a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a>       &#39;Invalid US City&#39;
+<a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a>  FROM events e
+<a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-29" name="__codelineno-22-29" href="#__codelineno-22-29"></a>   AND io_invalid_us_city IS NOT NULL 
+<a id="__codelineno-22-30" name="__codelineno-22-30" href="#__codelineno-22-30"></a> UNION
+<a id="__codelineno-22-31" name="__codelineno-22-31" href="#__codelineno-22-31"></a>SELECT count(*) ,
+<a id="__codelineno-22-32" name="__codelineno-22-32" href="#__codelineno-22-32"></a>       &#39;Invalid US City &amp; Zipcode&#39;
+<a id="__codelineno-22-33" name="__codelineno-22-33" href="#__codelineno-22-33"></a>  FROM events e
+<a id="__codelineno-22-34" name="__codelineno-22-34" href="#__codelineno-22-34"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-35" name="__codelineno-22-35" href="#__codelineno-22-35"></a>   AND io_invalid_us_city_zipcode IS NOT NULL 
+<a id="__codelineno-22-36" name="__codelineno-22-36" href="#__codelineno-22-36"></a> UNION
+<a id="__codelineno-22-37" name="__codelineno-22-37" href="#__codelineno-22-37"></a>SELECT count(*) ,
+<a id="__codelineno-22-38" name="__codelineno-22-38" href="#__codelineno-22-38"></a>       &#39;Invalid US State&#39;
+<a id="__codelineno-22-39" name="__codelineno-22-39" href="#__codelineno-22-39"></a>  FROM events e
+<a id="__codelineno-22-40" name="__codelineno-22-40" href="#__codelineno-22-40"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-41" name="__codelineno-22-41" href="#__codelineno-22-41"></a>   AND io_invalid_us_state IS NOT NULL 
+<a id="__codelineno-22-42" name="__codelineno-22-42" href="#__codelineno-22-42"></a> UNION
+<a id="__codelineno-22-43" name="__codelineno-22-43" href="#__codelineno-22-43"></a>SELECT count(*) ,
+<a id="__codelineno-22-44" name="__codelineno-22-44" href="#__codelineno-22-44"></a>       &#39;Invalid US Zipcode&#39;
+<a id="__codelineno-22-45" name="__codelineno-22-45" href="#__codelineno-22-45"></a>  FROM events e
+<a id="__codelineno-22-46" name="__codelineno-22-46" href="#__codelineno-22-46"></a> WHERE ev_year &lt; 2008 
+<a id="__codelineno-22-47" name="__codelineno-22-47" href="#__codelineno-22-47"></a>   AND io_invalid_us_zipcode IS NOT NULL 
+<a id="__codelineno-22-48" name="__codelineno-22-48" href="#__codelineno-22-48"></a> ORDER BY 2
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Count|Description              |
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>-----+-------------------------+
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  172|Invalid Latitude         |
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>  196|Invalid Longitude        |
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a> 4851|Invalid US City          |
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>12421|Invalid US City &amp; Zipcode|
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>  123|Invalid US State         |
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a> 5113|Invalid US Zipcode       |
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    1|Latitude deviation       |
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>    0|Longitude deviation      |    
+</code></pre></div>
+<p><strong>Query US Accidents since 2008:</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>SELECT count(*) &quot;Count&quot;,
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  FROM events e
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>   AND io_dec_latitude_deviating IS NOT NULL 
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a> UNION
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>SELECT count(*),
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>       &#39;Longitude deviation&#39;
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>  FROM events e
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>   AND io_dec_longitude_deviating IS NOT NULL 
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a> UNION
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>SELECT count(*) ,
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>       &#39;Invalid Latitude&#39;
+<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a>  FROM events e
+<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>   AND io_invalid_latitude IS NOT NULL 
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a> UNION
+<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>SELECT count(*) ,
+<a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a>       &#39;Invalid Longitude&#39;
+<a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a>  FROM events e
+<a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>   AND io_invalid_longitude IS NOT NULL 
+<a id="__codelineno-24-24" name="__codelineno-24-24" href="#__codelineno-24-24"></a> UNION
+<a id="__codelineno-24-25" name="__codelineno-24-25" href="#__codelineno-24-25"></a>SELECT count(*) ,
+<a id="__codelineno-24-26" name="__codelineno-24-26" href="#__codelineno-24-26"></a>       &#39;Invalid US City&#39;
+<a id="__codelineno-24-27" name="__codelineno-24-27" href="#__codelineno-24-27"></a>  FROM events e
+<a id="__codelineno-24-28" name="__codelineno-24-28" href="#__codelineno-24-28"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-29" name="__codelineno-24-29" href="#__codelineno-24-29"></a>   AND io_invalid_us_city IS NOT NULL 
+<a id="__codelineno-24-30" name="__codelineno-24-30" href="#__codelineno-24-30"></a> UNION
+<a id="__codelineno-24-31" name="__codelineno-24-31" href="#__codelineno-24-31"></a>SELECT count(*) ,
+<a id="__codelineno-24-32" name="__codelineno-24-32" href="#__codelineno-24-32"></a>       &#39;Invalid US City &amp; Zipcode&#39;
+<a id="__codelineno-24-33" name="__codelineno-24-33" href="#__codelineno-24-33"></a>  FROM events e
+<a id="__codelineno-24-34" name="__codelineno-24-34" href="#__codelineno-24-34"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-35" name="__codelineno-24-35" href="#__codelineno-24-35"></a>   AND io_invalid_us_city_zipcode IS NOT NULL 
+<a id="__codelineno-24-36" name="__codelineno-24-36" href="#__codelineno-24-36"></a> UNION
+<a id="__codelineno-24-37" name="__codelineno-24-37" href="#__codelineno-24-37"></a>SELECT count(*) ,
+<a id="__codelineno-24-38" name="__codelineno-24-38" href="#__codelineno-24-38"></a>       &#39;Invalid US State&#39;
+<a id="__codelineno-24-39" name="__codelineno-24-39" href="#__codelineno-24-39"></a>  FROM events e
+<a id="__codelineno-24-40" name="__codelineno-24-40" href="#__codelineno-24-40"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-41" name="__codelineno-24-41" href="#__codelineno-24-41"></a>   AND io_invalid_us_state IS NOT NULL 
+<a id="__codelineno-24-42" name="__codelineno-24-42" href="#__codelineno-24-42"></a> UNION
+<a id="__codelineno-24-43" name="__codelineno-24-43" href="#__codelineno-24-43"></a>SELECT count(*) ,
+<a id="__codelineno-24-44" name="__codelineno-24-44" href="#__codelineno-24-44"></a>       &#39;Invalid US Zipcode&#39;
+<a id="__codelineno-24-45" name="__codelineno-24-45" href="#__codelineno-24-45"></a>  FROM events e
+<a id="__codelineno-24-46" name="__codelineno-24-46" href="#__codelineno-24-46"></a> WHERE ev_year &gt;= 2008 
+<a id="__codelineno-24-47" name="__codelineno-24-47" href="#__codelineno-24-47"></a>   AND io_invalid_us_zipcode IS NOT NULL 
+<a id="__codelineno-24-48" name="__codelineno-24-48" href="#__codelineno-24-48"></a> ORDER BY 2
+</code></pre></div>
+<p><strong>Results</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Count|Description              |
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>-----+-------------------------+
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a> 3635|Invalid Latitude         |
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a> 3935|Invalid Longitude        |
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a> 1191|Invalid US City          |
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a> 4110|Invalid US City &amp; Zipcode|
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>  167|Invalid US State         |
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>  926|Invalid US Zipcode       |
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a> 3725|Latitude deviation       |
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a> 3655|Longitude deviation      | 
+</code></pre></div>
+<h3 id="no-21-backup-the-file-directory-datapostgres">No. 21 - Backup the file directory <strong><code>data/postgres</code></strong></h3>
+<ul>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
+<li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
+<li>Rename the file <strong><code>postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Create a copy of the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong> with the name <strong><code>latest_postgres.zip</code></strong>.</li>
+</ul>
+<h3 id="no-22-update-the-google-drive">No. 22 - Update the Google Drive</h3>
+<ul>
+<li>Log in to Google Drive with the Google Account <strong><code>io-avstats.io-aero@gmail.com</code></strong>.</li>
+<li>Upload the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Share the newly uploaded file.</li>
+</ul>
+<h3 id="no-23-c_f_z-zip-the-files-for-the-cloud">No. 23 -  <strong><code>c_f_z</code></strong> - Zip the files for the cloud</h3>
+<ul>
+<li>Upload the resulting <strong><code>cloud.zip</code></strong> file to the cloud and process it there.</li>
+</ul>
+<p><strong>Example protocol</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>=======================================================================
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Start scripts\run_cloud_files_zip
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>File Collection for AWS
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>The current time is: 13:01:26.05
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>Enter the new time:
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>=======================================================================
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>Scanning the drive:
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>3 files, 339154065 bytes (324 MiB)
+<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>
+<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>Creating archive: cloud.zip
+<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>
+<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>Items to compress: 3
+<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
+<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a>
+<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>Files read from disk: 3
+<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>Archive size: 328965173 bytes (314 MiB)
+<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>Everything is Ok
+<a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a>
+<a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a>=======================================================================
+<a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a>Archive Content
+<a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-27" name="__codelineno-26-27" href="#__codelineno-26-27"></a>
+<a id="__codelineno-26-28" name="__codelineno-26-28" href="#__codelineno-26-28"></a>7-Zip (a) [32] 15.14 : Copyright (c) 1999-2015 Igor Pavlov : 2015-12-31
+<a id="__codelineno-26-29" name="__codelineno-26-29" href="#__codelineno-26-29"></a>
+<a id="__codelineno-26-30" name="__codelineno-26-30" href="#__codelineno-26-30"></a>Scanning the drive for archives:
+<a id="__codelineno-26-31" name="__codelineno-26-31" href="#__codelineno-26-31"></a>1 file, 328965173 bytes (314 MiB)
+<a id="__codelineno-26-32" name="__codelineno-26-32" href="#__codelineno-26-32"></a>
+<a id="__codelineno-26-33" name="__codelineno-26-33" href="#__codelineno-26-33"></a>Listing archive: cloud.zip
+<a id="__codelineno-26-34" name="__codelineno-26-34" href="#__codelineno-26-34"></a>
+<a id="__codelineno-26-35" name="__codelineno-26-35" href="#__codelineno-26-35"></a>--
+<a id="__codelineno-26-36" name="__codelineno-26-36" href="#__codelineno-26-36"></a>Path = cloud.zip
+<a id="__codelineno-26-37" name="__codelineno-26-37" href="#__codelineno-26-37"></a>Type = zip
+<a id="__codelineno-26-38" name="__codelineno-26-38" href="#__codelineno-26-38"></a>Physical Size = 328965173
+<a id="__codelineno-26-39" name="__codelineno-26-39" href="#__codelineno-26-39"></a>
+<a id="__codelineno-26-40" name="__codelineno-26-40" href="#__codelineno-26-40"></a>   Date      Time    Attr         Size   Compressed  Name
+<a id="__codelineno-26-41" name="__codelineno-26-41" href="#__codelineno-26-41"></a>------------------- ----- ------------ ------------  ------------------------
+<a id="__codelineno-26-42" name="__codelineno-26-42" href="#__codelineno-26-42"></a>2023-01-31 12:57:21 ....A    339143116    328962979  data\latest_postgres.zip
+<a id="__codelineno-26-43" name="__codelineno-26-43" href="#__codelineno-26-43"></a>2023-01-27 06:55:21 ....A         2070          453  docker-compose.yml
+<a id="__codelineno-26-44" name="__codelineno-26-44" href="#__codelineno-26-44"></a>2023-01-27 12:31:21 ....A         8879         1241  scripts\run_docker_compose.sh
+<a id="__codelineno-26-45" name="__codelineno-26-45" href="#__codelineno-26-45"></a>------------------- ----- ------------ ------------  ------------------------
+<a id="__codelineno-26-46" name="__codelineno-26-46" href="#__codelineno-26-46"></a>2023-01-31 12:57:21          339154065    328964673  3 files
+<a id="__codelineno-26-47" name="__codelineno-26-47" href="#__codelineno-26-47"></a>=======================================================================
+<a id="__codelineno-26-48" name="__codelineno-26-48" href="#__codelineno-26-48"></a>
+<a id="__codelineno-26-49" name="__codelineno-26-49" href="#__codelineno-26-49"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-50" name="__codelineno-26-50" href="#__codelineno-26-50"></a>The current time is: 13:01:35.98
+<a id="__codelineno-26-51" name="__codelineno-26-51" href="#__codelineno-26-51"></a>Enter the new time:
+<a id="__codelineno-26-52" name="__codelineno-26-52" href="#__codelineno-26-52"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-53" name="__codelineno-26-53" href="#__codelineno-26-53"></a>End   scripts\run_cloud_files_zip
+<a id="__codelineno-26-54" name="__codelineno-26-54" href="#__codelineno-26-54"></a>=======================================================================
+<a id="__codelineno-26-55" name="__codelineno-26-55" href="#__codelineno-26-55"></a>
+<a id="__codelineno-26-56" name="__codelineno-26-56" href="#__codelineno-26-56"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-57" name="__codelineno-26-57" href="#__codelineno-26-57"></a>The current time is: 13:01:35.99
+<a id="__codelineno-26-58" name="__codelineno-26-58" href="#__codelineno-26-58"></a>Enter the new time:
+<a id="__codelineno-26-59" name="__codelineno-26-59" href="#__codelineno-26-59"></a>-----------------------------------------------------------------------
+<a id="__codelineno-26-60" name="__codelineno-26-60" href="#__codelineno-26-60"></a>End   run_io_avstats
+<a id="__codelineno-26-61" name="__codelineno-26-61" href="#__codelineno-26-61"></a>=======================================================================
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1724 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Event Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/data_reconc_event_related.html">
+      
+      
+        <link rel="prev" href="data_reconc_ntsb_io_avstats_db.html">
+      
+      
+        <link rel="next" href="data_reconc_fatality_related.html">
+      
+      <link rel="icon" href="img/IO-Aero Logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+    
+    
+      
+        <title>Event-related - IO-AVSTATS - Aviation Event Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#event-related" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Event Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Event-related
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Event Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          How to ...
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How to ...
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
+        ... add NTSB accident files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
+        ... create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
+        ... set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
+        ... update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Reconciliation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reconciliation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
+        NTSB vs. IO-AVSTATS-DB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Event-related
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data_reconc_event_related.html" class="md-nav__link md-nav__link--active">
+        Event-related
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-number-of-events" class="md-nav__link">
+    1. Number of Events
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Number of Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-based-on-events" class="md-nav__link">
+    1.1 Based on events
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-based-on-cictt-codes" class="md-nav__link">
+    1.2 Based on CICTT codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-conclusion" class="md-nav__link">
+    1.3 Conclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cictt-code" class="md-nav__link">
+    2. CICTT Code
+  </a>
+  
+    <nav class="md-nav" aria-label="2. CICTT Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bar-chart" class="md-nav__link">
+    2.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-pie-chart" class="md-nav__link">
+    2.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-event-type" class="md-nav__link">
+    3. Event Type
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Event Type">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-bar-chart" class="md-nav__link">
+    3.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pie-chart" class="md-nav__link">
+    3.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-highest-injury-level" class="md-nav__link">
+    4. Highest Injury Level
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Highest Injury Level">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-bar-chart" class="md-nav__link">
+    4.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-pie-chart" class="md-nav__link">
+    4.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-required-safety-system" class="md-nav__link">
+    5. Required Safety System
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Required Safety System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-bar-chart" class="md-nav__link">
+    5.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-pie-chart" class="md-nav__link">
+    5.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-top-level-logical-parameter" class="md-nav__link">
+    6. Top Level Logical Parameter
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Top Level Logical Parameter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-bar-chart" class="md-nav__link">
+    6.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-pie-chart" class="md-nav__link">
+    6.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_reconc_fatality_related.html" class="md-nav__link">
+        Fatality-related
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-number-of-events" class="md-nav__link">
+    1. Number of Events
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Number of Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-based-on-events" class="md-nav__link">
+    1.1 Based on events
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-based-on-cictt-codes" class="md-nav__link">
+    1.2 Based on CICTT codes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-conclusion" class="md-nav__link">
+    1.3 Conclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cictt-code" class="md-nav__link">
+    2. CICTT Code
+  </a>
+  
+    <nav class="md-nav" aria-label="2. CICTT Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bar-chart" class="md-nav__link">
+    2.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-pie-chart" class="md-nav__link">
+    2.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-event-type" class="md-nav__link">
+    3. Event Type
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Event Type">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-bar-chart" class="md-nav__link">
+    3.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pie-chart" class="md-nav__link">
+    3.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-highest-injury-level" class="md-nav__link">
+    4. Highest Injury Level
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Highest Injury Level">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-bar-chart" class="md-nav__link">
+    4.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-pie-chart" class="md-nav__link">
+    4.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-required-safety-system" class="md-nav__link">
+    5. Required Safety System
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Required Safety System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-bar-chart" class="md-nav__link">
+    5.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-pie-chart" class="md-nav__link">
+    5.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-top-level-logical-parameter" class="md-nav__link">
+    6. Top Level Logical Parameter
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Top Level Logical Parameter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-bar-chart" class="md-nav__link">
+    6.1 Bar Chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-pie-chart" class="md-nav__link">
+    6.2 Pie Chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="event-related">Event-related</h1>
+<p><strong>Important</strong>: All statistics provided below are based on NTSB data as of February 8, 2023 (period 2008 to 2023).</p>
+<p>The following is provided to verify that the numbers between the data taken over from NTSB and the application view io_app_ae1982 are consistent.</p>
+<h2 id="1-number-of-events">1. Number of Events</h2>
+<h3 id="11-based-on-events">1.1 Based on events</h3>
+<h4 id="111-db-tables-events">1.1.1 DB Tables <code>events</code></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ev_year|no_rows|
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>-------+-------+
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>2008   |   1893|
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>2009   |   1784|
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>2010   |   1786|
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>2011   |   1850|
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>2012   |   1835|
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>2013   |   1561|
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>2014   |   1535|
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>2015   |   1582|
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>2016   |   1665|
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>2017   |   1638|
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>2018   |   1685|
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>2019   |   1625|
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>2020   |   1396|
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>2021   |   1642|
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>2022   |   1635|
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>2023   |     64|
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>       |  25176|
+</code></pre></div>
+<p><strong>Applied SQL statement:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SELECT ev_year::text, 
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>       count(*) no_rows
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  FROM events e
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> GROUP BY ROLLUP(ev_year)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> ORDER BY 1
+</code></pre></div>
+<h4 id="112-db-view-io_app_ae1982">1.1.2 DB View <code>io_app_ae1982</code></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ev_year|no_rows|
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>-------+-------+
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>2008   |   1893|
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>2009   |   1784|
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>2010   |   1786|
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>2011   |   1850|
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>2012   |   1835|
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>2013   |   1561|
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>2014   |   1535|
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>2015   |   1582|
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>2016   |   1665|
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>2017   |   1638|
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>2018   |   1685|
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>2019   |   1625|
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>2020   |   1396|
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>2021   |   1642|
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>2022   |   1635|
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>2023   |     64|
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>       |  25176|
+</code></pre></div>
+<p><strong>Applied SQL statement:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SELECT ev_year::text, 
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       count(*) no_rows
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  FROM io_app_ae1982 e
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a> GROUP BY ROLLUP(ev_year)
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a> ORDER BY 1
+</code></pre></div>
+<h3 id="12-based-on-cictt-codes">1.2 Based on CICTT codes</h3>
+<ul>
+<li>The same event in the <code>events</code> table is associated with one or more aircraft in the <code>aircraft</code> table.</li>
+<li>The same aircraft in the <code>aircraft</code> table can have multiple entries assigned to it in the <code>events_sequence</code> table.</li>
+<li>Only the entries in the <code>events_sequence</code> table that have the value <code>true</code> in the <code>defining_ev</code> column and for whose value in the <code>eventsoe_no</code> column there is a value in the <code>cictt_code</code> column in the <code>io_sequence_of_events</code> table are considered.</li>
+<li>Additionally, the same combination <code>ev_id</code> and <code>cictt_code</code> is considered only once.</li>
+</ul>
+<h4 id="121-db-tables-events-aircraft-events_sequence-and-io_sequence_of_events">1.2.1 DB Tables <code>events</code>, <code>aircraft</code>, <code>events_sequence</code> and <code>io_sequence_of_events</code></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>aircraft_key|cictt_code|events|
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>------------+----------+------+
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>           1|ADRM      |    36|
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>           1|AMAN      |   161|
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>           1|ARC       |  2966|
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>           1|ATM       |    70|
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>           1|BIRD      |   168|
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>           1|CABIN     |    78|
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>           1|CFIT      |   749|
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>           1|CTOL      |   590|
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>           1|EVAC      |     5|
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>           1|EXTL      |    24|
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>           1|F-NI      |   285|
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>           1|F-POST    |     4|
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>           1|FUEL      |  1235|
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>           1|GCOL      |   457|
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>           1|GTOW      |    14|
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>           1|ICE       |    31|
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>           1|LALT      |   373|
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>           1|LOC-G     |  3202|
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>           1|LOC-I     |  4029|
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>           1|LOLI      |   156|
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>           1|MAC       |   351|
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>           1|MED       |    26|
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>           1|n/a       |   157|
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>           1|NAV       |    39|
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>           1|OTHR      |  1347|
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>           1|RAMP      |   167|
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>           1|RE        |   641|
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>           1|SCF-NP    |  1373|
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>           1|SCF-PP    |  4085|
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>           1|SEC       |    13|
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>           1|TURB      |   277|
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>           1|UIMC      |   268|
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>           1|UNK       |   922|
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>           1|USOS      |   289|
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>           1|WILD      |    67|
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>           1|WSTRW     |    88|
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>           1|          | 24743|
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>           2|ADRM      |    12|
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>           2|AMAN      |     1|
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>           2|ATM       |    43|
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>           2|CFIT      |     2|
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>           2|CTOL      |    25|
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>           2|FUEL      |     2|
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>           2|GCOL      |   243|
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>           2|LALT      |     1|
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>           2|LOC-G     |     9|
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>           2|LOC-I     |     3|
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>           2|MAC       |   337|
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>           2|n/a       |    31|
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>           2|OTHR      |    11|
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>           2|RAMP      |     9|
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>           2|SCF-NP    |     2|
+<a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>           2|SCF-PP    |     1|
+<a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a>           2|TURB      |     1|
+<a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a>           2|UIMC      |     1|
+<a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a>           2|UNK       |     1|
+<a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a>           2|USOS      |     2|
+<a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a>           2|          |   737|
+<a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a>           3|ATM       |     2|
+<a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>           3|FUEL      |     1|
+<a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>           3|MAC       |     2|
+<a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a>           3|          |     5|
+<a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>            |          | 25485|
+</code></pre></div>
+<ul>
+<li>For event '20220818105763' the first aircraft is missing (see below), so the number of fatalities for <code>aircraft_key</code> equal to 1 must be corrected to 14655.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SELECT a.aircraft_key ,
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>       COALESCE(isoe.cictt_code, &#39;n/a&#39;) cictt_code,
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>       count(*) events
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  FROM events e LEFT OUTER JOIN aircraft a 
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>                ON e.ev_id = a.ev_id
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>                LEFT OUTER JOIN events_sequence es 
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>                ON e.ev_id = es.ev_id
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>                LEFT OUTER JOIN io_sequence_of_events isoe 
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>                ON es.eventsoe_no = isoe.soe_no
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a> WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>   AND es.defining_ev = TRUE
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a> GROUP BY ROLLUP (a.aircraft_key,
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>                  COALESCE(isoe.cictt_code, &#39;n/a&#39;))
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a> ORDER BY a.aircraft_key,
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>          COALESCE(isoe.cictt_code, &#39;n/a&#39;)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ev_id         |aircraft_key|far_part|
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>--------------+------------+--------+
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>20100204X45658|           1|091     |
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>20100204X45658|           2|091     |
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>20100204X45658|           3|091     |
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>20101022X34140|           1|UNK     |
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>20101022X34140|           2|UNK     |
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>20101022X34140|           3|UNK     |
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>20220818105763|           2|091     |
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>20220818105763|           3|091     |
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SELECT e.ev_id,
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>       a.aircraft_key ,
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>       COALESCE (a.far_part ,&#39;n/a&#39;) far_part
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  FROM events e INNER JOIN aircraft a 
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>                ON e.ev_id = a.ev_id
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a> WHERE e.ev_id IN (SELECT e.ev_id
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>                     FROM events e INNER JOIN aircraft a 
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>                                   ON e.ev_id = a.ev_id
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>                     WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>                       AND a.aircraft_key = 3)
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a> ORDER BY e.ev_id,
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>          a.aircraft_key
+</code></pre></div>
+<h4 id="122-db-view-io_app_ae1982">1.2.2 DB View <code>io_app_ae1982</code></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>no_aircraft|cictt_codes    |events|
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>-----------+---------------+------+
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>          1|{}             |   953|
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>          1|{ADRM}         |    24|
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>          1|{AMAN}         |   159|
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>          1|{AMAN,UNK}     |     1|
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>          1|{ARC}          |  2954|
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>          1|{ARC,CTOL}     |     1|
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>          1|{ARC,LOC-G}    |     1|
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>          1|{ARC,OTHR}     |     2|
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>          1|{ARC,RE}       |     1|
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>          1|{ARC,SCF-PP}   |     1|
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>          1|{ATM}          |    27|
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>          1|{BIRD}         |   167|
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>          1|{CABIN}        |    78|
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>          1|{CFIT}         |   741|
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>          1|{CFIT,CTOL}    |     1|
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>          1|{CFIT,LALT}    |     1|
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>          1|{CFIT,LOC-I}   |     1|
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>          1|{CFIT,OTHR}    |     2|
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>          1|{CTOL}         |   557|
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>          1|{CTOL,LOLI}    |     1|
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>          1|{CTOL,OTHR}    |     3|
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>          1|{CTOL,RE}      |     1|
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>          1|{CTOL,UNK}     |     1|
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>          1|{EVAC}         |     5|
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>          1|{EXTL}         |    24|
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>          1|{F-NI}         |   284|
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>          1|{F-NI,OTHR}    |     1|
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>          1|{F-POST}       |     4|
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>          1|{FUEL}         |  1225|
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>          1|{FUEL,OTHR}    |     1|
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>          1|{FUEL,SCF-PP}  |     4|
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>          1|{FUEL,UNK}     |     2|
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>          1|{GCOL}         |   213|
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>          1|{GCOL,RAMP}    |     1|
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>          1|{GTOW}         |    14|
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>          1|{ICE}          |    31|
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>          1|{LALT}         |   370|
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>          1|{LALT,LOC-I}   |     1|
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>          1|{LOC-G}        |  3189|
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>          1|{LOC-G,LOC-I}  |     1|
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>          1|{LOC-G,OTHR}   |     2|
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>          1|{LOC-G,RE}     |     3|
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>          1|{LOC-I}        |  4015|
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>          1|{LOC-I,NAV}    |     1|
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>          1|{LOC-I,OTHR}   |     1|
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>          1|{LOC-I,SCF-NP} |     2|
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>          1|{LOC-I,SCF-PP} |     1|
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>          1|{LOC-I,UNK}    |     6|
+<a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>          1|{LOLI}         |   154|
+<a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>          1|{LOLI,UNK}     |     1|
+<a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>          1|{MAC}          |    15|
+<a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a>          1|{MED}          |    26|
+<a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>          1|{NAV}          |    37|
+<a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a>          1|{NAV,OTHR}     |     1|
+<a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a>          1|{OTHR}         |  1320|
+<a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a>          1|{OTHR,RE}      |     1|
+<a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a>          1|{OTHR,SCF-PP}  |     1|
+<a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a>          1|{OTHR,UNK}     |     2|
+<a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a>          1|{RAMP}         |   157|
+<a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a>          1|{RE}           |   634|
+<a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>          1|{RE,SCF-NP}    |     1|
+<a id="__codelineno-8-64" name="__codelineno-8-64" href="#__codelineno-8-64"></a>          1|{SCF-NP}       |  1370|
+<a id="__codelineno-8-65" name="__codelineno-8-65" href="#__codelineno-8-65"></a>          1|{SCF-NP,SCF-PP}|     1|
+<a id="__codelineno-8-66" name="__codelineno-8-66" href="#__codelineno-8-66"></a>          1|{SCF-PP}       |  4073|
+<a id="__codelineno-8-67" name="__codelineno-8-67" href="#__codelineno-8-67"></a>          1|{SCF-PP,UNK}   |     2|
+<a id="__codelineno-8-68" name="__codelineno-8-68" href="#__codelineno-8-68"></a>          1|{SEC}          |    13|
+<a id="__codelineno-8-69" name="__codelineno-8-69" href="#__codelineno-8-69"></a>          1|{TURB}         |   276|
+<a id="__codelineno-8-70" name="__codelineno-8-70" href="#__codelineno-8-70"></a>          1|{UIMC}         |   267|
+<a id="__codelineno-8-71" name="__codelineno-8-71" href="#__codelineno-8-71"></a>          1|{UNK}          |   904|
+<a id="__codelineno-8-72" name="__codelineno-8-72" href="#__codelineno-8-72"></a>          1|{USOS}         |   287|
+<a id="__codelineno-8-73" name="__codelineno-8-73" href="#__codelineno-8-73"></a>          1|{WILD}         |    67|
+<a id="__codelineno-8-74" name="__codelineno-8-74" href="#__codelineno-8-74"></a>          1|{WSTRW}        |    88|
+<a id="__codelineno-8-75" name="__codelineno-8-75" href="#__codelineno-8-75"></a>          1|NULL           | 24777|
+<a id="__codelineno-8-76" name="__codelineno-8-76" href="#__codelineno-8-76"></a>          2|{}             |    23|
+<a id="__codelineno-8-77" name="__codelineno-8-77" href="#__codelineno-8-77"></a>          2|{ADRM}         |     6|
+<a id="__codelineno-8-78" name="__codelineno-8-78" href="#__codelineno-8-78"></a>          2|{ADRM,MAC}     |     1|
+<a id="__codelineno-8-79" name="__codelineno-8-79" href="#__codelineno-8-79"></a>          2|{AMAN,GCOL}    |     1|
+<a id="__codelineno-8-80" name="__codelineno-8-80" href="#__codelineno-8-80"></a>          2|{ATM}          |    21|
+<a id="__codelineno-8-81" name="__codelineno-8-81" href="#__codelineno-8-81"></a>          2|{ATM,MAC}      |     3|
+<a id="__codelineno-8-82" name="__codelineno-8-82" href="#__codelineno-8-82"></a>          2|{CFIT}         |     1|
+<a id="__codelineno-8-83" name="__codelineno-8-83" href="#__codelineno-8-83"></a>          2|{CTOL}         |    12|
+<a id="__codelineno-8-84" name="__codelineno-8-84" href="#__codelineno-8-84"></a>          2|{CTOL,GCOL}    |     2|
+<a id="__codelineno-8-85" name="__codelineno-8-85" href="#__codelineno-8-85"></a>          2|{CTOL,MAC}     |     1|
+<a id="__codelineno-8-86" name="__codelineno-8-86" href="#__codelineno-8-86"></a>          2|{FUEL}         |     1|
+<a id="__codelineno-8-87" name="__codelineno-8-87" href="#__codelineno-8-87"></a>          2|{GCOL}         |   122|
+<a id="__codelineno-8-88" name="__codelineno-8-88" href="#__codelineno-8-88"></a>          2|{GCOL,LALT}    |     1|
+<a id="__codelineno-8-89" name="__codelineno-8-89" href="#__codelineno-8-89"></a>          2|{GCOL,LOC-G}   |     6|
+<a id="__codelineno-8-90" name="__codelineno-8-90" href="#__codelineno-8-90"></a>          2|{GCOL,MAC}     |     1|
+<a id="__codelineno-8-91" name="__codelineno-8-91" href="#__codelineno-8-91"></a>          2|{GCOL,OTHR}    |     2|
+<a id="__codelineno-8-92" name="__codelineno-8-92" href="#__codelineno-8-92"></a>          2|{GCOL,RAMP}    |     1|
+<a id="__codelineno-8-93" name="__codelineno-8-93" href="#__codelineno-8-93"></a>          2|{GCOL,UIMC}    |     1|
+<a id="__codelineno-8-94" name="__codelineno-8-94" href="#__codelineno-8-94"></a>          2|{GCOL,USOS}    |     1|
+<a id="__codelineno-8-95" name="__codelineno-8-95" href="#__codelineno-8-95"></a>          2|{LOC-G}        |     1|
+<a id="__codelineno-8-96" name="__codelineno-8-96" href="#__codelineno-8-96"></a>          2|{LOC-I,MAC}    |     1|
+<a id="__codelineno-8-97" name="__codelineno-8-97" href="#__codelineno-8-97"></a>          2|{MAC}          |   176|
+<a id="__codelineno-8-98" name="__codelineno-8-98" href="#__codelineno-8-98"></a>          2|{MAC,OTHR}     |     1|
+<a id="__codelineno-8-99" name="__codelineno-8-99" href="#__codelineno-8-99"></a>          2|{OTHR}         |     4|
+<a id="__codelineno-8-100" name="__codelineno-8-100" href="#__codelineno-8-100"></a>          2|{OTHR,UNK}     |     1|
+<a id="__codelineno-8-101" name="__codelineno-8-101" href="#__codelineno-8-101"></a>          2|{RAMP}         |     4|
+<a id="__codelineno-8-102" name="__codelineno-8-102" href="#__codelineno-8-102"></a>          2|{TURB}         |     1|
+<a id="__codelineno-8-103" name="__codelineno-8-103" href="#__codelineno-8-103"></a>          2|{USOS}         |     1|
+<a id="__codelineno-8-104" name="__codelineno-8-104" href="#__codelineno-8-104"></a>          2|NULL           |   397|
+<a id="__codelineno-8-105" name="__codelineno-8-105" href="#__codelineno-8-105"></a>          3|{ATM,FUEL}     |     1|
+<a id="__codelineno-8-106" name="__codelineno-8-106" href="#__codelineno-8-106"></a>          3|{MAC}          |     1|
+<a id="__codelineno-8-107" name="__codelineno-8-107" href="#__codelineno-8-107"></a>          3|NULL           |     2|
+<a id="__codelineno-8-108" name="__codelineno-8-108" href="#__codelineno-8-108"></a>           |NULL           | 25176|
+</code></pre></div>
+<ul>
+<li>This results in the following 80 events as candidates for double counting in the application:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>no_aircraft|cictt_codes    |events|
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>-----------+---------------+------+
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>          1|{AMAN,UNK}     |     1|
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>          1|{ARC,CTOL}     |     1|
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>          1|{ARC,LOC-G}    |     1|
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>          1|{ARC,OTHR}     |     2|
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>          1|{ARC,RE}       |     1|
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>          1|{ARC,SCF-PP}   |     1|
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>          1|{CFIT,CTOL}    |     1|
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>          1|{CFIT,LALT}    |     1|
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>          1|{CFIT,LOC-I}   |     1|
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>          1|{CFIT,OTHR}    |     2|
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>          1|{CTOL,LOLI}    |     1|
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>          1|{CTOL,OTHR}    |     3|
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>          1|{CTOL,RE}      |     1|
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>          1|{CTOL,UNK}     |     1|
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>          1|{F-NI,OTHR}    |     1|
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>          1|{FUEL,OTHR}    |     1|
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>          1|{FUEL,SCF-PP}  |     4|
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>          1|{FUEL,UNK}     |     2|
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>          1|{GCOL,RAMP}    |     1|
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>          1|{LALT,LOC-I}   |     1|
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>          1|{LOC-G,LOC-I}  |     1|
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>          1|{LOC-G,OTHR}   |     2|
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>          1|{LOC-G,RE}     |     3|
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>          1|{LOC-I,NAV}    |     1|
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>          1|{LOC-I,OTHR}   |     1|
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>          1|{LOC-I,SCF-NP} |     2|
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>          1|{LOC-I,SCF-PP} |     1|
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>          1|{LOC-I,UNK}    |     6|
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>          1|{LOLI,UNK}     |     1|
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>          1|{NAV,OTHR}     |     1|
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>          1|{OTHR,RE}      |     1|
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>          1|{OTHR,SCF-PP}  |     1|
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>          1|{OTHR,UNK}     |     2|
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>          1|{RE,SCF-NP}    |     1|
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>          1|{SCF-NP,SCF-PP}|     1|
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>          1|{SCF-PP,UNK}   |     2|
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>          2|{ADRM,MAC}     |     1|
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>          2|{AMAN,GCOL}    |     1|
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>          2|{ATM,MAC}      |     3|
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>          2|{CTOL,GCOL}    |     2|
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>          2|{CTOL,MAC}     |     1|
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>          2|{GCOL,LALT}    |     1|
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>          2|{GCOL,LOC-G}   |     6|
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>          2|{GCOL,MAC}     |     1|
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>          2|{GCOL,OTHR}    |     2|
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>          2|{GCOL,RAMP}    |     1|
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>          2|{GCOL,UIMC}    |     1|
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a>          2|{GCOL,USOS}    |     1|
+<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a>          2|{LOC-I,MAC}    |     1|
+<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a>          2|{MAC,OTHR}     |     1|
+<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a>          2|{OTHR,UNK}     |     1|
+<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a>          3|{ATM,FUEL}     |     1|
+<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a>           1|Total         |    55| 
+<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>           2|Total         |    24| 
+<a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a>           3|Total         |     1| 
+<a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a>            |Total         |    80| 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>SELECT no_aircraft,
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>       cictt_codes,
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>       count(*) events
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  FROM io_app_ae1982 iaa 
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a> WHERE ev_year &gt;= 2008
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a> GROUP BY ROLLUP (no_aircraft,
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>                  cictt_codes)
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a> ORDER BY no_aircraft,
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>          cictt_codes
+</code></pre></div>
+<h3 id="13-conclusion">1.3 Conclusion</h3>
+<p>The figures on the number of events are in complete agreement.</p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="2-cictt-code">2. CICTT Code</h2>
+<h3 id="21-bar-chart">2.1 Bar Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>year  below threshold  ARC        LOC-G      LOC-I      SCF-PP     Total
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>2008        677        211        218        298        301        1705
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>2009        667        203        231        299        277        1677
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>2010        746        215        190        229        274        1654
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>2011        668        235        212        329        292        1736
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>2012        666        205        247        308        292        1718
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>2013        576        194        180        273        251        1474
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>2014        539        189        182        299        259        1468
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>2015        647        190        186        265        277        1565
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>2016        688        217        225        264        261        1655
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>2017        675        190        242        279        245        1631
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>2018        739        188        245        259        247        1678
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>2019        650        186        236        290        258        1620
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>2020        609        161        211        226        179        1386
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>2021        691        196        184        210        336        1617
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>2022        732        178        210        195        319        1634
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>2023         34          2          4          7         15          62
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>Total     10004       2960       3203       4030       4083       24280
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>Duplicates   58          3          6.5        7.5        5          80
+</code></pre></div>
+<ul>
+<li>Contains the expected duplicates from 1.2.2.</li>
+</ul>
+<h3 id="22-pie-chart">2.2 Pie Chart</h3>
+<table>
+<thead>
+<tr>
+<th align="right">below threshold</th>
+<th align="right">SCF-PP</th>
+<th align="right">LOC-I</th>
+<th align="right">LOC-G</th>
+<th align="right">ARC</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">10004</td>
+<td align="right">4083</td>
+<td align="right">4030</td>
+<td align="right">3203</td>
+<td align="right">2960</td>
+<td align="right">24280</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Agrees with the bar chart above.</li>
+</ul>
+<div style="page-break-after: always;"></div>
+
+<h2 id="3-event-type">3. Event Type</h2>
+<p>Event type evaluations must be identical with event evaluations.</p>
+<h3 id="31-bar-chart">3.1 Bar Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>year        Accident    Incident   Total
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>2008        1790        103        1893
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>2009        1681        103        1784
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>2010        1648        138        1786
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>2011        1732        118        1850
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>2012        1717        118        1835
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>2013        1462         99        1561
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>2014        1451         84        1535
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>2015        1488         94        1582
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>2016        1542        123        1665
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>2017        1514        124        1638
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>2018        1565        120        1685
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>2019        1504        121        1625
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>2020        1309         87        1396
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>2021        1522        120        1642
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>2022        1505        130        1635
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>2023          58          6          64
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>Total      23488        1688      25176
+</code></pre></div>
+<ul>
+<li>The figures on the number of events are in complete agreement.</li>
+</ul>
+<h3 id="32-pie-chart">3.2 Pie Chart</h3>
+<table>
+<thead>
+<tr>
+<th align="right">Accident</th>
+<th align="right">Incident</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">23488</td>
+<td align="right">1688</td>
+<td align="right">25176</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Agrees with the bar chart above.</li>
+</ul>
+<div style="page-break-after: always;"></div>
+
+<h2 id="4-highest-injury-level">4. Highest Injury Level</h2>
+<p>Highest injury level evaluations must be identical with event evaluations.</p>
+<h3 id="41-bar-chart">4.1 Bar Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a> fatal      serious    minor     none   no data       Total 
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a> 382        190        269       1030        22        1893
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a> 359        224        234        937        30        1784
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a> 363        186        233        949        55        1786
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a> 398        218        237        953        44        1850
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a> 389        212        246        936        52        1835
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a> 344        146        240        783        48        1561
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a> 361        183        215        731        45        1535
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a> 365        204        209        749        55        1582
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a> 341        176        233        825        90        1665
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a> 338        170        219        831        80        1638
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a> 360        182        220        840        83        1685
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a> 379        169        200        785        92        1625
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a> 295        147        181        703        70        1396
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a> 322        175        209        817       119        1642
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a> 313        179        224        811       108        1635
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>  14          4          9         24        13          64
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>5323       2765       3378      12704      1006       25176
+</code></pre></div>
+<h3 id="42-pie-chart">4.2 Pie Chart</h3>
+<table>
+<thead>
+<tr>
+<th align="right">none</th>
+<th align="right">fatal</th>
+<th align="right">minor</th>
+<th align="right">serious</th>
+<th align="right">no data</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">12704</td>
+<td align="right">5323</td>
+<td align="right">3378</td>
+<td align="right">2765</td>
+<td align="right">1006</td>
+<td align="right">25176</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Agrees with the bar chart above.</li>
+</ul>
+<div style="page-break-after: always;"></div>
+
+<h2 id="5-required-safety-system">5. Required Safety System</h2>
+<p>Required safety system depends on the following flags:</p>
+<ul>
+<li>is_midair_collision</li>
+<li>is_rss_forced_landing</li>
+<li>is_rss_spin_stall_prevention_and_recovery</li>
+<li>is_rss_terrain_collision_avoidance</li>
+</ul>
+<p>Several of these can occur for the same event. This then leads to the multiple counting of an event.
+In the category 'no data' the events are listed where none of the flags apply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>no_rows|airborne_coll|forced_landing|spin_stall|terrain_coll|
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>-------+-------------+--------------+----------+------------+
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>   1098|             |              |          |            |
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  13689|             |              |          |true        |
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>   1002|             |              |true      |true        |
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>   8466|             |true          |          |true        |
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    764|             |true          |true      |true        |
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>      1|true         |              |          |            |
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    137|true         |              |          |true        |
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>     19|true         |true          |          |true        |
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>SELECT count(*)                                  AS no_rows,
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>       is_midair_collision                       AS airborne_coll,
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>       is_rss_forced_landing                     AS forced_landing,
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>       is_rss_spin_stall_prevention_and_recovery AS spin_stall,
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>       is_rss_terrain_collision_avoidance        AS terrain_coll
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>FROM io_app_ae1982
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>GROUP BY is_midair_collision,
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>         is_rss_forced_landing,  
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>         is_rss_spin_stall_prevention_and_recovery,
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>         is_rss_terrain_collision_avoidance
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>ORDER BY 2,3,4,5
+</code></pre></div>
+<h3 id="51-bar-chart">5.1 Bar Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>year    Terrain Coll... Spin Stall...  Forced Landing  Airborne Coll... no data    Total 
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>2008    1813            112             663             13              80          2681
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>2009    1694            128             676             12              90          2600
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>2010    1694            109             658             11              92          2564
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>2011    1745            138             675             11             105          2674
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>2012    1741            102             663             12              94          2612
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>2013    1499            115             576              7              62          2259
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>2014    1476            146             593              8              59          2282
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>2015    1508            139             651             13              74          2385
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>2016    1584            143             661             13              81          2482
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>2017    1575            141             618              8              63          2405
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>2018    1612            137             623             13              73          2458
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>2019    1560            145             632             10              64          2411
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>2020    1342             97             484             11              54          1988
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>2021    1582             65             579              6              60          2292
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>2022    1588             48             481              7              47          2171
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>2023      64              1              16              2               0            83
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>Total  24077           1766            9249            157            1098         36347
+</code></pre></div>
+<p>Since the flagging for the Required safety systems is done only in the view, a reconciliation with the database tables is not possible.
+With consideration of this limitation the figures on the number of required safety systems are in complete agreement.</p>
+<h3 id="52-pie-chart">5.2 Pie Chart</h3>
+<table>
+<thead>
+<tr>
+<th align="right">Terrain Collision Avoidance</th>
+<th align="right">Forced Landing</th>
+<th align="right">Spin Stall Prevention and Recovery</th>
+<th align="right">no data</th>
+<th align="right">Airborne Collision Avoidance</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">24077</td>
+<td align="right">9249</td>
+<td align="right">1766</td>
+<td align="right">1098</td>
+<td align="right">157</td>
+<td align="right">36347</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Agrees with the bar chart above.</li>
+</ul>
+<div style="page-break-after: always;"></div>
+
+<h2 id="6-top-level-logical-parameter">6. Top Level Logical Parameter</h2>
+<p>Top level logical parameter depends on the following flags:</p>
+<ul>
+<li>is_altitude_controllable</li>
+<li>is_altitude_low</li>
+<li>is_attitude_controllable</li>
+<li>is_emergency_landing</li>
+<li>is_pilot_issue</li>
+<li>is_spin_stall</li>
+</ul>
+<p>Several of these can occur for the same event. This then leads to the multiple counting of an event.
+In the category 'no data' the events are listed where none of the flags apply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>no_rows|altitude_contr|altitude_low|attitude_contr|emergency_land|pilot_issue|aerodyn_spin_stall|
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>-------+--------------+------------+--------------+--------------+-----------+------------------+
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    889|              |            |              |              |           |                  |
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    157|              |            |              |              |           |true              |
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>     43|              |            |              |              |true       |                  |
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>     10|              |            |              |              |true       |true              |
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    937|              |            |true          |              |           |true              |
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>     65|              |            |true          |              |true       |true              |
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>   4549|              |            |true          |true          |           |                  |
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    734|              |            |true          |true          |           |true              |
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    276|              |            |true          |true          |true       |                  |
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>     30|              |            |true          |true          |true       |true              |
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    321|              |true        |              |              |           |                  |
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>     17|              |true        |              |              |true       |                  |
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>   3421|              |true        |true          |true          |           |                  |
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    239|              |true        |true          |true          |true       |                  |
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>   8369|true          |            |true          |              |           |                  |
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    783|true          |            |true          |              |true       |                  |
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>   3485|true          |true        |true          |              |           |                  |
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    851|true          |true        |true          |              |true       |                  |
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>-------+--------------+------------+--------------+--------------+-----------+------------------+
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>Total  |true          |true        |true          |              |true       |                  |
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>SELECT count(*)                 AS no_rows,
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>       is_altitude_controllable AS altitude_contr,
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>       is_altitude_low          AS altitude_low,
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>       is_attitude_controllable AS attitude_contr,
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>       is_emergency_landing     AS emergency_land,
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>       is_pilot_issue           AS pilot_issue,
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>       is_spin_stall            AS aerodyn_spin_stall
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>FROM io_app_ae1982
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>GROUP BY is_altitude_controllable,
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>         is_altitude_low,  
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>         is_attitude_controllable,
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>         is_emergency_landing,
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>         is_pilot_issue,
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>         is_spin_stall
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>ORDER BY 2,3,4,5,6,7
+</code></pre></div>
+<h3 id="61-bar-chart">6.1 Bar Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>year   Attitude Contr. Aircraft Climb Altitude Too Low Aircraft Degr. Contr    no data  Aerodyn. Spin Stall Pilot Unable    Total
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>2008   1784              1058            785                663                     66        124                 182        4662
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>2009   1678               933            603                676                     72        140                 168        4270
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>2010   1673               948            574                658                     77        120                 127        4177 
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>2011   1715               965            578                675                     90        150                 121        4294
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>2012   1713               994            583                663                     75        115                 128        4271
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>2013   1471               824            510                576                     45        129                 142        3697
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>2014   1448               784            537                593                     49        155                 190        3756
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>2015   1478               765            553                651                     55        155                 130        3787
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>2016   1562               821            585                661                     59        159                 210        4057
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>2017   1548               849            631                618                     52        150                 207        4055
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>2018   1583               874            585                623                     52        155                 192        4064
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>2019   1544               830            570                632                     54        154                 170        3954
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>2020   1329               790            427                484                     47        103                 127        3307
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>2021   1573               948            444                579                     52         72                 137        3805
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>2022   1576              1058            360                481                     43         51                  83        3652
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>2023     64                47              9                 16                      0          1                   0         137
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>Total 23739             13488           8334               9249                    888       1933                2314       59945
+</code></pre></div>
+<p>Since the flagging for the top level logical parameters is done only in the view, a reconciliation with the database tables is not possible.
+With consideration of this limitation the figures on the number of top level logical parameters are in complete agreement.</p>
+<h3 id="62-pie-chart">6.2 Pie Chart</h3>
+<table>
+<thead>
+<tr>
+<th align="right">Attitude Contr.</th>
+<th align="right">Aircraft Climb</th>
+<th align="right">Aircraft Degr. Contr.</th>
+<th align="right">Altitude Too Low</th>
+<th align="right">Pilot Unable</th>
+<th align="right">Aerodyn. Spin Stall</th>
+<th align="right">no data</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">23739</td>
+<td align="right">13488</td>
+<td align="right">9246</td>
+<td align="right">8334</td>
+<td align="right">2314</td>
+<td align="right">1933</td>
+<td align="right">888</td>
+<td align="right">59945</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Agrees with the bar chart above.</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

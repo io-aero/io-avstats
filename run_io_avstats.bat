@@ -44,7 +44,6 @@ if ["%1"] EQU [""] (
     echo ---------------------------------------------------------
     echo u_p_d   - Complete processing of a modifying MS Access file
     echo ---------------------------------------------------------
-    echo d_n_a   - Download a NTSB MS Access database file
     echo l_n_a   - Load NTSB MS Access database data into PostgreSQL
     echo c_l_l   - Correct decimal US latitudes and longitudes
     echo v_n_d   - Verify selected NTSB data
@@ -63,7 +62,9 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo d_d_s   - Drop the PostgreSQL database schema
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
+    echo l_p_k   - Load NTSB primary keys into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
+    echo p_p_k   - Process NTSB data deletions in PostgreSQL
     echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
@@ -114,19 +115,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
     )
 )
 
-if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        echo avall   - Data from January 1, 2008 to today
-        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
-        echo upDDMON - New additions and updates until DD day in the month MON
-        echo ---------------------------------------------------------
-        set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
-    ) else (
-        set IO_AVSTATS_MSACCESS=%2
-    )
-)
-
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
@@ -141,7 +129,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        dir /A:-D /B %IO_AVSTATS_NTSB_WORK_DIR%\*.mdb
+        echo avall   - Data from January 1, 2008 to today
+        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
@@ -176,7 +165,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["u_p_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo upDDMON - New additions and updates until DD day in the month MON
+        echo avall   - Data from January 1, 2008 to today
+        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
@@ -327,19 +317,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_d_s"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Download a NTSB MS Access database file.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
 rem Download basic simplemaps files.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["d_s_f"] (
@@ -395,6 +372,12 @@ rem ----------------------------------------------------------------------------
 rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
+    pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -409,6 +392,25 @@ rem Load NTSB MS Excel statistic data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -e "%IO_AVSTATS_MSEXCEL%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Load NTSB primary keys into PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["l_p_k"] (
+    pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -447,6 +449,19 @@ rem ----------------------------------------------------------------------------
 rem Load ZIP Code Database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_z_d"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Process NTSB data deletions in PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["p_p_k"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%

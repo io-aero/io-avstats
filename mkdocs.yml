@@ -33,17 +33,15 @@ nav:
       - IO-AVSTATS: config_io_avstats.md
       - Logging: config_logging.md
   - Operation: operation.md
-  - Data Analysis:
-      - Aviation Event Data Sets: data_analyis_ntsb_accident_data.md
-      - DB Table io_ntsb_2002_2021: data_analyis_io_ntsb_2002_2021.md
-      - DB View ae1982: data_analyis_ae1982.md
   - How to ...:
       - ... add NTSB accident files: how_to_add_ntsb_accident_files.md
-      - ... compare NTSB and IO-AVSTATS-DB: how_to_compare_ntsb_and_io_db.md
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
       - ... set up an AWS instance: how_to_setup_aws_instance.md
       - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
-  - Release Schedule: release_schedule.md
+  - Reconciliation:
+          - NTSB vs. IO-AVSTATS-DB: data_reconc_ntsb_io_avstats_db.md
+          - Event-related: data_reconc_event_related.md
+          - Fatality-related: data_reconc_fatality_related.md
   - License: LICENSE.md
 
 plugins:

@@ -64,7 +64,7 @@ def present_about(pg_conn: connection, app_name: str) -> None:
 
     st.warning(
         f"""
-IO-AVSTATS Application: **{app_name}
+IO-AVSTATS Application: **{app_name}**
 
 Latest NTSB database: **{file_name} - {processed}**
 

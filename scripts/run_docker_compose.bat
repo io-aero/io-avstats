@@ -14,14 +14,14 @@ set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
+set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=32400
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982_LTD=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=57600
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8501
 
 set IO_AVSTATS_TASK=
 set IO_AVSTATS_TASK_DEFAULT=up
@@ -46,20 +46,20 @@ echo Start %0
 echo -----------------------------------------------------------------------
 echo Manage a multi-container Docker application
 echo -----------------------------------------------------------------------
-echo TASK                            : %IO_AVSTATS_TASK%
+echo TASK                         : %IO_AVSTATS_TASK%
 echo -----------------------------------------------------------------------
-echo POSTGRES_CONNECTION_PORT         : %IO_AVSTATS_POSTGRES_CONNECTION_PORT%
-echo POSTGRES_CONTAINER_NAME          : %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-echo POSTGRES_CONTAINER_PORT          : %IO_AVSTATS_POSTGRES_CONTAINER_PORT%
-echo POSTGRES_DBNAME_ADMIN            : %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
-echo POSTGRES_PASSWORD_ADMIN          : %IO_AVSTATS_POSTGRES_PASSWORD_ADMIN%
-echo POSTGRES_PGDATA                  : %IO_AVSTATS_POSTGRES_PGDATA%
-echo POSTGRES_USER_ADMIN              : %IO_AVSTATS_POSTGRES_USER_ADMIN%
-echo POSTGRES_VERSION                 : %IO_AVSTATS_POSTGRES_VERSION%
-echo STREAMLIT_SERVER_PORT            : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
-echo STREAMLIT_SRRVER_PORT_AE1982     : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
-echo STREAMLIT_SRRVER_PORT_AE1982_LTD : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982_LTD%
-echo STREAMLIT_SERVER_PORT_PD1982     : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
+echo POSTGRES_CONNECTION_PORT     : %IO_AVSTATS_POSTGRES_CONNECTION_PORT%
+echo POSTGRES_CONTAINER_NAME      : %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
+echo POSTGRES_CONTAINER_PORT      : %IO_AVSTATS_POSTGRES_CONTAINER_PORT%
+echo POSTGRES_DBNAME_ADMIN        : %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
+echo POSTGRES_PASSWORD_ADMIN      : %IO_AVSTATS_POSTGRES_PASSWORD_ADMIN%
+echo POSTGRES_PGDATA              : %IO_AVSTATS_POSTGRES_PGDATA%
+echo POSTGRES_USER_ADMIN          : %IO_AVSTATS_POSTGRES_USER_ADMIN%
+echo POSTGRES_VERSION             : %IO_AVSTATS_POSTGRES_VERSION%
+echo STREAMLIT_SERVER_PORT        : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
+echo STREAMLIT_SRRVER_PORT_AE1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
+echo STREAMLIT_SERVER_PORT_PD1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
+echo STREAMLIT_SRRVER_PORT_STATS  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS%
 echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
@@ -69,20 +69,20 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps -a
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                             && docker stop ae1982
-    docker ps -a    | find "ae1982"                             && docker rm  --force ae1982
-    docker ps       | find "ae1982_ltd"                         && docker stop ae1982_ltd
-    docker ps -a    | find "ae1982_ltd"                         && docker rm  --force ae1982_ltd
-    docker ps       | find "pd1982"                             && docker stop pd1982
-    docker ps -a    | find "pd1982"                             && docker rm  --force pd1982
+    docker ps       | find "ae1982"                               && docker stop ae1982
+    docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
+    docker ps       | find "pd1982"                               && docker stop pd1982
+    docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "stats"                                && docker stop stats
+    docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
-    docker image ls | find "ae1982"                           && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "ae1982_ltd"                       && docker rmi --force ioaero/ae1982_ltd:latest
-    docker image ls | find "pd1982"                           && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "ae1982"                             && docker rmi --force ioaero/ae1982:latest
+    docker image ls | find "pd1982"                             && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "stats"                              && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT
@@ -95,20 +95,20 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker ps -a
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                             && docker stop ae1982
-    docker ps -a    | find "ae1982"                             && docker rm  --force ae1982
-    docker ps       | find "ae1982_ltd"                         && docker stop ae1982_ltd
-    docker ps -a    | find "ae1982_ltd"                         && docker rm  --force ae1982_ltd
-    docker ps       | find "pd1982"                             && docker stop pd1982
-    docker ps -a    | find "pd1982"                             && docker rm  --force pd1982
+    docker ps       | find "ae1982"                               && docker stop ae1982
+    docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
+    docker ps       | find "pd1982"                               && docker stop pd1982
+    docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "stats"                                && docker stop stats
+    docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:
     docker ps -a
     echo ............................................................. before images:
     docker images
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
-    docker image ls | find "ae1982"                           && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "ae1982_ltd"                       && docker rmi --force ioaero/ae1982_ltd:latest
-    docker image ls | find "pd1982"                           && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "ae1982"                             && docker rmi --force ioaero/ae1982:latest
+    docker image ls | find "pd1982"                             && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "stats"                              && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT
@@ -120,12 +120,12 @@ if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
     docker ps -a
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker stop %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                             && docker stop ae1982
-    docker ps -a    | find "ae1982"                             && docker rm  --force ae1982
-    docker ps       | find "ae1982_ltd"                         && docker stop ae1982_ltd
-    docker ps -a    | find "ae1982_ltd"                         && docker rm  --force ae1982_ltd
-    docker ps       | find "pd1982"                             && docker stop pd1982
-    docker ps -a    | find "pd1982"                             && docker rm  --force pd1982
+    docker ps       | find "ae1982"                               && docker stop ae1982
+    docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
+    docker ps       | find "pd1982"                               && docker stop pd1982
+    docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "stats"                                && docker stop stats
+    docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:
     docker ps -a
 

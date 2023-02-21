@@ -8,7 +8,7 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export APPLICATION_DEFAULT=ae1982
+export APPLICATION_DEFAULT=stats
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=yes
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
@@ -18,9 +18,9 @@ if [ -z "$1" ]; then
     echo "========================================================="
     echo "all      - All Streamlit applications"
     echo "---------------------------------------------------------"
-    echo "ae1982     - Aircraft Accidents in the US since 1982"
-    echo "ae1982_ltd - Aircraft Accidents in the US since 1982"
-    echo "pd1982     - Profiling Data for the US since 1982"
+    echo "ae1982 - Aircraft Accidents in the US since 1982"
+    echo "pd1982 - Profiling Data for the US since 1982"
+    echo "stats  - Aircraft Accidents in the US since 1982 - limited"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}
@@ -75,14 +75,14 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 if [ "${APPLICATION}" = "all" ]; then
-    ( ./scripts/run_create_image.sh ae1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh ae1982_ltd ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh pd1982     ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh ae1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh pd1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh stats  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     goto END_OF_SCRIPT
 else
-    if [ "${APPLICATION}" = "ae1982_ltd" ]; then
+    if [ "${APPLICATION}" = "stats" ]; then
         export MODE=Ltd
-        copy -i src/ioavstats/ae1982.py src/ioavstats/ae1982_ltd.py
+        copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
     fi
     if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
         docker builder prune --all --force
@@ -123,8 +123,8 @@ do
     docker rmi -f ${IMAGE}
 done
 
-if [ "${APPLICATION}" = "ae1982_ltd" ]; then
-    rm -f src/ioavstats/ae1982_ltd.py
+if [ "${APPLICATION}" = "stats" ]; then
+    rm -f src/ioavstats/stats.py
 fi
 
 echo ""

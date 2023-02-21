@@ -1,4 +1,4 @@
-FROM python:3.10.9 as base
+FROM python:3.10.10 as base
 
 LABEL maintainer="IO-Aero"
 
@@ -17,8 +17,8 @@ EXPOSE ${SERVER_PORT}
 
 WORKDIR /home
 
-COPY .settings.io_avstats.toml ./
-COPY .streamlit/config.toml ./.streamlit/
+COPY .settings.io_avstats_4_dockerfile.toml ./.settings.io_avstats.toml
+COPY .streamlit/config.toml.${APP} ./.streamlit/config.toml
 COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml
 COPY Makefile ./
 COPY Pipfile ./

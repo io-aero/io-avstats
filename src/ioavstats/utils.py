@@ -95,6 +95,7 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
         SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
           FROM io_processed_files
          WHERE file_name LIKE 'up%'
+            OR file_name IN ('Pre2008', 'avall')
          ORDER BY COALESCE(last_processed, first_processed) DESC;
         """
         )

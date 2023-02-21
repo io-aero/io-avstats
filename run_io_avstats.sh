@@ -22,7 +22,7 @@ fi
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
+export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
@@ -99,11 +99,11 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "all      - All Streamlit applications"
+        echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "ae1982     - Aircraft Accidents in the US since 1982"
-        echo "ae1982_ltd - Aircraft Accidents in the US since 1982"
-        echo "pd1982     - Profiling Data for the US since 1982"
+        echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "pd1982 - Profiling Data for the US since 1982"
+        echo "stats  - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -235,7 +235,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py -- --mode Std ); then
             exit 255
         fi
-    elif [ "${IO_AVSTATS_APPLICATION}" = "ae1982_ltd" ]; then
+    elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/ae1982.py ); then
             exit 255
         fi

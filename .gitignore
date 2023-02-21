@@ -15,5 +15,5 @@
 /data/postgres.zip
 /data/postgres/
 /data/postgres_test/
-/src/ioavstats/ae1982_ltd.py
+/src/ioavstats/stats.py
 coverage.xml

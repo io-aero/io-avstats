@@ -24,7 +24,7 @@ if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
+set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
@@ -62,9 +62,7 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo d_d_s   - Drop the PostgreSQL database schema
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
-    echo l_p_k   - Load NTSB primary keys into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo p_p_k   - Process NTSB data deletions in PostgreSQL
     echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
@@ -105,9 +103,9 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo =========================================================
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
-        echo ae1982     - Aircraft Accidents in the US since 1982
-        echo ae1982_ltd - Aircraft Accidents in the US since 1982
-        echo pd1982     - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
+        echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -152,9 +150,9 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo ae1982     - Aircraft Accidents in the US since 1982
-        echo ae1982_ltd - Aircraft Accidents in the US since 1982
-        echo pd1982     - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
+        echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -378,6 +376,12 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
         exit %ERRORLEVEL%
     )
 
+    pipenv run python src\launcher.py -t u_d_s
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -392,25 +396,6 @@ rem Load NTSB MS Excel statistic data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -e "%IO_AVSTATS_MSEXCEL%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Load NTSB primary keys into PostgreSQL.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["l_p_k"] (
-    pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -459,19 +444,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_z_d"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Process NTSB data deletions in PostgreSQL.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["p_p_k"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
 rem Refresh the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["r_d_s"] (
@@ -499,8 +471,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    if ["%IO_AVSTATS_APPLICATION%"] EQU ["ae1982_ltd"] (
-        pipenv run streamlit run src\ioavstats\ae1982.py
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -509,10 +481,14 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["stats"] (
+        pipenv run streamlit run src\ioavstats\ae1982.py
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
     )
 
     goto END_OF_SCRIPT

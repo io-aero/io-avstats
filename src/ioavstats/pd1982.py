@@ -5,6 +5,7 @@
 """IO-AVSTATS-DB Data since 1982."""
 import datetime
 import time
+import urllib
 
 import pandas as pd
 import psycopg2
@@ -322,9 +323,16 @@ def _get_data(ddl_object_name: str) -> DataFrame:
 # pylint: disable=R0801
 @st.cache_resource
 def _get_engine() -> Engine:
+    print(
+        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
+
     return create_engine(
-        f"postgresql://{SETTINGS.postgres_user}:"
-        + f"{SETTINGS.postgres_password}@"
+        f"postgresql://{SETTINGS.postgres_user_guest}:"
+        + f"{SETTINGS.postgres_password_guest}@"
         + f"{SETTINGS.postgres_host}:"
         + f"{SETTINGS.postgres_connection_port}/"
         + f"{SETTINGS.postgres_dbname}",
@@ -337,6 +345,13 @@ def _get_engine() -> Engine:
 # pylint: disable=R0801
 @st.cache_resource
 def _get_postgres_connection() -> connection:
+    print(
+        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
+
     return psycopg2.connect(**st.secrets["db_postgres"])
 
 

@@ -145,6 +145,10 @@ CHOICE_PIE_CHARTS: bool | None = None
 
 CHOICE_TOTALS_CHARTS_DETAILS: bool | None = None
 CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS: bool | None = None
+CHOICE_TOTALS_CHARTS_HEIGHT: float | None = None
+CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT: float = 500
+CHOICE_TOTALS_CHARTS_WIDTH: float | None = None
+CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT: float = 1000
 
 CHOICE_UG_APP: bool | None = None
 CHOICE_UG_DATA_PROFILE: bool | None = None
@@ -201,6 +205,13 @@ FILTER_EV_TYPE_DEFAULT = [CHOICE_CHARTS_LEGEND_T_ACC]
 FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FILTER_FAR_PARTS: list[str] = []
+FILTER_FAR_PARTS_DEFAULT = [
+    "091",
+    "091F",
+    "091K",
+    "121",
+    "135",
+]
 FILTER_FINDING_CODES: list[str] = []
 FILTER_INJ_F_GRND_FROM: int | None = None
 FILTER_INJ_F_GRND_TO: int | None = None
@@ -324,7 +335,7 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["cictt_codes"].apply(
-                lambda x: bool(set(x) & set(FILTER_CICTT_CODES))  # type: ignore
+                lambda x: x in FILTER_CICTT_CODES  # type: ignore
             )
         ]
         _print_timestamp(
@@ -374,7 +385,7 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["far_parts"].apply(
-                lambda x: bool(set(x) & set(FILTER_FAR_PARTS))  # type: ignore
+                lambda x: x in FILTER_FAR_PARTS  # type: ignore
             )
         ]
         _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_FAR_PARTS")
@@ -563,9 +574,16 @@ def _get_data() -> DataFrame:
 @st.cache_resource
 def _get_engine() -> Engine:
     """Create a simple user PostgreSQL database engine."""
+    print(
+        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
+
     return create_engine(
-        f"postgresql://{SETTINGS.postgres_user}:"
-        + f"{SETTINGS.postgres_password}@"
+        f"postgresql://{SETTINGS.postgres_user_guest}:"
+        + f"{SETTINGS.postgres_password_guest}@"
         + f"{SETTINGS.postgres_host}:"
         + f"{SETTINGS.postgres_connection_port}/"
         + f"{SETTINGS.postgres_dbname}",
@@ -579,6 +597,13 @@ def _get_engine() -> Engine:
 @st.cache_resource
 def _get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
+    print(
+        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
+
     return psycopg2.connect(**st.secrets["db_postgres"])
 
 
@@ -1061,16 +1086,16 @@ def _prep_data_charts_ey_aoc(
     if FILTER_CICTT_CODES:
         names = []
         for cictt_code in FILTER_CICTT_CODES:
-            names.append((cictt_code, cictt_code))
+            if cictt_code in df_chart.cictt_codes.values:
+                names.append((cictt_code, cictt_code))
     else:
         names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
         for cictt_code in _sql_query_cictt_codes():
-            names.append((cictt_code, cictt_code))
+            if cictt_code in df_chart.cictt_codes.values:
+                names.append((cictt_code, cictt_code))
 
     for name, name_df in names:
-        df_chart[name] = np.where(
-            df_chart.cictt_codes.apply(lambda x, n=name_df: bool(set(x) & {n})), 1, 0
-        )
+        df_chart[name] = np.where(df_chart.cictt_codes == name_df, 1, 0)
 
     return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
 
@@ -1131,10 +1156,12 @@ def _prep_data_charts_ey_pss(
 
     if FILTER_PREVENTABLE_EVENTS:
         for preventable_events in FILTER_PREVENTABLE_EVENTS:
-            names.append((preventable_events, preventable_events))
+            if preventable_events in df_chart.preventable_events.values:
+                names.append((preventable_events, preventable_events))
     else:
         for preventable_events in _sql_query_preventable_events():
-            names.append((preventable_events, preventable_events))
+            if preventable_events in df_chart.preventable_events.values:
+                names.append((preventable_events, preventable_events))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.preventable_events == name_df, 1, 0)
@@ -1198,10 +1225,12 @@ def _prep_data_charts_ey_tlp(
 
     if FILTER_TLL_PARAMETERS:
         for tll_parameters in FILTER_TLL_PARAMETERS:
-            names.append((tll_parameters, tll_parameters))
+            if tll_parameters in df_chart.tll_parameters.values:
+                names.append((tll_parameters, tll_parameters))
     else:
         for tll_parameters in _sql_query_tll_parameters():
-            names.append((tll_parameters, tll_parameters))
+            if tll_parameters in df_chart.tll_parameters.values:
+                names.append((tll_parameters, tll_parameters))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.tll_parameters == name_df, 1, 0)
@@ -1236,18 +1265,16 @@ def _prep_data_charts_fy_fp(
     if FILTER_FAR_PARTS:
         names = []
         for far_part in FILTER_FAR_PARTS:
-            names.append((far_part, far_part))
+            if far_part in df_chart.far_parts.values:
+                names.append((far_part, far_part))
     else:
         names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
         for far_part in _sql_query_far_parts():
-            names.append((far_part, far_part))
+            if far_part in df_chart.far_parts.values:
+                names.append((far_part, far_part))
 
     for name, name_df in names:
-        df_chart[name] = np.where(
-            df_chart.far_parts.apply(lambda x, n=name_df: bool(set(x) & {n})),
-            df_chart.inj_tot_f,
-            0,
-        )
+        df_chart[name] = np.where(df_chart.far_parts == name_df, df_chart.inj_tot_f, 0)
 
     del df_chart["inj_tot_f"]
 
@@ -1313,14 +1340,11 @@ def _prep_data_charts_te_aoc(
     total_pie = 0
 
     for name in FILTER_CICTT_CODES if FILTER_CICTT_CODES else _sql_query_cictt_codes():
-        df_chart[name] = np.where(
-            df_chart.cictt_codes.apply(lambda x, n=name: bool(set(x) & {n})),
-            1,
-            0,
-        )
+        df_chart[name] = np.where(df_chart.cictt_codes == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1350,8 +1374,9 @@ def _prep_data_charts_te_il(
     for name, name_df in CHOICE_CHARTS_TYPE_N_IL:
         df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1382,8 +1407,9 @@ def _prep_data_charts_te_pss(
     ):
         df_chart[name] = np.where(df_chart.preventable_events == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1413,8 +1439,9 @@ def _prep_data_charts_te_t(
     for name, name_df in CHOICE_CHARTS_TYPE_N_T:
         df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1444,8 +1471,9 @@ def _prep_data_charts_te_tlp(
     ):
         df_chart[name] = np.where(df_chart.tll_parameters == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1475,14 +1503,11 @@ def _prep_data_charts_tf_fp(
     total_pie = 0
 
     for name in FILTER_FAR_PARTS if FILTER_FAR_PARTS else _sql_query_far_parts():
-        df_chart[name] = np.where(
-            df_chart.far_parts.apply(lambda x, n=name: bool(set(x) & {n})),
-            df_chart.inj_tot_f,
-            0,
-        )
+        df_chart[name] = np.where(df_chart.far_parts == name, df_chart.inj_tot_f, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -1517,8 +1542,9 @@ def _prep_data_charts_tf_sfp(
     for name, name_df in CHOICE_CHARTS_TYPE_N_SFP:
         df_chart[name] = np.where(df_chart[name_df], df_chart.inj_tot_f, 0)
         value = df_chart[name].sum(numeric_only=True)
-        name_value.append((name, value))
-        total_pie += value
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
 
     return _prep_totals_chart(
         total_pie,
@@ -2339,13 +2365,12 @@ def _present_totals_chart(
         fig.update_layout(
             bargap=0.05,
             barmode="stack",
-            # wwe
-            # height=CHOICE_YEARS_CHARTS_HEIGHT
-            # if CHOICE_YEARS_CHARTS_HEIGHT
-            # else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT,
-            # width=CHOICE_YEARS_CHARTS_WIDTH
-            # if CHOICE_YEARS_CHARTS_WIDTH
-            # else CHOICE_YEARS_CHARTS_WIDTH_DEFAULT,
+            height=CHOICE_TOTALS_CHARTS_HEIGHT
+            if CHOICE_TOTALS_CHARTS_HEIGHT
+            else CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT,
+            width=CHOICE_TOTALS_CHARTS_WIDTH
+            if CHOICE_TOTALS_CHARTS_WIDTH
+            else CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT,
             showlegend=False,
             title=chart_title,
             xaxis={
@@ -2617,6 +2642,13 @@ def _setup_filter() -> None:
 
         st.sidebar.markdown("""---""")
 
+    if not MODE_STANDARD:
+        FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
+        )
+
     FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
         help="""
             - **`1982`** is the first year with complete statistics.
@@ -2639,10 +2671,10 @@ def _setup_filter() -> None:
     st.sidebar.markdown("""---""")
 
     if not MODE_STANDARD:
-        FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
+        FILTER_FAR_PARTS = FILTER_FAR_PARTS_DEFAULT
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
+            + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
         )
         FILTER_EV_HIGHEST_INJURY = FILTER_EV_HIGHEST_INJURY_DEFAULT
         CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3020,6 +3052,8 @@ def _setup_task_controls() -> None:
     global CHOICE_PIE_CHARTS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
+    global CHOICE_TOTALS_CHARTS_HEIGHT  # pylint: disable=global-statement
+    global CHOICE_TOTALS_CHARTS_WIDTH  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS  # pylint: disable=global-statement
@@ -3083,12 +3117,20 @@ def _setup_task_controls() -> None:
     )
 
     if CHOICE_DATA_GRAPHS_YEARS:
-        if MODE_STANDARD:
+        if CHOICE_EXTENDED_VERSION:
             CHOICE_YEARS_CHARTS_HEIGHT = st.sidebar.slider(
-                label="Chart height (px)", min_value=100, max_value=1000, value=500
+                key="CHOICE_YEARS_CHARTS_HEIGHT",
+                label="Chart height (px)",
+                min_value=100,
+                max_value=1000,
+                value=CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT,
             )
             CHOICE_YEARS_CHARTS_WIDTH = st.sidebar.slider(
-                label="Chart width (px)", min_value=100, max_value=2000, value=1000
+                key="CHOICE_YEARS_CHARTS_WIDTH",
+                label="Chart width (px)",
+                min_value=100,
+                max_value=2000,
+                value=CHOICE_YEARS_CHARTS_WIDTH_DEFAULT,
             )
 
             CHOICE_YEARS_CHARTS_DETAILS = st.sidebar.checkbox(
@@ -3212,7 +3254,23 @@ def _setup_task_controls() -> None:
             label="Show horizontal bar charts",
             value=False,
         )
-        if MODE_STANDARD:
+        if CHOICE_HORIZONTAL_BAR_CHARTS:
+            if CHOICE_EXTENDED_VERSION:
+                CHOICE_TOTALS_CHARTS_HEIGHT = st.sidebar.slider(
+                    key="CHOICE_TOTALS_CHARTS_HEIGHT",
+                    label="Chart height (px)",
+                    min_value=100,
+                    max_value=1000,
+                    value=CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT,
+                )
+                CHOICE_TOTALS_CHARTS_WIDTH = st.sidebar.slider(
+                    key="CHOICE_TOTALS_CHARTS_WIDTH",
+                    label="Chart width (px)",
+                    min_value=100,
+                    max_value=2000,
+                    value=CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT,
+                )
+        if CHOICE_EXTENDED_VERSION:
             CHOICE_TOTALS_CHARTS_DETAILS = st.sidebar.checkbox(
                 help="Tabular representation of the of the data underlying the charts.",
                 key="CHOICE_TOTALS_CHARTS_DETAILS",
@@ -3367,12 +3425,17 @@ def _sql_query_cictt_codes() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
-        SELECT string_agg(cictt_code, ',' ORDER BY cictt_code)
-          FROM io_aviation_occurrence_categories;
+        SELECT DISTINCT cictt_codes
+          FROM io_app_ae1982;
         """
         )
 
-        return (cur.fetchone()[0]).split(",") + [CHARTS_LEGEND_N_A]  # type: ignore
+        data = []
+
+        for row in cur:
+            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+
+        return sorted(data)
 
 
 # ------------------------------------------------------------------
@@ -3431,12 +3494,17 @@ def _sql_query_far_parts() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
-        SELECT string_agg(DISTINCT far_part, ',' ORDER BY far_part)
-          FROM aircraft;
+        SELECT DISTINCT far_parts
+          FROM io_app_ae1982;
         """
         )
 
-        return (cur.fetchone()[0]).split(",") + [CHARTS_LEGEND_N_A]  # type: ignore
+        data = []
+
+        for row in cur:
+            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+
+        return sorted(data)
 
 
 # ------------------------------------------------------------------

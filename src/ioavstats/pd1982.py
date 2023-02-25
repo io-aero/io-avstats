@@ -5,7 +5,6 @@
 """IO-AVSTATS-DB Data since 1982."""
 import datetime
 import time
-import urllib
 
 import pandas as pd
 import psycopg2
@@ -715,7 +714,7 @@ def _streamlit_flow() -> None:
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",
     )
 

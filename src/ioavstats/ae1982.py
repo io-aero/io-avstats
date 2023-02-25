@@ -202,6 +202,7 @@ FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_HIGHEST_INJURY_DEFAULT: list[str] = ["fatal"]
 FILTER_EV_TYPE: list[str] = []
 FILTER_EV_TYPE_DEFAULT = [CHOICE_CHARTS_LEGEND_T_ACC]
+FILTER_EV_YEAR_INCOMPATIBLE = 2008
 FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FILTER_FAR_PARTS: list[str] = []
@@ -492,6 +493,28 @@ def _apply_filter(
         )
 
     _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - End")
+
+    return df_filtered
+
+
+# ------------------------------------------------------------------
+# Filter the data frame - Incompatible data.
+# ------------------------------------------------------------------
+def _apply_filter_incompatible(df_filtered):
+    if FILTER_EV_YEAR_FROM < FILTER_EV_YEAR_INCOMPATIBLE:
+        year_from = FILTER_EV_YEAR_INCOMPATIBLE
+    else:
+        year_from = FILTER_EV_YEAR_FROM
+
+    if FILTER_EV_YEAR_TO < FILTER_EV_YEAR_INCOMPATIBLE:
+        year_to = FILTER_EV_YEAR_INCOMPATIBLE
+    else:
+        year_to = FILTER_EV_YEAR_TO
+
+    if year_from != FILTER_EV_YEAR_FROM or year_to != FILTER_EV_YEAR_TO:
+        df_filtered = df_filtered.loc[
+            (df_filtered["ev_year"] >= year_from) & (df_filtered["ev_year"] <= year_to)
+        ]
 
     return df_filtered
 
@@ -1069,6 +1092,8 @@ def _prep_data_charts_ey_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by CICTT Codes."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1138,6 +1163,8 @@ def _prep_data_charts_ey_pss(
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Preventable Events per Year by Safety
     Systems."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1207,6 +1234,8 @@ def _prep_data_charts_ey_tlp(
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     """Prepare the chart data: Number of Events per Year by Top Level Logical
     Parameters."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1330,6 +1359,8 @@ def _prep_data_charts_te_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     #   """Prepare the chart data: Total Events by CICTT Codes."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "cictt_codes",
@@ -1391,6 +1422,8 @@ def _prep_data_charts_te_pss(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     """Prepare the chart data: Total Preventable Events by Safety Systems."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "preventable_events",
@@ -1457,6 +1490,8 @@ def _prep_data_charts_te_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     """Prepare the chart data: Total Events by Top Level Logical Parameters."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
     df_chart = df_filtered[
         [
             "tll_parameters",
@@ -3214,7 +3249,7 @@ def _setup_task_controls() -> None:
                 label="Threshold value in %",
                 max_value=20.0,
                 min_value=0.0,
-                value=1.5,
+                value=0.5,
             )
 
         if MODE_STANDARD:
@@ -3348,7 +3383,7 @@ def _setup_task_controls() -> None:
                 label="Threshold value in %",
                 max_value=20.0,
                 min_value=0.0,
-                value=1.5,
+                value=0.5,
             )
 
         if MODE_STANDARD:
@@ -3800,9 +3835,10 @@ def _streamlit_flow() -> None:
     st.set_page_config(
         layout="wide",
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
+    # st.sidebar.markdown("[IO-Aero Website](%s)" % "https://www.io-aero.com")
 
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

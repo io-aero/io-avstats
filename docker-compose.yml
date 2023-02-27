@@ -31,17 +31,17 @@ services:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
-  # ------------------------------------------------------------------------------
-  # pd1982 - Profiling Data since 1982.
-  # ------------------------------------------------------------------------------
-  app_pd1982:
-    container_name: pd1982
-    depends_on:
-      - db
-    image: ioaero/pd1982:latest
-    ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-    restart: always
+#  # ------------------------------------------------------------------------------
+#  # pd1982 - Profiling Data since 1982.
+#  # ------------------------------------------------------------------------------
+#  app_pd1982:
+#    container_name: pd1982
+#    depends_on:
+#      - db
+#    image: ioaero/pd1982:latest
+#    ports:
+#      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+#    restart: always
 
   # ------------------------------------------------------------------------------
   # stats - Aircraft Events since 1982.
@@ -56,7 +56,7 @@ services:
     restart: always
 
   # ------------------------------------------------------------------------------
-  # Nginx - LOad Balancer.
+  # Nginx - Load Balancer.
   # ------------------------------------------------------------------------------
   load_balancer:
     container_name: load_balancer

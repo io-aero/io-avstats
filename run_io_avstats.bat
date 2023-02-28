@@ -113,6 +113,19 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
     )
 )
 
+if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo avall   - Data from January 1, 2008 to today
+        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
+        echo upDDMON - New additions and updates until DD day in the month MON
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
+    ) else (
+        set IO_AVSTATS_MSACCESS=%2
+    )
+)
+
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
@@ -127,8 +140,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo avall   - Data from January 1, 2008 to today
-        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
+        dir /A:-D /B %IO_AVSTATS_NTSB_WORK_DIR%\*.mdb
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
@@ -165,6 +177,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["u_p_d"] (
         echo =========================================================
         echo avall   - Data from January 1, 2008 to today
         echo Pre2008 - Data from January 1, 1982 to December 31, 2007
+        echo upDDMON - New additions and updates until DD day in the month MON
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
@@ -306,6 +319,19 @@ rem Drop the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["d_d_s"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Download a NTSB MS Access database file.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

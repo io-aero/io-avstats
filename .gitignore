@@ -6,6 +6,7 @@
 /.pytest_cache/
 /cloud.zip
 /data/*_postgres_*.zip
+/data/__ARCHIVE__/
 /data/correction_test/
 /data/download/
 /data/download_test/

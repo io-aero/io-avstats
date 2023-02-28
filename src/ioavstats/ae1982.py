@@ -2282,7 +2282,6 @@ def _present_details() -> None:
 def _present_map() -> None:
     """Present the events on the US map."""
     global CHOICE_UG_MAP  # pylint: disable=global-statement
-    global DF_FILTERED  # pylint: disable=global-statement
 
     col1, col2 = st.columns([2, 1])
 
@@ -2314,13 +2313,13 @@ def _present_map() -> None:
         _get_user_guide_map()
 
     # noinspection PyUnboundLocalVariable
-    DF_FILTERED = DF_FILTERED.loc[
+    df_filtered_map = DF_FILTERED.loc[
         (DF_FILTERED["dec_latitude"].notna() & DF_FILTERED["dec_longitude"].notna())
     ]
 
     faa_layer = pdk.Layer(
         auto_highlight=True,
-        data=DF_FILTERED,
+        data=df_filtered_map,
         get_fill_color=[255, 0, 0],
         get_position=["dec_longitude", "dec_latitude"],
         get_radius=CHOICE_MAP_RADIUS,
@@ -2389,14 +2388,23 @@ def _present_totals_chart(
         names_new = []
         for categ in names:
             names_new.append(categ + ":")
-        fig = px.bar(
-            color=names,
-            color_discrete_map=color_discrete_map,
-            orientation="h",
-            title=chart_title,
-            x=values,
-            y=names_new,
-        )
+        if values:
+            fig = px.bar(
+                color=names,
+                color_discrete_map=color_discrete_map,
+                orientation="h",
+                title=chart_title,
+                x=values,
+                y=names_new,
+            )
+        else:
+            fig = px.bar(
+                color=names,
+                color_discrete_map=color_discrete_map,
+                orientation="h",
+                title=chart_title,
+                y=names_new,
+            )
         fig.update_layout(
             bargap=0.05,
             barmode="stack",

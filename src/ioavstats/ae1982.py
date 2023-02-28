@@ -581,12 +581,12 @@ def _get_data() -> DataFrame:
     _print_timestamp("_get_data() - Start")
 
     return pd.read_sql(
-        """
+        con=_get_engine(),
+        sql="""
     SELECT *
      FROM io_app_ae1982
     ORDER BY ev_id;
     """,
-        con=_get_engine(),
     )
 
 

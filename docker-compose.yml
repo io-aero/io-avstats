@@ -67,6 +67,6 @@ services:
       - 80:80
     depends_on:
       - app_ae1982
-      - app_pd1982
+#      - app_pd1982
       - app_stats
     restart: always

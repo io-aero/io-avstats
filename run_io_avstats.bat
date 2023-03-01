@@ -24,7 +24,7 @@ if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
+set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
@@ -44,7 +44,6 @@ if ["%1"] EQU [""] (
     echo ---------------------------------------------------------
     echo u_p_d   - Complete processing of a modifying MS Access file
     echo ---------------------------------------------------------
-    echo d_n_a   - Download a NTSB MS Access database file
     echo l_n_a   - Load NTSB MS Access database data into PostgreSQL
     echo c_l_l   - Correct decimal US latitudes and longitudes
     echo v_n_d   - Verify selected NTSB data
@@ -104,9 +103,9 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo =========================================================
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
-        echo ae1982     - Aircraft Accidents in the US since 1982
-        echo ae1982_ltd - Aircraft Accidents in the US since 1982
-        echo pd1982     - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
+        echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -163,9 +162,9 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo ae1982     - Aircraft Accidents in the US since 1982
-        echo ae1982_ltd - Aircraft Accidents in the US since 1982
-        echo pd1982     - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
+        echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -176,6 +175,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["u_p_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
+        echo avall   - Data from January 1, 2008 to today
+        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
         echo upDDMON - New additions and updates until DD day in the month MON
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
@@ -395,6 +396,18 @@ rem ----------------------------------------------------------------------------
 rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
+    pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    pipenv run python src\launcher.py -t u_d_s
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -484,8 +497,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    if ["%IO_AVSTATS_APPLICATION%"] EQU ["ae1982_ltd"] (
-        pipenv run streamlit run src\ioavstats\ae1982.py
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -494,10 +507,14 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["stats"] (
+        pipenv run streamlit run src\ioavstats\ae1982.py
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
     )
 
     goto END_OF_SCRIPT

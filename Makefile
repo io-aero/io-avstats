@@ -8,6 +8,7 @@ ifeq ($(OS),Windows_NT)
 	export PYTHONPATH_DEV=src\\ioavstats
 	export PYTHONPATH_MYPY=src\\ioavstats
 	export PYTHONPATH_PYTEST=src
+	export SQLALCHEMY_WARN_20=1
 else
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python3 -m pipenv
@@ -16,6 +17,7 @@ else
 	export PYTHONPATH_DEV=src/ioavstats
 	export PYTHONPATH_MYPY=src/ioavstats
 	export PYTHONPATH_PYTEST=src
+	export SQLALCHEMY_WARN_20=1
 endif
 
 ##                                                                            .

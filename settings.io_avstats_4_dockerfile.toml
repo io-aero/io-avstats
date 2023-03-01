@@ -1,46 +1,8 @@
 [default]
-correction_work_dir = "data/correction"
-database_commit_size = 5000
-download_chunk_size = 524288
-download_file_aviation_occurrence_categories_xlsx = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
-download_file_countries_states_json = "data/Countries_States/countries_states.json"
-download_file_sequence_of_events_csv = "data/Sequence_of_Events/CICTT_SOE_MAP.csv"
-download_file_simplemaps_us_cities_xlsx = "uscities.xlsx"
-download_file_simplemaps_us_cities_zip = "simplemaps_uscities_basicv1.75.zip"
-download_file_simplemaps_us_zips_xlsx = "uszips.xlsx"
-download_file_simplemaps_us_zips_zip = "simplemaps_uszips_basicv1.81.zip"
-download_file_zip_codes_org_xls = "zip_code_database.xls"
-download_timeout = 10
-download_url_ntsb_prefix = "https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C"
-download_url_simplemaps_us_cities = "https://simplemaps.com/static/data/us-cities/1.75/basic/simplemaps_uscities_basicv1.75.zip"
-download_url_simplemaps_us_zips = "https://simplemaps.com/static/data/us-zips/1.81/basic/simplemaps_uszips_basicv1.81.zip"
-download_url_zip_codes_org = "https://www.unitedstateszipcodes.org/zip_code_database.xls?download_auth=72c4e8898190892f8fc65eda54add7b8"
-download_work_dir = "data/download"
-is_runtime_environment_local = false
-is_verbose = true
-max_deviation_latitude = 0.01
-max_deviation_longitude = 0.01
-ntsb_work_dir = "data/download"
-odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
 postgres_connection_port = 5432
-postgres_container_name = "io_avstats_db"
-postgres_container_port = 5432
-postgres_database_schema = "public"
 postgres_dbname = "io_avstats_db"
-postgres_dbname_admin = "postgres"
 postgres_host = "db"
-postgres_pgdata ="data/postgres"
-postgres_user = "io_aero"
-postgres_user_admin = "postgres"
-postgres_version ="latest"
-razorsql_jar_file_windows = "C:\\Program Files\\RazorSQL\\razorsql.jar"
-razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
-razorsql_profile = "IO-AVSTATS"
-razorsql_reference_dir = "data/RazorSQL"
-razorsql_reference_file = "2022.11.01_avall.sql"
-streamlit_server_port = 8501
-streamlit_server_port_ae1982 = 8501
-streamlit_server_port_pd1982 = 8502
+postgres_user_guest = "guest"
 
 [dev]
 

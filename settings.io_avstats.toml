@@ -1,6 +1,6 @@
 [default]
 correction_work_dir = "data/correction"
-database_commit_size = 5000
+database_commit_size = 10000
 download_chunk_size = 524288
 download_file_aviation_occurrence_categories_xlsx = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 download_file_countries_states_json = "data/Countries_States/countries_states.json"
@@ -32,7 +32,8 @@ postgres_host = "localhost"
 postgres_pgdata ="data/postgres"
 postgres_user = "io_aero"
 postgres_user_admin = "postgres"
-postgres_version ="latest"
+postgres_user_guest = "guest"
+postgres_version = "latest"
 razorsql_jar_file_windows = "C:\\Program Files\\RazorSQL\\razorsql.jar"
 razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"

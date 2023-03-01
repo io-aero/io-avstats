@@ -6,6 +6,7 @@
 /.pytest_cache/
 /cloud.zip
 /data/*_postgres_*.zip
+/data/__ARCHIVE__/
 /data/correction_test/
 /data/download/
 /data/download_test/
@@ -15,5 +16,5 @@
 /data/postgres.zip
 /data/postgres/
 /data/postgres_test/
-/src/ioavstats/ae1982_ltd.py
+/src/ioavstats/stats.py
 coverage.xml

@@ -9,15 +9,14 @@ import time
 import pandas as pd
 import psycopg2
 import streamlit as st
-import user_guide  # type: ignore
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
-from pandas_profiling import ProfileReport  # type: ignore
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
+from ydata_profiling import ProfileReport  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -28,15 +27,15 @@ APP_ID = "pd1982"
 CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
+CHOICE_DATA_PROFILE: bool | None = None
+CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DDL_OBJECT_SELECTED: str = ""
 CHOICE_DDL_OBJECT_SELECTION: str = ""
 CHOICE_DETAILS: bool | None = None
 CHOICE_FILTER_DATA: bool | None = None
-CHOICE_PROFILING: bool | None = None
-CHOICE_PROFILING_TYPE: str | None = None
 CHOICE_UG_APP: bool | None = None
+CHOICE_UG_DATA_PROFILE: bool | None = None
 CHOICE_UG_DETAILS: bool | None = None
-CHOICE_UG_PROFILING: bool | None = None
 
 COLOR_HEADER: str = "#357f8f"
 
@@ -47,6 +46,8 @@ FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
+
+LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
 PG_CONN: connection | None = None
 
@@ -60,10 +61,7 @@ QUERIES = {
           FROM aircraft a
           LEFT OUTER JOIN events e
             ON (a.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY a.ev_id,
                  a.aircraft_key;
     """,
@@ -73,10 +71,7 @@ QUERIES = {
           FROM dt_aircraft d
           LEFT OUTER JOIN events e
             ON (d.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY d.ev_id,
                  d.aircraft_key,
                  d.col_name,
@@ -88,10 +83,7 @@ QUERIES = {
           FROM dt_events d
           LEFT OUTER JOIN events e
             ON (d.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY d.ev_id,
                  d.col_name,
                  d.code;
@@ -102,10 +94,7 @@ QUERIES = {
           FROM dt_flight_crew d
           LEFT OUTER JOIN events e
             ON (d.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY d.ev_id,
                  d.aircraft_key,
                  d.crew_no,
@@ -118,10 +107,7 @@ QUERIES = {
           FROM engines d
           LEFT OUTER JOIN events e
             ON (d.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY d.ev_id,
                  d.aircraft_key,
                  d.eng_no;
@@ -129,10 +115,7 @@ QUERIES = {
     "events": """
         SELECT *
           FROM events
-         WHERE ev_state IN (SELECT state
-                              FROM io_states
-                             WHERE country = 'USA')
-           AND ev_year >= 1982
+         WHERE ev_year >= 1982
          ORDER BY ev_id;
     """,
     "events_sequence": """
@@ -141,10 +124,7 @@ QUERIES = {
           FROM events_sequence d
           LEFT OUTER JOIN events e
             ON (d.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY d.ev_id,
                  d.aircraft_key,
                  d.occurrence_no;
@@ -155,10 +135,7 @@ QUERIES = {
           FROM findings f
           LEFT OUTER JOIN events e
             ON (f.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY f.ev_id,
                  f.aircraft_key,
                  f.finding_no;
@@ -169,10 +146,7 @@ QUERIES = {
           FROM flight_crew f
           LEFT OUTER JOIN events e
             ON (f.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY f.ev_id,
                  f.aircraft_key,
                  f.crew_no;
@@ -183,10 +157,7 @@ QUERIES = {
           FROM flight_time f
           LEFT OUTER JOIN events e
             ON (f.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY f.ev_id,
                  f.aircraft_key,
                  f.crew_no,
@@ -199,10 +170,7 @@ QUERIES = {
           FROM injury i
           LEFT OUTER JOIN events e
             ON (i.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY i.ev_id,
                  i.aircraft_key,
                  i.inj_person_category,
@@ -212,6 +180,11 @@ QUERIES = {
         SELECT *
           FROM io_app_ae1982
         ORDER BY ev_id;
+    """,
+    "io_aviation_occurrence_categories": """
+        SELECT *
+          FROM io_aviation_occurrence_categories
+         ORDER BY cictt_code;
     """,
     "io_countries": """
         SELECT *
@@ -229,16 +202,28 @@ QUERIES = {
           FROM io_lat_lng_issues l
           LEFT OUTER JOIN events e
             ON (l.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY l.ev_id;
+    """,
+    "io_ntsb_2002_2021": """
+        SELECT *
+          FROM io_ntsb_2002_2021
+        ORDER BY ntsb_number;
+    """,
+    "io_pk_ntsb": """
+        SELECT *
+          FROM io_pk_ntsb
+        ORDER BY ev_id, source, table_name;
     """,
     "io_processed_files": """
         SELECT *
           FROM io_processed_files
-        ORDER BY first_processed DESC;
+        ORDER BY COALESCE(last_processed, first_processed) DESC;
+    """,
+    "io_sequence_of_events": """
+        SELECT *
+          FROM io_sequence_of_events
+        ORDER BY soe_no;
     """,
     "io_states": """
         SELECT *
@@ -252,10 +237,7 @@ QUERIES = {
           FROM narratives n
           LEFT OUTER JOIN events e
             ON (n.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY n.ev_id,
                  n.aircraft_key;
     """,
@@ -265,10 +247,7 @@ QUERIES = {
           FROM ntsb_admin n
           LEFT OUTER JOIN events e
             ON (n.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY n.ev_id;
     """,
     "occurrences": """
@@ -277,10 +256,7 @@ QUERIES = {
           FROM occurrences o
           LEFT OUTER JOIN events e
             ON (o.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY o.ev_id,
                  o.aircraft_key,
                  o.occurrence_no;
@@ -291,10 +267,7 @@ QUERIES = {
           FROM seq_of_events s
           LEFT OUTER JOIN events e
             ON (s.ev_id = e.ev_id)
-        WHERE e.ev_state IN (SELECT state
-                               FROM io_states
-                              WHERE country = 'USA')
-          AND e.ev_year >= 1982
+        WHERE e.ev_year >= 1982
         ORDER BY s.ev_id,
                  s.aircraft_key,
                  s.occurrence_no,
@@ -315,25 +288,15 @@ SETTINGS = Dynaconf(
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
 def _apply_filter_controls(
-    df_unfiltered: DataFrame, filter_year_from: int | None, filter_year_to: int | None
+    df_unfiltered: DataFrame,
 ) -> DataFrame:
-    """Filter the data frame.
-
-    Args:
-        df_unfiltered (DataFrame): The unfiltered dataframe.
-        filter_year_from (int | None): Event year from.
-        filter_year_to (int | None): Event year to.
-
-    Returns:
-        DataFrame: The filtered dataframe.
-    """
     df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
-    if filter_year_from or filter_year_to:
+    if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
         df_filtered = df_filtered.loc[
-            (df_filtered["ev_year"] >= filter_year_from)
-            & (df_filtered["ev_year"] <= filter_year_to)
+            (df_filtered["ev_year"] >= FILTER_EV_YEAR_FROM)
+            & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
 
     return df_filtered
@@ -342,32 +305,14 @@ def _apply_filter_controls(
 # ------------------------------------------------------------------
 # Convert a dataframe to csv data.
 # ------------------------------------------------------------------
-@st.experimental_memo
 def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
-    """Convert a dataframe to csv data.
-
-    Args:
-        dataframe (DataFrame): The dataframe.
-
-    Returns:
-        bytes: The csv data.
-    """
     return dataframe.to_csv().encode("utf-8")
 
 
 # ------------------------------------------------------------------
 # Read the data.
 # ------------------------------------------------------------------
-@st.experimental_memo
 def _get_data(ddl_object_name: str) -> DataFrame:
-    """Read the data.
-
-    Args:
-        ddl_object_name (str): Name of the database table or view.
-
-    Returns:
-        DataFrame: The unfiltered dataframe.
-    """
     return pd.read_sql(QUERIES[ddl_object_name], con=_get_engine())  # type: ignore
 
 
@@ -375,15 +320,18 @@ def _get_data(ddl_object_name: str) -> DataFrame:
 # Create a simple user PostgreSQL database engine.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
+@st.cache_resource
 def _get_engine() -> Engine:
-    """Create a simple user PostgreSQL database engine.
+    print(
+        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
 
-    Returns:
-        Engine: Database engine.
-    """
     return create_engine(
-        f"postgresql://{SETTINGS.postgres_user}:"
-        + f"{SETTINGS.postgres_password}@"
+        f"postgresql://{SETTINGS.postgres_user_guest}:"
+        + f"{SETTINGS.postgres_password_guest}@"
         + f"{SETTINGS.postgres_host}:"
         + f"{SETTINGS.postgres_connection_port}/"
         + f"{SETTINGS.postgres_dbname}",
@@ -394,23 +342,86 @@ def _get_engine() -> Engine:
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
-@st.experimental_singleton
+@st.cache_resource
 def _get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection.
+    print(
+        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
+        + f"port={SETTINGS.postgres_connection_port} "
+        + f"dbname={SETTINGS.postgres_dbname} "
+        + f"user={SETTINGS.postgres_user_guest}"
+    )
 
-    Returns:
-        connection: Database connection.
-    """
     return psycopg2.connect(**st.secrets["db_postgres"])
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the whole application.
+# ------------------------------------------------------------------
+def _get_user_guide_app() -> None:
+    text = f"""
+#### User guide: pd1982 Application
+
+On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a 
+table format for display and download as **csv** file. 
+On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using 
+[Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally download the result as a **HTML** file.
+
+The **IO-AVSTATS-DB** database is based primarily on aviation accident data provided by the 
+[NTSB]( https://www.ntsb.gov/Pages/home.aspx) in the form of Microsoft Access databases [here]( https://data.ntsb.gov/avdata).
+
+Further information on the **`pd1982`** application can be found [here]({LINK_GITHUB_PAGES}).
+"""
+
+    st.warning(text)
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show data profile' task.
+# ------------------------------------------------------------------
+def _get_user_guide_data_profile() -> None:
+    text = """
+#### User guide: Show data profile
+
+This task performs a data analysis of the selected table or view. This is done with the help of 
+[**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/). 
+You can select either the explorative or the minimal version. 
+Depending on the size of the selected table or view, there may be delayed response times, with the exploratory version 
+again requiring significantly more computational effort than the minimal version.
+For further explanations please consult the documentation of **Pandas Profiling**. 
+The result of the data analysis can also be downloaded as **HTML** file if desired.
+
+
+If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
+[here](https://github.com/io-aero/io-avstats-shared/issues) so that we can make any necessary correction. 
+Also suggestions for improvement or enhancements are welcome. 
+    """
+
+    st.warning(text)
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task.
+# ------------------------------------------------------------------
+def _get_user_guide_details() -> None:
+    text = """
+#### User guide: Show details
+
+This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and 
+download as **csv** file. 
+The rows to be displayed can be limited to an interval of event years in the filter options. 
+The order of data display is based on the respective primary key of the database table. 
+The database columns of the selected rows are always displayed in full.
+    """
+
+    st.warning(text)
 
 
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data():
-    """Present the filtered data."""
     global CHOICE_UG_DETAILS  # pylint: disable=global-statement
-    global CHOICE_UG_PROFILING  # pylint: disable=global-statement
+    global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
 
     if CHOICE_ACTIVE_FILTERS:
         st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
@@ -426,9 +437,9 @@ def _present_data():
             utils.present_about(PG_CONN, APP_ID)
 
     if CHOICE_UG_APP:
-        user_guide.get_pd1982_app()
+        _get_user_guide_app()
 
-    if CHOICE_PROFILING:
+    if CHOICE_DATA_PROFILE:
         col1, col2 = st.columns(
             [
                 2,
@@ -443,16 +454,17 @@ def _present_data():
                 + f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
                 unsafe_allow_html=True,
             )
+
         with col2:
-            CHOICE_UG_PROFILING = st.checkbox(
+            CHOICE_UG_DATA_PROFILE = st.checkbox(
                 help="Explanations and operating instructions related to profiling "
                 + "of the database tables or views.",
-                label="**User Guide 'Show data profile'**",
+                label="**User Guide: Show data profile**",
                 value=False,
             )
 
-        if CHOICE_UG_PROFILING:
-            user_guide.get_pd1982_data_profile()
+        if CHOICE_UG_DATA_PROFILE:
+            _get_user_guide_data_profile()
 
         _present_data_data_profile()
 
@@ -475,12 +487,12 @@ def _present_data():
         with col2:
             CHOICE_UG_DETAILS = st.checkbox(
                 help="Explanations and operating instructions related to the detailed view.",
-                label="**User Guide 'Show details'**",
+                label="**User Guide: Show details**",
                 value=False,
             )
 
         if CHOICE_UG_DETAILS:
-            user_guide.get_pd1982_details()
+            _get_user_guide_details()
 
         st.dataframe(DF_FILTERED)
 
@@ -498,9 +510,8 @@ def _present_data():
 # Present the data profile.
 # ------------------------------------------------------------------
 def _present_data_data_profile():
-    """Present the data profile."""
     # noinspection PyUnboundLocalVariable
-    if CHOICE_PROFILING_TYPE == "explorative":
+    if CHOICE_DATA_PROFILE_TYPE == "explorative":
         profile_report = ProfileReport(
             DF_FILTERED,
             explorative=True,
@@ -515,7 +526,7 @@ def _present_data_data_profile():
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_PROFILING_TYPE + ".html",
+        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -527,7 +538,6 @@ def _present_data_data_profile():
 # Set up the filter controls.
 # ------------------------------------------------------------------
 def _setup_filter_controls():
-    """Set up the filter controls."""
     global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -571,7 +581,6 @@ def _setup_filter_controls():
 # Set up the page.
 # ------------------------------------------------------------------
 def _setup_page():
-    """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
     global CHOICE_UG_APP  # pylint: disable=global-statement
@@ -616,7 +625,7 @@ def _setup_page():
     with col3:
         CHOICE_UG_APP = st.checkbox(
             help="Explanations and operating instructions related to the whole application.",
-            label="**User Guide 'Application'**",
+            label="**User Guide: Application**",
             value=False,
         )
 
@@ -625,7 +634,6 @@ def _setup_page():
 # Set up the sidebar.
 # ------------------------------------------------------------------
 def _setup_sidebar():
-    """Set up the sidebar."""
     _setup_task_controls()
     _setup_filter_controls()
 
@@ -634,12 +642,11 @@ def _setup_sidebar():
 # Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls():
-    """Set up the task controls."""
     global CHOICE_DDL_OBJECT_SELECTED  # pylint: disable=global-statement
     global CHOICE_DDL_OBJECT_SELECTION  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_PROFILING  # pylint: disable=global-statement
-    global CHOICE_PROFILING_TYPE  # pylint: disable=global-statement
+    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
+    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
 
     # pylint: disable=line-too-long
     st.sidebar.image(
@@ -647,14 +654,14 @@ def _setup_task_controls():
         width=200,
     )
 
-    CHOICE_PROFILING = st.sidebar.checkbox(
+    CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**Show data profile**",
         value=False,
     )
 
-    if CHOICE_PROFILING:
-        CHOICE_PROFILING_TYPE = st.sidebar.radio(
+    if CHOICE_DATA_PROFILE:
+        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
             help="explorative: thorough but also slow - minimal: minimal but faster.",
             index=1,
             label="Data profile type",
@@ -696,7 +703,6 @@ def _setup_task_controls():
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
-    """Streamlit flow."""
     global DF_FILTERED  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global DF_UNFILTERED  # pylint: disable=global-statement
@@ -708,7 +714,7 @@ def _streamlit_flow() -> None:
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",
     )
 
@@ -723,14 +729,17 @@ def _streamlit_flow() -> None:
     DF_FILTERED = DF_UNFILTERED
 
     if CHOICE_DDL_OBJECT_SELECTION not in [
+        "io_aviation_occurrence_categories",
         "io_countries",
+        "io_pk_ntsb",
         "io_processed_files",
         "io_lat_lng",
+        "io_sequence_of_events",
         "io_states",
     ]:
         if CHOICE_FILTER_DATA:
             DF_FILTERED = _apply_filter_controls(
-                DF_UNFILTERED, FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO
+                DF_UNFILTERED,
             )
 
     _present_data()

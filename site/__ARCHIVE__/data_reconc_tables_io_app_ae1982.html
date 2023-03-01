@@ -1,0 +1,1259 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Event Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/__ARCHIVE__/data_reconc_tables_io_app_ae1982.html">
+      
+      
+      
+      <link rel="icon" href="../img/IO-Aero_Favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>DB Tables vs. DB View io_app_ae1982 - IO-AVSTATS - Aviation Event Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#db-tables-vs-db-view-io_app_ae1982" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="../img/IO-Aero_Favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Event Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DB Tables vs. DB View io_app_ae1982
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="../img/IO-Aero_Favicon.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Event Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup_requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup_installation.html" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config_io_avstats.html" class="md-nav__link">
+        IO-AVSTATS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config_logging.html" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operation.html" class="md-nav__link">
+        Operation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          How to ...
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How to ...
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_add_ntsb_accident_files.html" class="md-nav__link">
+        ... add NTSB accident files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_create_new_streamlit_app.html" class="md-nav__link">
+        ... create a new Streamlit app
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_setup_aws_instance.html" class="md-nav__link">
+        ... set up an AWS instance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_update_avstats_on_aws.html" class="md-nav__link">
+        ... update IO-AVSTATS in AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Reconciliation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reconciliation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
+        NTSB vs. IO-AVSTATS-DB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_reconc_event_related.html" class="md-nav__link">
+        Event-related
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_reconc_fatality_related.html" class="md-nav__link">
+        Fatality-related
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-events-fatalities" class="md-nav__link">
+    1. Events &amp; Fatalities
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cictt_code" class="md-nav__link">
+    2 cictt_code
+  </a>
+  
+    <nav class="md-nav" aria-label="2 cictt_code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-db-tables" class="md-nav__link">
+    2.1 DB tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-db-view-io_app_ae1982" class="md-nav__link">
+    2.2 DB view io_app_ae1982
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ntsb-db-avallmdb" class="md-nav__link">
+    3. NTSB DB avall.mdb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-io-aero-database-io-avstats-db" class="md-nav__link">
+    4. IO-Aero Database IO-AVSTATS-DB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-io-aero-database-io_app_ae1982" class="md-nav__link">
+    5. IO-Aero Database io_app_ae1982
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-application-ae1982" class="md-nav__link">
+    6. Application ae1982
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Application ae1982">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-bar-chart" class="md-nav__link">
+    6.1 Bar chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-pie-chart" class="md-nav__link">
+    6.2 Pie chart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="db-tables-vs-db-view-io_app_ae1982">DB Tables vs. DB View io_app_ae1982</h1>
+<p><strong>Important</strong>: All statistics provided below are based on NTSB data as of February 8, 2023 (period 2008 to 2023).</p>
+<h2 id="1-events-fatalities">1. Events &amp; Fatalities</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th align="right">Events</th>
+<th align="right">Fatalities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DB Table events</td>
+<td align="right">25'176</td>
+<td align="right">14'655</td>
+</tr>
+<tr>
+<td>DB View io_app_ae1982</td>
+<td align="right">25'176</td>
+<td align="right">14'655</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SELECT count(*)       AS events,
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>       sum(inj_tot_f) AS fatalities
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>FROM events
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>WHERE ev_year &gt;= 2008
+</code></pre></div>
+<h2 id="2-cictt_code">2 cictt_code</h2>
+<h3 id="21-db-tables">2.1 DB tables</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Number events_sequence: 24&#39;752 
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>SELECT count(*) AS no_rows
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>FROM events_sequence e
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>WHERE defining_ev = TRUE
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  AND ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Number cictt_codes:     24&#39;752 
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>SELECT count(*) AS no_rows
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>FROM events_sequence e
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>WHERE defining_ev = TRUE
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  AND ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  AND e.eventsoe_no IN (SELECT eventsoe_no FROM io_sequence_of_events isoe WHERE cictt_code IS NOT null)
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>cictt_code|sum |
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>----------+----+
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>SCF-PP    |4086|
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>LOC-I     |4031|
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>LOC-G     |3204|
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>ARC       |2966|
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>SCF-NP    |1375|
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>OTHR      |1348|
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>FUEL      |1235|
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>UNK       | 922|
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>CFIT      | 749|
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>RE        | 641|
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>CTOL      | 590|
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>GCOL      | 457|
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>LALT      | 373|
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>MAC       | 352|
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>USOS      | 289|
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>F-NI      | 285|
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>TURB      | 277|
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>UIMC      | 268|
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>BIRD      | 168|
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>RAMP      | 167|
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>AMAN      | 161|
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>LOLI      | 156|
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>SELECT cictt_code,
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>       sum(no_rows)
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>FROM (select isoe.cictt_code,
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>             es.no_rows
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>      FROM (select es.eventsoe_no,
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>                   count(*) as no_rows
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>            from events_sequence es
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>            where es.defining_ev = TRUE
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>              AND es.ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>            group by es.eventsoe_no) es
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>               INNER JOIN io_sequence_of_events isoe ON es.eventsoe_no = isoe.soe_no) a
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>GROUP BY cictt_code
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>HAVING sum(no_rows) &gt;= 100
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>ORDER BY 2 desc
+</code></pre></div>
+<h3 id="22-db-view-io_app_ae1982">2.2 DB view io_app_ae1982</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Number cictt_codes: 25&#39;256 
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>SELECT sum(array_length(cictt_codes, 1)) no_cictt_codes
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>FROM io_app_ae1982 iaa
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Number cictt_codes 1: 25&#39;096 
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>Number cictt_codes 2:     80 
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Number cictt_codes 3:      0 
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>SELECT count(*) no_cictt_codes
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>FROM io_app_ae1982 iaa
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>AND array_length(cictt_codes, 1) = 1
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>AND array_length(cictt_codes, 1) = 2
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>AND array_length(cictt_codes, 1) &gt;= 3
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>cictt_codes|no_rows|
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>-----------+-------+
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>{SCF-PP}   |   4073|
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>{LOC-I}    |   4015|
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>{LOC-G}    |   3190|
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>{ARC}      |   2954|
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>{SCF-NP}   |   1370|
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>{OTHR}     |   1324|
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>{FUEL}     |   1226|
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>{n/a}      |    976|
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>{UNK}      |    904|
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>{CFIT}     |    742|
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>{RE}       |    634|
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>{CTOL}     |    569|
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>{LALT}     |    370|
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>{GCOL}     |    335|
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>{USOS}     |    288|
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>{F-NI}     |    284|
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>{TURB}     |    277|
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>{UIMC}     |    267|
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>{MAC}      |    192|
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>{BIRD}     |    167|
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>{RAMP}     |    161|
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>{AMAN}     |    159|
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>{LOLI}     |    154|
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>SELECT cictt_codes,
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>       count(*) AS no_rows
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>FROM io_app_ae1982 iaa
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>GROUP BY cictt_codes
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>having count(*) &gt;= 100
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>ORDER BY 2 desc, 1
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>cictt_codes    |count|
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>---------------+-----+
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>{AMAN,UNK}     |    1|
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>{ARC,LOC-G}    |    1|
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>{ARC,OTHR}     |    2|
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>{ARC,RE}       |    1|
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a>{ATM,MAC}      |    3|
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a>{CTOL,ARC}     |    1|
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a>{CTOL,CFIT}    |    1|
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a>{CTOL,MAC}     |    1|
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a>{CTOL,OTHR}    |    3|
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a>{CTOL,RE}      |    1|
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a>{CTOL,UNK}     |    1|
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a>{FUEL,ATM}     |    1|
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>{GCOL,AMAN}    |    1|
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>{GCOL,CTOL}    |    2|
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>{GCOL,MAC}     |    1|
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a>{GCOL,RAMP}    |    2|
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>{LALT,CFIT}    |    1|
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a>{LALT,GCOL}    |    1|
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>{LOC-G,GCOL}   |    6|
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>{LOC-I,CFIT}   |    1|
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>{LOC-I,LALT}   |    1|
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>{LOC-I,LOC-G}  |    1|
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>{LOC-I,SCF-PP} |    1|
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a>{LOC-I,UNK}    |    6|
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a>{LOLI,CTOL}    |    1|
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a>{LOLI,UNK}     |    1|
+<a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a>{MAC,ADRM}     |    1|
+<a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a>{MAC,LOC-I}    |    1|
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a>{MAC,OTHR}     |    1|
+<a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a>{NAV,LOC-I}    |    1|
+<a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a>{NAV,OTHR}     |    1|
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a>{OTHR,CFIT}    |    2|
+<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a>{OTHR,F-NI}    |    1|
+<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a>{OTHR,FUEL}    |    1|
+<a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a>{OTHR,GCOL}    |    2|
+<a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a>{OTHR,LOC-G}   |    2|
+<a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a>{OTHR,LOC-I}   |    1|
+<a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a>{OTHR,RE}      |    1|
+<a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a>{OTHR,SCF-PP}  |    1|
+<a id="__codelineno-2-95" name="__codelineno-2-95" href="#__codelineno-2-95"></a>{OTHR,UNK}     |    3|
+<a id="__codelineno-2-96" name="__codelineno-2-96" href="#__codelineno-2-96"></a>{RE,LOC-G}     |    3|
+<a id="__codelineno-2-97" name="__codelineno-2-97" href="#__codelineno-2-97"></a>{SCF-NP,LOC-I} |    2|
+<a id="__codelineno-2-98" name="__codelineno-2-98" href="#__codelineno-2-98"></a>{SCF-NP,RE}    |    1|
+<a id="__codelineno-2-99" name="__codelineno-2-99" href="#__codelineno-2-99"></a>{SCF-PP,ARC}   |    1|
+<a id="__codelineno-2-100" name="__codelineno-2-100" href="#__codelineno-2-100"></a>{SCF-PP,FUEL}  |    4|
+<a id="__codelineno-2-101" name="__codelineno-2-101" href="#__codelineno-2-101"></a>{SCF-PP,SCF-NP}|    1|
+<a id="__codelineno-2-102" name="__codelineno-2-102" href="#__codelineno-2-102"></a>{UIMC,GCOL}    |    1|
+<a id="__codelineno-2-103" name="__codelineno-2-103" href="#__codelineno-2-103"></a>{UNK,FUEL}     |    2|
+<a id="__codelineno-2-104" name="__codelineno-2-104" href="#__codelineno-2-104"></a>{UNK,SCF-PP}   |    2|
+<a id="__codelineno-2-105" name="__codelineno-2-105" href="#__codelineno-2-105"></a>{USOS,GCOL}    |    1|
+<a id="__codelineno-2-106" name="__codelineno-2-106" href="#__codelineno-2-106"></a>
+<a id="__codelineno-2-107" name="__codelineno-2-107" href="#__codelineno-2-107"></a>SELECT cictt_codes, count(*)
+<a id="__codelineno-2-108" name="__codelineno-2-108" href="#__codelineno-2-108"></a>FROM io_app_ae1982 iaa
+<a id="__codelineno-2-109" name="__codelineno-2-109" href="#__codelineno-2-109"></a>WHERE ev_year &gt;= 2008
+<a id="__codelineno-2-110" name="__codelineno-2-110" href="#__codelineno-2-110"></a>  AND array_length(cictt_codes, 1) &gt;= 2
+<a id="__codelineno-2-111" name="__codelineno-2-111" href="#__codelineno-2-111"></a>GROUP BY cictt_codes
+<a id="__codelineno-2-112" name="__codelineno-2-112" href="#__codelineno-2-112"></a>ORDER BY 1
+</code></pre></div>
+<div style="page-break-after: always;"></div>
+
+<h2 id="3-ntsb-db-avallmdb">3. NTSB DB avall.mdb</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Number events_sequence:  24&#39;861
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>SELECT count(*) AS no_rows
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>FROM Events_Sequence e
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>WHERE defining_ev = TRUE
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>ev_id          ev_year    aircraft_key    eventsoe_no
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>20080505X00589    2008    1               200
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>20080505X00589    2008    2               230
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>20080829X01354    2008    1               260
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>20080829X01354    2008    2               100
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>20090202X21409    2009    1               250
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>20090202X21409    2009    2               490
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>20091010X63931    2009    1               250
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>20091010X63931    2009    2               240
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>20100317X00948    2010    1               260
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>20100317X00948    2010    2               070
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>20100704X92306    2010    1               380
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>20100704X92306    2010    2               200
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>20100803X25950    2010    1               200
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>20100803X25950    2010    2               900
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>20101022X34140    2010    1               190
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>20101022X34140    2010    2               100
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>20101022X34140    2010    3               100
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>20110904X00636    2011    1               250
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>20110904X00636    2011    2               440
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>20111019X85758    2011    1               900
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>20111019X85758    2011    2               260
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>20120523X33839    2012    1               230
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>20120523X33839    2012    2               200
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>20120529X21628    2012    1               230
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>20120529X21628    2012    2               200
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>20120705X51659    2012    1               320
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>20120705X51659    2012    2               900
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>20120811X13221    2012    1               000
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>20120811X13221    2012    2               900
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>20121027X42304    2012    1               230
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>20121027X42304    2012    2               200
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>20121118X14342    2012    1               220
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>20121118X14342    2012    2               200
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>20140425X84104    2014    1               100
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>20140425X84104    2014    2               260
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>20150210X11721    2015    1               230
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>20150210X11721    2015    2               200
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>20150416X33824    2015    1               260
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>20150416X33824    2015    2               320
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>20150508X60256    2015    1               230
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>20150508X60256    2015    2               200
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>20151123X43413    2015    1               200
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>20151123X43413    2015    2               402
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>20160413X30204    2016    1               320
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>20160413X30204    2016    2               100
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>20160413X94401    2016    1               320
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>20160413X94401    2016    2               070
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>20160418X44917    2016    1               100
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>20160418X44917    2016    2               260
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>20171019X45158    2017    1               200
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>20171019X45158    2017    2               490
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>20180403X00427    2018    1               200
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>20180403X00427    2018    2               490
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>20200603X55158    2019    1               080
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>20200603X55158    2019    2               200
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>20201023102180    2020    2               230
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>20201030102217    2020    2               230
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a>20210219102650    2021    2               900
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>20210311102742    2021    2               333
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>20210726103541    2021    1               200
+<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>20210726103541    2021    2               270
+<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a>20210822103737    2021    2               333
+<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>20220111104514    2022    1               200
+<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a>20220111104514    2022    2               900
+<a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a>20220309104755    2022    2               240
+<a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a>20220818105763    2022    2               250
+<a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a>20220826105805    2022    2               341
+<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a>20221121106336    2022    1               200
+<a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a>20221121106336    2022    2               250
+<a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a>
+<a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>select events.ev_id,
+<a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a>       ev_year,
+<a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a>       aircraft_key,
+<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a>       eventsoe_no
+<a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a>from events
+<a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a>         inner join events_sequence on events.ev_id = events_sequence.ev_id
+<a id="__codelineno-3-84" name="__codelineno-3-84" href="#__codelineno-3-84"></a>where events.ev_id in
+<a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a>      (select ev_id from events_sequence where aircraft_key &gt; 1 and defining_ev = True)
+<a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a>  and defining_ev = True
+<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a>  and events.ev_id in (select ev_id
+<a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a>                       from events_sequence
+<a id="__codelineno-3-89" name="__codelineno-3-89" href="#__codelineno-3-89"></a>                       where defining_ev = True
+<a id="__codelineno-3-90" name="__codelineno-3-90" href="#__codelineno-3-90"></a>                       group by ev_id, eventsoe_no
+<a id="__codelineno-3-91" name="__codelineno-3-91" href="#__codelineno-3-91"></a>                       having count(*) = 1)
+<a id="__codelineno-3-92" name="__codelineno-3-92" href="#__codelineno-3-92"></a>order by events.ev_id,
+<a id="__codelineno-3-93" name="__codelineno-3-93" href="#__codelineno-3-93"></a>         ev_year,
+<a id="__codelineno-3-94" name="__codelineno-3-94" href="#__codelineno-3-94"></a>         aircraft_key
+</code></pre></div>
+<div style="page-break-after: always;"></div>
+
+<h2 id="4-io-aero-database-io-avstats-db">4. IO-Aero Database IO-AVSTATS-DB</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Number events_sequence:    24&#39;711 
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SELECT count(*) AS no_rows
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>FROM events_sequence e
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>WHERE defining_ev = TRUE
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  AND ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Number cictt_codes:    24&#39;711 
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>SELECT count(*) AS no_rows
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>FROM events_sequence e
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>WHERE defining_ev = TRUE
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  AND ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  AND e.eventsoe_no IN (SELECT eventsoe_no FROM io_sequence_of_events isoe WHERE cictt_code IS NOT null)
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>cictt_code|sum |
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>----------+----+
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>SCF-PP    |4081|
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>LOC-I     |4028|
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>LOC-G     |3202|
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>ARC       |2962|
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>SCF-NP    |1374|
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>OTHR      |1342|
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>SELECT cictt_code,
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>       sum(no_rows)
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>FROM (select isoe.cictt_code,
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>             es.no_rows
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>      FROM (select es.eventsoe_no,
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>                   count(*) as no_rows
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>            from events_sequence es
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>            where es.defining_ev = TRUE
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>              AND es.ev_id in (SELECT ev_id FROM events WHERE ev_year &gt;= 2008)
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>            group by es.eventsoe_no) es
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>               INNER JOIN io_sequence_of_events isoe ON es.eventsoe_no = isoe.soe_no
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>      WHERE isoe.cictt_code IN (
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>                                &#39;ARC&#39;, &#39;LOC-G&#39;, &#39;LOC-I&#39;, &#39;OTHR&#39;, &#39;SCF-NP&#39;, &#39;SCF-PP&#39;
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>          )) a
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>GROUP BY cictt_code
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>ORDER BY 2 desc
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>ev_year|SCF-PP|
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>-------+---+
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>   2008|301|
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>   2009|277|
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>   2010|274|
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>   2011|292|
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>   2012|292|
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>   2013|251|
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>   2014|259|
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>   2015|277|
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>   2016|261|
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>   2017|245|
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>   2018|247|
+<a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>   2019|258|
+<a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a>   2020|181|
+<a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a>   2021|339|
+<a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a>   2022|319|
+<a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a>   2023|  8|
+<a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a>
+<a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a>SELECT ev_year,
+<a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>       sum(no_rows)
+<a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>FROM (select ev_year,
+<a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a>             es.no_rows
+<a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>      FROM (select e.ev_year,
+<a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a>                   es.eventsoe_no,
+<a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a>                   count(*) as no_rows
+<a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a>            from events_sequence es inner join events e on es.ev_id = e.ev_id
+<a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a>            where es.defining_ev = TRUE
+<a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a>              AND e.ev_year &gt;= 2008
+<a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a>            group by e.ev_year, es.eventsoe_no) es
+<a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a>               INNER JOIN io_sequence_of_events isoe ON es.eventsoe_no = isoe.soe_no
+<a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a>      WHERE isoe.cictt_code = &#39;SCF-PP&#39;) a
+<a id="__codelineno-4-74" name="__codelineno-4-74" href="#__codelineno-4-74"></a>GROUP BY ev_year
+<a id="__codelineno-4-75" name="__codelineno-4-75" href="#__codelineno-4-75"></a>ORDER BY 2 desc
+<a id="__codelineno-4-76" name="__codelineno-4-76" href="#__codelineno-4-76"></a>
+<a id="__codelineno-4-77" name="__codelineno-4-77" href="#__codelineno-4-77"></a>ev_id         |
+<a id="__codelineno-4-78" name="__codelineno-4-78" href="#__codelineno-4-78"></a>--------------+
+<a id="__codelineno-4-79" name="__codelineno-4-79" href="#__codelineno-4-79"></a>20220826105805|
+<a id="__codelineno-4-80" name="__codelineno-4-80" href="#__codelineno-4-80"></a>
+<a id="__codelineno-4-81" name="__codelineno-4-81" href="#__codelineno-4-81"></a>SELECT e.ev_id
+<a id="__codelineno-4-82" name="__codelineno-4-82" href="#__codelineno-4-82"></a>FROM events e
+<a id="__codelineno-4-83" name="__codelineno-4-83" href="#__codelineno-4-83"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-84" name="__codelineno-4-84" href="#__codelineno-4-84"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-85" name="__codelineno-4-85" href="#__codelineno-4-85"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-86" name="__codelineno-4-86" href="#__codelineno-4-86"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-87" name="__codelineno-4-87" href="#__codelineno-4-87"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-88" name="__codelineno-4-88" href="#__codelineno-4-88"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-89" name="__codelineno-4-89" href="#__codelineno-4-89"></a>  AND isoe.cictt_code = &#39;SCF-PP&#39;
+<a id="__codelineno-4-90" name="__codelineno-4-90" href="#__codelineno-4-90"></a>
+<a id="__codelineno-4-91" name="__codelineno-4-91" href="#__codelineno-4-91"></a>ev_id         |
+<a id="__codelineno-4-92" name="__codelineno-4-92" href="#__codelineno-4-92"></a>--------------+
+<a id="__codelineno-4-93" name="__codelineno-4-93" href="#__codelineno-4-93"></a>20091010X63931|
+<a id="__codelineno-4-94" name="__codelineno-4-94" href="#__codelineno-4-94"></a>20210822103737|
+<a id="__codelineno-4-95" name="__codelineno-4-95" href="#__codelineno-4-95"></a>20220309104755|
+<a id="__codelineno-4-96" name="__codelineno-4-96" href="#__codelineno-4-96"></a>
+<a id="__codelineno-4-97" name="__codelineno-4-97" href="#__codelineno-4-97"></a>SELECT e.ev_id
+<a id="__codelineno-4-98" name="__codelineno-4-98" href="#__codelineno-4-98"></a>FROM events e
+<a id="__codelineno-4-99" name="__codelineno-4-99" href="#__codelineno-4-99"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-100" name="__codelineno-4-100" href="#__codelineno-4-100"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-101" name="__codelineno-4-101" href="#__codelineno-4-101"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-102" name="__codelineno-4-102" href="#__codelineno-4-102"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-103" name="__codelineno-4-103" href="#__codelineno-4-103"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-104" name="__codelineno-4-104" href="#__codelineno-4-104"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-105" name="__codelineno-4-105" href="#__codelineno-4-105"></a>  AND isoe.cictt_code = &#39;LOC-I&#39;
+<a id="__codelineno-4-106" name="__codelineno-4-106" href="#__codelineno-4-106"></a>
+<a id="__codelineno-4-107" name="__codelineno-4-107" href="#__codelineno-4-107"></a>ev_id         |
+<a id="__codelineno-4-108" name="__codelineno-4-108" href="#__codelineno-4-108"></a>--------------+
+<a id="__codelineno-4-109" name="__codelineno-4-109" href="#__codelineno-4-109"></a>20080505X00589|
+<a id="__codelineno-4-110" name="__codelineno-4-110" href="#__codelineno-4-110"></a>20201023102180|
+<a id="__codelineno-4-111" name="__codelineno-4-111" href="#__codelineno-4-111"></a>20201030102217|
+<a id="__codelineno-4-112" name="__codelineno-4-112" href="#__codelineno-4-112"></a>
+<a id="__codelineno-4-113" name="__codelineno-4-113" href="#__codelineno-4-113"></a>SELECT e.ev_id
+<a id="__codelineno-4-114" name="__codelineno-4-114" href="#__codelineno-4-114"></a>FROM events e
+<a id="__codelineno-4-115" name="__codelineno-4-115" href="#__codelineno-4-115"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-116" name="__codelineno-4-116" href="#__codelineno-4-116"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-117" name="__codelineno-4-117" href="#__codelineno-4-117"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-118" name="__codelineno-4-118" href="#__codelineno-4-118"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-119" name="__codelineno-4-119" href="#__codelineno-4-119"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-120" name="__codelineno-4-120" href="#__codelineno-4-120"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-121" name="__codelineno-4-121" href="#__codelineno-4-121"></a>  AND isoe.cictt_code = &#39;LOC-G&#39;
+<a id="__codelineno-4-122" name="__codelineno-4-122" href="#__codelineno-4-122"></a>
+<a id="__codelineno-4-123" name="__codelineno-4-123" href="#__codelineno-4-123"></a>ev_id         |
+<a id="__codelineno-4-124" name="__codelineno-4-124" href="#__codelineno-4-124"></a>--------------+
+<a id="__codelineno-4-125" name="__codelineno-4-125" href="#__codelineno-4-125"></a>
+<a id="__codelineno-4-126" name="__codelineno-4-126" href="#__codelineno-4-126"></a>SELECT e.ev_id
+<a id="__codelineno-4-127" name="__codelineno-4-127" href="#__codelineno-4-127"></a>FROM events e
+<a id="__codelineno-4-128" name="__codelineno-4-128" href="#__codelineno-4-128"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-129" name="__codelineno-4-129" href="#__codelineno-4-129"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-130" name="__codelineno-4-130" href="#__codelineno-4-130"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-131" name="__codelineno-4-131" href="#__codelineno-4-131"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-132" name="__codelineno-4-132" href="#__codelineno-4-132"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-133" name="__codelineno-4-133" href="#__codelineno-4-133"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-134" name="__codelineno-4-134" href="#__codelineno-4-134"></a>  AND isoe.cictt_code = &#39;ARC&#39;  
+<a id="__codelineno-4-135" name="__codelineno-4-135" href="#__codelineno-4-135"></a>
+<a id="__codelineno-4-136" name="__codelineno-4-136" href="#__codelineno-4-136"></a>ev_id         |
+<a id="__codelineno-4-137" name="__codelineno-4-137" href="#__codelineno-4-137"></a>--------------+
+<a id="__codelineno-4-138" name="__codelineno-4-138" href="#__codelineno-4-138"></a>20210311102742|
+<a id="__codelineno-4-139" name="__codelineno-4-139" href="#__codelineno-4-139"></a>20210822103737|
+<a id="__codelineno-4-140" name="__codelineno-4-140" href="#__codelineno-4-140"></a>
+<a id="__codelineno-4-141" name="__codelineno-4-141" href="#__codelineno-4-141"></a>SELECT e.ev_id
+<a id="__codelineno-4-142" name="__codelineno-4-142" href="#__codelineno-4-142"></a>FROM events e
+<a id="__codelineno-4-143" name="__codelineno-4-143" href="#__codelineno-4-143"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-144" name="__codelineno-4-144" href="#__codelineno-4-144"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-145" name="__codelineno-4-145" href="#__codelineno-4-145"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-146" name="__codelineno-4-146" href="#__codelineno-4-146"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-147" name="__codelineno-4-147" href="#__codelineno-4-147"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-148" name="__codelineno-4-148" href="#__codelineno-4-148"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-149" name="__codelineno-4-149" href="#__codelineno-4-149"></a>  AND isoe.cictt_code = &#39;SCF-NP&#39;  
+<a id="__codelineno-4-150" name="__codelineno-4-150" href="#__codelineno-4-150"></a>
+<a id="__codelineno-4-151" name="__codelineno-4-151" href="#__codelineno-4-151"></a>ev_id         |
+<a id="__codelineno-4-152" name="__codelineno-4-152" href="#__codelineno-4-152"></a>--------------+
+<a id="__codelineno-4-153" name="__codelineno-4-153" href="#__codelineno-4-153"></a>20100224X50823|
+<a id="__codelineno-4-154" name="__codelineno-4-154" href="#__codelineno-4-154"></a>20100803X25950|
+<a id="__codelineno-4-155" name="__codelineno-4-155" href="#__codelineno-4-155"></a>20110830X71207|
+<a id="__codelineno-4-156" name="__codelineno-4-156" href="#__codelineno-4-156"></a>20120705X51659|
+<a id="__codelineno-4-157" name="__codelineno-4-157" href="#__codelineno-4-157"></a>20120811X13221|
+<a id="__codelineno-4-158" name="__codelineno-4-158" href="#__codelineno-4-158"></a>20210219102650|
+<a id="__codelineno-4-159" name="__codelineno-4-159" href="#__codelineno-4-159"></a>20220111104514|
+<a id="__codelineno-4-160" name="__codelineno-4-160" href="#__codelineno-4-160"></a>
+<a id="__codelineno-4-161" name="__codelineno-4-161" href="#__codelineno-4-161"></a>SELECT e.ev_id
+<a id="__codelineno-4-162" name="__codelineno-4-162" href="#__codelineno-4-162"></a>FROM events e
+<a id="__codelineno-4-163" name="__codelineno-4-163" href="#__codelineno-4-163"></a>         INNER JOIN aircraft a ON e.ev_id = a.ev_id
+<a id="__codelineno-4-164" name="__codelineno-4-164" href="#__codelineno-4-164"></a>         INNER JOIN events_sequence es ON e.ev_id = es.ev_id AND a.aircraft_key = es.aircraft_key
+<a id="__codelineno-4-165" name="__codelineno-4-165" href="#__codelineno-4-165"></a>         INNER JOIN io_sequence_of_events isoe ON isoe.soe_no = es.eventsoe_no
+<a id="__codelineno-4-166" name="__codelineno-4-166" href="#__codelineno-4-166"></a>WHERE e.ev_year &gt;= 2008
+<a id="__codelineno-4-167" name="__codelineno-4-167" href="#__codelineno-4-167"></a>  AND a.aircraft_key &gt; 1
+<a id="__codelineno-4-168" name="__codelineno-4-168" href="#__codelineno-4-168"></a>  AND es.defining_ev = TRUE
+<a id="__codelineno-4-169" name="__codelineno-4-169" href="#__codelineno-4-169"></a>  AND isoe.cictt_code = &#39;OTHR&#39;  
+</code></pre></div>
+<div style="page-break-after: always;"></div>
+
+<h2 id="5-io-aero-database-io_app_ae1982">5. IO-Aero Database io_app_ae1982</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cictt_scf_pp|cictt_loc_i|cictt_loc_g|cictt_arc|cictt_scf_np|cictt_othr|
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>------------+-----------+-----------+---------+------------+----------+
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        4080|       4028|       3201|     2956|        1373|      1340|
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>SELECT count(*) FILTER (WHERE &#39;SCF-PP&#39; = ANY (cictt_codes)) AS cictt_scf_pp,
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>       count(*) FILTER (WHERE &#39;LOC-I&#39;  = ANY (cictt_codes)) AS cictt_loc_i,
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>       count(*) FILTER (WHERE &#39;LOC-G&#39;  = ANY (cictt_codes)) AS cictt_loc_g,
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>       count(*) FILTER (WHERE &#39;ARC&#39;    = ANY (cictt_codes)) AS cictt_arc,
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>       count(*) FILTER (WHERE &#39;SCF-NP&#39; = ANY (cictt_codes)) AS cictt_scf_np,
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>       count(*) FILTER (WHERE &#39;OTHR&#39;   = ANY (cictt_codes)) AS cictt_othr
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>FROM io_app_ae1982
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>ev_id         |cictt_codes    |
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>--------------+---------------+
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>20200808X63356|{SCF-PP,ARC}   |
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>20210216102634|{SCF-PP,SCF-NP}|
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>20210218102641|{SCF-PP,FUEL}  |
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>20210506103043|{SCF-PP,FUEL}  |
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>20210702103405|{UNK,SCF-PP}   |
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>20210816103702|{LOC-I,SCF-PP} |
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>20220815105734|{SCF-PP,FUEL}  |
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>20220829105808|{OTHR,SCF-PP}  |
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>20221213106451|{SCF-PP,FUEL}  |
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>SELECT ev_id,
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>       cictt_codes
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>FROM io_app_ae1982
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>WHERE &#39;SCF-PP&#39; = ANY (cictt_codes)
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>  AND array_length(cictt_codes, 1) &gt; 1
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>ORDER BY 1
+</code></pre></div>
+<div style="page-break-after: always;"></div>
+
+<h2 id="6-application-ae1982">6. Application ae1982</h2>
+<h3 id="61-bar-chart">6.1 Bar chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>year    LOC-I    UNK    SCF-PP    CFIT    OTHR    UIMC    SCF-NP
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>2008    298       9     301       39      173     21      106   
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>2009    299      22     277       58       99     18       95   
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>2010    229      33     274       49      216     18       96   
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>2011    329      30     292       80       71     19      104   
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>2012    308      37     292       66       66     15      104   
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>2013    273      33     251       76       49     21       86   
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>2014    299      52     259       45       42     17       65   
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>2015    265      74     277       60       39     23       87   
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>2016    264      91     261       47       58     19       88   
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>2017    279      77     245       45       44     29       91   
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>2018    259      94     247       49       57     15      100   
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>2019    290      69     258       32       53     24       80   
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>2020    225      86     180       33       58     10       74   
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>2021    211      99     338       39      139     14       96   
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>2022    194     107     319       27      170      4       99   
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>2023      5       4       8        1        5      0        2   
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>       4027            4079              1339            1373   
+</code></pre></div>
+<h3 id="62-pie-chart">6.2 Pie chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SCF-PP     4&#39;079
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>LOC-I      4&#39;027
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>LOC-G      3&#39;201
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>ARC        2&#39;956
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>SCF-NP     1&#39;373
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>OTHR       1&#39;339
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

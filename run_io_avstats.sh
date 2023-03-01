@@ -22,7 +22,7 @@ fi
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
+export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
@@ -56,6 +56,7 @@ if [ -z "$1" ]; then
     echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
+    echo "p_p_k   - Process NTSB data deletions in PostgreSQL"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
@@ -98,11 +99,11 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        echo "all      - All Streamlit applications"
+        echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "ae1982     - Aircraft Accidents in the US since 1982"
-        echo "ae1982_ltd - Aircraft Accidents in the US since 1982"
-        echo "pd1982     - Profiling Data for the US since 1982"
+        echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "pd1982 - Profiling Data for the US since 1982"
+        echo "stats  - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -164,12 +165,13 @@ echo "==========================================================================
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_s_e: Load sequence of events data into PostgreSQL.
 # l_z_d: Load US Zip code data.
+# p_p_k: Process NTSB data deletions in PostgreSQL.
 # r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"p_p_k"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi
@@ -233,7 +235,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py -- --mode Std ); then
             exit 255
         fi
-    elif [ "${IO_AVSTATS_APPLICATION}" = "ae1982_ltd" ]; then
+    elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/ae1982.py ); then
             exit 255
         fi

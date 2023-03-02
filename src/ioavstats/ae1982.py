@@ -1108,16 +1108,13 @@ def _prep_data_charts_ey_aoc(
         inplace=True,
     )
 
-    if FILTER_CICTT_CODES:
-        names = []
-        for cictt_code in FILTER_CICTT_CODES:
-            if cictt_code in df_chart.cictt_codes.values:
-                names.append((cictt_code, cictt_code))
-    else:
-        names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
-        for cictt_code in _sql_query_cictt_codes():
-            if cictt_code in df_chart.cictt_codes.values:
-                names.append((cictt_code, cictt_code))
+    names = []
+
+    for cictt_code in (
+        FILTER_CICTT_CODES if FILTER_CICTT_CODES else _sql_query_cictt_codes()
+    ):
+        if cictt_code in df_chart.cictt_codes.values:
+            names.append((cictt_code, cictt_code))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.cictt_codes == name_df, 1, 0)
@@ -1181,14 +1178,13 @@ def _prep_data_charts_ey_pss(
 
     names = []
 
-    if FILTER_PREVENTABLE_EVENTS:
-        for preventable_events in FILTER_PREVENTABLE_EVENTS:
-            if preventable_events in df_chart.preventable_events.values:
-                names.append((preventable_events, preventable_events))
-    else:
-        for preventable_events in _sql_query_preventable_events():
-            if preventable_events in df_chart.preventable_events.values:
-                names.append((preventable_events, preventable_events))
+    for preventable_events in (
+        FILTER_PREVENTABLE_EVENTS
+        if FILTER_PREVENTABLE_EVENTS
+        else _sql_query_preventable_events()
+    ):
+        if preventable_events in df_chart.preventable_events.values:
+            names.append((preventable_events, preventable_events))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.preventable_events == name_df, 1, 0)
@@ -1252,14 +1248,11 @@ def _prep_data_charts_ey_tlp(
 
     names = []
 
-    if FILTER_TLL_PARAMETERS:
-        for tll_parameters in FILTER_TLL_PARAMETERS:
-            if tll_parameters in df_chart.tll_parameters.values:
-                names.append((tll_parameters, tll_parameters))
-    else:
-        for tll_parameters in _sql_query_tll_parameters():
-            if tll_parameters in df_chart.tll_parameters.values:
-                names.append((tll_parameters, tll_parameters))
+    for tll_parameters in (
+        FILTER_TLL_PARAMETERS if FILTER_TLL_PARAMETERS else _sql_query_tll_parameters()
+    ):
+        if tll_parameters in df_chart.tll_parameters.values:
+            names.append((tll_parameters, tll_parameters))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.tll_parameters == name_df, 1, 0)
@@ -1293,14 +1286,12 @@ def _prep_data_charts_fy_fp(
 
     if FILTER_FAR_PARTS:
         names = []
-        for far_part in FILTER_FAR_PARTS:
-            if far_part in df_chart.far_parts.values:
-                names.append((far_part, far_part))
     else:
         names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
-        for far_part in _sql_query_far_parts():
-            if far_part in df_chart.far_parts.values:
-                names.append((far_part, far_part))
+
+    for far_part in FILTER_FAR_PARTS if FILTER_FAR_PARTS else _sql_query_far_parts():
+        if far_part in df_chart.far_parts.values:
+            names.append((far_part, far_part))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.far_parts == name_df, df_chart.inj_tot_f, 0)
@@ -1374,6 +1365,8 @@ def _prep_data_charts_te_aoc(
         df_chart[name] = np.where(df_chart.cictt_codes == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
         if value > 0:
+            if name == "":
+                name = CHOICE_CHARTS_LEGEND_NAME_NONE
             name_value.append((name, value))
             total_pie += value
 
@@ -3476,7 +3469,7 @@ def _sql_query_cictt_codes() -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+            data.append(row[0])
 
         return sorted(data)
 
@@ -3545,7 +3538,7 @@ def _sql_query_far_parts() -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+            data.append(row[0])
 
         return sorted(data)
 

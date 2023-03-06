@@ -22,7 +22,7 @@ fi
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
@@ -102,6 +102,7 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
         echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "mlara  - Association Rule Analysis"
         echo "pd1982 - Profiling Data for the US since 1982"
         echo "stats  - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
@@ -180,7 +181,7 @@ if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"
 # Run Docker Compose tasks.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
-    if ! ( ./scripts/run_docker_compose.sh ${IO_AVSTATS_COMPOSE_TASK} ); then
+    if ! ( ./scripts/run_docker_compose.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
         exit 255
     fi
 
@@ -188,7 +189,7 @@ elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
 # Create or update a Docker image.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_i" ]; then
-    if ! ( ./scripts/run_create_image.sh ${IO_AVSTATS_APPLICATION} yes yes ); then
+    if ! ( ./scripts/run_create_image.sh "${IO_AVSTATS_APPLICATION}" yes yes ); then
         exit 255
     fi
 
@@ -232,7 +233,7 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" -- --mode Std ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
@@ -240,7 +241,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
             exit 255
         fi
     else
-        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" ); then
             exit 255
         fi
     fi

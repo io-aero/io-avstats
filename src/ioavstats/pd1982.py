@@ -205,6 +205,53 @@ QUERIES = {
         WHERE e.ev_year >= 1982
         ORDER BY l.ev_id;
     """,
+    "io_md_codes_category": """
+        SELECT *
+          FROM io_md_codes_category
+        ORDER BY category_code;
+    """,
+    "io_md_codes_modifier": """
+        SELECT *
+          FROM io_md_codes_modifier
+        ORDER BY modifier_code;
+    """,
+    "io_md_codes_occurrence": """
+        SELECT *
+          FROM io_md_codes_occurrence
+        ORDER BY occurrence_code;
+    """,
+    "io_md_codes_phase_operation": """
+        SELECT *
+          FROM io_md_codes_phase_operation
+        ORDER BY phase_operation_code;
+    """,
+    "io_md_codes_section": """
+        SELECT *
+          FROM io_md_codes_section
+        ORDER BY category_code,
+                 subcategory_code,
+                 section_code;
+    """,
+    "io_md_codes_subcategory": """
+        SELECT *
+          FROM io_md_codes_subcategory
+        ORDER BY category_code,
+                 subcategory_code;
+    """,
+    "io_md_codes_subsection": """
+        SELECT *
+          FROM io_md_codes_subsection
+        ORDER BY category_code,
+                 subcategory_code,
+                 section_code,
+                 subsection_code;
+    """,
+    "io_ml_ara_transactions": """
+        SELECT *
+          FROM io_ml_ara_transactions
+        WHERE ev_year >= 1982
+        ORDER BY ev_id;
+    """,
     "io_ntsb_2002_2021": """
         SELECT *
           FROM io_ntsb_2002_2021
@@ -692,7 +739,8 @@ def _setup_task_controls():
 
     CHOICE_DDL_OBJECT_SELECTED = (
         "View"
-        if CHOICE_DDL_OBJECT_SELECTION in ["io_app_ae1982", "io_lat_long_issues"]
+        if CHOICE_DDL_OBJECT_SELECTION
+        in ["io_app_ae1982", "io_lat_long_issues", "io_ml_ara_transactions"]
         else "Table"
     )
 
@@ -731,6 +779,13 @@ def _streamlit_flow() -> None:
     if CHOICE_DDL_OBJECT_SELECTION not in [
         "io_aviation_occurrence_categories",
         "io_countries",
+        "io_md_codes_category",
+        "io_md_codes_modifier",
+        "io_md_codes_occurrence",
+        "io_md_codes_phase_operation",
+        "io_md_codes_section",
+        "io_md_codes_subcategory",
+        "io_md_codes_subsection",
         "io_pk_ntsb",
         "io_processed_files",
         "io_lat_lng",

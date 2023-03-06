@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 ifeq ($(OS),Windows_NT)
+	export DELETE_PIPFILE_LOCK=del Pipfile.lock
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python -m pipenv
 	export PYTHON=python
@@ -10,6 +11,7 @@ ifeq ($(OS),Windows_NT)
 	export PYTHONPATH_PYTEST=src
 	export SQLALCHEMY_WARN_20=1
 else
+	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
 	export ENV_FOR_DYNACONF=test
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
@@ -170,6 +172,9 @@ pipenv-dev:         ## Install the package dependencies for development.
 	${PYTHON} -m pip install --upgrade pipenv
 	${PYTHON} -m pip uninstall -y virtualenv
 	${PYTHON} -m pip install virtualenv
+	${DELETE_PIPENV_LOCK}
+#	${PIPENV} install --skip-lock
+#	${PIPENV} graph
 	${PIPENV} install
 	${PIPENV} --rm
 	${PIPENV} install --dev
@@ -190,6 +195,9 @@ pipenv-prod:        ## Install the package dependencies for production.
 	${PYTHON} -m pip install --upgrade pipenv
 	${PYTHON} -m pip uninstall -y virtualenv
 	${PYTHON} -m pip install virtualenv
+	${DELETE_PIPENV_LOCK}
+#	${PIPENV} install --skip-lock
+#	${PIPENV} graph
 	${PIPENV} install
 	${PIPENV} --rm
 	${PIPENV} install

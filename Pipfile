@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 dynaconf = "*"
 lat_lon_parser ="*"
+mlxtend = "*"
 openpyxl = "*"
 pandas = "*"
 pandas-profiling = "*"

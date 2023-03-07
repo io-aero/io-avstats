@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+charset-normalizer = "*"
 dynaconf = "*"
 lat_lon_parser ="*"
 mlxtend = "*"

@@ -246,12 +246,6 @@ QUERIES = {
                  section_code,
                  subsection_code;
     """,
-    "io_ml_ara_transactions": """
-        SELECT *
-          FROM io_ml_ara_transactions
-        WHERE ev_year >= 1982
-        ORDER BY ev_id;
-    """,
     "io_ntsb_2002_2021": """
         SELECT *
           FROM io_ntsb_2002_2021
@@ -740,7 +734,10 @@ def _setup_task_controls():
     CHOICE_DDL_OBJECT_SELECTED = (
         "View"
         if CHOICE_DDL_OBJECT_SELECTION
-        in ["io_app_ae1982", "io_lat_long_issues", "io_ml_ara_transactions"]
+        in [
+            "io_app_ae1982",
+            "io_lat_long_issues",
+        ]
         else "Table"
     )
 

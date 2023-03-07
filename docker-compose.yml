@@ -64,7 +64,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - app_ae1982
 #      - app_pd1982

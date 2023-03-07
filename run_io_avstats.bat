@@ -104,8 +104,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
         echo ae1982 - Aircraft Accidents in the US since 1982
-        echo mlara  - Association Rule Analysis
         echo pd1982 - Profiling Data for the US since 1982
+        echo slara  - Association Rule Analysis
         echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
@@ -164,8 +164,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
         echo ae1982 - Aircraft Accidents in the US since 1982
-        echo mlara  - Association Rule Analysis
         echo pd1982 - Profiling Data for the US since 1982
+        echo slara  - Association Rule Analysis
         echo stats  - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
@@ -499,7 +499,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    if ["%IO_AVSTATS_APPLICATION%"] EQU ["mlara"] (
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
         pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -509,7 +509,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         goto END_OF_SCRIPT
     )
 
-    if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["slara"] (
         pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%

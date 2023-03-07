@@ -102,8 +102,8 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
         echo "ae1982 - Aircraft Accidents in the US since 1982"
-        echo "mlara  - Association Rule Analysis"
         echo "pd1982 - Profiling Data for the US since 1982"
+        echo "slara  - Association Rule Analysis"
         echo "stats  - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162

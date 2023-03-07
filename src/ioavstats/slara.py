@@ -11,13 +11,14 @@ import psycopg2
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
+from mlxtend.frequent_patterns import apriori  # type: ignore
+from mlxtend.frequent_patterns import association_rules
 from pandas import DataFrame
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
-from mlxtend.frequent_patterns import apriori, association_rules
 
 # SettingWithCopyWarning
 pd.options.mode.chained_assignment: str | None = None  # type: ignore
@@ -25,7 +26,7 @@ pd.options.mode.chained_assignment: str | None = None  # type: ignore
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-APP_ID = "mlara"
+APP_ID = "slara"
 
 # pylint: disable=R0801
 # pylint: disable=too-many-lines
@@ -53,6 +54,8 @@ CHOICE_TRANSACTION_DATA_DETAILS: bool | None = None
 
 CHOICE_UG_APP: bool | None = None
 CHOICE_UG_FREQUENT_ITEMSETS_DETAILS: bool | None = None
+CHOICE_UG_ITEMS_EVENTS_SEQUENCE: bool | None = None
+CHOICE_UG_ITEMS_FINDINGS: bool | None = None
 CHOICE_UG_ONE_HOT_ENCODED_DETAILS: bool | None = None
 CHOICE_UG_RAW_DATA_DETAILS: bool | None = None
 CHOICE_UG_RAW_DATA_PROFILE: bool | None = None
@@ -106,6 +109,40 @@ FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
 IS_TIMEKEEPING = False
+
+ITEMS_FROM_ES_EVENTSOE_CODES_ALL: bool | None = None
+ITEMS_FROM_ES_EVENTSOE_CODES_FALSE: bool | None = None
+ITEMS_FROM_ES_EVENTSOE_CODES_TRUE: bool | None = None
+ITEMS_FROM_ES_OCCURRENCE_CODES_ALL: bool | None = None
+ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE: bool | None = None
+ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE: bool | None = None
+ITEMS_FROM_ES_PHASE_CODES_ALL: bool | None = None
+ITEMS_FROM_ES_PHASE_CODES_FALSE: bool | None = None
+ITEMS_FROM_ES_PHASE_CODES_TRUE: bool | None = None
+ITEMS_FROM_F_CATEGORY_CODES_ALL: bool | None = None
+ITEMS_FROM_F_CATEGORY_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_CATEGORY_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_CATEGORY_CODES_NONE: bool | None = None
+ITEMS_FROM_F_FINDING_CODES_ALL: bool | None = None
+ITEMS_FROM_F_FINDING_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_FINDING_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_FINDING_CODES_NONE: bool | None = None
+ITEMS_FROM_F_MODIFIER_CODES_ALL: bool | None = None
+ITEMS_FROM_F_MODIFIER_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_MODIFIER_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_MODIFIER_CODES_NONE: bool | None = None
+ITEMS_FROM_F_SECTION_CODES_ALL: bool | None = None
+ITEMS_FROM_F_SECTION_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_SECTION_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_SECTION_CODES_NONE: bool | None = None
+ITEMS_FROM_F_SUBCATEGORY_CODES_ALL: bool | None = None
+ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_SUBCATEGORY_CODES_NONE: bool | None = None
+ITEMS_FROM_F_SUBSECTION_CODES_ALL: bool | None = None
+ITEMS_FROM_F_SUBSECTION_CODES_CAUSE: bool | None = None
+ITEMS_FROM_F_SUBSECTION_CODES_FACTOR: bool | None = None
+ITEMS_FROM_F_SUBSECTION_CODES_NONE: bool | None = None
 
 LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
@@ -289,7 +326,7 @@ def _apply_filter_us_aviation(
     filter_cmd_or = ""
 
     if FILTER_US_AVIATION_COUNTRY in filter_params:  # type: ignore
-        filter_cmd += filter_cmd_or + "(_df_unfiltered['ev_country'] == COUNTRY_USA)"
+        filter_cmd += filter_cmd_or + "(_df_unfiltered['country'] == COUNTRY_USA)"
         filter_cmd_or = " | "
 
     if FILTER_US_AVIATION_DESTINATION in filter_params:  # type: ignore
@@ -381,7 +418,8 @@ def _create_transaction_data() -> None:
     _print_timestamp("_get_transaction_data() - Start")
 
     DF_TRANSACTION_DATA["items"] = (
-        DF_RAW_DATA_FILTERED["findings"] + DF_RAW_DATA_FILTERED["occurrences"]
+        DF_RAW_DATA_FILTERED["all_finding_codes"]
+        + DF_RAW_DATA_FILTERED["all_occurrence_codes"]
     )
 
     _print_timestamp("_get_transaction_data() - End")
@@ -435,11 +473,58 @@ def _get_raw_data() -> DataFrame:
     return pd.read_sql(
         con=_get_engine(),
         sql="""
-    SELECT *
-     FROM io_ml_ara_transactions
-    WHERE ARRAY_LENGTH(findings, 1) > 0
-       OR ARRAY_LENGTH(occurrences, 1) > 0
-    ORDER BY ev_id;
+            SELECT ev_id,
+                   acft_categories,
+                   all_category_cause_codes,
+                   all_category_codes,
+                   all_category_factor_codes,
+                   all_category_none_codes,
+                   all_eventsoe_codes,
+                   all_eventsoe_false_codes,
+                   all_eventsoe_true_codes,
+                   all_finding_cause_codes,
+                   all_finding_codes,
+                   all_finding_factor_codes,
+                   all_finding_none_codes,
+                   all_modifier_cause_codes,
+                   all_modifier_codes,
+                   all_modifier_factor_codes,
+                   all_modifier_none_codes,
+                   all_occurrence_codes,
+                   all_occurrence_false_codes,
+                   all_occurrence_true_codes,
+                   all_phase_codes,
+                   all_phase_false_codes,
+                   all_phase_true_codes,
+                   all_section_cause_codes,
+                   all_section_codes,
+                   all_section_factor_codes,
+                   all_section_none_codes,
+                   all_subcategory_cause_codes,
+                   all_subcategory_codes,
+                   all_subcategory_factor_codes,
+                   all_subcategory_none_codes,
+                   all_subsection_cause_codes,
+                   all_subsection_codes,
+                   all_subsection_factor_codes,
+                   all_subsection_none_codes,
+                   country,
+                   ev_highest_injury,
+                   ev_type,
+                   ev_year,
+                   inj_f_grnd,
+                   inj_tot_f,
+                   is_dest_country_usa,
+                   is_dprt_country_usa,
+                   is_oper_country_usa,
+                   is_owner_country_usa,
+                   is_regis_country_usa,
+                   no_aircraft,
+                   ntsb_no,
+                   state
+             FROM io_app_ae1982
+            WHERE ev_year >= 2008
+            ORDER BY ev_id;
     """,
     )
 
@@ -449,7 +534,7 @@ def _get_raw_data() -> DataFrame:
 # ------------------------------------------------------------------
 def _get_user_guide_app() -> None:
     text = """
-#### User guide: mlara Application
+#### User guide: slara Application
 """
 
     text += """
@@ -513,15 +598,122 @@ def _get_user_guide_details(data_type: str) -> None:
     text = f"""
 #### User guide: {data_type} details
 
-This task provides the detailed {data_type.lower()} in a table format for display and download as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
+This task provides the resulting detailed {data_type.lower()} in a table format for display and download as **csv** file. 
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task -
+# one-hot encoded data.
+# ------------------------------------------------------------------
+def _get_user_guide_details_one_hot_encoded_data() -> None:
+    text = """
+#### User guide: One-hot encoded data details
+
+This task provides the detailed one-hot encoded data in a table format for display and download as **csv** file. 
+To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
+The **csv** download is not limited, but may not be processible with MS Excel.
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task - raw data.
+# ------------------------------------------------------------------
+def _get_user_guide_details_raw_data() -> None:
+    text = """
+#### User guide: Raw data details
+
+This task provides the detailed raw data in a table format for display and download as **csv** file. 
+The rows to be displayed are limited to the chosen filter options. 
+The order of data display is based on the ascending event identification. 
+
+The database columns of the selected rows are always displayed in full.
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task - standard.
+# ------------------------------------------------------------------
+def _get_user_guide_details_standard() -> str:
+    return """
 
 ##### Usage tips
 
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('⌘ Cmd + F' or 'Ctrl + F') to bring up the search bar, and using the search bar to filter data.
+- **Search**: search through data by clicking a table, using hotkeys ('Ctrl + F') to bring up the search bar, and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
+    """
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task - transaction data.
+# ------------------------------------------------------------------
+def _get_user_guide_details_transaction_data() -> None:
+    text = """
+#### User guide: Transaction data details
+
+This task provides the detailed transaction data in a table format for display and download as **csv** file.
+The order of data display is based on the ascending event identification of the raw data. 
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task.
+# ------------------------------------------------------------------
+def _get_user_guide_items_events_sequence() -> None:
+    text = """
+#### User guide: Items from events_sequence
+
+From the database table **events_sequence** the following attributes are available as items for the Association Rule Analysis:
+
+- **Eventsoe no** - event sequence
+- **Phase no** - event phase
+- **Occurrence code** - the combination of **Phase no** and **Eventsoe no**.
+- **Defining** - identification of the defining event
+
+The following rules apply when selecting items:
+
+- **Occurrence code** includes **Phase no** and **Eventsoe no**
+- **All** includes **Defining** and **Not defining**
+
+The application tries to prevent a redundant selection of items!
+    """
+
+    st.warning(text)
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task.
+# ------------------------------------------------------------------
+def _get_user_guide_items_findings() -> None:
+    text = """
+#### User guide: Items from findings
+
+From the database table **findings** the following attributes are available as items for the Association Rule Analysis:
+
+- **Category no** - category
+- **Subategory no** - subcategory
+- **Section no** - section
+- **Subsection no** - subsection
+- **Modifier no** - modifier
+- **Finding code** - the combination of **Category no**, **Subcategory no**, **Section no**, **Subsection no** and **Modifier no**.
+- **Cause factor** - identification of cause or factor
+
+The following rules apply when selecting items:
+- **Finding code** includes **Category no**, **Subcategory no**, **Section no**, **Subsection no** and **Modifier no**
+- **All** includes **Cause**, **Factor** and **Not cause or factor**
+
+The application tries to prevent a redundant selection of items!
     """
 
     st.warning(text)
@@ -531,7 +723,47 @@ This task provides the detailed {data_type.lower()} in a table format for displa
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
+    global CHOICE_UG_ITEMS_EVENTS_SEQUENCE  # pylint: disable=global-statement
+    global CHOICE_UG_ITEMS_FINDINGS  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_EVENTSOE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_EVENTSOE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_EVENTSOE_CODES_TRUE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_TRUE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_NONE  # pylint: disable=global-statement
+
     _print_timestamp("_present_data() - Start")
+
+    # ------------------------------------------------------------------
+    # User guide.
+    # ------------------------------------------------------------------
 
     if CHOICE_ACTIVE_FILTERS:
         st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
@@ -551,42 +783,645 @@ def _present_data() -> None:
     if CHOICE_UG_APP:
         _get_user_guide_app()
 
+    # ------------------------------------------------------------------
+    # Items from database table events_sequence.
+    # ------------------------------------------------------------------
+
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Items from database table events_sequence</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        CHOICE_UG_ITEMS_EVENTS_SEQUENCE = st.checkbox(
+            help="Explanations for the item selection of database table events_sequence.",
+            key="CHOICE_UG_ITEMS_EVENTS_SEQUENCE",
+            label="**User Guide: Items from events_sequence**",
+            value=False,
+        )
+
+    if CHOICE_UG_ITEMS_EVENTS_SEQUENCE:
+        _get_user_guide_items_events_sequence()
+
+    col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
+
+    # ------------------------------------------------------------------
+    # Occurrence code.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Occurrence code:**")
+
+    with col3:
+        ITEMS_FROM_ES_OCCURRENCE_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_ES_OCCURRENCE_CODES_ALL",
+            label="**All**",
+            value=True,
+        )
+    with col4:
+        ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE = st.checkbox(
+            help="Defining.",
+            key="ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE",
+            label="**Defining**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE = st.checkbox(
+            help="Not defining.",
+            key="ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE",
+            label="**Not defining**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Eventsoe no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Eventsoe no:**")
+
+    with col3:
+        ITEMS_FROM_ES_EVENTSOE_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_ES_EVENTSOE_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_ES_EVENTSOE_CODES_TRUE = st.checkbox(
+            help="Defining.",
+            key="ITEMS_FROM_ES_EVENTSOE_CODES_TRUE",
+            label="**Defining**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_ES_EVENTSOE_CODES_FALSE = st.checkbox(
+            help="Not defining.",
+            key="ITEMS_FROM_ES_EVENTSOE_CODES_FALSE",
+            label="**Not defining**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Phase no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Phase no:**")
+
+    with col3:
+        ITEMS_FROM_ES_PHASE_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_ES_PHASE_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_ES_PHASE_CODES_TRUE = st.checkbox(
+            help="Defining.",
+            key="ITEMS_FROM_ES_PHASE_CODES_TRUE",
+            label="**Defining**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_ES_PHASE_CODES_FALSE = st.checkbox(
+            help="Not defining.",
+            key="ITEMS_FROM_ES_PHASE_CODES_FALSE",
+            label="**Not defining**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Preventing redundancy.
+    # ------------------------------------------------------------------
+
+    if ITEMS_FROM_ES_OCCURRENCE_CODES_ALL:
+        if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**. "
+            )
+        if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**. "
+            )
+        if (
+            ITEMS_FROM_ES_EVENTSOE_CODES_ALL
+            or ITEMS_FROM_ES_EVENTSOE_CODES_FALSE
+            or ITEMS_FROM_ES_EVENTSOE_CODES_TRUE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**. "
+            )
+        if (
+            ITEMS_FROM_ES_PHASE_CODES_ALL
+            or ITEMS_FROM_ES_PHASE_CODES_FALSE
+            or ITEMS_FROM_ES_PHASE_CODES_TRUE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Occurrence code** already contains the items of the selection **Phase no**. "
+            )
+
+    if ITEMS_FROM_ES_EVENTSOE_CODES_ALL:
+        if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**. "
+            )
+        if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**. "
+            )
+
+    if ITEMS_FROM_ES_PHASE_CODES_ALL:
+        if ITEMS_FROM_ES_PHASE_CODES_TRUE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Defining event**. "
+            )
+        if ITEMS_FROM_ES_PHASE_CODES_FALSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**. "
+            )
+
+    # ------------------------------------------------------------------
+    # Items from database table findings.
+    # ------------------------------------------------------------------
+
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Items from database table findings</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        CHOICE_UG_ITEMS_FINDINGS = st.checkbox(
+            help="Explanations for the item selection of database table findings.",
+            key="CHOICE_UG_ITEMS_FINDINGS",
+            label="**User Guide: Items from findings**",
+            value=False,
+        )
+
+    if CHOICE_UG_ITEMS_FINDINGS:
+        _get_user_guide_items_findings()
+
+    col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
+
+    # ------------------------------------------------------------------
+    # Finding code.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Finding code:**")
+
+    with col3:
+        ITEMS_FROM_F_FINDING_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_FINDING_CODES_ALL",
+            label="**All**",
+            value=True,
+        )
+    with col4:
+        ITEMS_FROM_F_FINDING_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_FINDING_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_FINDING_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_FINDING_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_FINDING_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_FINDING_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Category no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Category no:**")
+
+    with col3:
+        ITEMS_FROM_F_CATEGORY_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_CATEGORY_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_F_CATEGORY_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_CATEGORY_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_CATEGORY_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_CATEGORY_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_CATEGORY_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_CATEGORY_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Subcategory no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Subcategory no:**")
+
+    with col3:
+        ITEMS_FROM_F_SUBCATEGORY_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_SUBCATEGORY_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_SUBCATEGORY_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_SUBCATEGORY_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Section no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Section no:**")
+
+    with col3:
+        ITEMS_FROM_F_SECTION_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_SECTION_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_F_SECTION_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_SECTION_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_SECTION_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_SECTION_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_SECTION_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_SECTION_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Subsection no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Subsection no:**")
+
+    with col3:
+        ITEMS_FROM_F_SUBSECTION_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_SUBSECTION_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_F_SUBSECTION_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_SUBSECTION_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_SUBSECTION_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_SUBSECTION_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_SUBSECTION_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_SUBSECTION_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Modifier no.
+    # ------------------------------------------------------------------
+
+    with col1:
+        st.markdown("**Modifier no:**")
+
+    with col3:
+        ITEMS_FROM_F_MODIFIER_CODES_ALL = st.checkbox(
+            help="All.",
+            key="ITEMS_FROM_F_MODIFIER_CODES_ALL",
+            label="**All**",
+            value=False,
+        )
+    with col4:
+        ITEMS_FROM_F_MODIFIER_CODES_CAUSE = st.checkbox(
+            help="Cause.",
+            key="ITEMS_FROM_F_MODIFIER_CODES_CAUSE",
+            label="**Cause**",
+            value=False,
+        )
+    with col5:
+        ITEMS_FROM_F_MODIFIER_CODES_FACTOR = st.checkbox(
+            help="Factor.",
+            key="ITEMS_FROM_F_MODIFIER_CODES_FACTOR",
+            label="**Factor**",
+            value=False,
+        )
+    with col6:
+        ITEMS_FROM_F_MODIFIER_CODES_NONE = st.checkbox(
+            help="None.",
+            key="ITEMS_FROM_F_MODIFIER_CODES_NONE",
+            label="**None**",
+            value=False,
+        )
+
+    # ------------------------------------------------------------------
+    # Preventing redundancy.
+    # ------------------------------------------------------------------
+
+    if ITEMS_FROM_F_FINDING_CODES_ALL:
+        if ITEMS_FROM_F_FINDING_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_FINDING_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_FINDING_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **None**. "
+            )
+        if (
+            ITEMS_FROM_F_CATEGORY_CODES_ALL
+            or ITEMS_FROM_F_CATEGORY_CODES_CAUSE
+            or ITEMS_FROM_F_CATEGORY_CODES_FACTOR
+            or ITEMS_FROM_F_CATEGORY_CODES_NONE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Finding code** already contains the items of the selection **Category no**. "
+            )
+        if (
+            ITEMS_FROM_F_SUBCATEGORY_CODES_ALL
+            or ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE
+            or ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR
+            or ITEMS_FROM_F_SUBCATEGORY_CODES_NONE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Finding code** already contains the items of the selection **Subcategory no**. "
+            )
+        if (
+            ITEMS_FROM_F_SECTION_CODES_ALL
+            or ITEMS_FROM_F_SECTION_CODES_CAUSE
+            or ITEMS_FROM_F_SECTION_CODES_FACTOR
+            or ITEMS_FROM_F_SECTION_CODES_NONE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Finding code** already contains the items of the selection **Section no**. "
+            )
+        if (
+            ITEMS_FROM_F_SUBSECTION_CODES_ALL
+            or ITEMS_FROM_F_SUBSECTION_CODES_CAUSE
+            or ITEMS_FROM_F_SUBSECTION_CODES_FACTOR
+            or ITEMS_FROM_F_SUBSECTION_CODES_NONE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Finding code** already contains the items of the selection **Subsection no**. "
+            )
+        if (
+            ITEMS_FROM_F_MODIFIER_CODES_ALL
+            or ITEMS_FROM_F_MODIFIER_CODES_CAUSE
+            or ITEMS_FROM_F_MODIFIER_CODES_FACTOR
+            or ITEMS_FROM_F_MODIFIER_CODES_NONE
+        ):
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **Finding code** already contains the items of the selection **Modifier no**. "
+            )
+
+    if ITEMS_FROM_F_CATEGORY_CODES_ALL:
+        if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_CATEGORY_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **None**. "
+            )
+
+    if ITEMS_FROM_F_SUBCATEGORY_CODES_ALL:
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **None**. "
+            )
+
+    if ITEMS_FROM_F_SECTION_CODES_ALL:
+        if ITEMS_FROM_F_SECTION_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_SECTION_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_SECTION_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **None**. "
+            )
+
+    if ITEMS_FROM_F_SUBSECTION_CODES_ALL:
+        if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **None**. "
+            )
+
+    if ITEMS_FROM_F_MODIFIER_CODES_ALL:
+        if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Cause**. "
+            )
+        if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Factor**. "
+            )
+        if ITEMS_FROM_F_MODIFIER_CODES_NONE:
+            # pylint: disable=line-too-long
+            st.error(
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **None**. "
+            )
+
+    # ------------------------------------------------------------------
+    # Raw data.
+    # ------------------------------------------------------------------
+
     if CHOICE_RAW_DATA_DETAILS:
-        _present_raw_data_details()
+        _present_details_raw_data()
         _print_timestamp("_present_raw_data_details() - CHOICE_RAW_DATA_DETAILS")
 
         if CHOICE_RAW_DATA_PROFILE:
-            _present_raw_data_profile()
+            _present_profile_raw_data()
             _print_timestamp("_present_raw_data_profile() - CHOICE_RAW_DATA_PROFILE")
+
+    # ------------------------------------------------------------------
+    # Transaction data.
+    # ------------------------------------------------------------------
 
     _create_transaction_data()
 
     if CHOICE_TRANSACTION_DATA_DETAILS:
-        _present_transaction_data_details()
+        _present_details_transaction_data()
         _print_timestamp(
             "_present_transaction_data_details() - CHOICE_TRANSACTION_DATA_DETAILS"
         )
 
+    # ------------------------------------------------------------------
+    # One-hot encoded data.
+    # ------------------------------------------------------------------
+
     if CHOICE_ALG_APRIORI:
         _create_one_hot_encoded_data()
         if CHOICE_ONE_HOT_ENCODED_DETAILS:
-            _present_one_hot_encoded_data_details()
+            _present_details_one_hot_encoded_data()
             _print_timestamp(
                 "_present_one_hot_encoded_details() - CHOICE_ONE_HOT_ENCODED_DETAILS"
             )
 
+    # ------------------------------------------------------------------
+    # Frequent itemsets.
+    # ------------------------------------------------------------------
+
     if CHOICE_ALG_APRIORI:
         _create_frequent_itemsets_apriori()
         if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-            _present_frequent_itemsets_details()
+            _present_details_frequent_itemsets()
             _print_timestamp(
                 "_present_frequent_itemsets_details() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
             )
 
+    # ------------------------------------------------------------------
+    # Association rules.
+    # ------------------------------------------------------------------
+
     if CHOICE_ALG_APRIORI:
         _create_rules_apriori()
         if CHOICE_RULES_DETAILS:
-            _present_rules_details()
+            _present_details_rules()
             _print_timestamp("_present_rules_details() - CHOICE_RULES_DETAILS")
 
     _print_timestamp("_present_data() - End")
@@ -595,7 +1430,7 @@ def _present_data() -> None:
 # ------------------------------------------------------------------
 # Present frequent itemset details.
 # ------------------------------------------------------------------
-def _present_frequent_itemsets_details() -> None:
+def _present_details_frequent_itemsets() -> None:
     global CHOICE_UG_FREQUENT_ITEMSETS_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_FREQUENT_ITEMSETS_DETAILS:
@@ -639,7 +1474,7 @@ def _present_frequent_itemsets_details() -> None:
 # ------------------------------------------------------------------
 # Present one-hot encoded data details.
 # ------------------------------------------------------------------
-def _present_one_hot_encoded_data_details() -> None:
+def _present_details_one_hot_encoded_data() -> None:
     global CHOICE_UG_ONE_HOT_ENCODED_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_ONE_HOT_ENCODED_DETAILS:
@@ -667,9 +1502,9 @@ def _present_one_hot_encoded_data_details() -> None:
             )
 
         if CHOICE_UG_ONE_HOT_ENCODED_DETAILS:
-            _get_user_guide_details("One-hot encoded data")
+            _get_user_guide_details_one_hot_encoded_data()
 
-        st.dataframe(DF_ONE_HOT_ENCODED_DATA)
+        st.dataframe(DF_ONE_HOT_ENCODED_DATA.iloc[:100, :100])
 
         st.download_button(
             data=_convert_df_2_csv(DF_ONE_HOT_ENCODED_DATA),
@@ -683,7 +1518,7 @@ def _present_one_hot_encoded_data_details() -> None:
 # ------------------------------------------------------------------
 # Present raw data details.
 # ------------------------------------------------------------------
-def _present_raw_data_details() -> None:
+def _present_details_raw_data() -> None:
     global CHOICE_UG_RAW_DATA_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_RAW_DATA_DETAILS:
@@ -711,7 +1546,7 @@ def _present_raw_data_details() -> None:
             )
 
         if CHOICE_UG_RAW_DATA_DETAILS:
-            _get_user_guide_details("Raw data")
+            _get_user_guide_details_raw_data()
 
         st.dataframe(DF_RAW_DATA_FILTERED)
 
@@ -726,66 +1561,9 @@ def _present_raw_data_details() -> None:
 
 
 # ------------------------------------------------------------------
-# Present raw data profile.
-# ------------------------------------------------------------------
-def _present_raw_data_profile() -> None:
-    global CHOICE_UG_RAW_DATA_PROFILE  # pylint: disable=global-statement
-
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        CHOICE_UG_RAW_DATA_PROFILE = st.checkbox(
-            help="Explanations and operating instructions related to profiling "
-            + "of the database view **io_ml_ara_transactions",
-            label="**User Guide: Raw data profile**",
-            value=False,
-        )
-
-    if CHOICE_UG_RAW_DATA_PROFILE:
-        _get_user_guide_data_profile("Raw data")
-
-    # noinspection PyUnboundLocalVariable
-    if CHOICE_RAW_DATA_PROFILE_TYPE == "explorative":
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            explorative=True,
-        )
-    else:
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            minimal=True,
-        )
-
-    st_profile_report(profile_report)
-
-    # pylint: disable=line-too-long
-    st.download_button(
-        data=profile_report.to_html(),
-        file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
-        help="The download includes a profile report from the dataframe "
-        + "after applying the filter options.",
-        label="Download the raw data profile report",
-        mime="text/html",
-    )
-
-
-# ------------------------------------------------------------------
 # Present association rule details.
 # ------------------------------------------------------------------
-def _present_rules_details() -> None:
+def _present_details_rules() -> None:
     global CHOICE_UG_RULES_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_RULES_DETAILS:
@@ -829,7 +1607,7 @@ def _present_rules_details() -> None:
 # ------------------------------------------------------------------
 # Present transaction data details.
 # ------------------------------------------------------------------
-def _present_transaction_data_details() -> None:
+def _present_details_transaction_data() -> None:
     global CHOICE_UG_TRANSACTION_DATA_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_TRANSACTION_DATA_DETAILS:
@@ -857,7 +1635,7 @@ def _present_transaction_data_details() -> None:
             )
 
         if CHOICE_UG_TRANSACTION_DATA_DETAILS:
-            _get_user_guide_details("Transaction data")
+            _get_user_guide_details_transaction_data()
 
         st.dataframe(DF_TRANSACTION_DATA)
 
@@ -868,6 +1646,63 @@ def _present_transaction_data_details() -> None:
             label="Download the detailed transaction data",
             mime="text/csv",
         )
+
+
+# ------------------------------------------------------------------
+# Present raw data profile.
+# ------------------------------------------------------------------
+def _present_profile_raw_data() -> None:
+    global CHOICE_UG_RAW_DATA_PROFILE  # pylint: disable=global-statement
+
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        CHOICE_UG_RAW_DATA_PROFILE = st.checkbox(
+            help="Explanations and operating instructions related to profiling "
+            + "of the database view **io_app_ae1982",
+            label="**User Guide: Raw data profile**",
+            value=False,
+        )
+
+    if CHOICE_UG_RAW_DATA_PROFILE:
+        _get_user_guide_data_profile("Raw data")
+
+    # noinspection PyUnboundLocalVariable
+    if CHOICE_RAW_DATA_PROFILE_TYPE == "explorative":
+        profile_report = ProfileReport(
+            DF_RAW_DATA_FILTERED,
+            explorative=True,
+        )
+    else:
+        profile_report = ProfileReport(
+            DF_RAW_DATA_FILTERED,
+            minimal=True,
+        )
+
+    st_profile_report(profile_report)
+
+    # pylint: disable=line-too-long
+    st.download_button(
+        data=profile_report.to_html(),
+        file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
+        help="The download includes a profile report from the dataframe "
+        + "after applying the filter options.",
+        label="Download the raw data profile report",
+        mime="text/html",
+    )
 
 
 # ------------------------------------------------------------------
@@ -1276,7 +2111,7 @@ def _setup_task_controls() -> None:
             label="Minimum support",
             max_value=1.000,
             min_value=0.001,
-            value=0.01,
+            value=0.3,
         )
 
     st.sidebar.markdown("""---""")
@@ -1329,14 +2164,14 @@ def _setup_task_controls() -> None:
             help="Tabular representation of the frequent itemsets.",
             key="CHOICE_FREQUENT_ITEMSETS_DETAILS",
             label="**Show Frequent Itemsets**",
-            value=False,
+            value=True,
         )
 
         CHOICE_RULES_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the association rules.",
             key="CHOICE_RULES_DETAILS",
             label="**Show Association Rules**",
-            value=False,
+            value=True,
         )
 
         st.sidebar.markdown("""---""")
@@ -1367,7 +2202,7 @@ def _sql_query_ev_highest_injury() -> list[str]:
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
 
@@ -1391,7 +2226,7 @@ def _sql_query_ev_type() -> list[str]:
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END, ',' ORDER BY CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
 
@@ -1413,7 +2248,7 @@ def _sql_query_max_inj_f_grnd() -> int:
         cur.execute(
             """
         SELECT MAX(inj_f_grnd)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1427,7 +2262,7 @@ def _sql_query_max_no_aircraft() -> int:
         cur.execute(
             """
         SELECT MAX(no_aircraft)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1441,7 +2276,7 @@ def _sql_query_min_no_aircraft() -> int:
         cur.execute(
             """
         SELECT MIN(no_aircraft)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1455,7 +2290,7 @@ def _sql_query_max_inj_tot_f() -> int:
         cur.execute(
             """
         SELECT MAX(inj_tot_f)
-          FROM io_ml_ara_transactions;
+          FROM io_app_ae1982;
         """
         )
         return cur.fetchone()[0]  # type: ignore
@@ -1493,7 +2328,7 @@ def _streamlit_flow() -> None:
         layout="wide",
         # pylint: disable=line-too-long
         page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
-        page_title="mlara by IO-Aero",
+        page_title="slara by IO-Aero",
     )
     # st.sidebar.markdown("[IO-Aero Website](%s)" % "https://www.io-aero.com")
 

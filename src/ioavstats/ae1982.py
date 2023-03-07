@@ -583,9 +583,36 @@ def _get_data() -> DataFrame:
     return pd.read_sql(
         con=_get_engine(),
         sql="""
-    SELECT *
-     FROM io_app_ae1982
-    ORDER BY ev_id;
+            SELECT ev_id,
+                   acft_categories,
+                   cictt_codes,
+                   country,
+                   dec_latitude,
+                   dec_longitude,
+                   ev_highest_injury,
+                   ev_type,
+                   ev_year,
+                   far_parts,
+                   finding_codes,
+                   inj_f_grnd,
+                   inj_tot_f,
+                   is_dest_country_usa,
+                   is_dprt_country_usa,
+                   is_far_part_091x,
+                   is_far_part_121,
+                   is_far_part_135,
+                   is_oper_country_usa,
+                   is_owner_country_usa,
+                   is_regis_country_usa,
+                   latlong_acq,
+                   no_aircraft,
+                   ntsb_no,
+                   occurrence_codes,
+                   preventable_events,
+                   state,
+                   tll_parameters
+             FROM io_app_ae1982
+            ORDER BY ev_id;
     """,
     )
 

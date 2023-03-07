@@ -35,10 +35,11 @@ CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 
 CHOICE_ALG_APRIORI: bool | None = None
-CHOICE_ALG_CONFIDENCE: float | None = None
 CHOICE_ALG_ECLAT: bool | None = None
 CHOICE_ALG_FPGROWTH: bool | None = None
-CHOICE_ALG_SUPPORT: float | None = None
+CHOICE_ALG_METRIC: str | None = None
+CHOICE_ALG_MIN_SUPPORT: float | None = None
+CHOICE_ALG_MIN_THRESHOLD: float | None = None
 
 CHOICE_FILTER_DATA: bool | None = None
 CHOICE_FREQUENT_ITEMSETS_DETAILS: bool | None = None
@@ -66,13 +67,11 @@ COLOR_HEADER: str = "#357f8f"
 
 COUNTRY_USA = "USA"
 
-DF_FREQUENT_ITEMSETS_APRIORI_EXT: DataFrame = DataFrame()
-DF_FREQUENT_ITEMSETS_APRIORI_INT: DataFrame = DataFrame()
+DF_FREQUENT_ITEMSETS_APRIORI: DataFrame = DataFrame()
 DF_ONE_HOT_ENCODED_DATA: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED: DataFrame = DataFrame()
 DF_RAW_DATA_UNFILTERED: DataFrame = DataFrame()
-DF_RULES_APRIORI_EXT: DataFrame = DataFrame()
-DF_RULES_APRIORI_INT: DataFrame = DataFrame()
+DF_RULES_APRIORI: DataFrame = DataFrame()
 DF_TRANSACTION_DATA: DataFrame = DataFrame()
 
 FILTER_ACFT_CATEGORIES: list[str] = []
@@ -150,6 +149,14 @@ LAYER_TYPE = "ScatterplotLayer"
 LEGEND_N_A = "n/a"
 LEGEND_N_A_DESC = "no data"
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
+
+MD_CODES_CATEGORY: dict[str, str] = {}
+MD_CODES_EVENTSOE: dict[str, str] = {}
+MD_CODES_MODIFIER: dict[str, str] = {}
+MD_CODES_PHASE: dict[str, str] = {}
+MD_CODES_SECTION: dict[str, str] = {}
+MD_CODES_SUBCATEGORY: dict[str, str] = {}
+MD_CODES_SUBSECTION: dict[str, str] = {}
 
 OPTIONS_EV_HIGHEST_INJURY = {
     "FATL": "fatal",
@@ -365,16 +372,59 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
 
 
 # ------------------------------------------------------------------
+# Present frequent itemset details.
+# ------------------------------------------------------------------
+def _create_df_frequent_itemsets_ext() -> DataFrame:
+    df_ext = DF_FREQUENT_ITEMSETS_APRIORI.copy()
+
+    df_ext["itemsets_description"] = ""
+
+    for idx in df_ext.index:
+        df_ext["itemsets_description"][idx] = _get_frozenset_description(
+            df_ext["itemsets"][idx]
+        )
+
+    return df_ext
+
+
+# ------------------------------------------------------------------
+# Present rules details.
+# ------------------------------------------------------------------
+def _create_df_rules_ext() -> DataFrame:
+    df_ext = DF_RULES_APRIORI.copy()
+
+    df_ext.insert(1, "antecedents_description", "")
+    df_ext.insert(3, "consequents_description", "")
+
+    for idx in df_ext.index:
+        df_ext["antecedents_description"][idx] = _get_frozenset_description(
+            df_ext["antecedents"][idx]
+        )
+        df_ext["consequents_description"][idx] = _get_frozenset_description(
+            df_ext["consequents"][idx]
+        )
+
+    return df_ext
+
+
+# ------------------------------------------------------------------
 # Create frequent itemsets with the Apriori Algorithm.
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_apriori() -> None:
-    global DF_FREQUENT_ITEMSETS_APRIORI_INT  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_APRIORI  # pylint: disable=global-statement
 
     _print_timestamp("_create_frequent_itemsets_apriori() - Start")
 
-    DF_FREQUENT_ITEMSETS_APRIORI_INT = apriori(
-        DF_ONE_HOT_ENCODED_DATA, min_support=CHOICE_ALG_SUPPORT, use_colnames=True
+    DF_FREQUENT_ITEMSETS_APRIORI = apriori(
+        DF_ONE_HOT_ENCODED_DATA, min_support=CHOICE_ALG_MIN_SUPPORT, use_colnames=True
     )
+
+    if DF_FREQUENT_ITEMSETS_APRIORI.empty:
+        # pylint: disable=line-too-long
+        st.error(
+            "**Error**: The selected algorithm did not find any data with the given items and parameters."
+        )
+        st.stop()
 
     _print_timestamp("_create_frequent_itemsets_apriori() - End")
 
@@ -398,14 +448,14 @@ def _create_one_hot_encoded_data() -> None:
 # Create association rules with the Apriori Algorithm.
 # ------------------------------------------------------------------
 def _create_rules_apriori() -> None:
-    global DF_RULES_APRIORI_INT  # pylint: disable=global-statement
+    global DF_RULES_APRIORI  # pylint: disable=global-statement
 
     _print_timestamp("_create_rules_apriori() - Start")
 
-    DF_RULES_APRIORI_INT = association_rules(
-        DF_FREQUENT_ITEMSETS_APRIORI_INT,
-        metric="confidence",
-        min_threshold=CHOICE_ALG_CONFIDENCE,
+    DF_RULES_APRIORI = association_rules(
+        DF_FREQUENT_ITEMSETS_APRIORI,
+        metric=CHOICE_ALG_METRIC,
+        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
     )
 
     _print_timestamp("_create_rules_apriori() - End")
@@ -417,10 +467,166 @@ def _create_rules_apriori() -> None:
 def _create_transaction_data() -> None:
     _print_timestamp("_get_transaction_data() - Start")
 
-    DF_TRANSACTION_DATA["items"] = (
-        DF_RAW_DATA_FILTERED["all_finding_codes"]
-        + DF_RAW_DATA_FILTERED["all_occurrence_codes"]
-    )
+    transaction_cmd = "("
+
+    if ITEMS_FROM_ES_EVENTSOE_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_eventsoe_codes']"
+    else:
+        if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_eventsoe_false_codes']"
+        if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_eventsoe_true_codes']"
+
+    if ITEMS_FROM_ES_OCCURRENCE_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_occurrence_codes']"
+    else:
+        if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_occurrence_false_codes']"
+        if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_occurrence_true_codes']"
+
+    if ITEMS_FROM_ES_PHASE_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_phase_codes']"
+    else:
+        if ITEMS_FROM_ES_PHASE_CODES_FALSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_phase_false_codes']"
+        if ITEMS_FROM_ES_PHASE_CODES_TRUE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_phase_true_codes']"
+
+    if ITEMS_FROM_F_CATEGORY_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_category_codes']"
+    else:
+        if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_category_cause_codes']"
+        if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_category_factor_codes']"
+        if ITEMS_FROM_F_CATEGORY_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_category_none_codes']"
+
+    if ITEMS_FROM_F_FINDING_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_finding_codes']"
+    else:
+        if ITEMS_FROM_F_FINDING_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_finding_cause_codes']"
+        if ITEMS_FROM_F_FINDING_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_finding_factor_codes']"
+        if ITEMS_FROM_F_FINDING_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_finding_none_codes']"
+
+    if ITEMS_FROM_F_MODIFIER_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_modifier_codes']"
+    else:
+        if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_cause_codes']"
+        if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_factor_codes']"
+        if ITEMS_FROM_F_MODIFIER_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_none_codes']"
+
+    if ITEMS_FROM_F_SECTION_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_section_codes']"
+    else:
+        if ITEMS_FROM_F_SECTION_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_section_cause_codes']"
+        if ITEMS_FROM_F_SECTION_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_section_factor_codes']"
+        if ITEMS_FROM_F_SECTION_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_section_none_codes']"
+
+    if ITEMS_FROM_F_SUBCATEGORY_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_subcategory_codes']"
+    else:
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_cause_codes']"
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_factor_codes']"
+        if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_none_codes']"
+
+    if ITEMS_FROM_F_SUBSECTION_CODES_ALL:
+        transaction_cmd += (
+            "" if transaction_cmd == "(" else " + "
+        ) + "DF_RAW_DATA_FILTERED['all_subsection_codes']"
+    else:
+        if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_cause_codes']"
+        if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_factor_codes']"
+        if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
+            transaction_cmd += (
+                "" if transaction_cmd == "(" else " + "
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_none_codes']"
+
+    transaction_cmd += ")"
+
+    if transaction_cmd == "()":
+        # pylint: disable=line-too-long
+        st.error("**Error**: No items selected.")
+        st.stop()
+
+    DF_TRANSACTION_DATA["items"] = eval(transaction_cmd)  # pylint: disable=eval-used
 
     _print_timestamp("_get_transaction_data() - End")
 
@@ -448,6 +654,98 @@ def _get_engine() -> Engine:
 
 
 # ------------------------------------------------------------------
+# Determine the itemset description.
+# ------------------------------------------------------------------
+def _get_frozenset_description(itemset) -> list[tuple[str, list[str], str]]:
+    descriptions = []
+
+    for item in itemset:
+        [part_1, part_2, part_3] = item.split("_")
+
+        match part_1:
+            case "ee":
+                attribute = "eventsoe no"
+                description = [MD_CODES_EVENTSOE[part_2]]
+            case "eo":
+                attribute = "occurrence code"
+                description = [
+                    MD_CODES_PHASE[part_2[:3]],
+                    MD_CODES_EVENTSOE[part_2[3:]],
+                ]
+            case "ep":
+                attribute = "phase no"
+                description = [MD_CODES_PHASE[part_2]]
+            case "fc":
+                attribute = "category no"
+                description = [MD_CODES_CATEGORY[part_2]]
+            case "ff":
+                attribute = "finding code"
+                description = [
+                    MD_CODES_CATEGORY[part_2[:2]],
+                    MD_CODES_SUBCATEGORY[part_2[:4]],
+                    MD_CODES_SECTION[part_2[:6]],
+                    MD_CODES_SUBSECTION[part_2[:8]],
+                    MD_CODES_MODIFIER[part_2[8:]],
+                ]
+            case "fm":
+                attribute = "modifier no"
+                description = [MD_CODES_MODIFIER[part_2]]
+            case "fs":
+                attribute = "section no"
+                description = [
+                    MD_CODES_CATEGORY[part_2[:2]],
+                    MD_CODES_SUBCATEGORY[part_2[:4]],
+                    MD_CODES_SECTION[part_2[:6]],
+                ]
+            case "fsc":
+                attribute = "subcategory no"
+                description = [
+                    MD_CODES_CATEGORY[part_2[:2]],
+                    MD_CODES_SUBCATEGORY[part_2[:4]],
+                ]
+            case "fss":
+                attribute = "subsection no"
+                description = [
+                    MD_CODES_CATEGORY[part_2[:2]],
+                    MD_CODES_SUBCATEGORY[part_2[:4]],
+                    MD_CODES_SECTION[part_2[:6]],
+                    MD_CODES_SUBSECTION[part_2[:8]],
+                ]
+            case _:
+                attribute = "??? " + part_1
+                description = ["??? " + part_2]
+
+        if part_1 in ["ee", "eo", "ep"]:
+            match part_3:
+                case "a":
+                    variant = "not relevant"
+                case "f":
+                    variant = "no defining event"
+                case "t":
+                    variant = "defining event"
+                case _:
+                    variant = "??? " + part_3
+        elif part_1 in ["fc", "ff", "fm", "fs", "fsc", "fss"]:
+            match part_3:
+                case "a":
+                    variant = "not relevant"
+                case "c":
+                    variant = "case"
+                case "f":
+                    variant = "factor"
+                case "n":
+                    variant = "neither cause nor factor"
+                case _:
+                    variant = "??? " + part_3
+        else:
+            variant = "??? " + part_3
+
+        descriptions.append((attribute, description, variant))
+
+    return descriptions
+
+
+# ------------------------------------------------------------------
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
@@ -466,7 +764,7 @@ def _get_postgres_connection() -> connection:
 # ------------------------------------------------------------------
 # Read the raw data.
 # ------------------------------------------------------------------
-@st.cache_resource
+# @st.cache_data
 def _get_raw_data() -> DataFrame:
     _print_timestamp("_get_raw_data() - Start")
 
@@ -592,13 +890,46 @@ For further explanations please consult the documentation of **Pandas Profiling*
 
 
 # ------------------------------------------------------------------
-# Creates the user guide for the 'Show details' task.
+# Creates the user guide for the 'Show details' task -
+# association rules.
 # ------------------------------------------------------------------
-def _get_user_guide_details(data_type: str) -> None:
-    text = f"""
-#### User guide: {data_type} details
+def _get_user_guide_details_association_rules() -> None:
+    text = """
+#### User guide: Association rules
 
-This task provides the resulting detailed {data_type.lower()} in a table format for display and download as **csv** file. 
+This task provides the detailed association rules in a table format for display and download as **csv** file. 
+
+The table comes with columns "antecedents" and "consequents" that store itemsets, plus the scoring metric columns:
+
+- "antecedent support", 
+- "consequent support",
+- "support", 
+- "confidence", 
+- "lift",
+- "leverage", 
+- "conviction"
+
+of all rules for which metric(rule) >= `min_threshold`.
+
+For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task -
+# frequent itemsets.
+# ------------------------------------------------------------------
+def _get_user_guide_details_frequent_itemsets() -> None:
+    text = """
+#### User guide: Frequent itemsets
+
+This task provides the detailed frequent itemsets in a table format for display and download as **csv** file. 
+
+The table comes with columns ['support', 'itemsets'] of all itemsets that are >= `min_support`.
+
+For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/
     """
 
     st.warning(text + _get_user_guide_details_standard())
@@ -832,16 +1163,16 @@ def _present_data() -> None:
         )
     with col4:
         ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE = st.checkbox(
-            help="Defining.",
+            help="Defining event.",
             key="ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE",
-            label="**Defining**",
+            label="**Defining event**",
             value=False,
         )
     with col5:
         ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE = st.checkbox(
-            help="Not defining.",
+            help="No defining event.",
             key="ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE",
-            label="**Not defining**",
+            label="**No defining event**",
             value=False,
         )
 
@@ -861,16 +1192,16 @@ def _present_data() -> None:
         )
     with col4:
         ITEMS_FROM_ES_EVENTSOE_CODES_TRUE = st.checkbox(
-            help="Defining.",
+            help="Defining event.",
             key="ITEMS_FROM_ES_EVENTSOE_CODES_TRUE",
-            label="**Defining**",
+            label="**Defining event**",
             value=False,
         )
     with col5:
         ITEMS_FROM_ES_EVENTSOE_CODES_FALSE = st.checkbox(
-            help="Not defining.",
+            help="No defining event.",
             key="ITEMS_FROM_ES_EVENTSOE_CODES_FALSE",
-            label="**Not defining**",
+            label="**No defining event**",
             value=False,
         )
 
@@ -890,16 +1221,16 @@ def _present_data() -> None:
         )
     with col4:
         ITEMS_FROM_ES_PHASE_CODES_TRUE = st.checkbox(
-            help="Defining.",
+            help="Defining event.",
             key="ITEMS_FROM_ES_PHASE_CODES_TRUE",
-            label="**Defining**",
+            label="**Defining event**",
             value=False,
         )
     with col5:
         ITEMS_FROM_ES_PHASE_CODES_FALSE = st.checkbox(
-            help="Not defining.",
+            help="No defining event.",
             key="ITEMS_FROM_ES_PHASE_CODES_FALSE",
-            label="**Not defining**",
+            label="**No defining event**",
             value=False,
         )
 
@@ -911,13 +1242,17 @@ def _present_data() -> None:
         if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**. "
+                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**."
             )
+            st.stop()
+
         if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**. "
+                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_ES_EVENTSOE_CODES_ALL
             or ITEMS_FROM_ES_EVENTSOE_CODES_FALSE
@@ -925,8 +1260,10 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**. "
+                "**Error**: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_ES_PHASE_CODES_ALL
             or ITEMS_FROM_ES_PHASE_CODES_FALSE
@@ -934,32 +1271,39 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Occurrence code** already contains the items of the selection **Phase no**. "
+                "**Error**: The selection **Occurrence code** already contains the items of the selection **Phase no**."
             )
+            st.stop()
 
     if ITEMS_FROM_ES_EVENTSOE_CODES_ALL:
         if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**. "
+                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**."
             )
+            st.stop()
+
         if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**. "
+                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**."
             )
+            st.stop()
 
     if ITEMS_FROM_ES_PHASE_CODES_ALL:
         if ITEMS_FROM_ES_PHASE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Defining event**. "
+                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Defining event**."
             )
+            st.stop()
+
         if ITEMS_FROM_ES_PHASE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**. "
+                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**."
             )
+            st.stop()
 
     # ------------------------------------------------------------------
     # Items from database table findings.
@@ -1024,9 +1368,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_FINDING_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_FINDING_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1060,9 +1404,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_CATEGORY_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_CATEGORY_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1096,9 +1440,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_SUBCATEGORY_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_SUBCATEGORY_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1132,9 +1476,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_SECTION_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_SECTION_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1168,9 +1512,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_SUBSECTION_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_SUBSECTION_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1204,9 +1548,9 @@ def _present_data() -> None:
         )
     with col6:
         ITEMS_FROM_F_MODIFIER_CODES_NONE = st.checkbox(
-            help="None.",
+            help="Neither cause nor factor.",
             key="ITEMS_FROM_F_MODIFIER_CODES_NONE",
-            label="**None**",
+            label="**Neither**",
             value=False,
         )
 
@@ -1218,18 +1562,24 @@ def _present_data() -> None:
         if ITEMS_FROM_F_FINDING_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_FINDING_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_FINDING_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **None**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_F_CATEGORY_CODES_ALL
             or ITEMS_FROM_F_CATEGORY_CODES_CAUSE
@@ -1238,8 +1588,10 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Category no**. "
+                "**Error**: The selection **Finding code** already contains the items of the selection **Category no**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_F_SUBCATEGORY_CODES_ALL
             or ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE
@@ -1248,8 +1600,10 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Subcategory no**. "
+                "**Error**: The selection **Finding code** already contains the items of the selection **Subcategory no**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_F_SECTION_CODES_ALL
             or ITEMS_FROM_F_SECTION_CODES_CAUSE
@@ -1258,8 +1612,10 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Section no**. "
+                "**Error**: The selection **Finding code** already contains the items of the selection **Section no**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_F_SUBSECTION_CODES_ALL
             or ITEMS_FROM_F_SUBSECTION_CODES_CAUSE
@@ -1268,8 +1624,10 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Subsection no**. "
+                "**Error**: The selection **Finding code** already contains the items of the selection **Subsection no**."
             )
+            st.stop()
+
         if (
             ITEMS_FROM_F_MODIFIER_CODES_ALL
             or ITEMS_FROM_F_MODIFIER_CODES_CAUSE
@@ -1278,93 +1636,119 @@ def _present_data() -> None:
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Modifier no**. "
+                "**Error**: The selection **Finding code** already contains the items of the selection **Modifier no**."
             )
+            st.stop()
 
     if ITEMS_FROM_F_CATEGORY_CODES_ALL:
         if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_CATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Category no** already contains the items of the selection **None**."
             )
+            st.stop()
 
     if ITEMS_FROM_F_SUBCATEGORY_CODES_ALL:
         if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **None**."
             )
+            st.stop()
 
     if ITEMS_FROM_F_SECTION_CODES_ALL:
         if ITEMS_FROM_F_SECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Section no** already contains the items of the selection **None**."
             )
+            st.stop()
 
     if ITEMS_FROM_F_SUBSECTION_CODES_ALL:
         if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **None**."
             )
+            st.stop()
 
     if ITEMS_FROM_F_MODIFIER_CODES_ALL:
         if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Cause**. "
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Cause**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Factor**. "
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Factor**."
             )
+            st.stop()
+
         if ITEMS_FROM_F_MODIFIER_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **None**. "
+                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **None**."
             )
+            st.stop()
 
     # ------------------------------------------------------------------
     # Raw data.
@@ -1458,12 +1842,14 @@ def _present_details_frequent_itemsets() -> None:
             )
 
         if CHOICE_UG_FREQUENT_ITEMSETS_DETAILS:
-            _get_user_guide_details("Frequent itemset")
+            _get_user_guide_details_frequent_itemsets()
 
-        st.dataframe(DF_FREQUENT_ITEMSETS_APRIORI_INT)
+        df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext()
+
+        st.dataframe(df_frequent_itemsets_ext)
 
         st.download_button(
-            data=_convert_df_2_csv(DF_FREQUENT_ITEMSETS_APRIORI_INT),
+            data=_convert_df_2_csv(df_frequent_itemsets_ext),
             file_name=APP_ID + "_frequent_itemsets_detail.csv",
             help="The download includes all frequent itemsets.",
             label="Download the frequent itemsets",
@@ -1591,12 +1977,14 @@ def _present_details_rules() -> None:
             )
 
         if CHOICE_UG_RULES_DETAILS:
-            _get_user_guide_details("Association rule")
+            _get_user_guide_details_association_rules()
 
-        st.dataframe(DF_RULES_APRIORI_INT)
+        df_rules_ext = _create_df_rules_ext()
+
+        st.dataframe(df_rules_ext)
 
         st.download_button(
-            data=_convert_df_2_csv(DF_RULES_APRIORI_INT),
+            data=_convert_df_2_csv(df_rules_ext),
             file_name=APP_ID + "_rules_detail.csv",
             help="The download includes all association rules.",
             label="Download the association rules",
@@ -2054,10 +2442,11 @@ def _setup_sidebar() -> None:
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
     global CHOICE_ALG_APRIORI  # pylint: disable=global-statement
-    global CHOICE_ALG_CONFIDENCE  # pylint: disable=global-statement
     global CHOICE_ALG_ECLAT  # pylint: disable=global-statement
     global CHOICE_ALG_FPGROWTH  # pylint: disable=global-statement
-    global CHOICE_ALG_SUPPORT  # pylint: disable=global-statement
+    global CHOICE_ALG_METRIC  # pylint: disable=global-statement
+    global CHOICE_ALG_MIN_SUPPORT  # pylint: disable=global-statement
+    global CHOICE_ALG_MIN_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_FREQUENT_ITEMSETS_DETAILS  # pylint: disable=global-statement
     global CHOICE_ONE_HOT_ENCODED_DETAILS  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_DETAILS  # pylint: disable=global-statement
@@ -2073,7 +2462,17 @@ def _setup_task_controls() -> None:
     )
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
-        help="Use the Apriori Algorithm.",
+        help="""
+Apriori is a popular algorithm [1] for extracting frequent itemsets with applications in association rule learning. 
+The apriori algorithm has been designed to operate on databases containing transactions. 
+An itemset is considered as "frequent" if it meets a user-specified support threshold. 
+For instance, if the support threshold is set to 0.5 (50%), 
+a frequent itemset is defined as a set of items that occur together in at least 50% of all transactions in the database.
+
+**References**
+
+[1] Agrawal, Rakesh, and Ramakrishnan Srikant. "Fast algorithms for mining association rules." Proc. 20th int. conf. very large data bases, VLDB. Vol. 1215. 1994.
+        """,
         key="CHOICE_ALG_APRIORI",
         label="**Apriori Algorithm**",
         value=False,
@@ -2096,22 +2495,53 @@ def _setup_task_controls() -> None:
     )
 
     if CHOICE_ALG_APRIORI:
-        CHOICE_ALG_CONFIDENCE = st.sidebar.number_input(
-            help="Confidence is the likelihood that a rule is correct or true, "
-            + "given the occurrence of the antecedent and consequent in the dataset.",
-            key="CHOICE_ALG_CONFIDENCE",
-            label="Minimum confidence",
-            max_value=1.0,
-            min_value=0.0,
-            value=0.7,
-        )
-        CHOICE_ALG_SUPPORT = st.sidebar.number_input(
-            help="Support is the frequency with which an item or itemset appears in the dataset.",
-            key="CHOICE_ALG_SUPPORT",
+        CHOICE_ALG_MIN_SUPPORT = st.sidebar.number_input(
+            help="""
+A decimal value 0 and 1 for minimum support of the itemsets returned.
+The support is computed as the fraction
+`transactions_where_item(s)_occur / total_transactions`.
+            """,
+            key="CHOICE_ALG_MIN_SUPPORT",
             label="Minimum support",
-            max_value=1.000,
-            min_value=0.001,
-            value=0.3,
+            max_value=1.00,
+            min_value=0.01,
+            value=0.50,
+        )
+        CHOICE_ALG_METRIC = st.sidebar.selectbox(
+            help="""
+Metric to evaluate if a rule is of interest.
+The metrics are computed as follows:
+
+- confidence(A->C) = support(A+C) / support(A), range: [0, 1]\n
+- conviction = [1 - support(C)] / [1 - confidence(A->C)], range: [0, inf]\n
+- leverage(A->C) = support(A->C) - support(A)*support(C), range: [-1, 1]\n
+- lift(A->C) = confidence(A->C) / support(C), range: [0, inf]\n
+- support(A->C) = support(A+C) [aka 'support'], range: [0, 1]\n
+- zhangs_metric(A->C) = leverage(A->C) / max(support(A->C)*(1-support(A)), support(A)*(support(C)-support(A->C))) range: [-1,1]\n
+                    """,
+            index=0,
+            key="CHOICE_ALG_METRIC",
+            label="Metric",
+            options=[
+                "confidence",
+                "conviction",
+                "leverage",
+                "lift",
+                "support",
+                "zhangs_metric",
+            ],
+        )
+        CHOICE_ALG_MIN_THRESHOLD = st.sidebar.number_input(
+            help="""
+Minimal threshold for the evaluation metric,
+via the `metric` parameter,
+to decide whether a candidate rule is of interest.
+            """,
+            key="CHOICE_ALG_MIN_THRESHOLD",
+            label="Minimum threshold",
+            max_value=1.00,
+            min_value=0.01,
+            value=0.80,
         )
 
     st.sidebar.markdown("""---""")
@@ -2190,6 +2620,197 @@ def _sql_query_acft_categories() -> list[str]:
         """
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of category codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_category():
+    global MD_CODES_CATEGORY  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT category_code,
+               description
+          FROM io_md_codes_category;
+        """
+        )
+
+        MD_CODES_CATEGORY = {}
+
+        for row in cur:
+            (category_code, description) = row
+            MD_CODES_CATEGORY[category_code] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of eventsoe codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_eventsoe():
+    global MD_CODES_EVENTSOE  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT eventsoe_code,
+               description
+          FROM io_md_codes_eventsoe;
+        """
+        )
+
+        MD_CODES_EVENTSOE = {}
+
+        for row in cur:
+            (eventsoe_code, description) = row
+            MD_CODES_EVENTSOE[eventsoe_code] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of modifier codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_modifier():
+    global MD_CODES_MODIFIER  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT modifier_code,
+               description
+          FROM io_md_codes_modifier;
+        """
+        )
+
+        MD_CODES_MODIFIER = {}
+
+        for row in cur:
+            (modifier_code, description) = row
+            MD_CODES_MODIFIER[modifier_code] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of phase codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_phase():
+    global MD_CODES_PHASE  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT phase_code,
+               description
+          FROM io_md_codes_phase;
+        """
+        )
+
+        MD_CODES_PHASE = {}
+
+        for row in cur:
+            (phase_code, description) = row
+            MD_CODES_PHASE[phase_code] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of section codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_section():
+    global MD_CODES_SECTION  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT category_code,
+               subcategory_code, 
+               section_code,
+               description
+          FROM io_md_codes_section;
+        """
+        )
+
+        MD_CODES_SECTION = {}
+
+        for row in cur:
+            (category_code, subcategory_code, section_code, description) = row
+            MD_CODES_SECTION[
+                category_code + subcategory_code + section_code
+            ] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of subcategory codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_subcategory():
+    global MD_CODES_SUBCATEGORY  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT category_code,
+               subcategory_code,
+               description
+          FROM io_md_codes_subcategory;
+        """
+        )
+
+        MD_CODES_SUBCATEGORY = {}
+
+        for row in cur:
+            (category_code, subcategory_code, description) = row
+            MD_CODES_SUBCATEGORY[category_code + subcategory_code] = description
+
+
+# ------------------------------------------------------------------
+# Execute a query that creates the list of subsection codes.
+# ------------------------------------------------------------------
+# @st.cache_data
+def _sql_query_codes_subsection():
+    global MD_CODES_SUBSECTION  # pylint: disable=global-statement
+
+    with PG_CONN.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        # flake8: noqa: E501
+        cur.execute(
+            """
+        SELECT category_code,
+               subcategory_code, 
+               section_code,
+               subsection_code,
+               description
+          FROM io_md_codes_subsection;
+        """
+        )
+
+        MD_CODES_SUBSECTION = {}
+
+        for row in cur:
+            (
+                category_code,
+                subcategory_code,
+                section_code,
+                subsection_code,
+                description,
+            ) = row
+            MD_CODES_SUBSECTION[
+                category_code + subcategory_code + section_code + subsection_code
+            ] = description
 
 
 # ------------------------------------------------------------------
@@ -2340,6 +2961,14 @@ def _streamlit_flow() -> None:
 
     _setup_page()
     _print_timestamp("_setup_page()")
+
+    _sql_query_codes_category()
+    _sql_query_codes_eventsoe()
+    _sql_query_codes_modifier()
+    _sql_query_codes_phase()
+    _sql_query_codes_section()
+    _sql_query_codes_subcategory()
+    _sql_query_codes_subsection()
 
     DF_RAW_DATA_UNFILTERED = _get_raw_data()
     DF_RAW_DATA_FILTERED = DF_RAW_DATA_UNFILTERED

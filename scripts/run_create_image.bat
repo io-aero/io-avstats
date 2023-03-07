@@ -79,6 +79,7 @@ rem > %LOG_FILE% 2>&1 (
     if ["!APPLICATION!"] EQU ["all"]  (
         call scripts\run_create_image ae1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         call scripts\run_create_image pd1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image slara  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         call scripts\run_create_image stats  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
     )

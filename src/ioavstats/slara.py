@@ -614,7 +614,7 @@ def _get_user_guide_details_one_hot_encoded_data() -> None:
 
 This task provides the detailed one-hot encoded data in a table format for display and download as **csv** file. 
 To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
-The **csv** download is not limited, but may not be processible with MS Excel.
+The **csv** download is not limited, but may not be processable with MS Excel.
     """
 
     st.warning(text + _get_user_guide_details_standard())

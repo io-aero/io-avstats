@@ -77,6 +77,7 @@ echo "==========================================================================
 if [ "${APPLICATION}" = "all" ]; then
     ( ./scripts/run_create_image.sh ae1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     ( ./scripts/run_create_image.sh pd1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh slara  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     ( ./scripts/run_create_image.sh stats  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     goto END_OF_SCRIPT
 else

@@ -21,6 +21,7 @@ set IO_AVSTATS_POSTGRES_VERSION=latest
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=32400
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=57600
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=39200
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8501
 
 set IO_AVSTATS_TASK=
@@ -59,6 +60,7 @@ echo POSTGRES_VERSION             : %IO_AVSTATS_POSTGRES_VERSION%
 echo STREAMLIT_SERVER_PORT        : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
 echo STREAMLIT_SRRVER_PORT_AE1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
 echo STREAMLIT_SERVER_PORT_PD1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
+echo STREAMLIT_SERVER_PORT_SLARA  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA%
 echo STREAMLIT_SRRVER_PORT_STATS  : %IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS%
 echo -----------------------------------------------------------------------
 echo:| TIME
@@ -73,6 +75,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
     docker ps       | find "pd1982"                               && docker stop pd1982
     docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "slara"                                && docker stop slara
+    docker ps -a    | find "slara"                                && docker rm  --force slara
     docker ps       | find "stats"                                && docker stop stats
     docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:
@@ -82,6 +86,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                             && docker rmi --force ioaero/ae1982:latest
     docker image ls | find "pd1982"                             && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "slara"                              && docker rmi --force ioaero/slara:latest
     docker image ls | find "stats"                              && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
@@ -99,6 +104,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
     docker ps       | find "pd1982"                               && docker stop pd1982
     docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "slara"                                && docker stop slara
+    docker ps -a    | find "slara"                                && docker rm  --force slara
     docker ps       | find "stats"                                && docker stop stats
     docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:
@@ -108,6 +115,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                             && docker rmi --force ioaero/ae1982:latest
     docker image ls | find "pd1982"                             && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "slara"                              && docker rmi --force ioaero/slara:latest
     docker image ls | find "stats"                              && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
@@ -124,6 +132,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
     docker ps -a    | find "ae1982"                               && docker rm  --force ae1982
     docker ps       | find "pd1982"                               && docker stop pd1982
     docker ps -a    | find "pd1982"                               && docker rm  --force pd1982
+    docker ps       | find "slara"                                && docker stop slara
+    docker ps -a    | find "slara"                                && docker rm  --force slara
     docker ps       | find "stats"                                && docker stop stats
     docker ps -a    | find "stats"                                && docker rm  --force stats
     echo ............................................................. after containers:

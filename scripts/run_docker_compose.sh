@@ -8,18 +8,19 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
- export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
- export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
- export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
- export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
- export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
- export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
- export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
- export IO_AVSTATS_POSTGRES_VERSION=latest
- export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
- export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=32400
- export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=57600
- export IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8501
+export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
+export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
+export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
+export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
+export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
+export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
+export IO_AVSTATS_POSTGRES_VERSION=latest
+export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=32400
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=57600
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=39200
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8501
 
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=up
@@ -75,6 +76,7 @@ echo "POSTGRES_VERSION             : ${IO_AVSTATS_POSTGRES_VERSION}"
 echo "STREAMLIT_SERVER_PORT        : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
 echo "STREAMLIT_SRRVER_PORT_AE1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}"
 echo "STREAMLIT_SERVER_PORT_PD1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}"
+echo "STREAMLIT_SERVER_PORT_SLARA  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}"
 echo "STREAMLIT_SRRVER_PORT_STATS  : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
@@ -89,6 +91,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                | grep -q . && docker stop ae1982                                && docker rm -fv ae1982
     docker ps -q --filter "name=pd1982"                                | grep -q . && docker stop pd1982                                && docker rm -fv pd1982
+    docker ps -q --filter "name=slara"                                 | grep -q . && docker stop slara                                 && docker rm -fv slara
     docker ps -q --filter "name=stats"                                 | grep -q . && docker stop stats                                 && docker rm -fv stats
     echo ............................................................. after containers:
     docker ps -a
@@ -97,6 +100,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
     docker images -q --filter "reference=ioaero/ae1982:latest"         | grep -q . && docker rmi --force ioaero/ae1982:latest
     docker images -q --filter "reference=ioaero/pd1982:latest"         | grep -q . && docker rmi --force ioaero/pd1982:latest
+    docker images -q --filter "reference=ioaero/slara:latest"          | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"          | grep -q . && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
@@ -112,6 +116,7 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                | grep -q . && docker stop ae1982                                && docker rm -fv ae1982
     docker ps -q --filter "name=pd1982"                                | grep -q . && docker stop pd1982                                && docker rm -fv pd1982
+    docker ps -q --filter "name=slara"                                 | grep -q . && docker stop slara                                 && docker rm -fv slara
     docker ps -q --filter "name=stats"                                 | grep -q . && docker stop stats                                 && docker rm -fv stats
     echo ............................................................. after containers:
     docker ps -a
@@ -120,6 +125,7 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker images -q --filter "reference=postgres:latest"              | grep -q . && docker rmi --force postgres:latest
     docker images -q --filter "reference=ioaero/ae1982:latest"         | grep -q . && docker rmi --force ioaero/ae1982:latest
     docker images -q --filter "reference=ioaero/pd1982:latest"         | grep -q . && docker rmi --force ioaero/pd1982:latest
+    docker images -q --filter "reference=ioaero/slara:latest"          | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"          | grep -q . && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
@@ -133,6 +139,7 @@ elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                | grep -q . && docker stop ae1982                                && docker rm -fv ae1982
     docker ps -q --filter "name=pd1982"                                | grep -q . && docker stop pd1982                                && docker rm -fv pd1982
+    docker ps -q --filter "name=slara"                                 | grep -q . && docker stop slara                                 && docker rm -fv slara
     docker ps -q --filter "name=stats"                                 | grep -q . && docker stop stats                                 && docker rm -fv stats
     echo ............................................................. after containers:
     docker ps -a

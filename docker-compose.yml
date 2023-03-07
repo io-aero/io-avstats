@@ -31,17 +31,29 @@ services:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
-#  # ------------------------------------------------------------------------------
-#  # pd1982 - Profiling Data since 1982.
-#  # ------------------------------------------------------------------------------
-#  app_pd1982:
-#    container_name: pd1982
-#    depends_on:
-#      - db
-#    image: ioaero/pd1982:latest
-#    ports:
-#      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-#    restart: always
+  # ------------------------------------------------------------------------------
+  # pd1982 - Profiling Data since 1982.
+  # ------------------------------------------------------------------------------
+  app_pd1982:
+    container_name: pd1982
+    depends_on:
+      - db
+    image: ioaero/pd1982:latest
+    ports:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always
+
+  # ------------------------------------------------------------------------------
+  # slara - Association Rule Analysis.
+  # ------------------------------------------------------------------------------
+  app_slara:
+    container_name: slara
+    depends_on:
+      - db
+    image: ioaero/slara:latest
+    ports:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always
 
   # ------------------------------------------------------------------------------
   # stats - Aircraft Events since 1982.
@@ -67,6 +79,7 @@ services:
       - "80:80"
     depends_on:
       - app_ae1982
-#      - app_pd1982
+      - app_pd1982
+      - app_slara
       - app_stats
     restart: always

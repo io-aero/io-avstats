@@ -40,7 +40,9 @@ CHOICE_UG_DETAILS: bool | None = None
 COLOR_HEADER: str = "#357f8f"
 
 DF_FILTERED: DataFrame = DataFrame()
+DF_FILTERED_ROWS = 0
 DF_UNFILTERED: DataFrame = DataFrame()
+DF_UNFILTERED_ROWS = 0
 
 FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
@@ -251,11 +253,6 @@ QUERIES = {
           FROM io_ntsb_2002_2021
         ORDER BY ntsb_number;
     """,
-    "io_pk_ntsb": """
-        SELECT *
-          FROM io_pk_ntsb
-        ORDER BY ev_id, source, table_name;
-    """,
     "io_processed_files": """
         SELECT *
           FROM io_processed_files
@@ -463,6 +460,8 @@ The database columns of the selected rows are always displayed in full.
 def _present_data():
     global CHOICE_UG_DETAILS  # pylint: disable=global-statement
     global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
+    global DF_FILTERED_ROWS  # pylint: disable=global-statement
+    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
 
     if CHOICE_ACTIVE_FILTERS:
         st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
@@ -479,6 +478,16 @@ def _present_data():
 
     if CHOICE_UG_APP:
         _get_user_guide_app()
+
+    (DF_UNFILTERED_ROWS, _) = DF_UNFILTERED.shape
+    if DF_UNFILTERED_ROWS == 0:
+        st.error("**Error**: There are no data available.")
+        st.stop()
+
+    (DF_FILTERED_ROWS, _) = DF_FILTERED.shape
+    if DF_FILTERED_ROWS == 0:
+        st.error("**Error**: No data has been selected.")
+        st.stop()
 
     if CHOICE_DATA_PROFILE:
         col1, col2 = st.columns(
@@ -534,6 +543,10 @@ def _present_data():
 
         if CHOICE_UG_DETAILS:
             _get_user_guide_details()
+
+        st.write(
+            f"No rows unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+        )
 
         st.dataframe(DF_FILTERED)
 
@@ -783,7 +796,6 @@ def _streamlit_flow() -> None:
         "io_md_codes_section",
         "io_md_codes_subcategory",
         "io_md_codes_subsection",
-        "io_pk_ntsb",
         "io_processed_files",
         "io_lat_lng",
         "io_sequence_of_events",

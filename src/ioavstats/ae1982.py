@@ -192,7 +192,9 @@ COLOR_MAP_SIZE = len(COLOR_MAP)
 COUNTRY_USA = "USA"
 
 DF_FILTERED: DataFrame = DataFrame()
+DF_FILTERED_ROWS = 0
 DF_UNFILTERED: DataFrame = DataFrame()
+DF_UNFILTERED_ROWS = 0
 
 EVENT_TYPE_DESC: str
 
@@ -223,7 +225,6 @@ FILTER_NO_AIRCRAFT_FROM: int | None = None
 FILTER_NO_AIRCRAFT_TO: int | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_PREVENTABLE_EVENTS: list[str] = []
-FILTER_STATE: list[str] = []
 FILTER_TLL_PARAMETERS: list[str] = []
 FILTER_US_AVIATION: list[str] = []
 FILTER_US_AVIATION_COUNTRY = "Event Country USA"
@@ -240,6 +241,8 @@ FILTER_US_AVIATION_DEFAULT: list[str] = [
     FILTER_US_AVIATION_OWNER,
     FILTER_US_AVIATION_REGISTRATION,
 ]
+FILTER_US_STATES: list[str] = []
+
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
@@ -471,12 +474,6 @@ def _apply_filter(
         )
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_STATE:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[(df_filtered["state"].isin(FILTER_STATE))]
-        _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
-
-    # noinspection PyUnboundLocalVariable
     if FILTER_TLL_PARAMETERS:
         df_filtered = df_filtered.loc[
             (df_filtered["tll_parameters"].isin(FILTER_TLL_PARAMETERS))
@@ -491,6 +488,14 @@ def _apply_filter(
         _print_timestamp(
             f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION"
         )
+
+    # noinspection PyUnboundLocalVariable
+    if FILTER_US_STATES:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (df_filtered["state"].isin(_get_prepared_us_states(FILTER_US_STATES)))
+        ]
+        _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
 
     _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - End")
 
@@ -655,6 +660,19 @@ def _get_postgres_connection() -> connection:
     )
 
     return psycopg2.connect(**st.secrets["db_postgres"])
+
+
+# ------------------------------------------------------------------
+# Prepare the US states.
+# ------------------------------------------------------------------
+def _get_prepared_us_states(list_in: list) -> list[str]:
+    list_out = []
+
+    for elem in list_in:
+        (_, code) = elem.split(" - ")
+        list_out.append(code)
+
+    return list_out
 
 
 # ------------------------------------------------------------------
@@ -2142,7 +2160,9 @@ def _present_chart_fy_sfp() -> None:
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
-    """Present the filtered data."""
+    global DF_FILTERED_ROWS  # pylint: disable=global-statement
+    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
+
     _print_timestamp("_present_data() - Start")
 
     if CHOICE_ACTIVE_FILTERS:
@@ -2168,6 +2188,16 @@ def _present_data() -> None:
 
     if CHOICE_UG_APP:
         _get_user_guide_app()
+
+    (DF_UNFILTERED_ROWS, _) = DF_UNFILTERED.shape
+    if DF_UNFILTERED_ROWS == 0:
+        st.error("**Error**: There are no data available.")
+        st.stop()
+
+    (DF_FILTERED_ROWS, _) = DF_FILTERED.shape
+    if DF_FILTERED_ROWS == 0:
+        st.error("**Error**: No data has been selected.")
+        st.stop()
 
     if CHOICE_MAP:
         _present_map()
@@ -2283,6 +2313,11 @@ def _present_details() -> None:
 
         if CHOICE_UG_DETAILS:
             _get_user_guide_details()
+
+        # pylint: disable=line-too-long
+        st.write(
+            f"No {EVENT_TYPE_DESC.lower()} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+        )
 
         st.dataframe(DF_FILTERED)
 
@@ -2587,9 +2622,9 @@ def _setup_filter() -> None:
     global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_PREVENTABLE_EVENTS  # pylint: disable=global-statement
-    global FILTER_STATE  # pylint: disable=global-statement
     global FILTER_TLL_PARAMETERS  # pylint: disable=global-statement
     global FILTER_US_AVIATION  # pylint: disable=global-statement
+    global FILTER_US_STATES  # pylint: disable=global-statement
 
     _print_timestamp("_setup_filter - Start")
 
@@ -2929,21 +2964,19 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
-    FILTER_STATE = st.sidebar.multiselect(
+    FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
         label="**State(s) in the US:**",
         options=_sql_query_us_states(),
     )
-    _print_timestamp("_setup_filter - FILTER_STATE - 1")
 
-    if FILTER_STATE:
+    if FILTER_US_STATES:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
+            + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_STATE - 2")
 
-    st.sidebar.markdown("""---""")
+    _print_timestamp("_setup_filter - FILTER_STATES - 1")
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_TLL_PARAMETERS = st.sidebar.multiselect(
@@ -3822,15 +3855,11 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
 # Execute a query that returns the list of US states.
 # ------------------------------------------------------------------
 def _sql_query_us_states() -> list[str]:
-    """Execute a query that returns a list of US states.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
+            # pylint: disable=line-too-long
             """
-        SELECT string_agg(DISTINCT state, ',' ORDER BY state)
+        SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
         """

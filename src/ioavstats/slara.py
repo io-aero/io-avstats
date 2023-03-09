@@ -62,6 +62,21 @@ CHOICE_TRANSACTION_DATA_DETAILS: bool | None = None
 CHOICE_UG_APP: bool | None = None
 
 COLOR_HEADER: str = "#357f8f"
+COLOR_MAP: list[str] = [
+    "#15535f",  # peacock
+    "#47a3b5",  # aqua
+    "#fadc82",  # yellow
+    "#f18c2c",  # orange
+    "#778b4a",  # olive
+    "#eb6081",  # raspberry
+    "#c4e5f4",  # pale blue
+    "#d43724",  # red
+    "#bcd284",  # pale green
+    "#5f4b8b",  # purple
+    "#f8d2d5",  # pink
+    "#795339",  # brown
+    "#40484f",  # charcoal
+]
 
 COUNTRY_USA = "USA"
 
@@ -69,6 +84,7 @@ DF_ASSOCIATION_RULES_APRIORI: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_ECLAT: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPGROWTH: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPMAX: DataFrame = DataFrame()
+DF_ECLAT_BINARY_DATA: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_APRIORI: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_ECLAT: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPGROWTH: DataFrame = DataFrame()
@@ -615,9 +631,32 @@ def _create_frequent_itemsets_eclat() -> None:
 
     _print_timestamp("_create_frequent_itemsets_eclat() - Start")
 
-    st.dataframe(DF_TRANSACTION_DATA_ECLAT)
-
     eclat = ECLAT(DF_TRANSACTION_DATA_ECLAT, CHOICE_ALG_MIN_SUPPORT)
+
+    st.dataframe(eclat.df_bin.iloc[:100, :100])
+
+    items_total = eclat.df_bin.astype(int).sum(axis=0)
+
+    items_per_transaction = eclat.df_bin.astype(int).sum(axis=1)
+
+    df = DataFrame({"items": items_total.index, "transactions":items_total.values} )
+
+    st.dataframe(df)
+
+    df_table = df.sort_values("transactions", ascending=False)
+
+    st.write(df_table.head(20).style.background_gradient(cmap='Blues'))
+
+    df_table["all"] = "Tree Map"
+    import plotly.express as px
+    fig = px.treemap(df_table.head(50), path=["all", "items"],values="transactions",color=df_table["transactions"].head(50),
+                     hover_data=["items"],
+                     color_continuous_scale="Blues")
+
+    fig.show()
+
+
+    st.stop()
 
     dict_finally_index, dict_finally_support = eclat.fit()
 
@@ -1259,7 +1298,9 @@ def _get_raw_data() -> DataFrame:
                    ntsb_no,
                    state
              FROM io_app_ae1982
-            WHERE ev_year >= 2008
+            WHERE (ARRAY_LENGTH(all_finding_codes, 1)    > 0 
+               OR  ARRAY_LENGTH(all_occurrence_codes, 1) > 0) 
+              AND  ev_year >= 2008
             ORDER BY ev_id;
     """,
     )
@@ -3226,7 +3267,6 @@ a frequent itemset is defined as a set of items that occur together in at least 
     )
 
     CHOICE_ALG_ECLAT = st.sidebar.checkbox(
-        disabled=True,
         help="""
 Unlike the a priori method, the ECLAT method is not based on the calculation of confidence and lift, therefore the ECLAT method is based on the calculation of the support conjunctions of the variables.
         """,

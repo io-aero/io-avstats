@@ -2,25 +2,16 @@
 
 rem ------------------------------------------------------------------------------
 rem
-rem run_setup_postgresql_pytest.bat: Setup a PostgreSQL Docker container.
+rem run_setup_postgresql_io_avstats_db.bat: Set up a IO-AVSTATS-DB PostgreSQL container.
 rem
 rem ------------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5434
-set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db_test
-set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
-set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=postgresql
-set IO_AVSTATS_POSTGRES_PGDATA=data\postgres_test
-set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
-set IO_AVSTATS_POSTGRES_VERSION=latest
-
 echo ================================================================================
 echo Start %0
 echo --------------------------------------------------------------------------------
-echo IO-AVSTATS-DB - Setup a PostgreSQL Docker container.
+echo IO-AVSTATS - Setup a IO-AVSTATS-DB PostgreSQL Docker container.
 echo --------------------------------------------------------------------------------
 echo POSTGRES_CONNECTION_PORT : %IO_AVSTATS_POSTGRES_CONNECTION_PORT%
 echo POSTGRES_CONTAINER_NAME  : %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
@@ -41,9 +32,11 @@ docker ps -a | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%" && docker rm --force 
 echo ............................................................. after:
 docker ps -a
 
-if exist %IO_AVSTATS_POSTGRES_PGDATA% (
-    rd /s /q %IO_AVSTATS_POSTGRES_PGDATA%
-)
+resources\Gammadyne\timer.exe
+
+rem ------------------------------------------------------------------------------
+rem PostgreSQL                          https://hub.docker.com/_/postgres
+rem ------------------------------------------------------------------------------
 
 echo PostgreSQL
 echo --------------------------------------------------------------------------------
@@ -69,7 +62,7 @@ docker start %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
 ping -n 30 127.0.0.1>nul
 
 for /f "delims=" %%A in ('resources\Gammadyne\timer.exe /s') do set "CONSUMED=%%A"
-echo DOCKER PostgreSQL was ready in %CONSUMED%
+echo DOCKER IO-AVSTATS-DB PostgreSQL was ready in %CONSUMED%
 
 docker ps
 

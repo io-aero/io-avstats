@@ -4,7 +4,7 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_setup_postgresql_pytest.sh: Setup a PostgreSQL Docker container.
+# run_setup_postgresql_io_avstats_db_pytest.sh: Setup a IO-AVSTATS-DB PostgreSQL container.
 #
 # ------------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ fi
 sleep 30
 
 end=$(date +%s)
-echo "DOCKER PostgreSQL was ready in $((end - start)) seconds"
+echo "DOCKER IO-AVSTATS-DB PostgreSQL was ready in $((end - start)) seconds"
 
 docker ps
 

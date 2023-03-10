@@ -3,9 +3,9 @@ version: '3.3'
 services:
 
   # ------------------------------------------------------------------------------
-  # PostgreSQL Database.
+  # PostgreSQL Database IO-AVSTATS-DB.
   # ------------------------------------------------------------------------------
-  db:
+  io_avstats_db:
     container_name: ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     environment:
       - POSTGRES_DB=${IO_AVSTATS_POSTGRES_DBNAME_ADMIN}
@@ -20,12 +20,29 @@ services:
       - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
 
   # ------------------------------------------------------------------------------
+  # PostgreSQL Database Keycloak.
+  # ------------------------------------------------------------------------------
+  keycloak_db:
+    container_name: ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+    environment:
+      - POSTGRES_DB=${KEYCLOAK_POSTGRES_DBNAME_ADMIN}
+      - POSTGRES_HOST_AUTH_METHOD=password
+      - POSTGRES_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - POSTGRES_USER=${KEYCLOAK_ADMIN_USER}
+    image: postgres:${KEYCLOAK_POSTGRES_VERSION}
+    ports:
+      - "${KEYCLOAK_DATABASE_PORT}:${KEYCLOAK_CONTAINER_PORT}"
+    restart: always
+    volumes:
+      - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
+
+  # ------------------------------------------------------------------------------
   # ae1982 - Aircraft Events since 1982.
   # ------------------------------------------------------------------------------
   app_ae1982:
     container_name: ae1982
     depends_on:
-      - db
+      - io_avstats_db
     image: ioaero/ae1982:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
@@ -37,7 +54,7 @@ services:
   app_pd1982:
     container_name: pd1982
     depends_on:
-      - db
+      - io_avstats_db
     image: ioaero/pd1982:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
@@ -49,7 +66,7 @@ services:
   app_slara:
     container_name: slara
     depends_on:
-      - db
+      - io_avstats_db
     image: ioaero/slara:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
@@ -61,7 +78,7 @@ services:
   app_stats:
     container_name: stats
     depends_on:
-      - db
+      - io_avstats_db
     image: ioaero/stats:latest
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"

@@ -138,7 +138,7 @@ def fxtr_before_any_test():
         subprocess.run(r"scripts\run_setup_postgresql_pytest.bat", shell=False)
     elif platform.system() == "Linux":
         # pylint: disable=subprocess-run-check
-        subprocess.run("scripts/run_setup_postgresql_pytest.sh")
+        subprocess.run("scripts/run_setup_postgresql_io_avstats_db_pytest.sh")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(

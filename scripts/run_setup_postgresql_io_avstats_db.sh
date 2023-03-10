@@ -4,14 +4,14 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_setup_postgresql.sh: Set up a PostgreSQL Docker container.
+# run_setup_postgresql_io_avstats_db.sh: Set up a IO-AVSTATS-DB PostgreSQL container.
 #
 # ------------------------------------------------------------------------------
 
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
-echo "IO-AVSTATS - Set up a PostgreSQL Docker container."
+echo "IO-AVSTATS - Setup a IO-AVSTATS-DB PostgreSQL Docker container."
 echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AVSTATS_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"
@@ -59,7 +59,7 @@ fi
 sleep 30
 
 end=$(date +%s)
-echo "DOCKER PostgreSQL was ready in $((end - start)) seconds"
+echo "DOCKER IO-AVSTATS-DB PostgreSQL was ready in $((end - start)) seconds"
 
 docker ps
 

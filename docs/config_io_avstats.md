@@ -50,8 +50,10 @@ The `test` layer is used for the automated tests.
 | razorsql_reference_dir                  | data/RazorSQL                                 | file directory of the database schema reference file                     |
 | razorsql_reference_file                 | 2022.11.01_avall.sql                          | file name of the database schema reference file                          |
 | streamlit_server_port                   | 8501                                          | Streamlit port number                                                    |
-| streamlit_server_port_ae1982          | 8501                                          | Streamlit port number for application ae1982                          |
-| streamlit_server_port_pd1982          | 8502                                          | Streamlit port number for application pd1982                           |
+| streamlit_server_port_ae1982            | development: 8501 / productive: 32400         | Streamlit port number for application ae1982                             |
+| streamlit_server_port_pd1982            | development: 8501 / productive: 57600         | Streamlit port number for application pd1982                             |
+| streamlit_server_port_slara             | development: 8501 / productive: 39200         | Streamlit port number for application slara                              |
+| streamlit_server_port_stats             | development: 8501 / productive: 8501          | Streamlit port number for application stats                              |
 
 ## 2. Notes
 

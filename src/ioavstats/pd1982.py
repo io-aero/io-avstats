@@ -4,6 +4,7 @@
 
 """IO-AVSTATS-DB Data since 1982."""
 import datetime
+import os
 import time
 
 import pandas as pd
@@ -15,6 +16,7 @@ from pandas import DataFrame
 from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
+from streamlit_keycloak import login
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -768,14 +770,6 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    st.set_page_config(
-        layout="wide",
-        # flake8: noqa: E501
-        # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
-        page_title="pd1982 by IO-Aero",
-    )
-
     PG_CONN = _get_postgres_connection()  # type: ignore
 
     _setup_sidebar()
@@ -821,4 +815,28 @@ def _streamlit_flow() -> None:
 # -----------------------------------------------------------------------------
 # Program start.
 # -----------------------------------------------------------------------------
-_streamlit_flow()
+
+st.set_page_config(
+    layout="wide",
+    # flake8: noqa: E501
+    # pylint: disable=line-too-long
+    page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
+    page_title=f"{APP_ID} by IO-Aero",
+)
+st.sidebar.markdown('[IO-Aero Website](https://www.io-aero.com)')
+
+client_id = f"{APP_ID}_{os.environ['IO_AVSTATS_KEYCLOAK_ENVIRONMENT']}"
+
+keycloak = login(
+    url="http://localhost:8080",
+    realm="IO-Aero",
+    client_id=client_id,
+)
+
+if keycloak.authenticated:
+    _streamlit_flow()
+else:
+    if "KEYCLOAK" in st.session_state:
+        st.error(f"**Error**: The login has failed - client_id='{client_id}'.")
+    else:
+        st.session_state["KEYCLOAK"] = "KEYCLOAK"

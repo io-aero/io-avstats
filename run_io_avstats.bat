@@ -15,6 +15,15 @@ if ["!ENV_FOR_DYNACONF!"] EQU [""] (
 )
 
 set IO_AVSTATS_CORRECTION_WORK_DIR=data\correction
+
+set IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
+set IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+set IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
+set IO_AVSTATS_KEYCLOAK_ENVIRONMENT=local
+set IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN=admin
+set IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
+set IO_AVSTATS_KEYCLOAK_VERSION=latest
+
 set IO_AVSTATS_NTSB_WORK_DIR=data\download
 
 if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
@@ -28,6 +37,18 @@ set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
+
+if ["!IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
+    set IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
+)
+
+set IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
+set IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT=5432
+set IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
+set IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+set IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
+set IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
+set IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION=latest
 
 set IO_AVSTATS_APPLICATION=
 set IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
@@ -63,8 +84,11 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo s_d_c   - Set up the PostgreSQL database container
+    echo s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
+    echo ---------------------------------------------------------
+    echo k_s_d   - Set up the Keycloak PostgreSQL database container
+    echo k_s_s   - Set up the Keycloak server container
     echo ---------------------------------------------------------
     echo c_d_i   - Create or update a Docker image
     echo c_d_c   - Run Docker Compose tasks
@@ -369,6 +393,32 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_z_f"] (
 )
 
 rem ----------------------------------------------------------------------------
+rem Set up the Keycloak PostgreSQL database container.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["k_s_d"] (
+    call scripts\run_setup_postgresql_keycloak
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Set up the Keycloak server container.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["k_s_s"] (
+    call scripts\run_setup_keycloak_server
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
@@ -533,10 +583,10 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Set up the database container.
+rem Set up the IO-AVSTATS-DB PostgreSQL database container.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["s_d_c"] (
-    call scripts\run_setup_postgresql
+    call scripts\run_setup_postgresql_io_avstats_db
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

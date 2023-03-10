@@ -13,6 +13,15 @@ if [ -z "${ENV_FOR_DYNACONF}" ]; then
 fi
 
 export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
+
+export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
+export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
+export IO_AVSTATS_KEYCLOAK_ENVIRONMENT=local
+export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN=admin
+export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
+export IO_AVSTATS_KEYCLOAK_VERSION=latest
+
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
 
 if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
@@ -26,6 +35,18 @@ export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
+
+if [ -z "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ]; then
+    export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
+fi
+
+export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
+export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT=5432
+export IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
+export IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
+export IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
+export IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
+export IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION=latest
 
 export IO_AVSTATS_APPLICATION=
 export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
@@ -56,9 +77,11 @@ if [ -z "$1" ]; then
     echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "p_p_k   - Process NTSB data deletions in PostgreSQL"
-    echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
+    echo "---------------------------------------------------------"
+    echo "k_s_d   - Set up the Keycloak PostgreSQL database container"
+    echo "k_s_s   - Set up the Keycloak server container"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks"
@@ -166,13 +189,12 @@ echo "==========================================================================
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_s_e: Load sequence of events data into PostgreSQL.
 # l_z_d: Load US Zip code data.
-# p_p_k: Process NTSB data deletions in PostgreSQL.
 # r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"p_p_k"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi
@@ -213,6 +235,22 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
     fi
 
 # ------------------------------------------------------------------------------
+# Set up the Keycloak PostgreSQL database container.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
+    if ! ( .run_setup_postgresql_keycloak.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Set up the Keycloak server container.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "k_s_s" ]; then
+    if ! ( .run_setup_keycloak_server.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -247,10 +285,10 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the database container.
+# Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
+    if ! ( .run_setup_postgresql_io_avstats_db.sh ); then
         exit 255
     fi
 

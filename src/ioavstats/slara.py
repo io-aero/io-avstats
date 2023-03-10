@@ -4,6 +4,7 @@
 
 """Association Rule Analysis."""
 import datetime
+import os
 import time
 
 import numpy
@@ -21,6 +22,7 @@ from psycopg2.extensions import connection
 from pyECLAT import ECLAT  # type: ignore
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
+from streamlit_keycloak import login
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -639,22 +641,27 @@ def _create_frequent_itemsets_eclat() -> None:
 
     items_per_transaction = eclat.df_bin.astype(int).sum(axis=1)
 
-    df = DataFrame({"items": items_total.index, "transactions":items_total.values} )
+    df = DataFrame({"items": items_total.index, "transactions": items_total.values})
 
     st.dataframe(df)
 
     df_table = df.sort_values("transactions", ascending=False)
 
-    st.write(df_table.head(20).style.background_gradient(cmap='Blues'))
+    st.write(df_table.head(20).style.background_gradient(cmap="Blues"))
 
     df_table["all"] = "Tree Map"
     import plotly.express as px
-    fig = px.treemap(df_table.head(50), path=["all", "items"],values="transactions",color=df_table["transactions"].head(50),
-                     hover_data=["items"],
-                     color_continuous_scale="Blues")
+
+    fig = px.treemap(
+        df_table.head(50),
+        path=["all", "items"],
+        values="transactions",
+        color=df_table["transactions"].head(50),
+        hover_data=["items"],
+        color_continuous_scale="Blues",
+    )
 
     fig.show()
-
 
     st.stop()
 
@@ -3891,15 +3898,6 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    # flake8: noqa: E501
-    st.set_page_config(
-        layout="wide",
-        # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
-        page_title="slara by IO-Aero",
-    )
-    # st.sidebar.markdown("[IO-Aero Website](%s)" % "https://www.io-aero.com")
-
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")
 
@@ -3949,4 +3947,27 @@ def _streamlit_flow() -> None:
 # Program start.
 # -----------------------------------------------------------------------------
 
-_streamlit_flow()
+# flake8: noqa: E501
+st.set_page_config(
+    layout="wide",
+    # pylint: disable=line-too-long
+    page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
+    page_title=f"{APP_ID} by IO-Aero",
+)
+st.sidebar.markdown('[IO-Aero Website](https://www.io-aero.com)')
+
+client_id = f"{APP_ID}_{os.environ['IO_AVSTATS_KEYCLOAK_ENVIRONMENT']}"
+
+keycloak = login(
+    url="http://localhost:8080",
+    realm="IO-Aero",
+    client_id=client_id,
+)
+
+if keycloak.authenticated:
+    _streamlit_flow()
+else:
+    if "KEYCLOAK" in st.session_state:
+        st.error(f"**Error**: The login has failed - client_id='{client_id}'.")
+    else:
+        st.session_state["KEYCLOAK"] = "KEYCLOAK"

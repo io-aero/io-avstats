@@ -53,11 +53,9 @@ see file directory **`docs`**
 
 ### 3.1 config_io_avstats.md
 
-```
 ...
 | streamlit_server_port_ae1982          | 8501                                          | Streamlit port number for application ae1982                           |
 | streamlit_server_port_pd1982          | 8502                                          | Streamlit port number for application pd1982                           |
-...
 ```
 
 ### 3.2 how_to_setup_aws_instance.md

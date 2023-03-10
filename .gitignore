@@ -15,6 +15,7 @@
 /data/pandas_profiles/io_processed_files_*.html
 /data/postgres.zip
 /data/postgres/
+/data/postgres_keycloak/
 /data/postgres_test/
 /src/ioavstats/stats.py
 coverage.xml

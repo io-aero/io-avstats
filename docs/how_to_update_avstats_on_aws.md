@@ -39,7 +39,7 @@ l_z_d   - Load ZIP Code Database data into PostgreSQL
 c_d_s   - Create the PostgreSQL database schema
 d_d_f   - Delete the PostgreSQL database files
 d_d_s   - Drop the PostgreSQL database schema
-s_d_c   - Set up the PostgreSQL database container
+s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image
@@ -402,7 +402,7 @@ l_z_d   - Load ZIP Code Database data into PostgreSQL
 c_d_s   - Create the PostgreSQL database schema
 d_d_f   - Delete the PostgreSQL database files
 d_d_s   - Drop the PostgreSQL database schema
-s_d_c   - Set up the PostgreSQL database container
+s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image

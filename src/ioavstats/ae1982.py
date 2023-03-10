@@ -4,6 +4,7 @@
 
 """Aviation Events in the US since 1982."""
 import datetime
+import os
 import time
 from operator import itemgetter
 
@@ -22,6 +23,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
+from streamlit_keycloak import login
 
 # SettingWithCopyWarning
 pd.options.mode.chained_assignment: str | None = None  # type: ignore
@@ -3895,7 +3897,24 @@ def _streamlit_flow() -> None:
         page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
-    # st.sidebar.markdown("[IO-Aero Website](%s)" % "https://www.io-aero.com")
+    st.sidebar.markdown('[IO-Aero Website](https://www.io-aero.com)')
+
+    if MODE_STANDARD:
+        client_id = f"{APP_ID}_{os.environ['IO_AVSTATS_KEYCLOAK_ENVIRONMENT']}"
+        keycloak = login(
+            url="http://localhost:8080",
+            realm="IO-Aero",
+            client_id=client_id,
+        )
+
+        if not keycloak.authenticated:
+            if "KEYCLOAK" in st.session_state:
+                st.error(
+                    f"**Error**: The login has failed - client_id='{client_id}'."
+                )
+            else:
+                st.session_state["KEYCLOAK"] = "KEYCLOAK"
+            st.stop()
 
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

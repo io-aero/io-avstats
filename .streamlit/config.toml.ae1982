@@ -130,7 +130,7 @@ port = 32400
 [browser]
 
 serverAddress = "ae1982.io-aero.com"
-serverPort = 32400
+serverPort = 8501
 
 # Internet address where users should point their browsers in order to connect to the app. Can be IP address or DNS name and path.
 # This is used to: - Set the correct URL for CORS and XSRF protection purposes. - Show the URL on the terminal - Open the browser

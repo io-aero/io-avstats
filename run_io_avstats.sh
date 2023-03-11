@@ -17,7 +17,6 @@ export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
 export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
 export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
-export IO_AVSTATS_KEYCLOAK_ENVIRONMENT=local
 export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN=admin
 export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
 export IO_AVSTATS_KEYCLOAK_VERSION=latest
@@ -271,15 +270,19 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py ); then
+        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
-    else
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" ); then
+    elif [ "${IO_AVSTATS_APPLICATION}" = "pd1982" ]; then
+        if ! ( pipenv run streamlit run src/ioavstats/pd1982.py --server.port 8502 ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "slara" ]; then
+        if ! ( pipenv run streamlit run src/ioavstats/slara.py --server.port 8503 ); then
             exit 255
         fi
     fi

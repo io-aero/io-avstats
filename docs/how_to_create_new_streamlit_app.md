@@ -51,61 +51,32 @@ st.sidebar.markdown("""---""")
 
 see file directory **`docs`**
 
-### 3.1 config_io_avstats.md
-
-...
-| streamlit_server_port_ae1982          | 8501                                          | Streamlit port number for application ae1982                           |
-| streamlit_server_port_pd1982          | 8502                                          | Streamlit port number for application pd1982                           |
-```
-
-### 3.2 how_to_setup_aws_instance.md
+### 3.1 how_to_update_avstats_on_aws.md
 
 ```
-...
-## 2. Open port numbers
-
-Each Streamlit application must be assigned its own port number so that they can run simultaneously.
-Currently, the following Streamlit applications are supported:
-
-| Port | Application                                        |
-|------|----------------------------------------------------|
-| 8501 | ae1982 - Aircraft Accidents in the US since 1982 |
-| 8502 | pd1982 - Profiling Data for the US since 1982    |
-...
-```
-
-### 3.3 how_to_update_avstats_on_aws.md
-
-```
-...
 ## 1. Docker images
 
 Currently, the following Streamlit applications are supported:
 
 | Application | Description                             |
 |-------------|-----------------------------------------|
-| ae1982    | Aircraft Accidents in the US since 1982 |
-| pd1982    | Profiling Data for the US since 1982    |
-...
+| ae1982      | Aircraft Accidents in the US since 1982 |
+| pd1982      | Profiling Data for the US since 1982    |
 ```
 
-### 3.4 index.md
+### 3.2 index.md
 
 ```
-...
 Currently, it includes the following applications:
 
 - ae1982 - Aircraft Accidents in the US since 1982
 - pd1982 - Profiling Data for the US since 1982
-...
 ```
 
-### 3.5 Operation.md
+### 3.3 Operation.md
 
 ```
-...
 TODO
-...
 ```
 
 ## 4. Parameterization
@@ -113,7 +84,6 @@ TODO
 ### 4.1 docker-compose.yml
 
 ```
-...
   # ------------------------------------------------------------------------------
   # ae1982 - Aircraft Accidents in the US since 1982.
   # ------------------------------------------------------------------------------
@@ -137,16 +107,6 @@ TODO
     ports:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
-...
-```
-
-### 4.2 settings.io_avstats.toml / settings.io_avstats_4_dockerfile.toml
-
-```
-...
-streamlit_server_port_ae1982 = 8501
-streamlit_server_port_pd1982 = 8502
-...
 ```
 
 ## 5. Scripts
@@ -156,25 +116,22 @@ streamlit_server_port_pd1982 = 8502
 **cmd**:
 
 ```
-...
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-		echo ae1982 - Aircraft Accidents in the US since 1982
-		echo pd1982 - Profiling Data for the US since 1982
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
         set IO_AVSTATS_APPLICATION=%2
     )
 )
-...
 ```
 
 **bash**:
 
 ```
-...
 if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
@@ -188,7 +145,6 @@ if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         export IO_AVSTATS_APPLICATION=$2
     fi
 fi
-...
 ```
 
 
@@ -200,7 +156,6 @@ fi
 **cmd**:
 
 ```
-...
 if ["%1"] EQU [""] (
     echo =========================================================
     echo ae1982 - Aircraft Accidents in the US since 1982
@@ -214,13 +169,11 @@ if ["%1"] EQU [""] (
 ) else (
     set APPLICATION=%1
 )
-...
 ```
 
 **bash**:
 
 ```
-...
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "ae1982 - Aircraft Accidents in the US since 1982"
@@ -235,7 +188,6 @@ if [ -z "$1" ]; then
 else
     export APPLICATION=$1
 fi
-...
 ```
 
 #### 5.2.2 scripts/run_docker_compose
@@ -243,23 +195,15 @@ fi
 **cmd**:
 
 ```
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
 ...
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-...
-echo STREAMLIT_SRRVER_PORT_AE1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
-echo STREAMLIT_SERVER_PORT_PD1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
-...
+echo STREAMLIT_SRRVER_PORT_X...X : %IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X%
 ```
 
 **bash**:
 
 ```
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
 ...
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-...
-echo "STREAMLIT_SRRVER_PORT_AE1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}"
-echo "STREAMLIT_SERVER_PORT_PD1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}"
-...
+echo "STREAMLIT_SRRVER_PORT_X...X : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X}"
 ```

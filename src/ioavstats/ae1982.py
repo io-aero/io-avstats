@@ -3158,12 +3158,6 @@ def _setup_task_controls() -> None:
     global CHOICE_YEARS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_WIDTH  # pylint: disable=global-statement
 
-    # pylint: disable=line-too-long
-    st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-        width=200,
-    )
-
     if MODE_STANDARD:
         CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
             help="The extended version has more complex filtering and processing options.",
@@ -3897,20 +3891,29 @@ def _streamlit_flow() -> None:
         page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
-    st.sidebar.markdown('[IO-Aero Website](https://www.io-aero.com)')
 
     if MODE_STANDARD:
-        client_id = f"{APP_ID}_{os.environ['IO_AVSTATS_KEYCLOAK_ENVIRONMENT']}"
+        st.sidebar.markdown(f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)")
+    else:
+        st.sidebar.markdown(f"[IO-Aero Website](https://www.io-aero.com)")
+
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    if MODE_STANDARD:
         keycloak = login(
             url="http://localhost:8080",
             realm="IO-Aero",
-            client_id=client_id,
+            client_id=APP_ID,
         )
 
         if not keycloak.authenticated:
             if "KEYCLOAK" in st.session_state:
                 st.error(
-                    f"**Error**: The login has failed - client_id='{client_id}'."
+                    f"**Error**: The login has failed - client_id='{APP_ID}'."
                 )
             else:
                 st.session_state["KEYCLOAK"] = "KEYCLOAK"

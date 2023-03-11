@@ -19,7 +19,6 @@ set IO_AVSTATS_CORRECTION_WORK_DIR=data\correction
 set IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 set IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
 set IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
-set IO_AVSTATS_KEYCLOAK_ENVIRONMENT=local
 set IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN=admin
 set IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
 set IO_AVSTATS_KEYCLOAK_VERSION=latest
@@ -540,7 +539,7 @@ rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["ae1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py -- --mode Std
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py  --server.port 8501 -- --mode Std
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -550,7 +549,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8502
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -560,7 +559,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["slara"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8503
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -570,7 +569,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["stats"] (
-        pipenv run streamlit run src\ioavstats\ae1982.py
+        pipenv run streamlit run src\ioavstats\ae1982.py --server.port 8599
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%

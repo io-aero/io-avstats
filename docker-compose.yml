@@ -23,18 +23,42 @@ services:
   # PostgreSQL Database Keycloak.
   # ------------------------------------------------------------------------------
   keycloak_db:
-    container_name: ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
+    container_name: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
     environment:
-      - POSTGRES_DB=${KEYCLOAK_POSTGRES_DBNAME_ADMIN}
+      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}
       - POSTGRES_HOST_AUTH_METHOD=password
-      - POSTGRES_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-      - POSTGRES_USER=${KEYCLOAK_ADMIN_USER}
-    image: postgres:${KEYCLOAK_POSTGRES_VERSION}
+      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}
+      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}
+    hostname: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
+    image: postgres:${IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION}
     ports:
-      - "${KEYCLOAK_DATABASE_PORT}:${KEYCLOAK_CONTAINER_PORT}"
+      - "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT}"
     restart: always
     volumes:
-      - "./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data"
+      - "./${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data"
+
+  # ------------------------------------------------------------------------------
+  # Keycloak.
+  # ------------------------------------------------------------------------------
+  keycloak:
+    command: start
+    container_name: ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
+    depends_on:
+      - keycloak_db
+    environment:
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_HOST: 0.0.0.0
+      KC_DB: postgres
+      KC_DB_PASSWORD: "${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}"
+      KC_DB_URL: "jdbc:postgresql://${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}:${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}/${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}"
+      KC_DB_USERNAME: "${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
+      KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN}
+    image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
+    ports:
+      - "${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_KEYCLOAK_CONTAINER_PORT}"
+    restart: always
 
   # ------------------------------------------------------------------------------
   # ae1982 - Aircraft Events since 1982.
@@ -95,6 +119,7 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - keycloak
       - app_ae1982
       - app_pd1982
       - app_slara

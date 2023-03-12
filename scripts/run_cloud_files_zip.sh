@@ -24,6 +24,7 @@ echo "--------------------------------------------------------------------------
 rm -f ${AWS_FILE_NAME}
 
 ${AWS_PROG_ZIP} a -tzip ${AWS_FILE_NAME} data/latest_postgres.zip \
+                                         data/latest_postgres_keycloak.zip \
                                          docker-compose.yml \
                                          nginx.conf \
                                          scripts/run_cloud_setup_instance.sh \

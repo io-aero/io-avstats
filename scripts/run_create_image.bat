@@ -18,9 +18,11 @@ if ["%1"] EQU [""] (
     echo =========================================================
     echo all      - All Streamlit applications
     echo ---------------------------------------------------------
-    echo ae1982 - Aircraft Accidents in the US since 1982
-    echo pd1982 - Profiling Data for the US since 1982
-    echo stats  - Aircraft Accidents in the US since 1982 - limited
+    echo ae1982  - Aircraft Accidents in the US since 1982
+    echo members - Members Only Area
+    echo pd1982  - Profiling Data for the US since 1982
+    echo slara   - Association Rule Analysis
+    echo stats   - Aircraft Accidents in the US since 1982 - limited
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -77,10 +79,11 @@ rem > %LOG_FILE% 2>&1 (
     echo =======================================================================
 
     if ["!APPLICATION!"] EQU ["all"]  (
-        call scripts\run_create_image ae1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image pd1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image slara  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image stats  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image ae1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image members !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image pd1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image slara   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image stats   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
     )
 

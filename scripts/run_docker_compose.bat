@@ -39,6 +39,7 @@ set IO_AVSTATS_POSTGRES_VERSION=latest
 
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
+set IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS=8598
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=8503
 set IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8599
@@ -112,6 +113,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
     docker ps       | find "load_balancer"                                 && docker stop        load_balancer
     docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
+    docker ps       | find "members"                                       && docker stop        members
+    docker ps -a    | find "members"                                       && docker rm  --force members
     docker ps       | find "pd1982"                                        && docker stop        pd1982
     docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
     docker ps       | find "slara"                                         && docker stop        slara
@@ -127,6 +130,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
     docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
+    docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
     docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
     docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest
     docker image ls | find "slara"                                       && docker rmi --force ioaero/slara:latest
@@ -152,6 +156,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
     docker ps       | find "load_balancer"                                 && docker stop        load_balancer
     docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
+    docker ps       | find "members"                                       && docker stop        members
+    docker ps -a    | find "members"                                       && docker rm  --force members
     docker ps       | find "pd1982"                                        && docker stop        pd1982
     docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
     docker ps       | find "slara"                                         && docker stop        slara
@@ -167,6 +173,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
     docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
+    docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
     docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
     docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest
     docker image ls | find "slara"                                       && docker rmi --force ioaero/slara:latest
@@ -191,6 +198,8 @@ if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
     docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
     docker ps       | find "load_balancer"                                 && docker stop        load_balancer
     docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
+    docker ps       | find "members"                                       && docker stop        members
+    docker ps -a    | find "members"                                       && docker rm  --force members
     docker ps       | find "pd1982"                                        && docker stop        pd1982
     docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
     docker ps       | find "slara"                                         && docker stop        slara

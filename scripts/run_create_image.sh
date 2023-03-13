@@ -18,9 +18,11 @@ if [ -z "$1" ]; then
     echo "========================================================="
     echo "all      - All Streamlit applications"
     echo "---------------------------------------------------------"
-    echo "ae1982 - Aircraft Accidents in the US since 1982"
-    echo "pd1982 - Profiling Data for the US since 1982"
-    echo "stats  - Aircraft Accidents in the US since 1982 - limited"
+    echo "ae1982  - Aircraft Accidents in the US since 1982"
+    echo "members - Members Only Area"
+    echo "pd1982  - Profiling Data for the US since 1982"
+    echo "slara   - Association Rule Analysis"
+    echo "stats   - Aircraft Accidents in the US since 1982 - limited"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION=${APPLICATION}
@@ -75,10 +77,11 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 if [ "${APPLICATION}" = "all" ]; then
-    ( ./scripts/run_create_image.sh ae1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh pd1982 ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh slara  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh stats  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh ae1982  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh members ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh pd1982  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh slara   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh stats   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     goto END_OF_SCRIPT
 else
     if [ "${APPLICATION}" = "stats" ]; then

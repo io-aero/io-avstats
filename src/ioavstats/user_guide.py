@@ -19,11 +19,6 @@ LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 # Create the generic footer section.
 # ------------------------------------------------------------------
 def _generic_footer_section() -> str:
-    """Create the generic footer section.
-
-    Returns:
-        str: Generated footer section.
-    """
     return ""
 
 
@@ -31,14 +26,6 @@ def _generic_footer_section() -> str:
 # Create the generic header section.
 # ------------------------------------------------------------------
 def _generic_header_section(header: str) -> str:
-    """Create the generic header section.
-
-    Args:
-        header (str): Header.
-
-    Returns:
-        str: Generated header section.
-    """
     return f"""
 #### **{header}**
 

@@ -123,10 +123,11 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "========================================================="
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "ae1982 - Aircraft Accidents in the US since 1982"
-        echo "pd1982 - Profiling Data for the US since 1982"
-        echo "slara  - Association Rule Analysis"
-        echo "stats  - Aircraft Accidents in the US since 1982 - limited"
+        echo "ae1982  - Aircraft Accidents in the US since 1982"
+        echo "members - Members Only Area"
+        echo "pd1982  - Profiling Data for the US since 1982"
+        echo "slara   - Association Rule Analysis"
+        echo "stats   - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -270,19 +271,23 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com --server.port 8501 -- --mode Std ); then
             exit 255
         fi
-    elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
+    elif [ "${IO_AVSTATS_APPLICATION}" = "members" ]; then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8598 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "pd1982" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/pd1982.py --server.port 8502 ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8502 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "slara" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/slara.py --server.port 8503 ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8503 ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
+        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8599 ); then
             exit 255
         fi
     fi

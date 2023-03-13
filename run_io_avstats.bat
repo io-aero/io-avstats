@@ -126,10 +126,11 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo =========================================================
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
-        echo ae1982 - Aircraft Accidents in the US since 1982
-        echo pd1982 - Profiling Data for the US since 1982
-        echo slara  - Association Rule Analysis
-        echo stats  - Aircraft Accidents in the US since 1982 - limited
+        echo ae1982  - Aircraft Accidents in the US since 1982
+        echo members - Members Only Area
+        echo pd1982  - Profiling Data for the US since 1982
+        echo slara   - Association Rule Analysis
+        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -186,10 +187,11 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo ae1982 - Aircraft Accidents in the US since 1982
-        echo pd1982 - Profiling Data for the US since 1982
-        echo slara  - Association Rule Analysis
-        echo stats  - Aircraft Accidents in the US since 1982 - limited
+        echo ae1982  - Aircraft Accidents in the US since 1982
+        echo members - Members Only Area
+        echo pd1982  - Profiling Data for the US since 1982
+        echo slara   - Association Rule Analysis
+        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -539,7 +541,17 @@ rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["ae1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py  --server.port 8501 -- --mode Std
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.address %IO_AVSTATS_APPLICATION%.io-aero.com --server.port 8501 -- --mode Std
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
+    )
+
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["members"] (
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.address %IO_AVSTATS_APPLICATION%.io-aero.com --server.port 8598
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -549,7 +561,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8502
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.address %IO_AVSTATS_APPLICATION%.io-aero.com --server.port 8502
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -559,7 +571,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["slara"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8503
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.address %IO_AVSTATS_APPLICATION%.io-aero.com --server.port 8503
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -569,7 +581,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["stats"] (
-        pipenv run streamlit run src\ioavstats\ae1982.py --server.port 8599
+        pipenv run streamlit run src\ioavstats\ae1982.py --server.address %IO_AVSTATS_APPLICATION%.io-aero.com --server.port 8599
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%

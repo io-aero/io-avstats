@@ -15,7 +15,7 @@ export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
 export IO_AVSTATS_KEYCLOAK_VERSION=latest
 
-export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5433
+export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5442
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
@@ -37,6 +37,7 @@ export IO_AVSTATS_POSTGRES_VERSION=latest
 
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
 export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
+export IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS=8598
 export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
 export IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=8503
 export IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8599
@@ -126,6 +127,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
     docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
+    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
     docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
     docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
     docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
@@ -134,6 +136,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     echo ............................................................. before images:
     docker images
     docker images -q --filter "reference=ioaero/ae1982:latest"             | grep -q . && docker rmi --force ioaero/ae1982:latest
+    docker images -q --filter "reference=ioaero/members:latest"            | grep -q . && docker rmi --force ioaero/members:latest
     docker images -q --filter "reference=ioaero/pd1982:latest"             | grep -q . && docker rmi --force ioaero/pd1982:latest
     docker images -q --filter "reference=ioaero/slara:latest"              | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"              | grep -q . && docker rmi --force ioaero/stats:latest
@@ -156,6 +159,7 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
     docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
+    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
     docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
     docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
     docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
@@ -164,6 +168,7 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     echo ............................................................. before images:
     docker images
     docker images -q --filter "reference=ioaero/ae1982:latest"             | grep -q . && docker rmi --force ioaero/ae1982:latest
+    docker images -q --filter "reference=ioaero/members:latest"            | grep -q . && docker rmi --force ioaero/members:latest
     docker images -q --filter "reference=ioaero/pd1982:latest"             | grep -q . && docker rmi --force ioaero/pd1982:latest
     docker images -q --filter "reference=ioaero/slara:latest"              | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"              | grep -q . && docker rmi --force ioaero/stats:latest
@@ -184,6 +189,7 @@ elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
     docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
     docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
+    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
     docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
     docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
     docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats

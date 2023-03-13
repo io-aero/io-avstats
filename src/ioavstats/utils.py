@@ -53,7 +53,7 @@ def get_args() -> str:
 # -----------------------------------------------------------------------------
 # Authentication and authorization check.
 # -----------------------------------------------------------------------------
-def has_access(app_id:str) -> str:
+def has_access(app_id: str) -> str:
     """Authentication and authorization check."""
 
     keycloak = login(
@@ -64,22 +64,19 @@ def has_access(app_id:str) -> str:
 
     if not keycloak.authenticated:
         if "KEYCLOAK" in st.session_state:
-            st.error(
-                f"**Error**: The login has failed - client_id='{app_id}'."
-            )
+            st.error(f"**Error**: The login has failed - client_id='{app_id}'.")
         else:
             st.session_state["KEYCLOAK"] = "KEYCLOAK"
         st.stop()
 
     if (resource_access := keycloak.user_info.get("resource_access")) is None:
+        # pylint: disable=line-too-long
         st.error(
             "**Error**: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly."
         )
         st.stop()
     elif (client_access := resource_access.get(app_id)) is None:
-        st.error(
-            "**Error**: You have no permission to access this application."
-        )
+        st.error("**Error**: You have no permission to access this application.")
         del st.session_state["KEYCLOAK"]
         st.stop()
     elif app_id + "-access" not in client_access.get("roles", []):

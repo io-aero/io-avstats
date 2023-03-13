@@ -57,7 +57,7 @@ def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
     keycloak = login(
-        url="http://auth.localhost:8080",
+        url="http://auth.io-aero.com:80",
         realm="IO-Aero",
         client_id=app_id,
     )

@@ -53,7 +53,7 @@ def get_args() -> str:
 # -----------------------------------------------------------------------------
 # Authentication and authorization check.
 # -----------------------------------------------------------------------------
-def has_access(app_id: str) -> str:
+def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
     keycloak = login(

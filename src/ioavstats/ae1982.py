@@ -694,7 +694,7 @@ You are welcome to request the use of the free full version of this application 
 The **ae1982** application allows you to perform data analysis tasks on aviation accident and incident data provided by 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
 The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating 
-every civil aviation accident in the United States and significant accidents in other modes of transportation and railroad, 
+every civil aviation accident in the United States and significant accidents in other modes of transportation – railroad, 
 highway, marine and pipeline.
 For each aviation accident and incident, the NTSB provides the relevant data in the form of MS Access databases.
 
@@ -844,9 +844,9 @@ ev_id          ev_year    aircraft_key    eventsoe_no
 ##### Data basis
 
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
-- **Forced landing**: Aircraft in degraded control state AND Aircraft is pitch/roll controllable
-- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable AND Aircraft in aerodynamic spin or stall
-- **Terrain collision avoidance**: Aircraft altitude too low AND Aircraft is pitch/roll controllable AND Aircraft can climb
+- **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
+- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
+- **Terrain collision avoidance**: Aircraft altitude too low ? Aircraft is pitch/roll controllable ? Aircraft can climb
 
 - **not available**: None of the criteria listed above
 """
@@ -862,18 +862,18 @@ ev_id          ev_year    aircraft_key    eventsoe_no
             text += """
 ##### Data basis
 
-- **Aerodynamic spin / stall**: [Angle of attack OR Aerodynamic stall/spin OR (Loss of control in flight AND Stall in narrative)] AND NOT Controlled flight into terrain/obj (CFIT) AND NOT Collision avoidance alert
+- **Aerodynamic spin / stall**: [Angle of attack ? Aerodynamic stall/spin ? (Loss of control in flight ? “Stall in narrative”)] ?¬Controlled flight into terrain/obj (CFIT) ?¬Collision avoidance alert
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
-- **Aircraft can climb**: (Aircraft power plant OR Fuel system OR Engine out control OR Ice/rain protection system OR Fuel OR Emergency descent OR Fuel contamination OR Fuel exhaustion OR Fuel related OR Fuel starvation OR Loss of engine power (partial) OR Loss of engine power (total) OR Loss of lift OR Off field or emergency landing OR Powerplant/sys comp malf/fail OR Uncontained engine failure OR Main rotor system OR Propeller system) AND Aerodynamic stall/spin
-- **Aircraft has degraded control failure**: (Aircraft power plant OR Fuel system OR Engine out control OR Ice/rain protection system OR Fuel OR Emergency descent OR Fuel contamination OR Fuel exhaustion OR Fuel related OR Fuel starvation OR Loss of engine power (partial) OR Loss of engine power (total) OR Loss of lift OR Off field or emergency landing OR Powerplant/sys comp malf/fail OR Uncontained engine failure OR Main rotor system OR Propeller system) AND Attitude is controllable
-- **Altitude too low**: [(Object/animal/substance AND NOT Birdstrike) OR Terrain OR Altitude OR Descent rate OR Descent/approach/glide path OR Approach-IFR final approach OR Initial climb OR Maneuvering-low alt flying OR Collision avoidance alert OR Controlled flight into terr/obj (CFIT) OR Low altitude operation/event] AND NOT  Mid-air collision AND NOT  Aerodynamic stall/spin
-- **Attitude is controllable**: (Conditions/weather phenomena (general) OR Turbulence OR Dust devil/whirlwind OR Microburst OR Updraft OR Aircraft wake turb encounter OR Downdraft OR Gusts OR High wind OR Windshear OR Empennage structure OR Wing structure OR Conducive to structural icing OR Aircraft structural failure OR Flight control sys malf/fail OR Mast bumping OR Structural icing OR Part(s) separation from AC OR CG or Weight Distribution)
-- **Forced landing**: Aircraft in degraded control state AND Aircraft is pitch/roll controllable
+- **Aircraft can climb**: ¬(Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? ¬ “Aerodynamic stall/spin”
+- **Aircraft has degraded control failure**: (Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? “Attitude is controllable”
+- **Altitude too low**: [(Object/animal/substance ?¬Birdstrike) ? Terrain ? Altitude ? Descent rate ? Descent/approach/glide path ? Approach-IFR final approach ? Initial climb ? Maneuvering-low alt flying ? Collision avoidance alert ? Controlled flight into terr/obj (CFIT) ? Low altitude operation/event] ?¬ Mid-air collision ?¬ “Aerodynamic stall/spin”
+- **Attitude is controllable**: ¬(Conditions/weather phenomena (general) ? Turbulence ? Dust devil/whirlwind ? Microburst ? Updraft ? Aircraft wake turb encounter ? Downdraft ? Gusts ? High wind ? Windshear ? Empennage structure ? Wing structure ? Conducive to structural icing ? Aircraft structural failure ? Flight control sys malf/fail ? Mast bumping ? Structural icing ? Part(s) separation from AC ? CG or Weight Distribution)
+- **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
 - **Midair collision**: Accident was a mid-air collision
-- **Pilot is able to perform maneuver**: (Impairment/incapacitation OR Visual function)
-- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable AND Aircraft in aerodynamic spin or stall
+- **Pilot is able to perform maneuver**: ¬(Impairment/incapacitation ? Visual function)
+- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
 - **Stall in narrative**: Stall is mentioned in the narrative.
-- **Terrain collision avoidance**: Aircraft altitude too low AND Aircraft is pitch/roll controllable AND Aircraft can climb
+- **Terrain collision avoidance**: Aircraft altitude too low ? Aircraft is pitch/roll controllable ? Aircraft can climb
 
 - **not available**: None of the criteria listed above
 """
@@ -1032,7 +1032,7 @@ This task provides the data of the underlying database view **io_app_ae1982** in
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('Ctrl + F') to bring up the search bar, and using the search bar to filter data.
+- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
     """
 
@@ -1112,7 +1112,7 @@ def _get_user_guide_years_chart_footer(
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('Ctrl + F') to bring up the search bar, 
+- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, 
 and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
         """

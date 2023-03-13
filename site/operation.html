@@ -2,99 +2,99 @@
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
-    
+
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
-      
+
         <meta name="description" content="Aviation Event Statistics">
-      
-      
+
+
         <meta name="author" content="IO-Aero Team">
-      
-      
+
+
         <link rel="canonical" href="https://io-aero.com/operation.html">
-      
-      
+
+
         <link rel="prev" href="config_logging.html">
-      
-      
+
+
         <link rel="next" href="how_to_add_ntsb_accident_files.html">
-      
+
       <link rel="icon" href="img/IO-Aero_Favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.1">
-    
-    
-      
-        <title>Operation - IO-AVSTATS - Aviation Event Statistics</title>
-      
-    
-    
-      <link rel="stylesheet" href="assets/stylesheets/main.402914a4.min.css">
-      
-        
-        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
-      
-      
 
-    
-    
-    
-      
-        
-        
+
+
+        <title>Operation - IO-AVSTATS - Aviation Event Statistics</title>
+
+
+
+      <link rel="stylesheet" href="assets/stylesheets/main.402914a4.min.css">
+
+
+        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
+
+
+
+
+
+
+
+
+
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
-    
-    
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
-    
-      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
-    
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
 
-    
-    
-    
+
+
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+
   </head>
-  
-  
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
-  
-    
-    
+
+
+
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
-      
-        
+
+
         <a href="#operation" class="md-skip">
           Skip to content
         </a>
-      
+
     </div>
     <div data-md-component="announce">
-      
-    </div>
-    
-    
-      
 
-  
+    </div>
+
+
+
+
+
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
-      
+
   <img src="img/IO-Aero_Favicon.png" alt="logo">
 
     </a>
@@ -110,16 +110,16 @@
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
-            
+
               Operation
-            
+
           </span>
         </div>
       </div>
     </div>
-    
-    
-    
+
+
+
       <label class="md-header__button md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
@@ -133,14 +133,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
-        
+
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
-      
+
         <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
+
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -154,12 +154,12 @@
     </div>
   </div>
 </div>
-    
-    
+
+
       <div class="md-header__source">
         <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
-    
+
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
@@ -167,43 +167,43 @@
   </div>
 </a>
       </div>
-    
+
   </nav>
-  
+
 </header>
-    
+
     <div class="md-container" data-md-component="container">
-      
-      
-        
-          
-        
-      
+
+
+
+
+
+
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
-          
-            
-              
+
+
+
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    
+
 
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
-      
+
   <img src="img/IO-Aero_Favicon.png" alt="logo">
 
     </a>
     IO-AVSTATS - Aviation Event Statistics
   </label>
-  
+
     <div class="md-nav__source">
       <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
-    
+
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
@@ -211,731 +211,731 @@
   </div>
 </a>
     </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-      
 
-  
-  
-  
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="index.html" class="md-nav__link">
         Home
       </a>
     </li>
-  
 
-    
-      
-      
-      
 
-  
-  
-  
-    
+
+
+
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
+
+
+
+
       <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-      
-      
-      
+
+
+
         <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
           Setup
           <span class="md-nav__icon md-icon"></span>
         </label>
-      
+
       <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Setup
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="setup_requirements.html" class="md-nav__link">
         Requirements
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="setup_installation.html" class="md-nav__link">
         Installation
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
-    
+
+
+
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
+
+
+
+
       <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
-      
-      
-      
+
+
+
         <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
           Configuration
           <span class="md-nav__icon md-icon"></span>
         </label>
-      
+
       <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2_3">
           <span class="md-nav__icon md-icon"></span>
           Configuration
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="config_io_avstats.html" class="md-nav__link">
         IO-AVSTATS
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="config_logging.html" class="md-nav__link">
         Logging
       </a>
     </li>
-  
 
-            
-          
+
+
+
         </ul>
       </nav>
     </li>
-  
 
-            
-          
+
+
+
         </ul>
       </nav>
     </li>
-  
 
-    
-      
-      
-      
 
-  
-  
-    
-  
-  
+
+
+
+
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active">
-      
+
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
+
+
+
+
+
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Operation
           <span class="md-nav__icon md-icon"></span>
         </label>
-      
+
       <a href="operation.html" class="md-nav__link md-nav__link--active">
         Operation
       </a>
-      
-        
+
+
 
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
+
+
+
+
+
+
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
+
         <li class="md-nav__item">
   <a href="#1-detailed-task-list" class="md-nav__link">
     1. Detailed task list
   </a>
-  
+
     <nav class="md-nav" aria-label="1. Detailed task list">
       <ul class="md-nav__list">
-        
+
           <li class="md-nav__item">
   <a href="#11-c_d_s-create-the-postgresql-database-schema" class="md-nav__link">
     1.1 c_d_s - Create the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#12-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
     1.2 c_l_l - Correct decimal US latitudes and longitudes
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#13-c_p_d-cleansing-postgresql-data" class="md-nav__link">
     1.3 c_p_d - Cleansing PostgreSQL data
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#14-d_d_f-delete-the-postgresql-database-files" class="md-nav__link">
     1.4 d_d_f - Delete the PostgreSQL database files
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#15-d_d_s-drop-the-postgresql-database-schema" class="md-nav__link">
     1.5 d_d_s - Drop the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#16-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
     1.6 d_n_a - Download a NTSB MS Access database file
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#17-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
     1.7 d_s_f - Download basic simplemaps files
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#18-d_z_f-download-the-zip-code-database-file" class="md-nav__link">
     1.8 d_z_f - Download the ZIP Code Database file
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#19-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
     1.9 l_c_d - Load data from a correction file into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#110-l_c_s-load-country-and-state-data-into-postgresql" class="md-nav__link">
     1.10 l_c_s - Load country and state data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#111-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
     1.11 l_n_a - Load NTSB MS Access database data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#112-l_n_s-load-ntsb-ms-excel-statistic-data-into-postgresql" class="md-nav__link">
     1.12 l_n_s - Load NTSB MS Excel statistic data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#113-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
     1.13 l_s_d - Load simplemaps data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#114-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
     1.14 l_z_d - Load ZIP Code Database data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#115-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
     1.15 r_d_s - Refresh the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#116-s_d_c-set-up-the-postgresql-database-container" class="md-nav__link">
     1.16 s_d_c - Set up the PostgreSQL database container
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#117-u_d_s-update-the-postgresql-database-schema" class="md-nav__link">
     1.17 u_d_s - Update the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#118-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
     1.18 v_n_d - Verify selected NTSB data
   </a>
-  
+
 </li>
-        
+
       </ul>
     </nav>
-  
+
 </li>
-      
+
         <li class="md-nav__item">
   <a href="#2-first-installation" class="md-nav__link">
     2. First installation
   </a>
-  
+
 </li>
-      
+
         <li class="md-nav__item">
   <a href="#3-regular-updates" class="md-nav__link">
     3. Regular updates
   </a>
-  
+
 </li>
-      
+
     </ul>
-  
+
 </nav>
-      
+
     </li>
-  
 
-    
-      
-      
-      
 
-  
-  
-  
-    
+
+
+
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
+
+
+
+
       <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-      
-      
-      
+
+
+
         <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
           How to ...
           <span class="md-nav__icon md-icon"></span>
         </label>
-      
+
       <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           How to ...
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
         ... add NTSB accident files
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
         ... create a new Streamlit app
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="how_to_setup_aws_instance.html" class="md-nav__link">
         ... set up an AWS instance
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
         ... update IO-AVSTATS in AWS
       </a>
     </li>
-  
 
-            
-          
+
+
+
         </ul>
       </nav>
     </li>
-  
 
-    
-      
-      
-      
 
-  
-  
-  
-    
+
+
+
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
+
+
+
+
       <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-      
-      
-      
+
+
+
         <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
           Reconciliation
           <span class="md-nav__icon md-icon"></span>
         </label>
-      
+
       <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Reconciliation
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
         NTSB vs. IO-AVSTATS-DB
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="data_reconc_event_related.html" class="md-nav__link">
         Event-related
       </a>
     </li>
-  
 
-            
-          
-            
-              
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="data_reconc_fatality_related.html" class="md-nav__link">
         Fatality-related
       </a>
     </li>
-  
 
-            
-          
+
+
+
         </ul>
       </nav>
     </li>
-  
 
-    
-      
-      
-      
 
-  
-  
-  
+
+
+
+
+
+
+
+
     <li class="md-nav__item">
       <a href="LICENSE.html" class="md-nav__link">
         License
       </a>
     </li>
-  
 
-    
+
+
   </ul>
 </nav>
                   </div>
                 </div>
               </div>
-            
-            
-              
+
+
+
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    
+
 
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
+
+
+
+
+
+
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
+
         <li class="md-nav__item">
   <a href="#1-detailed-task-list" class="md-nav__link">
     1. Detailed task list
   </a>
-  
+
     <nav class="md-nav" aria-label="1. Detailed task list">
       <ul class="md-nav__list">
-        
+
           <li class="md-nav__item">
   <a href="#11-c_d_s-create-the-postgresql-database-schema" class="md-nav__link">
     1.1 c_d_s - Create the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#12-c_l_l-correct-decimal-us-latitudes-and-longitudes" class="md-nav__link">
     1.2 c_l_l - Correct decimal US latitudes and longitudes
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#13-c_p_d-cleansing-postgresql-data" class="md-nav__link">
     1.3 c_p_d - Cleansing PostgreSQL data
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#14-d_d_f-delete-the-postgresql-database-files" class="md-nav__link">
     1.4 d_d_f - Delete the PostgreSQL database files
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#15-d_d_s-drop-the-postgresql-database-schema" class="md-nav__link">
     1.5 d_d_s - Drop the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#16-d_n_a-download-a-ntsb-ms-access-database-file" class="md-nav__link">
     1.6 d_n_a - Download a NTSB MS Access database file
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#17-d_s_f-download-basic-simplemaps-files" class="md-nav__link">
     1.7 d_s_f - Download basic simplemaps files
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#18-d_z_f-download-the-zip-code-database-file" class="md-nav__link">
     1.8 d_z_f - Download the ZIP Code Database file
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#19-l_c_d-load-data-from-a-correction-file-into-postgresql" class="md-nav__link">
     1.9 l_c_d - Load data from a correction file into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#110-l_c_s-load-country-and-state-data-into-postgresql" class="md-nav__link">
     1.10 l_c_s - Load country and state data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#111-l_n_a-load-ntsb-ms-access-database-data-into-postgresql" class="md-nav__link">
     1.11 l_n_a - Load NTSB MS Access database data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#112-l_n_s-load-ntsb-ms-excel-statistic-data-into-postgresql" class="md-nav__link">
     1.12 l_n_s - Load NTSB MS Excel statistic data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#113-l_s_d-load-simplemaps-data-into-postgresql" class="md-nav__link">
     1.13 l_s_d - Load simplemaps data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#114-l_z_d-load-zip-code-database-data-into-postgresql" class="md-nav__link">
     1.14 l_z_d - Load ZIP Code Database data into PostgreSQL
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#115-r_d_s-refresh-the-postgresql-database-schema" class="md-nav__link">
     1.15 r_d_s - Refresh the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#116-s_d_c-set-up-the-postgresql-database-container" class="md-nav__link">
     1.16 s_d_c - Set up the PostgreSQL database container
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#117-u_d_s-update-the-postgresql-database-schema" class="md-nav__link">
     1.17 u_d_s - Update the PostgreSQL database schema
   </a>
-  
+
 </li>
-        
+
           <li class="md-nav__item">
   <a href="#118-v_n_d-verify-selected-ntsb-data" class="md-nav__link">
     1.18 v_n_d - Verify selected NTSB data
   </a>
-  
+
 </li>
-        
+
       </ul>
     </nav>
-  
+
 </li>
-      
+
         <li class="md-nav__item">
   <a href="#2-first-installation" class="md-nav__link">
     2. First installation
   </a>
-  
+
 </li>
-      
+
         <li class="md-nav__item">
   <a href="#3-regular-updates" class="md-nav__link">
     3. Regular updates
   </a>
-  
+
 </li>
-      
+
     </ul>
-  
+
 </nav>
                   </div>
                 </div>
               </div>
-            
-          
-          
+
+
+
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
-                
-                  
+
+
 
 
 <h1 id="operation">Operation</h1>
 <p>Please see <a href="https://github.com/io-aero/io-avstats/blob/main/docs/operation.md" target="_blank">here</a></p>
-<p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong><code>run_io_avstats</code></strong> script. 
+<p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong><code>run_io_avstats</code></strong> script.
 The script is available in a Windows command line version and in a Linux bash shell version.</p>
 <p>The following tasks can be executed with this script:</p>
 <table>
@@ -1154,7 +1154,7 @@ Progress update 2022-11-29 14:39:43.333028 : INFO.00.006 End   Launcher.
 Progress update 2022-11-29 14:39:43.333028 : ===============================================================================.
 </code></pre></div>
 <h3 id="13-c_p_d-cleansing-postgresql-data">1.3 <strong><code>c_p_d</code></strong> - Cleansing PostgreSQL data</h3>
-<p>The task cleans up data abnormalities in the database. 
+<p>The task cleans up data abnormalities in the database.
 This includes the following activities:</p>
 <ul>
 <li>remove trailing whitespace in string data types (trimming),</li>
@@ -1209,8 +1209,8 @@ Progress update 2022-11-29 13:03:21.219372 : ===================================
 <p>This task deletes all PostgreSQL database files.
 The execution requires administration rights.
 Subsequently, the PostgreSQL database must be completely rebuilt.</p>
-<p><strong>Tip</strong>: The administration password is required to use the administration rights. 
-This can be difficult with the Windows operating system, as there seems to be no functionality to set the administration password. 
+<p><strong>Tip</strong>: The administration password is required to use the administration rights.
+This can be difficult with the Windows operating system, as there seems to be no functionality to set the administration password.
 The use of the Windows Subsystem for Linux can help here. </p>
 <h3 id="15-d_d_s-drop-the-postgresql-database-schema">1.5 <strong><code>d_d_s</code></strong> - Drop the PostgreSQL database schema</h3>
 <p>Successful execution of this task requires that no other process uses the database defined with the <strong><code>postgres_dbname</code></strong> parameter.
@@ -1838,7 +1838,7 @@ PostgreSQL
 Docker create io_avstats_db_dev_container (PostgreSQL latest)
 Docker network io_avstats_db_dev_net already existing
 93a1342e70d367bee07fa9b021293324d7ce04a8113563a3d995d63f9d5b6172
-Docker start io_avstats_db_dev_container (PostgreSQL ) ...
+Docker start io_avstats_db_dev_container (PostgreSQL) ...
 io_avstats_db_dev_container
 NETWORK ID     NAME                    DRIVER    SCOPE
 6c9fa25a23dc   AVSTATS_POSTGRES_NET    bridge    local
@@ -2041,50 +2041,50 @@ Progress update 2022-11-29 14:58:12.402730 : ===================================
 
 
 
-                
+
               </article>
             </div>
-          
-          
+
+
         </div>
-        
+
       </main>
-      
+
         <footer class="md-footer">
-  
+
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
-  
+
     <div class="md-copyright__highlight">
       Copyright &copy;2022, IO-Aero.
     </div>
-  
-  
+
+
 </div>
-      
+
     </div>
   </div>
 </footer>
-      
+
     </div>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    
+
     <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
-    
-    
+
+
       <script src="assets/javascripts/bundle.b78d2936.min.js"></script>
-      
+
         <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
-      
+
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-      
+
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      
+
         <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
-      
-    
+
+
   </body>
 </html>

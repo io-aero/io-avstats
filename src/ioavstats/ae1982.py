@@ -3904,20 +3904,7 @@ def _streamlit_flow() -> None:
     )
 
     if MODE_STANDARD:
-        keycloak = login(
-            url="http://localhost:8080",
-            realm="IO-Aero",
-            client_id=APP_ID,
-        )
-
-        if not keycloak.authenticated:
-            if "KEYCLOAK" in st.session_state:
-                st.error(
-                    f"**Error**: The login has failed - client_id='{APP_ID}'."
-                )
-            else:
-                st.session_state["KEYCLOAK"] = "KEYCLOAK"
-            st.stop()
+        utils.has_access(APP_ID)
 
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

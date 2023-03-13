@@ -4,7 +4,6 @@
 
 """Association Rule Analysis."""
 import datetime
-import os
 import time
 
 import numpy
@@ -22,7 +21,6 @@ from psycopg2.extensions import connection
 from pyECLAT import ECLAT  # type: ignore
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
-from streamlit_keycloak import login
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -3892,6 +3890,24 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
+    # flake8: noqa: E501
+    st.set_page_config(
+        layout="wide",
+        # pylint: disable=line-too-long
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
+        page_title=f"{APP_ID} by IO-Aero",
+    )
+
+    st.sidebar.markdown(f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)")
+
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    utils.has_access(APP_ID)
+
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")
 
@@ -3941,32 +3957,4 @@ def _streamlit_flow() -> None:
 # Program start.
 # -----------------------------------------------------------------------------
 
-# flake8: noqa: E501
-st.set_page_config(
-    layout="wide",
-    # pylint: disable=line-too-long
-    page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
-    page_title=f"{APP_ID} by IO-Aero",
-)
-
-st.sidebar.markdown(f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)")
-
-# pylint: disable=line-too-long
-st.sidebar.image(
-    "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-    width=200,
-)
-
-keycloak = login(
-    url="http://localhost:8080",
-    realm="IO-Aero",
-    client_id=APP_ID,
-)
-
-if keycloak.authenticated:
-    _streamlit_flow()
-else:
-    if "KEYCLOAK" in st.session_state:
-        st.error(f"**Error**: The login has failed - client_id='{APP_ID}'.")
-    else:
-        st.session_state["KEYCLOAK"] = "KEYCLOAK"
+_streamlit_flow()

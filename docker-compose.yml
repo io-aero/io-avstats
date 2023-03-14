@@ -23,14 +23,17 @@ services:
   # PostgreSQL Database Keycloak.
   # ------------------------------------------------------------------------------
   keycloak_db:
+    command: -p "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
     container_name: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
     environment:
       - POSTGRES_DB=${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}
       - POSTGRES_HOST_AUTH_METHOD=password
       - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}
       - POSTGRES_USER=${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}
+    expose:
+      - "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
     hostname: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-    image: postgres:${IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION}
+    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
     ports:
       - "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT}"
     restart: always
@@ -41,33 +44,32 @@ services:
   # Keycloak.
   # ------------------------------------------------------------------------------
   keycloak:
-    command: start
     container_name: ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
-    depends_on:
-      - keycloak_db
+    image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
+    restart: always
+    command: start
     environment:
-      KC_DB: postgres
-      KC_DB_PASSWORD: "${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}"
-      KC_DB_URL: "jdbc:postgresql://${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}:${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}/${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}"
-      KC_DB_USERNAME: "${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_HOSTNAME_URL: http://auth.io-aero.com:8080/
-      KC_HTTPS_CLIENT_AUTH: none
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: 0.0.0.0
-      KC_PROXY: edge
+      KC_HTTPS_CLIENT_AUTH: none
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_URL: http://auth.io-aero.com:8080/
       KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN}
-    image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
-#   ports:
-#     - "${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_KEYCLOAK_CONTAINER_PORT}"
-    restart: always
+      KC_DB: postgres
+      KC_DB_URL_HOST: "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}"
+      KC_DB_URL_PORT: "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
+      KC_DB_URL_DATABASE: "${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}"
+      KC_DB_USERNAME: "${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
+      KC_DB_PASSWORD: "${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}"
+      KC_PROXY: edge
+    depends_on:
+      - keycloak_db
 
   # ------------------------------------------------------------------------------
   # ae1982 - Aircraft Events since 1982.
   # ------------------------------------------------------------------------------
-  app_ae1982:
+  ae1982:
     container_name: ae1982
     depends_on:
       - io_avstats_db
@@ -79,7 +81,7 @@ services:
 #  # ------------------------------------------------------------------------------
 #  # members - Members Only Area.
 #  # ------------------------------------------------------------------------------
-#  app_members:
+#  members:
 #    container_name: members
 #    depends_on:
 #      - io_avstats_db
@@ -91,7 +93,7 @@ services:
   # ------------------------------------------------------------------------------
   # pd1982 - Profiling Data since 1982.
   # ------------------------------------------------------------------------------
-  app_pd1982:
+  pd1982:
     container_name: pd1982
     depends_on:
       - io_avstats_db
@@ -103,7 +105,7 @@ services:
   # ------------------------------------------------------------------------------
   # slara - Association Rule Analysis.
   # ------------------------------------------------------------------------------
-  app_slara:
+  slara:
     container_name: slara
     depends_on:
       - io_avstats_db
@@ -115,7 +117,7 @@ services:
   # ------------------------------------------------------------------------------
   # stats - Aircraft Events since 1982.
   # ------------------------------------------------------------------------------
-  app_stats:
+  stats:
     container_name: stats
     depends_on:
       - io_avstats_db
@@ -133,12 +135,12 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
       - keycloak
-      - app_ae1982
-#     - app_members
-      - app_pd1982
-      - app_slara
-      - app_stats
+      - ae1982
+#     - members
+      - pd1982
+      - slara
+      - stats
     restart: always

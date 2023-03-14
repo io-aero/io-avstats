@@ -14,12 +14,12 @@ fi
 
 export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
 
-export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=80
+export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=80
+export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
-export IO_AVSTATS_KEYCLOAK_VERSION=latest
+export IO_AVSTATS_KEYCLOAK_VERSION=21.0.1
 
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
 
@@ -45,7 +45,6 @@ export IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="twAuk3VM2swt#Z96#zM#"
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
 export IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION=latest
 
 export IO_AVSTATS_APPLICATION=
 export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
@@ -238,7 +237,7 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # Set up the Keycloak PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
-    if ! ( .run_setup_postgresql_keycloak.sh ); then
+    if ! ( ./scripts/run_setup_postgresql_keycloak.sh ); then
         exit 255
     fi
 
@@ -246,7 +245,7 @@ elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
 # Set up the Keycloak server container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "k_s_s" ]; then
-    if ! ( .run_setup_keycloak_server.sh ); then
+    if ! ( ./scripts/run_setup_keycloak_server.sh ); then
         exit 255
     fi
 
@@ -271,7 +270,7 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com --server.port 8501 -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8501 -- --mode Std ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "members" ]; then

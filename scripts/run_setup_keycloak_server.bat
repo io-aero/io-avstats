@@ -16,11 +16,13 @@ echo ---------------------------------------------------------------------------
 echo KEYCLOAK_CONNECTION_PORT          : %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%
 echo KEYCLOAK_CONTAINER_NAME           : %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
 echo KEYCLOAK_CONTAINER_PORT           : %IO_AVSTATS_KEYCLOAK_CONTAINER_PORT%
+echo KEYCLOAK_PASSWORD_ADMIN           : "%IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN%"
 echo KEYCLOAK_USER_ADMIN               : %IO_AVSTATS_KEYCLOAK_USER_ADMIN%
 echo KEYCLOAK_VERSION                  : %IO_AVSTATS_KEYCLOAK_VERSION%
 echo POSTGRES_KEYCLOAK_CONNECTION_PORT : %IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT%
 echo POSTGRES_KEYCLOAK_CONTAINER_NAME  : %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
 echo POSTGRES_KEYCLOAK_DBNAME_ADMIN    : %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%
+echo POSTGRES_KEYCLOAK_PASSWORD_ADMIN  : %IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN%
 echo POSTGRES_KEYCLOAK_USER_ADMIN      : %IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN%
 echo --------------------------------------------------------------------------------
 echo:| TIME
@@ -39,26 +41,27 @@ rem ----------------------------------------------------------------------------
 rem PostgreSQL                                   https://hub.docker.com/_/postgres
 rem ------------------------------------------------------------------------------
 
-echo Keycloak
 echo --------------------------------------------------------------------------------
 echo Docker create %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME% (Keycloak %IO_AVSTATS_KEYCLOAK_VERSION%)
 
-set KC_DB=postgres
-set KC_DB_PASSWORD="%IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN%"
-set KC_DB_URL="jdbc:postgresql://%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%:%IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT%/%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%"
-set KC_DB_USERNAME="%IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN%"
-set KC_FEATURES=token-exchange
-set KC_HOSTNAME_STRICT=false
-
-echo KEYCLOAK_ADMIN=%IO_AVSTATS_KEYCLOAK_ADMIN%
-
-docker create -e        KEYCLOAK_ADMIN=%IO_AVSTATS_KEYCLOAK_USER_ADMIN% ^
-              -e        KEYCLOAK_ADMIN_PASSWORD=%IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN% ^
+docker create -e        KC_HTTP_ENABLED=true ^
+              -e        KC_HTTP_HOST=0.0.0.0 ^
+              -e        KC_HTTPS_CLIENT_AUTH=none ^
+              -e        KC_HOSTNAME_STRICT=false ^
+              -e        KC_HOSTNAME_URL=http://auth.io-aero.com:8080/ ^
+              -e        KEYCLOAK_ADMIN=%IO_AVSTATS_KEYCLOAK_USER_ADMIN% ^
+              -e        KEYCLOAK_ADMIN_PASSWORD="%IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN%" ^
+              -e        KC_DB=postgres ^
+              -e        KC_DB_URL_HOST="%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" ^
+              -e        KC_DB_URL_PORT="%IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT%" ^
+              -e        KC_DB_URL_DATABASE="%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" ^
+              -e        KC_DB_USERNAME="%IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN%" ^
+              -e        KC_DB_PASSWORD="%IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN%" ^
+              -e        KC_PROXY=edge ^
               --name    %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME% ^
-              -p        %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%:%IO_AVSTATS_KEYCLOAK_CONTAINER_PORT% ^
               --restart always ^
               quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION% ^
-              start-dev
+              start
 
 echo Docker start %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME% (Keycloak %O-AVSTATS_KEYCLOAK_VERSION%) ...
 docker start %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%

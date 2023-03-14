@@ -8,26 +8,25 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=80
+export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=80
+export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
-export IO_AVSTATS_KEYCLOAK_VERSION=latest
+export IO_AVSTATS_KEYCLOAK_VERSION=21.0.1
 
-export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5442
+export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
 
-export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5432
+export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
 export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
 export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="twAuk3VM2swt#Z96#zM#"
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
 export IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION=latest
 
 export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
@@ -106,7 +105,6 @@ echo "POSTGRES_KEYCLOAK_DBNAME_ADMIN    : ${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_
 echo "POSTGRES_KEYCLOAK_PASSWORD_ADMIN  : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}"
 echo "POSTGRES_KEYCLOAK_PGDATA          : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}"
 echo "POSTGRES_KEYCLOAK_USER_ADMIN      : ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
-echo "POSTGRES_KEYCLOAK_VERSION         : ${IO_AVSTATS_POSTGRES_KEYCLOAK_VERSION}"
 echo "STREAMLIT_SERVER_PORT             : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
 echo "STREAMLIT_SERVER_PORT_AE1982      : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}"
 echo "STREAMLIT_SERVER_PORT_MEMBERS     : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS}"
@@ -136,14 +134,14 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=ioaero/ae1982:latest"             | grep -q . && docker rmi --force ioaero/ae1982:latest
-    docker images -q --filter "reference=ioaero/members:latest"            | grep -q . && docker rmi --force ioaero/members:latest
-    docker images -q --filter "reference=ioaero/pd1982:latest"             | grep -q . && docker rmi --force ioaero/pd1982:latest
-    docker images -q --filter "reference=ioaero/slara:latest"              | grep -q . && docker rmi --force ioaero/slara:latest
-    docker images -q --filter "reference=ioaero/stats:latest"              | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:alpine"                     | grep -q . && docker rmi --force nginx:alpine
-    docker images -q --filter "reference=postgres:latest"                  | grep -q . && docker rmi --force postgres:latest
-    docker images -q --filter "reference=quay.io/keycloak/keycloak:latest" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:latest
+    docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
+    docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
+    docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
+    docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
+    docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
+    docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
+    docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
+    docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
     echo ............................................................. after images:
     docker images
 
@@ -168,14 +166,14 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker images -q --filter "reference=ioaero/ae1982:latest"             | grep -q . && docker rmi --force ioaero/ae1982:latest
-    docker images -q --filter "reference=ioaero/members:latest"            | grep -q . && docker rmi --force ioaero/members:latest
-    docker images -q --filter "reference=ioaero/pd1982:latest"             | grep -q . && docker rmi --force ioaero/pd1982:latest
-    docker images -q --filter "reference=ioaero/slara:latest"              | grep -q . && docker rmi --force ioaero/slara:latest
-    docker images -q --filter "reference=ioaero/stats:latest"              | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:alpine"                     | grep -q . && docker rmi --force nginx:alpine
-    docker images -q --filter "reference=postgres:latest"                  | grep -q . && docker rmi --force postgres:latest
-    docker images -q --filter "reference=quay.io/keycloak/keycloak:latest" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:latest
+    docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
+    docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
+    docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
+    docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
+    docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
+    docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
+    docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
+    docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
     echo ............................................................. after images:
     docker images
 

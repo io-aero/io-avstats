@@ -57,7 +57,7 @@ def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
     keycloak = login(
-        url="http://auth.io-aero.com:80",
+        url="http://auth.io-aero.com:8080",
         realm="IO-Aero",
         client_id=app_id,
     )
@@ -70,16 +70,19 @@ def has_access(app_id: str) -> None:
         st.stop()
 
     if (resource_access := keycloak.user_info.get("resource_access")) is None:
+        keycloak.authenticated = False
         # pylint: disable=line-too-long
         st.error(
             "**Error**: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly."
         )
         st.stop()
     elif (client_access := resource_access.get(app_id)) is None:
+        keycloak.authenticated = False
         st.error("**Error**: You have no permission to access this application.")
         del st.session_state["KEYCLOAK"]
         st.stop()
     elif app_id + "-access" not in client_access.get("roles", []):
+        keycloak.authenticated = False
         st.error(
             "**Error**: You are missing the required role to access this application."
         )
@@ -90,18 +93,18 @@ def has_access(app_id: str) -> None:
 # Present the 'about' information.
 # ------------------------------------------------------------------
 # flake8: noqa: E501
-def present_about(pg_conn: connection, app_name: str) -> None:
+def present_about(pg_conn: connection, app_id: str) -> None:
     """Present the 'about' information.
 
     Args:
         pg_conn (connection): Database connection.
-        app_name (str): Application name.
+        app_id (str): Application name.
     """
     file_name, processed = _sql_query_last_file_name(pg_conn)
 
     st.warning(
         f"""
-IO-AVSTATS Application: **{app_name}**
+IO-AVSTATS Application: **{app_id}**
 
 Latest NTSB database: **{file_name} - {processed}**
 

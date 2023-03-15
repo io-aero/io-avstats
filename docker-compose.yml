@@ -74,8 +74,10 @@ services:
     depends_on:
       - io_avstats_db
     image: ioaero/ae1982:latest
-    ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    expose:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    # ports:
+    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
 #  # ------------------------------------------------------------------------------
@@ -86,8 +88,10 @@ services:
 #    depends_on:
 #      - io_avstats_db
 #    image: ioaero/members:latest
-#    ports:
-#      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+#     expose:
+#      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+#    # ports:
+#    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
 #    restart: always
 
   # ------------------------------------------------------------------------------
@@ -98,8 +102,10 @@ services:
     depends_on:
       - io_avstats_db
     image: ioaero/pd1982:latest
-    ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    expose:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    # ports:
+    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -110,8 +116,10 @@ services:
     depends_on:
       - io_avstats_db
     image: ioaero/slara:latest
-    ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    expose:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    # ports:
+    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -122,8 +130,10 @@ services:
     depends_on:
       - io_avstats_db
     image: ioaero/stats:latest
-    ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    expose:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    # ports:
+    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------

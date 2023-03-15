@@ -169,7 +169,11 @@ elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
     echo "............................................................ before images:"
     docker images
 
-    docker-compose up &
+    docker-compose up -d
+
+elif [ "${IO_AVSTATS_TASK}" = "logs" ]; then
+    # FIXME change servic name hardcoding to arg
+    docker-compose logs --follow load_balancer
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

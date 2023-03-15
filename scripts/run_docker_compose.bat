@@ -126,11 +126,10 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker image ls | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"        && docker rmi --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%:latest
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%"          && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
     docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
-#   docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
+    docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
     docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
     docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
     docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest

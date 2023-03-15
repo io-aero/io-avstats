@@ -9,6 +9,7 @@ import time
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
+from streamlit_keycloak import login  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -39,6 +40,58 @@ def _setup_page():
         unsafe_allow_html=True,
     )
 
+    applications = [("US Aviation Fatal Accidents", "[stats](stats.io-aero.com)")]
+
+    for app_id in ["ae1982", "pd1982", "slara"]:
+        # pylint: disable=R0801
+        keycloak = login(
+            url="http://auth.io-aero.com:8080",
+            realm="IO-Aero",
+            client_id=app_id,
+        )
+
+        if not keycloak.authenticated:
+            continue
+
+        resource_access = keycloak.user_info.get("resource_access")
+        client_access = resource_access.get(app_id)
+
+        if app_id + "-access" in client_access.get("roles", []):
+            if app_id == "ae1982":
+                applications.append(
+                    "Aviation Event Analysis",
+                    "[" + app_id + "](" + app_id + ".io-aero.com)",
+                )
+            elif app_id == "pd1982":
+                applications.append(
+                    "Database Profiling", "[" + app_id + "](" + app_id + ".io-aero.com)"
+                )
+            elif app_id == "slara":
+                applications.append(
+                    "Association Rule Analysis",
+                    "[" + app_id + "](" + app_id + ".io-aero.com)",
+                )
+            else:
+                applications.append(
+                    "Unknown Application",
+                    "[" + app_id + "](" + app_id + ".io-aero.com)",
+                )
+
+    applications.sort()
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        st.markdown("### Application")
+    with col2:
+        st.markdown("### Link")
+
+    for app_desc, app_link in applications:
+        with col1:
+            st.markdown("#### " + app_desc)
+        with col2:
+            st.markdown("#### " + app_link)
+
 
 # ------------------------------------------------------------------
 # Streamlit flow.
@@ -55,7 +108,7 @@ def _streamlit_flow() -> None:
         page_title="members by IO-Aero",
     )
 
-    st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
+    st.sidebar.markdown("## [IO-Aero](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

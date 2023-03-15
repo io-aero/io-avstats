@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""IO-AVSTATS-DB Data since 1982."""
+"""Database Profiling."""
 import datetime
 import time
 
@@ -648,8 +648,8 @@ def _setup_page():
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + 'font-weight: normal;border-radius:2%;">IO-AVSTATS-DB Data from Year '
-        + f"{FILTER_EV_YEAR_FROM} to {FILTER_EV_YEAR_TO}</p>",
+        + 'font-weight: normal;border-radius:2%;">Database Profiling - Year '
+        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -770,7 +770,9 @@ def _streamlit_flow() -> None:
         page_title="pd1982 by IO-Aero",
     )
 
-    st.sidebar.markdown(f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)")
+    col1, col2 = st.sidebar.columns(2)
+    col1.markdown("##  [IO-Aero](https://www.io-aero.com)")
+    col2.markdown("##  [Member Area](http://members.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

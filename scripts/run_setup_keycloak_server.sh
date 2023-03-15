@@ -29,9 +29,10 @@ echo ---------------------------------------------------------------------------
 
 echo "Docker stop/rm ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME} ................. before:"
 docker ps -a
-docker ps    | grep "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}" && docker stop       "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
-docker ps -a | grep "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}" && docker rm --force "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
-echo "............................................................. after:"
+docker ps    | grep "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}$" && docker stop       "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
+docker ps -a | grep "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}$" && docker rm --force "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
+
+echo "...................................................................... after:"
 docker ps -a
 
 start=$(date +%s)

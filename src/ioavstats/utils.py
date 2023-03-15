@@ -56,6 +56,7 @@ def get_args() -> str:
 def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
+    # pylint: disable=R0801
     keycloak = login(
         url="http://auth.io-aero.com:8080",
         realm="IO-Aero",

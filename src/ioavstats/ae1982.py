@@ -1797,7 +1797,7 @@ def _present_bar_chart(
             "title": {
                 "text": "Fatalities"
                 if chart_id in ["fy_fp", "fy_sfp"]
-                else EVENT_TYPE_DESC
+                else EVENT_TYPE_DESC + "s"
             }
         },
     )
@@ -1881,7 +1881,7 @@ def _present_chart_ey_aoc() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_AOC  # pylint: disable=global-statement
 
     chart_id = "ey_aoc"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by CICTT Codes"
 
     col1, col2 = st.columns([2, 1])
 
@@ -1924,7 +1924,7 @@ def _present_chart_ey_il() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_IL  # pylint: disable=global-statement
 
     chart_id = "ey_il"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Injury Levels"
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -1959,7 +1959,7 @@ def _present_chart_ey_pss() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_PSS  # pylint: disable=global-statement
 
     chart_id = "ey_pss"
-    chart_title = f"Number of Preventable {EVENT_TYPE_DESC} per Year by Safety Systems"
+    chart_title = f"Number of Preventable {EVENT_TYPE_DESC}s per Year by Safety Systems"
 
     col1, col2 = st.columns([2, 1])
 
@@ -2002,7 +2002,7 @@ def _present_chart_ey_t() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_T  # pylint: disable=global-statement
 
     chart_id = "ey_t"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Event Types"
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2037,7 +2037,7 @@ def _present_chart_ey_tlp() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_TLP  # pylint: disable=global-statement
 
     chart_id = "ey_tlp"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Top Logical Parameters"
 
     col1, col2 = st.columns([2, 1])
 
@@ -2316,7 +2316,7 @@ def _present_details() -> None:
 
         # pylint: disable=line-too-long
         st.write(
-            f"No {EVENT_TYPE_DESC.lower()} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+            f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
         )
 
         st.dataframe(DF_FILTERED)
@@ -2346,6 +2346,7 @@ def _present_map() -> None:
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
                 + 'font-weight: normal;border-radius:2%;">Map of '
                 + EVENT_TYPE_DESC
+                + "s"
                 + "</p>",
                 unsafe_allow_html=True,
             )
@@ -2475,7 +2476,7 @@ def _present_totals_chart(
                 "title": {
                     "text": "Fatalities"
                     if chart_id in ["tf_fp", "tf_sfp"]
-                    else EVENT_TYPE_DESC
+                    else EVENT_TYPE_DESC + "s"
                 }
             },
             yaxis={"title": {"text": " "}},
@@ -2533,7 +2534,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_AOC:
         _present_totals_chart(
             "te_aoc",
-            f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
+            f"Total Number of {EVENT_TYPE_DESC}s by CICTT Codes",
             _prep_data_charts_te_aoc(DF_FILTERED),
         )
 
@@ -2541,7 +2542,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_IL:
         _present_totals_chart(
             "te_il",
-            f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
+            f"Total Number of {EVENT_TYPE_DESC}s by Highest Injury Levels",
             _prep_data_charts_te_il(DF_FILTERED),
         )
 
@@ -2549,7 +2550,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_T:
         _present_totals_chart(
             "te_t",
-            f"Total Number of {EVENT_TYPE_DESC} by Event Types",
+            f"Total Number of {EVENT_TYPE_DESC}s by Event Types",
             _prep_data_charts_te_t(DF_FILTERED),
         )
 
@@ -2557,7 +2558,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_TLP:
         _present_totals_chart(
             "te_tlp",
-            f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
+            f"Total Number of {EVENT_TYPE_DESC}s  by Top Level Logical Parameters",
             _prep_data_charts_te_tlp(DF_FILTERED),
         )
 
@@ -2565,7 +2566,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_PSS:
         _present_totals_chart(
             "te_pss",
-            f"Total Number of Preventable {EVENT_TYPE_DESC} by Safety Systems",
+            f"Total Number of Preventable {EVENT_TYPE_DESC}s by Safety Systems",
             _prep_data_charts_te_pss(DF_FILTERED),
         )
 
@@ -3046,17 +3047,17 @@ def _setup_page() -> None:
     )
 
     if FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_ACC]:
-        EVENT_TYPE_DESC = "Accidents"
+        EVENT_TYPE_DESC = "Accident"
     elif FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_INC]:
-        EVENT_TYPE_DESC = "Incidents"
+        EVENT_TYPE_DESC = "Incident"
     else:
-        EVENT_TYPE_DESC = "Events"
+        EVENT_TYPE_DESC = "Event"
 
     if MODE_STANDARD:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} between '
-            + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+            + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
+            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
             unsafe_allow_html=True,
         )
     else:
@@ -3891,11 +3892,11 @@ def _streamlit_flow() -> None:
     )
 
     if MODE_STANDARD:
-        st.sidebar.markdown(
-            f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)"
-        )
+        col1, col2 = st.sidebar.columns(2)
+        col1.markdown("##  [IO-Aero](https://www.io-aero.com)")
+        col2.markdown("##  [Member Area](http://members.io-aero.com)")
     else:
-        st.sidebar.markdown("[IO-Aero Website](https://www.io-aero.com)")
+        st.sidebar.markdown("## [IO-Aero](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

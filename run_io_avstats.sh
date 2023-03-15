@@ -295,7 +295,7 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
 # Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
-    if ! ( .run_setup_postgresql_io_avstats_db.sh ); then
+    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
         exit 255
     fi
 

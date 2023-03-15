@@ -8,6 +8,7 @@ import time
 
 import numpy
 import pandas as pd
+import plotly.express as px  # type: ignore
 import psycopg2
 import streamlit as st
 import utils  # type: ignore
@@ -648,7 +649,6 @@ def _create_frequent_itemsets_eclat() -> None:
     st.write(df_table.head(20).style.background_gradient(cmap="Blues"))
 
     df_table["all"] = "Tree Map"
-    import plotly.express as px
 
     fig = px.treemap(
         df_table.head(50),
@@ -3185,8 +3185,8 @@ def _setup_page() -> None:
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + 'font-weight: normal;border-radius:2%;">Association Rule Analysis between '
-        + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+        + 'font-weight: normal;border-radius:2%;">Association Rule Analysis - Year '
+        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -3898,7 +3898,9 @@ def _streamlit_flow() -> None:
         page_title=f"{APP_ID} by IO-Aero",
     )
 
-    st.sidebar.markdown(f"## [IO-Aero Member Area [{APP_ID}]](https://www.io-aero.com)")
+    col1, col2 = st.sidebar.columns(2)
+    col1.markdown("##  [IO-Aero](https://www.io-aero.com)")
+    col2.markdown("##  [Member Area](http://members.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

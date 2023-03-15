@@ -13,7 +13,7 @@ export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
 export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
-export IO_AVSTATS_KEYCLOAK_VERSION=21.0.1
+export IO_AVSTATS_KEYCLOAK_VERSION=latest
 
 export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
@@ -119,7 +119,8 @@ echo "==========================================================================
 # Stop Docker Compose.
 # ------------------------------------------------------------------------------
 if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
-    echo "Docker Containers ........................................... before containers:"
+    echo "............................................................. before containers:"
+    docker ps
     docker ps -a
     docker ps -q --filter "name=${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
@@ -130,9 +131,10 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
     docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
     docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
-    echo ............................................................. after containers:
+    echo "............................................................ after containers:"
+    docker ps
     docker ps -a
-    echo ............................................................. before images:
+    echo "............................................................ before images:"
     docker images
     docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
     docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
@@ -142,7 +144,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
     docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
     docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
-    echo ............................................................. after images:
+    echo "............................................................ after images:"
     docker images
 
 # ------------------------------------------------------------------------------
@@ -151,49 +153,21 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
 elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker-compose down
 
-    echo "Docker Containers ........................................... before containers:"
+    echo "............................................................ after containers:"
+    docker ps
     docker ps -a
-    docker ps -q --filter "name=${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
-    docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
-    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
-    docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
-    docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
-    docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
-    echo ............................................................. after containers:
-    docker ps -a
-    echo ............................................................. before images:
-    docker images
-    docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
-    docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
-    docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
-    docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
-    docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
-    docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
-    docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
-    echo ............................................................. after images:
+    echo "............................................................ after images:"
     docker images
 
 # ------------------------------------------------------------------------------
 # Start Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
-    echo "Docker Containers ........................................... before containers:"
+    echo "............................................................ before containers:"
+    docker ps
     docker ps -a
-    docker ps -q --filter "name=${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
-    docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
-    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
-    docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
-    docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
-    docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
-    echo ............................................................. after containers:
-    docker ps -a
+    echo "............................................................ before images:"
+    docker images
 
     docker-compose up &
 

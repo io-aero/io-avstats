@@ -101,6 +101,7 @@ echo =======================================================================
 
 if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     echo Docker Containers ........................................... before containers:
+    docker ps
     docker ps -a
     docker ps       | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker stop        %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
@@ -121,6 +122,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps       | find "stats"                                         && docker stop        stats
     docker ps -a    | find "stats"                                         && docker rm  --force stats
     echo ............................................................. after containers:
+    docker ps
     docker ps -a
     echo ............................................................. before images:
     docker images
@@ -128,7 +130,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%"          && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
     docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
     docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
+#   docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
     docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
     docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
     docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest
@@ -142,71 +144,20 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     docker compose down
 
-    echo Docker Containers ........................................... before containers:
-    docker ps -a
-    docker ps -a
-    docker ps       | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker stop        %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                                        && docker stop        ae1982
-    docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
-    docker ps       | find "load_balancer"                                 && docker stop        load_balancer
-    docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
-    docker ps       | find "members"                                       && docker stop        members
-    docker ps -a    | find "members"                                       && docker rm  --force members
-    docker ps       | find "pd1982"                                        && docker stop        pd1982
-    docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
-    docker ps       | find "slara"                                         && docker stop        slara
-    docker ps -a    | find "slara"                                         && docker rm  --force slara
-    docker ps       | find "stats"                                         && docker stop        stats
-    docker ps -a    | find "stats"                                         && docker rm  --force stats
     echo ............................................................. after containers:
+    docker ps
     docker ps -a
-    echo ............................................................. before images:
-    docker images
-    docker image ls | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"        && docker rmi --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%:latest
-    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%"          && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
-    docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
-    docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:latest
-    docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
-    docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
-    docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest
-    docker image ls | find "slara"                                       && docker rmi --force ioaero/slara:latest
-    docker image ls | find "stats"                                       && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT
 )
 
 if ["%IO_AVSTATS_TASK%"] EQU ["up"] (
-    docker compose down
     echo Docker Containers ........................................... before containers:
+    docker ps
     docker ps -a
-    docker ps -a
-    docker ps       | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker stop        %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker rm  --force %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                                        && docker stop        ae1982
-    docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
-    docker ps       | find "load_balancer"                                 && docker stop        load_balancer
-    docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
-    docker ps       | find "members"                                       && docker stop        members
-    docker ps -a    | find "members"                                       && docker rm  --force members
-    docker ps       | find "pd1982"                                        && docker stop        pd1982
-    docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
-    docker ps       | find "slara"                                         && docker stop        slara
-    docker ps -a    | find "slara"                                         && docker rm  --force slara
-    docker ps       | find "stats"                                         && docker stop        stats
-    docker ps -a    | find "stats"                                         && docker rm  --force stats
-    echo ............................................................. after containers:
-    docker ps -a
+    echo ............................................................. before images:
+    docker images
 
     docker compose up
     goto END_OF_SCRIPT

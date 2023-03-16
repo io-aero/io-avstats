@@ -56,6 +56,12 @@ def get_args() -> str:
 def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
+    print(
+        str(datetime.datetime.now())
+        + f"                         - Authentication through Keycloak starts     - app_id={app_id}",
+        flush=True,
+    )
+
     # pylint: disable=R0801
     keycloak = login(
         url="http://auth.io-aero.com:8080",
@@ -64,6 +70,10 @@ def has_access(app_id: str) -> None:
     )
 
     if not keycloak.authenticated:
+        # pylint: disable=line-too-long
+        st.error(
+            "**Error**: The authentication attempt failed."
+        )
         if "KEYCLOAK" in st.session_state:
             st.error(f"**Error**: The login has failed - client_id='{app_id}'.")
         else:
@@ -88,6 +98,12 @@ def has_access(app_id: str) -> None:
             "**Error**: You are missing the required role to access this application."
         )
         st.stop()
+
+    print(
+        str(datetime.datetime.now())
+        + f"                         - Authentication through Keycloak successful - app_id={app_id}",
+        flush=True,
+    )
 
 
 # ------------------------------------------------------------------

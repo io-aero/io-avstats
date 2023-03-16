@@ -87,6 +87,7 @@ else
     if [ "${APPLICATION}" = "stats" ]; then
         export MODE=Ltd
         copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
+        copy -i Pipfile.ae1982 Pipfile.stats
     fi
     if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
         docker builder prune --all --force
@@ -129,6 +130,7 @@ done
 
 if [ "${APPLICATION}" = "stats" ]; then
     rm -f src/ioavstats/stats.py
+    rm -f Pipfile.stats
 fi
 
 echo ""

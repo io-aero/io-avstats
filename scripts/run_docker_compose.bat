@@ -37,12 +37,9 @@ set IO_AVSTATS_POSTGRES_USER_GUEST=guest
 set IO_AVSTATS_POSTGRES_VERSION=latest
 
 set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS=8598
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=8503
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8599
 
+set IO_AVSTATS_CONTAINER=
+set IO_AVSTATS_CONTAINER_DEFAULT=*
 set IO_AVSTATS_TASK=
 set IO_AVSTATS_TASK_DEFAULT=up
 
@@ -61,12 +58,36 @@ if ["%1"] EQU [""] (
     set IO_AVSTATS_TASK=%1
 )
 
+if ["%IO_AVSTATS_TASK%"] EQU ["logs"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo *             - All Containers
+        echo ae1982        - Aviation Event Analysis
+        echo io_avstats_db - Database Profiling
+        echo keycloak      - Keycloak Server
+        echo keycloak_db   - Keycloak Database
+        echo members       - IO-Aero Member Service
+        echo pd1982        - Database Profiling
+        echo slara         - Association Rule Analysis
+        echo stats         - US Aviation Fatal Accidents
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_CONTAINER="Enter the desired container [default: %IO_AVSTATS_CONTAINER_DEFAULT%] "
+
+        if ["!IO_AVSTATS_CONTAINER!"] EQU [""] (
+            set IO_AVSTATS_CONTAINER=%IO_AVSTATS_CONTAINER_DEFAULT%
+        )
+    ) else (
+        set IO_AVSTATS_CONTAINER=%2
+    )
+)
+
 echo =======================================================================
 echo Start %0
 echo -----------------------------------------------------------------------
 echo Manage a multi-container Docker application
 echo -----------------------------------------------------------------------
-echo TASK                         : %IO_AVSTATS_TASK%
+echo TASK                              : %IO_AVSTATS_TASK%
+echo CONTAINER                         : %IO_AVSTATS_CONTAINER%
 echo -----------------------------------------------------------------------
 echo KEYCLOAK_CONNECTION_PORT          : %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%
 echo KEYCLOAK_CONTAINER_NAME           : %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
@@ -90,11 +111,6 @@ echo POSTGRES_KEYCLOAK_PASSWORD_ADMIN  : %IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_
 echo POSTGRES_KEYCLOAK_PGDATA          : %IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA%
 echo POSTGRES_KEYCLOAK_USER_ADMIN      : %IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN%
 echo STREAMLIT_SERVER_PORT             : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
-echo STREAMLIT_SERVER_PORT_AE1982      : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
-echo STREAMLIT_SERVER_PORT_MEMBERS     : %IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS%
-echo STREAMLIT_SERVER_PORT_PD1982      : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
-echo STREAMLIT_SERVER_PORT_SLARA       : %IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA%
-echo STREAMLIT_SERVER_PORT_STATS       : %IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS%
 echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
@@ -149,6 +165,14 @@ if ["%IO_AVSTATS_TASK%"] EQU ["down"] (
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT
+)
+
+if ["%IO_AVSTATS_TASK%"] EQU ["logs"] (
+    if ["%IO_AVSTATS_CONTAINER%"] EQU ["*"] (
+        docker-compose logs --tail=0 --follow
+    ) else (
+        docker-compose logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
+    )
 )
 
 if ["%IO_AVSTATS_TASK%"] EQU ["up"] (

@@ -762,6 +762,13 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
+    print(
+        str(datetime.datetime.now())
+        + "                         - Start application "
+        + APP_ID,
+        flush=True,
+    )
+
     st.set_page_config(
         layout="wide",
         # flake8: noqa: E501
@@ -771,8 +778,8 @@ def _streamlit_flow() -> None:
     )
 
     col1, col2 = st.sidebar.columns(2)
-    col1.markdown("##  [IO-Aero](https://www.io-aero.com)")
-    col2.markdown("##  [Member Area](http://members.io-aero.com)")
+    col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+    col2.markdown("##  [Member Menu](http://members.io-aero.com:8080)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

@@ -76,23 +76,19 @@ services:
     image: ioaero/ae1982:latest
     expose:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-    # ports:
-    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
-#  # ------------------------------------------------------------------------------
-#  # members - Members Only Area.
-#  # ------------------------------------------------------------------------------
-#  members:
-#    container_name: members
-#    depends_on:
-#      - io_avstats_db
-#    image: ioaero/members:latest
-#     expose:
-#      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-#    # ports:
-#    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-#    restart: always
+  # ------------------------------------------------------------------------------
+  # members - Members Only Area.
+  # ------------------------------------------------------------------------------
+  members:
+    container_name: members
+    depends_on:
+      - io_avstats_db
+    image: ioaero/members:latest
+    expose:
+      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+    restart: always
 
   # ------------------------------------------------------------------------------
   # pd1982 - Profiling Data since 1982.
@@ -104,8 +100,6 @@ services:
     image: ioaero/pd1982:latest
     expose:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-    # ports:
-    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -118,8 +112,6 @@ services:
     image: ioaero/slara:latest
     expose:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-    # ports:
-    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -132,8 +124,6 @@ services:
     image: ioaero/stats:latest
     expose:
       - "${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-    # ports:
-    #   - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -149,7 +139,7 @@ services:
     depends_on:
       - keycloak
       - ae1982
-#     - members
+      - members
       - pd1982
       - slara
       - stats

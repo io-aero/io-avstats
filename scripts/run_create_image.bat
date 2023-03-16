@@ -90,6 +90,7 @@ rem > %LOG_FILE% 2>&1 (
     if ["!APPLICATION!"] EQU ["stats"]  (
         set MODE=Ltd
         copy /Y src\ioavstats\ae1982.py src\ioavstats\stats.py
+        copy /Y Pipfile.ae1982 Pipfile.stats
     )
 
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
@@ -130,6 +131,7 @@ rem > %LOG_FILE% 2>&1 (
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         del /s src\ioavstats\stats.py
+        del /s Pipfile.stats
     )
 
     :END_OF_SCRIPT

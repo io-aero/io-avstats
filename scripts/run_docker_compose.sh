@@ -35,12 +35,9 @@ export IO_AVSTATS_POSTGRES_USER_GUEST=guest
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
 export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS=8598
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA=8503
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS=8599
 
+export IO_AVSTATS_CONTAINER=
+export IO_AVSTATS_CONTAINER_DEFAULT=*
 export IO_AVSTATS_TASK=
 export IO_AVSTATS_TASK_DEFAULT=up
 
@@ -48,6 +45,7 @@ if [ -z "$1" ]; then
     echo "========================================================="
     echo "clean - Remove all containers and images"
     echo "down  - Stop  Docker Compose"
+    echo "logs  - Fetch the logs of a container"
     echo "up    - Start Docker Compose"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
@@ -61,6 +59,30 @@ else
     export IO_AVSTATS_TASK=$1
 fi
 
+if [ "${IO_AVSTATS_TASK}" = "logs" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "*             - All Containers"
+        echo "ae1982        - Aviation Event Analysis"
+        echo "io_avstats_db - Database Profiling"
+        echo "keycloak      - Keycloak Server"
+        echo "keycloak_db   - Keycloak Database"
+        echo "members       - IO-Aero Member Service"
+        echo "pd1982        - Database Profiling"
+        echo "slara         - Association Rule Analysis"
+        echo "stats         - US Aviation Fatal Accidents"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the desired container [default: ${IO_AVSTATS_CONTAINER_DEFAULT}] " IO_AVSTATS_CONTAINER
+        export IO_AVSTATS_CONTAINER=${IO_AVSTATS_CONTAINER}
+
+        if [ -z "${IO_AVSTATS_CONTAINER}" ]; then
+            export IO_AVSTATS_CONTAINER=${IO_AVSTATS_CONTAINER_DEFAULT}
+        fi
+    else
+        export IO_AVSTATS_CONTAINER=$2
+  fi
+fi
 
 echo ""
 echo "Script $0 is now running"
@@ -82,7 +104,8 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "Manage a multi-container Docker application"
 echo "--------------------------------------------------------------------------------"
-echo TASK                          : %IO_AVSTATS_TASK%
+echo "TASK                              : ${IO_AVSTATS_TASK}"
+echo "CONTAINER                         : ${IO_AVSTATS_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
 echo "KEYCLOAK_CONNECTION_PORT          : ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}"
 echo "KEYCLOAK_CONTAINER_NAME           : ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
@@ -106,17 +129,12 @@ echo "POSTGRES_KEYCLOAK_PASSWORD_ADMIN  : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWOR
 echo "POSTGRES_KEYCLOAK_PGDATA          : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}"
 echo "POSTGRES_KEYCLOAK_USER_ADMIN      : ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
 echo "STREAMLIT_SERVER_PORT             : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
-echo "STREAMLIT_SERVER_PORT_AE1982      : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}"
-echo "STREAMLIT_SERVER_PORT_MEMBERS     : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_MEMBERS}"
-echo "STREAMLIT_SERVER_PORT_PD1982      : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}"
-echo "STREAMLIT_SERVER_PORT_SLARA       : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_SLARA}"
-echo "STREAMLIT_SERVER_PORT_STATS       : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_STATS}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# Stop Docker Compose.
+# Remove all containers and images.
 # ------------------------------------------------------------------------------
 if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     echo "............................................................. before containers:"
@@ -158,6 +176,16 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
     docker ps -a
     echo "............................................................ after images:"
     docker images
+
+# ------------------------------------------------------------------------------
+# View Container Output.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "logs" ]; then
+    if [ "${IO_AVSTATS_CONTAINER}" = "*" ]; then
+        docker-compose logs --tail=0 --follow
+    else
+        docker-compose logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
+    fi
 
 # ------------------------------------------------------------------------------
 # Start Docker Compose.

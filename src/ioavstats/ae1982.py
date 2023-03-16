@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Aviation Events in the US since 1982."""
+"""Aviation Event Analysis."""
 import datetime
 import time
 from operator import itemgetter
@@ -3063,8 +3063,8 @@ def _setup_page() -> None:
     else:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">US Aviation Fatal Accidents between '
-            + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+            + 'font-weight: normal;border-radius:2%;">US Aviation Fatal Accidents - Year '
+            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
             unsafe_allow_html=True,
         )
 
@@ -3876,13 +3876,25 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
+    print(
+        str(datetime.datetime.now())
+        + "                         - Start application "
+        + APP_ID,
+        flush=True,
+    )
+
     if "MODE_STANDARD" in st.session_state:
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
         mode = utils.get_args()
-        print(f"command line argument mode={mode}")
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
+
+    print(
+        str(datetime.datetime.now())
+        + f"                         - MODE_STANDARD={MODE_STANDARD}",
+        flush=True,
+    )
 
     st.set_page_config(
         layout="wide",
@@ -3893,10 +3905,10 @@ def _streamlit_flow() -> None:
 
     if MODE_STANDARD:
         col1, col2 = st.sidebar.columns(2)
-        col1.markdown("##  [IO-Aero](https://www.io-aero.com)")
-        col2.markdown("##  [Member Area](http://members.io-aero.com)")
+        col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+        col2.markdown("##  [Member Menu](http://members.io-aero.com:8080)")
     else:
-        st.sidebar.markdown("## [IO-Aero](https://www.io-aero.com)")
+        st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

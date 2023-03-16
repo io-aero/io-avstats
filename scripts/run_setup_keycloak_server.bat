@@ -59,6 +59,7 @@ docker create -e        KC_HTTP_ENABLED=true ^
               -e        KC_DB_PASSWORD="%IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN%" ^
               -e        KC_PROXY=edge ^
               --name    %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME% ^
+              -p        %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%:%IO_AVSTATS_KEYCLOAK_CONTAINER_PORT% ^
               --restart always ^
               quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION% ^
               start

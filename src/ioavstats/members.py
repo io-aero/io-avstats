@@ -100,6 +100,13 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
+    print(
+        str(datetime.datetime.now())
+        + "                         - Start application "
+        + APP_ID,
+        flush=True,
+    )
+
     st.set_page_config(
         layout="wide",
         # flake8: noqa: E501

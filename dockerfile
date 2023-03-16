@@ -22,7 +22,7 @@ COPY .settings.io_avstats_4_dockerfile.toml ./.settings.io_avstats.toml
 COPY .streamlit/config.toml.${APP} ./.streamlit/config.toml
 COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml
 COPY Makefile ./
-COPY Pipfile ./
+COPY Pipfile.${APP} ./Pipfile
 COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml
 COPY src/ioavstats/${APP}.py ./${APP}.py
 COPY src/ioavstats/utils.py ./utils.py

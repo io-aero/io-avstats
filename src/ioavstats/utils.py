@@ -56,6 +56,7 @@ def get_args() -> str:
 def has_access(app_id: str) -> None:
     """Authentication and authorization check."""
 
+    # pylint: disable=line-too-long
     print(
         str(datetime.datetime.now())
         + f"                         - Authentication through Keycloak starts     - app_id={app_id}",
@@ -71,9 +72,7 @@ def has_access(app_id: str) -> None:
 
     if not keycloak.authenticated:
         # pylint: disable=line-too-long
-        st.error(
-            "**Error**: The authentication attempt failed."
-        )
+        st.error("**Error**: The authentication attempt failed.")
         if "KEYCLOAK" in st.session_state:
             st.error(f"**Error**: The login has failed - client_id='{app_id}'.")
         else:
@@ -99,6 +98,7 @@ def has_access(app_id: str) -> None:
         )
         st.stop()
 
+    # pylint: disable=line-too-long
     print(
         str(datetime.datetime.now())
         + f"                         - Authentication through Keycloak successful - app_id={app_id}",

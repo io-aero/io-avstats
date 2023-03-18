@@ -8,7 +8,7 @@ import time
 
 import numpy
 import pandas as pd
-import plotly.express as px  # type: ignore
+# import plotly.express as px  # type: ignore
 import psycopg2
 import streamlit as st
 import utils  # type: ignore
@@ -47,12 +47,13 @@ CHOICE_ALG_MIN_SUPPORT: float | None = None
 CHOICE_ALG_MIN_THRESHOLD: float | None = None
 CHOICE_ASSOCIATION_RULES_DETAILS: bool | None = None
 
+CHOICE_BINARY_DATA_ECLAT: bool | None = None
+CHOICE_BINARY_DATA_ONE_HOT_ENCODED: bool | None = None
+
 CHOICE_FILTER_DATA_EVENTS_SEQUENCE: bool | None = None
 CHOICE_FILTER_DATA_FINDINGS: bool | None = None
 CHOICE_FILTER_DATA_OTHER: bool | None = None
 CHOICE_FREQUENT_ITEMSETS_DETAILS: bool | None = None
-
-CHOICE_ONE_HOT_ENCODED_DETAILS: bool | None = None
 
 CHOICE_RAW_DATA_DETAILS: bool | None = None
 CHOICE_RAW_DATA_PROFILE: bool | None = None
@@ -83,14 +84,15 @@ COUNTRY_USA = "USA"
 
 DF_ASSOCIATION_RULES_APRIORI: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_ECLAT: DataFrame = DataFrame()
+DF_ASSOCIATION_RULES_ECLAT_BASE: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPGROWTH: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPMAX: DataFrame = DataFrame()
-DF_ECLAT_BINARY_DATA: DataFrame = DataFrame()
+DF_BINARY_DATA_ECLAT: DataFrame = DataFrame()
+DF_BINARY_DATA_ONE_HOT_ENCODED: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_APRIORI: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_ECLAT: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPGROWTH: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPMAX: DataFrame = DataFrame()
-DF_ONE_HOT_ENCODED_DATA: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED_ROWS = 0
 DF_RAW_DATA_UNFILTERED: DataFrame = DataFrame()
@@ -216,6 +218,115 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 START_TIME: int = 0
+
+
+# ------------------------------------------------------------------
+# Apply the algorithms.
+# ------------------------------------------------------------------
+def _apply_algorithm() -> None:
+    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+        _create_transaction_data()
+        _create_binary_data_one_hot_encoded()
+
+        if CHOICE_ALG_APRIORI:
+            _create_frequent_itemsets_apriori()
+            _apply_algorithm_apriori()
+
+        if CHOICE_ALG_FPGROWTH:
+            _create_frequent_itemsets_fpgrowth()
+            _apply_algorithm_fpgrowth()
+
+        if CHOICE_ALG_FPMAX:
+            _create_frequent_itemsets_fpmax()
+            _apply_algorithm_fpmax()
+
+    if CHOICE_ALG_ECLAT:
+        _create_transaction_data_eclat()
+        _apply_algorithm_eclat()
+        _create_frequent_itemsets_eclat()
+    #     _create_association_rules_eclat()
+
+
+# ------------------------------------------------------------------
+# Apply the Apriori Algorithm.
+# ------------------------------------------------------------------
+def _apply_algorithm_apriori() -> None:
+    global DF_ASSOCIATION_RULES_APRIORI  # pylint: disable=global-statement
+
+    _print_timestamp("_apply_algorithm_apriori() - Start")
+
+    DF_ASSOCIATION_RULES_APRIORI = association_rules(
+        DF_FREQUENT_ITEMSETS_APRIORI,
+        metric=CHOICE_ALG_METRIC,
+        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
+    )
+
+    _print_timestamp("_apply_algorithm_apriori() - End")
+
+
+# ------------------------------------------------------------------
+# Apply the Eclat Algorithm.
+# ------------------------------------------------------------------
+def _apply_algorithm_eclat() -> None:
+    global DF_ASSOCIATION_RULES_ECLAT_BASE  # pylint: disable=global-statement
+    global DF_BINARY_DATA_ECLAT  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_ECLAT  # pylint: disable=global-statement
+
+    _print_timestamp("_apply_algorithm_eclat() - Start")
+
+    eclat = ECLAT(DF_TRANSACTION_DATA_ECLAT, CHOICE_ALG_MIN_SUPPORT)
+
+    DF_BINARY_DATA_ECLAT = eclat.df_bin
+
+    items_total = eclat.df_bin.astype(int).sum(axis=0)
+    DF_ASSOCIATION_RULES_ECLAT_BASE = eclat.df_bin.astype(int).sum(axis=1)
+
+    items_transactions_gross = pd.DataFrame(
+        {"items": items_total.index, "transactions": items_total.values}
+    )
+    items_transactions_net = items_transactions_gross.loc[
+        items_transactions_gross["items"] > " "
+    ]
+    DF_FREQUENT_ITEMSETS_ECLAT = items_transactions_net.sort_values(
+        "transactions", ascending=False
+    )
+
+    _print_timestamp("_apply_algorithm_eclat() - End")
+
+
+# ------------------------------------------------------------------
+# Apply the FP-Growth Algorithm.
+# ------------------------------------------------------------------
+def _apply_algorithm_fpgrowth() -> None:
+    global DF_ASSOCIATION_RULES_FPGROWTH  # pylint: disable=global-statement
+
+    _print_timestamp("_apply_algorithm_fpgrowth() - Start")
+
+    DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
+        DF_FREQUENT_ITEMSETS_FPGROWTH,
+        metric=CHOICE_ALG_METRIC,
+        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
+    )
+
+    _print_timestamp("_apply_algorithm_fpgrowth() - End")
+
+
+# ------------------------------------------------------------------
+# Apply the FP-Max Algorithm.
+# ------------------------------------------------------------------
+def _apply_algorithm_fpmax() -> None:
+    global DF_ASSOCIATION_RULES_FPMAX  # pylint: disable=global-statement
+
+    _print_timestamp("_apply_algorithm_fpmax() - Start")
+
+    DF_ASSOCIATION_RULES_FPMAX = association_rules(
+        DF_FREQUENT_ITEMSETS_FPMAX,
+        metric=CHOICE_ALG_METRIC,
+        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
+        support_only=True,
+    )
+
+    _print_timestamp("_apply_algorithm_fpmax() - End")
 
 
 # ------------------------------------------------------------------
@@ -496,23 +607,7 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
     return dataframe.to_csv().encode("utf-8")
 
 
-# ------------------------------------------------------------------
-# Create association rules with the Apriori Algorithm.
-# ------------------------------------------------------------------
-def _create_association_rules_apriori() -> None:
-    global DF_ASSOCIATION_RULES_APRIORI  # pylint: disable=global-statement
-
-    _print_timestamp("_create_association_rules_apriori() - Start")
-
-    DF_ASSOCIATION_RULES_APRIORI = association_rules(
-        DF_FREQUENT_ITEMSETS_APRIORI,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-    )
-
-    _print_timestamp("_create_association_rules_apriori() - End")
-
-
+# wwe
 # ------------------------------------------------------------------
 # # Create association rules with the Eclat Algorithm.
 # # ------------------------------------------------------------------
@@ -530,40 +625,21 @@ def _create_association_rules_apriori() -> None:
 #     )
 #
 #     _print_timestamp("_create_association_rules_eclat() - End")
-#
-#
-# ------------------------------------------------------------------
-# Create association rules with the FP-Growth Algorithm.
-# ------------------------------------------------------------------
-def _create_association_rules_fpgrowth() -> None:
-    global DF_ASSOCIATION_RULES_FPGROWTH  # pylint: disable=global-statement
 
-    _print_timestamp("_create_association_rules_fpgrowth() - Start")
 
-    DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
-        DF_FREQUENT_ITEMSETS_FPGROWTH,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
+# ------------------------------------------------------------------
+# Create binary data one-hot encoded.
+# ------------------------------------------------------------------
+def _create_binary_data_one_hot_encoded() -> None:
+    global DF_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
+
+    _print_timestamp("_create_binary_data_one_hot_encoded() - Start")
+
+    DF_BINARY_DATA_ONE_HOT_ENCODED = (
+        DF_TRANSACTION_DATA["items"].str.join("|").str.get_dummies()
     )
 
-    _print_timestamp("_create_association_rules_fpgrowth() - End")
-
-
-# ------------------------------------------------------------------
-# Create association rules with the FP-Max Algorithm.
-# ------------------------------------------------------------------
-def _create_association_rules_fpmax() -> None:
-    global DF_ASSOCIATION_RULES_FPMAX  # pylint: disable=global-statement
-
-    _print_timestamp("_create_association_rules_fpmax() - Start")
-
-    DF_ASSOCIATION_RULES_FPMAX = association_rules(
-        DF_FREQUENT_ITEMSETS_FPMAX,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-    )
-
-    _print_timestamp("_create_association_rules_fpmax() - End")
+    _print_timestamp("_create_binary_data_one_hot_encoded() - End")
 
 
 # ------------------------------------------------------------------
@@ -611,7 +687,9 @@ def _create_frequent_itemsets_apriori() -> None:
     _print_timestamp("_create_frequent_itemsets_apriori() - Start")
 
     DF_FREQUENT_ITEMSETS_APRIORI = apriori(
-        DF_ONE_HOT_ENCODED_DATA, min_support=CHOICE_ALG_MIN_SUPPORT, use_colnames=True
+        DF_BINARY_DATA_ONE_HOT_ENCODED,
+        min_support=CHOICE_ALG_MIN_SUPPORT,
+        use_colnames=True,
     )
 
     if DF_FREQUENT_ITEMSETS_APRIORI.empty:
@@ -628,56 +706,42 @@ def _create_frequent_itemsets_apriori() -> None:
 # Create frequent itemsets with the Eclat Algorithm.
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_eclat() -> None:
-    global DF_FREQUENT_ITEMSETS_ECLAT  # pylint: disable=global-statement
-
     _print_timestamp("_create_frequent_itemsets_eclat() - Start")
 
-    eclat = ECLAT(DF_TRANSACTION_DATA_ECLAT, CHOICE_ALG_MIN_SUPPORT)
-
-    st.dataframe(eclat.df_bin.iloc[:100, :100])
-
-    items_total = eclat.df_bin.astype(int).sum(axis=0)
-
-    items_per_transaction = eclat.df_bin.astype(int).sum(axis=1)
-
-    df = DataFrame({"items": items_total.index, "transactions": items_total.values})
-
-    st.dataframe(df)
-
-    df_table = df.sort_values("transactions", ascending=False)
-
-    st.write(df_table.head(20).style.background_gradient(cmap="Blues"))
-
-    df_table["all"] = "Tree Map"
-
-    fig = px.treemap(
-        df_table.head(50),
-        path=["all", "items"],
-        values="transactions",
-        color=df_table["transactions"].head(50),
-        hover_data=["items"],
-        color_continuous_scale="Blues",
-    )
-
-    fig.show()
-
-    st.stop()
-
-    dict_finally_index, dict_finally_support = eclat.fit()
-
-    st.write(dict_finally_index)
-
-    st.write(dict_finally_support)
-
-    st.stop()
-
-    DF_FREQUENT_ITEMSETS_ECLAT = eclat.fit()
-
-    st.dataframe(DF_FREQUENT_ITEMSETS_ECLAT)
-
-    st.stop()
-
-    #    print(f"wwe DF_FREQUENT_ITEMSETS_ECLAT={DF_FREQUENT_ITEMSETS_ECLAT}")
+    # st.dataframe(df)
+    #
+    # df_table = df.sort_values("transactions", ascending=False)
+    #
+    # st.write(df_table.head(20).style.background_gradient(cmap="Blues"))
+    #
+    # df_table["all"] = "Tree Map"
+    #
+    # fig = px.treemap(
+    #     df_table.head(50),
+    #     path=["all", "items"],
+    #     values="transactions",
+    #     color=df_table["transactions"].head(50),
+    #     hover_data=["items"],
+    #     color_continuous_scale="Blues",
+    # )
+    #
+    # fig.show()
+    #
+    # st.stop()
+    #
+    # dict_finally_index, dict_finally_support = eclat.fit()
+    #
+    # st.write(dict_finally_index)
+    #
+    # st.write(dict_finally_support)
+    #
+    # st.stop()
+    #
+    # DF_FREQUENT_ITEMSETS_ECLAT = eclat.fit()
+    #
+    # st.dataframe(DF_FREQUENT_ITEMSETS_ECLAT)
+    #
+    # st.stop()
 
     # wwe
     # if DF_FREQUENT_ITEMSETS_ECLAT.empty:
@@ -699,7 +763,9 @@ def _create_frequent_itemsets_fpgrowth() -> None:
     _print_timestamp("_create_frequent_itemsets_fpgrowth() - Start")
 
     DF_FREQUENT_ITEMSETS_FPGROWTH = fpgrowth(
-        DF_ONE_HOT_ENCODED_DATA, min_support=CHOICE_ALG_MIN_SUPPORT, use_colnames=True
+        DF_BINARY_DATA_ONE_HOT_ENCODED,
+        min_support=CHOICE_ALG_MIN_SUPPORT,
+        use_colnames=True,
     )
 
     if DF_FREQUENT_ITEMSETS_FPGROWTH.empty:
@@ -721,7 +787,9 @@ def _create_frequent_itemsets_fpmax() -> None:
     _print_timestamp("_create_frequent_itemsets_fpmax() - Start")
 
     DF_FREQUENT_ITEMSETS_FPMAX = fpmax(
-        DF_ONE_HOT_ENCODED_DATA, min_support=CHOICE_ALG_MIN_SUPPORT, use_colnames=True
+        DF_BINARY_DATA_ONE_HOT_ENCODED,
+        min_support=CHOICE_ALG_MIN_SUPPORT,
+        use_colnames=True,
     )
 
     if DF_FREQUENT_ITEMSETS_FPMAX.empty:
@@ -735,21 +803,6 @@ def _create_frequent_itemsets_fpmax() -> None:
 
 
 # ------------------------------------------------------------------
-# Apply one-hot encoding.
-# ------------------------------------------------------------------
-def _create_one_hot_encoded_data() -> None:
-    global DF_ONE_HOT_ENCODED_DATA  # pylint: disable=global-statement
-
-    _print_timestamp("_create_one_hot_encoded_data() - Start")
-
-    DF_ONE_HOT_ENCODED_DATA = (
-        DF_TRANSACTION_DATA["items"].str.join("|").str.get_dummies()
-    )
-
-    _print_timestamp("_create_one_hot_encoded_data() - End")
-
-
-# ------------------------------------------------------------------
 # Create the transaction dataframe.
 # ------------------------------------------------------------------
 def _create_transaction_data() -> None:
@@ -760,152 +813,152 @@ def _create_transaction_data() -> None:
     if ITEMS_FROM_ES_EVENTSOE_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_eventsoe_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_eventsoe_codes']"
     else:
         if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_eventsoe_false_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_eventsoe_false_codes']"
         if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_eventsoe_true_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_eventsoe_true_codes']"
 
     if ITEMS_FROM_ES_OCCURRENCE_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_occurrence_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_occurrence_codes']"
     else:
         if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_occurrence_false_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_occurrence_false_codes']"
         if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_occurrence_true_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_occurrence_true_codes']"
 
     if ITEMS_FROM_ES_PHASE_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_phase_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_phase_codes']"
     else:
         if ITEMS_FROM_ES_PHASE_CODES_FALSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_phase_false_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_phase_false_codes']"
         if ITEMS_FROM_ES_PHASE_CODES_TRUE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_phase_true_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_phase_true_codes']"
 
     if ITEMS_FROM_F_CATEGORY_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_category_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_category_codes']"
     else:
         if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_category_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_category_cause_codes']"
         if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_category_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_category_factor_codes']"
         if ITEMS_FROM_F_CATEGORY_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_category_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_category_none_codes']"
 
     if ITEMS_FROM_F_FINDING_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_finding_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_finding_codes']"
     else:
         if ITEMS_FROM_F_FINDING_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_finding_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_finding_cause_codes']"
         if ITEMS_FROM_F_FINDING_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_finding_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_finding_factor_codes']"
         if ITEMS_FROM_F_FINDING_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_finding_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_finding_none_codes']"
 
     if ITEMS_FROM_F_MODIFIER_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_modifier_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_modifier_codes']"
     else:
         if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_modifier_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_cause_codes']"
         if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_modifier_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_factor_codes']"
         if ITEMS_FROM_F_MODIFIER_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_modifier_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_modifier_none_codes']"
 
     if ITEMS_FROM_F_SECTION_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_section_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_section_codes']"
     else:
         if ITEMS_FROM_F_SECTION_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_section_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_section_cause_codes']"
         if ITEMS_FROM_F_SECTION_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_section_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_section_factor_codes']"
         if ITEMS_FROM_F_SECTION_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_section_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_section_none_codes']"
 
     if ITEMS_FROM_F_SUBCATEGORY_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_subcategory_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_subcategory_codes']"
     else:
         if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subcategory_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_cause_codes']"
         if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subcategory_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_factor_codes']"
         if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subcategory_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subcategory_none_codes']"
 
     if ITEMS_FROM_F_SUBSECTION_CODES_ALL:
         transaction_cmd += (
             "" if transaction_cmd == "(" else " + "
-        ) + "row['all_subsection_codes']"
+        ) + "DF_RAW_DATA_FILTERED['all_subsection_codes']"
     else:
         if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subsection_cause_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_cause_codes']"
         if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subsection_factor_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_factor_codes']"
         if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
             transaction_cmd += (
                 "" if transaction_cmd == "(" else " + "
-            ) + "row['all_subsection_none_codes']"
+            ) + "DF_RAW_DATA_FILTERED['all_subsection_none_codes']"
 
     transaction_cmd += ")"
 
@@ -1360,6 +1413,29 @@ The following measures are commonly used to evaluate association rules:
 
 
 # ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task -
+# binary data.
+# ------------------------------------------------------------------
+def _get_user_guide_details_binary_data() -> None:
+    text = """
+#### User guide: Binary data
+
+This task provides the binary data in a table format for display and download as **csv** file.
+Every row represents a transaction.
+Columns are possible categories that might appear in every transaction.
+Every cell contains one of two possible values:
+
+- 0 - the category was not included in the transaction,
+- 1 - the transaction contains the category.  
+
+To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
+The **csv** download is not limited, but may not be processable with MS Excel.
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
 # Creates the user guide for the 'Show data profile' task.
 # ------------------------------------------------------------------
 def _get_user_guide_data_profile(data_type: str) -> None:
@@ -1403,6 +1479,22 @@ For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequen
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task -
+# binary data one-hot encoded.
+# ------------------------------------------------------------------
+def _get_user_guide_details_binary_data_one_hot_encoded() -> None:
+    text = """
+#### User guide: One-hot encoded data details
+
+This task provides the detailed one-hot encoded data in a table format for display and download as **csv** file. 
+To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
+The **csv** download is not limited, but may not be processable with MS Excel.
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task -
 # frequent itemsets.
 # ------------------------------------------------------------------
 def _get_user_guide_details_frequent_itemsets() -> None:
@@ -1414,22 +1506,6 @@ This task provides the detailed frequent itemsets in a table format for display 
 The table comes with columns ['support', 'itemsets'] of all itemsets that are >= `min_support`.
 
 For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/
-    """
-
-    st.warning(text + _get_user_guide_details_standard())
-
-
-# ------------------------------------------------------------------
-# Creates the user guide for the 'Show details' task -
-# one-hot encoded data.
-# ------------------------------------------------------------------
-def _get_user_guide_details_one_hot_encoded_data() -> None:
-    text = """
-#### User guide: One-hot encoded data details
-
-This task provides the detailed one-hot encoded data in a table format for display and download as **csv** file. 
-To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
-The **csv** download is not limited, but may not be processable with MS Excel.
     """
 
     st.warning(text + _get_user_guide_details_standard())
@@ -1535,45 +1611,478 @@ The application tries to prevent a redundant selection of items!
 
 
 # ------------------------------------------------------------------
+# Present association rule details.
+# ------------------------------------------------------------------
+def _present_details_association_rules(
+    algorithm: str, df_association_rules: DataFrame
+) -> None:
+    if CHOICE_ASSOCIATION_RULES_DETAILS:
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            # pylint: disable=line-too-long
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + 'font-weight: normal;border-radius:2%;">Detailed association rules '
+                + algorithm
+                + " Algorithm</p>",
+                unsafe_allow_html=True,
+            )
+
+        # pylint: disable=line-too-long
+        with col2:
+            choice_ug_rules_details = st.checkbox(
+                help="Explanations and operating instructions related to the detailed association rules view.",
+                key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
+                label="**User Guide: Association rule details**",
+                value=False,
+            )
+
+        if choice_ug_rules_details:
+            _get_user_guide_details_association_rules()
+
+        df_rules_ext = _create_df_association_rules_ext(df_association_rules)
+
+        st.dataframe(df_rules_ext)
+
+        st.download_button(
+            data=_convert_df_2_csv(df_rules_ext),
+            file_name=APP_ID
+            + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
+            help="The download includes all association rules.",
+            label="Download the association rules",
+            mime="text/csv",
+        )
+
+
+# ------------------------------------------------------------------
+# Present binary data.
+# ------------------------------------------------------------------
+def _present_details_binary_data() -> None:
+    if CHOICE_BINARY_DATA_ECLAT:
+        col1, col2 = st.columns(
+            [
+                2,
+                1,
+            ]
+        )
+
+        with col1:
+            # pylint: disable=line-too-long
+            st.markdown(
+                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+                + 'font-weight: normal;border-radius:2%;">Binary data Eclat Algorithm</p>',
+                unsafe_allow_html=True,
+            )
+
+        with col2:
+            # pylint: disable=line-too-long
+            choice_ug_binary_data = st.checkbox(
+                help="Explanations and operating instructions related to the detailed one-hot encoded data view.",
+                key="CHOICE_UG_ONE_BINARY_DATA",
+                label="**User Guide: Binary data**",
+                value=False,
+            )
+
+        if choice_ug_binary_data:
+            _get_user_guide_details_binary_data()
+
+        st.dataframe(DF_BINARY_DATA_ECLAT.iloc[:100, :100])
+
+        st.download_button(
+            data=_convert_df_2_csv(DF_BINARY_DATA_ECLAT),
+            file_name=APP_ID + "_binary_data.csv",
+            help="The download includes all binary data.",
+            label="Download the binary data",
+            mime="text/csv",
+        )
+
+
+# ------------------------------------------------------------------
+# Present binary data one-hot encoded.
+# ------------------------------------------------------------------
+def _present_details_binary_data_one_hot_encoded() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed one-hot encoded data Non-Eclat Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_binary_data_one_hot_encoded = st.checkbox(
+            help="Explanations and operating instructions related to the detailed one-hot encoded data view.",
+            key="CHOICE_UG_BINARY_DATA_ONE_HOT_ENCODED",
+            label="**User Guide: Binary data one-hot encoded**",
+            value=False,
+        )
+
+    if choice_ug_binary_data_one_hot_encoded:
+        _get_user_guide_details_binary_data_one_hot_encoded()
+
+    st.dataframe(DF_BINARY_DATA_ONE_HOT_ENCODED.iloc[:100, :100])
+
+    st.download_button(
+        data=_convert_df_2_csv(DF_BINARY_DATA_ONE_HOT_ENCODED),
+        file_name=APP_ID + "_binary_data_one_hot_encoded.csv",
+        help="The download includes all binary one-hot encoded data.",
+        label="Download the binary one-hot encoded data",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present frequent itemset details - Apriori Algorithm.
+# ------------------------------------------------------------------
+def _present_details_frequent_itemsets_apriori() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Apriori Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_frequent_itemsets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+            key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_APRIORI",
+            label="**User Guide: Frequent itemset details**",
+            value=False,
+        )
+
+    if choice_ug_frequent_itemsets_details:
+        _get_user_guide_details_frequent_itemsets()
+
+    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
+        DF_FREQUENT_ITEMSETS_APRIORI
+    )
+
+    st.dataframe(df_frequent_itemsets_ext)
+
+    st.download_button(
+        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
+        help="The download includes all frequent itemsets.",
+        label="Download the frequent itemsets",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present frequent itemset details - Eclat Algorithm.
+# ------------------------------------------------------------------
+def _present_details_frequent_itemsets_eclat() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Eclat Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_frequent_itemsets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+            key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_ECLAT",
+            label="**User Guide: Frequent itemset details**",
+            value=False,
+        )
+
+    if choice_ug_frequent_itemsets_details:
+        _get_user_guide_details_frequent_itemsets()
+
+    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
+        DF_FREQUENT_ITEMSETS_ECLAT
+    )
+
+    st.dataframe(df_frequent_itemsets_ext)
+
+    st.download_button(
+        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
+        help="The download includes all frequent itemsets.",
+        label="Download the frequent itemsets",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present frequent itemset details - FP-Growth Algorithm.
+# ------------------------------------------------------------------
+def _present_details_frequent_itemsets_fpgrowth() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Growth Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_frequent_itemsets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+            key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPGROWTH",
+            label="**User Guide: Frequent itemset details**",
+            value=False,
+        )
+
+    if choice_ug_frequent_itemsets_details:
+        _get_user_guide_details_frequent_itemsets()
+
+    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
+        DF_FREQUENT_ITEMSETS_FPGROWTH
+    )
+
+    st.dataframe(df_frequent_itemsets_ext)
+
+    st.download_button(
+        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
+        help="The download includes all frequent itemsets.",
+        label="Download the frequent itemsets",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present frequent itemset details - FP-Max Algorithm.
+# ------------------------------------------------------------------
+def _present_details_frequent_itemsets_fpmax() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Max Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_frequent_itemsets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+            key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPMAX",
+            label="**User Guide: Frequent itemset details**",
+            value=False,
+        )
+
+    if choice_ug_frequent_itemsets_details:
+        _get_user_guide_details_frequent_itemsets()
+
+    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
+        DF_FREQUENT_ITEMSETS_FPMAX
+    )
+
+    st.dataframe(df_frequent_itemsets_ext)
+
+    st.download_button(
+        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
+        help="The download includes all frequent itemsets.",
+        label="Download the frequent itemsets",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present raw data details.
+# ------------------------------------------------------------------
+def _present_details_raw_data() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Filtered detailed raw data</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_raw_data_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed raw data view.",
+            key="CHOICE_UG_RAW_DATA_DETAILS",
+            label="**User Guide: Raw data details**",
+            value=False,
+        )
+
+    if choice_ug_raw_data_details:
+        _get_user_guide_details_raw_data()
+
+    # pylint: disable=line-too-long
+    st.write(
+        f"No itemsets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
+    )
+
+    st.dataframe(DF_RAW_DATA_FILTERED)
+
+    st.download_button(
+        data=_convert_df_2_csv(DF_RAW_DATA_FILTERED),
+        file_name=APP_ID + "_raw_data_detail.csv",
+        help="The download includes all raw data "
+        + "after applying the filter options.",
+        label="Download the detailed raw data",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present transaction data details.
+# ------------------------------------------------------------------
+def _present_details_transaction_data(
+    algorithm: str, df_transaction_data: DataFrame
+) -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed transaction data  '
+            + algorithm
+            + " Algorithm</p>",
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_transaction_data_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed transaction data view.",
+            key="CHOICE_UG_TRANSACTION_DATA_DETAILS" + algorithm,
+            label="**User Guide: Transaction data details**",
+            value=False,
+        )
+
+    if choice_ug_transaction_data_details:
+        _get_user_guide_details_transaction_data()
+
+    st.dataframe(df_transaction_data)
+
+    st.download_button(
+        data=_convert_df_2_csv(df_transaction_data),
+        file_name=APP_ID + "_transaction_data_detail.csv",
+        help="The download includes all transaction data.",
+        label="Download the detailed transaction data",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present raw data profile.
+# ------------------------------------------------------------------
+def _present_profile_raw_data() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        choice_ug_raw_data_profile = st.checkbox(
+            help="Explanations and operating instructions related to profiling "
+            + "of the database view **io_app_ae1982",
+            key="CHOICE_UG_RAW_DATA_PROFILE",
+            label="**User Guide: Raw data profile**",
+            value=False,
+        )
+
+    if choice_ug_raw_data_profile:
+        _get_user_guide_data_profile("Raw data")
+
+    # noinspection PyUnboundLocalVariable
+    if CHOICE_RAW_DATA_PROFILE_TYPE == "explorative":
+        profile_report = ProfileReport(
+            DF_RAW_DATA_FILTERED,
+            explorative=True,
+        )
+    else:
+        profile_report = ProfileReport(
+            DF_RAW_DATA_FILTERED,
+            minimal=True,
+        )
+
+    st_profile_report(profile_report)
+
+    # pylint: disable=line-too-long
+    st.download_button(
+        data=profile_report.to_html(),
+        file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
+        help="The download includes a profile report from the dataframe "
+        + "after applying the filter options.",
+        label="Download the raw data profile report",
+        mime="text/html",
+    )
+
+
+# ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
-def _present_data() -> None:
-    global DF_RAW_DATA_FILTERED_ROWS  # pylint: disable=global-statement
-    global DF_RAW_DATA_UNFILTERED_ROWS  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_EVENTSOE_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_EVENTSOE_CODES_FALSE  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_EVENTSOE_CODES_TRUE  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_OCCURRENCE_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_PHASE_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_PHASE_CODES_FALSE  # pylint: disable=global-statement
-    global ITEMS_FROM_ES_PHASE_CODES_TRUE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_CATEGORY_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_CATEGORY_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_CATEGORY_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_CATEGORY_CODES_NONE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_FINDING_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_FINDING_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_FINDING_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_FINDING_CODES_NONE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_MODIFIER_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_MODIFIER_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_MODIFIER_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_MODIFIER_CODES_NONE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SECTION_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SECTION_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SECTION_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SECTION_CODES_NONE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBCATEGORY_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBCATEGORY_CODES_NONE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBSECTION_CODES_ALL  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBSECTION_CODES_CAUSE  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBSECTION_CODES_FACTOR  # pylint: disable=global-statement
-    global ITEMS_FROM_F_SUBSECTION_CODES_NONE  # pylint: disable=global-statement
-
+def _present_results() -> None:
     _print_timestamp("_present_data() - Start")
 
     # ------------------------------------------------------------------
@@ -1598,19 +2107,519 @@ def _present_data() -> None:
     if CHOICE_UG_APP:
         _get_user_guide_app()
 
-    (DF_RAW_DATA_UNFILTERED_ROWS, _) = DF_RAW_DATA_UNFILTERED.shape
-    if DF_RAW_DATA_UNFILTERED_ROWS == 0:
-        st.error("**Error**: There are no data available.")
-        st.stop()
+    _setup_filter_events_sequence()
 
-    (DF_RAW_DATA_FILTERED_ROWS, _) = DF_RAW_DATA_FILTERED.shape
-    if DF_RAW_DATA_FILTERED_ROWS == 0:
-        st.error("**Error**: No data has been selected.")
-        st.stop()
+    _setup_filter_findings()
 
     # ------------------------------------------------------------------
-    # Items from database table events_sequence.
+    # Run algorithms.
     # ------------------------------------------------------------------
+
+    _apply_algorithm()
+
+    # ------------------------------------------------------------------
+    # Raw data.
+    # ------------------------------------------------------------------
+
+    if CHOICE_RAW_DATA_DETAILS:
+        _present_details_raw_data()
+        _print_timestamp("_present_raw_data_details() - CHOICE_RAW_DATA_DETAILS")
+
+        if CHOICE_RAW_DATA_PROFILE:
+            _present_profile_raw_data()
+            _print_timestamp("_present_raw_data_profile() - CHOICE_RAW_DATA_PROFILE")
+
+    # ------------------------------------------------------------------
+    # Transaction data.
+    # ------------------------------------------------------------------
+
+    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+        if CHOICE_TRANSACTION_DATA_DETAILS:
+            _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
+            _print_timestamp(
+                "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
+            )
+    if CHOICE_ALG_ECLAT:
+        if CHOICE_TRANSACTION_DATA_DETAILS:
+            _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
+            _print_timestamp(
+                "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
+            )
+
+    # ------------------------------------------------------------------
+    # One-hot encoded data / binary data .
+    # ------------------------------------------------------------------
+
+    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+        if CHOICE_BINARY_DATA_ONE_HOT_ENCODED:
+            _present_details_binary_data_one_hot_encoded()
+            # pylint: disable=line-too-long
+            _print_timestamp(
+                "_present_details_binary_data_one_hot_encoded() - CHOICE_BINARY_DATA_ONE_HOT_ENCODED"
+            )
+
+    if CHOICE_ALG_ECLAT:
+        if CHOICE_BINARY_DATA_ECLAT:
+            _present_details_binary_data()
+            _print_timestamp("_present_binary_data() - CHOICE_BINARY_DATA")
+
+    # ------------------------------------------------------------------
+    # Frequent itemsets.
+    # ------------------------------------------------------------------
+
+    if CHOICE_ALG_APRIORI:
+        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+            _present_details_frequent_itemsets_apriori()
+            _print_timestamp(
+                "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+            )
+
+    # wwe
+    # if CHOICE_ALG_ECLAT:
+    #     if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+    #         _present_details_frequent_itemsets_eclat()
+    #         _print_timestamp(
+    #             "_present_details_frequent_itemsets_eclat() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+    #         )
+
+    if CHOICE_ALG_FPGROWTH:
+        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+            _present_details_frequent_itemsets_fpgrowth()
+            _print_timestamp(
+                "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+            )
+
+    if CHOICE_ALG_FPMAX:
+        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+            _present_details_frequent_itemsets_fpmax()
+            _print_timestamp(
+                "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+            )
+
+    # ------------------------------------------------------------------
+    # Association rules.
+    # ------------------------------------------------------------------
+
+    if CHOICE_ALG_APRIORI:
+        if CHOICE_ASSOCIATION_RULES_DETAILS:
+            _present_details_association_rules("Apriori", DF_ASSOCIATION_RULES_APRIORI)
+            _print_timestamp(
+                "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
+            )
+
+    # if CHOICE_ALG_ECLAT:
+    #     if CHOICE_ASSOCIATION_RULES_DETAILS:
+    #         _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
+    #         _print_timestamp(
+    #             "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
+    #         )
+
+    if CHOICE_ALG_FPGROWTH:
+        if CHOICE_ASSOCIATION_RULES_DETAILS:
+            _present_details_association_rules(
+                "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
+            )
+            _print_timestamp(
+                "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
+            )
+
+    if CHOICE_ALG_FPMAX:
+        if CHOICE_ASSOCIATION_RULES_DETAILS:
+            _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
+            _print_timestamp(
+                "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
+            )
+
+    _print_timestamp("_present_data() - End")
+
+
+# ------------------------------------------------------------------
+# Print a timestamp.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-statements
+def _print_timestamp(identifier: str) -> None:
+    global LAST_READING  # pylint: disable=global-statement
+
+    if not IS_TIMEKEEPING:
+        return
+
+    if not LAST_READING:
+        LAST_READING = START_TIME
+
+    current_time = time.time_ns()
+
+    # Stop time measurement.
+    print(
+        str(datetime.datetime.now())
+        + f" {f'{current_time - LAST_READING:,}':>20} ns - "
+        + f"{APP_ID} - {identifier}",
+        flush=True,
+    )
+
+    LAST_READING = current_time
+
+
+# ------------------------------------------------------------------
+# Set up the filter controls.
+# ------------------------------------------------------------------
+# pylint: disable=too-many-statements
+def _setup_filter() -> None:
+    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
+    global CHOICE_FILTER_DATA_EVENTS_SEQUENCE  # pylint: disable=global-statement
+    global CHOICE_FILTER_DATA_FINDINGS  # pylint: disable=global-statement
+    global CHOICE_FILTER_DATA_OTHER  # pylint: disable=global-statement
+    global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
+    global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
+    global FILTER_EV_TYPE  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
+    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
+    global FILTER_EVENTS_SEQUENCE_EVENTSOES  # pylint: disable=global-statement
+    global FILTER_EVENTS_SEQUENCE_PHASES  # pylint: disable=global-statement
+    global FILTER_FINDINGS_CATEGORIES  # pylint: disable=global-statement
+    global FILTER_FINDINGS_MODIFIERS  # pylint: disable=global-statement
+    global FILTER_FINDINGS_SECTIONS  # pylint: disable=global-statement
+    global FILTER_FINDINGS_SUBCATEGORIES  # pylint: disable=global-statement
+    global FILTER_FINDINGS_SUBSECTIONS  # pylint: disable=global-statement
+    global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
+    global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
+    global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
+    global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
+    global FILTER_NO_AIRCRAFT_FROM  # pylint: disable=global-statement
+    global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
+    global FILTER_US_AVIATION  # pylint: disable=global-statement
+    global FILTER_US_STATES  # pylint: disable=global-statement
+
+    _print_timestamp("_setup_filter - Start")
+
+    CHOICE_FILTER_DATA_EVENTS_SEQUENCE = st.sidebar.checkbox(
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        All selected filter options are applied simultaneously, i.e. they are linked
+        to a logical **`and`**.
+        """,
+        label="**Filter Events Sequence ?**",
+        value=False,
+    )
+
+    if CHOICE_FILTER_DATA_EVENTS_SEQUENCE:
+        FILTER_EVENTS_SEQUENCE_EVENTSOES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected events sequence eventsoes.",
+            label="**Eventsoes:**",
+            options=_sql_query_md_codes_eventsoe(),
+        )
+        if FILTER_EVENTS_SEQUENCE_EVENTSOES:
+            # pylint: disable=line-too-long
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Events sequence eventsoes**: **`{','.join(FILTER_EVENTS_SEQUENCE_EVENTSOES)}`**"
+            )
+
+        FILTER_EVENTS_SEQUENCE_PHASES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected events sequence phases.",
+            label="**Phases:**",
+            options=_sql_query_md_codes_phase(),
+        )
+        if FILTER_EVENTS_SEQUENCE_PHASES:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Events sequence phases**: **`{','.join(FILTER_EVENTS_SEQUENCE_PHASES)}`**"
+            )
+
+    CHOICE_FILTER_DATA_FINDINGS = st.sidebar.checkbox(
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        All selected filter options are applied simultaneously, i.e. they are linked
+        to a logical **`and`**.
+        """,
+        label="**Filter Findings ?**",
+        value=False,
+    )
+
+    if CHOICE_FILTER_DATA_FINDINGS:
+        FILTER_FINDINGS_CATEGORIES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected finding categories.",
+            label="**Categories:**",
+            options=_sql_query_md_codes_category(),
+        )
+        if FILTER_FINDINGS_CATEGORIES:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Finding categories**: **`{','.join(FILTER_FINDINGS_CATEGORIES)}`**"
+            )
+
+        FILTER_FINDINGS_SUBCATEGORIES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected finding subcategories.",
+            label="**Subcategories:**",
+            options=_sql_query_md_codes_subcategory(),
+        )
+        if FILTER_FINDINGS_SUBCATEGORIES:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Finding subcategories**: **`{','.join(FILTER_FINDINGS_SUBCATEGORIES)}`**"
+            )
+
+        FILTER_FINDINGS_SECTIONS = st.sidebar.multiselect(
+            help="Here, data can be limited to selected finding sections.",
+            label="**Sections:**",
+            options=_sql_query_md_codes_section(),
+        )
+        if FILTER_FINDINGS_SECTIONS:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Finding sections**: **`{','.join(FILTER_FINDINGS_SECTIONS)}`**"
+            )
+
+        FILTER_FINDINGS_SUBSECTIONS = st.sidebar.multiselect(
+            help="Here, data can be limited to selected finding subsections.",
+            label="**Subsections:**",
+            options=_sql_query_md_codes_subsection(),
+        )
+        if FILTER_FINDINGS_SUBSECTIONS:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Finding subsections**: **`{','.join(FILTER_FINDINGS_SUBSECTIONS)}`**"
+            )
+
+        FILTER_FINDINGS_MODIFIERS = st.sidebar.multiselect(
+            help="Here, data can be limited to selected finding modifiers.",
+            label="**Modifiers:**",
+            options=_sql_query_md_codes_modifier(),
+        )
+        if FILTER_FINDINGS_MODIFIERS:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Finding modifiers**: **`{','.join(FILTER_FINDINGS_MODIFIERS)}`**"
+            )
+
+        st.sidebar.markdown("""---""")
+
+    CHOICE_FILTER_DATA_OTHER = st.sidebar.checkbox(
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        All selected filter options are applied simultaneously, i.e. they are linked
+        to a logical **`and`**.
+        """,
+        label="**Filter Other Criteria ?**",
+        value=True,
+    )
+
+    if not CHOICE_FILTER_DATA_OTHER:
+        return
+
+    CHOICE_ACTIVE_FILTERS_TEXT = ""
+
+    FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
+        help="""
+        Here, the data can be limited to selected aircraft categories.
+        """,
+        label="**Aircraft categories:**",
+        options=_sql_query_acft_categories(),
+    )
+
+    if FILTER_ACFT_CATEGORIES:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    max_no_aircraft = _sql_query_max_no_aircraft()
+
+    min_no_aircraft = _sql_query_min_no_aircraft()
+
+    FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
+        help="""
+        Number of aircraft involved.
+        """,
+        label="**Aircraft involved:**",
+        min_value=min_no_aircraft,
+        max_value=max_no_aircraft,
+        value=(min_no_aircraft, max_no_aircraft),
+    )
+
+    if (
+        FILTER_NO_AIRCRAFT_FROM
+        and FILTER_NO_AIRCRAFT_FROM != min_no_aircraft
+        or FILTER_NO_AIRCRAFT_TO
+        and FILTER_NO_AIRCRAFT_TO != max_no_aircraft
+    ):
+        # pylint: disable=line-too-long
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_EV_TYPE = st.sidebar.multiselect(
+        default=FILTER_EV_TYPE_DEFAULT,
+        help="""
+        Here, the data can be limited to selected event types.
+        Those events are selected whose event type matches.
+        """,
+        label="**Event type(s):**",
+        options=_sql_query_ev_type(),
+    )
+
+    if FILTER_EV_TYPE:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
+        help="""
+            - **`2008`** changes were made to the data collection mode.
+            """,
+        label="**Event year(s):**",
+        min_value=2008,
+        max_value=datetime.date.today().year,
+        value=(2008, datetime.date.today().year - 1),
+    )
+
+    if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
+        # pylint: disable=line-too-long
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    max_inj_f_grnd = _sql_query_max_inj_f_grnd()
+
+    FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
+        help="""
+        Number of fatalities on the ground.
+        """,
+        label="**Fatalities on ground:**",
+        min_value=0,
+        max_value=max_inj_f_grnd,
+        value=(0, max_inj_f_grnd),
+    )
+
+    if (
+        FILTER_INJ_F_GRND_FROM
+        and FILTER_INJ_F_GRND_FROM != 0
+        or FILTER_INJ_F_GRND_TO
+        and FILTER_INJ_F_GRND_TO != max_inj_f_grnd
+    ):
+        # pylint: disable=line-too-long
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
+        )
+
+    max_inj_tot_f = _sql_query_max_inj_tot_f()
+
+    FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
+        help="""
+        Number of total fatalities.
+        """,
+        label="**Fatalities total:**",
+        min_value=0,
+        max_value=max_inj_tot_f,
+        value=(0, max_inj_tot_f),
+    )
+
+    if (
+        FILTER_INJ_TOT_F_FROM
+        and FILTER_INJ_TOT_F_FROM != 0
+        or FILTER_INJ_TOT_F_TO
+        and FILTER_INJ_TOT_F_TO != max_inj_tot_f
+    ):
+        # pylint: disable=line-too-long
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
+        )
+
+    if (
+        FILTER_INJ_F_GRND_FROM
+        or FILTER_INJ_F_GRND_TO
+        or FILTER_INJ_TOT_F_FROM
+        or FILTER_INJ_TOT_F_TO
+    ):
+        st.sidebar.markdown("""---""")
+
+    FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
+        default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
+        help="""
+        Here, the data can be limited to selected injury levels.
+        Those events are selected whose highest injury level matches.
+        """,
+        label="**Highest injury level(s):**",
+        options=_sql_query_ev_highest_injury(),
+    )
+
+    if FILTER_EV_HIGHEST_INJURY:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_US_STATES = st.sidebar.multiselect(
+        help="Here, data can be limited to selected U.S. states.",
+        label="**State(s) in the US:**",
+        options=_sql_query_us_states(),
+    )
+
+    if FILTER_US_STATES:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    FILTER_US_AVIATION = st.sidebar.multiselect(
+        default=FILTER_US_AVIATION_DEFAULT,
+        help="""
+        **US aviation** means that either the event occurred on US soil or 
+        the departure, destination, owner, operator or registration is US.
+        """,
+        label="**US aviation criteria:**",
+        options=[
+            FILTER_US_AVIATION_COUNTRY,
+            FILTER_US_AVIATION_DEPARTURE,
+            FILTER_US_AVIATION_DESTINATION,
+            FILTER_US_AVIATION_OPERATOR,
+            FILTER_US_AVIATION_OWNER,
+            FILTER_US_AVIATION_REGISTRATION,
+        ],
+    )
+
+    if FILTER_US_AVIATION:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
+        )
+
+    st.sidebar.markdown("""---""")
+
+    _print_timestamp("_setup_filter - End")
+
+
+# ------------------------------------------------------------------
+# Set up the filter of table events_sequence.
+# ------------------------------------------------------------------
+
+
+def _setup_filter_events_sequence():
+    global ITEMS_FROM_ES_EVENTSOE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_EVENTSOE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_EVENTSOE_CODES_TRUE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_FALSE  # pylint: disable=global-statement
+    global ITEMS_FROM_ES_PHASE_CODES_TRUE  # pylint: disable=global-statement
 
     col1, col2 = st.columns(
         [
@@ -1635,11 +2644,10 @@ def _present_data() -> None:
             label="**User Guide: Items from events_sequence**",
             value=False,
         )
-
     if choice_ug_items_events_sequence:
         _get_user_guide_items_events_sequence()
 
-    col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
+    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
 
     # ------------------------------------------------------------------
     # Occurrence code.
@@ -1655,6 +2663,7 @@ def _present_data() -> None:
             label="**All**",
             value=True,
         )
+
     with col4:
         ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE = st.checkbox(
             help="Defining event.",
@@ -1662,6 +2671,7 @@ def _present_data() -> None:
             label="**Defining event**",
             value=False,
         )
+
     with col5:
         ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE = st.checkbox(
             help="No defining event.",
@@ -1684,6 +2694,7 @@ def _present_data() -> None:
             label="**All**",
             value=False,
         )
+
     with col4:
         ITEMS_FROM_ES_EVENTSOE_CODES_TRUE = st.checkbox(
             help="Defining event.",
@@ -1691,6 +2702,7 @@ def _present_data() -> None:
             label="**Defining event**",
             value=False,
         )
+
     with col5:
         ITEMS_FROM_ES_EVENTSOE_CODES_FALSE = st.checkbox(
             help="No defining event.",
@@ -1713,6 +2725,7 @@ def _present_data() -> None:
             label="**All**",
             value=False,
         )
+
     with col4:
         ITEMS_FROM_ES_PHASE_CODES_TRUE = st.checkbox(
             help="Defining event.",
@@ -1720,6 +2733,7 @@ def _present_data() -> None:
             label="**Defining event**",
             value=False,
         )
+
     with col5:
         ITEMS_FROM_ES_PHASE_CODES_FALSE = st.checkbox(
             help="No defining event.",
@@ -1798,6 +2812,38 @@ def _present_data() -> None:
                 "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**."
             )
             st.stop()
+
+
+# ------------------------------------------------------------------
+# Set up the filter of table findings.
+# ------------------------------------------------------------------
+
+
+def _setup_filter_findings():
+    global ITEMS_FROM_F_CATEGORY_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_CATEGORY_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_FINDING_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_MODIFIER_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SECTION_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBCATEGORY_CODES_NONE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_ALL  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_CAUSE  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_FACTOR  # pylint: disable=global-statement
+    global ITEMS_FROM_F_SUBSECTION_CODES_NONE  # pylint: disable=global-statement
 
     # ------------------------------------------------------------------
     # Items from database table findings.
@@ -2244,929 +3290,6 @@ def _present_data() -> None:
             )
             st.stop()
 
-    # ------------------------------------------------------------------
-    # Raw data.
-    # ------------------------------------------------------------------
-
-    if CHOICE_RAW_DATA_DETAILS:
-        _present_details_raw_data()
-        _print_timestamp("_present_raw_data_details() - CHOICE_RAW_DATA_DETAILS")
-
-        if CHOICE_RAW_DATA_PROFILE:
-            _present_profile_raw_data()
-            _print_timestamp("_present_raw_data_profile() - CHOICE_RAW_DATA_PROFILE")
-
-    # ------------------------------------------------------------------
-    # Transaction data.
-    # ------------------------------------------------------------------
-
-    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        _create_transaction_data()
-        if CHOICE_TRANSACTION_DATA_DETAILS:
-            _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
-            _print_timestamp(
-                "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
-            )
-    elif CHOICE_ALG_ECLAT:
-        _create_transaction_data_eclat()
-        if CHOICE_TRANSACTION_DATA_DETAILS:
-            _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
-            _print_timestamp(
-                "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
-            )
-
-    # ------------------------------------------------------------------
-    # One-hot encoded data.
-    # ------------------------------------------------------------------
-
-    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        _create_one_hot_encoded_data()
-        if CHOICE_ONE_HOT_ENCODED_DETAILS:
-            _present_details_one_hot_encoded_data()
-            _print_timestamp(
-                "_present_one_hot_encoded_details() - CHOICE_ONE_HOT_ENCODED_DETAILS"
-            )
-
-    # ------------------------------------------------------------------
-    # Frequent itemsets.
-    # ------------------------------------------------------------------
-
-    if CHOICE_ALG_APRIORI:
-        _create_frequent_itemsets_apriori()
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-            _present_details_frequent_itemsets_apriori()
-            _print_timestamp(
-                "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-
-    if CHOICE_ALG_ECLAT:
-        _create_frequent_itemsets_eclat()
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-            _present_details_frequent_itemsets_eclat()
-            _print_timestamp(
-                "_present_details_frequent_itemsets_eclat() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-
-    if CHOICE_ALG_FPGROWTH:
-        _create_frequent_itemsets_fpgrowth()
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-            _present_details_frequent_itemsets_fpgrowth()
-            _print_timestamp(
-                "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-
-    if CHOICE_ALG_FPMAX:
-        _create_frequent_itemsets_fpmax()
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-            _present_details_frequent_itemsets_fpmax()
-            _print_timestamp(
-                "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-
-    # ------------------------------------------------------------------
-    # Association rules.
-    # ------------------------------------------------------------------
-
-    if CHOICE_ALG_APRIORI:
-        _create_association_rules_apriori()
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
-            _present_details_association_rules("Apriori", DF_ASSOCIATION_RULES_APRIORI)
-            _print_timestamp(
-                "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
-
-    # if CHOICE_ALG_ECLAT:
-    #     _create_association_rules_eclat()
-    #     if CHOICE_ASSOCIATION_RULES_DETAILS:
-    #         _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
-    #         _print_timestamp(
-    #             "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
-    #         )
-
-    if CHOICE_ALG_FPGROWTH:
-        _create_association_rules_fpgrowth()
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
-            _present_details_association_rules(
-                "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
-            )
-            _print_timestamp(
-                "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
-
-    if CHOICE_ALG_FPMAX:
-        _create_association_rules_fpmax()
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
-            _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
-            _print_timestamp(
-                "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
-
-    _print_timestamp("_present_data() - End")
-
-
-# ------------------------------------------------------------------
-# Present association rule details.
-# ------------------------------------------------------------------
-def _present_details_association_rules(
-    algorithm: str, df_association_rules: DataFrame
-) -> None:
-    if CHOICE_ASSOCIATION_RULES_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed association rules '
-                + algorithm
-                + " Algorithm</p>",
-                unsafe_allow_html=True,
-            )
-
-        # pylint: disable=line-too-long
-        with col2:
-            choice_ug_rules_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed association rules view.",
-                key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
-                label="**User Guide: Association rule details**",
-                value=False,
-            )
-
-        if choice_ug_rules_details:
-            _get_user_guide_details_association_rules()
-
-        df_rules_ext = _create_df_association_rules_ext(df_association_rules)
-
-        st.dataframe(df_rules_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_rules_ext),
-            file_name=APP_ID
-            + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
-            help="The download includes all association rules.",
-            label="Download the association rules",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present frequent itemset details - Apriori Algorithm.
-# ------------------------------------------------------------------
-def _present_details_frequent_itemsets_apriori() -> None:
-    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Apriori Algorithm</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_frequent_itemsets_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed frequent itemsets view.",
-                key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_APRIORI",
-                label="**User Guide: Frequent itemset details**",
-                value=False,
-            )
-
-        if choice_ug_frequent_itemsets_details:
-            _get_user_guide_details_frequent_itemsets()
-
-        df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-            DF_FREQUENT_ITEMSETS_APRIORI
-        )
-
-        st.dataframe(df_frequent_itemsets_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_frequent_itemsets_ext),
-            file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
-            help="The download includes all frequent itemsets.",
-            label="Download the frequent itemsets",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present frequent itemset details - Eclat Algorithm.
-# ------------------------------------------------------------------
-def _present_details_frequent_itemsets_eclat() -> None:
-    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Eclat Algorithm</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_frequent_itemsets_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed frequent itemsets view.",
-                key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_ECLAT",
-                label="**User Guide: Frequent itemset details**",
-                value=False,
-            )
-
-        if choice_ug_frequent_itemsets_details:
-            _get_user_guide_details_frequent_itemsets()
-
-        df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-            DF_FREQUENT_ITEMSETS_ECLAT
-        )
-
-        st.dataframe(df_frequent_itemsets_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_frequent_itemsets_ext),
-            file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
-            help="The download includes all frequent itemsets.",
-            label="Download the frequent itemsets",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present frequent itemset details - FP-Growth Algorithm.
-# ------------------------------------------------------------------
-def _present_details_frequent_itemsets_fpgrowth() -> None:
-    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Growth Algorithm</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_frequent_itemsets_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed frequent itemsets view.",
-                key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPGROWTH",
-                label="**User Guide: Frequent itemset details**",
-                value=False,
-            )
-
-        if choice_ug_frequent_itemsets_details:
-            _get_user_guide_details_frequent_itemsets()
-
-        df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-            DF_FREQUENT_ITEMSETS_FPGROWTH
-        )
-
-        st.dataframe(df_frequent_itemsets_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_frequent_itemsets_ext),
-            file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
-            help="The download includes all frequent itemsets.",
-            label="Download the frequent itemsets",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present frequent itemset details - FP-Max Algorithm.
-# ------------------------------------------------------------------
-def _present_details_frequent_itemsets_fpmax() -> None:
-    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Max Algorithm</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_frequent_itemsets_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed frequent itemsets view.",
-                key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPMAX",
-                label="**User Guide: Frequent itemset details**",
-                value=False,
-            )
-
-        if choice_ug_frequent_itemsets_details:
-            _get_user_guide_details_frequent_itemsets()
-
-        df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-            DF_FREQUENT_ITEMSETS_FPMAX
-        )
-
-        st.dataframe(df_frequent_itemsets_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_frequent_itemsets_ext),
-            file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
-            help="The download includes all frequent itemsets.",
-            label="Download the frequent itemsets",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present one-hot encoded data details.
-# ------------------------------------------------------------------
-def _present_details_one_hot_encoded_data() -> None:
-    if CHOICE_ONE_HOT_ENCODED_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed one-hot encoded data</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_one_hot_encoded_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed one-hot encoded data view.",
-                key="CHOICE_UG_ONE_HOT_ENCODED_DETAILS",
-                label="**User Guide: One-hot encoded data details**",
-                value=False,
-            )
-
-        if choice_ug_one_hot_encoded_details:
-            _get_user_guide_details_one_hot_encoded_data()
-
-        st.dataframe(DF_ONE_HOT_ENCODED_DATA.iloc[:100, :100])
-
-        st.download_button(
-            data=_convert_df_2_csv(DF_ONE_HOT_ENCODED_DATA),
-            file_name=APP_ID + "_one_hot_encoded_data_detail.csv",
-            help="The download includes all one-hot encoded data.",
-            label="Download the detailed one-hot encoded data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present raw data details.
-# ------------------------------------------------------------------
-def _present_details_raw_data() -> None:
-    if CHOICE_RAW_DATA_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
-
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed raw data</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_raw_data_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed raw data view.",
-                key="CHOICE_UG_RAW_DATA_DETAILS",
-                label="**User Guide: Raw data details**",
-                value=False,
-            )
-
-        if choice_ug_raw_data_details:
-            _get_user_guide_details_raw_data()
-
-        # pylint: disable=line-too-long
-        st.write(
-            f"No itemsets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
-        )
-
-        st.dataframe(DF_RAW_DATA_FILTERED)
-
-        st.download_button(
-            data=_convert_df_2_csv(DF_RAW_DATA_FILTERED),
-            file_name=APP_ID + "_raw_data_detail.csv",
-            help="The download includes all raw data "
-            + "after applying the filter options.",
-            label="Download the detailed raw data",
-            mime="text/csv",
-        )
-
-
-# ------------------------------------------------------------------
-# Present transaction data details.
-# ------------------------------------------------------------------
-def _present_details_transaction_data(
-    algorithm: str, df_transaction_data: DataFrame
-) -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed transaction data  '
-            + algorithm
-            + " Algorithm</p>",
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        # pylint: disable=line-too-long
-        choice_ug_transaction_data_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed transaction data view.",
-            key="CHOICE_UG_TRANSACTION_DATA_DETAILS",
-            label="**User Guide: Transaction data details**",
-            value=False,
-        )
-
-    if choice_ug_transaction_data_details:
-        _get_user_guide_details_transaction_data()
-
-    st.dataframe(df_transaction_data)
-
-    st.download_button(
-        data=_convert_df_2_csv(df_transaction_data),
-        file_name=APP_ID + "_transaction_data_detail.csv",
-        help="The download includes all transaction data.",
-        label="Download the detailed transaction data",
-        mime="text/csv",
-    )
-
-
-# ------------------------------------------------------------------
-# Present raw data profile.
-# ------------------------------------------------------------------
-def _present_profile_raw_data() -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        choice_ug_raw_data_profile = st.checkbox(
-            help="Explanations and operating instructions related to profiling "
-            + "of the database view **io_app_ae1982",
-            key="CHOICE_UG_RAW_DATA_PROFILE",
-            label="**User Guide: Raw data profile**",
-            value=False,
-        )
-
-    if choice_ug_raw_data_profile:
-        _get_user_guide_data_profile("Raw data")
-
-    # noinspection PyUnboundLocalVariable
-    if CHOICE_RAW_DATA_PROFILE_TYPE == "explorative":
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            explorative=True,
-        )
-    else:
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            minimal=True,
-        )
-
-    st_profile_report(profile_report)
-
-    # pylint: disable=line-too-long
-    st.download_button(
-        data=profile_report.to_html(),
-        file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
-        help="The download includes a profile report from the dataframe "
-        + "after applying the filter options.",
-        label="Download the raw data profile report",
-        mime="text/html",
-    )
-
-
-# ------------------------------------------------------------------
-# Print a timestamp.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-statements
-def _print_timestamp(identifier: str) -> None:
-    global LAST_READING  # pylint: disable=global-statement
-
-    if not IS_TIMEKEEPING:
-        return
-
-    if not LAST_READING:
-        LAST_READING = START_TIME
-
-    current_time = time.time_ns()
-
-    # Stop time measurement.
-    print(
-        str(datetime.datetime.now())
-        + f" {f'{current_time - LAST_READING:,}':>20} ns - "
-        + f"{APP_ID} - {identifier}",
-        flush=True,
-    )
-
-    LAST_READING = current_time
-
-
-# ------------------------------------------------------------------
-# Set up the filter controls.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-statements
-def _setup_filter() -> None:
-    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
-    global CHOICE_FILTER_DATA_EVENTS_SEQUENCE  # pylint: disable=global-statement
-    global CHOICE_FILTER_DATA_FINDINGS  # pylint: disable=global-statement
-    global CHOICE_FILTER_DATA_OTHER  # pylint: disable=global-statement
-    global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
-    global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
-    global FILTER_EV_TYPE  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
-    global FILTER_EVENTS_SEQUENCE_EVENTSOES  # pylint: disable=global-statement
-    global FILTER_EVENTS_SEQUENCE_PHASES  # pylint: disable=global-statement
-    global FILTER_FINDINGS_CATEGORIES  # pylint: disable=global-statement
-    global FILTER_FINDINGS_MODIFIERS  # pylint: disable=global-statement
-    global FILTER_FINDINGS_SECTIONS  # pylint: disable=global-statement
-    global FILTER_FINDINGS_SUBCATEGORIES  # pylint: disable=global-statement
-    global FILTER_FINDINGS_SUBSECTIONS  # pylint: disable=global-statement
-    global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
-    global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
-    global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
-    global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
-    global FILTER_NO_AIRCRAFT_FROM  # pylint: disable=global-statement
-    global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
-    global FILTER_US_AVIATION  # pylint: disable=global-statement
-    global FILTER_US_STATES  # pylint: disable=global-statement
-
-    _print_timestamp("_setup_filter - Start")
-
-    CHOICE_FILTER_DATA_EVENTS_SEQUENCE = st.sidebar.checkbox(
-        help="""
-        The following filter options can be used to limit the data to be processed.
-        All selected filter options are applied simultaneously, i.e. they are linked
-        to a logical **`and`**.
-        """,
-        label="**Filter Events Sequence ?**",
-        value=False,
-    )
-
-    if CHOICE_FILTER_DATA_EVENTS_SEQUENCE:
-        FILTER_EVENTS_SEQUENCE_EVENTSOES = st.sidebar.multiselect(
-            help="Here, data can be limited to selected events sequence eventsoes.",
-            label="**Eventsoes:**",
-            options=_sql_query_md_codes_eventsoe(),
-        )
-        if FILTER_EVENTS_SEQUENCE_EVENTSOES:
-            # pylint: disable=line-too-long
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Events sequence eventsoes**: **`{','.join(FILTER_EVENTS_SEQUENCE_EVENTSOES)}`**"
-            )
-
-        FILTER_EVENTS_SEQUENCE_PHASES = st.sidebar.multiselect(
-            help="Here, data can be limited to selected events sequence phases.",
-            label="**Phases:**",
-            options=_sql_query_md_codes_phase(),
-        )
-        if FILTER_EVENTS_SEQUENCE_PHASES:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Events sequence phases**: **`{','.join(FILTER_EVENTS_SEQUENCE_PHASES)}`**"
-            )
-
-    CHOICE_FILTER_DATA_FINDINGS = st.sidebar.checkbox(
-        help="""
-        The following filter options can be used to limit the data to be processed.
-        All selected filter options are applied simultaneously, i.e. they are linked
-        to a logical **`and`**.
-        """,
-        label="**Filter Findings ?**",
-        value=False,
-    )
-
-    if CHOICE_FILTER_DATA_FINDINGS:
-        FILTER_FINDINGS_CATEGORIES = st.sidebar.multiselect(
-            help="Here, data can be limited to selected finding categories.",
-            label="**Categories:**",
-            options=_sql_query_md_codes_category(),
-        )
-        if FILTER_FINDINGS_CATEGORIES:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Finding categories**: **`{','.join(FILTER_FINDINGS_CATEGORIES)}`**"
-            )
-
-        FILTER_FINDINGS_SUBCATEGORIES = st.sidebar.multiselect(
-            help="Here, data can be limited to selected finding subcategories.",
-            label="**Subcategories:**",
-            options=_sql_query_md_codes_subcategory(),
-        )
-        if FILTER_FINDINGS_SUBCATEGORIES:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Finding subcategories**: **`{','.join(FILTER_FINDINGS_SUBCATEGORIES)}`**"
-            )
-
-        FILTER_FINDINGS_SECTIONS = st.sidebar.multiselect(
-            help="Here, data can be limited to selected finding sections.",
-            label="**Sections:**",
-            options=_sql_query_md_codes_section(),
-        )
-        if FILTER_FINDINGS_SECTIONS:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Finding sections**: **`{','.join(FILTER_FINDINGS_SECTIONS)}`**"
-            )
-
-        FILTER_FINDINGS_SUBSECTIONS = st.sidebar.multiselect(
-            help="Here, data can be limited to selected finding subsections.",
-            label="**Subsections:**",
-            options=_sql_query_md_codes_subsection(),
-        )
-        if FILTER_FINDINGS_SUBSECTIONS:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Finding subsections**: **`{','.join(FILTER_FINDINGS_SUBSECTIONS)}`**"
-            )
-
-        FILTER_FINDINGS_MODIFIERS = st.sidebar.multiselect(
-            help="Here, data can be limited to selected finding modifiers.",
-            label="**Modifiers:**",
-            options=_sql_query_md_codes_modifier(),
-        )
-        if FILTER_FINDINGS_MODIFIERS:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Finding modifiers**: **`{','.join(FILTER_FINDINGS_MODIFIERS)}`**"
-            )
-
-        st.sidebar.markdown("""---""")
-
-    CHOICE_FILTER_DATA_OTHER = st.sidebar.checkbox(
-        help="""
-        The following filter options can be used to limit the data to be processed.
-        All selected filter options are applied simultaneously, i.e. they are linked
-        to a logical **`and`**.
-        """,
-        label="**Filter Other Criteria ?**",
-        value=True,
-    )
-
-    if not CHOICE_FILTER_DATA_OTHER:
-        return
-
-    CHOICE_ACTIVE_FILTERS_TEXT = ""
-
-    FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
-        help="""
-        Here, the data can be limited to selected aircraft categories.
-        """,
-        label="**Aircraft categories:**",
-        options=_sql_query_acft_categories(),
-    )
-
-    if FILTER_ACFT_CATEGORIES:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    max_no_aircraft = _sql_query_max_no_aircraft()
-
-    min_no_aircraft = _sql_query_min_no_aircraft()
-
-    FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
-        help="""
-        Number of aircraft involved.
-        """,
-        label="**Aircraft involved:**",
-        min_value=min_no_aircraft,
-        max_value=max_no_aircraft,
-        value=(min_no_aircraft, max_no_aircraft),
-    )
-
-    if (
-        FILTER_NO_AIRCRAFT_FROM
-        and FILTER_NO_AIRCRAFT_FROM != min_no_aircraft
-        or FILTER_NO_AIRCRAFT_TO
-        and FILTER_NO_AIRCRAFT_TO != max_no_aircraft
-    ):
-        # pylint: disable=line-too-long
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_EV_TYPE = st.sidebar.multiselect(
-        default=FILTER_EV_TYPE_DEFAULT,
-        help="""
-        Here, the data can be limited to selected event types.
-        Those events are selected whose event type matches.
-        """,
-        label="**Event type(s):**",
-        options=_sql_query_ev_type(),
-    )
-
-    if FILTER_EV_TYPE:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
-        help="""
-            - **`2008`** changes were made to the data collection mode.
-            """,
-        label="**Event year(s):**",
-        min_value=2008,
-        max_value=datetime.date.today().year,
-        value=(2008, datetime.date.today().year - 1),
-    )
-
-    if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
-        # pylint: disable=line-too-long
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    max_inj_f_grnd = _sql_query_max_inj_f_grnd()
-
-    FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
-        help="""
-        Number of fatalities on the ground.
-        """,
-        label="**Fatalities on ground:**",
-        min_value=0,
-        max_value=max_inj_f_grnd,
-        value=(0, max_inj_f_grnd),
-    )
-
-    if (
-        FILTER_INJ_F_GRND_FROM
-        and FILTER_INJ_F_GRND_FROM != 0
-        or FILTER_INJ_F_GRND_TO
-        and FILTER_INJ_F_GRND_TO != max_inj_f_grnd
-    ):
-        # pylint: disable=line-too-long
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
-        )
-
-    max_inj_tot_f = _sql_query_max_inj_tot_f()
-
-    FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
-        help="""
-        Number of total fatalities.
-        """,
-        label="**Fatalities total:**",
-        min_value=0,
-        max_value=max_inj_tot_f,
-        value=(0, max_inj_tot_f),
-    )
-
-    if (
-        FILTER_INJ_TOT_F_FROM
-        and FILTER_INJ_TOT_F_FROM != 0
-        or FILTER_INJ_TOT_F_TO
-        and FILTER_INJ_TOT_F_TO != max_inj_tot_f
-    ):
-        # pylint: disable=line-too-long
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
-        )
-
-    if (
-        FILTER_INJ_F_GRND_FROM
-        or FILTER_INJ_F_GRND_TO
-        or FILTER_INJ_TOT_F_FROM
-        or FILTER_INJ_TOT_F_TO
-    ):
-        st.sidebar.markdown("""---""")
-
-    FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
-        default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
-        help="""
-        Here, the data can be limited to selected injury levels.
-        Those events are selected whose highest injury level matches.
-        """,
-        label="**Highest injury level(s):**",
-        options=_sql_query_ev_highest_injury(),
-    )
-
-    if FILTER_EV_HIGHEST_INJURY:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_US_STATES = st.sidebar.multiselect(
-        help="Here, data can be limited to selected U.S. states.",
-        label="**State(s) in the US:**",
-        options=_sql_query_us_states(),
-    )
-
-    if FILTER_US_STATES:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    FILTER_US_AVIATION = st.sidebar.multiselect(
-        default=FILTER_US_AVIATION_DEFAULT,
-        help="""
-        **US aviation** means that either the event occurred on US soil or 
-        the departure, destination, owner, operator or registration is US.
-        """,
-        label="**US aviation criteria:**",
-        options=[
-            FILTER_US_AVIATION_COUNTRY,
-            FILTER_US_AVIATION_DEPARTURE,
-            FILTER_US_AVIATION_DESTINATION,
-            FILTER_US_AVIATION_OPERATOR,
-            FILTER_US_AVIATION_OWNER,
-            FILTER_US_AVIATION_REGISTRATION,
-        ],
-    )
-
-    if FILTER_US_AVIATION:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
-        )
-
-    st.sidebar.markdown("""---""")
-
-    _print_timestamp("_setup_filter - End")
-
 
 # ------------------------------------------------------------------
 # Set up the page.
@@ -3240,12 +3363,13 @@ def _setup_task_controls() -> None:
     global CHOICE_ALG_METRIC  # pylint: disable=global-statement
     global CHOICE_ALG_MIN_SUPPORT  # pylint: disable=global-statement
     global CHOICE_ALG_MIN_THRESHOLD  # pylint: disable=global-statement
+    global CHOICE_ASSOCIATION_RULES_DETAILS  # pylint: disable=global-statement
+    global CHOICE_BINARY_DATA_ECLAT  # pylint: disable=global-statement
+    global CHOICE_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
     global CHOICE_FREQUENT_ITEMSETS_DETAILS  # pylint: disable=global-statement
-    global CHOICE_ONE_HOT_ENCODED_DETAILS  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_DETAILS  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_PROFILE_TYPE  # pylint: disable=global-statement
-    global CHOICE_ASSOCIATION_RULES_DETAILS  # pylint: disable=global-statement
     global CHOICE_TRANSACTION_DATA_DETAILS  # pylint: disable=global-statement
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
@@ -3266,6 +3390,7 @@ a frequent itemset is defined as a set of items that occur together in at least 
     )
 
     CHOICE_ALG_ECLAT = st.sidebar.checkbox(
+        disabled=True,
         help="""
 Unlike the a priori method, the ECLAT method is not based on the calculation of confidence and lift, therefore the ECLAT method is based on the calculation of the support conjunctions of the variables.
         """,
@@ -3372,7 +3497,7 @@ to decide whether a candidate rule is of interest.
     CHOICE_RAW_DATA_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed raw data.",
         key="CHOICE_RAW_DATA_DETAILS",
-        label="**Show Detailed Raw Data**",
+        label="**Show Filtered Detailed Raw Data**",
         value=False,
     )
 
@@ -3380,7 +3505,7 @@ to decide whether a candidate rule is of interest.
         CHOICE_RAW_DATA_PROFILE = st.sidebar.checkbox(
             help="Profiling of the filtered raw dataset.",
             key="CHOICE_RAW_DATA_PROFILE",
-            label="**Show Raw Data Profile**",
+            label="**Show Filtered Raw Data Profile**",
             value=False,
         )
 
@@ -3406,10 +3531,18 @@ to decide whether a candidate rule is of interest.
     )
 
     if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        CHOICE_ONE_HOT_ENCODED_DETAILS = st.sidebar.checkbox(
+        CHOICE_BINARY_DATA_ONE_HOT_ENCODED = st.sidebar.checkbox(
             help="Tabular representation of the one-hot encoded data.",
             key="CHOICE_ONE_HOT_ENCODED_DETAILS",
             label="**Show Detailed One-Hot Encoded Data**",
+            value=False,
+        )
+
+    if CHOICE_ALG_ECLAT:
+        CHOICE_BINARY_DATA_ECLAT = st.sidebar.checkbox(
+            help="Tabular representation of the binary data.",
+            key="CHOICE_BINARY_DATA",
+            label="**Show Binary Data**",
             value=False,
         )
 
@@ -3883,7 +4016,9 @@ def _sql_query_us_states() -> list[str]:
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
     global DF_RAW_DATA_FILTERED  # pylint: disable=global-statement
+    global DF_RAW_DATA_FILTERED_ROWS  # pylint: disable=global-statement
     global DF_RAW_DATA_UNFILTERED  # pylint: disable=global-statement
+    global DF_RAW_DATA_UNFILTERED_ROWS  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
 
@@ -3917,6 +4052,10 @@ def _streamlit_flow() -> None:
 
     utils.has_access(APP_ID)
 
+    # ------------------------------------------------------------------
+    # Get data.
+    # ------------------------------------------------------------------
+
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")
 
@@ -3934,7 +4073,17 @@ def _streamlit_flow() -> None:
     _sql_query_codes_subcategory()
     _sql_query_codes_subsection()
 
+    # ------------------------------------------------------------------
+    # Filter data.
+    # ------------------------------------------------------------------
+
     DF_RAW_DATA_UNFILTERED = _get_raw_data()
+
+    (DF_RAW_DATA_UNFILTERED_ROWS, _) = DF_RAW_DATA_UNFILTERED.shape
+    if DF_RAW_DATA_UNFILTERED_ROWS == 0:
+        st.error("**Error**: There are no data available.")
+        st.stop()
+
     DF_RAW_DATA_FILTERED = DF_RAW_DATA_UNFILTERED
 
     _print_timestamp("_get_data()")
@@ -3949,8 +4098,17 @@ def _streamlit_flow() -> None:
         )
         _print_timestamp("_apply_filter()")
 
-    _present_data()
-    _print_timestamp("_present_data()")
+    (DF_RAW_DATA_FILTERED_ROWS, _) = DF_RAW_DATA_FILTERED.shape
+    if DF_RAW_DATA_FILTERED_ROWS == 0:
+        st.error("**Error**: No data has been selected.")
+        st.stop()
+
+    # ------------------------------------------------------------------
+    # Present the results.
+    # ------------------------------------------------------------------
+
+    _present_results()
+    _print_timestamp("_present_results()")
 
     # Stop time measurement.
     # flake8: noqa: E501

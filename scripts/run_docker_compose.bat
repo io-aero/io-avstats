@@ -47,6 +47,7 @@ if ["%1"] EQU [""] (
     echo =========================================================
     echo clean - Remove all containers and images
     echo down  - Stop  Docker Compose
+    echo logs  - Fetch the logs of a container
     echo up    - Start Docker Compose
     echo ---------------------------------------------------------
     set /P IO_AVSTATS_TASK="Enter the desired task [default: %IO_AVSTATS_TASK_DEFAULT%] "
@@ -142,15 +143,14 @@ if ["%IO_AVSTATS_TASK%"] EQU ["clean"] (
     docker ps -a
     echo ............................................................. before images:
     docker images
-    docker image ls | find "%IO_AVSTATS_POSTGRES_DBNAME_ADMIN%"          && docker rmi --force %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%:latest
-    docker image ls | find "%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%" && docker rmi --force %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%:latest
-    docker image ls | find "ae1982"                                      && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "keycloak"                                    && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
-    docker image ls | find "members"                                     && docker rmi --force ioaero/members:latest
-    docker image ls | find "nginx"                                       && docker rmi --force nginx:alpine
-    docker image ls | find "pd1982"                                      && docker rmi --force ioaero/pd1982:latest
-    docker image ls | find "slara"                                       && docker rmi --force ioaero/slara:latest
-    docker image ls | find "stats"                                       && docker rmi --force ioaero/stats:latest
+    docker image ls | find "postgres"                  && docker rmi --force postgres
+    docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak
+    docker image ls | find "ae1982"                    && docker rmi --force ioaero/ae1982:latest
+    docker image ls | find "members"                   && docker rmi --force ioaero/members:latest
+    docker image ls | find "nginx"                     && docker rmi --force nginx:alpine
+    docker image ls | find "pd1982"                    && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "slara"                     && docker rmi --force ioaero/slara:latest
+    docker image ls | find "stats"                     && docker rmi --force ioaero/stats:latest
     echo ............................................................. after images:
     docker images
     goto END_OF_SCRIPT

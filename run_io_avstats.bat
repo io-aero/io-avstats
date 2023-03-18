@@ -108,6 +108,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
         echo =========================================================
         echo clean - Remove all containers and images
         echo down  - Stop  Docker Compose
+        echo logs  - Fetch the logs of a container
         echo up    - Start Docker Compose
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AVSTATS_COMPOSE_TASK_DEFAULT%] "

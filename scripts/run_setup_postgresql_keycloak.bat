@@ -50,8 +50,9 @@ docker create -e        POSTGRES_DB=%IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN% 
               -e        POSTGRES_HOST_AUTH_METHOD=password ^
               -e        POSTGRES_PASSWORD=%IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN% ^
               -e        POSTGRES_USER=%IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN% ^
+              --expose  %IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT% ^
+              -h        %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME% ^
               --name    %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME% ^
-              --network bridge ^
               -p        %IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT%:%IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT% ^
               -v        "%cd%\%IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA%":/var/lib/postgresql/data ^
               --restart always ^

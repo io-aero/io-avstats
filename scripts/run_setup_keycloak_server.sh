@@ -44,24 +44,25 @@ start=$(date +%s)
 echo "--------------------------------------------------------------------------------"
 echo "Docker create ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME} (Keycloak ${IO_AVSTATS_KEYCLOAK_VERSION})"
 
-docker create -e        KC_HTTP_ENABLED=true ^
-              -e        KC_HTTP_HOST=0.0.0.0 ^
-              -e        KC_HTTPS_CLIENT_AUTH=none ^
-              -e        KC_HOSTNAME_STRICT=false ^
-              -e        KC_HOSTNAME_URL=http://auth.io-aero.com:8080/ ^
-              -e        KEYCLOAK_ADMIN="${IO_AVSTATS_KEYCLOAK_USER_ADMIN}" ^
-              -e        KEYCLOAK_ADMIN_PASSWORD="${IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN}" ^
-              -e        KC_DB=postgres ^
-              -e        KC_DB_URL_HOST="${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" ^
-              -e        KC_DB_URL_PORT="${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ^
-              -e        KC_DB_URL_DATABASE="${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}" ^
-              -e        KC_DB_USERNAME="${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}" ^
-              -e        KC_DB_PASSWORD="${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}" ^
-              -e        KC_PROXY=edge ^
-              --name    "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}" ^
-              --restart always ^
-              quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}" ^
+docker create -e        KC_HTTP_ENABLED=true \
+              -e        KC_HTTP_HOST=0.0.0.0 \
+              -e        KC_HTTPS_CLIENT_AUTH=none \
+              -e        KC_HOSTNAME_STRICT=false \
+              -e        KC_HOSTNAME_URL=http://auth.io-aero.com:8080/ \
+              -e        KEYCLOAK_ADMIN="${IO_AVSTATS_KEYCLOAK_USER_ADMIN}" \
+              -e        KEYCLOAK_ADMIN_PASSWORD="${IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN}" \
+              -e        KC_DB=postgres \
+              -e        KC_DB_URL_HOST="${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" \
+              -e        KC_DB_URL_PORT="${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}" \
+              -e        KC_DB_URL_DATABASE="${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN}" \
+              -e        KC_DB_USERNAME="${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}" \
+              -e        KC_DB_PASSWORD="${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}" \
+              -e        KC_PROXY=edge \
+              --name    "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}" \
+              --restart always \
+              quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}" \
               start
+
 
 echo "Docker start ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME} (Keycloak ${IO_AVSTATS_KEYCLOAK_VERSION}) ..."
 if ! docker start "${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"; then

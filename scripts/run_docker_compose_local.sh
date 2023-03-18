@@ -4,7 +4,7 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_docker_compose.sh: Manage a multi-container Docker application.
+# run_docker_compose_cloud.sh: Manage a multi-container Docker application (Local).
 #
 # ------------------------------------------------------------------------------
 
@@ -34,11 +34,9 @@ export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_USER_GUEST=guest
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
-export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
-
 export IO_AVSTATS_CONTAINER=
 export IO_AVSTATS_CONTAINER_DEFAULT=*
-export IO_AVSTATS_TASK=
+export IO_AVSTATS_COMPOSE_TASK=
 export IO_AVSTATS_TASK_DEFAULT=up
 
 if [ -z "$1" ]; then
@@ -49,17 +47,17 @@ if [ -z "$1" ]; then
     echo "up    - Start Docker Compose"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
-    read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_TASK
-    export IO_AVSTATS_TASK=${IO_AVSTATS_TASK}
+    read -p "Enter the desired task [default: ${IO_AVSTATS_TASK_DEFAULT}] " IO_AVSTATS_COMPOSE_TASK
+    export IO_AVSTATS_COMPOSE_TASK=${IO_AVSTATS_COMPOSE_TASK}
 
-    if [ -z "${IO_AVSTATS_TASK}" ]; then
-        export IO_AVSTATS_TASK=${IO_AVSTATS_TASK_DEFAULT}
+    if [ -z "${IO_AVSTATS_COMPOSE_TASK}" ]; then
+        export IO_AVSTATS_COMPOSE_TASK=${IO_AVSTATS_TASK_DEFAULT}
     fi
 else
-    export IO_AVSTATS_TASK=$1
+    export IO_AVSTATS_COMPOSE_TASK=$1
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "logs" ]; then
+if [ "${IO_AVSTATS_COMPOSE_TASK}" = "logs" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "*             - All Containers"
@@ -104,7 +102,7 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "Manage a multi-container Docker application"
 echo "--------------------------------------------------------------------------------"
-echo "TASK                              : ${IO_AVSTATS_TASK}"
+echo "COMPOSE_TASK                      : ${IO_AVSTATS_COMPOSE_TASK}"
 echo "CONTAINER                         : ${IO_AVSTATS_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
 echo "KEYCLOAK_CONNECTION_PORT          : ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}"
@@ -128,7 +126,6 @@ echo "POSTGRES_KEYCLOAK_DBNAME_ADMIN    : ${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_
 echo "POSTGRES_KEYCLOAK_PASSWORD_ADMIN  : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN}"
 echo "POSTGRES_KEYCLOAK_PGDATA          : ${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}"
 echo "POSTGRES_KEYCLOAK_USER_ADMIN      : ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN}"
-echo "STREAMLIT_SERVER_PORT             : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -143,12 +140,6 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker ps -q --filter "name=${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AVSTATS_POSTGRES_CONTAINER_NAME}
     docker ps -q --filter "name=${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
-    docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
-    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
-    docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
-    docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
-    docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
     echo "............................................................ after containers:"
     docker ps
     docker ps -a
@@ -156,12 +147,6 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
     docker images
     docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
     docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
-    docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
-    docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
-    docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
-    docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
-    docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
     echo "............................................................ after images:"
     docker images
 
@@ -169,7 +154,7 @@ if [ "${IO_AVSTATS_TASK}" = "clean" ]; then
 # Stop Docker Compose.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
-    docker-compose down
+    docker-compose -f docker-compose_local.yml down
 
     echo "............................................................ after containers:"
     docker ps
@@ -180,35 +165,31 @@ elif [ "${IO_AVSTATS_TASK}" = "down" ]; then
 # ------------------------------------------------------------------------------
 # View Container Output.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "logs" ]; then
+elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "logs" ]; then
     if [ "${IO_AVSTATS_CONTAINER}" = "*" ]; then
-        docker-compose logs --tail=0 --follow
+        docker-compose -f docker-compose_local.yml logs --tail=0 --follow
     else
-        docker-compose logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
+        docker-compose -f docker-compose_local.yml logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
     fi
 
 # ------------------------------------------------------------------------------
 # Start Docker Compose.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "up" ]; then
+elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "up" ]; then
     echo "............................................................ before containers:"
     docker ps
     docker ps -a
     echo "............................................................ before images:"
     docker images
 
-    docker-compose up -d
-
-elif [ "${IO_AVSTATS_TASK}" = "logs" ]; then
-    # FIXME change servic name hardcoding to arg
-    docker-compose logs --follow load_balancer
+    docker-compose -f docker-compose_local.yml up -d
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
 
 else
-    echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AVSTATS_TASK}'"
+    echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AVSTATS_COMPOSE_TASK}'"
     exit 255
 fi
 

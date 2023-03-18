@@ -68,6 +68,7 @@ if [ -z "$1" ]; then
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
+    echo "c_d_l   - Run Docker Compose tasks - Local"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_f   - Delete the PostgreSQL database files"
@@ -82,7 +83,7 @@ if [ -z "$1" ]; then
     echo "k_s_s   - Set up the Keycloak server container"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
-    echo "c_d_c   - Run Docker Compose tasks"
+    echo "c_d_c   - Run Docker Compose tasks - Cloud"
     echo "c_f_z   - Zip the files for the cloud"
     echo "---------------------------------------------------------"
     echo "version - Show the IO-AVSTATS-DB version"
@@ -98,11 +99,12 @@ else
     export IO_AVSTATS_TASK=$1
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
+if [ "${IO_AVSTATS_TASK}" = "c_d_c" ] || [ "${IO_AVSTATS_TASK}" = "c_d_l" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "clean - Remove all containers and images"
         echo "down  - Stop  Docker Compose"
+        echo "logs  - Fetch the logs of a container"
         echo "up    - Start Docker Compose"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
@@ -167,11 +169,13 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
 echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH : ${PYTHONPATH}"
+echo "PYTHONPATH   : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
-echo "TASK       : ${IO_AVSTATS_TASK}"
-echo "MSACCESS   : ${IO_AVSTATS_MSACCESS}"
-echo "MSEXCEL    : ${IO_AVSTATS_MSEXCEL}"
+echo "TASK         : ${IO_AVSTATS_TASK}"
+echo "APPLICATION  : ${IO_AVSTATS_APPLICATION}"
+echo "COMPOSE_TASK : ${IO_AVSTATS_COMPOSE_TASK}"
+echo "MSACCESS     : ${IO_AVSTATS_MSACCESS}"
+echo "MSEXCEL      : ${IO_AVSTATS_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -199,10 +203,18 @@ if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"
     fi
 
 # ------------------------------------------------------------------------------
-# Run Docker Compose tasks.
+# Run Docker Compose tasks (Cloud).
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
-    if ! ( ./scripts/run_docker_compose.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
+    if ! ( ./scripts/run_docker_compose_cloud.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Run Docker Compose tasks (Local).
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "c_d_l" ]; then
+    if ! ( ./scripts/run_docker_compose_local.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
         exit 255
     fi
 
@@ -270,23 +282,23 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8501 -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "members" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8598 ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8598 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "pd1982" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8502 ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8502 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "slara" ]; then
-        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8503 ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8503 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.address "${IO_AVSTATS_APPLICATION}.io-aero.com" --server.port 8599 ); then
+        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
     fi

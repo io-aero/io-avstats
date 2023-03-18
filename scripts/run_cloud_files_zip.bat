@@ -23,10 +23,10 @@ IF EXIST %AWS_FILE_NAME% DEL /F %AWS_FILE_NAME%
 
 %AWS_PROG_ZIP% a -spd -tzip %AWS_FILE_NAME% data\latest_postgres.zip ^
                                             data\latest_postgres_keycloak.zip ^
-                                            docker-compose.yml ^
+                                            docker-compose_cloud.yml ^
                                             nginx.conf ^
                                             scripts\run_cloud_setup_instance.sh ^
-                                            scripts\run_docker_compose.sh
+                                            scripts\run_docker_compose_cloud.sh
 
 echo.
 echo =======================================================================

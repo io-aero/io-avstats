@@ -63,11 +63,11 @@ The latest version of the **IO-AVSTATS** database can be found here:
 | logging_cfg.yaml                      | Configuration of the Logger functionality.                                                      |
 | Makefile                              | Definition of tasks to be executed with the **`make`** command.                                 |
 | mkdocs.yml                            | Configuration file for **MkDocs**.                                                              |
+| nginx.conf                            | Configuration file for **Nginx**.                                                               |
 | Pipfile                               | Definition of the Python package requirements.                                                  |
+| Pipfile.ae1982, Pipfile.members, ...  | Application specific definitions of the Python package requirements.                            |
 | pyproject.toml                        | Optional configuration data for the **bandit**, **isort**, **pydocstyle** and **pytest** tools. |
 | README.md                             | This file.                                                                                      |
-| run_create_image                      | Script to create the Streamlit application images.                                              |
-| run_docker_compose                    | Script to start the Docker orchestration.                                                       |
 | run_io_avstats                        | Main script for using the functionality of **IO-AVSTATS**.                                      |
 | settings.io_avstats.toml              | Configuration data for **IO-AVSTATS**.                                                          |
 | settings.io_avstats_4_dockerfile.toml | Configuration data for **IO-AVSTATS** - variant for the Streamlit application images.           |

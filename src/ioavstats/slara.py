@@ -3390,7 +3390,7 @@ a frequent itemset is defined as a set of items that occur together in at least 
     )
 
     CHOICE_ALG_ECLAT = st.sidebar.checkbox(
-        disabled=True,
+# wwe   disabled=True,
         help="""
 Unlike the a priori method, the ECLAT method is not based on the calculation of confidence and lift, therefore the ECLAT method is based on the calculation of the support conjunctions of the variables.
         """,

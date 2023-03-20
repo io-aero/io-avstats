@@ -2191,12 +2191,12 @@ def _present_data() -> None:
 
     (DF_UNFILTERED_ROWS, _) = DF_UNFILTERED.shape
     if DF_UNFILTERED_ROWS == 0:
-        st.error("**Error**: There are no data available.")
+        st.error("##### Error: There are no data available.")
         st.stop()
 
     (DF_FILTERED_ROWS, _) = DF_FILTERED.shape
     if DF_FILTERED_ROWS == 0:
-        st.error("**Error**: No data has been selected.")
+        st.error("##### Error: No data has been selected.")
         st.stop()
 
     if CHOICE_MAP:

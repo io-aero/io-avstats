@@ -8,7 +8,8 @@ import time
 
 import numpy
 import pandas as pd
-# import plotly.express as px  # type: ignore
+import plotly.express as px  # type: ignore
+import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import streamlit as st
 import utils  # type: ignore
@@ -43,6 +44,8 @@ CHOICE_ALG_ECLAT: bool | None = None
 CHOICE_ALG_FPGROWTH: bool | None = None
 CHOICE_ALG_FPMAX: bool | None = None
 CHOICE_ALG_METRIC: str | None = None
+CHOICE_ALG_COMBINATIONS_MAX: int | None = None
+CHOICE_ALG_COMBINATIONS_MIN: int | None = None
 CHOICE_ALG_MIN_SUPPORT: float | None = None
 CHOICE_ALG_MIN_THRESHOLD: float | None = None
 CHOICE_ASSOCIATION_RULES_DETAILS: bool | None = None
@@ -54,6 +57,9 @@ CHOICE_FILTER_DATA_EVENTS_SEQUENCE: bool | None = None
 CHOICE_FILTER_DATA_FINDINGS: bool | None = None
 CHOICE_FILTER_DATA_OTHER: bool | None = None
 CHOICE_FREQUENT_ITEMSETS_DETAILS: bool | None = None
+
+CHOICE_ITEM_DISTRIBUTION_ECLAT: bool | None = None
+CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT: bool | None = None
 
 CHOICE_RAW_DATA_DETAILS: bool | None = None
 CHOICE_RAW_DATA_PROFILE: bool | None = None
@@ -90,9 +96,10 @@ DF_ASSOCIATION_RULES_FPMAX: DataFrame = DataFrame()
 DF_BINARY_DATA_ECLAT: DataFrame = DataFrame()
 DF_BINARY_DATA_ONE_HOT_ENCODED: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_APRIORI: DataFrame = DataFrame()
-DF_FREQUENT_ITEMSETS_ECLAT: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPGROWTH: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPMAX: DataFrame = DataFrame()
+DF_ITEM_DISTRIBUTION_ECLAT: DataFrame = DataFrame()
+DF_ITEM_DISTRIBUTION_ECLAT_EXT: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED_ROWS = 0
 DF_RAW_DATA_UNFILTERED: DataFrame = DataFrame()
@@ -243,7 +250,6 @@ def _apply_algorithm() -> None:
     if CHOICE_ALG_ECLAT:
         _create_transaction_data_eclat()
         _apply_algorithm_eclat()
-        _create_frequent_itemsets_eclat()
     #     _create_association_rules_eclat()
 
 
@@ -268,9 +274,14 @@ def _apply_algorithm_apriori() -> None:
 # Apply the Eclat Algorithm.
 # ------------------------------------------------------------------
 def _apply_algorithm_eclat() -> None:
+    global DF_ASSOCIATION_RULES_ECLAT  # pylint: disable=global-statement
     global DF_ASSOCIATION_RULES_ECLAT_BASE  # pylint: disable=global-statement
     global DF_BINARY_DATA_ECLAT  # pylint: disable=global-statement
-    global DF_FREQUENT_ITEMSETS_ECLAT  # pylint: disable=global-statement
+    global CHOICE_ALG_COMBINATIONS_MAX  # pylint: disable=global-statement
+    global CHOICE_ALG_COMBINATIONS_MIN  # pylint: disable=global-statement
+    global DF_ITEM_DISTRIBUTION_ECLAT  # pylint: disable=global-statement
+    global DF_ITEM_DISTRIBUTION_ECLAT_EXT  # pylint: disable=global-statement
+
 
     _print_timestamp("_apply_algorithm_eclat() - Start")
 
@@ -282,14 +293,30 @@ def _apply_algorithm_eclat() -> None:
     DF_ASSOCIATION_RULES_ECLAT_BASE = eclat.df_bin.astype(int).sum(axis=1)
 
     items_transactions_gross = pd.DataFrame(
-        {"items": items_total.index, "transactions": items_total.values}
+        {"item": items_total.index, "item_description": " ", "transactions": items_total.values}
     )
-    items_transactions_net = items_transactions_gross.loc[
-        items_transactions_gross["items"] > " "
+    DF_ITEM_DISTRIBUTION_ECLAT = items_transactions_gross.loc[
+        items_transactions_gross["item"] > " "
     ]
-    DF_FREQUENT_ITEMSETS_ECLAT = items_transactions_net.sort_values(
-        "transactions", ascending=False
+
+    df_item_distribution_eclat_ext = _create_df_item_distribution_ext(
+        DF_ITEM_DISTRIBUTION_ECLAT
     )
+
+    DF_ITEM_DISTRIBUTION_ECLAT_EXT = df_item_distribution_eclat_ext.sort_values("transactions", ascending=False)
+
+    CHOICE_ALG_COMBINATIONS_MAX = max(DF_ASSOCIATION_RULES_ECLAT_BASE)
+
+    if CHOICE_ALG_COMBINATIONS_MIN > CHOICE_ALG_COMBINATIONS_MAX:
+        CHOICE_ALG_COMBINATIONS_MIN = CHOICE_ALG_COMBINATIONS_MAX
+
+    rule_indices, rule_supports = eclat.fit(min_support=CHOICE_ALG_MIN_SUPPORT,
+                                            min_combination = CHOICE_ALG_COMBINATIONS_MIN,
+                                            max_combination=CHOICE_ALG_COMBINATIONS_MAX,
+                                            separator = " & ",
+                                            verbose=True,)
+
+    DF_ASSOCIATION_RULES_ECLAT = pd.DataFrame(rule_supports.items(),columns=["Item","Support"]).sort_values(by=["Support"],ascending=False)
 
     _print_timestamp("_apply_algorithm_eclat() - End")
 
@@ -607,26 +634,6 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
     return dataframe.to_csv().encode("utf-8")
 
 
-# wwe
-# ------------------------------------------------------------------
-# # Create association rules with the Eclat Algorithm.
-# # ------------------------------------------------------------------
-# def _create_association_rules_eclat() -> None:
-#     global DF_ASSOCIATION_RULES_ECLAT  # pylint: disable=global-statement
-#
-#     _print_timestamp("_create_association_rules_eclat() - Start")
-#
-#     st.dataframe(DF_FREQUENT_ITEMSETS_ECLAT)
-#
-#     DF_ASSOCIATION_RULES_ECLAT = association_rules(
-#         DF_FREQUENT_ITEMSETS_ECLAT,
-#         metric=CHOICE_ALG_METRIC,
-#         min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-#     )
-#
-#     _print_timestamp("_create_association_rules_eclat() - End")
-
-
 # ------------------------------------------------------------------
 # Create binary data one-hot encoded.
 # ------------------------------------------------------------------
@@ -679,6 +686,20 @@ def _create_df_frequent_itemsets_ext(df_int: DataFrame) -> DataFrame:
 
 
 # ------------------------------------------------------------------
+# Create the external item distribution including the descriptions.
+# ------------------------------------------------------------------
+def _create_df_item_distribution_ext(df_int: DataFrame) -> DataFrame:
+    df_ext = df_int.copy()
+
+    for idx in df_ext.index:
+        df_ext["item_description"][idx] = _get_item_description(
+            df_ext["item"][idx]
+        )
+
+    return df_ext
+
+
+# ------------------------------------------------------------------
 # Create frequent itemsets with the Apriori Algorithm.
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_apriori() -> None:
@@ -695,63 +716,11 @@ def _create_frequent_itemsets_apriori() -> None:
     if DF_FREQUENT_ITEMSETS_APRIORI.empty:
         # pylint: disable=line-too-long
         st.error(
-            "**Error**: The selected Apriori Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected Apriori Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
     _print_timestamp("_create_frequent_itemsets_apriori() - End")
-
-
-# ------------------------------------------------------------------
-# Create frequent itemsets with the Eclat Algorithm.
-# ------------------------------------------------------------------
-def _create_frequent_itemsets_eclat() -> None:
-    _print_timestamp("_create_frequent_itemsets_eclat() - Start")
-
-    # st.dataframe(df)
-    #
-    # df_table = df.sort_values("transactions", ascending=False)
-    #
-    # st.write(df_table.head(20).style.background_gradient(cmap="Blues"))
-    #
-    # df_table["all"] = "Tree Map"
-    #
-    # fig = px.treemap(
-    #     df_table.head(50),
-    #     path=["all", "items"],
-    #     values="transactions",
-    #     color=df_table["transactions"].head(50),
-    #     hover_data=["items"],
-    #     color_continuous_scale="Blues",
-    # )
-    #
-    # fig.show()
-    #
-    # st.stop()
-    #
-    # dict_finally_index, dict_finally_support = eclat.fit()
-    #
-    # st.write(dict_finally_index)
-    #
-    # st.write(dict_finally_support)
-    #
-    # st.stop()
-    #
-    # DF_FREQUENT_ITEMSETS_ECLAT = eclat.fit()
-    #
-    # st.dataframe(DF_FREQUENT_ITEMSETS_ECLAT)
-    #
-    # st.stop()
-
-    # wwe
-    # if DF_FREQUENT_ITEMSETS_ECLAT.empty:
-    #     # pylint: disable=line-too-long
-    #     st.error(
-    #         "**Error**: The selected Eclat Algorithm did not find any data with the given items and parameters."
-    #     )
-    #     st.stop()
-
-    _print_timestamp("_create_frequent_itemsets_eclat() - End")
 
 
 # ------------------------------------------------------------------
@@ -771,7 +740,7 @@ def _create_frequent_itemsets_fpgrowth() -> None:
     if DF_FREQUENT_ITEMSETS_FPGROWTH.empty:
         # pylint: disable=line-too-long
         st.error(
-            "**Error**: The selected FP-Growth Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected FP-Growth Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
@@ -795,7 +764,7 @@ def _create_frequent_itemsets_fpmax() -> None:
     if DF_FREQUENT_ITEMSETS_FPMAX.empty:
         # pylint: disable=line-too-long
         st.error(
-            "**Error**: The selected FP-Max Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected FP-Max Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
@@ -964,7 +933,7 @@ def _create_transaction_data() -> None:
 
     if transaction_cmd == "()":
         # pylint: disable=line-too-long
-        st.error("**Error**: No items selected - transaction data.")
+        st.error("##### Error: No items selected - transaction data.")
         st.stop()
 
     DF_TRANSACTION_DATA["items"] = eval(transaction_cmd)  # pylint: disable=eval-used
@@ -1126,7 +1095,7 @@ def _create_transaction_data_eclat() -> None:
 
     if cmd_concat == "[] ":
         # pylint: disable=line-too-long
-        st.error("**Error**: No items selected - transaction data Eclat Algorithm.")
+        st.error("##### Error: No items selected - transaction data Eclat Algorithm.")
         st.stop()
 
     _idx_row_d = 0
@@ -1165,93 +1134,100 @@ def _get_engine() -> Engine:
 # ------------------------------------------------------------------
 # Determine the itemset description.
 # ------------------------------------------------------------------
-def _get_frozenset_description(itemset) -> list[tuple[str, list[str], str]]:
+def _get_frozenset_description(itemset:list[str]) -> list[str]:
     descriptions = []
 
     for item in itemset:
-        [part_1, part_2, part_3] = item.split("_")
-
-        match part_1:
-            case "ee":
-                attribute = "eventsoe no"
-                description = [MD_CODES_EVENTSOE[part_2]]
-            case "eo":
-                attribute = "occurrence code"
-                description = [
-                    MD_CODES_PHASE[part_2[:3]],
-                    MD_CODES_EVENTSOE[part_2[3:]],
-                ]
-            case "ep":
-                attribute = "phase no"
-                description = [MD_CODES_PHASE[part_2]]
-            case "fc":
-                attribute = "category no"
-                description = [MD_CODES_CATEGORY[part_2]]
-            case "ff":
-                attribute = "finding code"
-                description = [
-                    MD_CODES_CATEGORY[part_2[:2]],
-                    MD_CODES_SUBCATEGORY[part_2[:4]],
-                    MD_CODES_SECTION[part_2[:6]],
-                    MD_CODES_SUBSECTION[part_2[:8]],
-                    MD_CODES_MODIFIER[part_2[8:]],
-                ]
-            case "fm":
-                attribute = "modifier no"
-                description = [MD_CODES_MODIFIER[part_2]]
-            case "fs":
-                attribute = "section no"
-                description = [
-                    MD_CODES_CATEGORY[part_2[:2]],
-                    MD_CODES_SUBCATEGORY[part_2[:4]],
-                    MD_CODES_SECTION[part_2[:6]],
-                ]
-            case "fsc":
-                attribute = "subcategory no"
-                description = [
-                    MD_CODES_CATEGORY[part_2[:2]],
-                    MD_CODES_SUBCATEGORY[part_2[:4]],
-                ]
-            case "fss":
-                attribute = "subsection no"
-                description = [
-                    MD_CODES_CATEGORY[part_2[:2]],
-                    MD_CODES_SUBCATEGORY[part_2[:4]],
-                    MD_CODES_SECTION[part_2[:6]],
-                    MD_CODES_SUBSECTION[part_2[:8]],
-                ]
-            case _:
-                attribute = "??? " + part_1
-                description = ["??? " + part_2]
-
-        if part_1 in ["ee", "eo", "ep"]:
-            match part_3:
-                case "a":
-                    variant = "not relevant"
-                case "f":
-                    variant = "no defining event"
-                case "t":
-                    variant = "defining event"
-                case _:
-                    variant = "??? " + part_3
-        elif part_1 in ["fc", "ff", "fm", "fs", "fsc", "fss"]:
-            match part_3:
-                case "a":
-                    variant = "not relevant"
-                case "c":
-                    variant = "case"
-                case "f":
-                    variant = "factor"
-                case "n":
-                    variant = "neither cause nor factor"
-                case _:
-                    variant = "??? " + part_3
-        else:
-            variant = "??? " + part_3
-
-        descriptions.append((attribute, description, variant))
+        descriptions.append(_get_item_description(item))
 
     return descriptions
+
+
+# ------------------------------------------------------------------
+# Determine the item description.
+# ------------------------------------------------------------------
+def _get_item_description(item:str) -> str:
+    [part_1, part_2, part_3] = item.split("_")
+
+    match part_1:
+        case "ee":
+            attribute = "eventsoe no"
+            description = [MD_CODES_EVENTSOE[part_2]]
+        case "eo":
+            attribute = "occurrence code"
+            description = [
+                MD_CODES_PHASE[part_2[:3]],
+                MD_CODES_EVENTSOE[part_2[3:]],
+            ]
+        case "ep":
+            attribute = "phase no"
+            description = [MD_CODES_PHASE[part_2]]
+        case "fc":
+            attribute = "category no"
+            description = [MD_CODES_CATEGORY[part_2]]
+        case "ff":
+            attribute = "finding code"
+            description = [
+                MD_CODES_CATEGORY[part_2[:2]],
+                MD_CODES_SUBCATEGORY[part_2[:4]],
+                MD_CODES_SECTION[part_2[:6]],
+                MD_CODES_SUBSECTION[part_2[:8]],
+                MD_CODES_MODIFIER[part_2[8:]],
+            ]
+        case "fm":
+            attribute = "modifier no"
+            description = [MD_CODES_MODIFIER[part_2]]
+        case "fs":
+            attribute = "section no"
+            description = [
+                MD_CODES_CATEGORY[part_2[:2]],
+                MD_CODES_SUBCATEGORY[part_2[:4]],
+                MD_CODES_SECTION[part_2[:6]],
+            ]
+        case "fsc":
+            attribute = "subcategory no"
+            description = [
+                MD_CODES_CATEGORY[part_2[:2]],
+                MD_CODES_SUBCATEGORY[part_2[:4]],
+            ]
+        case "fss":
+            attribute = "subsection no"
+            description = [
+                MD_CODES_CATEGORY[part_2[:2]],
+                MD_CODES_SUBCATEGORY[part_2[:4]],
+                MD_CODES_SECTION[part_2[:6]],
+                MD_CODES_SUBSECTION[part_2[:8]],
+            ]
+        case _:
+            attribute = "??? " + part_1
+            description = ["??? " + part_2]
+
+    if part_1 in ["ee", "eo", "ep"]:
+        match part_3:
+            case "a":
+                variant = "not relevant"
+            case "f":
+                variant = "no defining event"
+            case "t":
+                variant = "defining event"
+            case _:
+                variant = "??? " + part_3
+    elif part_1 in ["fc", "ff", "fm", "fs", "fsc", "fss"]:
+        match part_3:
+            case "a":
+                variant = "not relevant"
+            case "c":
+                variant = "case"
+            case "f":
+                variant = "factor"
+            case "n":
+                variant = "neither cause nor factor"
+            case _:
+                variant = "??? " + part_3
+    else:
+        variant = "??? " + part_3
+
+    return    attribute + " | " + " - ".join(description) + " | " + variant
 
 
 # ------------------------------------------------------------------
@@ -1512,6 +1488,21 @@ For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequen
 
 
 # ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task -
+# item distribution data.
+# ------------------------------------------------------------------
+def _get_user_guide_item_distribution() -> None:
+    text = """
+#### User guide: Item distribution data details
+
+This task provides the detailed item distribution data in a table format for display and download as **csv** file. 
+The **csv** download may not be processable with MS Excel.
+    """
+
+    st.warning(text + _get_user_guide_details_standard())
+
+
+# ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task - raw data.
 # ------------------------------------------------------------------
 def _get_user_guide_details_raw_data() -> None:
@@ -1586,6 +1577,19 @@ The application tries to prevent a redundant selection of items!
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task.
 # ------------------------------------------------------------------
+def _get_user_guide_item_distribution_tree_map() -> None:
+    text = """
+#### User guide: Item distribution tree map
+
+TODO
+    """
+
+    st.warning(text)
+
+
+# ------------------------------------------------------------------
+# Creates the user guide for the 'Show details' task.
+# ------------------------------------------------------------------
 def _get_user_guide_items_findings() -> None:
     text = """
 #### User guide: Items from findings
@@ -1616,91 +1620,156 @@ The application tries to prevent a redundant selection of items!
 def _present_details_association_rules(
     algorithm: str, df_association_rules: DataFrame
 ) -> None:
-    if CHOICE_ASSOCIATION_RULES_DETAILS:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
-        )
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
 
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed association rules '
-                + algorithm
-                + " Algorithm</p>",
-                unsafe_allow_html=True,
-            )
-
+    with col1:
         # pylint: disable=line-too-long
-        with col2:
-            choice_ug_rules_details = st.checkbox(
-                help="Explanations and operating instructions related to the detailed association rules view.",
-                key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
-                label="**User Guide: Association rule details**",
-                value=False,
-            )
-
-        if choice_ug_rules_details:
-            _get_user_guide_details_association_rules()
-
-        df_rules_ext = _create_df_association_rules_ext(df_association_rules)
-
-        st.dataframe(df_rules_ext)
-
-        st.download_button(
-            data=_convert_df_2_csv(df_rules_ext),
-            file_name=APP_ID
-            + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
-            help="The download includes all association rules.",
-            label="Download the association rules",
-            mime="text/csv",
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed association rules '
+            + algorithm
+            + " Algorithm</p>",
+            unsafe_allow_html=True,
         )
+
+    # pylint: disable=line-too-long
+    with col2:
+        choice_ug_rules_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed association rules view.",
+            key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
+            label="**User Guide: Association rule details**",
+            value=False,
+        )
+
+    if choice_ug_rules_details:
+        _get_user_guide_details_association_rules()
+
+    df_rules_ext = _create_df_association_rules_ext(df_association_rules)
+
+    (no_rows, _) = df_rules_ext.shape
+
+    st.write(
+        f"No association rules: {no_rows}"
+    )
+
+    st.dataframe(df_rules_ext.sort_values("support", ascending=False))
+
+    st.download_button(
+        data=_convert_df_2_csv(df_rules_ext),
+        file_name=APP_ID
+        + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
+        help="The download includes all association rules.",
+        label="**Download the association rules**",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present association rule details.
+# ------------------------------------------------------------------
+def _present_details_association_rules_eclat(
+    algorithm: str, df_association_rules: DataFrame
+) -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed association rules '
+            + algorithm
+            + " Algorithm</p>",
+            unsafe_allow_html=True,
+        )
+
+    # pylint: disable=line-too-long
+    with col2:
+        choice_ug_rules_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed association rules view.",
+            key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
+            label="**User Guide: Association rule details**",
+            value=False,
+        )
+
+    if choice_ug_rules_details:
+        _get_user_guide_details_association_rules()
+
+    df_rules_ext = _create_df_association_rules_ext(df_association_rules)
+
+    (no_rows, _) = df_rules_ext.shape
+
+    st.write(
+        f"No association rules: {no_rows}"
+    )
+
+    st.dataframe(df_rules_ext.sort_values("support", ascending=False))
+
+    st.download_button(
+        data=_convert_df_2_csv(df_rules_ext),
+        file_name=APP_ID
+        + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
+        help="The download includes all association rules (ECLAT).",
+        label="**Download the association rules (ECLAT)**",
+        mime="text/csv",
+    )
 
 
 # ------------------------------------------------------------------
 # Present binary data.
 # ------------------------------------------------------------------
 def _present_details_binary_data() -> None:
-    if CHOICE_BINARY_DATA_ECLAT:
-        col1, col2 = st.columns(
-            [
-                2,
-                1,
-            ]
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Binary data Eclat Algorithm</p>',
+            unsafe_allow_html=True,
         )
 
-        with col1:
-            # pylint: disable=line-too-long
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Binary data Eclat Algorithm</p>',
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            # pylint: disable=line-too-long
-            choice_ug_binary_data = st.checkbox(
-                help="Explanations and operating instructions related to the detailed one-hot encoded data view.",
-                key="CHOICE_UG_ONE_BINARY_DATA",
-                label="**User Guide: Binary data**",
-                value=False,
-            )
-
-        if choice_ug_binary_data:
-            _get_user_guide_details_binary_data()
-
-        st.dataframe(DF_BINARY_DATA_ECLAT.iloc[:100, :100])
-
-        st.download_button(
-            data=_convert_df_2_csv(DF_BINARY_DATA_ECLAT),
-            file_name=APP_ID + "_binary_data.csv",
-            help="The download includes all binary data.",
-            label="Download the binary data",
-            mime="text/csv",
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_binary_data = st.checkbox(
+            help="Explanations and operating instructions related to the detailed one-hot encoded data view.",
+            key="CHOICE_UG_BINARY_DATA",
+            label="**User Guide: Binary data**",
+            value=False,
         )
+
+    if choice_ug_binary_data:
+        _get_user_guide_details_binary_data()
+
+    (no_rows,no_cols) = DF_BINARY_DATA_ECLAT.shape
+
+    st.write(
+        f"No transactions: {no_rows} - no columns: {no_cols}"
+    )
+
+    st.dataframe(DF_BINARY_DATA_ECLAT.iloc[:100, :100])
+
+    st.download_button(
+        data=_convert_df_2_csv(DF_BINARY_DATA_ECLAT),
+        file_name=APP_ID + "_binary_data.csv",
+        help="The download includes all binary data.",
+        label="**Download the binary data**",
+        mime="text/csv",
+    )
 
 
 # ------------------------------------------------------------------
@@ -1734,13 +1803,19 @@ def _present_details_binary_data_one_hot_encoded() -> None:
     if choice_ug_binary_data_one_hot_encoded:
         _get_user_guide_details_binary_data_one_hot_encoded()
 
+    (no_rows, no_cols) = DF_BINARY_DATA_ONE_HOT_ENCODED.shape
+
+    st.write(
+        f"No transactions: {no_rows} - no columns: {no_cols}"
+    )
+
     st.dataframe(DF_BINARY_DATA_ONE_HOT_ENCODED.iloc[:100, :100])
 
     st.download_button(
         data=_convert_df_2_csv(DF_BINARY_DATA_ONE_HOT_ENCODED),
         file_name=APP_ID + "_binary_data_one_hot_encoded.csv",
-        help="The download includes all binary one-hot encoded data.",
-        label="Download the binary one-hot encoded data",
+        help="The download includes all one-hot encoded data.",
+        label="**Download the one-hot encoded data**",
         mime="text/csv",
     )
 
@@ -1780,13 +1855,19 @@ def _present_details_frequent_itemsets_apriori() -> None:
         DF_FREQUENT_ITEMSETS_APRIORI
     )
 
-    st.dataframe(df_frequent_itemsets_ext)
+    (no_rows, _) = df_frequent_itemsets_ext.shape
+
+    st.write(
+        f"No frequent itemsets: {no_rows}"
+    )
+
+    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_frequent_itemsets_ext),
         file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
         help="The download includes all frequent itemsets.",
-        label="Download the frequent itemsets",
+        label="**Download the frequent itemsets**",
         mime="text/csv",
     )
 
@@ -1823,16 +1904,22 @@ def _present_details_frequent_itemsets_eclat() -> None:
         _get_user_guide_details_frequent_itemsets()
 
     df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-        DF_FREQUENT_ITEMSETS_ECLAT
+        DF_ITEM_DISTRIBUTION_ECLAT
     )
 
-    st.dataframe(df_frequent_itemsets_ext)
+    (no_rows, _) = df_frequent_itemsets_ext.shape
+
+    st.write(
+        f"No frequent itemsets: {no_rows}"
+    )
+
+    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_frequent_itemsets_ext),
         file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
         help="The download includes all frequent itemsets.",
-        label="Download the frequent itemsets",
+        label="**Download the frequent itemsets**",
         mime="text/csv",
     )
 
@@ -1872,13 +1959,19 @@ def _present_details_frequent_itemsets_fpgrowth() -> None:
         DF_FREQUENT_ITEMSETS_FPGROWTH
     )
 
-    st.dataframe(df_frequent_itemsets_ext)
+    (no_rows, _) = df_frequent_itemsets_ext.shape
+
+    st.write(
+        f"No frequent itemsets: {no_rows}"
+    )
+
+    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_frequent_itemsets_ext),
         file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
         help="The download includes all frequent itemsets.",
-        label="Download the frequent itemsets",
+        label="**Download the frequent itemsets**",
         mime="text/csv",
     )
 
@@ -1918,13 +2011,19 @@ def _present_details_frequent_itemsets_fpmax() -> None:
         DF_FREQUENT_ITEMSETS_FPMAX
     )
 
-    st.dataframe(df_frequent_itemsets_ext)
+    (no_rows, _) = df_frequent_itemsets_ext.shape
+
+    st.write(
+        f"No frequent itemsets: {no_rows}"
+    )
+
+    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_frequent_itemsets_ext),
         file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
         help="The download includes all frequent itemsets.",
-        label="Download the frequent itemsets",
+        label="**Download the frequent itemsets**",
         mime="text/csv",
     )
 
@@ -1972,7 +2071,7 @@ def _present_details_raw_data() -> None:
         file_name=APP_ID + "_raw_data_detail.csv",
         help="The download includes all raw data "
         + "after applying the filter options.",
-        label="Download the detailed raw data",
+        label="**Download the detailed raw data**",
         mime="text/csv",
     )
 
@@ -2012,15 +2111,114 @@ def _present_details_transaction_data(
     if choice_ug_transaction_data_details:
         _get_user_guide_details_transaction_data()
 
+    (no_rows, _) = df_transaction_data.shape
+
+    st.write(
+        f"No transactions: {no_rows}"
+    )
+
     st.dataframe(df_transaction_data)
 
     st.download_button(
         data=_convert_df_2_csv(df_transaction_data),
         file_name=APP_ID + "_transaction_data_detail.csv",
         help="The download includes all transaction data.",
-        label="Download the detailed transaction data",
+        label="**Download the detailed transaction data**",
         mime="text/csv",
     )
+
+
+# ------------------------------------------------------------------
+# Present details item distribution.
+# ------------------------------------------------------------------
+def _present_item_distribution() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Item distribution data Eclat Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_item_distribution = st.checkbox(
+            help="Explanations and operating instructions related to the detailed item distribution data view.",
+            key="CHOICE_UG_ITEM_DISTRIBUTION",
+            label="**User Guide: Item distribution data**",
+            value=False,
+        )
+
+    if choice_ug_item_distribution:
+        _get_user_guide_item_distribution()
+
+    (no_rows,_) = DF_ITEM_DISTRIBUTION_ECLAT_EXT.shape
+
+    st.write(
+        f"No items: {no_rows}"
+    )
+
+    st.dataframe(DF_ITEM_DISTRIBUTION_ECLAT_EXT)
+
+    st.download_button(
+        data=_convert_df_2_csv(DF_ITEM_DISTRIBUTION_ECLAT_EXT),
+        file_name=APP_ID + "_item_distribution_data.csv",
+        help="The download includes all item distribution data.",
+        label="**Download the item distribution data**",
+        mime="text/csv",
+    )
+
+
+# ------------------------------------------------------------------
+# Present the item distribution tree_map.
+# ------------------------------------------------------------------
+def _present_item_distribution_tree_map() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Item distribution tree map Eclat Algorithm</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_item_distribution_tree_map = st.checkbox(
+            help="Explanations and operating instructions related to the item distribution tree map view.",
+            key="CHOICE_UG_ITEM_DISTRIBUTION_TREE_MAP",
+            label="**User Guide: Item distribution tree map**",
+            value=False,
+        )
+
+    if choice_ug_item_distribution_tree_map:
+        _get_user_guide_item_distribution_tree_map()
+
+    DF_ITEM_DISTRIBUTION_ECLAT_EXT["all"] = "All"
+
+    fig = px.treemap(
+        DF_ITEM_DISTRIBUTION_ECLAT_EXT.head(50),
+        color=DF_ITEM_DISTRIBUTION_ECLAT_EXT["transactions"].head(50),
+        color_continuous_scale="Blues",
+        hover_data={"item_description":True, "transactions":True,},
+        path=[px.Constant("all"), "item"],
+        values="transactions",
+    )
+
+    st.plotly_chart(fig)
 
 
 # ------------------------------------------------------------------
@@ -2074,7 +2272,7 @@ def _present_profile_raw_data() -> None:
         file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
-        label="Download the raw data profile report",
+        label="**Download the raw data profile report**",
         mime="text/html",
     )
 
@@ -2133,14 +2331,13 @@ def _present_results() -> None:
     # Transaction data.
     # ------------------------------------------------------------------
 
-    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        if CHOICE_TRANSACTION_DATA_DETAILS:
+    if CHOICE_TRANSACTION_DATA_DETAILS:
+        if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
             _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
             _print_timestamp(
                 "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
             )
-    if CHOICE_ALG_ECLAT:
-        if CHOICE_TRANSACTION_DATA_DETAILS:
+        if CHOICE_ALG_ECLAT:
             _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
             _print_timestamp(
                 "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
@@ -2162,35 +2359,29 @@ def _present_results() -> None:
         if CHOICE_BINARY_DATA_ECLAT:
             _present_details_binary_data()
             _print_timestamp("_present_binary_data() - CHOICE_BINARY_DATA")
+        if CHOICE_ITEM_DISTRIBUTION_ECLAT:
+            _present_item_distribution ()
+            _print_timestamp("_present_item_distribution() - CHOICE_ITEM_DISTRIBUTION_ECLAT")
+        if CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT:
+            _present_item_distribution_tree_map ()
+            _print_timestamp("_present_item_distribution_tree_map() - CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT")
 
     # ------------------------------------------------------------------
     # Frequent itemsets.
     # ------------------------------------------------------------------
 
-    if CHOICE_ALG_APRIORI:
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+        if CHOICE_ALG_APRIORI:
             _present_details_frequent_itemsets_apriori()
             _print_timestamp(
                 "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
             )
-
-    # wwe
-    # if CHOICE_ALG_ECLAT:
-    #     if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-    #         _present_details_frequent_itemsets_eclat()
-    #         _print_timestamp(
-    #             "_present_details_frequent_itemsets_eclat() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-    #         )
-
-    if CHOICE_ALG_FPGROWTH:
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+        if CHOICE_ALG_FPGROWTH:
             _present_details_frequent_itemsets_fpgrowth()
             _print_timestamp(
                 "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
             )
-
-    if CHOICE_ALG_FPMAX:
-        if CHOICE_FREQUENT_ITEMSETS_DETAILS:
+        if CHOICE_ALG_FPMAX:
             _present_details_frequent_itemsets_fpmax()
             _print_timestamp(
                 "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
@@ -2200,31 +2391,25 @@ def _present_results() -> None:
     # Association rules.
     # ------------------------------------------------------------------
 
-    if CHOICE_ALG_APRIORI:
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
+    if CHOICE_ASSOCIATION_RULES_DETAILS:
+        if CHOICE_ALG_APRIORI:
             _present_details_association_rules("Apriori", DF_ASSOCIATION_RULES_APRIORI)
             _print_timestamp(
                 "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
             )
-
-    # if CHOICE_ALG_ECLAT:
-    #     if CHOICE_ASSOCIATION_RULES_DETAILS:
-    #         _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
-    #         _print_timestamp(
-    #             "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
-    #         )
-
-    if CHOICE_ALG_FPGROWTH:
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
+        if CHOICE_ALG_ECLAT:
+            _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
+            _print_timestamp(
+                "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
+            )
+        if CHOICE_ALG_FPGROWTH:
             _present_details_association_rules(
                 "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
             )
             _print_timestamp(
                 "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
             )
-
-    if CHOICE_ALG_FPMAX:
-        if CHOICE_ASSOCIATION_RULES_DETAILS:
+        if CHOICE_ALG_FPMAX:
             _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
             _print_timestamp(
                 "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
@@ -2641,7 +2826,7 @@ def _setup_filter_events_sequence():
         choice_ug_items_events_sequence = st.checkbox(
             help="Explanations for the item selection of database table events_sequence.",
             key="CHOICE_UG_ITEMS_EVENTS_SEQUENCE",
-            label="**User Guide: Items from events_sequence**",
+            label="**User Guide: Items from events_sequence****",
             value=False,
         )
     if choice_ug_items_events_sequence:
@@ -2750,14 +2935,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**."
             )
             st.stop()
 
         if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**."
             )
             st.stop()
 
@@ -2768,7 +2953,7 @@ def _setup_filter_events_sequence():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**."
+                "##### Error: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**."
             )
             st.stop()
 
@@ -2779,7 +2964,7 @@ def _setup_filter_events_sequence():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Occurrence code** already contains the items of the selection **Phase no**."
+                "##### Error: The selection **Occurrence code** already contains the items of the selection **Phase no**."
             )
             st.stop()
 
@@ -2787,14 +2972,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**."
             )
             st.stop()
 
         if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**."
             )
             st.stop()
 
@@ -2802,14 +2987,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_PHASE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Defining event**."
             )
             st.stop()
 
         if ITEMS_FROM_ES_PHASE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**."
             )
             st.stop()
 
@@ -3102,21 +3287,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_FINDING_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_FINDING_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_FINDING_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Finding code** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3128,7 +3313,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Category no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Category no**."
             )
             st.stop()
 
@@ -3140,7 +3325,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Subcategory no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Subcategory no**."
             )
             st.stop()
 
@@ -3152,7 +3337,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Section no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Section no**."
             )
             st.stop()
 
@@ -3164,7 +3349,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Subsection no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Subsection no**."
             )
             st.stop()
 
@@ -3176,7 +3361,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **Finding code** already contains the items of the selection **Modifier no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Modifier no**."
             )
             st.stop()
 
@@ -3184,21 +3369,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_CATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Category no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3206,21 +3391,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subcategory no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3228,21 +3413,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Section no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3250,21 +3435,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Subsection no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3272,21 +3457,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Cause**."
             )
             st.stop()
 
         if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Factor**."
             )
             st.stop()
 
         if ITEMS_FROM_F_MODIFIER_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "**Error**: The selection **All** of **Modifier no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **None**."
             )
             st.stop()
 
@@ -3357,6 +3542,8 @@ def _setup_sidebar() -> None:
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
     global CHOICE_ALG_APRIORI  # pylint: disable=global-statement
+    global CHOICE_ALG_COMBINATIONS_MAX  # pylint: disable=global-statement
+    global CHOICE_ALG_COMBINATIONS_MIN  # pylint: disable=global-statement
     global CHOICE_ALG_ECLAT  # pylint: disable=global-statement
     global CHOICE_ALG_FPGROWTH  # pylint: disable=global-statement
     global CHOICE_ALG_FPMAX  # pylint: disable=global-statement
@@ -3367,6 +3554,8 @@ def _setup_task_controls() -> None:
     global CHOICE_BINARY_DATA_ECLAT  # pylint: disable=global-statement
     global CHOICE_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
     global CHOICE_FREQUENT_ITEMSETS_DETAILS  # pylint: disable=global-statement
+    global CHOICE_ITEM_DISTRIBUTION_ECLAT  # pylint: disable=global-statement
+    global CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_DETAILS  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_RAW_DATA_PROFILE_TYPE  # pylint: disable=global-statement
@@ -3390,7 +3579,6 @@ a frequent itemset is defined as a set of items that occur together in at least 
     )
 
     CHOICE_ALG_ECLAT = st.sidebar.checkbox(
-# wwe   disabled=True,
         help="""
 Unlike the a priori method, the ECLAT method is not based on the calculation of confidence and lift, therefore the ECLAT method is based on the calculation of the support conjunctions of the variables.
         """,
@@ -3450,7 +3638,7 @@ The support is computed as the fraction
 `transactions_where_item(s)_occur / total_transactions`.
             """,
             key="CHOICE_ALG_MIN_SUPPORT",
-            label="Minimum support",
+            label="**Minimum support**",
             max_value=1.00,
             min_value=0.01,
             value=0.50,
@@ -3469,7 +3657,7 @@ The metrics are computed as follows:
                     """,
             index=0,
             key="CHOICE_ALG_METRIC",
-            label="Metric",
+            label="**Metric**",
             options=[
                 "confidence",
                 "conviction",
@@ -3486,7 +3674,7 @@ via the `metric` parameter,
 to decide whether a candidate rule is of interest.
             """,
             key="CHOICE_ALG_MIN_THRESHOLD",
-            label="Minimum threshold",
+            label="**Minimum threshold**",
             max_value=1.00,
             min_value=0.01,
             value=0.80,
@@ -3514,7 +3702,7 @@ to decide whether a candidate rule is of interest.
                 help="explorative: thorough but also slow - minimal: minimal but faster.",
                 index=1,
                 key="CHOICE_RAW_DATA_PROFILE_TYPE",
-                label="Data profile type",
+                label="**Data profile type**",
                 options=(
                     [
                         "explorative",
@@ -3545,6 +3733,18 @@ to decide whether a candidate rule is of interest.
             label="**Show Binary Data**",
             value=False,
         )
+        CHOICE_ITEM_DISTRIBUTION_ECLAT = st.sidebar.checkbox(
+            help="Item distribution.",
+            key="CHOICE_ITEM_DISTRIBUTION_ECLAT",
+            label="**Show Item Distribution**",
+            value=False,
+        )
+        CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT = st.sidebar.checkbox(
+            help="Item distribution treemap.",
+            key="CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT",
+            label="**Show Item Distribution TreeMap**",
+            value=False,
+        )
 
     if (
         CHOICE_ALG_APRIORI
@@ -3558,13 +3758,20 @@ to decide whether a candidate rule is of interest.
             label="**Show Frequent Itemsets**",
             value=True,
         )
-
         CHOICE_ASSOCIATION_RULES_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the association rules.",
             key="CHOICE_ASSOCIATION_RULES_DETAILS",
             label="**Show Association Rules**",
             value=True,
         )
+        if CHOICE_ALG_ECLAT:
+            CHOICE_ALG_COMBINATIONS_MIN, CHOICE_ALG_COMBINATIONS_MAX = st.sidebar.slider(
+                help="""The minimum and maximum amount of items in the transaction.""",
+                label="**Combinations:**",
+                min_value=2,
+                max_value=10,
+                value=(2, 2),
+            )
 
     st.sidebar.markdown("""---""")
 
@@ -4050,14 +4257,14 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    utils.has_access(APP_ID)
+    # wwe utils.has_access(APP_ID)
 
     # ------------------------------------------------------------------
     # Get data.
     # ------------------------------------------------------------------
 
     PG_CONN = _get_postgres_connection()
-    _print_timestamp("_setup_filter - got DB connection")
+    _print_timestamp("_get_postgres_connection - got DB connection")
 
     _setup_sidebar()
     _print_timestamp("_setup_sidebar()")
@@ -4081,7 +4288,7 @@ def _streamlit_flow() -> None:
 
     (DF_RAW_DATA_UNFILTERED_ROWS, _) = DF_RAW_DATA_UNFILTERED.shape
     if DF_RAW_DATA_UNFILTERED_ROWS == 0:
-        st.error("**Error**: There are no data available.")
+        st.error("##### Error: There are no data available.")
         st.stop()
 
     DF_RAW_DATA_FILTERED = DF_RAW_DATA_UNFILTERED
@@ -4100,7 +4307,7 @@ def _streamlit_flow() -> None:
 
     (DF_RAW_DATA_FILTERED_ROWS, _) = DF_RAW_DATA_FILTERED.shape
     if DF_RAW_DATA_FILTERED_ROWS == 0:
-        st.error("**Error**: No data has been selected.")
+        st.error("##### Error: No data has been selected.")
         st.stop()
 
     # ------------------------------------------------------------------

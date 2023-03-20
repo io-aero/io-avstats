@@ -4,6 +4,7 @@
 /.idea/
 /.mypy_cache/
 /.pytest_cache/
+/.vs/
 /cloud.zip
 /data/*_postgres_*.zip
 /data/__ARCHIVE__/
@@ -17,5 +18,6 @@
 /data/postgres/
 /data/postgres_keycloak/
 /data/postgres_test/
+/resources/Gammadyne/timer.txt
 /src/ioavstats/stats.py
 coverage.xml

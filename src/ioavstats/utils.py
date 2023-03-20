@@ -72,9 +72,9 @@ def has_access(app_id: str) -> None:
 
     if not keycloak.authenticated:
         # pylint: disable=line-too-long
-        st.error("**Error**: The authentication attempt failed.")
+        st.error("##### Error: The authentication attempt failed.")
         if "KEYCLOAK" in st.session_state:
-            st.error(f"**Error**: The login has failed - client_id='{app_id}'.")
+            st.error(f"##### Error: The login has failed - client_id='{app_id}'.")
         else:
             st.session_state["KEYCLOAK"] = "KEYCLOAK"
         st.stop()
@@ -83,18 +83,18 @@ def has_access(app_id: str) -> None:
         keycloak.authenticated = False
         # pylint: disable=line-too-long
         st.error(
-            "**Error**: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly."
+            "##### Error: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly."
         )
         st.stop()
     elif (client_access := resource_access.get(app_id)) is None:
         keycloak.authenticated = False
-        st.error("**Error**: You have no permission to access this application.")
+        st.error("##### Error: You have no permission to access this application.")
         del st.session_state["KEYCLOAK"]
         st.stop()
     elif app_id + "-access" not in client_access.get("roles", []):
         keycloak.authenticated = False
         st.error(
-            "**Error**: You are missing the required role to access this application."
+            "##### Error: You are missing the required role to access this application."
         )
         st.stop()
 

@@ -167,7 +167,7 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
     docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
     docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:alpine"                                             | grep -q . && docker rmi --force nginx:alpine
+    docker images -q --filter "reference=nginx:stable-alpine"                                      | grep -q . && docker rmi --force nginx:stable-alpine
     echo "........................................................ after images:"
     docker images
 

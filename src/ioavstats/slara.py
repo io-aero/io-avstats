@@ -9,7 +9,6 @@ import time
 import numpy
 import pandas as pd
 import plotly.express as px  # type: ignore
-import plotly.graph_objects as go  # type: ignore
 import psycopg2
 import streamlit as st
 import utils  # type: ignore
@@ -44,28 +43,27 @@ CHOICE_ALG_ECLAT: bool | None = None
 CHOICE_ALG_FPGROWTH: bool | None = None
 CHOICE_ALG_FPMAX: bool | None = None
 CHOICE_ALG_METRIC: str | None = None
-CHOICE_ALG_COMBINATIONS_MAX: int | None = None
-CHOICE_ALG_COMBINATIONS_MIN: int | None = None
+CHOICE_ALG_COMBINATIONS_CURRENT: int = 0
+CHOICE_ALG_COMBINATIONS_MAX: int = 0
+CHOICE_ALG_COMBINATIONS_MIN: int = 0
 CHOICE_ALG_MIN_SUPPORT: float | None = None
 CHOICE_ALG_MIN_THRESHOLD: float | None = None
-CHOICE_ASSOCIATION_RULES_DETAILS: bool | None = None
-
-CHOICE_BINARY_DATA_ECLAT: bool | None = None
-CHOICE_BINARY_DATA_ONE_HOT_ENCODED: bool | None = None
 
 CHOICE_FILTER_DATA_EVENTS_SEQUENCE: bool | None = None
 CHOICE_FILTER_DATA_FINDINGS: bool | None = None
 CHOICE_FILTER_DATA_OTHER: bool | None = None
-CHOICE_FREQUENT_ITEMSETS_DETAILS: bool | None = None
 
-CHOICE_ITEM_DISTRIBUTION_ECLAT: bool | None = None
-CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT: bool | None = None
+CHOICE_RUN_ALGORITHMS: bool | None = None
 
-CHOICE_RAW_DATA_DETAILS: bool | None = None
-CHOICE_RAW_DATA_PROFILE: bool | None = None
-CHOICE_RAW_DATA_PROFILE_TYPE: str | None = None
-
-CHOICE_TRANSACTION_DATA_DETAILS: bool | None = None
+CHOICE_SHOW_ASSOCIATION_RULES: bool | None = None
+CHOICE_SHOW_BINARY_DATA_ECLAT: bool | None = None
+CHOICE_SHOW_FILTERED_RAW_DATA: bool | None = None
+CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE: bool | None = None
+CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE: str | None = None
+CHOICE_SHOW_FREQUENT_ITEMSETS: bool | None = None
+CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT: bool | None = None
+CHOICE_SHOW_ONE_HOT_ENCODED_DATA: bool | None = None
+CHOICE_SHOW_TRANSACTION_DATA: bool | None = None
 
 CHOICE_UG_APP: bool | None = None
 
@@ -90,15 +88,14 @@ COUNTRY_USA = "USA"
 
 DF_ASSOCIATION_RULES_APRIORI: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_ECLAT: DataFrame = DataFrame()
-DF_ASSOCIATION_RULES_ECLAT_BASE: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPGROWTH: DataFrame = DataFrame()
 DF_ASSOCIATION_RULES_FPMAX: DataFrame = DataFrame()
 DF_BINARY_DATA_ECLAT: DataFrame = DataFrame()
 DF_BINARY_DATA_ONE_HOT_ENCODED: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_APRIORI: DataFrame = DataFrame()
+DF_FREQUENT_ITEMSETS_ECLAT: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPGROWTH: DataFrame = DataFrame()
 DF_FREQUENT_ITEMSETS_FPMAX: DataFrame = DataFrame()
-DF_ITEM_DISTRIBUTION_ECLAT: DataFrame = DataFrame()
 DF_ITEM_DISTRIBUTION_ECLAT_EXT: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED: DataFrame = DataFrame()
 DF_RAW_DATA_FILTERED_ROWS = 0
@@ -232,25 +229,54 @@ START_TIME: int = 0
 # ------------------------------------------------------------------
 def _apply_algorithm() -> None:
     if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        _create_transaction_data()
-        _create_binary_data_one_hot_encoded()
-
-        if CHOICE_ALG_APRIORI:
-            _create_frequent_itemsets_apriori()
-            _apply_algorithm_apriori()
-
-        if CHOICE_ALG_FPGROWTH:
-            _create_frequent_itemsets_fpgrowth()
-            _apply_algorithm_fpgrowth()
-
-        if CHOICE_ALG_FPMAX:
-            _create_frequent_itemsets_fpmax()
-            _apply_algorithm_fpmax()
+        if (
+            CHOICE_SHOW_ASSOCIATION_RULES
+            or CHOICE_SHOW_FREQUENT_ITEMSETS
+            or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+            or CHOICE_SHOW_ONE_HOT_ENCODED_DATA
+            or CHOICE_SHOW_TRANSACTION_DATA
+        ):
+            _create_transaction_data()
+            if (
+                CHOICE_SHOW_ASSOCIATION_RULES
+                or CHOICE_SHOW_FREQUENT_ITEMSETS
+                or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+                or CHOICE_SHOW_ONE_HOT_ENCODED_DATA
+            ):
+                _create_binary_data_one_hot_encoded()
+                if (
+                    CHOICE_SHOW_ASSOCIATION_RULES
+                    or CHOICE_SHOW_FREQUENT_ITEMSETS
+                    or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+                ):
+                    if CHOICE_ALG_APRIORI:
+                        _create_frequent_itemsets_apriori()
+                        _apply_algorithm_apriori()
+                    if CHOICE_ALG_FPGROWTH:
+                        _create_frequent_itemsets_fpgrowth()
+                        _apply_algorithm_fpgrowth()
+                    if CHOICE_ALG_FPMAX:
+                        _create_frequent_itemsets_fpmax()
+                        _apply_algorithm_fpmax()
+        return
 
     if CHOICE_ALG_ECLAT:
-        _create_transaction_data_eclat()
-        _apply_algorithm_eclat()
-    #     _create_association_rules_eclat()
+        if (
+            CHOICE_SHOW_ASSOCIATION_RULES
+            or CHOICE_SHOW_BINARY_DATA_ECLAT
+            or CHOICE_SHOW_FREQUENT_ITEMSETS
+            or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+            or CHOICE_SHOW_TRANSACTION_DATA
+        ):
+            _create_transaction_data_eclat()
+            if (
+                CHOICE_SHOW_ASSOCIATION_RULES
+                or CHOICE_SHOW_BINARY_DATA_ECLAT
+                or CHOICE_SHOW_FREQUENT_ITEMSETS
+                or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+            ):
+                _apply_algorithm_eclat()
+            #   _create_association_rules_eclat()
 
 
 # ------------------------------------------------------------------
@@ -274,49 +300,74 @@ def _apply_algorithm_apriori() -> None:
 # Apply the Eclat Algorithm.
 # ------------------------------------------------------------------
 def _apply_algorithm_eclat() -> None:
-    global DF_ASSOCIATION_RULES_ECLAT  # pylint: disable=global-statement
-    global DF_ASSOCIATION_RULES_ECLAT_BASE  # pylint: disable=global-statement
-    global DF_BINARY_DATA_ECLAT  # pylint: disable=global-statement
+    global CHOICE_ALG_COMBINATIONS_CURRENT  # pylint: disable=global-statement
     global CHOICE_ALG_COMBINATIONS_MAX  # pylint: disable=global-statement
     global CHOICE_ALG_COMBINATIONS_MIN  # pylint: disable=global-statement
-    global DF_ITEM_DISTRIBUTION_ECLAT  # pylint: disable=global-statement
+    global DF_ASSOCIATION_RULES_ECLAT  # pylint: disable=global-statement
+    global DF_BINARY_DATA_ECLAT  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_ECLAT  # pylint: disable=global-statement
     global DF_ITEM_DISTRIBUTION_ECLAT_EXT  # pylint: disable=global-statement
-
 
     _print_timestamp("_apply_algorithm_eclat() - Start")
 
     eclat = ECLAT(DF_TRANSACTION_DATA_ECLAT, CHOICE_ALG_MIN_SUPPORT)
 
-    DF_BINARY_DATA_ECLAT = eclat.df_bin
+    # --------------------------------------------------------------------------
+    if CHOICE_SHOW_BINARY_DATA_ECLAT:
+        DF_BINARY_DATA_ECLAT = eclat.df_bin
 
-    items_total = eclat.df_bin.astype(int).sum(axis=0)
-    DF_ASSOCIATION_RULES_ECLAT_BASE = eclat.df_bin.astype(int).sum(axis=1)
+    # --------------------------------------------------------------------------
+    if (
+        CHOICE_SHOW_ASSOCIATION_RULES
+        or CHOICE_SHOW_FREQUENT_ITEMSETS
+        or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+    ):
+        CHOICE_ALG_COMBINATIONS_CURRENT = max(eclat.df_bin.astype(int).sum(axis=1))
 
-    items_transactions_gross = pd.DataFrame(
-        {"item": items_total.index, "item_description": " ", "transactions": items_total.values}
-    )
-    DF_ITEM_DISTRIBUTION_ECLAT = items_transactions_gross.loc[
-        items_transactions_gross["item"] > " "
-    ]
+        # ----------------------------------------------------------------------
+        if (
+            CHOICE_SHOW_FREQUENT_ITEMSETS
+            or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+        ):
+            items_total = eclat.df_bin.astype(int).sum(axis=0)
+            items_transactions_gross = pd.DataFrame(
+                {
+                    "item": items_total.index,
+                    "item_description": " ",
+                    "transactions": items_total.values,
+                }
+            )
+            DF_FREQUENT_ITEMSETS_ECLAT = items_transactions_gross.loc[
+                items_transactions_gross["item"] > " "
+            ]
+            df_item_distribution_eclat_ext = _get_description_items(
+                DF_FREQUENT_ITEMSETS_ECLAT
+            )
 
-    df_item_distribution_eclat_ext = _create_df_item_distribution_ext(
-        DF_ITEM_DISTRIBUTION_ECLAT
-    )
+            DF_ITEM_DISTRIBUTION_ECLAT_EXT = df_item_distribution_eclat_ext.sort_values(
+                "transactions", ascending=False
+            )
 
-    DF_ITEM_DISTRIBUTION_ECLAT_EXT = df_item_distribution_eclat_ext.sort_values("transactions", ascending=False)
+        # ----------------------------------------------------------------------
+        if CHOICE_SHOW_ASSOCIATION_RULES:
+            CHOICE_ALG_COMBINATIONS_MIN = min(
+                CHOICE_ALG_COMBINATIONS_MIN, CHOICE_ALG_COMBINATIONS_CURRENT
+            )
+            CHOICE_ALG_COMBINATIONS_MAX = min(
+                CHOICE_ALG_COMBINATIONS_MAX, CHOICE_ALG_COMBINATIONS_CURRENT
+            )
 
-    CHOICE_ALG_COMBINATIONS_MAX = max(DF_ASSOCIATION_RULES_ECLAT_BASE)
+            _, rule_supports = eclat.fit(
+                min_support=CHOICE_ALG_MIN_SUPPORT,
+                min_combination=CHOICE_ALG_COMBINATIONS_MIN,
+                max_combination=CHOICE_ALG_COMBINATIONS_MAX,
+                separator=" & ",
+                verbose=True,
+            )
 
-    if CHOICE_ALG_COMBINATIONS_MIN > CHOICE_ALG_COMBINATIONS_MAX:
-        CHOICE_ALG_COMBINATIONS_MIN = CHOICE_ALG_COMBINATIONS_MAX
-
-    rule_indices, rule_supports = eclat.fit(min_support=CHOICE_ALG_MIN_SUPPORT,
-                                            min_combination = CHOICE_ALG_COMBINATIONS_MIN,
-                                            max_combination=CHOICE_ALG_COMBINATIONS_MAX,
-                                            separator = " & ",
-                                            verbose=True,)
-
-    DF_ASSOCIATION_RULES_ECLAT = pd.DataFrame(rule_supports.items(),columns=["Item","Support"]).sort_values(by=["Support"],ascending=False)
+            DF_ASSOCIATION_RULES_ECLAT = pd.DataFrame(
+                rule_supports.items(), columns=["Item", "Support"]
+            ).sort_values(by=["Support"], ascending=False)
 
     _print_timestamp("_apply_algorithm_eclat() - End")
 
@@ -659,10 +710,10 @@ def _create_df_association_rules_ext(df_int: DataFrame) -> DataFrame:
     df_ext.insert(3, "consequents_description", "")
 
     for idx in df_ext.index:
-        df_ext["antecedents_description"][idx] = _get_frozenset_description(
+        df_ext["antecedents_description"][idx] = _get_items_description(
             df_ext["antecedents"][idx]
         )
-        df_ext["consequents_description"][idx] = _get_frozenset_description(
+        df_ext["consequents_description"][idx] = _get_items_description(
             df_ext["consequents"][idx]
         )
 
@@ -670,31 +721,16 @@ def _create_df_association_rules_ext(df_int: DataFrame) -> DataFrame:
 
 
 # ------------------------------------------------------------------
-# Create the external frequent itemsets including the descriptions.
+# Create the external association rules including the descriptions.
 # ------------------------------------------------------------------
-def _create_df_frequent_itemsets_ext(df_int: DataFrame) -> DataFrame:
+def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
     df_ext = df_int.copy()
 
-    df_ext["itemsets_description"] = ""
+    df_ext.insert(1, "Item_description", "")
 
     for idx in df_ext.index:
-        df_ext["itemsets_description"][idx] = _get_frozenset_description(
-            df_ext["itemsets"][idx]
-        )
-
-    return df_ext
-
-
-# ------------------------------------------------------------------
-# Create the external item distribution including the descriptions.
-# ------------------------------------------------------------------
-def _create_df_item_distribution_ext(df_int: DataFrame) -> DataFrame:
-    df_ext = df_int.copy()
-
-    for idx in df_ext.index:
-        df_ext["item_description"][idx] = _get_item_description(
-            df_ext["item"][idx]
-        )
+        items = df_ext["Item"][idx].split(" & ")
+        df_ext["Item_description"][idx] = _get_items_description(items)
 
     return df_ext
 
@@ -1110,6 +1146,34 @@ def _create_transaction_data_eclat() -> None:
 
 
 # ------------------------------------------------------------------
+# Get the item descriptions.
+# ------------------------------------------------------------------
+def _get_description_items(df_int: DataFrame) -> DataFrame:
+    df_ext = df_int.copy()
+
+    for idx in df_ext.index:
+        df_ext["item_description"][idx] = _get_item_description(df_ext["item"][idx])
+
+    return df_ext
+
+
+# ------------------------------------------------------------------
+# Get the itemset descriptions.
+# ------------------------------------------------------------------
+def _get_description_itemsets(df_int: DataFrame) -> DataFrame:
+    df_ext = df_int.copy()
+
+    df_ext["itemsets_description"] = ""
+
+    for idx in df_ext.index:
+        df_ext["itemsets_description"][idx] = _get_items_description(
+            df_ext["itemsets"][idx]
+        )
+
+    return df_ext
+
+
+# ------------------------------------------------------------------
 # Create a simple user PostgreSQL database engine.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
@@ -1132,21 +1196,9 @@ def _get_engine() -> Engine:
 
 
 # ------------------------------------------------------------------
-# Determine the itemset description.
-# ------------------------------------------------------------------
-def _get_frozenset_description(itemset:list[str]) -> list[str]:
-    descriptions = []
-
-    for item in itemset:
-        descriptions.append(_get_item_description(item))
-
-    return descriptions
-
-
-# ------------------------------------------------------------------
 # Determine the item description.
 # ------------------------------------------------------------------
-def _get_item_description(item:str) -> str:
+def _get_item_description(item: str) -> str:
     [part_1, part_2, part_3] = item.split("_")
 
     match part_1:
@@ -1227,7 +1279,20 @@ def _get_item_description(item:str) -> str:
     else:
         variant = "??? " + part_3
 
-    return    attribute + " | " + " - ".join(description) + " | " + variant
+    return attribute + " | " + " - ".join(description) + " | " + variant
+
+
+# ------------------------------------------------------------------
+# Determine the itemset description.
+# ------------------------------------------------------------------
+def _get_items_description(itemset: list[str]) -> list[str]:
+    descriptions = []
+
+    for item in itemset:
+        if item != "":
+            descriptions.append(_get_item_description(item))
+
+    return descriptions
 
 
 # ------------------------------------------------------------------
@@ -1489,17 +1554,16 @@ For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequen
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task -
-# item distribution data.
+# frequent itemsets - tree map.
 # ------------------------------------------------------------------
-def _get_user_guide_item_distribution() -> None:
+def _get_user_guide_details_frequent_itemsets_tree_map() -> None:
     text = """
-#### User guide: Item distribution data details
+#### User guide: Frequent itemsets tree map
 
-This task provides the detailed item distribution data in a table format for display and download as **csv** file. 
-The **csv** download may not be processable with MS Excel.
+TODO
     """
 
-    st.warning(text + _get_user_guide_details_standard())
+    st.warning(text)
 
 
 # ------------------------------------------------------------------
@@ -1577,19 +1641,6 @@ The application tries to prevent a redundant selection of items!
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task.
 # ------------------------------------------------------------------
-def _get_user_guide_item_distribution_tree_map() -> None:
-    text = """
-#### User guide: Item distribution tree map
-
-TODO
-    """
-
-    st.warning(text)
-
-
-# ------------------------------------------------------------------
-# Creates the user guide for the 'Show details' task.
-# ------------------------------------------------------------------
 def _get_user_guide_items_findings() -> None:
     text = """
 #### User guide: Items from findings
@@ -1649,15 +1700,19 @@ def _present_details_association_rules(
     if choice_ug_rules_details:
         _get_user_guide_details_association_rules()
 
-    df_rules_ext = _create_df_association_rules_ext(df_association_rules)
+    if CHOICE_ALG_ECLAT:
+        df_rules_ext = _create_df_association_rules_ext_eclat(df_association_rules)
+    else:
+        df_rules_ext = _create_df_association_rules_ext(df_association_rules)
 
     (no_rows, _) = df_rules_ext.shape
 
-    st.write(
-        f"No association rules: {no_rows}"
-    )
+    st.write(f"No association rules: {no_rows}")
 
-    st.dataframe(df_rules_ext.sort_values("support", ascending=False))
+    if CHOICE_ALG_ECLAT:
+        st.dataframe(df_rules_ext.sort_values("Support", ascending=False))
+    else:
+        st.dataframe(df_rules_ext.sort_values("support", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_rules_ext),
@@ -1665,61 +1720,6 @@ def _present_details_association_rules(
         + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
         help="The download includes all association rules.",
         label="**Download the association rules**",
-        mime="text/csv",
-    )
-
-
-# ------------------------------------------------------------------
-# Present association rule details.
-# ------------------------------------------------------------------
-def _present_details_association_rules_eclat(
-    algorithm: str, df_association_rules: DataFrame
-) -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed association rules '
-            + algorithm
-            + " Algorithm</p>",
-            unsafe_allow_html=True,
-        )
-
-    # pylint: disable=line-too-long
-    with col2:
-        choice_ug_rules_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed association rules view.",
-            key="CHOICE_UG_RULES_DETAILS_" + algorithm.upper().replace("-", ""),
-            label="**User Guide: Association rule details**",
-            value=False,
-        )
-
-    if choice_ug_rules_details:
-        _get_user_guide_details_association_rules()
-
-    df_rules_ext = _create_df_association_rules_ext(df_association_rules)
-
-    (no_rows, _) = df_rules_ext.shape
-
-    st.write(
-        f"No association rules: {no_rows}"
-    )
-
-    st.dataframe(df_rules_ext.sort_values("support", ascending=False))
-
-    st.download_button(
-        data=_convert_df_2_csv(df_rules_ext),
-        file_name=APP_ID
-        + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
-        help="The download includes all association rules (ECLAT).",
-        label="**Download the association rules (ECLAT)**",
         mime="text/csv",
     )
 
@@ -1755,11 +1755,9 @@ def _present_details_binary_data() -> None:
     if choice_ug_binary_data:
         _get_user_guide_details_binary_data()
 
-    (no_rows,no_cols) = DF_BINARY_DATA_ECLAT.shape
+    (no_rows, no_cols) = DF_BINARY_DATA_ECLAT.shape
 
-    st.write(
-        f"No transactions: {no_rows} - no columns: {no_cols}"
-    )
+    st.write(f"No transactions: {no_rows} - no columns: {no_cols}")
 
     st.dataframe(DF_BINARY_DATA_ECLAT.iloc[:100, :100])
 
@@ -1805,9 +1803,7 @@ def _present_details_binary_data_one_hot_encoded() -> None:
 
     (no_rows, no_cols) = DF_BINARY_DATA_ONE_HOT_ENCODED.shape
 
-    st.write(
-        f"No transactions: {no_rows} - no columns: {no_cols}"
-    )
+    st.write(f"No transactions: {no_rows} - no columns: {no_cols}")
 
     st.dataframe(DF_BINARY_DATA_ONE_HOT_ENCODED.iloc[:100, :100])
 
@@ -1851,15 +1847,11 @@ def _present_details_frequent_itemsets_apriori() -> None:
     if choice_ug_frequent_itemsets_details:
         _get_user_guide_details_frequent_itemsets()
 
-    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-        DF_FREQUENT_ITEMSETS_APRIORI
-    )
+    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_APRIORI)
 
     (no_rows, _) = df_frequent_itemsets_ext.shape
 
-    st.write(
-        f"No frequent itemsets: {no_rows}"
-    )
+    st.write(f"No frequent itemsets: {no_rows}")
 
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
@@ -1903,17 +1895,15 @@ def _present_details_frequent_itemsets_eclat() -> None:
     if choice_ug_frequent_itemsets_details:
         _get_user_guide_details_frequent_itemsets()
 
-    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-        DF_ITEM_DISTRIBUTION_ECLAT
-    )
+    df_frequent_itemsets_ext = _get_description_items(DF_FREQUENT_ITEMSETS_ECLAT)
 
     (no_rows, _) = df_frequent_itemsets_ext.shape
 
     st.write(
-        f"No frequent itemsets: {no_rows}"
+        f"No frequent itemsets: {no_rows} - max. combinations: {CHOICE_ALG_COMBINATIONS_CURRENT}"
     )
 
-    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
+    st.dataframe(df_frequent_itemsets_ext.sort_values("transactions", ascending=False))
 
     st.download_button(
         data=_convert_df_2_csv(df_frequent_itemsets_ext),
@@ -1955,15 +1945,11 @@ def _present_details_frequent_itemsets_fpgrowth() -> None:
     if choice_ug_frequent_itemsets_details:
         _get_user_guide_details_frequent_itemsets()
 
-    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-        DF_FREQUENT_ITEMSETS_FPGROWTH
-    )
+    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_FPGROWTH)
 
     (no_rows, _) = df_frequent_itemsets_ext.shape
 
-    st.write(
-        f"No frequent itemsets: {no_rows}"
-    )
+    st.write(f"No frequent itemsets: {no_rows}")
 
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
@@ -2007,15 +1993,11 @@ def _present_details_frequent_itemsets_fpmax() -> None:
     if choice_ug_frequent_itemsets_details:
         _get_user_guide_details_frequent_itemsets()
 
-    df_frequent_itemsets_ext = _create_df_frequent_itemsets_ext(
-        DF_FREQUENT_ITEMSETS_FPMAX
-    )
+    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_FPMAX)
 
     (no_rows, _) = df_frequent_itemsets_ext.shape
 
-    st.write(
-        f"No frequent itemsets: {no_rows}"
-    )
+    st.write(f"No frequent itemsets: {no_rows}")
 
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
@@ -2113,9 +2095,7 @@ def _present_details_transaction_data(
 
     (no_rows, _) = df_transaction_data.shape
 
-    st.write(
-        f"No transactions: {no_rows}"
-    )
+    st.write(f"No transactions: {no_rows}")
 
     st.dataframe(df_transaction_data)
 
@@ -2129,9 +2109,9 @@ def _present_details_transaction_data(
 
 
 # ------------------------------------------------------------------
-# Present details item distribution.
+# Present the frequent itemsets tree_map.
 # ------------------------------------------------------------------
-def _present_item_distribution() -> None:
+def _present_details_frequent_itemsets_tree_map_eclat() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -2143,69 +2123,21 @@ def _present_item_distribution() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Item distribution data Eclat Algorithm</p>',
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        # pylint: disable=line-too-long
-        choice_ug_item_distribution = st.checkbox(
-            help="Explanations and operating instructions related to the detailed item distribution data view.",
-            key="CHOICE_UG_ITEM_DISTRIBUTION",
-            label="**User Guide: Item distribution data**",
-            value=False,
-        )
-
-    if choice_ug_item_distribution:
-        _get_user_guide_item_distribution()
-
-    (no_rows,_) = DF_ITEM_DISTRIBUTION_ECLAT_EXT.shape
-
-    st.write(
-        f"No items: {no_rows}"
-    )
-
-    st.dataframe(DF_ITEM_DISTRIBUTION_ECLAT_EXT)
-
-    st.download_button(
-        data=_convert_df_2_csv(DF_ITEM_DISTRIBUTION_ECLAT_EXT),
-        file_name=APP_ID + "_item_distribution_data.csv",
-        help="The download includes all item distribution data.",
-        label="**Download the item distribution data**",
-        mime="text/csv",
-    )
-
-
-# ------------------------------------------------------------------
-# Present the item distribution tree_map.
-# ------------------------------------------------------------------
-def _present_item_distribution_tree_map() -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Item distribution tree map Eclat Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Frequent itemsets tree map Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
         choice_ug_item_distribution_tree_map = st.checkbox(
-            help="Explanations and operating instructions related to the item distribution tree map view.",
+            help="Explanations and operating instructions related to the frequent itemset tree map view.",
             key="CHOICE_UG_ITEM_DISTRIBUTION_TREE_MAP",
-            label="**User Guide: Item distribution tree map**",
+            label="**User Guide: Frequent itemsets tree map**",
             value=False,
         )
 
     if choice_ug_item_distribution_tree_map:
-        _get_user_guide_item_distribution_tree_map()
+        _get_user_guide_details_frequent_itemsets_tree_map()
 
     DF_ITEM_DISTRIBUTION_ECLAT_EXT["all"] = "All"
 
@@ -2213,7 +2145,10 @@ def _present_item_distribution_tree_map() -> None:
         DF_ITEM_DISTRIBUTION_ECLAT_EXT.head(50),
         color=DF_ITEM_DISTRIBUTION_ECLAT_EXT["transactions"].head(50),
         color_continuous_scale="Blues",
-        hover_data={"item_description":True, "transactions":True,},
+        hover_data={
+            "item_description": True,
+            "transactions": True,
+        },
         path=[px.Constant("all"), "item"],
         values="transactions",
     )
@@ -2253,7 +2188,7 @@ def _present_profile_raw_data() -> None:
         _get_user_guide_data_profile("Raw data")
 
     # noinspection PyUnboundLocalVariable
-    if CHOICE_RAW_DATA_PROFILE_TYPE == "explorative":
+    if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE == "explorative":
         profile_report = ProfileReport(
             DF_RAW_DATA_FILTERED,
             explorative=True,
@@ -2269,7 +2204,7 @@ def _present_profile_raw_data() -> None:
     # pylint: disable=line-too-long
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_raw_data_profile_" + CHOICE_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
+        file_name=APP_ID + "_raw_data_profile_" + CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
         help="The download includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="**Download the raw data profile report**",
@@ -2310,110 +2245,131 @@ def _present_results() -> None:
     _setup_filter_findings()
 
     # ------------------------------------------------------------------
-    # Run algorithms.
-    # ------------------------------------------------------------------
-
-    _apply_algorithm()
-
-    # ------------------------------------------------------------------
     # Raw data.
     # ------------------------------------------------------------------
 
-    if CHOICE_RAW_DATA_DETAILS:
+    if CHOICE_SHOW_FILTERED_RAW_DATA:
         _present_details_raw_data()
         _print_timestamp("_present_raw_data_details() - CHOICE_RAW_DATA_DETAILS")
 
-        if CHOICE_RAW_DATA_PROFILE:
+        if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE:
             _present_profile_raw_data()
             _print_timestamp("_present_raw_data_profile() - CHOICE_RAW_DATA_PROFILE")
 
     # ------------------------------------------------------------------
-    # Transaction data.
+    # Run algorithms.
     # ------------------------------------------------------------------
 
-    if CHOICE_TRANSACTION_DATA_DETAILS:
+    if CHOICE_RUN_ALGORITHMS:
+        # pylint: disable=too-many-boolean-expressions
+        if (
+            CHOICE_SHOW_ASSOCIATION_RULES
+            or CHOICE_SHOW_BINARY_DATA_ECLAT
+            or CHOICE_SHOW_FREQUENT_ITEMSETS
+            or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+            or CHOICE_SHOW_ONE_HOT_ENCODED_DATA
+            or CHOICE_SHOW_TRANSACTION_DATA
+        ):
+            _apply_algorithm()
+
+        # ------------------------------------------------------------------
+        # Transaction data.
+        # ------------------------------------------------------------------
+
+        if CHOICE_SHOW_TRANSACTION_DATA:
+            if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+                _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
+                _print_timestamp(
+                    "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
+                )
+            if CHOICE_ALG_ECLAT:
+                _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
+                _print_timestamp(
+                    "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
+                )
+
+        # ------------------------------------------------------------------
+        # One-hot encoded data / binary data .
+        # ------------------------------------------------------------------
+
         if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-            _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
-            _print_timestamp(
-                "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
-            )
+            if CHOICE_SHOW_ONE_HOT_ENCODED_DATA:
+                _present_details_binary_data_one_hot_encoded()
+                # pylint: disable=line-too-long
+                _print_timestamp(
+                    "_present_details_binary_data_one_hot_encoded() - CHOICE_BINARY_DATA_ONE_HOT_ENCODED"
+                )
+
         if CHOICE_ALG_ECLAT:
-            _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
-            _print_timestamp(
-                "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
-            )
+            if CHOICE_SHOW_BINARY_DATA_ECLAT:
+                _present_details_binary_data()
+                _print_timestamp("_present_binary_data() - CHOICE_BINARY_DATA")
 
-    # ------------------------------------------------------------------
-    # One-hot encoded data / binary data .
-    # ------------------------------------------------------------------
+        # ------------------------------------------------------------------
+        # Frequent itemsets.
+        # ------------------------------------------------------------------
 
-    if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        if CHOICE_BINARY_DATA_ONE_HOT_ENCODED:
-            _present_details_binary_data_one_hot_encoded()
-            # pylint: disable=line-too-long
-            _print_timestamp(
-                "_present_details_binary_data_one_hot_encoded() - CHOICE_BINARY_DATA_ONE_HOT_ENCODED"
-            )
+        if CHOICE_SHOW_FREQUENT_ITEMSETS:
+            if CHOICE_ALG_APRIORI:
+                _present_details_frequent_itemsets_apriori()
+                _print_timestamp(
+                    "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+                )
+            if CHOICE_ALG_ECLAT:
+                _present_details_frequent_itemsets_eclat()
+                _print_timestamp(
+                    "_present_details_frequent_itemsets_eclat() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+                )
+            if CHOICE_ALG_FPGROWTH:
+                _present_details_frequent_itemsets_fpgrowth()
+                # pylint: disable=line-too-long
+                _print_timestamp(
+                    "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+                )
+            if CHOICE_ALG_FPMAX:
+                _present_details_frequent_itemsets_fpmax()
+                _print_timestamp(
+                    "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
+                )
 
-    if CHOICE_ALG_ECLAT:
-        if CHOICE_BINARY_DATA_ECLAT:
-            _present_details_binary_data()
-            _print_timestamp("_present_binary_data() - CHOICE_BINARY_DATA")
-        if CHOICE_ITEM_DISTRIBUTION_ECLAT:
-            _present_item_distribution ()
-            _print_timestamp("_present_item_distribution() - CHOICE_ITEM_DISTRIBUTION_ECLAT")
-        if CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT:
-            _present_item_distribution_tree_map ()
-            _print_timestamp("_present_item_distribution_tree_map() - CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT")
-
-    # ------------------------------------------------------------------
-    # Frequent itemsets.
-    # ------------------------------------------------------------------
-
-    if CHOICE_FREQUENT_ITEMSETS_DETAILS:
-        if CHOICE_ALG_APRIORI:
-            _present_details_frequent_itemsets_apriori()
-            _print_timestamp(
-                "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-        if CHOICE_ALG_FPGROWTH:
-            _present_details_frequent_itemsets_fpgrowth()
-            _print_timestamp(
-                "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-        if CHOICE_ALG_FPMAX:
-            _present_details_frequent_itemsets_fpmax()
-            _print_timestamp(
-                "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-            )
-
-    # ------------------------------------------------------------------
-    # Association rules.
-    # ------------------------------------------------------------------
-
-    if CHOICE_ASSOCIATION_RULES_DETAILS:
-        if CHOICE_ALG_APRIORI:
-            _present_details_association_rules("Apriori", DF_ASSOCIATION_RULES_APRIORI)
-            _print_timestamp(
-                "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
         if CHOICE_ALG_ECLAT:
-            _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
-            _print_timestamp(
-                "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
-        if CHOICE_ALG_FPGROWTH:
-            _present_details_association_rules(
-                "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
-            )
-            _print_timestamp(
-                "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
-        if CHOICE_ALG_FPMAX:
-            _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
-            _print_timestamp(
-                "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
-            )
+            if CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT:
+                _present_details_frequent_itemsets_tree_map_eclat()
+                # pylint: disable=line-too-long
+                _print_timestamp(
+                    "_present_details_frequent_itemsets_tree_map_eclat() - CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT"
+                )
+
+        # ------------------------------------------------------------------
+        # Association rules.
+        # ------------------------------------------------------------------
+
+        if CHOICE_SHOW_ASSOCIATION_RULES:
+            if CHOICE_ALG_APRIORI:
+                _present_details_association_rules(
+                    "Apriori", DF_ASSOCIATION_RULES_APRIORI
+                )
+                _print_timestamp(
+                    "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
+                )
+            if CHOICE_ALG_ECLAT:
+                _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
+                _print_timestamp(
+                    "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
+                )
+            if CHOICE_ALG_FPGROWTH:
+                _present_details_association_rules(
+                    "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
+                )
+                # pylint: disable=line-too-long
+                _print_timestamp(
+                    "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
+                )
+            if CHOICE_ALG_FPMAX:
+                _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
+                _print_timestamp(
+                    "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
+                )
 
     _print_timestamp("_present_data() - End")
 
@@ -3550,16 +3506,27 @@ def _setup_task_controls() -> None:
     global CHOICE_ALG_METRIC  # pylint: disable=global-statement
     global CHOICE_ALG_MIN_SUPPORT  # pylint: disable=global-statement
     global CHOICE_ALG_MIN_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_ASSOCIATION_RULES_DETAILS  # pylint: disable=global-statement
-    global CHOICE_BINARY_DATA_ECLAT  # pylint: disable=global-statement
-    global CHOICE_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
-    global CHOICE_FREQUENT_ITEMSETS_DETAILS  # pylint: disable=global-statement
-    global CHOICE_ITEM_DISTRIBUTION_ECLAT  # pylint: disable=global-statement
-    global CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT  # pylint: disable=global-statement
-    global CHOICE_RAW_DATA_DETAILS  # pylint: disable=global-statement
-    global CHOICE_RAW_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_RAW_DATA_PROFILE_TYPE  # pylint: disable=global-statement
-    global CHOICE_TRANSACTION_DATA_DETAILS  # pylint: disable=global-statement
+    global CHOICE_RUN_ALGORITHMS  # pylint: disable=global-statement
+    global CHOICE_SHOW_ASSOCIATION_RULES  # pylint: disable=global-statement
+    global CHOICE_SHOW_BINARY_DATA_ECLAT  # pylint: disable=global-statement
+    global CHOICE_SHOW_FILTERED_RAW_DATA  # pylint: disable=global-statement
+    global CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE  # pylint: disable=global-statement
+    global CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE  # pylint: disable=global-statement
+    global CHOICE_SHOW_FREQUENT_ITEMSETS  # pylint: disable=global-statement
+    global CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT  # pylint: disable=global-statement
+    global CHOICE_SHOW_ONE_HOT_ENCODED_DATA  # pylint: disable=global-statement
+    global CHOICE_SHOW_TRANSACTION_DATA  # pylint: disable=global-statement
+
+    # pylint: disable=line-too-long
+    CHOICE_RUN_ALGORITHMS = st.sidebar.checkbox(
+        help="""
+For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected algorithms.        """,
+        key="CHOICE_RUN_ALGORITHMS",
+        label="**Run the Algorithms**",
+        value=False,
+    )
+
+    st.sidebar.markdown("""---""")
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
         help="""
@@ -3643,8 +3610,10 @@ The support is computed as the fraction
             min_value=0.01,
             value=0.50,
         )
-        CHOICE_ALG_METRIC = st.sidebar.selectbox(
-            help="""
+
+        if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+            CHOICE_ALG_METRIC = st.sidebar.selectbox(
+                help="""
 Metric to evaluate if a rule is of interest.
 The metrics are computed as follows:
 
@@ -3655,50 +3624,52 @@ The metrics are computed as follows:
 - support(A->C) = support(A+C) [aka 'support'], range: [0, 1]\n
 - zhangs_metric(A->C) = leverage(A->C) / max(support(A->C)*(1-support(A)), support(A)*(support(C)-support(A->C))) range: [-1,1]\n
                     """,
-            index=0,
-            key="CHOICE_ALG_METRIC",
-            label="**Metric**",
-            options=[
-                "confidence",
-                "conviction",
-                "leverage",
-                "lift",
-                "support",
-                "zhangs_metric",
-            ],
-        )
-        CHOICE_ALG_MIN_THRESHOLD = st.sidebar.number_input(
-            help="""
+                index=0,
+                key="CHOICE_ALG_METRIC",
+                label="**Metric**",
+                options=[
+                    "confidence",
+                    "conviction",
+                    "leverage",
+                    "lift",
+                    "support",
+                    "zhangs_metric",
+                ],
+            )
+
+        if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
+            CHOICE_ALG_MIN_THRESHOLD = st.sidebar.number_input(
+                help="""
 Minimal threshold for the evaluation metric,
 via the `metric` parameter,
 to decide whether a candidate rule is of interest.
             """,
-            key="CHOICE_ALG_MIN_THRESHOLD",
-            label="**Minimum threshold**",
-            max_value=1.00,
-            min_value=0.01,
-            value=0.80,
-        )
+                key="CHOICE_ALG_MIN_THRESHOLD",
+                label="**Minimum threshold**",
+                max_value=1.00,
+                min_value=0.01,
+                value=0.80,
+            )
 
     st.sidebar.markdown("""---""")
 
-    CHOICE_RAW_DATA_DETAILS = st.sidebar.checkbox(
+    CHOICE_SHOW_FILTERED_RAW_DATA = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed raw data.",
         key="CHOICE_RAW_DATA_DETAILS",
-        label="**Show Filtered Detailed Raw Data**",
+        label="**Show Filtered Raw Data**",
         value=False,
     )
 
-    if CHOICE_RAW_DATA_DETAILS:
-        CHOICE_RAW_DATA_PROFILE = st.sidebar.checkbox(
+    if CHOICE_SHOW_FILTERED_RAW_DATA:
+        CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE = st.sidebar.checkbox(
             help="Profiling of the filtered raw dataset.",
             key="CHOICE_RAW_DATA_PROFILE",
             label="**Show Filtered Raw Data Profile**",
             value=False,
         )
 
-        if CHOICE_RAW_DATA_PROFILE:
-            CHOICE_RAW_DATA_PROFILE_TYPE = st.sidebar.radio(
+        if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE:
+            CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE = st.sidebar.radio(
                 help="explorative: thorough but also slow - minimal: minimal but faster.",
                 index=1,
                 key="CHOICE_RAW_DATA_PROFILE_TYPE",
@@ -3711,38 +3682,26 @@ to decide whether a candidate rule is of interest.
                 ),
             )
 
-    CHOICE_TRANSACTION_DATA_DETAILS = st.sidebar.checkbox(
+    CHOICE_SHOW_TRANSACTION_DATA = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed transaction data.",
         key="CHOICE_TRANSACTION_DATA_DETAILS",
-        label="**Show Detailed Transaction Data**",
+        label="**Show Transaction Data**",
         value=False,
     )
 
     if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-        CHOICE_BINARY_DATA_ONE_HOT_ENCODED = st.sidebar.checkbox(
+        CHOICE_SHOW_ONE_HOT_ENCODED_DATA = st.sidebar.checkbox(
             help="Tabular representation of the one-hot encoded data.",
             key="CHOICE_ONE_HOT_ENCODED_DETAILS",
-            label="**Show Detailed One-Hot Encoded Data**",
+            label="**Show One-Hot Encoded Data**",
             value=False,
         )
 
     if CHOICE_ALG_ECLAT:
-        CHOICE_BINARY_DATA_ECLAT = st.sidebar.checkbox(
+        CHOICE_SHOW_BINARY_DATA_ECLAT = st.sidebar.checkbox(
             help="Tabular representation of the binary data.",
             key="CHOICE_BINARY_DATA",
             label="**Show Binary Data**",
-            value=False,
-        )
-        CHOICE_ITEM_DISTRIBUTION_ECLAT = st.sidebar.checkbox(
-            help="Item distribution.",
-            key="CHOICE_ITEM_DISTRIBUTION_ECLAT",
-            label="**Show Item Distribution**",
-            value=False,
-        )
-        CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT = st.sidebar.checkbox(
-            help="Item distribution treemap.",
-            key="CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT",
-            label="**Show Item Distribution TreeMap**",
             value=False,
         )
 
@@ -3752,20 +3711,30 @@ to decide whether a candidate rule is of interest.
         or CHOICE_ALG_FPGROWTH
         or CHOICE_ALG_FPMAX
     ):
-        CHOICE_FREQUENT_ITEMSETS_DETAILS = st.sidebar.checkbox(
+        CHOICE_SHOW_FREQUENT_ITEMSETS = st.sidebar.checkbox(
             help="Tabular representation of the frequent itemsets.",
             key="CHOICE_FREQUENT_ITEMSETS_DETAILS",
             label="**Show Frequent Itemsets**",
             value=True,
         )
-        CHOICE_ASSOCIATION_RULES_DETAILS = st.sidebar.checkbox(
+        if CHOICE_ALG_ECLAT:
+            CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT = st.sidebar.checkbox(
+                help="Tree map representation of the frequent itemsets.",
+                key="CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT",
+                label="**Show Frequent Itemsets TreeMap**",
+                value=False,
+            )
+        CHOICE_SHOW_ASSOCIATION_RULES = st.sidebar.checkbox(
             help="Tabular representation of the association rules.",
             key="CHOICE_ASSOCIATION_RULES_DETAILS",
             label="**Show Association Rules**",
             value=True,
         )
         if CHOICE_ALG_ECLAT:
-            CHOICE_ALG_COMBINATIONS_MIN, CHOICE_ALG_COMBINATIONS_MAX = st.sidebar.slider(
+            (
+                CHOICE_ALG_COMBINATIONS_MIN,
+                CHOICE_ALG_COMBINATIONS_MAX,
+            ) = st.sidebar.slider(
                 help="""The minimum and maximum amount of items in the transaction.""",
                 label="**Combinations:**",
                 min_value=2,
@@ -4257,7 +4226,7 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    # wwe utils.has_access(APP_ID)
+    utils.has_access(APP_ID)
 
     # ------------------------------------------------------------------
     # Get data.

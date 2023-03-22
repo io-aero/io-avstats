@@ -145,7 +145,7 @@ FILTER_US_STATES: list[str] = []
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
-IS_TIMEKEEPING = True
+IS_TIMEKEEPING = False
 
 ITEMS_FROM_ES_EVENTSOE_CODES_ALL: bool | None = None
 ITEMS_FROM_ES_EVENTSOE_CODES_FALSE: bool | None = None
@@ -228,10 +228,13 @@ START_TIME: int = 0
 # Apply the algorithms.
 # ------------------------------------------------------------------
 def _apply_algorithm() -> None:
-    global DF_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
     global DF_ASSOCIATION_RULES_APRIORI  # pylint: disable=global-statement
     global DF_ASSOCIATION_RULES_FPGROWTH  # pylint: disable=global-statement
     global DF_ASSOCIATION_RULES_FPMAX  # pylint: disable=global-statement
+    global DF_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_APRIORI  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_FPGROWTH  # pylint: disable=global-statement
+    global DF_FREQUENT_ITEMSETS_FPMAX  # pylint: disable=global-statement
 
     if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
         if (
@@ -257,28 +260,60 @@ def _apply_algorithm() -> None:
                     or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
                 ):
                     if CHOICE_ALG_APRIORI:
-                        _create_frequent_itemsets_apriori()
+                        DF_FREQUENT_ITEMSETS_APRIORI = (
+                            _create_frequent_itemsets_apriori(
+                                DF_BINARY_DATA_ONE_HOT_ENCODED,
+                                CHOICE_ALG_MIN_SUPPORT,
+                            )
+                        )
+                        # pylint: disable=line-too-long
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - _create_frequent_itemsets_apriori"
+                        )
                         DF_ASSOCIATION_RULES_APRIORI = association_rules(
                             DF_FREQUENT_ITEMSETS_APRIORI,
                             CHOICE_ALG_METRIC,
                             CHOICE_ALG_MIN_THRESHOLD,
                         )
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - association_rules"
+                        )
                     if CHOICE_ALG_FPGROWTH:
-                        _create_frequent_itemsets_fpgrowth()
-                        print(f"wwe DF_FREQUENT_ITEMSETS_FPGROWTH={DF_FREQUENT_ITEMSETS_FPGROWTH}")
+                        DF_FREQUENT_ITEMSETS_FPGROWTH = (
+                            _create_frequent_itemsets_fpgrowth(
+                                DF_BINARY_DATA_ONE_HOT_ENCODED,
+                                CHOICE_ALG_MIN_SUPPORT,
+                            )
+                        )
+                        # pylint: disable=line-too-long
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - _create_frequent_itemsets_fpgrowth"
+                        )
                         DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
                             DF_FREQUENT_ITEMSETS_FPGROWTH,
                             CHOICE_ALG_METRIC,
                             CHOICE_ALG_MIN_THRESHOLD,
                         )
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - association_rules"
+                        )
                     if CHOICE_ALG_FPMAX:
-                        _create_frequent_itemsets_fpmax()
-                        print(f"wwe DF_FREQUENT_ITEMSETS_FPMAX={DF_FREQUENT_ITEMSETS_FPMAX}")
+                        DF_FREQUENT_ITEMSETS_FPMAX = _create_frequent_itemsets_fpmax(
+                            DF_BINARY_DATA_ONE_HOT_ENCODED,
+                            CHOICE_ALG_MIN_SUPPORT,
+                        )
+                        # pylint: disable=line-too-long
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - _create_frequent_itemsets_fpmax"
+                        )
                         DF_ASSOCIATION_RULES_FPMAX = association_rules(
                             DF_FREQUENT_ITEMSETS_FPMAX,
                             CHOICE_ALG_METRIC,
                             CHOICE_ALG_MIN_THRESHOLD,
                             support_only=True,
+                        )
+                        _print_timestamp(
+                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - association_rules"
                         )
 
         return
@@ -299,7 +334,8 @@ def _apply_algorithm() -> None:
                 or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
             ):
                 _apply_algorithm_eclat()
-            #   _create_association_rules_eclat()
+
+    _print_timestamp("_apply_algorithm()")
 
 
 # ------------------------------------------------------------------
@@ -685,16 +721,17 @@ def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
 # ------------------------------------------------------------------
 # Create frequent itemsets with the Apriori Algorithm.
 # ------------------------------------------------------------------
-def _create_frequent_itemsets_apriori() -> None:
-    global DF_FREQUENT_ITEMSETS_APRIORI  # pylint: disable=global-statement
-
-    DF_FREQUENT_ITEMSETS_APRIORI = apriori(
-        DF_BINARY_DATA_ONE_HOT_ENCODED,
-        min_support=CHOICE_ALG_MIN_SUPPORT,
+@st.cache_data(persist=True)
+def _create_frequent_itemsets_apriori(
+    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+) -> DataFrame:
+    df_frequent_itemsets = apriori(
+        df_binary_data_one_hot_encoded,
+        min_support=min_support,
         use_colnames=True,
     )
 
-    if DF_FREQUENT_ITEMSETS_APRIORI.empty:
+    if df_frequent_itemsets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected Apriori Algorithm did not find any data with the given items and parameters."
@@ -703,20 +740,23 @@ def _create_frequent_itemsets_apriori() -> None:
 
     _print_timestamp("_create_frequent_itemsets_apriori()")
 
+    return df_frequent_itemsets
+
 
 # ------------------------------------------------------------------
 # Create frequent itemsets with the FP-Growth Algorithm.
 # ------------------------------------------------------------------
-def _create_frequent_itemsets_fpgrowth() -> None:
-    global DF_FREQUENT_ITEMSETS_FPGROWTH  # pylint: disable=global-statement
-
-    DF_FREQUENT_ITEMSETS_FPGROWTH = fpgrowth(
-        DF_BINARY_DATA_ONE_HOT_ENCODED,
-        min_support=CHOICE_ALG_MIN_SUPPORT,
+@st.cache_data(persist=True)
+def _create_frequent_itemsets_fpgrowth(
+    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+) -> DataFrame:
+    df_frequent_itemsets = fpgrowth(
+        df_binary_data_one_hot_encoded,
+        min_support=min_support,
         use_colnames=True,
     )
 
-    if DF_FREQUENT_ITEMSETS_FPGROWTH.empty:
+    if df_frequent_itemsets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected FP-Growth Algorithm did not find any data with the given items and parameters."
@@ -725,20 +765,23 @@ def _create_frequent_itemsets_fpgrowth() -> None:
 
     _print_timestamp("_create_frequent_itemsets_fpgrowth()")
 
+    return df_frequent_itemsets
+
 
 # ------------------------------------------------------------------
 # Create frequent itemsets with the FP-Max Algorithm.
 # ------------------------------------------------------------------
-def _create_frequent_itemsets_fpmax() -> None:
-    global DF_FREQUENT_ITEMSETS_FPMAX  # pylint: disable=global-statement
-
-    DF_FREQUENT_ITEMSETS_FPMAX = fpmax(
-        DF_BINARY_DATA_ONE_HOT_ENCODED,
-        min_support=CHOICE_ALG_MIN_SUPPORT,
+@st.cache_data(persist=True)
+def _create_frequent_itemsets_fpmax(
+    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+) -> DataFrame:
+    df_frequent_itemsets = fpmax(
+        df_binary_data_one_hot_encoded,
+        min_support=min_support,
         use_colnames=True,
     )
 
-    if DF_FREQUENT_ITEMSETS_FPMAX.empty:
+    if df_frequent_itemsets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected FP-Max Algorithm did not find any data with the given items and parameters."
@@ -746,6 +789,8 @@ def _create_frequent_itemsets_fpmax() -> None:
         st.stop()
 
     _print_timestamp("_create_frequent_itemsets_fpmax()")
+
+    return df_frequent_itemsets
 
 
 # ------------------------------------------------------------------
@@ -1085,6 +1130,7 @@ def _create_transaction_data_eclat() -> None:
 # ------------------------------------------------------------------
 # Get the item descriptions.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _get_description_items(df_int: DataFrame) -> DataFrame:
     df_ext = df_int.copy()
 
@@ -1099,6 +1145,7 @@ def _get_description_items(df_int: DataFrame) -> DataFrame:
 # ------------------------------------------------------------------
 # Get the itemset descriptions.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _get_description_itemsets(df_int: DataFrame) -> DataFrame:
     df_ext = df_int.copy()
 
@@ -2232,7 +2279,6 @@ def _present_results() -> None:
             or CHOICE_SHOW_TRANSACTION_DATA
         ):
             _apply_algorithm()
-            _print_timestamp("_apply_algorithm()")
 
         # ------------------------------------------------------------------
         # Transaction data.
@@ -2291,8 +2337,6 @@ def _present_results() -> None:
                 )
             if CHOICE_ALG_FPMAX:
                 _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
-
-    _print_timestamp("_present_results()")
 
 
 # ------------------------------------------------------------------
@@ -3406,8 +3450,6 @@ def _setup_sidebar() -> None:
     _setup_task_controls()
 
     _setup_filter()
-
-    _print_timestamp("_setup_sidebar()")
 
 
 # ------------------------------------------------------------------

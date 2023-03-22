@@ -145,7 +145,7 @@ FILTER_US_STATES: list[str] = []
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
-IS_TIMEKEEPING = False
+IS_TIMEKEEPING = True
 
 ITEMS_FROM_ES_EVENTSOE_CODES_ALL: bool | None = None
 ITEMS_FROM_ES_EVENTSOE_CODES_FALSE: bool | None = None
@@ -228,6 +228,11 @@ START_TIME: int = 0
 # Apply the algorithms.
 # ------------------------------------------------------------------
 def _apply_algorithm() -> None:
+    global DF_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
+    global DF_ASSOCIATION_RULES_APRIORI  # pylint: disable=global-statement
+    global DF_ASSOCIATION_RULES_FPGROWTH  # pylint: disable=global-statement
+    global DF_ASSOCIATION_RULES_FPMAX  # pylint: disable=global-statement
+
     if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
         if (
             CHOICE_SHOW_ASSOCIATION_RULES
@@ -243,7 +248,9 @@ def _apply_algorithm() -> None:
                 or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
                 or CHOICE_SHOW_ONE_HOT_ENCODED_DATA
             ):
-                _create_binary_data_one_hot_encoded()
+                DF_BINARY_DATA_ONE_HOT_ENCODED = (
+                    DF_TRANSACTION_DATA["items"].str.join("|").str.get_dummies()
+                )
                 if (
                     CHOICE_SHOW_ASSOCIATION_RULES
                     or CHOICE_SHOW_FREQUENT_ITEMSETS
@@ -251,13 +258,29 @@ def _apply_algorithm() -> None:
                 ):
                     if CHOICE_ALG_APRIORI:
                         _create_frequent_itemsets_apriori()
-                        _apply_algorithm_apriori()
+                        DF_ASSOCIATION_RULES_APRIORI = association_rules(
+                            DF_FREQUENT_ITEMSETS_APRIORI,
+                            CHOICE_ALG_METRIC,
+                            CHOICE_ALG_MIN_THRESHOLD,
+                        )
                     if CHOICE_ALG_FPGROWTH:
                         _create_frequent_itemsets_fpgrowth()
-                        _apply_algorithm_fpgrowth()
+                        print(f"wwe DF_FREQUENT_ITEMSETS_FPGROWTH={DF_FREQUENT_ITEMSETS_FPGROWTH}")
+                        DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
+                            DF_FREQUENT_ITEMSETS_FPGROWTH,
+                            CHOICE_ALG_METRIC,
+                            CHOICE_ALG_MIN_THRESHOLD,
+                        )
                     if CHOICE_ALG_FPMAX:
                         _create_frequent_itemsets_fpmax()
-                        _apply_algorithm_fpmax()
+                        print(f"wwe DF_FREQUENT_ITEMSETS_FPMAX={DF_FREQUENT_ITEMSETS_FPMAX}")
+                        DF_ASSOCIATION_RULES_FPMAX = association_rules(
+                            DF_FREQUENT_ITEMSETS_FPMAX,
+                            CHOICE_ALG_METRIC,
+                            CHOICE_ALG_MIN_THRESHOLD,
+                            support_only=True,
+                        )
+
         return
 
     if CHOICE_ALG_ECLAT:
@@ -280,23 +303,6 @@ def _apply_algorithm() -> None:
 
 
 # ------------------------------------------------------------------
-# Apply the Apriori Algorithm.
-# ------------------------------------------------------------------
-def _apply_algorithm_apriori() -> None:
-    global DF_ASSOCIATION_RULES_APRIORI  # pylint: disable=global-statement
-
-    _print_timestamp("_apply_algorithm_apriori() - Start")
-
-    DF_ASSOCIATION_RULES_APRIORI = association_rules(
-        DF_FREQUENT_ITEMSETS_APRIORI,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-    )
-
-    _print_timestamp("_apply_algorithm_apriori() - End")
-
-
-# ------------------------------------------------------------------
 # Apply the Eclat Algorithm.
 # ------------------------------------------------------------------
 def _apply_algorithm_eclat() -> None:
@@ -307,8 +313,6 @@ def _apply_algorithm_eclat() -> None:
     global DF_BINARY_DATA_ECLAT  # pylint: disable=global-statement
     global DF_FREQUENT_ITEMSETS_ECLAT  # pylint: disable=global-statement
     global DF_ITEM_DISTRIBUTION_ECLAT_EXT  # pylint: disable=global-statement
-
-    _print_timestamp("_apply_algorithm_eclat() - Start")
 
     eclat = ECLAT(DF_TRANSACTION_DATA_ECLAT, CHOICE_ALG_MIN_SUPPORT)
 
@@ -369,42 +373,7 @@ def _apply_algorithm_eclat() -> None:
                 rule_supports.items(), columns=["Item", "Support"]
             ).sort_values(by=["Support"], ascending=False)
 
-    _print_timestamp("_apply_algorithm_eclat() - End")
-
-
-# ------------------------------------------------------------------
-# Apply the FP-Growth Algorithm.
-# ------------------------------------------------------------------
-def _apply_algorithm_fpgrowth() -> None:
-    global DF_ASSOCIATION_RULES_FPGROWTH  # pylint: disable=global-statement
-
-    _print_timestamp("_apply_algorithm_fpgrowth() - Start")
-
-    DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
-        DF_FREQUENT_ITEMSETS_FPGROWTH,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-    )
-
-    _print_timestamp("_apply_algorithm_fpgrowth() - End")
-
-
-# ------------------------------------------------------------------
-# Apply the FP-Max Algorithm.
-# ------------------------------------------------------------------
-def _apply_algorithm_fpmax() -> None:
-    global DF_ASSOCIATION_RULES_FPMAX  # pylint: disable=global-statement
-
-    _print_timestamp("_apply_algorithm_fpmax() - Start")
-
-    DF_ASSOCIATION_RULES_FPMAX = association_rules(
-        DF_FREQUENT_ITEMSETS_FPMAX,
-        metric=CHOICE_ALG_METRIC,
-        min_threshold=CHOICE_ALG_MIN_THRESHOLD,
-        support_only=True,
-    )
-
-    _print_timestamp("_apply_algorithm_fpmax() - End")
+    _print_timestamp("_apply_algorithm_eclat()")
 
 
 # ------------------------------------------------------------------
@@ -417,8 +386,6 @@ def _apply_algorithm_fpmax() -> None:
 def _apply_filter(
     df_unfiltered: DataFrame,
 ) -> DataFrame:
-    _print_timestamp(f"_apply_filter() - {len(df_unfiltered):>6} - Start")
-
     df_filtered = df_unfiltered
 
     # noinspection PyUnboundLocalVariable
@@ -607,8 +574,6 @@ def _apply_filter(
         ]
         _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
 
-    _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - End")
-
     return df_filtered
 
 
@@ -631,6 +596,8 @@ def _apply_filter_incompatible(df_filtered):
             (df_filtered["ev_year"] >= year_from) & (df_filtered["ev_year"] <= year_to)
         ]
 
+    _print_timestamp("_apply_filter_incompatible()")
+
     return df_filtered
 
 
@@ -641,8 +608,6 @@ def _apply_filter_us_aviation(
     _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
 ) -> DataFrame:
-    _print_timestamp("_apply_filter_us_aviation() - Start")
-
     filter_cmd = "_df_unfiltered.loc["
     filter_cmd_or = ""
 
@@ -673,31 +638,9 @@ def _apply_filter_us_aviation(
 
     df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
 
-    _print_timestamp("_apply_filter_us_aviation() - End")
+    _print_timestamp("_apply_filter_us_aviation()")
 
     return df_filtered
-
-
-# ------------------------------------------------------------------
-# Convert a dataframe to csv data.
-# ------------------------------------------------------------------
-def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
-    return dataframe.to_csv().encode("utf-8")
-
-
-# ------------------------------------------------------------------
-# Create binary data one-hot encoded.
-# ------------------------------------------------------------------
-def _create_binary_data_one_hot_encoded() -> None:
-    global DF_BINARY_DATA_ONE_HOT_ENCODED  # pylint: disable=global-statement
-
-    _print_timestamp("_create_binary_data_one_hot_encoded() - Start")
-
-    DF_BINARY_DATA_ONE_HOT_ENCODED = (
-        DF_TRANSACTION_DATA["items"].str.join("|").str.get_dummies()
-    )
-
-    _print_timestamp("_create_binary_data_one_hot_encoded() - End")
 
 
 # ------------------------------------------------------------------
@@ -717,6 +660,8 @@ def _create_df_association_rules_ext(df_int: DataFrame) -> DataFrame:
             df_ext["consequents"][idx]
         )
 
+    _print_timestamp("_create_df_association_rules_ext()")
+
     return df_ext
 
 
@@ -732,6 +677,8 @@ def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
         items = df_ext["Item"][idx].split(" & ")
         df_ext["Item_description"][idx] = _get_items_description(items)
 
+    _print_timestamp("_create_df_association_rules_ext_eclat()")
+
     return df_ext
 
 
@@ -740,8 +687,6 @@ def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_apriori() -> None:
     global DF_FREQUENT_ITEMSETS_APRIORI  # pylint: disable=global-statement
-
-    _print_timestamp("_create_frequent_itemsets_apriori() - Start")
 
     DF_FREQUENT_ITEMSETS_APRIORI = apriori(
         DF_BINARY_DATA_ONE_HOT_ENCODED,
@@ -756,7 +701,7 @@ def _create_frequent_itemsets_apriori() -> None:
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_apriori() - End")
+    _print_timestamp("_create_frequent_itemsets_apriori()")
 
 
 # ------------------------------------------------------------------
@@ -764,8 +709,6 @@ def _create_frequent_itemsets_apriori() -> None:
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_fpgrowth() -> None:
     global DF_FREQUENT_ITEMSETS_FPGROWTH  # pylint: disable=global-statement
-
-    _print_timestamp("_create_frequent_itemsets_fpgrowth() - Start")
 
     DF_FREQUENT_ITEMSETS_FPGROWTH = fpgrowth(
         DF_BINARY_DATA_ONE_HOT_ENCODED,
@@ -780,7 +723,7 @@ def _create_frequent_itemsets_fpgrowth() -> None:
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_fpgrowth() - End")
+    _print_timestamp("_create_frequent_itemsets_fpgrowth()")
 
 
 # ------------------------------------------------------------------
@@ -788,8 +731,6 @@ def _create_frequent_itemsets_fpgrowth() -> None:
 # ------------------------------------------------------------------
 def _create_frequent_itemsets_fpmax() -> None:
     global DF_FREQUENT_ITEMSETS_FPMAX  # pylint: disable=global-statement
-
-    _print_timestamp("_create_frequent_itemsets_fpmax() - Start")
 
     DF_FREQUENT_ITEMSETS_FPMAX = fpmax(
         DF_BINARY_DATA_ONE_HOT_ENCODED,
@@ -804,15 +745,13 @@ def _create_frequent_itemsets_fpmax() -> None:
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_fpmax() - End")
+    _print_timestamp("_create_frequent_itemsets_fpmax()")
 
 
 # ------------------------------------------------------------------
 # Create the transaction dataframe.
 # ------------------------------------------------------------------
 def _create_transaction_data() -> None:
-    _print_timestamp("_create_transaction_data() - Start")
-
     transaction_cmd = "("
 
     if ITEMS_FROM_ES_EVENTSOE_CODES_ALL:
@@ -974,7 +913,7 @@ def _create_transaction_data() -> None:
 
     DF_TRANSACTION_DATA["items"] = eval(transaction_cmd)  # pylint: disable=eval-used
 
-    _print_timestamp("_create_transaction_data() - End")
+    _print_timestamp("_create_transaction_data()")
 
 
 # ------------------------------------------------------------------
@@ -982,8 +921,6 @@ def _create_transaction_data() -> None:
 # ------------------------------------------------------------------
 def _create_transaction_data_eclat() -> None:
     global DF_TRANSACTION_DATA_ECLAT  # pylint: disable=global-statement
-
-    _print_timestamp("_create_transaction_data_eclat() - Start")
 
     # ------------------------------------------------------------------
     # Create the empty dataframe.
@@ -1142,7 +1079,7 @@ def _create_transaction_data_eclat() -> None:
             DF_TRANSACTION_DATA_ECLAT.iat[_idx_row_d, idx_col] = column
         _idx_row_d += 1
 
-    _print_timestamp("_create_transaction_data_eclat() - End")
+    _print_timestamp("_create_transaction_data_eclat()")
 
 
 # ------------------------------------------------------------------
@@ -1153,6 +1090,8 @@ def _get_description_items(df_int: DataFrame) -> DataFrame:
 
     for idx in df_ext.index:
         df_ext["item_description"][idx] = _get_item_description(df_ext["item"][idx])
+
+    _print_timestamp("_get_description_items()")
 
     return df_ext
 
@@ -1169,6 +1108,8 @@ def _get_description_itemsets(df_int: DataFrame) -> DataFrame:
         df_ext["itemsets_description"][idx] = _get_items_description(
             df_ext["itemsets"][idx]
         )
+
+    _print_timestamp("_get_description_itemsets()")
 
     return df_ext
 
@@ -1321,6 +1262,8 @@ def _get_prepared_codes(list_in: list, prefix: str) -> list[str]:
         (_, code) = elem.split(" - ")
         list_out.append(prefix + "_" + code + "_a")
 
+    _print_timestamp("_get_prepared_codes()")
+
     return list_out
 
 
@@ -1334,16 +1277,16 @@ def _get_prepared_us_states(list_in: list) -> list[str]:
         (_, code) = elem.split(" - ")
         list_out.append(code)
 
+    _print_timestamp("_get_prepared_us_states()")
+
     return list_out
 
 
 # ------------------------------------------------------------------
 # Read the raw data.
 # ------------------------------------------------------------------
-# @st.cache_data
+@st.cache_data(persist=True)
 def _get_raw_data() -> DataFrame:
-    _print_timestamp("_get_raw_data() - Start")
-
     return pd.read_sql(
         con=_get_engine(),
         sql="""
@@ -1715,13 +1658,15 @@ def _present_details_association_rules(
         st.dataframe(df_rules_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=_convert_df_2_csv(df_rules_ext),
+        data=df_rules_ext.to_csv().encode("utf-8"),
         file_name=APP_ID
         + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
         help="The download includes all association rules.",
         label="**Download the association rules**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_association_rules()")
 
 
 # ------------------------------------------------------------------
@@ -1762,12 +1707,14 @@ def _present_details_binary_data() -> None:
     st.dataframe(DF_BINARY_DATA_ECLAT.iloc[:100, :100])
 
     st.download_button(
-        data=_convert_df_2_csv(DF_BINARY_DATA_ECLAT),
+        data=DF_BINARY_DATA_ECLAT.to_csv().encode("utf-8"),
         file_name=APP_ID + "_binary_data.csv",
         help="The download includes all binary data.",
         label="**Download the binary data**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_binary_data()")
 
 
 # ------------------------------------------------------------------
@@ -1808,12 +1755,14 @@ def _present_details_binary_data_one_hot_encoded() -> None:
     st.dataframe(DF_BINARY_DATA_ONE_HOT_ENCODED.iloc[:100, :100])
 
     st.download_button(
-        data=_convert_df_2_csv(DF_BINARY_DATA_ONE_HOT_ENCODED),
+        data=DF_BINARY_DATA_ONE_HOT_ENCODED.to_csv().encode("utf-8"),
         file_name=APP_ID + "_binary_data_one_hot_encoded.csv",
         help="The download includes all one-hot encoded data.",
         label="**Download the one-hot encoded data**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_binary_data_one_hot_encoded()")
 
 
 # ------------------------------------------------------------------
@@ -1856,12 +1805,14 @@ def _present_details_frequent_itemsets_apriori() -> None:
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
         help="The download includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_frequent_itemsets_apriori()")
 
 
 # ------------------------------------------------------------------
@@ -1906,12 +1857,14 @@ def _present_details_frequent_itemsets_eclat() -> None:
     st.dataframe(df_frequent_itemsets_ext.sort_values("transactions", ascending=False))
 
     st.download_button(
-        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
         help="The download includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_frequent_itemsets_eclat()")
 
 
 # ------------------------------------------------------------------
@@ -1954,12 +1907,14 @@ def _present_details_frequent_itemsets_fpgrowth() -> None:
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
         help="The download includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
+
+    _print_timestamp("_present_details_frequent_itemsets_fpgrowth()")
 
 
 # ------------------------------------------------------------------
@@ -2002,110 +1957,14 @@ def _present_details_frequent_itemsets_fpmax() -> None:
     st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=_convert_df_2_csv(df_frequent_itemsets_ext),
+        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
         help="The download includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
 
-
-# ------------------------------------------------------------------
-# Present raw data details.
-# ------------------------------------------------------------------
-def _present_details_raw_data() -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Filtered detailed raw data</p>',
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        # pylint: disable=line-too-long
-        choice_ug_raw_data_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed raw data view.",
-            key="CHOICE_UG_RAW_DATA_DETAILS",
-            label="**User Guide: Raw data details**",
-            value=False,
-        )
-
-    if choice_ug_raw_data_details:
-        _get_user_guide_details_raw_data()
-
-    # pylint: disable=line-too-long
-    st.write(
-        f"No itemsets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
-    )
-
-    st.dataframe(DF_RAW_DATA_FILTERED)
-
-    st.download_button(
-        data=_convert_df_2_csv(DF_RAW_DATA_FILTERED),
-        file_name=APP_ID + "_raw_data_detail.csv",
-        help="The download includes all raw data "
-        + "after applying the filter options.",
-        label="**Download the detailed raw data**",
-        mime="text/csv",
-    )
-
-
-# ------------------------------------------------------------------
-# Present transaction data details.
-# ------------------------------------------------------------------
-def _present_details_transaction_data(
-    algorithm: str, df_transaction_data: DataFrame
-) -> None:
-    col1, col2 = st.columns(
-        [
-            2,
-            1,
-        ]
-    )
-
-    with col1:
-        # pylint: disable=line-too-long
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed transaction data  '
-            + algorithm
-            + " Algorithm</p>",
-            unsafe_allow_html=True,
-        )
-
-    with col2:
-        # pylint: disable=line-too-long
-        choice_ug_transaction_data_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed transaction data view.",
-            key="CHOICE_UG_TRANSACTION_DATA_DETAILS" + algorithm,
-            label="**User Guide: Transaction data details**",
-            value=False,
-        )
-
-    if choice_ug_transaction_data_details:
-        _get_user_guide_details_transaction_data()
-
-    (no_rows, _) = df_transaction_data.shape
-
-    st.write(f"No transactions: {no_rows}")
-
-    st.dataframe(df_transaction_data)
-
-    st.download_button(
-        data=_convert_df_2_csv(df_transaction_data),
-        file_name=APP_ID + "_transaction_data_detail.csv",
-        help="The download includes all transaction data.",
-        label="**Download the detailed transaction data**",
-        mime="text/csv",
-    )
+    _print_timestamp("_present_details_frequent_itemsets_fpmax()")
 
 
 # ------------------------------------------------------------------
@@ -2154,6 +2013,110 @@ def _present_details_frequent_itemsets_tree_map_eclat() -> None:
     )
 
     st.plotly_chart(fig)
+
+    _print_timestamp("_present_details_frequent_itemsets_tree_map_eclat()")
+
+
+# ------------------------------------------------------------------
+# Present raw data details.
+# ------------------------------------------------------------------
+def _present_details_raw_data() -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Filtered detailed raw data</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_raw_data_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed raw data view.",
+            key="CHOICE_UG_RAW_DATA_DETAILS",
+            label="**User Guide: Raw data details**",
+            value=False,
+        )
+
+    if choice_ug_raw_data_details:
+        _get_user_guide_details_raw_data()
+
+    # pylint: disable=line-too-long
+    st.write(
+        f"No itemsets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
+    )
+
+    st.dataframe(DF_RAW_DATA_FILTERED)
+
+    st.download_button(
+        data=DF_RAW_DATA_FILTERED.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_raw_data_detail.csv",
+        help="The download includes all raw data "
+        + "after applying the filter options.",
+        label="**Download the detailed raw data**",
+        mime="text/csv",
+    )
+
+    _print_timestamp("_present_details_raw_data()")
+
+
+# ------------------------------------------------------------------
+# Present transaction data details.
+# ------------------------------------------------------------------
+def _present_details_transaction_data(
+    algorithm: str, df_transaction_data: DataFrame
+) -> None:
+    col1, col2 = st.columns(
+        [
+            2,
+            1,
+        ]
+    )
+
+    with col1:
+        # pylint: disable=line-too-long
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Detailed transaction data  '
+            + algorithm
+            + " Algorithm</p>",
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        # pylint: disable=line-too-long
+        choice_ug_transaction_data_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed transaction data view.",
+            key="CHOICE_UG_TRANSACTION_DATA_DETAILS" + algorithm,
+            label="**User Guide: Transaction data details**",
+            value=False,
+        )
+
+    if choice_ug_transaction_data_details:
+        _get_user_guide_details_transaction_data()
+
+    (no_rows, _) = df_transaction_data.shape
+
+    st.write(f"No transactions: {no_rows}")
+
+    st.dataframe(df_transaction_data)
+
+    st.download_button(
+        data=df_transaction_data.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_transaction_data_detail.csv",
+        help="The download includes all transaction data.",
+        label="**Download the detailed transaction data**",
+        mime="text/csv",
+    )
+
+    _print_timestamp("_present_details_transaction_data()")
 
 
 # ------------------------------------------------------------------
@@ -2211,13 +2174,13 @@ def _present_profile_raw_data() -> None:
         mime="text/html",
     )
 
+    _print_timestamp("_present_profile_raw_data()")
+
 
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_results() -> None:
-    _print_timestamp("_present_data() - Start")
-
     # ------------------------------------------------------------------
     # User guide.
     # ------------------------------------------------------------------
@@ -2250,11 +2213,9 @@ def _present_results() -> None:
 
     if CHOICE_SHOW_FILTERED_RAW_DATA:
         _present_details_raw_data()
-        _print_timestamp("_present_raw_data_details() - CHOICE_RAW_DATA_DETAILS")
 
         if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE:
             _present_profile_raw_data()
-            _print_timestamp("_present_raw_data_profile() - CHOICE_RAW_DATA_PROFILE")
 
     # ------------------------------------------------------------------
     # Run algorithms.
@@ -2271,6 +2232,7 @@ def _present_results() -> None:
             or CHOICE_SHOW_TRANSACTION_DATA
         ):
             _apply_algorithm()
+            _print_timestamp("_apply_algorithm()")
 
         # ------------------------------------------------------------------
         # Transaction data.
@@ -2279,14 +2241,8 @@ def _present_results() -> None:
         if CHOICE_SHOW_TRANSACTION_DATA:
             if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
                 _present_details_transaction_data("Non-Eclat", DF_TRANSACTION_DATA)
-                _print_timestamp(
-                    "_create_transaction_data() - CHOICE_TRANSACTION_DATA_DETAILS"
-                )
             if CHOICE_ALG_ECLAT:
                 _present_details_transaction_data("Eclat", DF_TRANSACTION_DATA_ECLAT)
-                _print_timestamp(
-                    "_create_transaction_data_eclat() - CHOICE_TRANSACTION_DATA_DETAILS"
-                )
 
         # ------------------------------------------------------------------
         # One-hot encoded data / binary data .
@@ -2295,15 +2251,10 @@ def _present_results() -> None:
         if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
             if CHOICE_SHOW_ONE_HOT_ENCODED_DATA:
                 _present_details_binary_data_one_hot_encoded()
-                # pylint: disable=line-too-long
-                _print_timestamp(
-                    "_present_details_binary_data_one_hot_encoded() - CHOICE_BINARY_DATA_ONE_HOT_ENCODED"
-                )
 
         if CHOICE_ALG_ECLAT:
             if CHOICE_SHOW_BINARY_DATA_ECLAT:
                 _present_details_binary_data()
-                _print_timestamp("_present_binary_data() - CHOICE_BINARY_DATA")
 
         # ------------------------------------------------------------------
         # Frequent itemsets.
@@ -2312,33 +2263,16 @@ def _present_results() -> None:
         if CHOICE_SHOW_FREQUENT_ITEMSETS:
             if CHOICE_ALG_APRIORI:
                 _present_details_frequent_itemsets_apriori()
-                _print_timestamp(
-                    "_create_frequent_itemsets_apriori() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-                )
             if CHOICE_ALG_ECLAT:
                 _present_details_frequent_itemsets_eclat()
-                _print_timestamp(
-                    "_present_details_frequent_itemsets_eclat() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-                )
             if CHOICE_ALG_FPGROWTH:
                 _present_details_frequent_itemsets_fpgrowth()
-                # pylint: disable=line-too-long
-                _print_timestamp(
-                    "_present_details_frequent_itemsets_fpgrowth() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-                )
             if CHOICE_ALG_FPMAX:
                 _present_details_frequent_itemsets_fpmax()
-                _print_timestamp(
-                    "_present_details_frequent_itemsets_fpmax() - CHOICE_FREQUENT_ITEMSETS_DETAILS"
-                )
 
         if CHOICE_ALG_ECLAT:
             if CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT:
                 _present_details_frequent_itemsets_tree_map_eclat()
-                # pylint: disable=line-too-long
-                _print_timestamp(
-                    "_present_details_frequent_itemsets_tree_map_eclat() - CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT"
-                )
 
         # ------------------------------------------------------------------
         # Association rules.
@@ -2349,29 +2283,16 @@ def _present_results() -> None:
                 _present_details_association_rules(
                     "Apriori", DF_ASSOCIATION_RULES_APRIORI
                 )
-                _print_timestamp(
-                    "_present_details_rules(apriori) - CHOICE_ASSOCIATION_RULES_DETAILS"
-                )
             if CHOICE_ALG_ECLAT:
                 _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
-                _print_timestamp(
-                    "_present_details_rules(eclat) - CHOICE_ASSOCIATION_RULES_DETAILS"
-                )
             if CHOICE_ALG_FPGROWTH:
                 _present_details_association_rules(
                     "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
                 )
-                # pylint: disable=line-too-long
-                _print_timestamp(
-                    "_present_details_association_rules(fpgrowth) - CHOICE_ASSOCIATION_RULES_DETAILS"
-                )
             if CHOICE_ALG_FPMAX:
                 _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
-                _print_timestamp(
-                    "_present_details_association_rules(fpmax) - CHOICE_ASSOCIATION_RULES_DETAILS"
-                )
 
-    _print_timestamp("_present_data() - End")
+    _print_timestamp("_present_results()")
 
 
 # ------------------------------------------------------------------
@@ -2429,8 +2350,6 @@ def _setup_filter() -> None:
     global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
     global FILTER_US_AVIATION  # pylint: disable=global-statement
     global FILTER_US_STATES  # pylint: disable=global-statement
-
-    _print_timestamp("_setup_filter - Start")
 
     CHOICE_FILTER_DATA_EVENTS_SEQUENCE = st.sidebar.checkbox(
         help="""
@@ -2743,14 +2662,12 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
-    _print_timestamp("_setup_filter - End")
+    _print_timestamp("_setup_filter")
 
 
 # ------------------------------------------------------------------
 # Set up the filter of table events_sequence.
 # ------------------------------------------------------------------
-
-
 def _setup_filter_events_sequence():
     global ITEMS_FROM_ES_EVENTSOE_CODES_ALL  # pylint: disable=global-statement
     global ITEMS_FROM_ES_EVENTSOE_CODES_FALSE  # pylint: disable=global-statement
@@ -2954,12 +2871,12 @@ def _setup_filter_events_sequence():
             )
             st.stop()
 
+    _print_timestamp("_setup_filter_events_sequence()")
+
 
 # ------------------------------------------------------------------
 # Set up the filter of table findings.
 # ------------------------------------------------------------------
-
-
 def _setup_filter_findings():
     global ITEMS_FROM_F_CATEGORY_CODES_ALL  # pylint: disable=global-statement
     global ITEMS_FROM_F_CATEGORY_CODES_CAUSE  # pylint: disable=global-statement
@@ -3431,6 +3348,8 @@ def _setup_filter_findings():
             )
             st.stop()
 
+    _print_timestamp("_setup_filter_findings()")
+
 
 # ------------------------------------------------------------------
 # Set up the page.
@@ -3477,20 +3396,18 @@ def _setup_page() -> None:
             value=False,
         )
 
+    _print_timestamp("_setup_page()")
+
 
 # ------------------------------------------------------------------
 # Set up the sidebar.
 # ------------------------------------------------------------------
 def _setup_sidebar() -> None:
-    _print_timestamp("_setup_sidebar() - Start")
-
     _setup_task_controls()
-    _print_timestamp("_setup_sidebar() - _setup_task_controls()")
 
     _setup_filter()
-    _print_timestamp("_setup_sidebar() - _setup_filter")
 
-    _print_timestamp("_setup_sidebar() - End")
+    _print_timestamp("_setup_sidebar()")
 
 
 # ------------------------------------------------------------------
@@ -3744,10 +3661,13 @@ to decide whether a candidate rule is of interest.
 
     st.sidebar.markdown("""---""")
 
+    _print_timestamp("_setup_task_controls()")
+
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of aircraft categories.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_acft_categories() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -3757,16 +3677,15 @@ def _sql_query_acft_categories() -> list[str]:
          WHERE acft_category IS NOT NULL;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of category codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_category():
-    global MD_CODES_CATEGORY  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_category() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3778,20 +3697,22 @@ def _sql_query_codes_category():
         """
         )
 
-        MD_CODES_CATEGORY = {}
+        data = {}
 
         for row in cur:
             (category_code, description) = row
-            MD_CODES_CATEGORY[category_code] = description
+            data[category_code] = description
+
+        _print_timestamp("_sql_query_codes_category()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of eventsoe codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_eventsoe():
-    global MD_CODES_EVENTSOE  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_eventsoe() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3803,20 +3724,22 @@ def _sql_query_codes_eventsoe():
         """
         )
 
-        MD_CODES_EVENTSOE = {}
+        data = {}
 
         for row in cur:
             (eventsoe_code, description) = row
-            MD_CODES_EVENTSOE[eventsoe_code] = description
+            data[eventsoe_code] = description
+
+        _print_timestamp("_sql_query_codes_eventsoe()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of modifier codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_modifier():
-    global MD_CODES_MODIFIER  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_modifier() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3828,20 +3751,22 @@ def _sql_query_codes_modifier():
         """
         )
 
-        MD_CODES_MODIFIER = {}
+        data = {}
 
         for row in cur:
             (modifier_code, description) = row
-            MD_CODES_MODIFIER[modifier_code] = description
+            data[modifier_code] = description
+
+        _print_timestamp("_sql_query_codes_modifier()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of phase codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_phase():
-    global MD_CODES_PHASE  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_phase() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3853,20 +3778,22 @@ def _sql_query_codes_phase():
         """
         )
 
-        MD_CODES_PHASE = {}
+        data = {}
 
         for row in cur:
             (phase_code, description) = row
-            MD_CODES_PHASE[phase_code] = description
+            data[phase_code] = description
+
+        _print_timestamp("_sql_query_codes_phase()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of section codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_section():
-    global MD_CODES_SECTION  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_section() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3880,22 +3807,22 @@ def _sql_query_codes_section():
         """
         )
 
-        MD_CODES_SECTION = {}
+        data = {}
 
         for row in cur:
             (category_code, subcategory_code, section_code, description) = row
-            MD_CODES_SECTION[
-                category_code + subcategory_code + section_code
-            ] = description
+            data[category_code + subcategory_code + section_code] = description
+
+        _print_timestamp("_sql_query_codes_section()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of subcategory codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_subcategory():
-    global MD_CODES_SUBCATEGORY  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_subcategory() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3908,20 +3835,22 @@ def _sql_query_codes_subcategory():
         """
         )
 
-        MD_CODES_SUBCATEGORY = {}
+        data = {}
 
         for row in cur:
             (category_code, subcategory_code, description) = row
-            MD_CODES_SUBCATEGORY[category_code + subcategory_code] = description
+            data[category_code + subcategory_code] = description
+
+        _print_timestamp("_sql_query_codes_subcategory()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that creates the list of subsection codes.
 # ------------------------------------------------------------------
-# @st.cache_data
-def _sql_query_codes_subsection():
-    global MD_CODES_SUBSECTION  # pylint: disable=global-statement
-
+@st.cache_data(persist=True)
+def _sql_query_codes_subsection() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         # flake8: noqa: E501
@@ -3936,7 +3865,7 @@ def _sql_query_codes_subsection():
         """
         )
 
-        MD_CODES_SUBSECTION = {}
+        data = {}
 
         for row in cur:
             (
@@ -3946,14 +3875,19 @@ def _sql_query_codes_subsection():
                 subsection_code,
                 description,
             ) = row
-            MD_CODES_SUBSECTION[
+            data[
                 category_code + subcategory_code + section_code + subsection_code
             ] = description
+
+        _print_timestamp("_sql_query_codes_subsection()")
+
+        return data
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of injury levels
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_ev_highest_injury() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
@@ -3978,6 +3912,7 @@ def _sql_query_ev_highest_injury() -> list[str]:
 # ------------------------------------------------------------------
 # Execute a query that returns the list of event types
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_ev_type() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # flake8: noqa: E501
@@ -4002,6 +3937,7 @@ def _sql_query_ev_type() -> list[str]:
 # ------------------------------------------------------------------
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_max_array_length() -> int:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4011,12 +3947,14 @@ def _sql_query_max_array_length() -> int:
           FROM io_app_ae1982 iaa;
         """
         )
+
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_max_inj_f_grnd() -> int:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4025,12 +3963,14 @@ def _sql_query_max_inj_f_grnd() -> int:
           FROM io_app_ae1982;
         """
         )
+
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Determine the maximum number of involved aircraft.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_max_no_aircraft() -> int:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4039,12 +3979,14 @@ def _sql_query_max_no_aircraft() -> int:
           FROM io_app_ae1982;
         """
         )
+
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of categories.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_category() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4053,12 +3995,14 @@ def _sql_query_md_codes_category() -> list[str]:
           FROM io_md_codes_category;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of eventsoes.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_eventsoe() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4067,12 +4011,14 @@ def _sql_query_md_codes_eventsoe() -> list[str]:
           FROM io_md_codes_eventsoe;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of modifiers.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_modifier() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4081,12 +4027,14 @@ def _sql_query_md_codes_modifier() -> list[str]:
           FROM io_md_codes_modifier;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of phases.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_phase() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4095,12 +4043,14 @@ def _sql_query_md_codes_phase() -> list[str]:
           FROM io_md_codes_phase;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of sections.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_section() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
@@ -4110,12 +4060,14 @@ def _sql_query_md_codes_section() -> list[str]:
           FROM io_md_codes_section;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of subcategories.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_subcategory() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
@@ -4125,12 +4077,14 @@ def _sql_query_md_codes_subcategory() -> list[str]:
           FROM io_md_codes_subcategory;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of subsections.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_md_codes_subsection() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
@@ -4140,12 +4094,14 @@ def _sql_query_md_codes_subsection() -> list[str]:
           FROM io_md_codes_subsection;
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Determine the minimum number of involved aircraft.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_min_no_aircraft() -> int:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4154,12 +4110,14 @@ def _sql_query_min_no_aircraft() -> int:
           FROM io_app_ae1982;
         """
         )
+
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Determine the maximum number of fatalities.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_max_inj_tot_f() -> int:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4168,12 +4126,14 @@ def _sql_query_max_inj_tot_f() -> int:
           FROM io_app_ae1982;
         """
         )
+
         return cur.fetchone()[0]  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of US states.
 # ------------------------------------------------------------------
+@st.cache_data(persist=True)
 def _sql_query_us_states() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
@@ -4184,6 +4144,7 @@ def _sql_query_us_states() -> list[str]:
          WHERE country  = 'USA';
         """
         )
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -4195,6 +4156,13 @@ def _streamlit_flow() -> None:
     global DF_RAW_DATA_FILTERED_ROWS  # pylint: disable=global-statement
     global DF_RAW_DATA_UNFILTERED  # pylint: disable=global-statement
     global DF_RAW_DATA_UNFILTERED_ROWS  # pylint: disable=global-statement
+    global MD_CODES_CATEGORY  # pylint: disable=global-statement
+    global MD_CODES_EVENTSOE  # pylint: disable=global-statement
+    global MD_CODES_MODIFIER  # pylint: disable=global-statement
+    global MD_CODES_PHASE  # pylint: disable=global-statement
+    global MD_CODES_SECTION  # pylint: disable=global-statement
+    global MD_CODES_SUBCATEGORY  # pylint: disable=global-statement
+    global MD_CODES_SUBSECTION  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
 
@@ -4236,24 +4204,23 @@ def _streamlit_flow() -> None:
     _print_timestamp("_get_postgres_connection - got DB connection")
 
     _setup_sidebar()
-    _print_timestamp("_setup_sidebar()")
 
     _setup_page()
-    _print_timestamp("_setup_page()")
 
-    _sql_query_codes_category()
-    _sql_query_codes_eventsoe()
-    _sql_query_codes_modifier()
-    _sql_query_codes_phase()
-    _sql_query_codes_section()
-    _sql_query_codes_subcategory()
-    _sql_query_codes_subsection()
+    MD_CODES_CATEGORY = _sql_query_codes_category()
+    MD_CODES_EVENTSOE = _sql_query_codes_eventsoe()
+    MD_CODES_MODIFIER = _sql_query_codes_modifier()
+    MD_CODES_PHASE = _sql_query_codes_phase()
+    MD_CODES_SECTION = _sql_query_codes_section()
+    MD_CODES_SUBCATEGORY = _sql_query_codes_subcategory()
+    MD_CODES_SUBSECTION = _sql_query_codes_subsection()
 
     # ------------------------------------------------------------------
     # Filter data.
     # ------------------------------------------------------------------
 
     DF_RAW_DATA_UNFILTERED = _get_raw_data()
+    _print_timestamp("_get_raw_data()")
 
     (DF_RAW_DATA_UNFILTERED_ROWS, _) = DF_RAW_DATA_UNFILTERED.shape
     if DF_RAW_DATA_UNFILTERED_ROWS == 0:
@@ -4261,8 +4228,6 @@ def _streamlit_flow() -> None:
         st.stop()
 
     DF_RAW_DATA_FILTERED = DF_RAW_DATA_UNFILTERED
-
-    _print_timestamp("_get_data()")
 
     if (
         CHOICE_FILTER_DATA_OTHER
@@ -4272,7 +4237,6 @@ def _streamlit_flow() -> None:
         DF_RAW_DATA_FILTERED = _apply_filter(
             DF_RAW_DATA_UNFILTERED,
         )
-        _print_timestamp("_apply_filter()")
 
     (DF_RAW_DATA_FILTERED_ROWS, _) = DF_RAW_DATA_FILTERED.shape
     if DF_RAW_DATA_FILTERED_ROWS == 0:
@@ -4284,7 +4248,6 @@ def _streamlit_flow() -> None:
     # ------------------------------------------------------------------
 
     _present_results()
-    _print_timestamp("_present_results()")
 
     # Stop time measurement.
     # flake8: noqa: E501

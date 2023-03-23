@@ -10,7 +10,9 @@ setlocal EnableDelayedExpansion
 
 set ERRORLEVEL=
 
+set IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 set IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+set IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 set IO_AVSTATS_KEYCLOAK_PASSWORD=RsxAG^&hpCcuXsB2cbxSS
 set IO_AVSTATS_KEYCLOAK_USER=admin
 set IO_AVSTATS_KEYCLOAK_VERSION=latest
@@ -57,14 +59,9 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["logs"] (
     if ["%2"] EQU [""] (
         echo =========================================================
         echo *             - All Containers
-        echo ae1982        - Aviation Event Analysis
         echo io_avstats_db - Database Profiling
         echo keycloak      - Keycloak Server
         echo keycloak_db   - Keycloak Database
-        echo members       - IO-Aero Member Service
-        echo pd1982        - Database Profiling
-        echo slara         - Association Rule Analysis
-        echo stats         - US Aviation Fatal Accidents
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_CONTAINER="Enter the desired container [default: %IO_AVSTATS_CONTAINER_DEFAULT%] "
 
@@ -84,7 +81,9 @@ echo -----------------------------------------------------------------------
 echo COMPOSE_TASK                      : %IO_AVSTATS_COMPOSE_TASK%
 echo CONTAINER                         : %IO_AVSTATS_CONTAINER%
 echo -----------------------------------------------------------------------
+echo KEYCLOAK_CONNECTION_PORT          : %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%
 echo KEYCLOAK_CONTAINER_NAME           : %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
+echo KEYCLOAK_CONTAINER_PORT           : %IO_AVSTATS_KEYCLOAK_CONTAINER_PORT%
 echo KEYCLOAK_PASSWORD                 : "%IO_AVSTATS_KEYCLOAK_PASSWORD%"
 echo KEYCLOAK_USER                     : %IO_AVSTATS_KEYCLOAK_USER%
 echo KEYCLOAK_VERSION                  : %IO_AVSTATS_KEYCLOAK_VERSION%
@@ -119,8 +118,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker ps       | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    echo ............................................. after containers running:
+    docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%    echo ............................................. after containers running:
     docker ps
     echo ..................................................... after containers:
     docker ps -a

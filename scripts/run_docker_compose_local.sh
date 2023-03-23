@@ -8,7 +8,9 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
+export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER=admin
 export IO_AVSTATS_KEYCLOAK_VERSION=latest
@@ -57,14 +59,9 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "logs" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "*             - All Containers"
-        echo "ae1982        - Aviation Event Analysis"
         echo "io_avstats_db - Database Profiling"
         echo "keycloak      - Keycloak Server"
         echo "keycloak_db   - Keycloak Database"
-        echo "members       - IO-Aero Member Service"
-        echo "pd1982        - Database Profiling"
-        echo "slara         - Association Rule Analysis"
-        echo "stats         - US Aviation Fatal Accidents"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the desired container [default: ${IO_AVSTATS_CONTAINER_DEFAULT}] " IO_AVSTATS_CONTAINER
@@ -101,7 +98,9 @@ echo "--------------------------------------------------------------------------
 echo "COMPOSE_TASK                      : ${IO_AVSTATS_COMPOSE_TASK}"
 echo "CONTAINER                         : ${IO_AVSTATS_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
+echo "KEYCLOAK_CONNECTION_PORT          : ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}"
 echo "KEYCLOAK_CONTAINER_NAME           : ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
+echo "KEYCLOAK_CONTAINER_PORT           : ${IO_AVSTATS_KEYCLOAK_CONTAINER_PORT}"
 echo "KEYCLOAK_PASSWORD                 : ${IO_AVSTATS_KEYCLOAK_PASSWORD}"
 echo "KEYCLOAK_USER                     : ${IO_AVSTATS_KEYCLOAK_USER}"
 echo "KEYCLOAK_VERSION                  : ${IO_AVSTATS_KEYCLOAK_VERSION}"

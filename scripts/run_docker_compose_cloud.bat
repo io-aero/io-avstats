@@ -129,8 +129,6 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker ps -a    | find "%IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
     docker ps       | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker stop        %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
     docker ps -a    | find "%IO_AVSTATS_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "ae1982"                                        && docker stop        ae1982
-    docker ps -a    | find "ae1982"                                        && docker rm  --force ae1982
     docker ps       | find "load_balancer"                                 && docker stop        load_balancer
     docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
     docker ps       | find "members"                                       && docker stop        members
@@ -147,12 +145,12 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker ps -a
     echo ........................................................ before images:
     docker images
-    docker image ls | find "postgres"                  && docker rmi --force postgres:%IO_AVSTATS_POSTGRES_VERSION%
-    docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
     docker image ls | find "ae1982"                    && docker rmi --force ioaero/ae1982:latest
     docker image ls | find "members"                   && docker rmi --force ioaero/members:latest
     docker image ls | find "nginx"                     && docker rmi --force nginx:stable-alpine
     docker image ls | find "pd1982"                    && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "postgres"                  && docker rmi --force postgres:%IO_AVSTATS_POSTGRES_VERSION%
+    docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
     docker image ls | find "slara"                     && docker rmi --force ioaero/slara:latest
     docker image ls | find "stats"                     && docker rmi --force ioaero/stats:latest
     echo ......................................................... after images:

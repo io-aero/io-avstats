@@ -5,10 +5,17 @@
 """Application Utilities."""
 import argparse
 import datetime
-
+import socket
 import streamlit as st
 from psycopg2.extensions import connection
 from streamlit_keycloak import login
+
+
+
+# ------------------------------------------------------------------
+# Global constants and variables.
+# ------------------------------------------------------------------
+HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
 
 
 # -----------------------------------------------------------------------------
@@ -53,7 +60,7 @@ def get_args() -> str:
 # -----------------------------------------------------------------------------
 # Authentication and authorization check.
 # -----------------------------------------------------------------------------
-def has_access(app_id: str) -> None:
+def has_access(app_id: str) -> dict[str,dict[str,list[str]]]:
     """Authentication and authorization check."""
 
     # pylint: disable=line-too-long
@@ -65,18 +72,12 @@ def has_access(app_id: str) -> None:
 
     # pylint: disable=R0801
     keycloak = login(
-        url="http://auth.io-aero.com:8080",
+        url="http://auth.io-aero.com:8080" if HOST == "cloud" else "http://auth.localhost:8080",
         realm="IO-Aero",
         client_id=app_id,
     )
 
     if not keycloak.authenticated:
-        # pylint: disable=line-too-long
-        st.error("##### Error: The authentication attempt failed.")
-        if "KEYCLOAK" in st.session_state:
-            st.error(f"##### Error: The login has failed - client_id='{app_id}'.")
-        else:
-            st.session_state["KEYCLOAK"] = "KEYCLOAK"
         st.stop()
 
     if (resource_access := keycloak.user_info.get("resource_access")) is None:
@@ -104,6 +105,8 @@ def has_access(app_id: str) -> None:
         + f"                         - Authentication through Keycloak successful - app_id={app_id}",
         flush=True,
     )
+
+    return keycloak.user_info.get("resource_access")
 
 
 # ------------------------------------------------------------------

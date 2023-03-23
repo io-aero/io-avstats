@@ -21,10 +21,13 @@ echo =======================================================================
 
 IF EXIST %AWS_FILE_NAME% DEL /F %AWS_FILE_NAME%
 
+copy /Y data\latest_postgrep.zip download\IO-AVSTATS-DB.zip
+
 %AWS_PROG_ZIP% a -spd -tzip %AWS_FILE_NAME% data\latest_postgres.zip ^
                                             data\latest_postgres_keycloak.zip ^
                                             docker-compose_cloud.yml ^
-                                            docker-compose_local.yml ^
+                                            download\IO-AVSTATS-DB.pdf ^
+                                            download\IO-AVSTATS-DB.zip ^
                                             nginx.conf ^
                                             scripts\run_cloud_setup_instance.sh ^
                                             scripts\run_docker_compose_cloud.sh

@@ -4,6 +4,7 @@
 
 """Aviation Event Analysis."""
 import datetime
+import socket
 import time
 from operator import itemgetter
 
@@ -245,6 +246,8 @@ FILTER_US_STATES: list[str] = []
 
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
+
+HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
 
 IS_TIMEKEEPING = False
 
@@ -3906,7 +3909,8 @@ def _streamlit_flow() -> None:
     if MODE_STANDARD:
         col1, col2 = st.sidebar.columns(2)
         col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-        col2.markdown("##  [Member Menu](http://members.io-aero.com)")
+        url = "http://" + ("members.io-aero.com" if HOST == "cloud" else "localhost:8598")
+        col2.markdown(f"##  [Member Menu]({url})")
     else:
         st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
 

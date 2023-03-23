@@ -4,6 +4,7 @@
 
 """Database Profiling."""
 import datetime
+import socket
 import time
 
 import pandas as pd
@@ -48,6 +49,8 @@ FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
+
+HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
 
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
@@ -779,7 +782,8 @@ def _streamlit_flow() -> None:
 
     col1, col2 = st.sidebar.columns(2)
     col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-    col2.markdown("##  [Member Menu](http://members.io-aero.com)")
+    url = "http://" + ("members.io-aero.com" if HOST == "cloud" else "localhost:8598")
+    col2.markdown(f"##  [Member Menu]({url})")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

@@ -18,6 +18,7 @@
 /data/postgres/
 /data/postgres_keycloak/
 /data/postgres_test/
+/download/
 /resources/Gammadyne/timer.txt
 /src/ioavstats/stats.py
 coverage.xml

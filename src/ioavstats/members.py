@@ -49,19 +49,19 @@ def _setup_page():
     # --------------------------------------------------------------
     # Application menu.
     # --------------------------------------------------------------
-    url = "http://" + ("stats.io-aero.com:8080" if HOST == "cloud" else "localhost:8599")
+    url = "http://" + ("stats.io-aero.com" if HOST == "cloud" else "localhost:8599")
     applications = [("US Aviation Fatal Accidents", f"[stats]({url})")]
 
     for app_id in ["ae1982", "pd1982", "slara"]:
         if app_id in RESOURCES:
             if app_id == "ae1982":
-                url = "http://" + (app_id+".io-aero.com:8080" if HOST == "cloud" else "localhost:8501")
+                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8501")
                 applications.append(("Aviation Event Analysis", f"[{app_id}]({url})"))
             elif app_id == "pd1982":
-                url = "http://" + (app_id+".io-aero.com:8080" if HOST == "cloud" else "localhost:8502")
+                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8502")
                 applications.append(("Database Profiling", f"[{app_id}]({url})"))
             elif app_id == "slara":
-                url = "http://" + (app_id+".io-aero.com:8080" if HOST == "cloud" else "localhost:8503")
+                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8503")
                 applications.append(("Association Rule Analysis", f"[{app_id}]({url})"))
             else:
                 applications.append((

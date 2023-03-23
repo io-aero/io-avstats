@@ -53,7 +53,7 @@ services:
       KC_DB_URL_PORT: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}
       KC_DB_USERNAME: ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER}
       KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_URL: http://auth.io-aero.com:8080/
+      KC_HOSTNAME_URL: http://auth.io-aero.com:80/
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: 0.0.0.0
       KC_HTTPS_CLIENT_AUTH: none

@@ -779,7 +779,7 @@ def _streamlit_flow() -> None:
 
     col1, col2 = st.sidebar.columns(2)
     col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-    col2.markdown("##  [Member Menu](http://members.io-aero.com:8080)")
+    col2.markdown("##  [Member Menu](http://members.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(

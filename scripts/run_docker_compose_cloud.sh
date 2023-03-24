@@ -8,7 +8,9 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
+export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER=admin
 export IO_AVSTATS_KEYCLOAK_VERSION=latest

@@ -56,6 +56,9 @@
             "uma_authorization"
           ],
           "client": {
+            "members": [
+              "members-access"
+            ],
             "account": [
               "manage-account",
               "view-profile"
@@ -853,7 +856,7 @@
     {
       "id": "f8eff163-4efb-4a00-a873-da2a75db9a38",
       "clientId": "pd1982",
-      "name": "Application  pd1982",
+      "name": "Application pd1982",
       "description": "Database Profiling",
       "rootUrl": "",
       "adminUrl": "",
@@ -1009,7 +1012,7 @@
     {
       "id": "9acf071a-9d9e-4e0a-b9dc-be17de38ab76",
       "clientId": "slara",
-      "name": "Application  slara",
+      "name": "Application slara",
       "description": "Association Rule Analysis",
       "rootUrl": "",
       "adminUrl": "",
@@ -2409,7 +2412,7 @@
       "name": "Update Password",
       "providerId": "UPDATE_PASSWORD",
       "enabled": true,
-      "defaultAction": false,
+      "defaultAction": true,
       "priority": 30,
       "config": {}
     },
@@ -2418,7 +2421,7 @@
       "name": "Update Profile",
       "providerId": "UPDATE_PROFILE",
       "enabled": true,
-      "defaultAction": false,
+      "defaultAction": true,
       "priority": 40,
       "config": {}
     },
@@ -2427,7 +2430,7 @@
       "name": "Verify Email",
       "providerId": "VERIFY_EMAIL",
       "enabled": true,
-      "defaultAction": false,
+      "defaultAction": true,
       "priority": 50,
       "config": {}
     },

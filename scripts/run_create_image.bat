@@ -94,16 +94,16 @@ rem > %LOG_FILE% 2>&1 (
     mkdir tmp\docs\img
 
     if ["!APPLICATION!"] EQU ["members"]  (
-        copy /Y data\latest_postgres.zip download\IO-AVSTATS-DB.zip
+        copy /Y data\latest_postgres.zip          download\IO-AVSTATS-DB.zip
         copy /Y docs\img\StockSnap_SLQQYN6CRR.jpg tmp\docs\img\StockSnap_SLQQYN6CRR.jpg
-        copy /Y download\IO-AVSTATS-DB.pdf tmp\download\IO-AVSTATS-DB.pdf
-        copy /Y download\IO-AVSTATS-DB.zip tmp\download\IO-AVSTATS-DB.zip
+        copy /Y download\IO-AVSTATS-DB.pdf        tmp\download\IO-AVSTATS-DB.pdf
+        copy /Y download\IO-AVSTATS-DB.zip        tmp\download\IO-AVSTATS-DB.zip
     )
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         set MODE=Ltd
         copy /Y src\ioavstats\ae1982.py src\ioavstats\stats.py
-        copy /Y config\Pipfile.ae1982 Pipfile.stats
+        copy /Y config\Pipfile.ae1982   config\Pipfile.stats
     )
 
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
@@ -112,7 +112,7 @@ rem > %LOG_FILE% 2>&1 (
 
     echo Docker stop/rm !APPLICATION! ................................ before containers:
     docker ps -a
-    docker ps       | find "!APPLICATION!" && docker stop !APPLICATION!
+    docker ps       | find "!APPLICATION!" && docker stop        !APPLICATION!
     docker ps -a    | find "!APPLICATION!" && docker rm  --force !APPLICATION!
     echo ............................................................. after containers:
     docker ps -a
@@ -148,7 +148,7 @@ rem > %LOG_FILE% 2>&1 (
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         del /s src\ioavstats\stats.py
-        del /s Pipfile.stats
+        del /s config\Pipfile.stats
     )
 
     :END_OF_SCRIPT

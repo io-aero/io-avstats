@@ -83,20 +83,34 @@ if [ "${APPLICATION}" = "all" ]; then
     ( ./scripts/run_create_image.sh slara   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     ( ./scripts/run_create_image.sh stats   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
     goto END_OF_SCRIPT
-else
-    if [ "${APPLICATION}" = "stats" ]; then
-        export MODE=Ltd
-        copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
-        copy -i config/Pipfile.ae1982 Pipfile.stats
-    fi
-    if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
-        docker builder prune --all --force
-    fi
+fi
+
+rm -rf tmp/download
+mkdir tmp/download
+
+rm -rf tmp/docs/img
+mkdir tmp/docs\img
+
+if [ "${APPLICATION}" = "members" ]; then
+    copy -i data/latest_postgres.zip          download/IO-AVSTATS-DB.zip
+    copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
+    copy -i download/IO-AVSTATS-DB.pdf        tmp/download/IO-AVSTATS-DB.pdf
+    copy -i download/IO-AVSTATS-DB.zip        tmp/download/IO-AVSTATS-DB.zip
+fi
+
+if [ "${APPLICATION}" = "stats" ]; then
+    export MODE=Ltd
+    copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
+    copy -i config/Pipfile.ae1982   config/Pipfile.stats
+fi
+
+if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
+    docker builder prune --all --force
 fi
 
 echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
 docker ps -a
-docker ps    | find "${APPLICATION}" && docker stop ${APPLICATION}
+docker ps    | find "${APPLICATION}" && docker stop       ${APPLICATION}
 docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
 echo "............................................................. after containers:"
 docker ps -a
@@ -129,9 +143,12 @@ do
     docker rmi -f ${IMAGE}
 done
 
+rm -rf tmp/download
+rm -rf tmp/docs/img
+
 if [ "${APPLICATION}" = "stats" ]; then
     rm -f src/ioavstats/stats.py
-    rm -f Pipfile.stats
+    rm -f config/Pipfile.stats
 fi
 
 echo ""

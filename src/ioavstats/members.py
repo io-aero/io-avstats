@@ -8,10 +8,9 @@ import pathlib
 import time
 
 import streamlit as st
-from PIL import Image
-
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
+from PIL import Image  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -47,6 +46,8 @@ def _setup_page():
         unsafe_allow_html=True,
     )
 
+    st.markdown("""---""")
+
     # --------------------------------------------------------------
     # Application menu.
     # --------------------------------------------------------------
@@ -56,17 +57,17 @@ def _setup_page():
         if app_id in RESOURCES:
             if app_id == "ae1982":
                 url = "http://" + (
-                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8501"
+                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8501"
                 )
                 applications.append(("Aviation Event Analysis", f"[{app_id}]({url})"))
             elif app_id == "pd1982":
                 url = "http://" + (
-                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8502"
+                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8502"
                 )
                 applications.append(("Database Profiling", f"[{app_id}]({url})"))
             elif app_id == "slara":
                 url = "http://" + (
-                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8503"
+                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8503"
                 )
                 applications.append(("Association Rule Analysis", f"[{app_id}]({url})"))
             else:
@@ -85,7 +86,7 @@ def _setup_page():
         with col1:
             st.markdown("## Applications")
         with col2:
-            st.markdown("## Link")
+            st.markdown("""## <span style='color:white'>Link</span>""", unsafe_allow_html=True)
 
         for app_desc, app_link in applications:
             with col1:
@@ -121,7 +122,7 @@ def _setup_page():
         with col1:
             st.markdown("## Downloadable Items")
         with col2:
-            st.markdown("## Button")
+            st.markdown("""## <span style='color:white'>Button</span>""", unsafe_allow_html=True)
 
         for item_desc, item_file in downloads:
             with col1:
@@ -142,6 +143,8 @@ def _setup_page():
     # Image.
     # --------------------------------------------------------------
     st.image(Image.open("docs/img/StockSnap_SLQQYN6CRR.jpg"))
+
+    st.markdown("""---""")
 
 
 # ------------------------------------------------------------------

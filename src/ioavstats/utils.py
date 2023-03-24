@@ -5,23 +5,16 @@
 """Application Utilities."""
 import argparse
 import datetime
-import socket
+
 import streamlit as st
 from psycopg2.extensions import connection
 from streamlit_keycloak import login
 
 
-
-# ------------------------------------------------------------------
-# Global constants and variables.
-# ------------------------------------------------------------------
-HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
-
-
 # -----------------------------------------------------------------------------
 # Load the command line arguments into the memory.
 # -----------------------------------------------------------------------------
-def get_args() -> str:
+def get_args() -> tuple[str, str]:
     """Load the command line arguments into the memory."""
 
     parser = argparse.ArgumentParser(
@@ -34,6 +27,14 @@ def get_args() -> str:
     # -------------------------------------------------------------------------
     # Definition of the command line arguments.
     # ------------------------------------------------------------------------
+    parser.add_argument(
+        "--host",
+        help="the host mode: '" + "cloud' (Cloud host) or '" + "local' (Local host)",
+        metavar="host",
+        required=False,
+        type=str,
+    )
+
     parser.add_argument(
         "--mode",
         help="the execution mode: '"
@@ -54,13 +55,18 @@ def get_args() -> str:
         if parsed_args.mode == "Std":
             mode = parsed_args.mode
 
-    return mode
+    host = "Local"
+    if parsed_args.host is not None:
+        if parsed_args.host == "Cloud":
+            host = parsed_args.host
+
+    return host, mode
 
 
 # -----------------------------------------------------------------------------
 # Authentication and authorization check.
 # -----------------------------------------------------------------------------
-def has_access(app_id: str) -> dict[str,dict[str,list[str]]]:
+def has_access(host_cloud: bool, app_id: str) -> dict[str, dict[str, list[str]]]:
     """Authentication and authorization check."""
 
     # pylint: disable=line-too-long
@@ -70,9 +76,13 @@ def has_access(app_id: str) -> dict[str,dict[str,list[str]]]:
         flush=True,
     )
 
+    print(f"wwe st.session_state={st.session_state}")
+
     # pylint: disable=R0801
     keycloak = login(
-        url="http://auth.io-aero.com" if HOST == "cloud" else "http://auth.localhost:8080",
+        url="http://auth.io-aero.com:8080"
+        if host_cloud
+        else "http://auth.localhost:8080",
         realm="IO-Aero",
         client_id=app_id,
     )

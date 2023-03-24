@@ -5,13 +5,11 @@
 """Members Only Area."""
 import datetime
 import pathlib
-import socket
 import time
 
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
-from streamlit_keycloak import login  # type: ignore
 
 # ------------------------------------------------------------------
 # Global constants and variables.
@@ -23,11 +21,11 @@ COLOR_HEADER: str = "#357f8f"
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
-HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
+HOST_CLOUD: bool | None = None
 
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
-RESOURCES: dict[str,dict[str,list[str]]] = {}
+RESOURCES: dict[str, dict[str, list[str]]] = {}
 
 SETTINGS = Dynaconf(
     environments=True,
@@ -39,6 +37,7 @@ SETTINGS = Dynaconf(
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
+# pylint: disable=too-many-branches
 def _setup_page():
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
@@ -49,25 +48,33 @@ def _setup_page():
     # --------------------------------------------------------------
     # Application menu.
     # --------------------------------------------------------------
-    url = "http://" + ("stats.io-aero.com" if HOST == "cloud" else "localhost:8599")
+    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
     applications = [("US Aviation Fatal Accidents", f"[stats]({url})")]
 
     for app_id in ["ae1982", "pd1982", "slara"]:
         if app_id in RESOURCES:
             if app_id == "ae1982":
-                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8501")
+                url = "http://" + (
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8501"
+                )
                 applications.append(("Aviation Event Analysis", f"[{app_id}]({url})"))
             elif app_id == "pd1982":
-                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8502")
+                url = "http://" + (
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8502"
+                )
                 applications.append(("Database Profiling", f"[{app_id}]({url})"))
             elif app_id == "slara":
-                url = "http://" + (app_id+".io-aero.com" if HOST == "cloud" else "localhost:8503")
+                url = "http://" + (
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8503"
+                )
                 applications.append(("Association Rule Analysis", f"[{app_id}]({url})"))
             else:
-                applications.append((
-                    "Unknown Application",
-                    f"[{app_id}]",
-                ))
+                applications.append(
+                    (
+                        "Unknown Application",
+                        f"[{app_id}]",
+                    )
+                )
 
     if len(applications) > 0:
         applications.sort()
@@ -96,10 +103,12 @@ def _setup_page():
                 downloads.append(("IO-AVSTATS-DB Database", "IO-AVSTATS-DB.zip"))
                 downloads.append(("IO-AVSTATS-DB Documentation", "IO-AVSTATS-DB.pdf"))
             else:
-                downloads.append((
-                    "Unknown Download",
-                    f"[{item_id}]",
-                ))
+                downloads.append(
+                    (
+                        "Unknown Download",
+                        f"[{item_id}]",
+                    )
+                )
 
     if len(downloads) > 0:
         downloads.sort()
@@ -115,14 +124,21 @@ def _setup_page():
             with col1:
                 st.markdown("#### " + item_desc)
             with col2:
-                with open("download/"+item_file,"rb") as download:
-                    st.download_button("**Download "+pathlib.Path(item_file).suffix.upper()[1:]+"**",download,file_name=item_file)
+                with open("download/" + item_file, "rb") as download:
+                    st.download_button(
+                        "**Download "
+                        + pathlib.Path(item_file).suffix.upper()[1:]
+                        + "**",
+                        download,
+                        file_name=item_file,
+                    )
 
 
 # ------------------------------------------------------------------
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
+    global HOST_CLOUD  # pylint: disable=global-statement
     global RESOURCES  # pylint: disable=global-statement
 
     # Start time measurement.
@@ -134,6 +150,13 @@ def _streamlit_flow() -> None:
         + APP_ID,
         flush=True,
     )
+
+    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        HOST_CLOUD = st.session_state["HOST_CLOUD"]
+    else:
+        (host, _mode) = utils.get_args()
+        HOST_CLOUD = bool(host == "Cloud")
+        st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
     st.set_page_config(
         layout="wide",
@@ -151,7 +174,7 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    RESOURCES = utils.has_access(APP_ID)
+    RESOURCES = utils.has_access(HOST_CLOUD, APP_ID)
 
     _setup_page()
 

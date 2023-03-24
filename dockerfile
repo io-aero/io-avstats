@@ -29,4 +29,4 @@ COPY src/ioavstats/utils.py ./utils.py
 
 RUN make pipenv-prod
 
-ENTRYPOINT pipenv run streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --mode ${MODE}
+ENTRYPOINT pipenv run streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --host Cloud --mode ${MODE}

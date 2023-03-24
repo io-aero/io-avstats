@@ -4,7 +4,6 @@
 
 """Database Profiling."""
 import datetime
-import socket
 import time
 
 import pandas as pd
@@ -50,7 +49,7 @@ FILTER_EV_YEAR_TO: int | None = None
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
-HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
+HOST_CLOUD: bool | None = None
 
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
@@ -759,6 +758,7 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
     global DF_FILTERED  # pylint: disable=global-statement
+    global HOST_CLOUD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global DF_UNFILTERED  # pylint: disable=global-statement
 
@@ -772,6 +772,13 @@ def _streamlit_flow() -> None:
         flush=True,
     )
 
+    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        HOST_CLOUD = st.session_state["HOST_CLOUD"]
+    else:
+        (host, _mode) = utils.get_args()
+        HOST_CLOUD = bool(host == "Cloud")
+        st.session_state["HOST_CLOUD"] = HOST_CLOUD
+
     st.set_page_config(
         layout="wide",
         # flake8: noqa: E501
@@ -782,7 +789,7 @@ def _streamlit_flow() -> None:
 
     col1, col2 = st.sidebar.columns(2)
     col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-    url = "http://" + ("members.io-aero.com" if HOST == "cloud" else "localhost:8598")
+    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
     col2.markdown(f"##  [Member Menu]({url})")
 
     # pylint: disable=line-too-long
@@ -791,7 +798,7 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    utils.has_access(APP_ID)
+    utils.has_access(HOST_CLOUD, APP_ID)
 
     PG_CONN = _get_postgres_connection()  # type: ignore
 

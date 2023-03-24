@@ -4,7 +4,6 @@
 
 """Aviation Event Analysis."""
 import datetime
-import socket
 import time
 from operator import itemgetter
 
@@ -247,7 +246,7 @@ FILTER_US_STATES: list[str] = []
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
-HOST ="cloud" if socket.getfqdn()[-13:] == ".ec2.internal" else "local"
+HOST_CLOUD: bool | None = None
 
 IS_TIMEKEEPING = False
 
@@ -3871,6 +3870,7 @@ def _sql_query_us_states() -> list[str]:
 def _streamlit_flow() -> None:
     """Streamlit flow."""
     global DF_FILTERED  # pylint: disable=global-statement
+    global HOST_CLOUD  # pylint: disable=global-statement
     global MODE_STANDARD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
@@ -3886,10 +3886,13 @@ def _streamlit_flow() -> None:
         flush=True,
     )
 
-    if "MODE_STANDARD" in st.session_state:
+    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        HOST_CLOUD = st.session_state["HOST_CLOUD"]
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
-        mode = utils.get_args()
+        (host, mode) = utils.get_args()
+        HOST_CLOUD = bool(host == "Cloud")
+        st.session_state["HOST_CLOUD"] = HOST_CLOUD
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
 
@@ -3909,7 +3912,7 @@ def _streamlit_flow() -> None:
     if MODE_STANDARD:
         col1, col2 = st.sidebar.columns(2)
         col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-        url = "http://" + ("members.io-aero.com" if HOST == "cloud" else "localhost:8598")
+        url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
         col2.markdown(f"##  [Member Menu]({url})")
     else:
         st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
@@ -3921,7 +3924,7 @@ def _streamlit_flow() -> None:
     )
 
     if MODE_STANDARD:
-        utils.has_access(APP_ID)
+        utils.has_access(HOST_CLOUD, APP_ID)
 
     PG_CONN = _get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

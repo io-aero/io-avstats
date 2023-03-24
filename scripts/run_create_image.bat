@@ -87,6 +87,19 @@ rem > %LOG_FILE% 2>&1 (
         goto END_OF_SCRIPT
     )
 
+    if exist tmp\download rmdir /s /q tmp\download
+    mkdir tmp\download
+
+    if exist tmp\docs\img rmdir /s /q tmp\docs\img
+    mkdir tmp\docs\img
+
+    if ["!APPLICATION!"] EQU ["members"]  (
+        copy /Y data\latest_postgres.zip download\IO-AVSTATS-DB.zip
+        copy /Y docs\img\StockSnap_SLQQYN6CRR.jpg tmp\docs\img\StockSnap_SLQQYN6CRR.jpg
+        copy /Y download\IO-AVSTATS-DB.pdf tmp\download\IO-AVSTATS-DB.pdf
+        copy /Y download\IO-AVSTATS-DB.zip tmp\download\IO-AVSTATS-DB.zip
+    )
+
     if ["!APPLICATION!"] EQU ["stats"]  (
         set MODE=Ltd
         copy /Y src\ioavstats\ae1982.py src\ioavstats\stats.py
@@ -129,6 +142,9 @@ rem > %LOG_FILE% 2>&1 (
     docker images -q -f "dangling=true" -f "label=autodelete=true"
 
     for /F %%I in ('docker images -q -f "dangling=true" -f "label=autodelete=true"') do (docker rmi -f %%I)
+
+    rmdir /s /q tmp\download
+    rmdir /s /q tmp\docs\img
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         del /s src\ioavstats\stats.py

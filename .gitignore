@@ -18,7 +18,8 @@
 /data/postgres/
 /data/postgres_keycloak/
 /data/postgres_test/
-/download/
+/download/IO-AVSTATS-DB.pdf
+/download/IO-AVSTATS-DB.zip
 /resources/Gammadyne/timer.txt
 /src/ioavstats/stats.py
 coverage.xml

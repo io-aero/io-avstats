@@ -87,7 +87,7 @@ else
     if [ "${APPLICATION}" = "stats" ]; then
         export MODE=Ltd
         copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
-        copy -i Pipfile.ae1982 Pipfile.stats
+        copy -i config/Pipfile.ae1982 Pipfile.stats
     fi
     if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
         docker builder prune --all --force
@@ -110,7 +110,8 @@ if [ "${APPLICATION}" = "ae1982" ]; then
     export MODE=Std
 fi
 
-docker build --build-arg APP=${APPLICATION} \
+docker build --file config/dockerfile ^
+             --build-arg APP=${APPLICATION} \
              --build-arg MODE=${MODE} \
              --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
              -t ioaero/${APPLICATION} .

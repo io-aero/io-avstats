@@ -8,6 +8,8 @@ import pathlib
 import time
 
 import streamlit as st
+from PIL import Image
+
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 
@@ -48,8 +50,7 @@ def _setup_page():
     # --------------------------------------------------------------
     # Application menu.
     # --------------------------------------------------------------
-    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
-    applications = [("US Aviation Fatal Accidents", f"[stats]({url})")]
+    applications = []
 
     for app_id in ["ae1982", "pd1982", "slara"]:
         if app_id in RESOURCES:
@@ -88,9 +89,11 @@ def _setup_page():
 
         for app_desc, app_link in applications:
             with col1:
-                st.markdown("#### " + app_desc)
+                st.markdown("##### " + app_desc)
             with col2:
-                st.markdown("#### " + app_link)
+                st.markdown("##### " + app_link)
+
+        st.markdown("""---""")
 
     # --------------------------------------------------------------
     # Download menu.
@@ -122,7 +125,7 @@ def _setup_page():
 
         for item_desc, item_file in downloads:
             with col1:
-                st.markdown("#### " + item_desc)
+                st.markdown("##### " + item_desc)
             with col2:
                 with open("download/" + item_file, "rb") as download:
                     st.download_button(
@@ -132,6 +135,13 @@ def _setup_page():
                         download,
                         file_name=item_file,
                     )
+
+        st.markdown("""---""")
+
+    # --------------------------------------------------------------
+    # Image.
+    # --------------------------------------------------------------
+    st.image(Image.open("docs/img/StockSnap_SLQQYN6CRR.jpg"))
 
 
 # ------------------------------------------------------------------

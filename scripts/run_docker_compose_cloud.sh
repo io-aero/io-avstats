@@ -182,7 +182,7 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "down" ]; then
     echo "................................................... before containers:"
     docker ps -a
 
-    docker compose -f docker-compose_cloud.yml down
+    docker compose -f config/docker-compose_cloud.yml down
 
     echo "............................................ after containers running:"
     docker ps
@@ -195,9 +195,9 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "down" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "logs" ]; then
     if [ "${IO_AVSTATS_CONTAINER}" = "*" ]; then
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow
+        docker-compose -f config/docker-compose_cloud.yml logs --tail=0 --follow
     else
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
+        docker-compose -f config/docker-compose_cloud.yml logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
     fi
 
 # ------------------------------------------------------------------------------
@@ -211,7 +211,7 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "up" ]; then
     echo "....................................................... before images:"
     docker images
 
-    docker compose -f docker-compose_cloud.yml up -d
+    docker compose -f config/docker-compose_cloud.yml up -d
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+dynaconf = "*"
+plotly = "*"
+psycopg2-binary = "*"
+sqlalchemy = "<2.0.0"
+streamlit = "*"
+streamlit-keycloak ="*"
+streamlit-pandas-profiling = "*"
+
+[requires]
+python_version = "3.10"

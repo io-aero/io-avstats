@@ -7,14 +7,11 @@ import datetime
 import time
 
 import pandas as pd
-import psycopg2
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -322,6 +319,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 
+USER_INFO: str = "n/a"
+
 
 # ------------------------------------------------------------------
 # Filter the data frame.
@@ -353,45 +352,7 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
 # Read the data.
 # ------------------------------------------------------------------
 def _get_data(ddl_object_name: str) -> DataFrame:
-    return pd.read_sql(QUERIES[ddl_object_name], con=_get_engine())  # type: ignore
-
-
-# ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_engine() -> Engine:
-    print(
-        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return create_engine(
-        f"postgresql://{SETTINGS.postgres_user_guest}:"
-        + f"{SETTINGS.postgres_password_guest}@"
-        + f"{SETTINGS.postgres_host}:"
-        + f"{SETTINGS.postgres_connection_port}/"
-        + f"{SETTINGS.postgres_dbname}",
-    )
-
-
-# ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_postgres_connection() -> connection:
-    print(
-        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return psycopg2.connect(**st.secrets["db_postgres"])
+    return pd.read_sql(QUERIES[ddl_object_name], con=utils.get_engine(SETTINGS))  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -758,9 +719,10 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
     global DF_FILTERED  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
-    global DF_UNFILTERED  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     start_time = time.time_ns()
@@ -798,9 +760,9 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    utils.has_access(HOST_CLOUD, APP_ID)
+    USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
-    PG_CONN = _get_postgres_connection()  # type: ignore
+    PG_CONN = utils.get_postgres_connection(SETTINGS)  # type: ignore
 
     _setup_sidebar()
 
@@ -835,9 +797,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - "
-        + "Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 

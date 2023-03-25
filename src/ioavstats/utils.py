@@ -6,8 +6,12 @@
 import argparse
 import datetime
 
+import psycopg2
 import streamlit as st
+from dynaconf import Dynaconf  # type: ignore
 from psycopg2.extensions import connection
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from streamlit_keycloak import login
 
 
@@ -63,10 +67,52 @@ def get_args() -> tuple[str, str]:
     return host, mode
 
 
+# ------------------------------------------------------------------
+# Create a simple user PostgreSQL database engine.
+# ------------------------------------------------------------------
+# pylint: disable=R0801
+@st.cache_resource
+def get_engine(_settings: Dynaconf) -> Engine:
+    """Create a simple user PostgreSQL database engine."""
+    print(
+        f"[engine  ] User connect request host={_settings.postgres_host} "
+        + f"port={_settings.postgres_connection_port} "
+        + f"dbname={_settings.postgres_dbname} "
+        + f"user={_settings.postgres_user_guest}"
+    )
+
+    return create_engine(
+        f"postgresql://{_settings.postgres_user_guest}:"
+        + f"{_settings.postgres_password_guest}@"
+        + f"{_settings.postgres_host}:"
+        + f"{_settings.postgres_connection_port}/"
+        + f"{_settings.postgres_dbname}",
+    )
+
+
+# ------------------------------------------------------------------
+# Create a PostgreSQL connection.
+# ------------------------------------------------------------------
+# pylint: disable=R0801
+@st.cache_resource
+def get_postgres_connection(_settings: Dynaconf) -> connection:
+    """Create a PostgreSQL connection."""
+    print(
+        f"[psycopg2] User connect request host={_settings.postgres_host} "
+        + f"port={_settings.postgres_connection_port} "
+        + f"dbname={_settings.postgres_dbname} "
+        + f"user={_settings.postgres_user_guest}"
+    )
+
+    return psycopg2.connect(**st.secrets["db_postgres"])
+
+
 # -----------------------------------------------------------------------------
 # Authentication and authorization check.
 # -----------------------------------------------------------------------------
-def has_access(host_cloud: bool, app_id: str) -> dict[str, dict[str, list[str]]]:
+def has_access(
+    host_cloud: bool, app_id: str
+) -> tuple[str, dict[str, dict[str, list[str]]]]:
     """Authentication and authorization check."""
 
     # pylint: disable=line-too-long
@@ -96,9 +142,10 @@ def has_access(host_cloud: bool, app_id: str) -> dict[str, dict[str, list[str]]]
         )
         st.stop()
 
+    user_info = f"User:  {keycloak.user_info.get('family_name')+', '+keycloak.user_info.get('given_name')} [{keycloak.user_info.get('email')}]"
     print(
         str(datetime.datetime.now())
-        + f"                         -                                            - Name:  {keycloak.user_info.get('family_name')+', '+keycloak.user_info.get('given_name')} - Email: {keycloak.user_info.get('email')}",
+        + f"                         -                                            - {user_info}",
         flush=True,
     )
 
@@ -132,7 +179,7 @@ def has_access(host_cloud: bool, app_id: str) -> dict[str, dict[str, list[str]]]
         flush=True,
     )
 
-    return keycloak.user_info.get("resource_access")
+    return user_info, keycloak.user_info.get("resource_access")
 
 
 # ------------------------------------------------------------------

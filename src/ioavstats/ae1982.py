@@ -11,15 +11,12 @@ import numpy as np
 import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
-import psycopg2
 import pydeck as pdk  # type: ignore
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -302,6 +299,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 START_TIME: int = 0
+
+USER_INFO: str = "n/a"
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
@@ -588,7 +587,7 @@ def _get_data() -> DataFrame:
     _print_timestamp("_get_data() - Start")
 
     return pd.read_sql(
-        con=_get_engine(),
+        con=utils.get_engine(SETTINGS),
         sql="""
             SELECT ev_id,
                    acft_categories,
@@ -622,46 +621,6 @@ def _get_data() -> DataFrame:
             ORDER BY ev_id;
     """,
     )
-
-
-# ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_engine() -> Engine:
-    """Create a simple user PostgreSQL database engine."""
-    print(
-        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return create_engine(
-        f"postgresql://{SETTINGS.postgres_user_guest}:"
-        + f"{SETTINGS.postgres_password_guest}@"
-        + f"{SETTINGS.postgres_host}:"
-        + f"{SETTINGS.postgres_connection_port}/"
-        + f"{SETTINGS.postgres_dbname}",
-    )
-
-
-# ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection."""
-    print(
-        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return psycopg2.connect(**st.secrets["db_postgres"])
 
 
 # ------------------------------------------------------------------
@@ -3870,11 +3829,12 @@ def _sql_query_us_states() -> list[str]:
 def _streamlit_flow() -> None:
     """Streamlit flow."""
     global DF_FILTERED  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
     global MODE_STANDARD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
-    global DF_UNFILTERED  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
@@ -3912,7 +3872,9 @@ def _streamlit_flow() -> None:
     if MODE_STANDARD:
         col1, col2 = st.sidebar.columns(2)
         col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-        url = "http://" + ("members.io-aero.com:8080" if HOST_CLOUD else "localhost:8598")
+        url = "http://" + (
+            "members.io-aero.com:8080" if HOST_CLOUD else "localhost:8598"
+        )
         col2.markdown(f"##  [Member Menu]({url})")
     else:
         st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
@@ -3924,9 +3886,9 @@ def _streamlit_flow() -> None:
     )
 
     if MODE_STANDARD:
-        utils.has_access(HOST_CLOUD, APP_ID)
+        USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
-    PG_CONN = _get_postgres_connection()
+    PG_CONN = utils.get_postgres_connection(SETTINGS)
     _print_timestamp("_setup_filter - got DB connection")
 
     _setup_sidebar()
@@ -3951,8 +3913,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 

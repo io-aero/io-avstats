@@ -9,7 +9,6 @@ import time
 import numpy
 import pandas as pd
 import plotly.express as px  # type: ignore
-import psycopg2
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
@@ -20,8 +19,6 @@ from mlxtend.frequent_patterns import fpmax  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection
 from pyECLAT import ECLAT  # type: ignore
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -224,6 +221,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 START_TIME: int = 0
+
+USER_INFO: str = "n/a"
 
 
 # ------------------------------------------------------------------
@@ -1164,28 +1163,6 @@ def _get_description_itemsets(df_int: DataFrame) -> DataFrame:
 
 
 # ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_engine() -> Engine:
-    print(
-        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return create_engine(
-        f"postgresql://{SETTINGS.postgres_user_guest}:"
-        + f"{SETTINGS.postgres_password_guest}@"
-        + f"{SETTINGS.postgres_host}:"
-        + f"{SETTINGS.postgres_connection_port}/"
-        + f"{SETTINGS.postgres_dbname}",
-    )
-
-
-# ------------------------------------------------------------------
 # Determine the item description.
 # ------------------------------------------------------------------
 def _get_item_description(item: str) -> str:
@@ -1286,22 +1263,6 @@ def _get_items_description(itemset: list[str]) -> list[str]:
 
 
 # ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_postgres_connection() -> connection:
-    print(
-        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return psycopg2.connect(**st.secrets["db_postgres"])
-
-
-# ------------------------------------------------------------------
 # Prepare the codes.
 # ------------------------------------------------------------------
 def _get_prepared_codes(list_in: list, prefix: str) -> list[str]:
@@ -1337,7 +1298,7 @@ def _get_prepared_us_states(list_in: list) -> list[str]:
 @st.cache_data(persist=True)
 def _get_raw_data() -> DataFrame:
     return pd.read_sql(
-        con=_get_engine(),
+        con=utils.get_engine(SETTINGS),
         sql="""
             SELECT ev_id,
                    acft_categories,
@@ -4210,6 +4171,7 @@ def _streamlit_flow() -> None:
     global MD_CODES_SUBSECTION  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
@@ -4247,14 +4209,14 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    utils.has_access(HOST_CLOUD, APP_ID)
+    USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
     # ------------------------------------------------------------------
     # Get data.
     # ------------------------------------------------------------------
 
-    PG_CONN = _get_postgres_connection()
-    _print_timestamp("_get_postgres_connection - got DB connection")
+    PG_CONN = utils.get_postgres_connection(SETTINGS)
+    _print_timestamp("get_postgres_connection - got DB connection")
 
     _setup_sidebar()
 
@@ -4306,8 +4268,7 @@ def _streamlit_flow() -> None:
     # flake8: noqa: E501
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 

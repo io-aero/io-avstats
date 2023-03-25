@@ -34,6 +34,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 
+USER_INFO: str = "n/a"
+
 
 # ------------------------------------------------------------------
 # Set up the page.
@@ -86,7 +88,9 @@ def _setup_page():
         with col1:
             st.markdown("## Applications")
         with col2:
-            st.markdown("""## <span style='color:white'>Link</span>""", unsafe_allow_html=True)
+            st.markdown(
+                """## <span style='color:white'>Link</span>""", unsafe_allow_html=True
+            )
 
         for app_desc, app_link in applications:
             with col1:
@@ -122,7 +126,9 @@ def _setup_page():
         with col1:
             st.markdown("## Downloadable Items")
         with col2:
-            st.markdown("""## <span style='color:white'>Button</span>""", unsafe_allow_html=True)
+            st.markdown(
+                """## <span style='color:white'>Button</span>""", unsafe_allow_html=True
+            )
 
         for item_desc, item_file in downloads:
             with col1:
@@ -153,6 +159,7 @@ def _setup_page():
 def _streamlit_flow() -> None:
     global HOST_CLOUD  # pylint: disable=global-statement
     global RESOURCES  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     start_time = time.time_ns()
@@ -187,16 +194,14 @@ def _streamlit_flow() -> None:
         width=200,
     )
 
-    RESOURCES = utils.has_access(HOST_CLOUD, APP_ID)
+    USER_INFO, RESOURCES = utils.has_access(HOST_CLOUD, APP_ID)
 
     _setup_page()
 
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - "
-        + "Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 

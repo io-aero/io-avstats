@@ -61,8 +61,6 @@ services:
       KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD}
     image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
-    ports:
-      - ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_KEYCLOAK_CONTAINER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------

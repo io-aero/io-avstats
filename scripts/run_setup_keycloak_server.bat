@@ -13,12 +13,11 @@ echo Start %0
 echo --------------------------------------------------------------------------------
 echo IO-AVSTATS - Set up a Keycloak server container.
 echo --------------------------------------------------------------------------------
-echo KEYCLOAK_CONNECTION_PORT          : %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%
 echo KEYCLOAK_CONTAINER_NAME           : %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME%
-echo KEYCLOAK_CONTAINER_PORT           : %IO_AVSTATS_KEYCLOAK_CONTAINER_PORT%
 echo KEYCLOAK_PASSWORD_ADMIN           : "%IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN%"
 echo KEYCLOAK_USER_ADMIN               : %IO_AVSTATS_KEYCLOAK_USER_ADMIN%
 echo KEYCLOAK_VERSION                  : %IO_AVSTATS_KEYCLOAK_VERSION%
+echo --------------------------------------------------------------------------------
 echo POSTGRES_KEYCLOAK_CONNECTION_PORT : %IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT%
 echo POSTGRES_KEYCLOAK_CONTAINER_NAME  : %IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME%
 echo POSTGRES_KEYCLOAK_DBNAME_ADMIN    : %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN%
@@ -59,7 +58,6 @@ docker create -e        KC_HTTP_ENABLED=true ^
               -e        KC_DB_PASSWORD="%IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN%" ^
               -e        KC_PROXY=edge ^
               --name    %IO_AVSTATS_KEYCLOAK_CONTAINER_NAME% ^
-              -p        %IO_AVSTATS_KEYCLOAK_CONNECTION_PORT%:%IO_AVSTATS_KEYCLOAK_CONTAINER_PORT% ^
               --restart always ^
               quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION% ^
               start

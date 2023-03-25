@@ -8,9 +8,7 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AVSTATS_KEYCLOAK_CONTAINER_PORT=8080
 export IO_AVSTATS_KEYCLOAK_PASSWORD="RsxAG&hpCcuXsB2cbxSS"
 export IO_AVSTATS_KEYCLOAK_USER=admin
 export IO_AVSTATS_KEYCLOAK_VERSION=latest
@@ -108,9 +106,7 @@ echo "--------------------------------------------------------------------------
 echo "COMPOSE_TASK                      : ${IO_AVSTATS_COMPOSE_TASK}"
 echo "CONTAINER                         : ${IO_AVSTATS_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
-echo "KEYCLOAK_CONNECTION_PORT          : ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}"
 echo "KEYCLOAK_CONTAINER_NAME           : ${IO_AVSTATS_KEYCLOAK_CONTAINER_NAME}"
-echo "KEYCLOAK_CONTAINER_PORT           : ${IO_AVSTATS_KEYCLOAK_CONTAINER_PORT}"
 echo "KEYCLOAK_PASSWORD                 : ${IO_AVSTATS_KEYCLOAK_PASSWORD}"
 echo "KEYCLOAK_USER                     : ${IO_AVSTATS_KEYCLOAK_USER}"
 echo "KEYCLOAK_VERSION                  : ${IO_AVSTATS_KEYCLOAK_VERSION}"

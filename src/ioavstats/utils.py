@@ -78,7 +78,8 @@ def get_engine(_settings: Dynaconf) -> Engine:
         f"[engine  ] User connect request host={_settings.postgres_host} "
         + f"port={_settings.postgres_connection_port} "
         + f"dbname={_settings.postgres_dbname} "
-        + f"user={_settings.postgres_user_guest}"
+        + f"user={_settings.postgres_user_guest}",
+        flush=True,
     )
 
     return create_engine(
@@ -101,7 +102,8 @@ def get_postgres_connection(_settings: Dynaconf) -> connection:
         f"[psycopg2] User connect request host={_settings.postgres_host} "
         + f"port={_settings.postgres_connection_port} "
         + f"dbname={_settings.postgres_dbname} "
-        + f"user={_settings.postgres_user_guest}"
+        + f"user={_settings.postgres_user_guest}",
+        flush=True,
     )
 
     return psycopg2.connect(**st.secrets["db_postgres"])

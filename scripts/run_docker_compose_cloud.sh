@@ -167,7 +167,7 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
     docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
     docker images -q --filter "reference=nginx:stable-alpine"                                      | grep -q . && docker rmi --force nginx:stable-alpine
-    docker images -q --filter "reference=portainer"                                                | grep -q . && docker rmi --force portainer/portainer-ce:latest
+    docker images -q --filter "reference=portainer/portainer-ce"                                   | grep -q . && docker rmi --force portainer/portainer-ce:latest
     docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
     docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
     echo "........................................................ after images:"

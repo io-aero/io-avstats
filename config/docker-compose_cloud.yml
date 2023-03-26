@@ -161,4 +161,4 @@ services:
       - ${IO_AVSTATS_NGINX_CONNECTION_PORT}:${IO_AVSTATS_NGINX_CONTAINER_PORT}
     restart: always
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./../conf/nginx.conf:/etc/nginx/conf.d/default.conf:ro

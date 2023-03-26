@@ -11,6 +11,8 @@ services:
   # ------------------------------------------------------------------------------
   portainer:
     container_name: portainer
+    expose:
+      - 9000
     image: portainer/portainer-ce:latest
     ports:
       - 9000:9000
@@ -82,6 +84,8 @@ services:
       KC_PROXY: edge
       KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD}
+    expose:
+      - ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}
     image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
     restart: always
 
@@ -151,12 +155,15 @@ services:
   load_balancer:
     container_name: load_balancer
     depends_on:
-      - keycloak
       - ae1982
+      - io_avstats_db
+      - keycloak
       - members
       - pd1982
       - slara
       - stats
+    expose:
+      - ${IO_AVSTATS_NGINX_CONNECTION_PORT}
     image: nginx:stable-alpine
     ports:
       - ${IO_AVSTATS_NGINX_CONNECTION_PORT}:${IO_AVSTATS_NGINX_CONTAINER_PORT}

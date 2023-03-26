@@ -121,8 +121,8 @@ services:
     depends_on:
       - io_avstats_db
     image: ioaero/pd1982:latest
-#   expose:
-#     - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+    expose:
+      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------

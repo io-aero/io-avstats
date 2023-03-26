@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 dynaconf = "*"
 psycopg2-binary = "*"
-#sqlalchemy = "*"
 sqlalchemy = "<2.0.0"
 streamlit = "*"
 streamlit-keycloak ="*"

@@ -10,12 +10,10 @@ services:
   # portainer.
   # ------------------------------------------------------------------------------
   portainer:
-    command: postgres -c "max_connections=200"
     container_name: portainer
     image: portainer/portainer-ce:latest
     ports:
-      - 8000:8000
-      - 9443:9443
+      - 9000:9000
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

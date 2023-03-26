@@ -74,6 +74,7 @@ def get_args() -> tuple[str, str]:
 def get_engine(settings: Dynaconf) -> Engine:
     """Create a simple user PostgreSQL database engine."""
     print(
+        str(datetime.datetime.now()) +
         f"[engine  ] User connect request host='{settings.postgres_host}' "
         + f"'port={settings.postgres_connection_port}' "
         + f"'dbname={settings.postgres_dbname}' "
@@ -98,6 +99,7 @@ def get_engine(settings: Dynaconf) -> Engine:
 def get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
     print(
+        str(datetime.datetime.now()) +
         f"[psycopg2] st.secrets['db_postgres']={st.secrets['db_postgres']}",
         flush=True,
     )

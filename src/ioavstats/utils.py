@@ -71,23 +71,23 @@ def get_args() -> tuple[str, str]:
 # Create a simple user PostgreSQL database engine.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
-@st.cache_resource
-def get_engine(_settings: Dynaconf) -> Engine:
+def get_engine(settings: Dynaconf) -> Engine:
     """Create a simple user PostgreSQL database engine."""
     print(
-        f"[engine  ] User connect request host={_settings.postgres_host} "
-        + f"port={_settings.postgres_connection_port} "
-        + f"dbname={_settings.postgres_dbname} "
-        + f"user={_settings.postgres_user_guest}",
+        f"[engine  ] User connect request host='{settings.postgres_host}' "
+        + f"'port={settings.postgres_connection_port}' "
+        + f"'dbname={settings.postgres_dbname}' "
+        + f"'user={settings.postgres_user_guest}' "
+        + f"['{settings.postgres_password_guest}']",
         flush=True,
     )
 
     return create_engine(
-        f"postgresql://{_settings.postgres_user_guest}:"
-        + f"{_settings.postgres_password_guest}@"
-        + f"{_settings.postgres_host}:"
-        + f"{_settings.postgres_connection_port}/"
-        + f"{_settings.postgres_dbname}",
+        f"postgresql://{settings.postgres_user_guest}:"
+        + f"{settings.postgres_password_guest}@"
+        + f"{settings.postgres_host}:"
+        + f"{settings.postgres_connection_port}/"
+        + f"{settings.postgres_dbname}",
     )
 
 
@@ -95,14 +95,10 @@ def get_engine(_settings: Dynaconf) -> Engine:
 # Create a PostgreSQL connection.
 # ------------------------------------------------------------------
 # pylint: disable=R0801
-@st.cache_resource
-def get_postgres_connection(_settings: Dynaconf) -> connection:
+def get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
     print(
-        f"[psycopg2] User connect request host={_settings.postgres_host} "
-        + f"port={_settings.postgres_connection_port} "
-        + f"dbname={_settings.postgres_dbname} "
-        + f"user={_settings.postgres_user_guest}",
+        f"[psycopg2] st.secrets['db_postgres']={st.secrets['db_postgres']}",
         flush=True,
     )
 

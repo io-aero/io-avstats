@@ -762,7 +762,7 @@ def _streamlit_flow() -> None:
 
     USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
-    PG_CONN = utils.get_postgres_connection(SETTINGS)  # type: ignore
+    PG_CONN = utils.get_postgres_connection()  # type: ignore
 
     _setup_sidebar()
 

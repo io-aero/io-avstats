@@ -3888,7 +3888,7 @@ def _streamlit_flow() -> None:
     if MODE_STANDARD:
         USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
-    PG_CONN = utils.get_postgres_connection(SETTINGS)
+    PG_CONN = utils.get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")
 
     _setup_sidebar()

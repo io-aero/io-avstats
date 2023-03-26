@@ -4215,7 +4215,7 @@ def _streamlit_flow() -> None:
     # Get data.
     # ------------------------------------------------------------------
 
-    PG_CONN = utils.get_postgres_connection(SETTINGS)
+    PG_CONN = utils.get_postgres_connection()
     _print_timestamp("get_postgres_connection - got DB connection")
 
     _setup_sidebar()

@@ -135,6 +135,8 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker ps -a    | find "members"                                       && docker rm  --force members
     docker ps       | find "pd1982"                                        && docker stop        pd1982
     docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
+    docker ps       | find "portainer"                                     && docker stop        portainer
+    docker ps -a    | find "portainer"                                     && docker rm  --force portainer
     docker ps       | find "slara"                                         && docker stop        slara
     docker ps -a    | find "slara"                                         && docker rm  --force slara
     docker ps       | find "stats"                                         && docker stop        stats
@@ -150,6 +152,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker image ls | find "nginx"                     && docker rmi --force nginx:stable-alpine
     docker image ls | find "pd1982"                    && docker rmi --force ioaero/pd1982:latest
     docker image ls | find "postgres"                  && docker rmi --force postgres:%IO_AVSTATS_POSTGRES_VERSION%
+    docker image ls | find "portainer"                 && docker rmi --force portainer/portainer-ce:latest
     docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
     docker image ls | find "slara"                     && docker rmi --force ioaero/slara:latest
     docker image ls | find "stats"                     && docker rmi --force ioaero/stats:latest

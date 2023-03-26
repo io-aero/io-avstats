@@ -151,6 +151,7 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
     docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
     docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
     docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
+    docker ps -q --filter "name=portainer"                                      | grep -q . && docker stop portainer                                      && docker rm -fv portainer
     docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
     docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
     echo "............................................ after containers running:"
@@ -166,6 +167,7 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
     docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
     docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
     docker images -q --filter "reference=nginx:stable-alpine"                                      | grep -q . && docker rmi --force nginx:stable-alpine
+    docker images -q --filter "reference=portainer"                                                | grep -q . && docker rmi --force portainer/portainer-ce:latest
     docker images -q --filter "reference=postgres:${IO_AVSTATS_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AVSTATS_POSTGRES_VERSION}"
     docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AVSTATS_KEYCLOAK_VERSION}"
     echo "........................................................ after images:"

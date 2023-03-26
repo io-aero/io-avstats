@@ -124,8 +124,7 @@ if [ "${APPLICATION}" = "ae1982" ]; then
     export MODE=Std
 fi
 
-docker build --file config/dockerfile ^
-             --build-arg APP=${APPLICATION} \
+docker build --build-arg APP=${APPLICATION} \
              --build-arg MODE=${MODE} \
              --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
              -t ioaero/${APPLICATION} .

@@ -168,7 +168,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
     echo Docker Containers .................................. before containers:
     docker ps -a
 
-    docker compose -f config/docker-compose_cloud.yml down
+    docker compose -f docker-compose_cloud.yml down
 
     echo ............................................. after containers running:
     docker ps
@@ -179,9 +179,9 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
 
 if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["logs"] (
     if ["%IO_AVSTATS_CONTAINER%"] EQU ["*"] (
-        docker-compose -f config/docker-compose_cloud.yml logs --tail=0 --follow
+        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow
     ) else (
-        docker-compose -f config/docker-compose_cloud.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
+        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
     )
 )
 
@@ -193,7 +193,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["up"] (
     echo ........................................................ before images:
     docker images
 
-    start /B docker compose -f config/docker-compose_cloud.yml up
+    start /B docker compose -f docker-compose_cloud.yml up
     goto END_OF_SCRIPT
 )
 

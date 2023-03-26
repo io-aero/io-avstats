@@ -146,9 +146,8 @@ services:
   load_balancer:
     container_name: load_balancer
     depends_on:
-      - ae1982
-      - io_avstats_db
       - keycloak
+      - ae1982
       - members
       - pd1982
       - slara

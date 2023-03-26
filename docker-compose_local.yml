@@ -18,7 +18,7 @@ services:
       - ${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_CONTAINER_PORT}
     restart: always
     volumes:
-      - ./../${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data
+      - ./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data
 
   # ------------------------------------------------------------------------------
   # PostgreSQL Database Keycloak.
@@ -36,7 +36,7 @@ services:
       - ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}:${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT}
     restart: always
     volumes:
-      - ./../${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data
+      - ./${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data
 
   # ------------------------------------------------------------------------------
   # Keycloak.

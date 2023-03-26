@@ -1,7 +1,7 @@
 [default]
 postgres_connection_port = 5442
 postgres_dbname = "io_avstats_db"
-postgres_host = "localhost"
+postgres_host = "io_avstats_db"
 postgres_user_guest = "guest"
 
 [dev]

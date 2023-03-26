@@ -84,6 +84,8 @@ services:
       KC_PROXY: edge
       KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD}
+    expose:
+      - ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}
     image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
     restart: always
 

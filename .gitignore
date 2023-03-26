@@ -5,6 +5,7 @@
 /.mypy_cache/
 /.pytest_cache/
 /.vs/
+/Pipfile.lock
 /cloud.zip
 /data/*_postgres_*.zip
 /data/__ARCHIVE__/

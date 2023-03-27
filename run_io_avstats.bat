@@ -24,11 +24,10 @@ set IO_AVSTATS_KEYCLOAK_VERSION=latest
 set IO_AVSTATS_NTSB_WORK_DIR=data\download
 
 if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
-    set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5442
+    set IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 )
 
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
-set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
@@ -36,11 +35,10 @@ set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
 
 if ["!IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
-    set IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5432
+    set IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
 )
 
 set IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-set IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN=twAuk3VM2swt#Z96#zM#
 set IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
@@ -88,7 +86,6 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
     echo k_s_d   - Set up the Keycloak PostgreSQL database container
-    echo k_s_s   - Set up the Keycloak server container
     echo ---------------------------------------------------------
     echo c_d_i   - Create or update a Docker image
     echo c_d_c   - Run Docker Compose tasks - Cloud
@@ -433,19 +430,6 @@ rem Set up the Keycloak PostgreSQL database container.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["k_s_d"] (
     call scripts\run_setup_postgresql_keycloak
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Set up the Keycloak server container.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["k_s_s"] (
-    call scripts\run_setup_keycloak_server
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

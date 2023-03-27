@@ -22,7 +22,7 @@ max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
 ntsb_work_dir = "data/download"
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
-postgres_connection_port = 5442
+postgres_connection_port = 5432
 postgres_container_name = "io_avstats_db"
 postgres_container_port = 5432
 postgres_database_schema = "public"

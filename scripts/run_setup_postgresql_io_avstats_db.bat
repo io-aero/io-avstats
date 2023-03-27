@@ -15,7 +15,6 @@ echo IO-AVSTATS - Setup a IO-AVSTATS-DB PostgreSQL Docker container.
 echo --------------------------------------------------------------------------------
 echo POSTGRES_CONNECTION_PORT : %IO_AVSTATS_POSTGRES_CONNECTION_PORT%
 echo POSTGRES_CONTAINER_NAME  : %IO_AVSTATS_POSTGRES_CONTAINER_NAME%
-echo POSTGRES_CONTAINER_PORT  : %IO_AVSTATS_POSTGRES_CONTAINER_PORT%
 echo POSTGRES_DBNAME_ADMIN    : %IO_AVSTATS_POSTGRES_DBNAME_ADMIN%
 echo POSTGRES_PASSWORD_ADMIN  : "%IO_AVSTATS_POSTGRES_PASSWORD_ADMIN%"
 echo POSTGRES_PGDATA          : %IO_AVSTATS_POSTGRES_PGDATA%
@@ -51,7 +50,7 @@ docker create -e        POSTGRES_DB=%IO_AVSTATS_POSTGRES_DBNAME_ADMIN% ^
               -e        POSTGRES_PASSWORD=%IO_AVSTATS_POSTGRES_PASSWORD_ADMIN% ^
               -e        POSTGRES_USER=%IO_AVSTATS_POSTGRES_USER_ADMIN% ^
               --name    %IO_AVSTATS_POSTGRES_CONTAINER_NAME% ^
-              -p        %IO_AVSTATS_POSTGRES_CONNECTION_PORT%:%IO_AVSTATS_POSTGRES_CONTAINER_PORT% ^
+              -p        %IO_AVSTATS_POSTGRES_CONNECTION_PORT%:5432 ^
               -v        "%cd%\%IO_AVSTATS_POSTGRES_PGDATA%":/var/lib/postgresql/data ^
               --restart always ^
               postgres:%IO_AVSTATS_POSTGRES_VERSION%

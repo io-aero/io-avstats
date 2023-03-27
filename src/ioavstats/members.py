@@ -59,17 +59,17 @@ def _setup_page():
         if app_id in RESOURCES:
             if app_id == "ae1982":
                 url = "http://" + (
-                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8501"
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8501"
                 )
                 applications.append(("Aviation Event Analysis", f"[{app_id}]({url})"))
             elif app_id == "pd1982":
                 url = "http://" + (
-                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8502"
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8502"
                 )
                 applications.append(("Database Profiling", f"[{app_id}]({url})"))
             elif app_id == "slara":
                 url = "http://" + (
-                    app_id + ".io-aero.com:8080" if HOST_CLOUD else "localhost:8503"
+                    app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8503"
                 )
                 applications.append(("Association Rule Analysis", f"[{app_id}]({url})"))
             else:

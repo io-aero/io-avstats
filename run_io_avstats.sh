@@ -22,11 +22,10 @@ export IO_AVSTATS_KEYCLOAK_VERSION=21.0.1
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
 
 if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
-    export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5442
+    export IO_AVSTATS_POSTGRES_CONNECTION_PORT=5432
 fi
 
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
-export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
@@ -34,11 +33,10 @@ export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
 if [ -z "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ]; then
-    export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5432
+    export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
 fi
 
 export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="twAuk3VM2swt#Z96#zM#"
 export IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
@@ -81,7 +79,6 @@ if [ -z "$1" ]; then
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
     echo "k_s_d   - Set up the Keycloak PostgreSQL database container"
-    echo "k_s_s   - Set up the Keycloak server container"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
@@ -251,14 +248,6 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
     if ! ( ./scripts/run_setup_postgresql_keycloak.sh ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
-# Set up the Keycloak server container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "k_s_s" ]; then
-    if ! ( ./scripts/run_setup_keycloak_server.sh ); then
         exit 255
     fi
 

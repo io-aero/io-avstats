@@ -86,10 +86,10 @@ if [ "${APPLICATION}" = "all" ]; then
 fi
 
 rm -rf tmp/download
-mkdir tmp/download
+mkdir -p tmp/download
 
 rm -rf tmp/docs/img
-mkdir tmp/docs\img
+mkdir -p tmp/docs\img
 
 if [ "${APPLICATION}" = "members" ]; then
     copy -i data/latest_postgres.zip          download/IO-AVSTATS-DB.zip

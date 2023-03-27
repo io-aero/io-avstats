@@ -23,11 +23,13 @@ echo "--------------------------------------------------------------------------
 
 rm -f ${AWS_FILE_NAME}
 
+copy -i data/latest_postgrep.zip download/AVSTATS-DB.zip
+
 ${AWS_PROG_ZIP} a -tzip ${AWS_FILE_NAME} data/latest_postgres.zip \
-                                         docker-compose.yml \
+                                         docker-compose_cloud.yml \
                                          nginx.conf \
                                          scripts/run_cloud_setup_instance.sh \
-                                         scripts/run_docker_compose.sh
+                                         scripts/run_docker_compose_cloud.sh
 
 echo ""
 echo "================================================================================"

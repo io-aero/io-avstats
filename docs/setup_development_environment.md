@@ -94,7 +94,7 @@ Install the Python packages
 
     make pipenv-dev
 
-Set up the database container
+Set up the IO-AVSTATS-DB database container
 
     run_io_avstats_db s_d_c
 
@@ -144,7 +144,7 @@ Install the Python packages
 
     make pipenv-dev
 
-Set up the database container
+Set up the IO-AVSTATS-DB database container
 
     run_io_avstats_db s_d_c
 

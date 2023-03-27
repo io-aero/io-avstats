@@ -4,6 +4,8 @@
 /.idea/
 /.mypy_cache/
 /.pytest_cache/
+/.vs/
+/Pipfile.lock
 /cloud.zip
 /data/*_postgres_*.zip
 /data/__ARCHIVE__/
@@ -15,6 +17,10 @@
 /data/pandas_profiles/io_processed_files_*.html
 /data/postgres.zip
 /data/postgres/
+/data/postgres_keycloak/
 /data/postgres_test/
+/download/IO-AVSTATS-DB.pdf
+/download/IO-AVSTATS-DB.zip
+/resources/Gammadyne/timer.txt
 /src/ioavstats/stats.py
 coverage.xml

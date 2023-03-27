@@ -13,6 +13,12 @@ if [ -z "${ENV_FOR_DYNACONF}" ]; then
 fi
 
 export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
+
+export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+export IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
+export IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
+export IO_AVSTATS_KEYCLOAK_VERSION=21.0.1
+
 export IO_AVSTATS_NTSB_WORK_DIR=data/download
 
 if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
@@ -20,15 +26,27 @@ if [ -z "${IO_AVSTATS_POSTGRES_CONNECTION_PORT}" ]; then
 fi
 
 export IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
-export IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 export IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+export IO_AVSTATS_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
+if [ -z "${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ]; then
+    export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
+fi
+
+export IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
+export IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
+export IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="twAuk3VM2swt#Z96#zM#"
+export IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
+export IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
+
 export IO_AVSTATS_APPLICATION=
-export IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
+export IO_AVSTATS_COMPOSE_TASK=
+export IO_AVSTATS_COMPOSE_TASK_DEFAULT=logs
+export IO_AVSTATS_CONTAINER=
+export IO_AVSTATS_CONTAINER_DEFAULT="*"
 export IO_AVSTATS_MSACCESS=
 export IO_AVSTATS_MSEXCEL=
 export IO_AVSTATS_TASK=
@@ -49,6 +67,7 @@ if [ -z "$1" ]; then
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
+    echo "c_d_l   - Run Docker Compose tasks - Local"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_f   - Delete the PostgreSQL database files"
@@ -56,12 +75,13 @@ if [ -z "$1" ]; then
     echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "p_p_k   - Process NTSB data deletions in PostgreSQL"
-    echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
+    echo "k_s_d   - Set up the Keycloak PostgreSQL database container"
+    echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
-    echo "c_d_c   - Run Docker Compose tasks"
+    echo "c_d_c   - Run Docker Compose tasks - Cloud"
     echo "c_f_z   - Zip the files for the cloud"
     echo "---------------------------------------------------------"
     echo "version - Show the IO-AVSTATS-DB version"
@@ -77,11 +97,12 @@ else
     export IO_AVSTATS_TASK=$1
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
+if [ "${IO_AVSTATS_TASK}" = "c_d_c" ] || [ "${IO_AVSTATS_TASK}" = "c_d_l" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "clean - Remove all containers and images"
         echo "down  - Stop  Docker Compose"
+        echo "logs  - Fetch the logs of a container"
         echo "up    - Start Docker Compose"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
@@ -101,9 +122,11 @@ if [ "${IO_AVSTATS_TASK}" = "c_d_i" ] || [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; the
         echo "========================================================="
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
-        echo "ae1982 - Aircraft Accidents in the US since 1982"
-        echo "pd1982 - Profiling Data for the US since 1982"
-        echo "stats  - Aircraft Accidents in the US since 1982 - limited"
+        echo "ae1982  - Aircraft Accidents in the US since 1982"
+        echo "members - Members Only Area"
+        echo "pd1982  - Profiling Data for the US since 1982"
+        echo "slara   - Association Rule Analysis"
+        echo "stats   - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
@@ -144,11 +167,13 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
 echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH : ${PYTHONPATH}"
+echo "PYTHONPATH   : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
-echo "TASK       : ${IO_AVSTATS_TASK}"
-echo "MSACCESS   : ${IO_AVSTATS_MSACCESS}"
-echo "MSEXCEL    : ${IO_AVSTATS_MSEXCEL}"
+echo "TASK         : ${IO_AVSTATS_TASK}"
+echo "APPLICATION  : ${IO_AVSTATS_APPLICATION}"
+echo "COMPOSE_TASK : ${IO_AVSTATS_COMPOSE_TASK}"
+echo "MSACCESS     : ${IO_AVSTATS_MSACCESS}"
+echo "MSEXCEL      : ${IO_AVSTATS_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -165,22 +190,29 @@ echo "==========================================================================
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_s_e: Load sequence of events data into PostgreSQL.
 # l_z_d: Load US Zip code data.
-# p_p_k: Process NTSB data deletions in PostgreSQL.
 # r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"p_p_k"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi
 
 # ------------------------------------------------------------------------------
-# Run Docker Compose tasks.
+# Run Docker Compose tasks (Cloud).
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
-    if ! ( ./scripts/run_docker_compose.sh ${IO_AVSTATS_COMPOSE_TASK} ); then
+    if ! ( ./scripts/run_docker_compose_cloud.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Run Docker Compose tasks (Local).
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "c_d_l" ]; then
+    if ! ( ./scripts/run_docker_compose_local.sh "${IO_AVSTATS_COMPOSE_TASK}" ); then
         exit 255
     fi
 
@@ -188,7 +220,7 @@ elif [ "${IO_AVSTATS_TASK}" = "c_d_c" ]; then
 # Create or update a Docker image.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_i" ]; then
-    if ! ( ./scripts/run_create_image.sh ${IO_AVSTATS_APPLICATION} yes yes ); then
+    if ! ( ./scripts/run_create_image.sh "${IO_AVSTATS_APPLICATION}" yes yes ); then
         exit 255
     fi
 
@@ -212,6 +244,14 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
     fi
 
 # ------------------------------------------------------------------------------
+# Set up the Keycloak PostgreSQL database container.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
+    if ! ( ./scripts/run_setup_postgresql_keycloak.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -232,24 +272,32 @@ elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
     if [ "${IO_AVSTATS_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py -- --mode Std ); then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "members" ]; then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8598 ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "pd1982" ]; then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8502 ); then
+            exit 255
+        fi
+    elif [ "${IO_AVSTATS_APPLICATION}" = "slara" ]; then
+        if ! ( pipenv run streamlit run "src/ioavstats/${IO_AVSTATS_APPLICATION}.py" --server.port 8503 ); then
             exit 255
         fi
     elif [ "${IO_AVSTATS_APPLICATION}" = "stats" ]; then
-        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py ); then
-            exit 255
-        fi
-    else
-        if ! ( pipenv run streamlit run src/ioavstats/${IO_AVSTATS_APPLICATION}.py ); then
+        if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the database container.
+# Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
+    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
         exit 255
     fi
 

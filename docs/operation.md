@@ -10,25 +10,25 @@ The script is available in a Windows command line version and in a Linux bash sh
 
 The following tasks can be executed with this script:
 
-| Code    | Task                                                  | Additional parameter(s) |
-|---------|-------------------------------------------------------|-------------------------|
-| `c_d_s` | Create the PostgreSQL database schema                 |                         |
-| `c_l_l` | Correct decimal US latitudes and longitudes           |                         |
-| `c_p_d` | Cleansing PostgreSQL data                             |                         |
-| `d_d_f` | Delete the PostgreSQL database files                  |                         |
-| `d_d_s` | Drop the PostgreSQL database schema                   |                         |
-| `d_n_a` | Download a **NTSB** MS Access database file           | -m / -msaccess          |
-| `d_s_f` | Download basic **simplemaps** files                   |                         |
-| `d_z_f` | Download the ZIP Code Database file                   |                         |
-| `l_c_d` | Load data from a correction file into PostgreSQL      | -c / -correction        |
-| `l_c_s` | Load country and state data into PostgreSQL           |                         |
-| `l_n_a` | Load **NTSB** MS Access database data into PostgreSQL | -m / -msaccess          |
-| `l_s_d` | Load **simplemaps** data into PostgreSQL              |                         |
-| `l_z_d` | Load ZIP Code Database data into PostgreSQL           |                         |
-| `r_d_s` | Refresh the PostgreSQL database schema              |                         |
-| `s_d_c` | Set up the PostgreSQL database container              |                         |
-| `u_d_s` | Update the PostgreSQL database schema                 |                         |
-| `v_n_d` | Verify selected **NTSB** data                         |                         |
+| Code    | Task                                                   | Additional parameter(s) |
+|---------|--------------------------------------------------------|-------------------------|
+| `c_d_s` | Create the PostgreSQL database schema                  |                         |
+| `c_l_l` | Correct decimal US latitudes and longitudes            |                         |
+| `c_p_d` | Cleansing PostgreSQL data                              |                         |
+| `d_d_f` | Delete the PostgreSQL database files                   |                         |
+| `d_d_s` | Drop the PostgreSQL database schema                    |                         |
+| `d_n_a` | Download a **NTSB** MS Access database file            | -m / -msaccess          |
+| `d_s_f` | Download basic **simplemaps** files                    |                         |
+| `d_z_f` | Download the ZIP Code Database file                    |                         |
+| `l_c_d` | Load data from a correction file into PostgreSQL       | -c / -correction        |
+| `l_c_s` | Load country and state data into PostgreSQL            |                         |
+| `l_n_a` | Load **NTSB** MS Access database data into PostgreSQL  | -m / -msaccess          |
+| `l_s_d` | Load **simplemaps** data into PostgreSQL               |                         |
+| `l_z_d` | Load ZIP Code Database data into PostgreSQL            |                         |
+| `r_d_s` | Refresh the PostgreSQL database schema                 |                         |
+| `s_d_c` | Set up the IO-AVSTATS-DB PostgreSQL database container |                         |
+| `u_d_s` | Update the PostgreSQL database schema                  |                         |
+| `v_n_d` | Verify selected **NTSB** data                          |                         |
 
 ## 1. Detailed task list
 
@@ -843,7 +843,7 @@ Example protocol:
     Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
     Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
 
-### 1.16 **`s_d_c`** - Set up the PostgreSQL database container
+### 1.16 **`s_d_c`** - Set up the IO-AVSTATS-DB PostgreSQL database container
 
 The default installation of the PostgreSQL database is done using the official Docker images from Dockerhub - see [here](https://hub.docker.com/_/postgres){:target="_blank"}.
 
@@ -1065,7 +1065,7 @@ Example protocol:
 
 The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:
 
-- **`s_d_c`** - Set up the PostgreSQL database container                              
+- **`s_d_c`** - Set up the IO-AVSTATS-DB PostgreSQL database container                              
 - **`c_d_s`** - Create the PostgreSQL database schema 
 - **`d_n_a`** - Download the **NTSB** MS Access files Pre2008 and avall                      
 - **`l_n_a`** - Load the **NTSB** MS Access database from Pre2008 and avall

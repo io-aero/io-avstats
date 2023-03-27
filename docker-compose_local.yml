@@ -1,0 +1,81 @@
+version: '3.3'
+
+volumes:
+  portainer_data:
+    external: true
+
+services:
+
+  # ------------------------------------------------------------------------------
+  # portainer.
+  # ------------------------------------------------------------------------------
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9000:9000
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer_data:/data portainer/portainer-ce:latest
+
+  # ------------------------------------------------------------------------------
+  # PostgreSQL Database IO-AVSTATS-DB.
+  # ------------------------------------------------------------------------------
+  io_avstats_db:
+    command: postgres -c "max_connections=200"
+    container_name: io_avstats_db
+    environment:
+      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_DBNAME}
+      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_USER}
+    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
+    ports:
+      - ${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:5432
+    restart: always
+    volumes:
+      - ./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data
+
+  # ------------------------------------------------------------------------------
+  # PostgreSQL Database Keycloak.
+  # ------------------------------------------------------------------------------
+  keycloak_db:
+    command: postgres -c "max_connections=200"
+    container_name: keycloak_db
+    environment:
+      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME}
+      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD}
+      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_KEYCLOAK_USER}
+    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
+    ports:
+      - ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}:5432
+    restart: always
+    volumes:
+      - ./${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data
+
+  # ------------------------------------------------------------------------------
+  # Keycloak.
+  # ------------------------------------------------------------------------------
+  keycloak:
+    command: start
+    container_name: keycloak
+    depends_on:
+      - keycloak_db
+    environment:
+      KC_DB: postgres
+      KC_DB_PASSWORD: ${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD}
+      KC_DB_URL_DATABASE: ${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME}
+      KC_DB_URL_HOST: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
+      KC_DB_USERNAME: ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_URL: http://auth.localhost:8080/
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_HOST: 0.0.0.0
+      KC_HTTPS_CLIENT_AUTH: none
+      KC_PROXY: edge
+      KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD}
+    image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
+    ports:
+      - ${IO_AVSTATS_KEYCLOAK_CONNECTION_PORT}:8080
+    restart: always

@@ -2,7 +2,7 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""Aviation Events in the US since 1982."""
+"""Aviation Event Analysis."""
 import datetime
 import time
 from operator import itemgetter
@@ -11,15 +11,12 @@ import numpy as np
 import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
-import psycopg2
 import pydeck as pdk  # type: ignore
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -192,7 +189,9 @@ COLOR_MAP_SIZE = len(COLOR_MAP)
 COUNTRY_USA = "USA"
 
 DF_FILTERED: DataFrame = DataFrame()
+DF_FILTERED_ROWS = 0
 DF_UNFILTERED: DataFrame = DataFrame()
+DF_UNFILTERED_ROWS = 0
 
 EVENT_TYPE_DESC: str
 
@@ -223,7 +222,6 @@ FILTER_NO_AIRCRAFT_FROM: int | None = None
 FILTER_NO_AIRCRAFT_TO: int | None = None
 FILTER_OCCURRENCE_CODES: list[str] = []
 FILTER_PREVENTABLE_EVENTS: list[str] = []
-FILTER_STATE: list[str] = []
 FILTER_TLL_PARAMETERS: list[str] = []
 FILTER_US_AVIATION: list[str] = []
 FILTER_US_AVIATION_COUNTRY = "Event Country USA"
@@ -240,8 +238,12 @@ FILTER_US_AVIATION_DEFAULT: list[str] = [
     FILTER_US_AVIATION_OWNER,
     FILTER_US_AVIATION_REGISTRATION,
 ]
+FILTER_US_STATES: list[str] = []
+
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
+
+HOST_CLOUD: bool | None = None
 
 IS_TIMEKEEPING = False
 
@@ -297,6 +299,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 START_TIME: int = 0
+
+USER_INFO: str = "n/a"
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
@@ -471,12 +475,6 @@ def _apply_filter(
         )
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_STATE:
-        # noinspection PyUnboundLocalVariable
-        df_filtered = df_filtered.loc[(df_filtered["state"].isin(FILTER_STATE))]
-        _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
-
-    # noinspection PyUnboundLocalVariable
     if FILTER_TLL_PARAMETERS:
         df_filtered = df_filtered.loc[
             (df_filtered["tll_parameters"].isin(FILTER_TLL_PARAMETERS))
@@ -491,6 +489,14 @@ def _apply_filter(
         _print_timestamp(
             f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION"
         )
+
+    # noinspection PyUnboundLocalVariable
+    if FILTER_US_STATES:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (df_filtered["state"].isin(_get_prepared_us_states(FILTER_US_STATES)))
+        ]
+        _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
 
     _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - End")
 
@@ -581,53 +587,53 @@ def _get_data() -> DataFrame:
     _print_timestamp("_get_data() - Start")
 
     return pd.read_sql(
-        con=_get_engine(),
+        con=utils.get_engine(SETTINGS),
         sql="""
-    SELECT *
-     FROM io_app_ae1982
-    ORDER BY ev_id;
+            SELECT ev_id,
+                   acft_categories,
+                   cictt_codes,
+                   country,
+                   dec_latitude,
+                   dec_longitude,
+                   ev_highest_injury,
+                   ev_type,
+                   ev_year,
+                   far_parts,
+                   finding_codes,
+                   inj_f_grnd,
+                   inj_tot_f,
+                   is_dest_country_usa,
+                   is_dprt_country_usa,
+                   is_far_part_091x,
+                   is_far_part_121,
+                   is_far_part_135,
+                   is_oper_country_usa,
+                   is_owner_country_usa,
+                   is_regis_country_usa,
+                   latlong_acq,
+                   no_aircraft,
+                   ntsb_no,
+                   occurrence_codes,
+                   preventable_events,
+                   state,
+                   tll_parameters
+             FROM io_app_ae1982
+            ORDER BY ev_id;
     """,
     )
 
 
 # ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
+# Prepare the US states.
 # ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_engine() -> Engine:
-    """Create a simple user PostgreSQL database engine."""
-    print(
-        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
+def _get_prepared_us_states(list_in: list) -> list[str]:
+    list_out = []
 
-    return create_engine(
-        f"postgresql://{SETTINGS.postgres_user_guest}:"
-        + f"{SETTINGS.postgres_password_guest}@"
-        + f"{SETTINGS.postgres_host}:"
-        + f"{SETTINGS.postgres_connection_port}/"
-        + f"{SETTINGS.postgres_dbname}",
-    )
+    for elem in list_in:
+        (_, code) = elem.split(" - ")
+        list_out.append(code)
 
-
-# ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection."""
-    print(
-        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return psycopg2.connect(**st.secrets["db_postgres"])
+    return list_out
 
 
 # ------------------------------------------------------------------
@@ -799,9 +805,9 @@ ev_id          ev_year    aircraft_key    eventsoe_no
 ##### Data basis
 
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
-- **Forced landing**: Aircraft in degraded control state ∧ Aircraft is pitch/roll controllable
-- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ∧ Aircraft in aerodynamic spin or stall
-- **Terrain collision avoidance**: Aircraft altitude too low ∧ Aircraft is pitch/roll controllable ∧ Aircraft can climb
+- **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
+- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
+- **Terrain collision avoidance**: Aircraft altitude too low ? Aircraft is pitch/roll controllable ? Aircraft can climb
 
 - **not available**: None of the criteria listed above
 """
@@ -817,18 +823,18 @@ ev_id          ev_year    aircraft_key    eventsoe_no
             text += """
 ##### Data basis
 
-- **Aerodynamic spin / stall**: [Angle of attack ∨ Aerodynamic stall/spin ∨ (Loss of control in flight ∧ “Stall in narrative”)] ∧¬Controlled flight into terrain/obj (CFIT) ∧¬Collision avoidance alert
+- **Aerodynamic spin / stall**: [Angle of attack ? Aerodynamic stall/spin ? (Loss of control in flight ? “Stall in narrative”)] ?¬Controlled flight into terrain/obj (CFIT) ?¬Collision avoidance alert
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
-- **Aircraft can climb**: ¬(Aircraft power plant ∨ Fuel system ∨ Engine out control ∨ Ice/rain protection system ∨ Fuel ∨ Emergency descent ∨ Fuel contamination ∨ Fuel exhaustion ∨ Fuel related ∨ Fuel starvation ∨ Loss of engine power (partial) ∨ Loss of engine power (total) ∨ Loss of lift ∨ Off field or emergency landing ∨ Powerplant/sys comp malf/fail ∨ Uncontained engine failure ∨ Main rotor system ∨ Propeller system) ∧ ¬ “Aerodynamic stall/spin”
-- **Aircraft has degraded control failure**: (Aircraft power plant ∨ Fuel system ∨ Engine out control ∨ Ice/rain protection system ∨ Fuel ∨ Emergency descent ∨ Fuel contamination ∨ Fuel exhaustion ∨ Fuel related ∨ Fuel starvation ∨ Loss of engine power (partial) ∨ Loss of engine power (total) ∨ Loss of lift ∨ Off field or emergency landing ∨ Powerplant/sys comp malf/fail ∨ Uncontained engine failure ∨ Main rotor system ∨ Propeller system) ∧ “Attitude is controllable”
-- **Altitude too low**: [(Object/animal/substance ∧¬Birdstrike) ∨ Terrain ∨ Altitude ∨ Descent rate ∨ Descent/approach/glide path ∨ Approach-IFR final approach ∨ Initial climb ∨ Maneuvering-low alt flying ∨ Collision avoidance alert ∨ Controlled flight into terr/obj (CFIT) ∨ Low altitude operation/event] ∧¬ Mid-air collision ∧¬ “Aerodynamic stall/spin”
-- **Attitude is controllable**: ¬(Conditions/weather phenomena (general) ∨ Turbulence ∨ Dust devil/whirlwind ∨ Microburst ∨ Updraft ∨ Aircraft wake turb encounter ∨ Downdraft ∨ Gusts ∨ High wind ∨ Windshear ∨ Empennage structure ∨ Wing structure ∨ Conducive to structural icing ∨ Aircraft structural failure ∨ Flight control sys malf/fail ∨ Mast bumping ∨ Structural icing ∨ Part(s) separation from AC ∨ CG or Weight Distribution)
-- **Forced landing**: Aircraft in degraded control state ∧ Aircraft is pitch/roll controllable
+- **Aircraft can climb**: ¬(Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? ¬ “Aerodynamic stall/spin”
+- **Aircraft has degraded control failure**: (Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? “Attitude is controllable”
+- **Altitude too low**: [(Object/animal/substance ?¬Birdstrike) ? Terrain ? Altitude ? Descent rate ? Descent/approach/glide path ? Approach-IFR final approach ? Initial climb ? Maneuvering-low alt flying ? Collision avoidance alert ? Controlled flight into terr/obj (CFIT) ? Low altitude operation/event] ?¬ Mid-air collision ?¬ “Aerodynamic stall/spin”
+- **Attitude is controllable**: ¬(Conditions/weather phenomena (general) ? Turbulence ? Dust devil/whirlwind ? Microburst ? Updraft ? Aircraft wake turb encounter ? Downdraft ? Gusts ? High wind ? Windshear ? Empennage structure ? Wing structure ? Conducive to structural icing ? Aircraft structural failure ? Flight control sys malf/fail ? Mast bumping ? Structural icing ? Part(s) separation from AC ? CG or Weight Distribution)
+- **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
 - **Midair collision**: Accident was a mid-air collision
-- **Pilot is able to perform maneuver**: ¬(Impairment/incapacitation ∨ Visual function)
-- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ∧ Aircraft in aerodynamic spin or stall
+- **Pilot is able to perform maneuver**: ¬(Impairment/incapacitation ? Visual function)
+- **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
 - **Stall in narrative**: Stall is mentioned in the narrative.
-- **Terrain collision avoidance**: Aircraft altitude too low ∧ Aircraft is pitch/roll controllable ∧ Aircraft can climb
+- **Terrain collision avoidance**: Aircraft altitude too low ? Aircraft is pitch/roll controllable ? Aircraft can climb
 
 - **not available**: None of the criteria listed above
 """
@@ -987,7 +993,7 @@ This task provides the data of the underlying database view **io_app_ae1982** in
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('⌘ Cmd + F' or 'Ctrl + F') to bring up the search bar, and using the search bar to filter data.
+- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
     """
 
@@ -1067,7 +1073,7 @@ def _get_user_guide_years_chart_footer(
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('⌘ Cmd + F' or 'Ctrl + F') to bring up the search bar, 
+- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, 
 and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
         """
@@ -1108,16 +1114,13 @@ def _prep_data_charts_ey_aoc(
         inplace=True,
     )
 
-    if FILTER_CICTT_CODES:
-        names = []
-        for cictt_code in FILTER_CICTT_CODES:
-            if cictt_code in df_chart.cictt_codes.values:
-                names.append((cictt_code, cictt_code))
-    else:
-        names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
-        for cictt_code in _sql_query_cictt_codes():
-            if cictt_code in df_chart.cictt_codes.values:
-                names.append((cictt_code, cictt_code))
+    names = []
+
+    for cictt_code in (
+        FILTER_CICTT_CODES if FILTER_CICTT_CODES else _sql_query_cictt_codes()
+    ):
+        if cictt_code in df_chart.cictt_codes.values:
+            names.append((cictt_code, cictt_code))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.cictt_codes == name_df, 1, 0)
@@ -1181,14 +1184,13 @@ def _prep_data_charts_ey_pss(
 
     names = []
 
-    if FILTER_PREVENTABLE_EVENTS:
-        for preventable_events in FILTER_PREVENTABLE_EVENTS:
-            if preventable_events in df_chart.preventable_events.values:
-                names.append((preventable_events, preventable_events))
-    else:
-        for preventable_events in _sql_query_preventable_events():
-            if preventable_events in df_chart.preventable_events.values:
-                names.append((preventable_events, preventable_events))
+    for preventable_events in (
+        FILTER_PREVENTABLE_EVENTS
+        if FILTER_PREVENTABLE_EVENTS
+        else _sql_query_preventable_events()
+    ):
+        if preventable_events in df_chart.preventable_events.values:
+            names.append((preventable_events, preventable_events))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.preventable_events == name_df, 1, 0)
@@ -1252,14 +1254,11 @@ def _prep_data_charts_ey_tlp(
 
     names = []
 
-    if FILTER_TLL_PARAMETERS:
-        for tll_parameters in FILTER_TLL_PARAMETERS:
-            if tll_parameters in df_chart.tll_parameters.values:
-                names.append((tll_parameters, tll_parameters))
-    else:
-        for tll_parameters in _sql_query_tll_parameters():
-            if tll_parameters in df_chart.tll_parameters.values:
-                names.append((tll_parameters, tll_parameters))
+    for tll_parameters in (
+        FILTER_TLL_PARAMETERS if FILTER_TLL_PARAMETERS else _sql_query_tll_parameters()
+    ):
+        if tll_parameters in df_chart.tll_parameters.values:
+            names.append((tll_parameters, tll_parameters))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.tll_parameters == name_df, 1, 0)
@@ -1293,14 +1292,12 @@ def _prep_data_charts_fy_fp(
 
     if FILTER_FAR_PARTS:
         names = []
-        for far_part in FILTER_FAR_PARTS:
-            if far_part in df_chart.far_parts.values:
-                names.append((far_part, far_part))
     else:
         names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
-        for far_part in _sql_query_far_parts():
-            if far_part in df_chart.far_parts.values:
-                names.append((far_part, far_part))
+
+    for far_part in FILTER_FAR_PARTS if FILTER_FAR_PARTS else _sql_query_far_parts():
+        if far_part in df_chart.far_parts.values:
+            names.append((far_part, far_part))
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.far_parts == name_df, df_chart.inj_tot_f, 0)
@@ -1374,6 +1371,8 @@ def _prep_data_charts_te_aoc(
         df_chart[name] = np.where(df_chart.cictt_codes == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
         if value > 0:
+            if name == "":
+                name = CHOICE_CHARTS_LEGEND_NAME_NONE
             name_value.append((name, value))
             total_pie += value
 
@@ -1759,7 +1758,7 @@ def _present_bar_chart(
             "title": {
                 "text": "Fatalities"
                 if chart_id in ["fy_fp", "fy_sfp"]
-                else EVENT_TYPE_DESC
+                else EVENT_TYPE_DESC + "s"
             }
         },
     )
@@ -1843,7 +1842,7 @@ def _present_chart_ey_aoc() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_AOC  # pylint: disable=global-statement
 
     chart_id = "ey_aoc"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by CICTT Codes"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by CICTT Codes"
 
     col1, col2 = st.columns([2, 1])
 
@@ -1886,7 +1885,7 @@ def _present_chart_ey_il() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_IL  # pylint: disable=global-statement
 
     chart_id = "ey_il"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Injury Levels"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Injury Levels"
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -1921,7 +1920,7 @@ def _present_chart_ey_pss() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_PSS  # pylint: disable=global-statement
 
     chart_id = "ey_pss"
-    chart_title = f"Number of Preventable {EVENT_TYPE_DESC} per Year by Safety Systems"
+    chart_title = f"Number of Preventable {EVENT_TYPE_DESC}s per Year by Safety Systems"
 
     col1, col2 = st.columns([2, 1])
 
@@ -1964,7 +1963,7 @@ def _present_chart_ey_t() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_T  # pylint: disable=global-statement
 
     chart_id = "ey_t"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Event Types"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Event Types"
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -1999,7 +1998,7 @@ def _present_chart_ey_tlp() -> None:
     global CHOICE_UG_YEARS_CHARTS_EY_TLP  # pylint: disable=global-statement
 
     chart_id = "ey_tlp"
-    chart_title = f"Number of {EVENT_TYPE_DESC} per Year by Top Logical Parameters"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Top Logical Parameters"
 
     col1, col2 = st.columns([2, 1])
 
@@ -2122,7 +2121,9 @@ def _present_chart_fy_sfp() -> None:
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
-    """Present the filtered data."""
+    global DF_FILTERED_ROWS  # pylint: disable=global-statement
+    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
+
     _print_timestamp("_present_data() - Start")
 
     if CHOICE_ACTIVE_FILTERS:
@@ -2148,6 +2149,16 @@ def _present_data() -> None:
 
     if CHOICE_UG_APP:
         _get_user_guide_app()
+
+    (DF_UNFILTERED_ROWS, _) = DF_UNFILTERED.shape
+    if DF_UNFILTERED_ROWS == 0:
+        st.error("##### Error: There are no data available.")
+        st.stop()
+
+    (DF_FILTERED_ROWS, _) = DF_FILTERED.shape
+    if DF_FILTERED_ROWS == 0:
+        st.error("##### Error: No data has been selected.")
+        st.stop()
 
     if CHOICE_MAP:
         _present_map()
@@ -2264,6 +2275,11 @@ def _present_details() -> None:
         if CHOICE_UG_DETAILS:
             _get_user_guide_details()
 
+        # pylint: disable=line-too-long
+        st.write(
+            f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+        )
+
         st.dataframe(DF_FILTERED)
 
         st.download_button(
@@ -2291,6 +2307,7 @@ def _present_map() -> None:
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
                 + 'font-weight: normal;border-radius:2%;">Map of '
                 + EVENT_TYPE_DESC
+                + "s"
                 + "</p>",
                 unsafe_allow_html=True,
             )
@@ -2420,7 +2437,7 @@ def _present_totals_chart(
                 "title": {
                     "text": "Fatalities"
                     if chart_id in ["tf_fp", "tf_sfp"]
-                    else EVENT_TYPE_DESC
+                    else EVENT_TYPE_DESC + "s"
                 }
             },
             yaxis={"title": {"text": " "}},
@@ -2478,7 +2495,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_AOC:
         _present_totals_chart(
             "te_aoc",
-            f"Total Number of {EVENT_TYPE_DESC} by CICTT Codes",
+            f"Total Number of {EVENT_TYPE_DESC}s by CICTT Codes",
             _prep_data_charts_te_aoc(DF_FILTERED),
         )
 
@@ -2486,7 +2503,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_IL:
         _present_totals_chart(
             "te_il",
-            f"Total Number of {EVENT_TYPE_DESC} by Highest Injury Levels",
+            f"Total Number of {EVENT_TYPE_DESC}s by Highest Injury Levels",
             _prep_data_charts_te_il(DF_FILTERED),
         )
 
@@ -2494,7 +2511,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_T:
         _present_totals_chart(
             "te_t",
-            f"Total Number of {EVENT_TYPE_DESC} by Event Types",
+            f"Total Number of {EVENT_TYPE_DESC}s by Event Types",
             _prep_data_charts_te_t(DF_FILTERED),
         )
 
@@ -2502,7 +2519,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_TLP:
         _present_totals_chart(
             "te_tlp",
-            f"Total Number of {EVENT_TYPE_DESC}  by Top Level Logical Parameters",
+            f"Total Number of {EVENT_TYPE_DESC}s  by Top Level Logical Parameters",
             _prep_data_charts_te_tlp(DF_FILTERED),
         )
 
@@ -2510,7 +2527,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_PSS:
         _present_totals_chart(
             "te_pss",
-            f"Total Number of Preventable {EVENT_TYPE_DESC} by Safety Systems",
+            f"Total Number of Preventable {EVENT_TYPE_DESC}s by Safety Systems",
             _prep_data_charts_te_pss(DF_FILTERED),
         )
 
@@ -2567,9 +2584,9 @@ def _setup_filter() -> None:
     global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
     global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
     global FILTER_PREVENTABLE_EVENTS  # pylint: disable=global-statement
-    global FILTER_STATE  # pylint: disable=global-statement
     global FILTER_TLL_PARAMETERS  # pylint: disable=global-statement
     global FILTER_US_AVIATION  # pylint: disable=global-statement
+    global FILTER_US_STATES  # pylint: disable=global-statement
 
     _print_timestamp("_setup_filter - Start")
 
@@ -2909,21 +2926,19 @@ def _setup_filter() -> None:
 
     st.sidebar.markdown("""---""")
 
-    FILTER_STATE = st.sidebar.multiselect(
+    FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
         label="**State(s) in the US:**",
         options=_sql_query_us_states(),
     )
-    _print_timestamp("_setup_filter - FILTER_STATE - 1")
 
-    if FILTER_STATE:
+    if FILTER_US_STATES:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **State(s) in the US**: **`{','.join(FILTER_STATE)}`**"
+            + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_STATE - 2")
 
-    st.sidebar.markdown("""---""")
+    _print_timestamp("_setup_filter - FILTER_STATES - 1")
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_TLL_PARAMETERS = st.sidebar.multiselect(
@@ -2993,24 +3008,24 @@ def _setup_page() -> None:
     )
 
     if FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_ACC]:
-        EVENT_TYPE_DESC = "Accidents"
+        EVENT_TYPE_DESC = "Accident"
     elif FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_INC]:
-        EVENT_TYPE_DESC = "Incidents"
+        EVENT_TYPE_DESC = "Incident"
     else:
-        EVENT_TYPE_DESC = "Events"
+        EVENT_TYPE_DESC = "Event"
 
     if MODE_STANDARD:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} between '
-            + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+            + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
+            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">US Aviation Fatal Accidents between '
-            + f"{FILTER_EV_YEAR_FROM} and {FILTER_EV_YEAR_TO}</p>",
+            + 'font-weight: normal;border-radius:2%;">US Aviation Fatal Accidents - Year '
+            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
             unsafe_allow_html=True,
         )
 
@@ -3102,12 +3117,6 @@ def _setup_task_controls() -> None:
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_WIDTH  # pylint: disable=global-statement
-
-    # pylint: disable=line-too-long
-    st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-        width=200,
-    )
 
     if MODE_STANDARD:
         CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
@@ -3476,7 +3485,7 @@ def _sql_query_cictt_codes() -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+            data.append(row[0])
 
         return sorted(data)
 
@@ -3545,7 +3554,7 @@ def _sql_query_far_parts() -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0].replace(CHARTS_LEGEND_N_A, CHARTS_LEGEND_N_A_DESC))
+            data.append(row[0])
 
         return sorted(data)
 
@@ -3802,15 +3811,11 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
 # Execute a query that returns the list of US states.
 # ------------------------------------------------------------------
 def _sql_query_us_states() -> list[str]:
-    """Execute a query that returns a list of US states.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
+            # pylint: disable=line-too-long
             """
-        SELECT string_agg(DISTINCT state, ',' ORDER BY state)
+        SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
         """
@@ -3824,21 +3829,38 @@ def _sql_query_us_states() -> list[str]:
 def _streamlit_flow() -> None:
     """Streamlit flow."""
     global DF_FILTERED  # pylint: disable=global-statement
+    global DF_UNFILTERED  # pylint: disable=global-statement
+    global HOST_CLOUD  # pylint: disable=global-statement
     global MODE_STANDARD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
-    global DF_UNFILTERED  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    if "MODE_STANDARD" in st.session_state:
+    print(
+        str(datetime.datetime.now())
+        + "                         - Start application "
+        + APP_ID,
+        flush=True,
+    )
+
+    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        HOST_CLOUD = st.session_state["HOST_CLOUD"]
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
-        mode = utils.get_args()
-        print(f"command line argument mode={mode}")
+        (host, mode) = utils.get_args()
+        HOST_CLOUD = bool(host == "Cloud")
+        st.session_state["HOST_CLOUD"] = HOST_CLOUD
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
+
+    print(
+        str(datetime.datetime.now())
+        + f"                         - MODE_STANDARD={MODE_STANDARD}",
+        flush=True,
+    )
 
     st.set_page_config(
         layout="wide",
@@ -3846,9 +3868,27 @@ def _streamlit_flow() -> None:
         page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
-    # st.sidebar.markdown("[IO-Aero Website](%s)" % "https://www.io-aero.com")
 
-    PG_CONN = _get_postgres_connection()
+    if MODE_STANDARD:
+        col1, col2 = st.sidebar.columns(2)
+        col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+        url = "http://" + (
+            "members.io-aero.com" if HOST_CLOUD else "localhost:8598"
+        )
+        col2.markdown(f"##  [Member Menu]({url})")
+    else:
+        st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
+
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    if MODE_STANDARD:
+        USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
+
+    PG_CONN = utils.get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")
 
     _setup_sidebar()
@@ -3873,8 +3913,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 

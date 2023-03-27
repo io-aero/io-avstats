@@ -18,9 +18,11 @@ if ["%1"] EQU [""] (
     echo =========================================================
     echo all      - All Streamlit applications
     echo ---------------------------------------------------------
-    echo ae1982 - Aircraft Accidents in the US since 1982
-    echo pd1982 - Profiling Data for the US since 1982
-    echo stats  - Aircraft Accidents in the US since 1982 - limited
+    echo ae1982  - Aircraft Accidents in the US since 1982
+    echo members - Members Only Area
+    echo pd1982  - Profiling Data for the US since 1982
+    echo slara   - Association Rule Analysis
+    echo stats   - Aircraft Accidents in the US since 1982 - limited
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -77,15 +79,31 @@ rem > %LOG_FILE% 2>&1 (
     echo =======================================================================
 
     if ["!APPLICATION!"] EQU ["all"]  (
-        call scripts\run_create_image ae1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image pd1982 !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image stats  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image ae1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image members !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image pd1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image slara   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
+        call scripts\run_create_image stats   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
+    )
+
+    if exist tmp\download rmdir /s /q tmp\download
+    mkdir tmp\download
+
+    if exist tmp\docs\img rmdir /s /q tmp\docs\img
+    mkdir tmp\docs\img
+
+    if ["!APPLICATION!"] EQU ["members"]  (
+        copy /Y data\latest_postgres.zip          download\IO-AVSTATS-DB.zip
+        copy /Y docs\img\StockSnap_SLQQYN6CRR.jpg tmp\docs\img\StockSnap_SLQQYN6CRR.jpg
+        copy /Y download\IO-AVSTATS-DB.pdf        tmp\download\IO-AVSTATS-DB.pdf
+        copy /Y download\IO-AVSTATS-DB.zip        tmp\download\IO-AVSTATS-DB.zip
     )
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         set MODE=Ltd
         copy /Y src\ioavstats\ae1982.py src\ioavstats\stats.py
+        copy /Y config\Pipfile.ae1982   config\Pipfile.stats
     )
 
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
@@ -94,7 +112,7 @@ rem > %LOG_FILE% 2>&1 (
 
     echo Docker stop/rm !APPLICATION! ................................ before containers:
     docker ps -a
-    docker ps       | find "!APPLICATION!" && docker stop !APPLICATION!
+    docker ps       | find "!APPLICATION!" && docker stop        !APPLICATION!
     docker ps -a    | find "!APPLICATION!" && docker rm  --force !APPLICATION!
     echo ............................................................. after containers:
     docker ps -a
@@ -124,8 +142,12 @@ rem > %LOG_FILE% 2>&1 (
 
     for /F %%I in ('docker images -q -f "dangling=true" -f "label=autodelete=true"') do (docker rmi -f %%I)
 
+    rmdir /s /q tmp\download
+    rmdir /s /q tmp\docs\img
+
     if ["!APPLICATION!"] EQU ["stats"]  (
         del /s src\ioavstats\stats.py
+        del /s config\Pipfile.stats
     )
 
     :END_OF_SCRIPT

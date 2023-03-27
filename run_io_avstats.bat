@@ -15,6 +15,12 @@ if ["!ENV_FOR_DYNACONF!"] EQU [""] (
 )
 
 set IO_AVSTATS_CORRECTION_WORK_DIR=data\correction
+
+set IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
+set IO_AVSTATS_KEYCLOAK_PASSWORD_ADMIN=RsxAG^&hpCcuXsB2cbxSS
+set IO_AVSTATS_KEYCLOAK_USER_ADMIN=admin
+set IO_AVSTATS_KEYCLOAK_VERSION=latest
+
 set IO_AVSTATS_NTSB_WORK_DIR=data\download
 
 if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
@@ -22,15 +28,27 @@ if ["!IO_AVSTATS_POSTGRES_CONNECTION_PORT!"] EQU [""] (
 )
 
 set IO_AVSTATS_POSTGRES_CONTAINER_NAME=io_avstats_db
-set IO_AVSTATS_POSTGRES_CONTAINER_PORT=5432
 set IO_AVSTATS_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AVSTATS_POSTGRES_PGDATA=data\postgres
 set IO_AVSTATS_POSTGRES_USER_ADMIN=postgres
 set IO_AVSTATS_POSTGRES_VERSION=latest
 
+if ["!IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
+    set IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
+)
+
+set IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
+set IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
+set IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD_ADMIN=twAuk3VM2swt#Z96#zM#
+set IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
+set IO_AVSTATS_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
+
 set IO_AVSTATS_APPLICATION=
-set IO_AVSTATS_COMPOSE_TASK_DEFAULT=up
+set IO_AVSTATS_COMPOSE_TASK=
+set IO_AVSTATS_COMPOSE_TASK_DEFAULT=logs
+set IO_AVSTATS_CONTAINER=
+set IO_AVSTATS_CONTAINER_DEFAULT=*
 set IO_AVSTATS_MSACCESS=
 set IO_AVSTATS_MSEXCEL=
 set IO_AVSTATS_TASK=
@@ -56,6 +74,7 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL
+    echo c_d_l   - Run Docker Compose tasks - Local
     echo c_d_s   - Create the PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo d_d_f   - Delete the PostgreSQL database files
@@ -63,11 +82,13 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo s_d_c   - Set up the PostgreSQL database container
+    echo s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
+    echo k_s_d   - Set up the Keycloak PostgreSQL database container
+    echo ---------------------------------------------------------
     echo c_d_i   - Create or update a Docker image
-    echo c_d_c   - Run Docker Compose tasks
+    echo c_d_c   - Run Docker Compose tasks - Cloud
     echo c_f_z   - Zip the files for the cloud
     echo ---------------------------------------------------------
     echo version - Show the IO-AVSTATS-DB version
@@ -86,6 +107,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
         echo =========================================================
         echo clean - Remove all containers and images
         echo down  - Stop  Docker Compose
+        echo logs  - Fetch the logs of a container
         echo up    - Start Docker Compose
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AVSTATS_COMPOSE_TASK_DEFAULT%] "
@@ -103,13 +125,33 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
         echo =========================================================
         echo all      - All Streamlit applications
         echo ---------------------------------------------------------
-        echo ae1982 - Aircraft Accidents in the US since 1982
-        echo pd1982 - Profiling Data for the US since 1982
-        echo stats  - Aircraft Accidents in the US since 1982 - limited
+        echo ae1982  - Aircraft Accidents in the US since 1982
+        echo members - Members Only Area
+        echo pd1982  - Profiling Data for the US since 1982
+        echo slara   - Association Rule Analysis
+        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
         set IO_AVSTATS_APPLICATION=%2
+    )
+)
+
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_l"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo clean - Remove all containers and images
+        echo down  - Stop  Docker Compose
+        echo logs  - Fetch the logs of a container
+        echo up    - Start Docker Compose
+        echo ---------------------------------------------------------
+        set /P IO_AVSTATS_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AVSTATS_COMPOSE_TASK_DEFAULT%] "
+
+        if ["!IO_AVSTATS_COMPOSE_TASK!"] EQU [""] (
+            set IO_AVSTATS_COMPOSE_TASK=%IO_AVSTATS_COMPOSE_TASK_DEFAULT%
+        )
+    ) else (
+        set IO_AVSTATS_COMPOSE_TASK=%2
     )
 )
 
@@ -162,9 +204,11 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo ae1982 - Aircraft Accidents in the US since 1982
-        echo pd1982 - Profiling Data for the US since 1982
-        echo stats  - Aircraft Accidents in the US since 1982 - limited
+        echo ae1982  - Aircraft Accidents in the US since 1982
+        echo members - Members Only Area
+        echo pd1982  - Profiling Data for the US since 1982
+        echo slara   - Association Rule Analysis
+        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -197,11 +241,13 @@ echo Start %0
 echo -----------------------------------------------------------------------
 echo IO-AVSTATS - Aviation Event Statistics.
 echo -----------------------------------------------------------------------
-echo PYTHONPATH : %PYTHONPATH%
+echo PYTHONPATH   : %PYTHONPATH%
 echo -----------------------------------------------------------------------
-echo TASK       : %IO_AVSTATS_TASK%
-echo MSACCESS   : %IO_AVSTATS_MSACCESS%
-echo MSEXCEL    : %IO_AVSTATS_MSECEL%
+echo TASK         : %IO_AVSTATS_TASK%
+echo APPLICATION  : %IO_AVSTATS_APPLICATION%
+echo COMPOSE_TASK : %IO_AVSTATS_COMPOSE_TASK%
+echo MSACCESS     : %IO_AVSTATS_MSACCESS%
+echo MSEXCEL      : %IO_AVSTATS_MSEXCEL%
 echo -----------------------------------------------------------------------
 echo:| TIME
 echo =======================================================================
@@ -220,10 +266,10 @@ if ["%IO_AVSTATS_TASK%"] EQU ["a_o_c"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Run Docker Compose tasks.
+rem Run Docker Compose tasks (Cloud).
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
-    call scripts\run_docker_compose %IO_AVSTATS_COMPOSE_TASK%
+    call scripts\run_docker_compose_cloud %IO_AVSTATS_COMPOSE_TASK%
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -237,6 +283,19 @@ rem Create or update a Docker image.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
     call scripts\run_create_image %IO_AVSTATS_APPLICATION% yes yes
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Run Docker Compose tasks (Local).
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["c_d_l"] (
+    call scripts\run_docker_compose_local %IO_AVSTATS_COMPOSE_TASK%
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -367,6 +426,19 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_z_f"] (
 )
 
 rem ----------------------------------------------------------------------------
+rem Set up the Keycloak PostgreSQL database container.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["k_s_d"] (
+    call scripts\run_setup_postgresql_keycloak
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
@@ -488,7 +560,17 @@ rem ----------------------------------------------------------------------------
 
 if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["ae1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py -- --mode Std
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8501 -- --mode Std
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
+    )
+
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["members"] (
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8598
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -498,7 +580,17 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["pd1982"] (
-        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8502
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
+    )
+
+    if ["%IO_AVSTATS_APPLICATION%"] EQU ["slara"] (
+        pipenv run streamlit run src\ioavstats\%IO_AVSTATS_APPLICATION%.py --server.port 8503
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -508,7 +600,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
     )
 
     if ["%IO_AVSTATS_APPLICATION%"] EQU ["stats"] (
-        pipenv run streamlit run src\ioavstats\ae1982.py
+        pipenv run streamlit run src\ioavstats\ae1982.py --server.port 8599
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -521,10 +613,10 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Set up the database container.
+rem Set up the IO-AVSTATS-DB PostgreSQL database container.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["s_d_c"] (
-    call scripts\run_setup_postgresql
+    call scripts\run_setup_postgresql_io_avstats_db
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

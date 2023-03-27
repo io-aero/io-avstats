@@ -39,16 +39,11 @@ razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2022.11.01_avall.sql"
-streamlit_server_port = 8501
-streamlit_server_port_ae1982 = 8501
-streamlit_server_port_pd1982 = 8502
 
 [dev]
-postgres_connection_port = 5433
 postgres_container_name = "io_avstats_db_dev"
 
 [prod]
-postgres_connection_port = 5432
 postgres_container_name = "io_avstats_db"
 
 [test]

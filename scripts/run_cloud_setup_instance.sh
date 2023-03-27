@@ -50,7 +50,8 @@ sudo apt-get install -qy containerd.io \
                          docker-compose \
                          dos2unix \
                          software-properties-common \
-                         unzip
+                         unzip \
+                         zip
 
 sudo chmod 666 /var/run/docker.sock
 

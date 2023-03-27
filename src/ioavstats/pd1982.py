@@ -2,19 +2,16 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-"""IO-AVSTATS-DB Data since 1982."""
+"""Database Profiling."""
 import datetime
 import time
 
 import pandas as pd
-import psycopg2
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -40,12 +37,16 @@ CHOICE_UG_DETAILS: bool | None = None
 COLOR_HEADER: str = "#357f8f"
 
 DF_FILTERED: DataFrame = DataFrame()
+DF_FILTERED_ROWS = 0
 DF_UNFILTERED: DataFrame = DataFrame()
+DF_UNFILTERED_ROWS = 0
 
 FILTER_EV_YEAR_FROM: int | None = None
 FILTER_EV_YEAR_TO: int | None = None
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
+
+HOST_CLOUD: bool | None = None
 
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
@@ -205,15 +206,51 @@ QUERIES = {
         WHERE e.ev_year >= 1982
         ORDER BY l.ev_id;
     """,
+    "io_md_codes_category": """
+        SELECT *
+          FROM io_md_codes_category
+        ORDER BY category_code;
+    """,
+    "io_md_codes_modifier": """
+        SELECT *
+          FROM io_md_codes_modifier
+        ORDER BY modifier_code;
+    """,
+    "io_md_codes_occurrence": """
+        SELECT *
+          FROM io_md_codes_occurrence
+        ORDER BY occurrence_code;
+    """,
+    "io_md_codes_phase_operation": """
+        SELECT *
+          FROM io_md_codes_phase_operation
+        ORDER BY phase_operation_code;
+    """,
+    "io_md_codes_section": """
+        SELECT *
+          FROM io_md_codes_section
+        ORDER BY category_code,
+                 subcategory_code,
+                 section_code;
+    """,
+    "io_md_codes_subcategory": """
+        SELECT *
+          FROM io_md_codes_subcategory
+        ORDER BY category_code,
+                 subcategory_code;
+    """,
+    "io_md_codes_subsection": """
+        SELECT *
+          FROM io_md_codes_subsection
+        ORDER BY category_code,
+                 subcategory_code,
+                 section_code,
+                 subsection_code;
+    """,
     "io_ntsb_2002_2021": """
         SELECT *
           FROM io_ntsb_2002_2021
         ORDER BY ntsb_number;
-    """,
-    "io_pk_ntsb": """
-        SELECT *
-          FROM io_pk_ntsb
-        ORDER BY ev_id, source, table_name;
     """,
     "io_processed_files": """
         SELECT *
@@ -282,6 +319,8 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_avstats.toml", ".settings.io_avstats.toml"],
 )
 
+USER_INFO: str = "n/a"
+
 
 # ------------------------------------------------------------------
 # Filter the data frame.
@@ -313,45 +352,7 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
 # Read the data.
 # ------------------------------------------------------------------
 def _get_data(ddl_object_name: str) -> DataFrame:
-    return pd.read_sql(QUERIES[ddl_object_name], con=_get_engine())  # type: ignore
-
-
-# ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_engine() -> Engine:
-    print(
-        f"[engine  ] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return create_engine(
-        f"postgresql://{SETTINGS.postgres_user_guest}:"
-        + f"{SETTINGS.postgres_password_guest}@"
-        + f"{SETTINGS.postgres_host}:"
-        + f"{SETTINGS.postgres_connection_port}/"
-        + f"{SETTINGS.postgres_dbname}",
-    )
-
-
-# ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
-@st.cache_resource
-def _get_postgres_connection() -> connection:
-    print(
-        f"[psycopg2] User connect request host={SETTINGS.postgres_host} "
-        + f"port={SETTINGS.postgres_connection_port} "
-        + f"dbname={SETTINGS.postgres_dbname} "
-        + f"user={SETTINGS.postgres_user_guest}"
-    )
-
-    return psycopg2.connect(**st.secrets["db_postgres"])
+    return pd.read_sql(QUERIES[ddl_object_name], con=utils.get_engine(SETTINGS))  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -422,6 +423,8 @@ The database columns of the selected rows are always displayed in full.
 def _present_data():
     global CHOICE_UG_DETAILS  # pylint: disable=global-statement
     global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
+    global DF_FILTERED_ROWS  # pylint: disable=global-statement
+    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
 
     if CHOICE_ACTIVE_FILTERS:
         st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
@@ -438,6 +441,16 @@ def _present_data():
 
     if CHOICE_UG_APP:
         _get_user_guide_app()
+
+    (DF_UNFILTERED_ROWS, _) = DF_UNFILTERED.shape
+    if DF_UNFILTERED_ROWS == 0:
+        st.error("##### Error: There are no data available.")
+        st.stop()
+
+    (DF_FILTERED_ROWS, _) = DF_FILTERED.shape
+    if DF_FILTERED_ROWS == 0:
+        st.error("##### Error: No data has been selected.")
+        st.stop()
 
     if CHOICE_DATA_PROFILE:
         col1, col2 = st.columns(
@@ -493,6 +506,10 @@ def _present_data():
 
         if CHOICE_UG_DETAILS:
             _get_user_guide_details()
+
+        st.write(
+            f"No rows unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+        )
 
         st.dataframe(DF_FILTERED)
 
@@ -594,8 +611,8 @@ def _setup_page():
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + 'font-weight: normal;border-radius:2%;">IO-AVSTATS-DB Data from Year '
-        + f"{FILTER_EV_YEAR_FROM} to {FILTER_EV_YEAR_TO}</p>",
+        + 'font-weight: normal;border-radius:2%;">Database Profiling - Year '
+        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -648,12 +665,6 @@ def _setup_task_controls():
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
 
-    # pylint: disable=line-too-long
-    st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
-        width=200,
-    )
-
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**Show data profile**",
@@ -692,7 +703,11 @@ def _setup_task_controls():
 
     CHOICE_DDL_OBJECT_SELECTED = (
         "View"
-        if CHOICE_DDL_OBJECT_SELECTION in ["io_app_ae1982", "io_lat_long_issues"]
+        if CHOICE_DDL_OBJECT_SELECTION
+        in [
+            "io_app_ae1982",
+            "io_lat_long_issues",
+        ]
         else "Table"
     )
 
@@ -704,21 +719,50 @@ def _setup_task_controls():
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
     global DF_FILTERED  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
     global DF_UNFILTERED  # pylint: disable=global-statement
+    global HOST_CLOUD  # pylint: disable=global-statement
+    global PG_CONN  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     start_time = time.time_ns()
+
+    print(
+        str(datetime.datetime.now())
+        + "                         - Start application "
+        + APP_ID,
+        flush=True,
+    )
+
+    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        HOST_CLOUD = st.session_state["HOST_CLOUD"]
+    else:
+        (host, _mode) = utils.get_args()
+        HOST_CLOUD = bool(host == "Cloud")
+        st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
     st.set_page_config(
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
         page_title="pd1982 by IO-Aero",
     )
 
-    PG_CONN = _get_postgres_connection()  # type: ignore
+    col1, col2 = st.sidebar.columns(2)
+    col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
+    col2.markdown(f"##  [Member Menu]({url})")
+
+    # pylint: disable=line-too-long
+    st.sidebar.image(
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        width=200,
+    )
+
+    USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
+
+    PG_CONN = utils.get_postgres_connection()  # type: ignore
 
     _setup_sidebar()
 
@@ -731,7 +775,13 @@ def _streamlit_flow() -> None:
     if CHOICE_DDL_OBJECT_SELECTION not in [
         "io_aviation_occurrence_categories",
         "io_countries",
-        "io_pk_ntsb",
+        "io_md_codes_category",
+        "io_md_codes_modifier",
+        "io_md_codes_occurrence",
+        "io_md_codes_phase_operation",
+        "io_md_codes_section",
+        "io_md_codes_subcategory",
+        "io_md_codes_subsection",
         "io_processed_files",
         "io_lat_lng",
         "io_sequence_of_events",
@@ -747,9 +797,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - "
-        + "Total runtime for application "
-        + APP_ID,
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
         flush=True,
     )
 
@@ -757,4 +805,5 @@ def _streamlit_flow() -> None:
 # -----------------------------------------------------------------------------
 # Program start.
 # -----------------------------------------------------------------------------
+
 _streamlit_flow()

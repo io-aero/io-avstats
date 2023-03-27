@@ -84,7 +84,7 @@ echo ""
 echo "Script $0 is now running"
 
 now=$(date +"%Y_%m_%d")
-export LOG_FILE=run_docker_compose_${now}.log
+export LOG_FILE=run_docker_compose.log
 
 echo ""
 echo "You can find the run log in the file ${LOG_FILE}"

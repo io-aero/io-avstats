@@ -84,7 +84,7 @@ echo ""
 echo "Please wait ..."
 echo ""
 
-exec &> >(tee -i "${LOG_FILE}") 2>&1
+exec &>> >(tee -a -i "${LOG_FILE}") 2>&1
 sleep .1
 
 echo "================================================================================"
@@ -180,7 +180,7 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "up" ]; then
     echo "....................................................... before images:"
     docker images
 
-    docker-compose -f docker-compose_local.yml up -d
+    docker-compose -f docker-compose_local.yml up &
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

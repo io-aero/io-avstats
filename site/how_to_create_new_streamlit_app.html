@@ -21,7 +21,7 @@
         <link rel="next" href="how_to_setup_aws_instance.html">
       
       <link rel="icon" href="img/IO-Aero_Favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.1">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.402914a4.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.240905d7.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -476,36 +476,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-config_io_avstatsmd" class="md-nav__link">
-    3.1 config_io_avstats.md
+  <a href="#31-how_to_update_avstats_on_awsmd" class="md-nav__link">
+    3.1 how_to_update_avstats_on_aws.md
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-how_to_setup_aws_instancemd" class="md-nav__link">
-    3.2 how_to_setup_aws_instance.md
+  <a href="#32-indexmd" class="md-nav__link">
+    3.2 index.md
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-how_to_update_avstats_on_awsmd" class="md-nav__link">
-    3.3 how_to_update_avstats_on_aws.md
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-indexmd" class="md-nav__link">
-    3.4 index.md
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-operationmd" class="md-nav__link">
-    3.5 Operation.md
+  <a href="#33-operationmd" class="md-nav__link">
+    3.3 Operation.md
   </a>
   
 </li>
@@ -526,13 +512,6 @@
           <li class="md-nav__item">
   <a href="#41-docker-composeyml" class="md-nav__link">
     4.1 docker-compose.yml
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-settingsio_avstatstoml-settingsio_avstats_4_dockerfiletoml" class="md-nav__link">
-    4.2 settings.io_avstats.toml / settings.io_avstats_4_dockerfile.toml
   </a>
   
 </li>
@@ -753,36 +732,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-config_io_avstatsmd" class="md-nav__link">
-    3.1 config_io_avstats.md
+  <a href="#31-how_to_update_avstats_on_awsmd" class="md-nav__link">
+    3.1 how_to_update_avstats_on_aws.md
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-how_to_setup_aws_instancemd" class="md-nav__link">
-    3.2 how_to_setup_aws_instance.md
+  <a href="#32-indexmd" class="md-nav__link">
+    3.2 index.md
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-how_to_update_avstats_on_awsmd" class="md-nav__link">
-    3.3 how_to_update_avstats_on_aws.md
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-indexmd" class="md-nav__link">
-    3.4 index.md
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-operationmd" class="md-nav__link">
-    3.5 Operation.md
+  <a href="#33-operationmd" class="md-nav__link">
+    3.3 Operation.md
   </a>
   
 </li>
@@ -803,13 +768,6 @@
           <li class="md-nav__item">
   <a href="#41-docker-composeyml" class="md-nav__link">
     4.1 docker-compose.yml
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-settingsio_avstatstoml-settingsio_avstats_4_dockerfiletoml" class="md-nav__link">
-    4.2 settings.io_avstats.toml / settings.io_avstats_4_dockerfile.toml
   </a>
   
 </li>
@@ -919,173 +877,124 @@
 </code></pre></div>
 <h2 id="3-documentation">3. Documentation</h2>
 <p>see file directory <strong><code>docs</code></strong></p>
-<h3 id="31-config_io_avstatsmd">3.1 config_io_avstats.md</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>...
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>| streamlit_server_port_ae1982          | 8501                                          | Streamlit port number for application ae1982                           |
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>| streamlit_server_port_pd1982          | 8502                                          | Streamlit port number for application pd1982                           |
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>...
+<h3 id="31-how_to_update_avstats_on_awsmd">3.1 how_to_update_avstats_on_aws.md</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>## 1. Docker images
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Currently, the following Streamlit applications are supported:
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>| Application | Description                             |
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>|-------------|-----------------------------------------|
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>| ae1982      | Aircraft Accidents in the US since 1982 |
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>| pd1982      | Profiling Data for the US since 1982    |
 </code></pre></div>
-<h3 id="32-how_to_setup_aws_instancemd">3.2 how_to_setup_aws_instance.md</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>...
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>## 2. Open port numbers
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Each Streamlit application must be assigned its own port number so that they can run simultaneously.
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Currently, the following Streamlit applications are supported:
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>| Port | Application                                        |
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>|------|----------------------------------------------------|
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>| 8501 | ae1982 - Aircraft Accidents in the US since 1982 |
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>| 8502 | pd1982 - Profiling Data for the US since 1982    |
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>...
+<h3 id="32-indexmd">3.2 index.md</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Currently, it includes the following applications:
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>- ae1982 - Aircraft Accidents in the US since 1982
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>- pd1982 - Profiling Data for the US since 1982
 </code></pre></div>
-<h3 id="33-how_to_update_avstats_on_awsmd">3.3 how_to_update_avstats_on_aws.md</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>...
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>## 1. Docker images
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Currently, the following Streamlit applications are supported:
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>| Application | Description                             |
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>|-------------|-----------------------------------------|
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>| ae1982    | Aircraft Accidents in the US since 1982 |
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>| pd1982    | Profiling Data for the US since 1982    |
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>...
-</code></pre></div>
-<h3 id="34-indexmd">3.4 index.md</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>...
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Currently, it includes the following applications:
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>- ae1982 - Aircraft Accidents in the US since 1982
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>- pd1982 - Profiling Data for the US since 1982
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>...
-</code></pre></div>
-<h3 id="35-operationmd">3.5 Operation.md</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>...
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>TODO
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>...
+<h3 id="33-operationmd">3.3 Operation.md</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>TODO
 </code></pre></div>
 <h2 id="4-parameterization">4. Parameterization</h2>
 <h3 id="41-docker-composeyml">4.1 docker-compose.yml</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>...
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  # ------------------------------------------------------------------------------
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  # ae1982 - Aircraft Accidents in the US since 1982.
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  # ------------------------------------------------------------------------------
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  app_ae1982:
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    container_name: ae1982
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    depends_on:
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>      - db
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    image: ioaero/ae1982:latest
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    ports:
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    restart: always
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  # ------------------------------------------------------------------------------
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  # pd1982 - Profiling Data for the US since 1982.
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  # ------------------------------------------------------------------------------
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  app_pd1982:
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    container_name: pd1982
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    depends_on:
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>      - db
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    image: ioaero/pd1982:latest
-<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    ports:
-<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
-<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    restart: always
-<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>...
-</code></pre></div>
-<h3 id="42-settingsio_avstatstoml-settingsio_avstats_4_dockerfiletoml">4.2 settings.io_avstats.toml / settings.io_avstats_4_dockerfile.toml</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>...
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>streamlit_server_port_ae1982 = 8501
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>streamlit_server_port_pd1982 = 8502
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>  # ------------------------------------------------------------------------------
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  # ae1982 - Aircraft Accidents in the US since 1982.
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  # ------------------------------------------------------------------------------
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  app_ae1982:
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    container_name: ae1982
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    depends_on:
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>      - db
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    image: ioaero/ae1982:latest
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    ports:
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    restart: always
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  # ------------------------------------------------------------------------------
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  # pd1982 - Profiling Data for the US since 1982.
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  # ------------------------------------------------------------------------------
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  app_pd1982:
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    container_name: pd1982
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    depends_on:
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>      - db
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    image: ioaero/pd1982:latest
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    ports:
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    restart: always
 </code></pre></div>
 <h2 id="5-scripts">5. Scripts</h2>
 <h3 id="51-run_io_avstats">5.1 run_io_avstats</h3>
 <p><strong>cmd</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>...
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>if [&quot;%IO_AVSTATS_TASK%&quot;] EQU [&quot;r_s_a&quot;] (
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    if [&quot;%2&quot;] EQU [&quot;&quot;] (
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        echo =========================================================
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        echo ae1982 - Aircraft Accidents in the US since 1982
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>        echo pd1982 - Profiling Data for the US since 1982
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>        echo ---------------------------------------------------------
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        set /P IO_AVSTATS_APPLICATION=&quot;Enter the Streamlit application name &quot;
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    ) else (
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>        set IO_AVSTATS_APPLICATION=%2
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    )
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>)
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>if [&quot;%IO_AVSTATS_TASK%&quot;] EQU [&quot;r_s_a&quot;] (
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    if [&quot;%2&quot;] EQU [&quot;&quot;] (
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        echo =========================================================
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        echo ae1982 - Aircraft Accidents in the US since 1982
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        echo pd1982 - Profiling Data for the US since 1982
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        echo ---------------------------------------------------------
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        set /P IO_AVSTATS_APPLICATION=&quot;Enter the Streamlit application name &quot;
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    ) else (
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        set IO_AVSTATS_APPLICATION=%2
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    )
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>)
 </code></pre></div>
 <p><strong>bash</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>...
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>if [ &quot;${IO_AVSTATS_TASK}&quot; = &quot;r_s_a&quot; ]; then
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    if [ -z &quot;$2&quot; ]; then
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        echo &quot;=========================================================&quot;
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        echo &quot;ae1982 - Aircraft Accidents in the US since 1982&quot;
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        echo &quot;pd1982 - Profiling Data for the US since 1982&quot;
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        echo &quot;---------------------------------------------------------&quot;
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        # shellcheck disable=SC2162
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        read -p &quot;Enter the Streamlit application name &quot; IO_AVSTATS_APPLICATION
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    else
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        export IO_AVSTATS_APPLICATION=$2
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    fi
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>fi
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>if [ &quot;${IO_AVSTATS_TASK}&quot; = &quot;r_s_a&quot; ]; then
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    if [ -z &quot;$2&quot; ]; then
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        echo &quot;=========================================================&quot;
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        echo &quot;ae1982 - Aircraft Accidents in the US since 1982&quot;
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        echo &quot;pd1982 - Profiling Data for the US since 1982&quot;
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        echo &quot;---------------------------------------------------------&quot;
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        # shellcheck disable=SC2162
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        read -p &quot;Enter the Streamlit application name &quot; IO_AVSTATS_APPLICATION
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    else
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        export IO_AVSTATS_APPLICATION=$2
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    fi
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>fi
 </code></pre></div>
 <h3 id="52-see-file-directory-scripts">5.2 See file directory <strong><code>scripts</code></strong></h3>
 <h4 id="521-scriptsrun_create_image">5.2.1 scripts/run_create_image</h4>
 <p><strong>cmd</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>...
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>if [&quot;%1&quot;] EQU [&quot;&quot;] (
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    echo =========================================================
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    echo ae1982 - Aircraft Accidents in the US since 1982
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    echo pd1982 - Profiling Data for the US since 1982
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    echo ---------------------------------------------------------
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    set /P APPLICATION=&quot;Enter the desired application name [default: %APPLICATION_DEFAULT%] &quot;
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    if [&quot;!APPLICATION!&quot;] EQU [&quot;&quot;] (
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>        set APPLICATION=%APPLICATION_DEFAULT%
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    )
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>) else (
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    set APPLICATION=%1
-<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>)
-<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>if [&quot;%1&quot;] EQU [&quot;&quot;] (
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    echo =========================================================
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    echo ae1982 - Aircraft Accidents in the US since 1982
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    echo pd1982 - Profiling Data for the US since 1982
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    echo ---------------------------------------------------------
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    set /P APPLICATION=&quot;Enter the desired application name [default: %APPLICATION_DEFAULT%] &quot;
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    if [&quot;!APPLICATION!&quot;] EQU [&quot;&quot;] (
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        set APPLICATION=%APPLICATION_DEFAULT%
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    )
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>) else (
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    set APPLICATION=%1
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>)
 </code></pre></div>
 <p><strong>bash</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>...
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>if [ -z &quot;$1&quot; ]; then
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    echo &quot;=========================================================&quot;
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    echo &quot;ae1982 - Aircraft Accidents in the US since 1982&quot;
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    echo &quot;pd1982 - Profiling Data for the US since 1982&quot;
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    echo &quot;---------------------------------------------------------&quot;
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    read -p &quot;Enter the desired application name [default: ${APPLICATION_DEFAULT}] &quot; APPLICATION
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    export APPLICATION=${APPLICATION}
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    if [ -z &quot;${APPLICATION}&quot; ]; then
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        export APPLICATION=${APPLICATION_DEFAULT}
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    fi
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>else
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    export APPLICATION=$1
-<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>fi
-<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>if [ -z &quot;$1&quot; ]; then
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    echo &quot;=========================================================&quot;
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    echo &quot;ae1982 - Aircraft Accidents in the US since 1982&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    echo &quot;pd1982 - Profiling Data for the US since 1982&quot;
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    echo &quot;---------------------------------------------------------&quot;
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    read -p &quot;Enter the desired application name [default: ${APPLICATION_DEFAULT}] &quot; APPLICATION
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    export APPLICATION=${APPLICATION}
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    if [ -z &quot;${APPLICATION}&quot; ]; then
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>        export APPLICATION=${APPLICATION_DEFAULT}
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    fi
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>else
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    export APPLICATION=$1
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>fi
 </code></pre></div>
 <h4 id="522-scriptsrun_docker_compose">5.2.2 scripts/run_docker_compose</h4>
 <p><strong>cmd</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>...
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>...
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>echo STREAMLIT_SRRVER_PORT_AE1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982%
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>echo STREAMLIT_SERVER_PORT_PD1982 : %IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982%
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>...
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>echo STREAMLIT_SRRVER_PORT_X...X : %IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X%
 </code></pre></div>
 <p><strong>bash</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>...
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982=8501
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982=8502
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>...
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>echo &quot;STREAMLIT_SRRVER_PORT_AE1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}&quot;
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>echo &quot;STREAMLIT_SERVER_PORT_PD1982 : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}&quot;
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>...
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>echo &quot;STREAMLIT_SRRVER_PORT_X...X : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X}&quot;
 </code></pre></div>
 
 
@@ -1126,7 +1035,7 @@
     <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.b78d2936.min.js"></script>
+      <script src="assets/javascripts/bundle.19047be9.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
       

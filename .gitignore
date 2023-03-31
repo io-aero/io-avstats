@@ -18,6 +18,8 @@
 /data/postgres.zip
 /data/postgres/
 /data/postgres_keycloak/
+/data/postgres_keycloak_export_cloud/
+/data/postgres_keycloak_export_local/
 /data/postgres_test/
 /download/IO-AVSTATS-DB.pdf
 /download/IO-AVSTATS-DB.zip

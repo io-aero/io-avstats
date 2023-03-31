@@ -3872,9 +3872,7 @@ def _streamlit_flow() -> None:
     if MODE_STANDARD:
         col1, col2 = st.sidebar.columns(2)
         col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-        url = "http://" + (
-            "members.io-aero.com" if HOST_CLOUD else "localhost:8598"
-        )
+        url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
         col2.markdown(f"##  [Member Menu]({url})")
     else:
         st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")

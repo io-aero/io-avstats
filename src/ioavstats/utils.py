@@ -124,9 +124,7 @@ def has_access(
 
     # pylint: disable=R0801
     keycloak = login(
-        url="http://auth.io-aero.com"
-        if host_cloud
-        else "http://auth.localhost:8080",
+        url="http://auth.io-aero.com" if host_cloud else "http://auth.localhost:8080",
         realm="IO-Aero",
         client_id=app_id,
     )

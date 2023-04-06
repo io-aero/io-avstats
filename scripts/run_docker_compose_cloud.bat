@@ -152,6 +152,11 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker image ls | find "stats"                     && docker rmi --force ioaero/stats:latest
     echo ......................................................... after images:
     docker images
+
+    cd data
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
+    cd ..
+
     goto END_OF_SCRIPT
 )
 
@@ -167,6 +172,11 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
     docker ps
     echo ..................................................... after containers:
     docker ps -a
+
+    cd data
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
+    cd ..
+
     goto END_OF_SCRIPT
 )
 

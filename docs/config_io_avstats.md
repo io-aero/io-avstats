@@ -33,7 +33,6 @@ The `test` layer is used for the automated tests.
 | odbc_connection_string                  | Driver={MS Access Driver ...                  | connection string for the MS Access ODBC driver                          |
 | postgres_connection_port                | 5432                                          | database port number                                                     |
 | postgres_container_name                 | io_avstats_container                          | container name                                                           |
-| postgres_container_port                 | 5432                                          | container port number                                                    |
 | postgres_database_schema                | public                                        | database schema name                                                     |
 | postgres_dbname                         | io_avstats_db                                 | database name                                                            |
 | postgres_dbname_admin                   | postgres                                      | administration database name                                             |

@@ -142,6 +142,11 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
     echo "........................................................ after images:"
     docker images
 
+    now=$(date +"%Y.%m.%d")
+    cd data
+    zip -r ${now}_postgres_keycloak.zip postgres_keycloak
+    cd ..
+
 # ------------------------------------------------------------------------------
 # Stop Docker Compose.
 # ------------------------------------------------------------------------------
@@ -158,6 +163,11 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "down" ]; then
     echo ".................................................... after containers:"
     docker ps
     docker images
+
+    now=$(date +"%Y.%m.%d")
+    cd data
+    zip -r ${now}_postgres_keycloak.zip postgres_keycloak
+    cd ..
 
 # ------------------------------------------------------------------------------
 # View Container Output.

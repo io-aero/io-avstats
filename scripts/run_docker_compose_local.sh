@@ -144,7 +144,7 @@ if [ "${IO_AVSTATS_COMPOSE_TASK}" = "clean" ]; then
 
     now=$(date +"%Y.%m.%d")
     cd data
-    zip -r ${now}_postgres_keycloak.zip postgres_keycloak
+    sudo zip-r "${now}_postgres_keycloak.zip" postgres_keycloak
     cd ..
 
 # ------------------------------------------------------------------------------
@@ -166,7 +166,7 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "down" ]; then
 
     now=$(date +"%Y.%m.%d")
     cd data
-    zip -r ${now}_postgres_keycloak.zip postgres_keycloak
+    sudo zip -r "${now}_postgres_keycloak.zip" postgres_keycloak
     cd ..
 
 # ------------------------------------------------------------------------------

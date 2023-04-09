@@ -62,7 +62,6 @@ if [ -z "$1" ]; then
     echo "---------------------------------------------------------"
     echo "d_s_f   - Download basic simplemaps files"
     echo "l_s_d   - Load simplemaps data into PostgreSQL"
-#   echo "d_z_f   - Download the ZIP Code Database file"
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
@@ -184,8 +183,6 @@ echo "==========================================================================
 # c_l_l: Correct decimal US latitudes and longitudes.
 # c_p_d: Cleansing PostgreSQL data.
 # d_d_s: Drop the PostgreSQL database schema.
-# d_s_f: Download basic simplemaps files.
-# d_z_f: Download the ZIP Code Database file.
 # l_c_s: Load country and state data into PostgreSQL.
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_s_e: Load sequence of events data into PostgreSQL.
@@ -195,7 +192,7 @@ echo "==========================================================================
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"d_s_f"|"d_z_f"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi

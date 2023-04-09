@@ -66,10 +66,6 @@ def main(argv: list[str]) -> None:
         avstats.drop_db_schema()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_D_N_A:
         avstats.download_ntsb_msaccess_file(avstats.ARG_MSACCESS)
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_D_S_F:
-        avstats.download_basic_simplemaps_files()
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_D_Z_F:
-        avstats.download_zip_code_db_file()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_GENERATE:
         avstats.generate_sql()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_C_D:

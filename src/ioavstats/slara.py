@@ -2458,7 +2458,7 @@ def _setup_filter() -> None:
                 + f"\n- **Finding modifiers**: **`{','.join(FILTER_FINDINGS_MODIFIERS)}`**"
             )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     CHOICE_FILTER_DATA_OTHER = st.sidebar.checkbox(
         help="""
@@ -2489,7 +2489,7 @@ def _setup_filter() -> None:
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     max_no_aircraft = _sql_query_max_no_aircraft()
 
@@ -2517,7 +2517,7 @@ def _setup_filter() -> None:
             + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_EV_TYPE = st.sidebar.multiselect(
         default=FILTER_EV_TYPE_DEFAULT,
@@ -2535,7 +2535,7 @@ def _setup_filter() -> None:
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
         help="""
@@ -2554,7 +2554,7 @@ def _setup_filter() -> None:
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     max_inj_f_grnd = _sql_query_max_inj_f_grnd()
 
@@ -2610,7 +2610,7 @@ def _setup_filter() -> None:
         or FILTER_INJ_TOT_F_FROM
         or FILTER_INJ_TOT_F_TO
     ):
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
         default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
@@ -2628,7 +2628,7 @@ def _setup_filter() -> None:
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
@@ -2642,7 +2642,7 @@ def _setup_filter() -> None:
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
@@ -2667,7 +2667,7 @@ def _setup_filter() -> None:
             + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     _print_timestamp("_setup_filter")
 
@@ -3448,7 +3448,7 @@ For efficiency reasons, it is very useful to define the parameter settings and f
         value=False,
     )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
         help="""
@@ -3573,7 +3573,7 @@ to decide whether a candidate rule is of interest.
                 value=0.80,
             )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_SHOW_FILTERED_RAW_DATA = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed raw data.",
@@ -3664,7 +3664,7 @@ to decide whether a candidate rule is of interest.
                 value=(2, 2),
             )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     _print_timestamp("_setup_task_controls()")
 

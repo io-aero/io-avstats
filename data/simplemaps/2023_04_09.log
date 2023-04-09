@@ -1,0 +1,114 @@
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
+=========================================================
+r_s_a   - Run a Streamlit application
+---------------------------------------------------------
+u_p_d   - Complete processing of a modifying MS Access file
+---------------------------------------------------------
+l_n_a   - Load NTSB MS Access database data into PostgreSQL
+c_l_l   - Correct decimal US latitudes and longitudes
+v_n_d   - Verify selected NTSB data
+r_d_s   - Refresh the PostgreSQL database schema
+---------------------------------------------------------
+l_s_d   - Load simplemaps data into PostgreSQL
+l_z_d   - Load ZIP Code Database data into PostgreSQL
+l_c_d   - Load data from a correction file into PostgreSQL
+---------------------------------------------------------
+a_o_c   - Load aviation occurrence categories into PostgreSQL
+c_d_l   - Run Docker Compose tasks - Local
+c_d_s   - Create the PostgreSQL database schema
+c_p_d   - Cleansing PostgreSQL data
+d_d_f   - Delete the PostgreSQL database files
+d_d_s   - Drop the PostgreSQL database schema
+l_c_s   - Load country and state data into PostgreSQL
+l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
+l_s_e   - Load sequence of events data into PostgreSQL
+s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
+u_d_s   - Update the PostgreSQL database schema
+---------------------------------------------------------
+k_s_d   - Set up the Keycloak PostgreSQL database container
+---------------------------------------------------------
+c_d_i   - Create or update a Docker image
+c_d_c   - Run Docker Compose tasks - Cloud
+c_f_z   - Zip the files for the cloud
+---------------------------------------------------------
+version - Show the IO-AVSTATS-DB version
+---------------------------------------------------------
+Enter the desired task [default: r_s_a] l_s_d
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   :
+-----------------------------------------------------------------------
+TASK         : l_s_d
+APPLICATION  :
+COMPOSE_TASK :
+MSACCESS     :
+MSEXCEL      :
+-----------------------------------------------------------------------
+The current time is:  4:57:57.05
+Enter the new time:
+=======================================================================
+Progress update 2023-04-09 04:57:59.513389 : ===============================================================================.
+Progress update 2023-04-09 04:57:59.513389 : INFO.00.004 Start Launcher.
+Progress update 2023-04-09 04:57:59.515389 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-04-09 04:57:59.526889 : INFO.00.005 Argument task='l_s_d'.
+Progress update 2023-04-09 04:57:59.526889 : -------------------------------------------------------------------------------.
+Progress update 2023-04-09 04:57:59.526889 : INFO.00.050 Load simplemaps data.
+Progress update 2023-04-09 04:57:59.526889 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:57:59.526889 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-04-09 04:58:00.050973 : INFO.00.063 Processed data source 'simplemaps United States Cities Database'.
+Progress update 2023-04-09 04:58:00.050973 : INFO.00.063 Processed data source 'simplemaps US Zip Codes Database'.
+Progress update 2023-04-09 04:58:00.050973 : Number rows deleted  :    78370.
+Progress update 2023-04-09 04:58:00.051473 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:00.051473 : INFO.00.039 Database table io_lat_lng: Load zipcode data from file 'data/simplemaps/uscities.xlsx'.
+Progress update 2023-04-09 04:58:00.051473 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:05.149470 : Number of rows so far read :    10000.
+Progress update 2023-04-09 04:58:10.481506 : Number of rows so far read :    20000.
+Progress update 2023-04-09 04:58:15.829851 : Number of rows so far read :    30000.
+Progress update 2023-04-09 04:58:21.202950 : Number of rows so far read :    40000.
+Progress update 2023-04-09 04:58:25.394052 : Number rows selected :    47813.
+Progress update 2023-04-09 04:58:25.394052 : Number rows inserted :    44372.
+Progress update 2023-04-09 04:58:25.394052 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:25.394552 : INFO.00.025 Database table io_lat_lng: Load zipcode data from file 'data/simplemaps/uszips.xlsx'.
+Progress update 2023-04-09 04:58:25.394552 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:31.650463 : Number of rows so far read :    10000.
+Progress update 2023-04-09 04:58:37.540755 : Number of rows so far read :    20000.
+Progress update 2023-04-09 04:58:43.438502 : Number of rows so far read :    30000.
+Progress update 2023-04-09 04:58:45.629552 : Number rows selected :    33790.
+Progress update 2023-04-09 04:58:45.629552 : Number rows upserted :    33784.
+Progress update 2023-04-09 04:58:45.629552 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:45.630052 : INFO.00.027 Database table io_lat_lng: Load city data from file 'data/simplemaps/uscities.xlsx'.
+Progress update 2023-04-09 04:58:45.630052 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:58:51.719807 : Number of rows so far read :    10000.
+Progress update 2023-04-09 04:58:57.801339 : Number of rows so far read :    20000.
+Progress update 2023-04-09 04:59:03.924857 : Number of rows so far read :    30000.
+Progress update 2023-04-09 04:59:04.466451 : Number rows selected :    30844.
+Progress update 2023-04-09 04:59:04.466451 : Number rows upserted :    30844.
+Progress update 2023-04-09 04:59:04.466950 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:59:04.515960 : INFO.00.063 Processed data source 'average'.
+Progress update 2023-04-09 04:59:04.516462 : Number rows deleted  :    14261.
+Progress update 2023-04-09 04:59:04.516462 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:59:04.516462 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2023-04-09 04:59:04.516462 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 04:59:04.516462 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-04-09 04:59:09.281466 : Number of rows so far read :    10000.
+Progress update 2023-04-09 04:59:13.772000 : Number of rows so far read :    20000.
+Progress update 2023-04-09 04:59:18.237445 : Number of rows so far read :    30000.
+Progress update 2023-04-09 04:59:22.719052 : Number of rows so far read :    40000.
+Progress update 2023-04-09 04:59:24.994497 : Number rows selected :    45047.
+Progress update 2023-04-09 04:59:24.994497 : Number rows inserted :    45047.
+Progress update 2023-04-09 04:59:24.994997 : -------------------------------------------------------------------------------.
+Progress update 2023-04-09 04:59:24.994997 :       85,481,608,500 ns - Total time launcher.
+Progress update 2023-04-09 04:59:24.994997 : INFO.00.006 End   Launcher.
+Progress update 2023-04-09 04:59:24.994997 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is:  4:59:25.11
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================

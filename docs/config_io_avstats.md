@@ -16,15 +16,10 @@ The `test` layer is used for the automated tests.
 | download_chunk_size                     | 524288                                        | chunk size for download from the **NTSB** website                        |
 | download_file_countries_states_json     | data/Countries_States/countries_states.json   | name of the file containing data of countries and states                 |
 | download_file_simplemaps_us_cities_xlsx | uscities.xlsx                                 | simplemaps: name of the zipped US city file                              |
-| download_file_simplemaps_us_cities_zip  | simplemaps_uscities_basicv1.75.zip            | simplemaps: name of the unzipped US city file                            |
 | download_file_simplemaps_us_zips_xlsx   | uszips.xlsx                                   | simplemaps: name of the zipped US zip code file                          |
-| download_file_simplemaps_us_zips_zip    | simplemaps_uszips_basicv1.81.zip              | simplemaps: name of the unzipped US zip code file                        |
 | download_file_zip_codes_org_xls         | zip_code_database.xls                         | ZIP Code Database: name of the unzipped US zip code file                 |
 | download_timeout                        | 10                                            | seconds to wait for the server to send data                              |
 | download_url_ntsb_prefix                | https://data.ntsb.gov/...                     | prefix of the download link for the **NTSB** data sets                   |
-| download_url_simplemaps_us_cities       | https://simplemaps.com/...                    | prefix of the download link for the **simplemaps** US cities data sets   |
-| download_url_simplemaps_us_zips         | https://simplemaps.com/...                    | prefix of the download link for the **simplemaps** US zip code data sets |
-| download_url_zip_codes_org              | https://www.unitedstateszipcodes.org/...      | prefix of the download link for the **ZIP Code Database** data set       |
 | download_work_dir                       | data/download                                 | working directory for the processing of **NTSB** data sets               |
 | is_runtime_environment_local            | false / true                                  | local execution environment - unlike Docker                              |
 | is_verbose                              | true                                          | display progress messages for processing                                 |

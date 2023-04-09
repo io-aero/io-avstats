@@ -412,28 +412,6 @@ def test_launcher_l_c_d_wrong_format():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - d_s_f   - Download basic simplemaps files.
-# -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_d_s_f():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
-
-    if platform.system() == "Windows":
-        os.system("run_io_avstats.bat d_s_f")
-    elif platform.system() == "Linux":
-        os.system("./run_io_avstats.sh d_s_f")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        io_utils.terminate_fatal(
-            io_glob.ERROR_00_908.replace("{os}", platform.system())
-        )
-
-    io_glob.logger.debug(io_glob.LOGGER_END)
-
-
-# -----------------------------------------------------------------------------
 # Test case: launcher() - l_z_d   - Load ZIP Code Database data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
@@ -479,28 +457,6 @@ def test_launcher_l_z_d_wrong_correction():
         os.system(
             "pipenv run python src/launcher.py -t l_z_d -e correction_pytest.xlsx"
         )
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        io_utils.terminate_fatal(
-            io_glob.ERROR_00_908.replace("{os}", platform.system())
-        )
-
-    io_glob.logger.debug(io_glob.LOGGER_END)
-
-
-# -----------------------------------------------------------------------------
-# Test case: launcher() - d_z_f   - Download the ZIP Code Database file.
-# -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_d_z_f():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
-
-    if platform.system() == "Windows":
-        os.system("run_io_avstats.bat d_z_f")
-    elif platform.system() == "Linux":
-        os.system("./run_io_avstats.sh d_z_f")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(

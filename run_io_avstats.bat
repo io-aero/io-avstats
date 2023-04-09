@@ -67,9 +67,7 @@ if ["%1"] EQU [""] (
     echo v_n_d   - Verify selected NTSB data
     echo r_d_s   - Refresh the PostgreSQL database schema
     echo ---------------------------------------------------------
-    echo d_s_f   - Download basic simplemaps files
     echo l_s_d   - Load simplemaps data into PostgreSQL
-rem echo d_z_f   - Download the ZIP Code Database file
     echo l_z_d   - Load ZIP Code Database data into PostgreSQL
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
@@ -391,32 +389,6 @@ rem Download a NTSB MS Access database file.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Download basic simplemaps files.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_s_f"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Download the ZIP Code Database file.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_z_f"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

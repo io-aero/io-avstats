@@ -1,0 +1,97 @@
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats>run_io_avstats
+=========================================================
+r_s_a   - Run a Streamlit application
+---------------------------------------------------------
+u_p_d   - Complete processing of a modifying MS Access file
+---------------------------------------------------------
+l_n_a   - Load NTSB MS Access database data into PostgreSQL
+c_l_l   - Correct decimal US latitudes and longitudes
+v_n_d   - Verify selected NTSB data
+r_d_s   - Refresh the PostgreSQL database schema
+---------------------------------------------------------
+l_s_d   - Load simplemaps data into PostgreSQL
+l_z_d   - Load ZIP Code Database data into PostgreSQL
+l_c_d   - Load data from a correction file into PostgreSQL
+---------------------------------------------------------
+a_o_c   - Load aviation occurrence categories into PostgreSQL
+c_d_l   - Run Docker Compose tasks - Local
+c_d_s   - Create the PostgreSQL database schema
+c_p_d   - Cleansing PostgreSQL data
+d_d_f   - Delete the PostgreSQL database files
+d_d_s   - Drop the PostgreSQL database schema
+l_c_s   - Load country and state data into PostgreSQL
+l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
+l_s_e   - Load sequence of events data into PostgreSQL
+s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
+u_d_s   - Update the PostgreSQL database schema
+---------------------------------------------------------
+k_s_d   - Set up the Keycloak PostgreSQL database container
+---------------------------------------------------------
+c_d_i   - Create or update a Docker image
+c_d_c   - Run Docker Compose tasks - Cloud
+c_f_z   - Zip the files for the cloud
+---------------------------------------------------------
+version - Show the IO-AVSTATS-DB version
+---------------------------------------------------------
+Enter the desired task [default: r_s_a] l_z_d
+
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   :
+-----------------------------------------------------------------------
+TASK         : l_z_d
+APPLICATION  :
+COMPOSE_TASK :
+MSACCESS     :
+MSEXCEL      :
+-----------------------------------------------------------------------
+The current time is:  5:25:29.02
+Enter the new time:
+=======================================================================
+Progress update 2023-04-09 05:25:30.598512 : ===============================================================================.
+Progress update 2023-04-09 05:25:30.599009 : INFO.00.004 Start Launcher.
+Progress update 2023-04-09 05:25:30.600507 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-04-09 05:25:30.610017 : INFO.00.005 Argument task='l_z_d'.
+Progress update 2023-04-09 05:25:30.610017 : -------------------------------------------------------------------------------.
+Progress update 2023-04-09 05:25:30.610017 : INFO.00.056 Load ZIP Code Database data.
+Progress update 2023-04-09 05:25:30.610516 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:30.610516 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-04-09 05:25:31.019443 : INFO.00.063 Processed data source 'Zip Codes.org ZIP Code Database'.
+Progress update 2023-04-09 05:25:31.019943 : Number rows deleted  :    13366.
+Progress update 2023-04-09 05:25:31.019943 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:31.019943 : INFO.00.061 Database table io_lat_lng: Load the estimated zip code data.
+Progress update 2023-04-09 05:25:31.019943 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:36.818186 : Number of rows so far read :    10000.
+Progress update 2023-04-09 05:25:42.682638 : Number of rows so far read :    20000.
+Progress update 2023-04-09 05:25:49.597571 : Number of rows so far read :    30000.
+Progress update 2023-04-09 05:25:57.087719 : Number of rows so far read :    40000.
+Progress update 2023-04-09 05:25:59.113139 : Number rows selected :    42736.
+Progress update 2023-04-09 05:25:59.113638 : Number rows upserted :    13369.
+Progress update 2023-04-09 05:25:59.113638 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:59.188316 : INFO.00.063 Processed data source 'average'.
+Progress update 2023-04-09 05:25:59.188816 : Number rows deleted  :    14263.
+Progress update 2023-04-09 05:25:59.188816 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:59.188816 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2023-04-09 05:25:59.188816 : --------------------------------------------------------------------------------
+Progress update 2023-04-09 05:25:59.188816 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-04-09 05:26:05.543298 : Number of rows so far read :    10000.
+Progress update 2023-04-09 05:26:10.508678 : Number of rows so far read :    20000.
+Progress update 2023-04-09 05:26:15.274053 : Number of rows so far read :    30000.
+Progress update 2023-04-09 05:26:19.930991 : Number of rows so far read :    40000.
+Progress update 2023-04-09 05:26:22.613940 : Number rows selected :    45845.
+Progress update 2023-04-09 05:26:22.614440 : Number rows inserted :    45845.
+Progress update 2023-04-09 05:26:22.615940 : -------------------------------------------------------------------------------.
+Progress update 2023-04-09 05:26:22.615940 :       52,017,428,200 ns - Total time launcher.
+Progress update 2023-04-09 05:26:22.615940 : INFO.00.006 End   Launcher.
+Progress update 2023-04-09 05:26:22.616945 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is:  5:26:22.74
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================

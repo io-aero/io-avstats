@@ -2487,7 +2487,8 @@ def _present_map() -> None:
                 + "<tr><td><b>Acquired</b></td><td>{latlong_acq}</td></tr>"
                 + "</tbody></table>"
             },
-        )
+        ),
+        use_container_width=True,
     )
 
 
@@ -2757,7 +2758,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_no_aircraft = _sql_query_max_no_aircraft()
@@ -2791,7 +2792,7 @@ def _setup_filter() -> None:
                 "_setup_filter - FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO"
             )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_CICTT_CODES = st.sidebar.multiselect(
@@ -2810,7 +2811,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if MODE_STANDARD:
         FILTER_EV_TYPE = st.sidebar.multiselect(
@@ -2831,7 +2832,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if not MODE_STANDARD:
         FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
@@ -2859,7 +2860,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     if not MODE_STANDARD:
         FILTER_FAR_PARTS = FILTER_FAR_PARTS_DEFAULT
@@ -2896,7 +2897,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_inj_f_grnd = _sql_query_max_inj_f_grnd()
@@ -2960,7 +2961,7 @@ def _setup_filter() -> None:
         or FILTER_INJ_TOT_F_FROM
         or FILTER_INJ_TOT_F_TO
     ):
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FINDING_CODES = st.sidebar.multiselect(
@@ -2979,7 +2980,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
         default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
@@ -2999,7 +3000,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_LATLONG_ACQ = st.sidebar.multiselect(
@@ -3016,7 +3017,7 @@ def _setup_filter() -> None:
                 + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
         FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
             help="""
@@ -3032,7 +3033,7 @@ def _setup_filter() -> None:
                 + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_DEFINING_PHASES = st.sidebar.multiselect(
@@ -3046,7 +3047,7 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Phases of flight**: **`{','.join(FILTER_DEFINING_PHASES)}`**"
             )
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_PREVENTABLE_EVENTS = st.sidebar.multiselect(
         help="""
@@ -3064,7 +3065,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_PREVENTABLE_EVENTS - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
@@ -3098,7 +3099,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_TLL_PARAMETERS - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
@@ -3125,7 +3126,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     _print_timestamp("_setup_filter - End")
 
@@ -3269,7 +3270,7 @@ def _setup_task_controls() -> None:
             value=False,
         )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     CHOICE_MAP = st.sidebar.checkbox(
         help="Display the events on a map (after filtering the data).",
@@ -3304,7 +3305,7 @@ def _setup_task_controls() -> None:
             value=(1609 * 2),
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DATA_GRAPHS_YEARS = st.sidebar.checkbox(
         help="Events or fatalities per year (after filtering the data).",
@@ -3348,7 +3349,7 @@ def _setup_task_controls() -> None:
                     value=False,
                 )
 
-            st.sidebar.markdown("""---""")
+            st.sidebar.divider()
 
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
@@ -3446,7 +3447,7 @@ def _setup_task_controls() -> None:
                     value=1.5,
                 )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DATA_GRAPHS_TOTALS = st.sidebar.checkbox(
         help="Total Events or fatalities (after filtering the data).",
@@ -3498,7 +3499,7 @@ def _setup_task_controls() -> None:
                     value=True,
                 )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
@@ -3596,7 +3597,7 @@ def _setup_task_controls() -> None:
                     value=1.5,
                 )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     if MODE_STANDARD:
         CHOICE_DATA_PROFILE = st.sidebar.checkbox(
@@ -3618,7 +3619,7 @@ def _setup_task_controls() -> None:
                 ),
             )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if MODE_STANDARD:
         CHOICE_DETAILS = st.sidebar.checkbox(
@@ -3627,7 +3628,7 @@ def _setup_task_controls() -> None:
             value=True,
         )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
 
 # ------------------------------------------------------------------

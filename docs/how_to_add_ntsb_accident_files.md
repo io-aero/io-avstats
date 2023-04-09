@@ -22,9 +22,7 @@ The following processing steps are performed only on the first of each month:
 
 | No. | Task  | Description                                                    |
 |----:|-------|----------------------------------------------------------------|
-|   1 | d_s_f | Download basic simplemaps files                                |
 |   2 | l_s_d | **Optional**: Load simplemaps data into PostgreSQL             |
-|   3 |       | Download the ZIP Code Database file                            |
 |   4 | l_z_d | **Optional**: Load ZIP Code Database data into PostgreSQL      |
 |   5 | l_c_d | **Optional**: Load data from a correction file into PostgreSQL |
 
@@ -48,46 +46,6 @@ The following steps are used to back up and to update the database in the cloud:
 |  23 | c_f_z | Zip the files for the cloud                   |
 
 ## 2. Detailed description
-
-### No. 1 - **`d_s_f`** - Download basic simplemaps files
-
-**Relevant configuration parameters**:
-
-```
-download_chunk_size = 524288
-download_timeout = 10
-download_file_simplemaps_us_cities_xlsx = "uscities.xlsx"
-download_file_simplemaps_us_cities_zip = "simplemaps_uscities_basicv1.75.zip"
-download_file_simplemaps_us_zips_xlsx = "uszips.xlsx"
-download_file_simplemaps_us_zips_zip = "simplemaps_uszips_basicv1.81.zip"
-download_work_dir = "data/download"
-```
-
-**Example protocol**:
-
-```
-...\io-avstats>run_io_avstats
-Progress update 2023-01-12 08:52:58.915135 : ===============================================================================.
-Progress update 2023-01-12 08:52:58.915635 : INFO.00.004 Start Launcher.
-Progress update 2023-01-12 08:52:58.917636 : INFO.00.001 The logger is configured and ready.
-Progress update 2023-01-12 08:52:58.925635 : INFO.00.005 Argument task='d_s_f'.
-Progress update 2023-01-12 08:52:58.925635 : -------------------------------------------------------------------------------.
-Progress update 2023-01-12 08:52:58.926135 : INFO.00.048 Downloading basic simplemaps files.
-Progress update 2023-01-12 08:52:58.926135 : --------------------------------------------------------------------------------
-Progress update 2023-01-12 08:52:59.124166 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
-Progress update 2023-01-12 08:52:59.625371 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
-Progress update 2023-01-12 08:52:59.658871 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
-Progress update 2023-01-12 08:52:59.736875 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
-Progress update 2023-01-12 08:52:59.838506 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
-Progress update 2023-01-12 08:52:59.872006 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
-Progress update 2023-01-12 08:52:59.872506 : -------------------------------------------------------------------------------.
-Progress update 2023-01-12 08:52:59.872506 :        1,075,371,000 ns - Total time launcher.
-Progress update 2023-01-12 08:52:59.872506 : INFO.00.006 End   Launcher.
-Progress update 2023-01-12 08:52:59.872506 : ===============================================================================.
-```
-
-The downloaded files **`uscities.csv`** and **`uszips.xlsx`** must be checked with the reference files in the file directory **`data/reference`** for a match.
-If there is no mismatch, then the next step can be skipped.
 
 ### No. 2 - **`l_s_d`** - Load simplemaps data into PostgreSQL
 

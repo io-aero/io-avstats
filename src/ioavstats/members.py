@@ -48,7 +48,7 @@ def _setup_page():
         unsafe_allow_html=True,
     )
 
-    st.markdown("""---""")
+    st.divider()
 
     # --------------------------------------------------------------
     # Application menu.
@@ -98,7 +98,7 @@ def _setup_page():
             with col2:
                 st.markdown("##### " + app_link)
 
-        st.markdown("""---""")
+        st.divider()
 
     # --------------------------------------------------------------
     # Download menu.
@@ -143,14 +143,14 @@ def _setup_page():
                         file_name=item_file,
                     )
 
-        st.markdown("""---""")
+        st.divider()
 
     # --------------------------------------------------------------
     # Image.
     # --------------------------------------------------------------
     st.image(Image.open("docs/img/StockSnap_SLQQYN6CRR.jpg"))
 
-    st.markdown("""---""")
+    st.divider()
 
 
 # ------------------------------------------------------------------

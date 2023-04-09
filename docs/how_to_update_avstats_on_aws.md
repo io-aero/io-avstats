@@ -30,7 +30,6 @@ v_n_d   - Verify selected NTSB data
 r_d_s   - Refresh the PostgreSQL database schema
 ---------------------------------------------------------
 c_p_d   - Cleansing PostgreSQL data
-d_s_f   - Download basic simplemaps files
 l_c_d   - Load data from a correction file into PostgreSQL
 l_c_s   - Load country and state data into PostgreSQL
 l_s_d   - Load simplemaps data into PostgreSQL
@@ -393,7 +392,6 @@ v_n_d   - Verify selected NTSB data
 r_d_s   - Refresh the PostgreSQL database schema
 ---------------------------------------------------------
 c_p_d   - Cleansing PostgreSQL data
-d_s_f   - Download basic simplemaps files
 l_c_d   - Load data from a correction file into PostgreSQL
 l_c_s   - Load country and state data into PostgreSQL
 l_s_d   - Load simplemaps data into PostgreSQL

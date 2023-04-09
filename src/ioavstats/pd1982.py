@@ -591,7 +591,7 @@ def _setup_filter_controls():
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
 
 # ------------------------------------------------------------------
@@ -684,7 +684,7 @@ def _setup_task_controls():
             ),
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the selected detailed data.",
@@ -692,7 +692,7 @@ def _setup_task_controls():
         value=True,
     )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
@@ -711,7 +711,7 @@ def _setup_task_controls():
         else "Table"
     )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
 
 # ------------------------------------------------------------------

@@ -761,81 +761,6 @@ def _get_user_guide_chart(
 **io_sequence_of_events** and **io_aviation_occurrence_categories**. 
 - Depending on the number of aircraft involved in the event, several rows may be assigned to the same event in the 
 **events_sequence** table. However, this is only critical if it results in different CICTT codes for the same event.
-
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id          ev_year    aircraft_key    eventsoe_no
-20080505X00589    2008    1               200
-20080505X00589    2008    2               230
-20080829X01354    2008    1               260
-20080829X01354    2008    2               100
-20090202X21409    2009    1               250
-20090202X21409    2009    2               490
-20091010X63931    2009    1               250
-20091010X63931    2009    2               240
-20100317X00948    2010    1               260
-20100317X00948    2010    2               070
-20100704X92306    2010    1               380
-20100704X92306    2010    2               200
-20100803X25950    2010    1               200
-20100803X25950    2010    2               900
-20101022X34140    2010    1               190
-20101022X34140    2010    2               100
-20101022X34140    2010    3               100
-20110904X00636    2011    1               250
-20110904X00636    2011    2               440
-20111019X85758    2011    1               900
-20111019X85758    2011    2               260
-20120523X33839    2012    1               230
-20120523X33839    2012    2               200
-20120529X21628    2012    1               230
-20120529X21628    2012    2               200
-20120705X51659    2012    1               320
-20120705X51659    2012    2               900
-20120811X13221    2012    1               000
-20120811X13221    2012    2               900
-20121027X42304    2012    1               230
-20121027X42304    2012    2               200
-20121118X14342    2012    1               220
-20121118X14342    2012    2               200
-20140425X84104    2014    1               100
-20140425X84104    2014    2               260
-20150210X11721    2015    1               230
-20150210X11721    2015    2               200
-20150416X33824    2015    1               260
-20150416X33824    2015    2               320
-20150508X60256    2015    1               230
-20150508X60256    2015    2               200
-20151123X43413    2015    1               200
-20151123X43413    2015    2               402
-20160413X30204    2016    1               320
-20160413X30204    2016    2               100
-20160413X94401    2016    1               320
-20160413X94401    2016    2               070
-20160418X44917    2016    1               100
-20160418X44917    2016    2               260
-20171019X45158    2017    1               200
-20171019X45158    2017    2               490
-20180403X00427    2018    1               200
-20180403X00427    2018    2               490
-20200603X55158    2019    1               080
-20200603X55158    2019    2               200
-20201023102180    2020    2               230
-20201030102217    2020    2               230
-20210219102650    2021    2               900
-20210311102742    2021    2               333
-20210726103541    2021    1               200
-20210726103541    2021    2               270
-20210822103737    2021    2               333
-20220111104514    2022    1               200
-20220111104514    2022    2               900
-20220309104755    2022    2               240
-20220818105763    2022    2               250
-20220826105805    2022    2               341
-20221121106336    2022    1               200
-20221121106336    2022    2               250
-```
             """
         case "ey_il" | "te_il":
             text += """
@@ -894,37 +819,6 @@ TODO
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
-
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id         |ev_year|aircraft_key|far_part|inj_tot_f|
---------------+-------+------------+--------+---------+
-20090808X42846|   2009|           1|091     |        9|
-20090808X42846|   2009|           2|135     |        9|
-20111004X45824|   2011|           1|NUSN    |        1|
-20111004X45824|   2011|           2|        |        1|
-20150707X22207|   2015|           1|091     |        2|
-20150707X22207|   2015|           2|ARMF    |        2|
-20160831X62719|   2016|           1|135     |        5|
-20160831X62719|   2016|           2|091     |        5|
-20180107X10632|   2017|           1|NUSN    |        1|
-20180107X10632|   2017|           2|NUSC    |        1|
-20180614X22730|   2018|           1|091     |        1|
-20180614X22730|   2018|           2|135     |        1|
-20180804X53521|   2018|           1|UNK     |        1|
-20180804X53521|   2018|           2|PUBU    |        1|
-20190826X90719|   2019|           1|NUSC    |        7|
-20190826X90719|   2019|           2|NUSN    |        7|
-20200731X11938|   2020|           1|135     |        7|
-20200731X11938|   2020|           2|091     |        7|
-20200827X15154|   2020|           1|135     |        2|
-20200827X15154|   2020|           2|091     |        2|
-20210715103483|   2020|           1|NUSN    |        5|
-20210715103483|   2020|           2|129     |        5|
-20211221104432|   2021|           1|135     |        2|
-20211221104432|   2021|           2|103     |        2|
-```
                     """
         case "fy_sfp" | "tf_sfp":
             text += """
@@ -933,37 +827,6 @@ ev_id         |ev_year|aircraft_key|far_part|inj_tot_f|
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
-
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id         |ev_year|aircraft_key|far_part|inj_tot_f|
---------------+-------+------------+--------+---------+
-20090808X42846|   2009|           1|091     |        9|
-20090808X42846|   2009|           2|135     |        9|
-20111004X45824|   2011|           1|NUSN    |        1|
-20111004X45824|   2011|           2|        |        1|
-20150707X22207|   2015|           1|091     |        2|
-20150707X22207|   2015|           2|ARMF    |        2|
-20160831X62719|   2016|           1|135     |        5|
-20160831X62719|   2016|           2|091     |        5|
-20180107X10632|   2017|           1|NUSN    |        1|
-20180107X10632|   2017|           2|NUSC    |        1|
-20180614X22730|   2018|           1|091     |        1|
-20180614X22730|   2018|           2|135     |        1|
-20180804X53521|   2018|           1|UNK     |        1|
-20180804X53521|   2018|           2|PUBU    |        1|
-20190826X90719|   2019|           1|NUSC    |        7|
-20190826X90719|   2019|           2|NUSN    |        7|
-20200731X11938|   2020|           1|135     |        7|
-20200731X11938|   2020|           2|091     |        7|
-20200827X15154|   2020|           1|135     |        2|
-20200827X15154|   2020|           2|091     |        2|
-20210715103483|   2020|           1|NUSN    |        5|
-20210715103483|   2020|           2|129     |        5|
-20211221104432|   2021|           1|135     |        2|
-20211221104432|   2021|           2|103     |        2|
-```
                             """
         case _:
             text += f"""
@@ -2752,7 +2615,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_MPF:
         _present_totals_chart(
             "te_mpf",
-            f"Total Number of {EVENT_TYPE_DESC}s by Main Phases of Flights",
+            f"Total Number of {EVENT_TYPE_DESC}s by Main Phases of Flight",
             _prep_data_charts_te_mpf(DF_FILTERED),
         )
 
@@ -2760,7 +2623,7 @@ def _present_totals_charts() -> None:
     if CHOICE_CHARTS_TYPE_TE_PF:
         _present_totals_chart(
             "te_pf",
-            f"Total Number of {EVENT_TYPE_DESC}s by Phases of Flights",
+            f"Total Number of {EVENT_TYPE_DESC}s by Phases of Flight",
             _prep_data_charts_te_pf(DF_FILTERED),
         )
 
@@ -3695,7 +3558,7 @@ def _setup_task_controls() -> None:
             if CHOICE_CHARTS_TYPE_TE_MPF:
                 CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD = st.sidebar.number_input(
                     help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD",
+                    key="CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD",
                     label="Threshold value in %",
                     max_value=20.0,
                     min_value=0.0,

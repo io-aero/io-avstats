@@ -211,20 +211,20 @@ QUERIES = {
           FROM io_md_codes_category
         ORDER BY category_code;
     """,
+    "io_md_codes_eventsoe": """
+        SELECT *
+          FROM io_md_codes_eventsoe
+        ORDER BY eventsoe_code;
+    """,
     "io_md_codes_modifier": """
         SELECT *
           FROM io_md_codes_modifier
         ORDER BY modifier_code;
     """,
-    "io_md_codes_occurrence": """
+    "io_md_codes_phase": """
         SELECT *
-          FROM io_md_codes_occurrence
-        ORDER BY occurrence_code;
-    """,
-    "io_md_codes_phase_operation": """
-        SELECT *
-          FROM io_md_codes_phase_operation
-        ORDER BY phase_operation_code;
+          FROM io_md_codes_phase
+        ORDER BY phase_code;
     """,
     "io_md_codes_section": """
         SELECT *
@@ -776,9 +776,9 @@ def _streamlit_flow() -> None:
         "io_aviation_occurrence_categories",
         "io_countries",
         "io_md_codes_category",
+        "io_md_codes_eventsoe",
         "io_md_codes_modifier",
-        "io_md_codes_occurrence",
-        "io_md_codes_phase_operation",
+        "io_md_codes_phase",
         "io_md_codes_section",
         "io_md_codes_subcategory",
         "io_md_codes_subsection",

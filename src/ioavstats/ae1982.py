@@ -694,17 +694,17 @@ def _get_prepared_us_states(list_in: list) -> list[str]:
 # Creates the user guide for the whole application.
 # ------------------------------------------------------------------
 def _get_user_guide_app() -> None:
-    text = """
+    ug_text = """
 #### User guide: ae1982 Application
 """
 
     if not MODE_STANDARD:
-        text += """
+        ug_text += """
 **Important**: You are using a very limited version of this application. 
 You are welcome to request the use of the free full version of this application [here](https://www.io-aero.com/analytics) on IO-Aero's website.
 """
 
-    text += f"""
+    ug_text += f"""
 The **ae1982** application allows you to perform data analysis tasks on aviation accident and incident data provided by 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
 The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating 
@@ -743,7 +743,7 @@ If you encounter any problem in the application, documentation or data, we would
 Also suggestions for improvement or enhancements are welcome. 
 """
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
@@ -753,37 +753,37 @@ def _get_user_guide_chart(
     chart_id: str,
     chart_title: str,
 ) -> None:
-    text = _get_user_guide_chart_header(
+    ug_text = _get_user_guide_chart_header(
         chart_id,
         chart_title,
     )
 
-    text = _get_user_guide_chart_data_basis(chart_id, text)
+    ug_text = _get_user_guide_chart_data_basis(chart_id, ug_text)
 
     match chart_id:
         # pylint: disable=line-too-long
         case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
-            text += _get_user_guide_years_chart_footer(
+            ug_text += _get_user_guide_years_chart_footer(
                 chart_id,
                 chart_title,
             )
         # pylint: disable=line-too-long
         case "te_aoc" | "te_il" | "te_mpf" | "te_pf" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
-            text += _get_user_guide_totals_chart_footer(
+            ug_text += _get_user_guide_totals_chart_footer(
                 chart_id,
                 chart_title,
             )
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
 # Creates the description of the data basis.
 # ------------------------------------------------------------------
-def _get_user_guide_chart_data_basis(chart_id, text):
-    text = (
-        text
-        + """
+def _get_user_guide_chart_data_basis(chart_id, ug_text):
+    ug_text = (
+            ug_text
+            + """
 ##### Data basis
 
 """
@@ -791,7 +791,7 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 
     match chart_id:
         case "ey_aoc" | "te_aoc":
-            text += """
+            ug_text += """
 - In the database table **events_sequence** there are the columns **defining_code** and **eventsoe_no**. 
 - The values from **eventsoe_no** are used to determine the CICTT code in case **defining_code** equals TRUE via the tables 
 **io_sequence_of_events** and **io_aviation_occurrence_categories**. 
@@ -800,14 +800,14 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 """
 
         case "ey_il" | "te_il":
-            text += """
+            ug_text += """
 - In the database table **events** there is a column **ev_highest_injury** which contains the highest injury level per event. 
 - The available database categories are **`FATL`** (fatal injury), **`MINR`** (minor injury), **`NONE`** (no injury) and **`SERS`** (serious injury). 
 - If there is no information about the injuries, then the event appears in the category **`n/a`** (not available).
 """
 
         case "ey_mpf" | "te_mpf":
-            text += """
+            ug_text += """
 - An event can have several entries in the database table **events_sequence** assigned to it.      
 - The **phase_no** column contains the flight phase at the time of the event. 
 - The flight phases can be marked as defining events in the **defining_ev** column.
@@ -816,7 +816,7 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 """
 
         case "ey_pf" | "te_pf":
-            text += """
+            ug_text += """
 - An event can have several entries in the database table **events_sequence** assigned to it.      
 - The **phase_no** column contains the flight phase at the time of the event. 
 - The flight phases can be marked as defining events in the **defining_ev** column. 
@@ -824,7 +824,7 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 """
 
         case "ey_pss" | "te_pss":
-            text += """
+            ug_text += """
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
 - **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
 - **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
@@ -833,13 +833,13 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 - **not available**: None of the criteria listed above
 """
         case "ey_t" | "te_t":
-            text += """
+            ug_text += """
 - In the database table **events** there is a column **ev_type** which contains the type of the event. 
 - The available database categories are **`ACC`** (Accident) and **`INC`** (Incident). 
 - If there is no information about the event type, then the event appears in the category **`n/a`** (not available).
 """
         case "ey_tlp" | "te_tlp":
-            text += """
+            ug_text += """
 - **Aerodynamic spin / stall**: [Angle of attack ? Aerodynamic stall/spin ? (Loss of control in flight ? “Stall in narrative”)] ?¬Controlled flight into terrain/obj (CFIT) ?¬Collision avoidance alert
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
 - **Aircraft can climb**: ¬(Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? ¬ “Aerodynamic stall/spin”
@@ -856,23 +856,23 @@ def _get_user_guide_chart_data_basis(chart_id, text):
 - **not available**: None of the criteria listed above
 """
         case "fy_fp" | "tf_fp":
-            text += """
+            ug_text += """
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
 """
         case "fy_sfp" | "tf_sfp":
-            text += """
+            ug_text += """
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
 """
         case _:
-            text += f"""
+            ug_text += f"""
 ### Coming soon ... (chart_id={chart_id})    
 """
 
-    return text
+    return ug_text
 
 
 # ------------------------------------------------------------------
@@ -905,21 +905,21 @@ def _get_user_guide_chart_header(
 # Creates the user guide for the 'Show data profile' task.
 # ------------------------------------------------------------------
 def _get_user_guide_data_profile() -> None:
-    text = """
+    ug_text = """
 #### User guide: Show Data Profile
 
 This task performs a data analysis of the underlying database view **io_app_ae1982**. This is done with the help of [**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/). You can select either the explorative or the minimal version. Depending on the size of the selected data, there may be delayed response times, with the exploratory version again requiring significantly more computational effort than the minimal version.
 For further explanations please consult the documentation of **Pandas Profiling**. The result of the data analysis can also be downloaded as **HTML** file if desired.
 """
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task.
 # ------------------------------------------------------------------
 def _get_user_guide_details() -> None:
-    text = """
+    ug_text = """
 #### User guide: Show details
 
 This task provides the data of the underlying database view **io_app_ae1982** in a table format for display and download as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
@@ -933,20 +933,20 @@ This task provides the data of the underlying database view **io_app_ae1982** in
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
 """
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
 # Creates the user guide for the map.
 # ------------------------------------------------------------------
 def _get_user_guide_map() -> None:
-    text = """
+    ug_text = """
 #### User guide: Map
 
 ###TODO
 """
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
@@ -991,7 +991,7 @@ def _get_user_guide_years_chart_footer(
         else "events"
     )
 
-    text = f"""
+    ug_text = f"""
 ##### Usage tips years chart
 
 - If you hover your mouse over the bars, the exact number of {objects} will be shown.
@@ -1012,7 +1012,7 @@ and using the search bar to filter data.
 """
 
     if MODE_STANDARD:
-        text += """
+        ug_text += """
 ##### Detailed chart data
 
 If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying 
@@ -1020,7 +1020,7 @@ the chart displayed in a tabular form.
 With the button **`Download the chart data`** this data can be loaded into a local **csv** file. 
 """
 
-    return text
+    return ug_text
 
 
 # ------------------------------------------------------------------

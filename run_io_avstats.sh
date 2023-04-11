@@ -12,6 +12,7 @@ if [ -z "${ENV_FOR_DYNACONF}" ]; then
     export ENV_FOR_DYNACONF=prod
 fi
 
+export IO_AVSTATS_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AVSTATS_CORRECTION_WORK_DIR=data/correction
 
 export IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
@@ -60,7 +61,6 @@ if [ -z "$1" ]; then
     echo "v_n_d   - Verify selected NTSB data"
     echo "r_d_s   - Refresh the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    echo "d_s_f   - Download basic simplemaps files"
     echo "l_s_d   - Load simplemaps data into PostgreSQL"
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
@@ -70,9 +70,11 @@ if [ -z "$1" ]; then
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_f   - Delete the PostgreSQL database files"
-    echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "d_d_s   - Drop the PostgreSQL database schema"
+    echo "f_n_a   - Find the nearest airports"
+    echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
+    echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
     echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
@@ -151,7 +153,7 @@ fi
 if [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
-        ls -ll ${IO_AVSTATS_NTSB_WORK_DIR}/*.xlsx
+        ls -ll ${IO_AVSTATS_AVIATION_EVENT_STATISTICS}/*.xlsx
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the stem name of the desired desired NTSB statistic file " IO_AVSTATS_MSEXCEL
@@ -183,6 +185,8 @@ echo "==========================================================================
 # c_l_l: Correct decimal US latitudes and longitudes.
 # c_p_d: Cleansing PostgreSQL data.
 # d_d_s: Drop the PostgreSQL database schema.
+# f_n_a: Find the nearest airports.
+# l_a_p: Load airport data into PostgreSQL.
 # l_c_s: Load country and state data into PostgreSQL.
 # l_s_d: Load simplemaps data into PostgreSQL.
 # l_s_e: Load sequence of events data into PostgreSQL.
@@ -192,7 +196,7 @@ echo "==========================================================================
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi

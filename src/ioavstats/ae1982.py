@@ -782,8 +782,8 @@ def _get_user_guide_chart(
 # ------------------------------------------------------------------
 def _get_user_guide_chart_data_basis(chart_id, ug_text):
     ug_text = (
-            ug_text
-            + """
+        ug_text
+        + """
 ##### Data basis
 
 """

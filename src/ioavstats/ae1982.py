@@ -38,6 +38,8 @@ CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 
+CHOICE_BOX_PLOTS: bool | None = None
+
 CHOICE_CHARTS_LEGEND_IL_FATAL = "fatal"
 CHOICE_CHARTS_LEGEND_IL_MINOR = "minor"
 CHOICE_CHARTS_LEGEND_IL_NONE = "none"
@@ -51,6 +53,9 @@ CHOICE_CHARTS_LEGEND_SFP_OTHER = "Other FAR Operations Parts"
 CHOICE_CHARTS_LEGEND_T_ACC = "Accident"
 CHOICE_CHARTS_LEGEND_T_INC = "Incident"
 
+CHOICE_CHARTS_TYPE_D_NA: bool | None = None
+CHOICE_CHARTS_TYPE_D_NA_MAX: float | None = None
+CHOICE_CHARTS_TYPE_D_NA_NO: int | None = None
 CHOICE_CHARTS_TYPE_EY_AOC: bool | None = None
 CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_IL: bool | None = None
@@ -129,8 +134,9 @@ CHOICE_CHARTS_TYPE_TF_FP: bool | None = None
 CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TF_SFP: bool | None = None
 
-CHOICE_DATA_GRAPHS_YEARS: bool | None = None
+CHOICE_DATA_GRAPHS_DISTANCES: bool | None = None
 CHOICE_DATA_GRAPHS_TOTALS: bool | None = None
+CHOICE_DATA_GRAPHS_YEARS: bool | None = None
 CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
@@ -170,6 +176,8 @@ CHOICE_UG_YEARS_CHARTS_EY_T: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_TLP: bool | None = None
 CHOICE_UG_YEARS_CHARTS_FY_FP: bool | None = None
 CHOICE_UG_YEARS_CHARTS_FY_SFP: bool | None = None
+
+CHOICE_VIOLIN_PLOTS: bool | None = None
 
 CHOICE_YEARS_CHARTS_DETAILS: bool | None = None
 CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS: bool | None = None
@@ -649,6 +657,9 @@ def _get_data() -> DataFrame:
                    is_owner_country_usa,
                    is_regis_country_usa,
                    latlong_acq,
+                   nearest_airport_city,
+                   nearest_airport_code_iata,
+                   nearest_airport_distance,
                    no_aircraft,
                    ntsb_no,
                    occurrence_codes,
@@ -695,7 +706,7 @@ def _get_prepared_us_states(list_in: list) -> list[str]:
 # ------------------------------------------------------------------
 def _get_user_guide_app() -> None:
     ug_text = """
-#### User guide: ae1982 Application
+#### User guide: Application
 """
 
     if not MODE_STANDARD:
@@ -705,7 +716,7 @@ You are welcome to request the use of the free full version of this application 
 """
 
     ug_text += f"""
-The **ae1982** application allows you to perform data analysis tasks on aviation accident and incident data provided by 
+This application allows you to perform data analysis tasks on aviation accident and incident data provided by 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
 The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating 
 every civil aviation accident in the United States and significant accidents in other modes of transportation – railroad, 
@@ -718,25 +729,26 @@ The databases provided on the [NTSB website](https://data.ntsb.gov/avdata) come 
 - **up[01|08|15|22][JAN|...|DEC]**: at the 1st, 8th, 15th and 22nd of each month these update files contain the changes
 since the previous update file.
 
-The **ae1982** application processes data regarding
+The application processes data regarding
 - the events (`events`),
 - the aircraft involved (`aircraft`),
 - the event sequences (`events_sequence`),
 - the findings (`findings`), and
 - the reports of involved parties (`narratives`).
 
-The **ae1982** application provides the following tools:
+The application provides the following tools:
 
-- **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
-- **Data Graphs - Years**: Provides graphical analysis options for year-based analysis,
+- **Data Graphs - Distances**: Provides graphical evaluation options for questions regarding distances,
 - **Data Graphs - Totals**: Provides graphical evaluation options for total summaries,
+- **Data Graphs - Years**: Provides graphical analysis options for year-based analysis,
 - **Data Profiles**: Allows detailed analysis of data characteristics,
 - **Detailed Data**: Shows the detailed data involved,
+- **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
 - **Map**: Shows the event locations on a map. 
 
-Where appropriate, the **ae1982** application allows you to print the displayed graphics or download detailed data in **csv** format.
+Where appropriate, the application allows you to print the displayed graphics or download detailed data in **csv** format.
 
-Further information on the **ae1982** application can be found [here]({LINK_GITHUB_PAGES}).
+Further information on the application can be found [here]({LINK_GITHUB_PAGES}).
 
 If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
 [here](https://github.com/io-aero/io-avstats-shared/issues) so that we can make any necessary correction. 
@@ -761,6 +773,11 @@ def _get_user_guide_chart(
     ug_text = _get_user_guide_chart_data_basis(chart_id, ug_text)
 
     match chart_id:
+        case "d_na":
+            ug_text += _get_user_guide_distances_chart_footer(
+                chart_id,
+                chart_title,
+            )
         # pylint: disable=line-too-long
         case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
             ug_text += _get_user_guide_years_chart_footer(
@@ -790,6 +807,17 @@ def _get_user_guide_chart_data_basis(chart_id, ug_text):
     )
 
     match chart_id:
+        case "d_na":
+            ug_text += """
+For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:         
+- Airports in the U.S. states.
+- Aerodrome type airports.
+- Civil airports.
+- Airports in operation.
+
+Of the events, only those that occurred in U.S. states are included.
+"""
+
         case "ey_aoc" | "te_aoc":
             ug_text += """
 - In the database table **events_sequence** there are the columns **defining_code** and **eventsoe_no**. 
@@ -882,20 +910,21 @@ def _get_user_guide_chart_header(
     chart_id: str,
     chart_title: str,
 ) -> str:
-    chart_type = (
-        "Bar"
-        if "ey_" in chart_id or "fy_" in chart_id
-        else "Pie"
-        if CHOICE_PIE_CHARTS
-        else "Horizontal bar"
-    )
-    chart_type_1 = (
-        "Here are the data grouped by year."
-        if "ey_" in chart_id or "fy_" in chart_id
-        else "Only the total figures are shown here."
-    )
+    chart_type = "n/a"
+    chart_type_1 = "n/a"
+
+    if "d_" in chart_id:
+        chart_type = "Box Plot and Violin Plot"
+        chart_type_1 = "Only the distance figures are shown here."
+    elif "ey_" in chart_id or "fy_" in chart_id:
+        chart_type = "Bar Chart"
+        chart_type_1 = "Here are the data grouped by year."
+    elif "te_" in chart_id or "tf_" in chart_id:
+        chart_type = "Pie Chart and Horizontal Bar Chart"
+        chart_type_1 = "Only the total figures are shown here."
+
     return f"""
-#### User guide: {chart_type} chart - {chart_title}
+#### User guide: {chart_type} - {chart_title}
 
 {chart_type_1}
 """
@@ -952,6 +981,23 @@ def _get_user_guide_map() -> None:
 # ------------------------------------------------------------------
 # Create the generic footer section.
 # ------------------------------------------------------------------
+def _get_user_guide_distances_chart_footer(
+    _chart_id: str,
+    _chart_title: str,
+) -> str:
+    return """
+##### Usage tips
+
+- The left side displays the data points underlying the chart.
+- If you hover your mouse over the dots in the left, the exact distance in miles will be shown.
+- If you hover your mouse over the figure in the right, statistical key figures will be shown.
+- **View fullscreen** (double arrow): shows the distances chart in fullscreen mode.
+"""
+
+
+# ------------------------------------------------------------------
+# Create the generic footer section.
+# ------------------------------------------------------------------
 def _get_user_guide_totals_chart_footer(
     chart_id: str,
     _chart_title: str,
@@ -970,7 +1016,7 @@ def _get_user_guide_totals_chart_footer(
 
 - If you hover your mouse over the slices, the exact number of {objects} will be shown.
 - By clicking on the icons in the legend, you can hide the underlying categories in the totals chart. 
-- **`View fullscreen`** (double arrow): shows the totals chart in fullscreen mode.
+- **View fullscreen** (double arrow): shows the totals chart in fullscreen mode.
 """
 
 
@@ -999,7 +1045,7 @@ def _get_user_guide_years_chart_footer(
 - **`Download plot as png`** (camera symbol): the bar chart can be downloaded as an image file.
 - **`Zoom out`**, **`Zoom in`**, **`Autoscale`** (plus, minus and cross symbols): the bar chart can be downloaded as an image file.
 - **`Reset axes`** (home symbol): reset the axis of the bar chart.
-- **`View fullscreen`** (double arrow): shows the bar chart in fullscreen mode.
+- **View fullscreen** (double arrow): shows the bar chart in fullscreen mode.
 
 ##### Usage tips detailed data
 
@@ -1024,10 +1070,34 @@ With the button **`Download the chart data`** this data can be loaded into a loc
 
 
 # ------------------------------------------------------------------
+# Prepare the chart data: Distance to the Nearest Airport.
+# ------------------------------------------------------------------
+def _prep_data_chart_d_na(
+    df_filtered: DataFrame,
+) -> DataFrame:
+    global CHOICE_CHARTS_TYPE_D_NA_NO  # pylint: disable=global-statement
+
+    df_chart_data = _apply_filter_incompatible(df_filtered)
+
+    if CHOICE_CHARTS_TYPE_D_NA_MAX:
+        df_chart_data = df_chart_data[
+            df_chart_data["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
+        ]
+
+    df_chart_data = df_chart_data.nearest_airport_distance.dropna()
+
+    (CHOICE_CHARTS_TYPE_D_NA_NO,) = df_chart_data.shape
+
+    return _prep_distance_chart(
+        df_chart_data,
+    )
+
+
+# ------------------------------------------------------------------
 # Prepare the chart data: Number of Events per Year by
 # CICTT Codes.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_aoc(
+def _prep_data_chart_ey_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1063,7 +1133,7 @@ def _prep_data_charts_ey_aoc(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Injury Level.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_il(
+def _prep_data_chart_ey_il(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_chart = df_filtered[
@@ -1091,7 +1161,7 @@ def _prep_data_charts_ey_il(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Main Phases of Flight.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_mpf(
+def _prep_data_chart_ey_mpf(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1136,7 +1206,7 @@ def _prep_data_charts_ey_mpf(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Phases of Flight.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_pf(
+def _prep_data_chart_ey_pf(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_chart = df_filtered[
@@ -1174,7 +1244,7 @@ def _prep_data_charts_ey_pf(
 # Prepare the chart data: Number of Preventable Events per Year by
 # Safety Systems.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_pss(
+def _prep_data_chart_ey_pss(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1212,7 +1282,7 @@ def _prep_data_charts_ey_pss(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Event Types.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_t(
+def _prep_data_chart_ey_t(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_chart = df_filtered[
@@ -1241,7 +1311,7 @@ def _prep_data_charts_ey_t(
 # Prepare the chart data: Number of Events per Year by
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_tlp(
+def _prep_data_chart_ey_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1278,7 +1348,7 @@ def _prep_data_charts_ey_tlp(
 # Prepare the chart data: Fatalities per Year under
 # FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_fy_fp(
+def _prep_data_chart_fy_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_chart = df_filtered[
@@ -1317,7 +1387,7 @@ def _prep_data_charts_fy_fp(
 # Prepare the chart data: Fatalities per Year under
 # Selected FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_fy_sfp(
+def _prep_data_chart_fy_sfp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
     df_chart = df_filtered[
@@ -1356,7 +1426,7 @@ def _prep_data_charts_fy_sfp(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by CICTT Codes.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_aoc(
+def _prep_data_chart_te_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1391,7 +1461,7 @@ def _prep_data_charts_te_aoc(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Highest Injury Levels.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_il(
+def _prep_data_chart_te_il(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_chart = df_filtered[
@@ -1419,7 +1489,7 @@ def _prep_data_charts_te_il(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Main Phases of Flight.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_mpf(
+def _prep_data_chart_te_mpf(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1458,7 +1528,7 @@ def _prep_data_charts_te_mpf(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Phases of Flight.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_pf(
+def _prep_data_chart_te_pf(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1496,7 +1566,7 @@ def _prep_data_charts_te_pf(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Preventable Events by Safety Systems.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_pss(
+def _prep_data_chart_te_pss(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1533,7 +1603,7 @@ def _prep_data_charts_te_pss(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Event Types.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_t(
+def _prep_data_chart_te_t(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_chart = df_filtered[
@@ -1562,7 +1632,7 @@ def _prep_data_charts_te_t(
 # Prepare the chart data: Total Events by
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_tlp(
+def _prep_data_chart_te_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
@@ -1598,7 +1668,7 @@ def _prep_data_charts_te_tlp(
 # Prepare the chart data: Total Fatalities by
 # FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_tf_fp(
+def _prep_data_chart_tf_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_chart = df_filtered[
@@ -1631,7 +1701,7 @@ def _prep_data_charts_tf_fp(
 # Prepare the chart data: Total Fatalities by
 # Selected FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_tf_sfp(
+def _prep_data_chart_tf_sfp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_chart = df_filtered[
@@ -1657,6 +1727,15 @@ def _prep_data_charts_tf_sfp(
         total_pie,
         name_value,
     )
+
+
+# ------------------------------------------------------------------
+# Prepare the distance chart.
+# ------------------------------------------------------------------
+def _prep_distance_chart(
+    chart_data: DataFrame,
+) -> DataFrame:
+    return chart_data
 
 
 # ------------------------------------------------------------------
@@ -1946,7 +2025,7 @@ def _present_chart_ey_aoc() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_aoc(DF_FILTERED),
+        _prep_data_chart_ey_aoc(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
         else 0.0,
@@ -1981,7 +2060,7 @@ def _present_chart_ey_il() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_il(DF_FILTERED),
+        _prep_data_chart_ey_il(DF_FILTERED),
     )
 
 
@@ -2018,7 +2097,7 @@ def _present_chart_ey_mpf() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_mpf(DF_FILTERED),
+        _prep_data_chart_ey_mpf(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
         else 0.0,
@@ -2054,7 +2133,7 @@ def _present_chart_ey_pf() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_pf(DF_FILTERED),
+        _prep_data_chart_ey_pf(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD
         else 0.0,
@@ -2094,7 +2173,7 @@ def _present_chart_ey_pss() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_pss(DF_FILTERED),
+        _prep_data_chart_ey_pss(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD
         else 0.0,
@@ -2129,7 +2208,7 @@ def _present_chart_ey_t() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_t(DF_FILTERED),
+        _prep_data_chart_ey_t(DF_FILTERED),
     )
 
 
@@ -2166,7 +2245,7 @@ def _present_chart_ey_tlp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_tlp(DF_FILTERED),
+        _prep_data_chart_ey_tlp(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD
         else 0.0,
@@ -2207,7 +2286,7 @@ def _present_chart_fy_fp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_fy_fp(DF_FILTERED),
+        _prep_data_chart_fy_fp(DF_FILTERED),
         CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
         else 0.0,
@@ -2247,7 +2326,7 @@ def _present_chart_fy_sfp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_fy_sfp(DF_FILTERED),
+        _prep_data_chart_fy_sfp(DF_FILTERED),
     )
 
 
@@ -2312,6 +2391,10 @@ def _present_data() -> None:
         ):
             _present_totals_charts()
             _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_TOTALS")
+
+        if CHOICE_DATA_GRAPHS_DISTANCES and (CHOICE_BOX_PLOTS or CHOICE_VIOLIN_PLOTS):
+            _present_distance_charts()
+            _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_DISTANCE")
 
         if CHOICE_DATA_PROFILE:
             _present_data_profile()
@@ -2430,6 +2513,82 @@ def _present_details() -> None:
 
 
 # ------------------------------------------------------------------
+# Present the distance chart.
+# ------------------------------------------------------------------
+def _present_distance_chart(
+    chart_id: str,
+    chart_title: str,
+    chart_data: DataFrame,
+) -> None:
+    chart_title_int = chart_title.replace(
+        "{no_rows}", str(CHOICE_CHARTS_TYPE_D_NA_NO)
+    ).replace("{event_type}", EVENT_TYPE_DESC + "s")
+
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title_int}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        choice_charts_ug = st.checkbox(
+            help="Explanations and operating instructions related to this distance chart(s).",
+            key=chart_title_int,
+            label="**User guide: Distance chart**",
+            value=False,
+        )
+
+    if choice_charts_ug:
+        _get_user_guide_chart(
+            chart_id,
+            chart_title_int,
+        )
+
+    if CHOICE_BOX_PLOTS:
+        fig = px.box(
+            chart_data,
+            notched=True,
+            points="all",
+            title=chart_title_int,
+            y="nearest_airport_distance",
+        )
+        fig.update_layout(
+            yaxis_title="Distance (mi)",
+        )
+        st.plotly_chart(
+            fig,
+        )
+
+    if CHOICE_VIOLIN_PLOTS:
+        fig = px.violin(
+            chart_data,
+            points="all",
+            title=chart_title_int,
+            y="nearest_airport_distance",
+        )
+        fig.update_layout(
+            yaxis_title="Distance (mi)",
+        )
+        st.plotly_chart(
+            fig,
+        )
+
+
+# ------------------------------------------------------------------
+# Present the distance charts.
+# ------------------------------------------------------------------
+def _present_distance_charts() -> None:
+    # Distance to the Nearest Airport
+    if CHOICE_CHARTS_TYPE_D_NA:
+        _present_distance_chart(
+            "d_na",
+            "Distance to the Nearest Airport ({no_rows} {event_type})",
+            _prep_data_chart_d_na(DF_FILTERED),
+        )
+
+
+# ------------------------------------------------------------------
 # Present the events on the US map.
 # ------------------------------------------------------------------
 def _present_map() -> None:
@@ -2512,7 +2671,7 @@ def _present_map() -> None:
 def _present_totals_chart(
     chart_id: str,
     chart_title: str,
-    pie_chart_data: tuple[list[str], list[int], dict[str, str], DataFrame],
+    chart_data: tuple[list[str], list[int], dict[str, str], DataFrame],
 ) -> None:
     col1, col2 = st.columns([2, 1])
     with col1:
@@ -2522,20 +2681,20 @@ def _present_totals_chart(
             unsafe_allow_html=True,
         )
     with col2:
-        choice_pie_charts_ug = st.checkbox(
+        choice_charts_ug = st.checkbox(
             help="Explanations and operating instructions related to this totals chart(s).",
             key=chart_title,
             label="**User guide: Totals chart**",
             value=False,
         )
 
-    if choice_pie_charts_ug:
+    if choice_charts_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
         )
 
-    names, values, color_discrete_map, df_sum = pie_chart_data
+    names, values, color_discrete_map, df_sum = chart_data
 
     if CHOICE_HORIZONTAL_BAR_CHARTS:
         names_new = []
@@ -2615,7 +2774,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "tf_fp",
             "Total Number of Fatalities by FAR Operations Parts",
-            _prep_data_charts_tf_fp(DF_FILTERED),
+            _prep_data_chart_tf_fp(DF_FILTERED),
         )
 
     # Total Fatalities by Selected FAR Operations Parts
@@ -2623,7 +2782,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "tf_sfp",
             "Total Number of Fatalities by Selected FAR Operations Parts",
-            _prep_data_charts_tf_sfp(DF_FILTERED),
+            _prep_data_chart_tf_sfp(DF_FILTERED),
         )
 
     # Total Events by CICTT Code
@@ -2631,7 +2790,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_aoc",
             f"Total Number of {EVENT_TYPE_DESC}s by CICTT Codes",
-            _prep_data_charts_te_aoc(DF_FILTERED),
+            _prep_data_chart_te_aoc(DF_FILTERED),
         )
 
     # Total Events by Event Types
@@ -2639,7 +2798,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_t",
             f"Total Number of {EVENT_TYPE_DESC}s by Event Types",
-            _prep_data_charts_te_t(DF_FILTERED),
+            _prep_data_chart_te_t(DF_FILTERED),
         )
 
     # Total Events by Highest Injury Levels
@@ -2647,7 +2806,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_il",
             f"Total Number of {EVENT_TYPE_DESC}s by Highest Injury Levels",
-            _prep_data_charts_te_il(DF_FILTERED),
+            _prep_data_chart_te_il(DF_FILTERED),
         )
 
     # Total Events by Main Phases of Flight
@@ -2655,7 +2814,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_mpf",
             f"Total Number of {EVENT_TYPE_DESC}s by Main Phases of Flight",
-            _prep_data_charts_te_mpf(DF_FILTERED),
+            _prep_data_chart_te_mpf(DF_FILTERED),
         )
 
     # Total Events by Phases of Flight
@@ -2663,7 +2822,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_pf",
             f"Total Number of {EVENT_TYPE_DESC}s by Phases of Flight",
-            _prep_data_charts_te_pf(DF_FILTERED),
+            _prep_data_chart_te_pf(DF_FILTERED),
         )
 
     # Total Preventable Events by Safety Systems
@@ -2671,7 +2830,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_pss",
             f"Total Number of Preventable {EVENT_TYPE_DESC}s by Safety Systems",
-            _prep_data_charts_te_pss(DF_FILTERED),
+            _prep_data_chart_te_pss(DF_FILTERED),
         )
 
     # Total Events by Top Level logical Parameter
@@ -2679,7 +2838,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_tlp",
             f"Total Number of {EVENT_TYPE_DESC}s  by Top Level Logical Parameters",
-            _prep_data_charts_te_tlp(DF_FILTERED),
+            _prep_data_chart_te_tlp(DF_FILTERED),
         )
 
 
@@ -3245,6 +3404,9 @@ def _setup_sidebar() -> None:
 # Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
+    global CHOICE_BOX_PLOTS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_D_NA  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_D_NA_MAX  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_AOC  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
@@ -3275,6 +3437,7 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_TF_FP  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TF_SFP  # pylint: disable=global-statement
+    global CHOICE_DATA_GRAPHS_DISTANCES  # pylint: disable=global-statement
     global CHOICE_DATA_GRAPHS_TOTALS  # pylint: disable=global-statement
     global CHOICE_DATA_GRAPHS_YEARS  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
@@ -3291,12 +3454,16 @@ def _setup_task_controls() -> None:
     global CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_WIDTH  # pylint: disable=global-statement
+    global CHOICE_VIOLIN_PLOTS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_WIDTH  # pylint: disable=global-statement
 
+    # --------------------------------------------------------------
+    # Run the Data Analysis.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
         # pylint: disable=line-too-long
         CHOICE_RUN_ANALYSIS = st.sidebar.checkbox(
@@ -3309,6 +3476,9 @@ def _setup_task_controls() -> None:
 
         st.sidebar.divider()
 
+        # ----------------------------------------------------------
+        # Extended Version.
+        # ----------------------------------------------------------
         CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
             help="The extended version has more complex filtering and processing options.",
             label="**Extended Version**",
@@ -3317,6 +3487,9 @@ def _setup_task_controls() -> None:
 
         st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Map.
+    # --------------------------------------------------------------
     CHOICE_MAP = st.sidebar.checkbox(
         help="Display the events on a map (after filtering the data).",
         label="**Show Map**",
@@ -3352,6 +3525,9 @@ def _setup_task_controls() -> None:
 
     st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Data Graph - Years.
+    # --------------------------------------------------------------
     CHOICE_DATA_GRAPHS_YEARS = st.sidebar.checkbox(
         help="Events or fatalities per year (after filtering the data).",
         label="**Show Data Graphs - Years**",
@@ -3508,6 +3684,9 @@ def _setup_task_controls() -> None:
 
     st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Data Graph - Totals.
+    # --------------------------------------------------------------
     CHOICE_DATA_GRAPHS_TOTALS = st.sidebar.checkbox(
         help="Total Events or fatalities (after filtering the data).",
         label="**Show Data Graphs - Totals**",
@@ -3672,6 +3851,53 @@ def _setup_task_controls() -> None:
 
     st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Data Graph - Distances.
+    # --------------------------------------------------------------
+    CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
+        help="Distances (after filtering the data).",
+        label="**Show Data Graphs - Distances**",
+        value=not MODE_STANDARD,
+    )
+
+    if CHOICE_DATA_GRAPHS_DISTANCES:
+        CHOICE_BOX_PLOTS = st.sidebar.checkbox(
+            help="Presenting distances with box plots.",
+            key="CHOICE_BOX_PLOTS",
+            label="Show box plots",
+            value=False,
+        )
+        CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
+            help="Presenting distances with violin plots.",
+            key="CHOICE_VIOLIN_PLOTS",
+            label="Show voline plots",
+            value=True,
+        )
+
+        st.sidebar.divider()
+
+        if MODE_STANDARD:
+            # pylint: disable=line-too-long
+            CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
+                help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
+                label="Distance to the Nearest Airport",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_D_NA:
+                CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
+                    help="Maximum distance in miles",
+                    key="CHOICE_CHARTS_TYPE_D_NA_MAX",
+                    label="Maximum distance in miles",
+                    max_value=3000.0,
+                    step=5.0,
+                    value=100.0,
+                )
+
+    st.sidebar.divider()
+
+    # --------------------------------------------------------------
+    # Show Data Profile.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
         CHOICE_DATA_PROFILE = st.sidebar.checkbox(
             help="Profiling of the filtered dataset.",
@@ -3694,6 +3920,9 @@ def _setup_task_controls() -> None:
 
         st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Detailed Data.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
         CHOICE_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the filtered detailed data.",

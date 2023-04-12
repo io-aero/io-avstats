@@ -127,7 +127,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker images
 
     cd data
-    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-4,4%.%date:~3,2%.%date:~0,2%_postgres_keycloak.zip postgres_keycloak
     cd ..
 
     goto END_OF_SCRIPT
@@ -147,7 +147,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
     docker ps -a
 
     cd data
-    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-4,4%.%date:~3,2%.%date:~0,2%_postgres_keycloak.zip postgres_keycloak
     cd ..
 
     goto END_OF_SCRIPT

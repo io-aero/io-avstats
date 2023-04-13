@@ -2068,8 +2068,7 @@ def _present_details_raw_data() -> None:
     st.download_button(
         data=DF_RAW_DATA_FILTERED.to_csv().encode("utf-8"),
         file_name=APP_ID + "_raw_data_detail.csv",
-        help="The upload includes all raw data "
-        + "after applying the filter options.",
+        help="The upload includes all raw data " + "after applying the filter options.",
         label="**Download the detailed raw data**",
         mime="text/csv",
     )

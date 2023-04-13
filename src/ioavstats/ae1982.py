@@ -644,6 +644,9 @@ def _get_data() -> DataFrame:
                    finding_codes,
                    inj_f_grnd,
                    inj_tot_f,
+                   CASE WHEN inj_tot_f = 0 THEN 'non-fatal'
+                        ELSE 'fatal'
+                   END dot_color,     
                    is_dest_country_usa,
                    is_dprt_country_usa,
                    is_far_part_091x,
@@ -654,6 +657,7 @@ def _get_data() -> DataFrame:
                    is_regis_country_usa,
                    latlong_acq,
                    nearest_airport_city,
+                   UPPER(city) event_city,
                    nearest_airport_code_iata,
                    nearest_airport_distance,
                    no_aircraft,
@@ -968,7 +972,14 @@ def _get_user_guide_map() -> None:
     ug_text = """
 #### User guide: Map
 
-###TODO
+The dots on the interactive map show the locations where the selected events took place. By default, the map is focused on the center of the United States. You can move around the map and zoom in and out. Each point on the map contains an interactive popup with additional information such as latitude and longitude or number of fatalities. 
+
+##### Usage tips
+
+- If you hover your mouse over the dots in the map, event related extra information will be shown.
+- **Download map as png** (camera symbol): the map can be downloaded as an image file.
+- **Zoom out**, **Zoom in**, **Home** (plus, minus and cross symbols): the map can changed in size and focus.
+- **View fullscreen** (double arrow): shows the map in fullscreen mode.
 """
 
     st.warning(ug_text)
@@ -1037,11 +1048,11 @@ def _get_user_guide_years_chart_footer(
 ##### Usage tips years chart
 
 - If you hover your mouse over the bars, the exact number of {objects} will be shown.
-- By clicking on the icons in the legend, you can hide the underlying categories in the bar chart. 
-- **`Download plot as png`** (camera symbol): the bar chart can be downloaded as an image file.
-- **`Zoom out`**, **`Zoom in`**, **`Autoscale`** (plus, minus and cross symbols): the bar chart can be downloaded as an image file.
-- **`Reset axes`** (home symbol): reset the axis of the bar chart.
-- **View fullscreen** (double arrow): shows the bar chart in fullscreen mode.
+- By clicking on the icons in the legend, you can hide the underlying categories in the chart. 
+- **Download chart as png** (camera symbol): the chart can be downloaded as an image file.
+- **Zoom out**, **Zoom in**, **Autoscale** (plus, minus and cross symbols): the chart can be resized.
+- **Reset axes** (home symbol): reset the axis of the chart.
+- **View fullscreen** (double arrow): shows the chart in fullscreen mode.
 
 ##### Usage tips detailed data
 
@@ -1059,7 +1070,7 @@ and using the search bar to filter data.
 
 If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying 
 the chart displayed in a tabular form. 
-With the button **`Download the chart data`** this data can be loaded into a local **csv** file. 
+With the button **Download the chart data** this data can be loaded into a local **csv** file. 
 """
 
     return ug_text
@@ -2501,8 +2512,7 @@ def _present_details() -> None:
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_data_detail.csv",
-            help="The upload includes all data "
-            + "after applying the filter options.",
+            help="The upload includes all data " + "after applying the filter options.",
             label="Download the detailed data",
             mime="text/csv",
         )
@@ -2628,13 +2638,22 @@ def _present_map() -> None:
     fig = px.scatter_mapbox(
         df_filtered_map,
         center=_sql_query_us_ll(),
-        hover_data={"ev_id": True, "ntsb_no": True, "inj_tot_f": True},
+        color="dot_color",
+        color_discrete_map={"non-fatal": "MediumBlue", "fatal": "Red"},
+        hover_data={
+            "dot_color": False,
+            "event_city": True,
+            "ev_id": True,
+            "ntsb_no": True,
+            "inj_tot_f": True,
+        },
         labels={
             "dec_latitude": "Latitude",
             "dec_longitude": "Longitude",
             "ev_id": "Event",
-            "ntsb_no": "NTSB No.",
+            "event_city": "City",
             "inj_tot_f": "Fatalities",
+            "ntsb_no": "NTSB No.",
         },
         lat="dec_latitude",
         lon="dec_longitude",
@@ -3490,9 +3509,12 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_MAP_MAP_STYLE = st.sidebar.radio(
                 help="""
-    light: designed to provide geographic context while highlighting the data -
-    outdoors: focused on wilderness locations with curated tile sets -
-    streets: emphasizes accurate, legible styling of road and transit networks.
+- **carto-positron**: light base map
+- **open-street-map**: default representation
+- **stamen-terrain**: focused on terrain representation
+- **stamen-toner**: black and white representation
+- **stamen-watercolor**: focused on water representation
+- **white-bg**: pure white background
 """,
                 index=1,
                 label="Map style",
@@ -3836,32 +3858,32 @@ def _setup_task_controls() -> None:
 
     st.sidebar.divider()
 
-    # --------------------------------------------------------------
-    # Show Data Graph - Distances.
-    # --------------------------------------------------------------
-    CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
-        help="Distances (after filtering the data).",
-        label="**Show Data Graphs - Distances**",
-        value=not MODE_STANDARD,
-    )
-
-    if CHOICE_DATA_GRAPHS_DISTANCES:
-        CHOICE_BOX_PLOTS = st.sidebar.checkbox(
-            help="Presenting distances with box plots.",
-            key="CHOICE_BOX_PLOTS",
-            label="Show box plots",
-            value=False,
-        )
-        CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
-            help="Presenting distances with violin plots.",
-            key="CHOICE_VIOLIN_PLOTS",
-            label="Show voline plots",
-            value=True,
+    if MODE_STANDARD:
+        # --------------------------------------------------------------
+        # Show Data Graph - Distances.
+        # --------------------------------------------------------------
+        CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
+            help="Distances (after filtering the data).",
+            label="**Show Data Graphs - Distances**",
+            value=not MODE_STANDARD,
         )
 
-        st.sidebar.divider()
+        if CHOICE_DATA_GRAPHS_DISTANCES:
+            CHOICE_BOX_PLOTS = st.sidebar.checkbox(
+                help="Presenting distances with box plots.",
+                key="CHOICE_BOX_PLOTS",
+                label="Show box plots",
+                value=False,
+            )
+            CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
+                help="Presenting distances with violin plots.",
+                key="CHOICE_VIOLIN_PLOTS",
+                label="Show voline plots",
+                value=True,
+            )
 
-        if MODE_STANDARD:
+            st.sidebar.divider()
+
             # pylint: disable=line-too-long
             CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
                 help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
@@ -3878,7 +3900,7 @@ def _setup_task_controls() -> None:
                     value=100.0,
                 )
 
-    st.sidebar.divider()
+        st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Data Profile.

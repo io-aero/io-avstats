@@ -11,7 +11,7 @@ The following parameter in the file **`settings.io_avstats.toml`** is used to lo
 The data source can be found on the FAA website here:
 
 - [geodatos](https://www.geodatos.net/en/countries/united-states)
-- [opendatasoft](https://data.opendatasoft.com/explore/dataset/us-state-boundaries%40public/table/)
+- [opendatasoft: US State Boundaries](https://data.opendatasoft.com/explore/?q=us+states&sort=%23relevance&disjunctive.language&disjunctive.source_domain_title&disjunctive.theme&disjunctive.semantic.classes&disjunctive.semantic.properties)
 
 The data found in  **geodatos** and **opendatasoft** was manually transferred to a JSON file.
 
@@ -43,3 +43,7 @@ The data found in  **geodatos** and **opendatasoft** was manually transferred to
       ...
       ]
 ```
+
+The current version is dated 
+
+- October 24, 2019.

@@ -134,7 +134,7 @@ def _setup_page():
             with col1:
                 st.markdown("##### " + item_desc)
             with col2:
-                with open("download/" + item_file, "rb") as download:
+                with open("upload/" + item_file, "rb") as download:
                     st.download_button(
                         "**Download "
                         + pathlib.Path(item_file).suffix.upper()[1:]

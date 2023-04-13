@@ -742,7 +742,7 @@ The application provides the following tools:
 - **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
 - **Map**: Shows the event locations on a map. 
 
-Where appropriate, the application allows you to print the displayed graphics or download detailed data in **csv** format.
+Where appropriate, the application allows you to print the displayed graphics or upload detailed data in **csv** format.
 
 Further information on the application can be found [here]({LINK_GITHUB_PAGES}).
 
@@ -947,7 +947,7 @@ def _get_user_guide_details() -> None:
     ug_text = """
 #### User guide: Show details
 
-This task provides the data of the underlying database view **io_app_ae1982** in a table format for display and download as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
+This task provides the data of the underlying database view **io_app_ae1982** in a table format for display and upload as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
 
 ##### Usage tips
 
@@ -1941,7 +1941,7 @@ def _present_bar_chart(
         st.download_button(
             data=_convert_df_2_csv(df_filtered_charts),
             file_name=APP_ID + "_chart_detail_" + chart_id + ".csv",
-            help="The download includes the detailed years chart data.",
+            help="The upload includes the detailed years chart data.",
             label="Download the years chart data",
             mime="text/csv",
         )
@@ -2452,7 +2452,7 @@ def _present_data_profile() -> None:
     st.download_button(
         data=profile_report.to_html(),
         file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",  # type: ignore
-        help="The download includes a profile report from the dataframe "
+        help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
         mime="text/html",
@@ -2501,7 +2501,7 @@ def _present_details() -> None:
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_data_detail.csv",
-            help="The download includes all data "
+            help="The upload includes all data "
             + "after applying the filter options.",
             label="Download the detailed data",
             mime="text/csv",

@@ -94,8 +94,8 @@ mkdir -p tmp/docs\img
 if [ "${APPLICATION}" = "members" ]; then
     copy -i data/latest_postgres.zip          download/IO-AVSTATS-DB.zip
     copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
-    copy -i download/IO-AVSTATS-DB.pdf        tmp/download/IO-AVSTATS-DB.pdf
-    copy -i download/IO-AVSTATS-DB.zip        tmp/download/IO-AVSTATS-DB.zip
+    copy -i uoload/IO-AVSTATS-DB.pdf          tmp/download/IO-AVSTATS-DB.pdf
+    copy -i upload/IO-AVSTATS-DB.zip          tmp/download/IO-AVSTATS-DB.zip
 fi
 
 if [ "${APPLICATION}" = "stats" ]; then

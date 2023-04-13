@@ -1414,7 +1414,7 @@ def _get_user_guide_details_binary_data() -> None:
     text = """
 #### User guide: Binary data
 
-This task provides the binary data in a table format for display and download as **csv** file.
+This task provides the binary data in a table format for display and upload as **csv** file.
 Every row represents a transaction.
 Columns are possible categories that might appear in every transaction.
 Every cell contains one of two possible values:
@@ -1423,7 +1423,7 @@ Every cell contains one of two possible values:
 - 1 - the transaction contains the category.  
 
 To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
-The **csv** download is not limited, but may not be processable with MS Excel.
+The **csv** upload is not limited, but may not be processable with MS Excel.
     """
 
     st.warning(text + _get_user_guide_details_standard())
@@ -1451,7 +1451,7 @@ def _get_user_guide_details_association_rules() -> None:
     text = """
 #### User guide: Association rules
 
-This task provides the detailed association rules in a table format for display and download as **csv** file. 
+This task provides the detailed association rules in a table format for display and upload as **csv** file. 
 
 The table comes with columns "antecedents" and "consequents" that store itemsets, plus the scoring metric columns:
 
@@ -1479,9 +1479,9 @@ def _get_user_guide_details_binary_data_one_hot_encoded() -> None:
     text = """
 #### User guide: One-hot encoded data details
 
-This task provides the detailed one-hot encoded data in a table format for display and download as **csv** file. 
+This task provides the detailed one-hot encoded data in a table format for display and upload as **csv** file. 
 To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
-The **csv** download is not limited, but may not be processable with MS Excel.
+The **csv** upload is not limited, but may not be processable with MS Excel.
     """
 
     st.warning(text + _get_user_guide_details_standard())
@@ -1495,7 +1495,7 @@ def _get_user_guide_details_frequent_itemsets() -> None:
     text = """
 #### User guide: Frequent itemsets
 
-This task provides the detailed frequent itemsets in a table format for display and download as **csv** file. 
+This task provides the detailed frequent itemsets in a table format for display and upload as **csv** file. 
 
 The table comes with columns ['support', 'itemsets'] of all itemsets that are >= `min_support`.
 
@@ -1526,7 +1526,7 @@ def _get_user_guide_details_raw_data() -> None:
     text = """
 #### User guide: Raw data details
 
-This task provides the detailed raw data in a table format for display and download as **csv** file. 
+This task provides the detailed raw data in a table format for display and upload as **csv** file. 
 The rows to be displayed are limited to the chosen filter options. 
 The order of data display is based on the ascending event identification. 
 
@@ -1559,7 +1559,7 @@ def _get_user_guide_details_transaction_data() -> None:
     text = """
 #### User guide: Transaction data details
 
-This task provides the detailed transaction data in a table format for display and download as **csv** file.
+This task provides the detailed transaction data in a table format for display and upload as **csv** file.
 The order of data display is based on the ascending event identification of the raw data. 
     """
 
@@ -1671,7 +1671,7 @@ def _present_details_association_rules(
         data=df_rules_ext.to_csv().encode("utf-8"),
         file_name=APP_ID
         + f"_association_rules_{algorithm.lower().replace('-','')}_detail.csv",
-        help="The download includes all association rules.",
+        help="The upload includes all association rules.",
         label="**Download the association rules**",
         mime="text/csv",
     )
@@ -1719,7 +1719,7 @@ def _present_details_binary_data() -> None:
     st.download_button(
         data=DF_BINARY_DATA_ECLAT.to_csv().encode("utf-8"),
         file_name=APP_ID + "_binary_data.csv",
-        help="The download includes all binary data.",
+        help="The upload includes all binary data.",
         label="**Download the binary data**",
         mime="text/csv",
     )
@@ -1767,7 +1767,7 @@ def _present_details_binary_data_one_hot_encoded() -> None:
     st.download_button(
         data=DF_BINARY_DATA_ONE_HOT_ENCODED.to_csv().encode("utf-8"),
         file_name=APP_ID + "_binary_data_one_hot_encoded.csv",
-        help="The download includes all one-hot encoded data.",
+        help="The upload includes all one-hot encoded data.",
         label="**Download the one-hot encoded data**",
         mime="text/csv",
     )
@@ -1817,7 +1817,7 @@ def _present_details_frequent_itemsets_apriori() -> None:
     st.download_button(
         data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
-        help="The download includes all frequent itemsets.",
+        help="The upload includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
@@ -1869,7 +1869,7 @@ def _present_details_frequent_itemsets_eclat() -> None:
     st.download_button(
         data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
-        help="The download includes all frequent itemsets.",
+        help="The upload includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
@@ -1919,7 +1919,7 @@ def _present_details_frequent_itemsets_fpgrowth() -> None:
     st.download_button(
         data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
-        help="The download includes all frequent itemsets.",
+        help="The upload includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
@@ -1969,7 +1969,7 @@ def _present_details_frequent_itemsets_fpmax() -> None:
     st.download_button(
         data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
         file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
-        help="The download includes all frequent itemsets.",
+        help="The upload includes all frequent itemsets.",
         label="**Download the frequent itemsets**",
         mime="text/csv",
     )
@@ -2068,7 +2068,7 @@ def _present_details_raw_data() -> None:
     st.download_button(
         data=DF_RAW_DATA_FILTERED.to_csv().encode("utf-8"),
         file_name=APP_ID + "_raw_data_detail.csv",
-        help="The download includes all raw data "
+        help="The upload includes all raw data "
         + "after applying the filter options.",
         label="**Download the detailed raw data**",
         mime="text/csv",
@@ -2121,7 +2121,7 @@ def _present_details_transaction_data(
     st.download_button(
         data=df_transaction_data.to_csv().encode("utf-8"),
         file_name=APP_ID + "_transaction_data_detail.csv",
-        help="The download includes all transaction data.",
+        help="The upload includes all transaction data.",
         label="**Download the detailed transaction data**",
         mime="text/csv",
     )
@@ -2178,7 +2178,7 @@ def _present_profile_raw_data() -> None:
     st.download_button(
         data=profile_report.to_html(),
         file_name=APP_ID + "_raw_data_profile_" + CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
-        help="The download includes a profile report from the dataframe "
+        help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="**Download the raw data profile report**",
         mime="text/html",

@@ -1,10 +1,8 @@
 /*.log
-/.coverage
 /.history/
 /.idea/
 /.mypy_cache/
 /.pytest_cache/
-/.vs/
 /Pipfile.lock
 /cloud.zip
 /data/*_postgres_*.zip

@@ -6,7 +6,7 @@
   - Association Rule Analysis
   - Aviation Event Analysis
   - Database Profiling
-- Usable as cloud application
+- Usable as cloud application:
   - load balancer support
   - single sign-on with identity and access management
 

@@ -164,12 +164,12 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -201,7 +201,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

@@ -73,15 +73,15 @@ def get_args() -> tuple[str, str]:
 # pylint: disable=R0801
 def get_engine(settings: Dynaconf) -> Engine:
     """Create a simple user PostgreSQL database engine."""
-    print(
-        str(datetime.datetime.now())
-        + f"[engine  ] User connect request host='{settings.postgres_host}' "
-        + f"'port={settings.postgres_connection_port}' "
-        + f"'dbname={settings.postgres_dbname}' "
-        + f"'user={settings.postgres_user_guest}' "
-        + f"['{settings.postgres_password_guest}']",
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + f"[engine  ] User connect request host='{settings.postgres_host}' "
+    #     + f"'port={settings.postgres_connection_port}' "
+    #     + f"'dbname={settings.postgres_dbname}' "
+    #     + f"'user={settings.postgres_user_guest}' "
+    #     + f"['{settings.postgres_password_guest}']",
+    #     flush=True,
+    # )
 
     return create_engine(
         f"postgresql://{settings.postgres_user_guest}:"
@@ -98,11 +98,11 @@ def get_engine(settings: Dynaconf) -> Engine:
 # pylint: disable=R0801
 def get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
-    print(
-        str(datetime.datetime.now())
-        + f"[psycopg2] st.secrets['db_postgres']={st.secrets['db_postgres']}",
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + f"[psycopg2] st.secrets['db_postgres']={st.secrets['db_postgres']}",
+    #     flush=True,
+    # )
 
     return psycopg2.connect(**st.secrets["db_postgres"])
 
@@ -114,13 +114,6 @@ def has_access(
     host_cloud: bool, app_id: str
 ) -> tuple[str, dict[str, dict[str, list[str]]]]:
     """Authentication and authorization check."""
-
-    # pylint: disable=line-too-long
-    print(
-        str(datetime.datetime.now())
-        + f"                         - Authentication through Keycloak starts     - Cloud: {host_cloud} - Application: {app_id}",
-        flush=True,
-    )
 
     # pylint: disable=R0801
     keycloak = login(
@@ -136,16 +129,12 @@ def has_access(
         keycloak.authenticated = False
         # pylint: disable=line-too-long
         st.error(
-            "##### Error: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly."
+            "##### Error: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly.",
         )
         st.stop()
 
+    # pylint: disable=line-too-long
     user_info = f"User:  {keycloak.user_info.get('family_name')+', '+keycloak.user_info.get('given_name')} [{keycloak.user_info.get('email')}]"
-    print(
-        str(datetime.datetime.now())
-        + f"                         -                                            - {user_info}",
-        flush=True,
-    )
 
     if (client_access := resource_access.get(app_id)) is None:
         keycloak.authenticated = False
@@ -153,7 +142,7 @@ def has_access(
         del st.session_state["KEYCLOAK"]
         print(
             str(datetime.datetime.now())
-            + "                         -                                            - Authentication Error: You have no permission to access this application.",
+            + f"Authentication Error: You have no permission to access this application: {user_info}.",
             flush=True,
         )
         st.stop()
@@ -165,17 +154,10 @@ def has_access(
         )
         print(
             str(datetime.datetime.now())
-            + "                         -                                            - Authentication Error: You are missing the required role to access this application.",
+            + f"Authentication Error: You are missing the required role to access this application: {user_info}.",
             flush=True,
         )
         st.stop()
-
-    # pylint: disable=line-too-long
-    print(
-        str(datetime.datetime.now())
-        + f"                         - Authentication through Keycloak successful - app_id={app_id}",
-        flush=True,
-    )
 
     return user_info, keycloak.user_info.get("resource_access")
 

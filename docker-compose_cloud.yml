@@ -150,6 +150,8 @@ services:
       - pd1982
       - slara
       - stats
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
     image: nginx:stable-alpine
     ports:
       - ${IO_AVSTATS_NGINX_CONNECTION_PORT}:80

@@ -4176,12 +4176,12 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -4268,7 +4268,7 @@ def _streamlit_flow() -> None:
     # flake8: noqa: E501
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

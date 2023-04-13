@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
-import pydeck as pdk  # type: ignore
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
@@ -149,8 +148,7 @@ CHOICE_HORIZONTAL_BAR_CHARTS: bool | None = None
 
 CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
-CHOICE_MAP_MAP_STYLE_DEFAULT: str = "outdoors-v12"
-CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
+CHOICE_MAP_MAP_STYLE_DEFAULT = "open-street-map"
 
 CHOICE_PIE_CHARTS: bool | None = None
 
@@ -274,7 +272,6 @@ LAST_READING: int = 0
 LAYER_TYPE = "ScatterplotLayer"
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
-MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 MODE_STANDARD: bool | None = None
 
 OPTIONS_EV_HIGHEST_INJURY = {
@@ -310,7 +307,6 @@ OPTIONS_LATLONG_ACQ = {
 PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
-PITCH = 30
 
 # ------------------------------------------------------------------
 # Configuration parameters.
@@ -322,12 +318,12 @@ SETTINGS = Dynaconf(
 )
 START_TIME: int = 0
 
-USER_INFO: str = "n/a"
+USER_INFO: str = "anonymous"
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
 # 24 (close to individual buildings)
-ZOOM = 4.4
+ZOOM = 4
 
 
 # ------------------------------------------------------------------
@@ -2629,38 +2625,33 @@ def _present_map() -> None:
         (DF_FILTERED["dec_latitude"].notna() & DF_FILTERED["dec_longitude"].notna())
     ]
 
-    faa_layer = pdk.Layer(
-        auto_highlight=True,
-        data=df_filtered_map,
-        get_fill_color=[255, 0, 0],
-        get_position=["dec_longitude", "dec_latitude"],
-        get_radius=CHOICE_MAP_RADIUS,
-        pickable=True,
-        type=LAYER_TYPE,
+    fig = px.scatter_mapbox(
+        df_filtered_map,
+        center=_sql_query_us_ll(),
+        hover_data={"ev_id": True, "ntsb_no": True, "inj_tot_f": True},
+        labels={
+            "dec_latitude": "Latitude",
+            "dec_longitude": "Longitude",
+            "ev_id": "Event",
+            "ntsb_no": "NTSB No.",
+            "inj_tot_f": "Fatalities",
+        },
+        lat="dec_latitude",
+        lon="dec_longitude",
+        title=f"Map of {EVENT_TYPE_DESC}s"
+        if MODE_STANDARD
+        else "Map of Fatal Accidents in the US",
+        zoom=ZOOM,
     )
 
-    # noinspection PyUnboundLocalVariable
-    st.pydeck_chart(
-        pdk.Deck(
-            initial_view_state=_sql_query_us_ll(PITCH, ZOOM),
-            layers=[faa_layer],
-            map_style=MAP_STYLE_PREFIX
-            + (
-                CHOICE_MAP_MAP_STYLE
-                if CHOICE_MAP_MAP_STYLE
-                else CHOICE_MAP_MAP_STYLE_DEFAULT
-            ),  # type: ignore
-            tooltip={
-                "html": "<table><tbody>"
-                + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
-                + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
-                + "<tr><td><b>Fatalities</b></td><td>{inj_tot_f}</td></tr>"
-                + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
-                + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
-                + "<tr><td><b>Acquired</b></td><td>{latlong_acq}</td></tr>"
-                + "</tbody></table>"
-            },
-        ),
+    fig.update_layout(
+        mapbox_style=CHOICE_MAP_MAP_STYLE
+        if MODE_STANDARD
+        else CHOICE_MAP_MAP_STYLE_DEFAULT
+    )
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    st.plotly_chart(
+        fig,
         use_container_width=True,
     )
 
@@ -3447,7 +3438,6 @@ def _setup_task_controls() -> None:
     global CHOICE_HORIZONTAL_BAR_CHARTS  # pylint: disable=global-statement
     global CHOICE_MAP  # pylint: disable=global-statement
     global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
-    global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
     global CHOICE_PIE_CHARTS  # pylint: disable=global-statement
     global CHOICE_RUN_ANALYSIS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_DETAILS  # pylint: disable=global-statement
@@ -3508,20 +3498,15 @@ def _setup_task_controls() -> None:
                 label="Map style",
                 options=(
                     [
-                        "light-v11",
-                        "outdoors-v12",
-                        "streets-v12",
+                        "carto-positron",
+                        "open-street-map",
+                        "stamen-terrain",
+                        "stamen-toner",
+                        "stamen-watercolor",
+                        "white-bg",
                     ]
                 ),
             )
-
-        CHOICE_MAP_RADIUS = st.sidebar.slider(
-            label="Event radius in meters",
-            help="Radius for displaying the events - " + "default value is 2 miles.",
-            min_value=10,
-            max_value=1609 * 4,
-            value=(1609 * 2),
-        )
 
     st.sidebar.divider()
 
@@ -4254,7 +4239,7 @@ def _sql_query_tll_parameters() -> list[str]:
 # ------------------------------------------------------------------
 # Run the US latitude and longitude query.
 # ------------------------------------------------------------------
-def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
+def _sql_query_us_ll() -> dict[str, float]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
@@ -4265,12 +4250,7 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
 """
         )
         result = cur.fetchone()
-        return pdk.ViewState(
-            latitude=result[0],  # type: ignore
-            longitude=result[1],  # type: ignore
-            pitch=pitch,
-            zoom=zoom,
-        )
+        return {"lat": result[0], "lon": result[1]}  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -4305,12 +4285,12 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -4322,11 +4302,11 @@ def _streamlit_flow() -> None:
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
 
-    print(
-        str(datetime.datetime.now())
-        + f"                         - MODE_STANDARD={MODE_STANDARD}",
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + f"                         - MODE_STANDARD={MODE_STANDARD}",
+    #     flush=True,
+    # )
 
     st.set_page_config(
         layout="wide",
@@ -4377,7 +4357,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

@@ -5,15 +5,12 @@
 /.pytest_cache/
 /Pipfile.lock
 /cloud.zip
-/data/*_postgres_*.zip
-/data/__ARCHIVE__/
+/data/*_postgres*.zip
 /data/correction_test/
 /data/download/
 /data/download_test/
-/data/latest_postgres.zip
 /data/pandas_profiles/*_explorative.html
 /data/pandas_profiles/io_processed_files_*.html
-/data/postgres.zip
 /data/postgres/
 /data/postgres_keycloak/
 /data/postgres_test/

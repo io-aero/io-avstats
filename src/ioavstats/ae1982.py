@@ -3895,7 +3895,7 @@ def _setup_task_controls() -> None:
                     help="Maximum distance in miles",
                     key="CHOICE_CHARTS_TYPE_D_NA_MAX",
                     label="Maximum distance in miles",
-                    max_value=3000.0,
+                    max_value=5000.0,
                     step=5.0,
                     value=100.0,
                 )

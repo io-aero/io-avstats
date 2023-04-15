@@ -2,19 +2,17 @@
 correction_work_dir = "data/correction"
 database_commit_size = 10000
 download_chunk_size = 524288
+download_directory_aviation_event_statistics = "data/AviationAccidentStatistics"
 download_file_aviation_occurrence_categories_xlsx = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 download_file_countries_states_json = "data/Countries_States/countries_states.json"
-download_file_sequence_of_events_csv = "data/Sequence_of_Events/CICTT_SOE_MAP.csv"
-download_file_simplemaps_us_cities_xlsx = "uscities.xlsx"
-download_file_simplemaps_us_cities_zip = "simplemaps_uscities_basicv1.75.zip"
-download_file_simplemaps_us_zips_xlsx = "uszips.xlsx"
-download_file_simplemaps_us_zips_zip = "simplemaps_uszips_basicv1.81.zip"
-download_file_zip_codes_org_xls = "zip_code_database.xls"
+download_file_faa_airports_xlsx = "data/FAA_Airports/Airports.xlsx"
+download_file_main_phases_of_flight_xlsx = "data/Main_Phases_of_Flight/main_phases_of_flight.xlsx"
+download_file_sequence_of_events_xlsx = "data/Sequence_of_Events/CICTT_SOE_MAP.xlsx"
+download_file_simplemaps_us_cities_xlsx = "data/simplemaps/uscities.xlsx"
+download_file_simplemaps_us_zips_xlsx = "data/simplemaps/uszips.xlsx"
+download_file_zip_codes_org_xlsx = "data/United States Zip Codes.org/zip_code_database.xlsx"
 download_timeout = 10
 download_url_ntsb_prefix = "https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C"
-download_url_simplemaps_us_cities = "https://simplemaps.com/static/data/us-cities/1.75/basic/simplemaps_uscities_basicv1.75.zip"
-download_url_simplemaps_us_zips = "https://simplemaps.com/static/data/us-zips/1.81/basic/simplemaps_uszips_basicv1.81.zip"
-download_url_zip_codes_org = "https://www.unitedstateszipcodes.org/zip_code_database.xls?download_auth=72c4e8898190892f8fc65eda54add7b8"
 download_work_dir = "data/download"
 is_runtime_environment_local = true
 is_verbose = true
@@ -24,7 +22,6 @@ ntsb_work_dir = "data/download"
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
 postgres_connection_port = 5432
 postgres_container_name = "io_avstats_db"
-postgres_container_port = 5432
 postgres_database_schema = "public"
 postgres_dbname = "io_avstats_db"
 postgres_dbname_admin = "postgres"

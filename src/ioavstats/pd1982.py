@@ -211,20 +211,20 @@ QUERIES = {
           FROM io_md_codes_category
         ORDER BY category_code;
     """,
+    "io_md_codes_eventsoe": """
+        SELECT *
+          FROM io_md_codes_eventsoe
+        ORDER BY eventsoe_code;
+    """,
     "io_md_codes_modifier": """
         SELECT *
           FROM io_md_codes_modifier
         ORDER BY modifier_code;
     """,
-    "io_md_codes_occurrence": """
+    "io_md_codes_phase": """
         SELECT *
-          FROM io_md_codes_occurrence
-        ORDER BY occurrence_code;
-    """,
-    "io_md_codes_phase_operation": """
-        SELECT *
-          FROM io_md_codes_phase_operation
-        ORDER BY phase_operation_code;
+          FROM io_md_codes_phase
+        ORDER BY phase_code;
     """,
     "io_md_codes_section": """
         SELECT *
@@ -363,9 +363,9 @@ def _get_user_guide_app() -> None:
 #### User guide: pd1982 Application
 
 On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a 
-table format for display and download as **csv** file. 
+table format for display and upload as **csv** file. 
 On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using 
-[Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally download the result as a **HTML** file.
+[Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally upload the result as a **HTML** file.
 
 The **IO-AVSTATS-DB** database is based primarily on aviation accident data provided by the 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in the form of Microsoft Access databases [here]( https://data.ntsb.gov/avdata).
@@ -408,7 +408,7 @@ def _get_user_guide_details() -> None:
 #### User guide: Show details
 
 This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and 
-download as **csv** file. 
+upload as **csv** file. 
 The rows to be displayed can be limited to an interval of event years in the filter options. 
 The order of data display is based on the respective primary key of the database table. 
 The database columns of the selected rows are always displayed in full.
@@ -516,7 +516,7 @@ def _present_data():
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_" + CHOICE_DDL_OBJECT_SELECTION + ".csv",
-            help="The download includes all data of the selected "
+            help="The upload includes all data of the selected "
             + f"{CHOICE_DDL_OBJECT_SELECTED.lower()} after applying the filter options.",
             label="Download all data as CSV file",
             mime="text/csv",
@@ -544,7 +544,7 @@ def _present_data_data_profile():
     st.download_button(
         data=profile_report.to_html(),
         file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
-        help="The download includes a profile report from the dataframe "
+        help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
         mime="text/html",
@@ -591,7 +591,7 @@ def _setup_filter_controls():
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
 
 # ------------------------------------------------------------------
@@ -684,7 +684,7 @@ def _setup_task_controls():
             ),
         )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the selected detailed data.",
@@ -692,7 +692,7 @@ def _setup_task_controls():
         value=True,
     )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
@@ -711,7 +711,7 @@ def _setup_task_controls():
         else "Table"
     )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
 
 # ------------------------------------------------------------------
@@ -727,12 +727,12 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -776,9 +776,9 @@ def _streamlit_flow() -> None:
         "io_aviation_occurrence_categories",
         "io_countries",
         "io_md_codes_category",
+        "io_md_codes_eventsoe",
         "io_md_codes_modifier",
-        "io_md_codes_occurrence",
-        "io_md_codes_phase_operation",
+        "io_md_codes_phase",
         "io_md_codes_section",
         "io_md_codes_subcategory",
         "io_md_codes_subsection",
@@ -797,7 +797,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

@@ -66,14 +66,14 @@ def main(argv: list[str]) -> None:
         avstats.drop_db_schema()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_D_N_A:
         avstats.download_ntsb_msaccess_file(avstats.ARG_MSACCESS)
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_D_S_F:
-        avstats.download_basic_simplemaps_files()
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_D_Z_F:
-        avstats.download_zip_code_db_file()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_F_N_A:
+        avstats.find_nearest_airports()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_GENERATE:
         avstats.generate_sql()
+    elif avstats.ARG_TASK == io_glob.ARG_TASK_L_A_P:
+        avstats.load_airport_data()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_C_D:
-        avstats.load_correction_data(avstats.ARG_CORRECTION)
+        avstats.load_correction_data(avstats.ARG_MSEXCEL)
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_C_S:
         avstats.load_country_state_data()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_N_A:

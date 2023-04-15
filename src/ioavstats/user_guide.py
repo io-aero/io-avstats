@@ -92,7 +92,7 @@ def get_pd1982_app() -> None:
     user_guide = (
         _generic_header_section("User Guide 'Application'")
         + f"""
-On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a table format for display and download as **csv** file. On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally download the result as a **HTML** file.
+On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a table format for display and upload as **csv** file. On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally upload the result as a **HTML** file.
 
 The **IO-AVSTATS-DB** database is based primarily on aviation accident data provided by the [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in the form of Microsoft Access databases [here]( https://data.ntsb.gov/avdata).
 
@@ -143,7 +143,7 @@ def get_pd1982_details() -> None:
     user_guide = (
         _generic_header_section("User Guide 'Show details'")
         + """
-This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and download as **csv** file. The rows to be displayed can be limited to an interval of event years in the filter options. The order of data display is based on the respective primary key of the database table. The database columns of the selected rows are always displayed in full.
+This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and upload as **csv** file. The rows to be displayed can be limited to an interval of event years in the filter options. The order of data display is based on the respective primary key of the database table. The database columns of the selected rows are always displayed in full.
     """
         + _generic_footer_section()
     )

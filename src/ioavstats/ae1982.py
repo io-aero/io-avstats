@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
-import pydeck as pdk  # type: ignore
 import streamlit as st
 import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
@@ -38,6 +37,8 @@ CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 
+CHOICE_BOX_PLOTS: bool | None = None
+
 CHOICE_CHARTS_LEGEND_IL_FATAL = "fatal"
 CHOICE_CHARTS_LEGEND_IL_MINOR = "minor"
 CHOICE_CHARTS_LEGEND_IL_NONE = "none"
@@ -51,9 +52,16 @@ CHOICE_CHARTS_LEGEND_SFP_OTHER = "Other FAR Operations Parts"
 CHOICE_CHARTS_LEGEND_T_ACC = "Accident"
 CHOICE_CHARTS_LEGEND_T_INC = "Incident"
 
+CHOICE_CHARTS_TYPE_D_NA: bool | None = None
+CHOICE_CHARTS_TYPE_D_NA_MAX: float | None = None
+CHOICE_CHARTS_TYPE_D_NA_NO: int | None = None
 CHOICE_CHARTS_TYPE_EY_AOC: bool | None = None
 CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_IL: bool | None = None
+CHOICE_CHARTS_TYPE_EY_MPF: bool | None = None
+CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD: float | None = None
+CHOICE_CHARTS_TYPE_EY_PF: bool | None = None
+CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_PSS: bool | None = None
 CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_T: bool | None = None
@@ -112,6 +120,10 @@ CHOICE_CHARTS_TYPE_N_SFP: list[tuple[str, str]] = [
 CHOICE_CHARTS_TYPE_TE_AOC: bool | None = None
 CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TE_IL: bool | None = None
+CHOICE_CHARTS_TYPE_TE_MPF: bool | None = None
+CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD: float | None = None
+CHOICE_CHARTS_TYPE_TE_PF: bool | None = None
+CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TE_PSS: bool | None = None
 CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TE_T: bool | None = None
@@ -121,8 +133,9 @@ CHOICE_CHARTS_TYPE_TF_FP: bool | None = None
 CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TF_SFP: bool | None = None
 
-CHOICE_DATA_GRAPHS_YEARS: bool | None = None
+CHOICE_DATA_GRAPHS_DISTANCES: bool | None = None
 CHOICE_DATA_GRAPHS_TOTALS: bool | None = None
+CHOICE_DATA_GRAPHS_YEARS: bool | None = None
 CHOICE_DATA_PROFILE: bool | None = None
 CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DETAILS: bool | None = None
@@ -135,10 +148,11 @@ CHOICE_HORIZONTAL_BAR_CHARTS: bool | None = None
 
 CHOICE_MAP: bool | None = None
 CHOICE_MAP_MAP_STYLE: str | None = None
-CHOICE_MAP_MAP_STYLE_DEFAULT: str = "outdoors-v12"
-CHOICE_MAP_RADIUS: float | None = 1609.347 * 2
+CHOICE_MAP_MAP_STYLE_DEFAULT = "open-street-map"
 
 CHOICE_PIE_CHARTS: bool | None = None
+
+CHOICE_RUN_ANALYSIS: bool | None = None
 
 CHOICE_TOTALS_CHARTS_DETAILS: bool | None = None
 CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS: bool | None = None
@@ -153,11 +167,15 @@ CHOICE_UG_DETAILS: bool | None = None
 CHOICE_UG_MAP: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_AOC: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_IL: bool | None = None
+CHOICE_UG_YEARS_CHARTS_EY_MPF: bool | None = None
+CHOICE_UG_YEARS_CHARTS_EY_PF: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_PSS: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_T: bool | None = None
 CHOICE_UG_YEARS_CHARTS_EY_TLP: bool | None = None
 CHOICE_UG_YEARS_CHARTS_FY_FP: bool | None = None
 CHOICE_UG_YEARS_CHARTS_FY_SFP: bool | None = None
+
+CHOICE_VIOLIN_PLOTS: bool | None = None
 
 CHOICE_YEARS_CHARTS_DETAILS: bool | None = None
 CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS: bool | None = None
@@ -197,6 +215,8 @@ EVENT_TYPE_DESC: str
 
 FILTER_ACFT_CATEGORIES: list[str] = []
 FILTER_CICTT_CODES: list[str] = []
+FILTER_DEFINING_PHASES: list[str] = []
+FILTER_DESCRIPTION_MAIN_PHASES: list[str] = []
 FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_HIGHEST_INJURY_DEFAULT: list[str] = ["fatal"]
 FILTER_EV_TYPE: list[str] = []
@@ -252,7 +272,6 @@ LAST_READING: int = 0
 LAYER_TYPE = "ScatterplotLayer"
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
 
-MAP_STYLE_PREFIX = "mapbox://styles/mapbox/"
 MODE_STANDARD: bool | None = None
 
 OPTIONS_EV_HIGHEST_INJURY = {
@@ -288,7 +307,6 @@ OPTIONS_LATLONG_ACQ = {
 PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
-PITCH = 30
 
 # ------------------------------------------------------------------
 # Configuration parameters.
@@ -300,12 +318,12 @@ SETTINGS = Dynaconf(
 )
 START_TIME: int = 0
 
-USER_INFO: str = "n/a"
+USER_INFO: str = "anonymous"
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
 # 24 (close to individual buildings)
-ZOOM = 4.4
+ZOOM = 4
 
 
 # ------------------------------------------------------------------
@@ -318,7 +336,6 @@ ZOOM = 4.4
 def _apply_filter(
     df_unfiltered: DataFrame,
 ) -> DataFrame:
-    """Filter the data frame."""
     _print_timestamp(f"_apply_filter() - {len(df_unfiltered):>6} - Start")
 
     df_filtered = df_unfiltered
@@ -345,6 +362,33 @@ def _apply_filter(
         ]
         _print_timestamp(
             f"_apply_filter() - {len(df_filtered):>6} - FILTER_CICTT_CODES"
+        )
+
+    # noinspection PyUnboundLocalVariable
+    if FILTER_DEFINING_PHASES:
+        # noinspection PyUnboundLocalVariable
+        # pylint: disable=line-too-long
+        df_filtered = df_filtered.loc[
+            df_filtered["phase_codes_defining"].apply(
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_DEFINING_PHASES)))  # type: ignore
+            )
+        ]
+        _print_timestamp(
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DEFINING_PHASES"
+        )
+
+    # noinspection PyUnboundLocalVariable
+    if FILTER_DESCRIPTION_MAIN_PHASES:
+        # noinspection PyUnboundLocalVariable
+        df_filtered = df_filtered.loc[
+            (
+                df_filtered["description_main_phase_defining"].isin(
+                    FILTER_DESCRIPTION_MAIN_PHASES
+                )
+            )
+        ]
+        _print_timestamp(
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DESCRIPTION_MAIN_PHASES"
         )
 
     # noinspection PyUnboundLocalVariable
@@ -532,7 +576,6 @@ def _apply_filter_us_aviation(
     _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
     filter_params: list | None,
 ) -> DataFrame:
-    """Filter the data frame - US aviation."""
     _print_timestamp("_apply_filter_us_aviation() - Start")
 
     filter_cmd = "_df_unfiltered.loc["
@@ -574,7 +617,6 @@ def _apply_filter_us_aviation(
 # Convert a dataframe to csv data.
 # ------------------------------------------------------------------
 def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
-    """Convert a dataframe to csv data."""
     return dataframe.to_csv().encode("utf-8")
 
 
@@ -583,7 +625,6 @@ def _convert_df_2_csv(dataframe: DataFrame) -> bytes:
 # ------------------------------------------------------------------
 @st.cache_resource
 def _get_data() -> DataFrame:
-    """Read the data."""
     _print_timestamp("_get_data() - Start")
 
     return pd.read_sql(
@@ -595,6 +636,7 @@ def _get_data() -> DataFrame:
                    country,
                    dec_latitude,
                    dec_longitude,
+                   description_main_phase_defining,
                    ev_highest_injury,
                    ev_type,
                    ev_year,
@@ -602,6 +644,9 @@ def _get_data() -> DataFrame:
                    finding_codes,
                    inj_f_grnd,
                    inj_tot_f,
+                   CASE WHEN inj_tot_f = 0 THEN 'non-fatal'
+                        ELSE 'fatal'
+                   END dot_color,     
                    is_dest_country_usa,
                    is_dprt_country_usa,
                    is_far_part_091x,
@@ -611,16 +656,36 @@ def _get_data() -> DataFrame:
                    is_owner_country_usa,
                    is_regis_country_usa,
                    latlong_acq,
+                   nearest_airport_city,
+                   UPPER(city) event_city,
+                   nearest_airport_code_iata,
+                   nearest_airport_distance,
                    no_aircraft,
                    ntsb_no,
                    occurrence_codes,
+                   phase_codes_defining,
                    preventable_events,
                    state,
                    tll_parameters
              FROM io_app_ae1982
             ORDER BY ev_id;
-    """,
+""",
     )
+
+
+# ------------------------------------------------------------------
+# Prepare the codes.
+# ------------------------------------------------------------------
+def _get_prepared_codes(list_in: list) -> list[str]:
+    list_out = []
+
+    for elem in list_in:
+        (_, code) = elem.split(" - ")
+        list_out.append(code)
+
+    _print_timestamp("_get_prepared_codes()")
+
+    return list_out
 
 
 # ------------------------------------------------------------------
@@ -640,19 +705,18 @@ def _get_prepared_us_states(list_in: list) -> list[str]:
 # Creates the user guide for the whole application.
 # ------------------------------------------------------------------
 def _get_user_guide_app() -> None:
-    """Creates the user guide for the whole application."""
-    text = """
-#### User guide: ae1982 Application
+    ug_text = """
+#### User guide: Application
 """
 
     if not MODE_STANDARD:
-        text += """
+        ug_text += """
 **Important**: You are using a very limited version of this application. 
 You are welcome to request the use of the free full version of this application [here](https://www.io-aero.com/analytics) on IO-Aero's website.
-        """
+"""
 
-    text += f"""
-The **ae1982** application allows you to perform data analysis tasks on aviation accident and incident data provided by 
+    ug_text += f"""
+This application allows you to perform data analysis tasks on aviation accident and incident data provided by 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
 The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating 
 every civil aviation accident in the United States and significant accidents in other modes of transportation – railroad, 
@@ -660,37 +724,38 @@ highway, marine and pipeline.
 For each aviation accident and incident, the NTSB provides the relevant data in the form of MS Access databases.
 
 The databases provided on the [NTSB website](https://data.ntsb.gov/avdata) come in three versions:
-- **Pre2008**: contains all data for events that occurred before the year 2008,
-- **avall**: on the first of each month, the data for all events since 2008 are made available here,
+- **Pre2008**: contains data for events that occurred before the year 2008,
+- **avall**: on the first of each month, the data for events since 2008 are made available here,
 - **up[01|08|15|22][JAN|...|DEC]**: at the 1st, 8th, 15th and 22nd of each month these update files contain the changes
 since the previous update file.
 
-The **ae1982** application processes data regarding
+The application processes data regarding
 - the events (`events`),
-- the event sequences (`events_sequence`),
 - the aircraft involved (`aircraft`),
-- the reports of involved parties (`narratives`), and
-- the findings (`findings`).
+- the event sequences (`events_sequence`),
+- the findings (`findings`), and
+- the reports of involved parties (`narratives`).
 
-The **ae1982** application provides the following tools:
+The application provides the following tools:
 
-- **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
-- **Data Graphs - Years**: Provides graphical analysis options for year-based analysis,
+- **Data Graphs - Distances**: Provides graphical evaluation options for questions regarding distances,
 - **Data Graphs - Totals**: Provides graphical evaluation options for total summaries,
+- **Data Graphs - Years**: Provides graphical analysis options for year-based analysis,
 - **Data Profiles**: Allows detailed analysis of data characteristics,
 - **Detailed Data**: Shows the detailed data involved,
+- **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
 - **Map**: Shows the event locations on a map. 
 
-Where appropriate, the **ae1982** application allows you to print the displayed graphics or download detailed data in **csv** format.
+Where appropriate, the application allows you to print the displayed graphics or upload detailed data in **csv** format.
 
-Further information on the **ae1982** application can be found [here]({LINK_GITHUB_PAGES}).
+Further information on the application can be found [here]({LINK_GITHUB_PAGES}).
 
 If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
 [here](https://github.com/io-aero/io-avstats-shared/issues) so that we can make any necessary correction. 
 Also suggestions for improvement or enhancements are welcome. 
 """
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
@@ -700,110 +765,94 @@ def _get_user_guide_chart(
     chart_id: str,
     chart_title: str,
 ) -> None:
-    """Creates the user guide for years charts."""
-    text = _get_user_guide_chart_header(
+    ug_text = _get_user_guide_chart_header(
         chart_id,
         chart_title,
     )
 
+    ug_text = _get_user_guide_chart_data_basis(chart_id, ug_text)
+
     match chart_id:
-        case "ey_aoc" | "te_aoc":
-            text += """
+        case "d_na":
+            ug_text += _get_user_guide_distances_chart_footer(
+                chart_id,
+                chart_title,
+            )
+        # pylint: disable=line-too-long
+        case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
+            ug_text += _get_user_guide_years_chart_footer(
+                chart_id,
+                chart_title,
+            )
+        # pylint: disable=line-too-long
+        case "te_aoc" | "te_il" | "te_mpf" | "te_pf" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
+            ug_text += _get_user_guide_totals_chart_footer(
+                chart_id,
+                chart_title,
+            )
+
+    st.warning(ug_text)
+
+
+# ------------------------------------------------------------------
+# Creates the description of the data basis.
+# ------------------------------------------------------------------
+def _get_user_guide_chart_data_basis(chart_id, ug_text):
+    ug_text = (
+        ug_text
+        + """
 ##### Data basis
 
+"""
+    )
+
+    match chart_id:
+        case "d_na":
+            ug_text += """
+For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:         
+- Airports in the U.S. states.
+- Aerodrome type airports.
+- Civil airports.
+- Airports in operation.
+
+Of the events, only those that occurred in U.S. states are included.
+"""
+
+        case "ey_aoc" | "te_aoc":
+            ug_text += """
 - In the database table **events_sequence** there are the columns **defining_code** and **eventsoe_no**. 
 - The values from **eventsoe_no** are used to determine the CICTT code in case **defining_code** equals TRUE via the tables 
 **io_sequence_of_events** and **io_aviation_occurrence_categories**. 
 - Depending on the number of aircraft involved in the event, several rows may be assigned to the same event in the 
 **events_sequence** table. However, this is only critical if it results in different CICTT codes for the same event.
+"""
 
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id          ev_year    aircraft_key    eventsoe_no
-20080505X00589    2008    1               200
-20080505X00589    2008    2               230
-20080829X01354    2008    1               260
-20080829X01354    2008    2               100
-20090202X21409    2009    1               250
-20090202X21409    2009    2               490
-20091010X63931    2009    1               250
-20091010X63931    2009    2               240
-20100317X00948    2010    1               260
-20100317X00948    2010    2               070
-20100704X92306    2010    1               380
-20100704X92306    2010    2               200
-20100803X25950    2010    1               200
-20100803X25950    2010    2               900
-20101022X34140    2010    1               190
-20101022X34140    2010    2               100
-20101022X34140    2010    3               100
-20110904X00636    2011    1               250
-20110904X00636    2011    2               440
-20111019X85758    2011    1               900
-20111019X85758    2011    2               260
-20120523X33839    2012    1               230
-20120523X33839    2012    2               200
-20120529X21628    2012    1               230
-20120529X21628    2012    2               200
-20120705X51659    2012    1               320
-20120705X51659    2012    2               900
-20120811X13221    2012    1               000
-20120811X13221    2012    2               900
-20121027X42304    2012    1               230
-20121027X42304    2012    2               200
-20121118X14342    2012    1               220
-20121118X14342    2012    2               200
-20140425X84104    2014    1               100
-20140425X84104    2014    2               260
-20150210X11721    2015    1               230
-20150210X11721    2015    2               200
-20150416X33824    2015    1               260
-20150416X33824    2015    2               320
-20150508X60256    2015    1               230
-20150508X60256    2015    2               200
-20151123X43413    2015    1               200
-20151123X43413    2015    2               402
-20160413X30204    2016    1               320
-20160413X30204    2016    2               100
-20160413X94401    2016    1               320
-20160413X94401    2016    2               070
-20160418X44917    2016    1               100
-20160418X44917    2016    2               260
-20171019X45158    2017    1               200
-20171019X45158    2017    2               490
-20180403X00427    2018    1               200
-20180403X00427    2018    2               490
-20200603X55158    2019    1               080
-20200603X55158    2019    2               200
-20201023102180    2020    2               230
-20201030102217    2020    2               230
-20210219102650    2021    2               900
-20210311102742    2021    2               333
-20210726103541    2021    1               200
-20210726103541    2021    2               270
-20210822103737    2021    2               333
-20220111104514    2022    1               200
-20220111104514    2022    2               900
-20220309104755    2022    2               240
-20220818105763    2022    2               250
-20220826105805    2022    2               341
-20221121106336    2022    1               200
-20221121106336    2022    2               250
-```
-            """
         case "ey_il" | "te_il":
-            text += """
-##### Data basis
-
+            ug_text += """
 - In the database table **events** there is a column **ev_highest_injury** which contains the highest injury level per event. 
 - The available database categories are **`FATL`** (fatal injury), **`MINR`** (minor injury), **`NONE`** (no injury) and **`SERS`** (serious injury). 
 - If there is no information about the injuries, then the event appears in the category **`n/a`** (not available).
-            """
-        case "ey_pss" | "te_pss":
-            text += """
-##### Data basis
+"""
 
+        case "ey_mpf" | "te_mpf":
+            ug_text += """
+- An event can have several entries in the database table **events_sequence** assigned to it.      
+- The **phase_no** column contains the flight phase at the time of the event. 
+- The flight phases can be marked as defining events in the **defining_ev** column.
+- In the database table **io_md_codes_phase**, each flight phase is assigned a main flight phase.
+- From this information, the main flight phases for the aircraft involved in the event can be determined.
+"""
+
+        case "ey_pf" | "te_pf":
+            ug_text += """
+- An event can have several entries in the database table **events_sequence** assigned to it.      
+- The **phase_no** column contains the flight phase at the time of the event. 
+- The flight phases can be marked as defining events in the **defining_ev** column. 
+- From this information, the flight phases for the aircraft involved in the event can be determined.
+"""
+
+        case "ey_pss" | "te_pss":
+            ug_text += """
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
 - **Forced landing**: Aircraft in degraded control state ? Aircraft is pitch/roll controllable
 - **Spin / stall prevention and recovery**: Aircraft is pitch/roll controllable ? Aircraft in aerodynamic spin or stall
@@ -812,17 +861,13 @@ ev_id          ev_year    aircraft_key    eventsoe_no
 - **not available**: None of the criteria listed above
 """
         case "ey_t" | "te_t":
-            text += """
-##### Data basis
-
+            ug_text += """
 - In the database table **events** there is a column **ev_type** which contains the type of the event. 
 - The available database categories are **`ACC`** (Accident) and **`INC`** (Incident). 
 - If there is no information about the event type, then the event appears in the category **`n/a`** (not available).
-                    """
+"""
         case "ey_tlp" | "te_tlp":
-            text += """
-##### Data basis
-
+            ug_text += """
 - **Aerodynamic spin / stall**: [Angle of attack ? Aerodynamic stall/spin ? (Loss of control in flight ? “Stall in narrative”)] ?¬Controlled flight into terrain/obj (CFIT) ?¬Collision avoidance alert
 - **Airborne Collision Avoidance**: Accident was a mid-air collision
 - **Aircraft can climb**: ¬(Aircraft power plant ? Fuel system ? Engine out control ? Ice/rain protection system ? Fuel ? Emergency descent ? Fuel contamination ? Fuel exhaustion ? Fuel related ? Fuel starvation ? Loss of engine power (partial) ? Loss of engine power (total) ? Loss of lift ? Off field or emergency landing ? Powerplant/sys comp malf/fail ? Uncontained engine failure ? Main rotor system ? Propeller system) ? ¬ “Aerodynamic stall/spin”
@@ -839,101 +884,23 @@ ev_id          ev_year    aircraft_key    eventsoe_no
 - **not available**: None of the criteria listed above
 """
         case "fy_fp" | "tf_fp":
-            text += """
-##### Data basis
-
+            ug_text += """
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
-
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id         |ev_year|aircraft_key|far_part|inj_tot_f|
---------------+-------+------------+--------+---------+
-20090808X42846|   2009|           1|091     |        9|
-20090808X42846|   2009|           2|135     |        9|
-20111004X45824|   2011|           1|NUSN    |        1|
-20111004X45824|   2011|           2|        |        1|
-20150707X22207|   2015|           1|091     |        2|
-20150707X22207|   2015|           2|ARMF    |        2|
-20160831X62719|   2016|           1|135     |        5|
-20160831X62719|   2016|           2|091     |        5|
-20180107X10632|   2017|           1|NUSN    |        1|
-20180107X10632|   2017|           2|NUSC    |        1|
-20180614X22730|   2018|           1|091     |        1|
-20180614X22730|   2018|           2|135     |        1|
-20180804X53521|   2018|           1|UNK     |        1|
-20180804X53521|   2018|           2|PUBU    |        1|
-20190826X90719|   2019|           1|NUSC    |        7|
-20190826X90719|   2019|           2|NUSN    |        7|
-20200731X11938|   2020|           1|135     |        7|
-20200731X11938|   2020|           2|091     |        7|
-20200827X15154|   2020|           1|135     |        2|
-20200827X15154|   2020|           2|091     |        2|
-20210715103483|   2020|           1|NUSN    |        5|
-20210715103483|   2020|           2|129     |        5|
-20211221104432|   2021|           1|135     |        2|
-20211221104432|   2021|           2|103     |        2|
-```
-                    """
+"""
         case "fy_sfp" | "tf_sfp":
-            text += """
-##### Data basis
-
+            ug_text += """
 - In the database table **aircraft** there is the column **far_part** which contains the FAR operations parts.
 - In the database table **events** there is a column **inj_tot_f** which contains the number of fatalities per event.
 - Several FAR operations parts can be assigned to the same event, depending on the number of aircraft involved. However, this is only critical if the FAR operation parts are different.
-
-##### Possible double counting since 2008 as of 02/01/2013
-
-```
-ev_id         |ev_year|aircraft_key|far_part|inj_tot_f|
---------------+-------+------------+--------+---------+
-20090808X42846|   2009|           1|091     |        9|
-20090808X42846|   2009|           2|135     |        9|
-20111004X45824|   2011|           1|NUSN    |        1|
-20111004X45824|   2011|           2|        |        1|
-20150707X22207|   2015|           1|091     |        2|
-20150707X22207|   2015|           2|ARMF    |        2|
-20160831X62719|   2016|           1|135     |        5|
-20160831X62719|   2016|           2|091     |        5|
-20180107X10632|   2017|           1|NUSN    |        1|
-20180107X10632|   2017|           2|NUSC    |        1|
-20180614X22730|   2018|           1|091     |        1|
-20180614X22730|   2018|           2|135     |        1|
-20180804X53521|   2018|           1|UNK     |        1|
-20180804X53521|   2018|           2|PUBU    |        1|
-20190826X90719|   2019|           1|NUSC    |        7|
-20190826X90719|   2019|           2|NUSN    |        7|
-20200731X11938|   2020|           1|135     |        7|
-20200731X11938|   2020|           2|091     |        7|
-20200827X15154|   2020|           1|135     |        2|
-20200827X15154|   2020|           2|091     |        2|
-20210715103483|   2020|           1|NUSN    |        5|
-20210715103483|   2020|           2|129     |        5|
-20211221104432|   2021|           1|135     |        2|
-20211221104432|   2021|           2|103     |        2|
-```
-                            """
+"""
         case _:
-            text += f"""
-                ### Coming soon ... (chart_id={chart_id})    
-                    """
+            ug_text += f"""
+### Coming soon ... (chart_id={chart_id})    
+"""
 
-    match chart_id:
-        case "ey_aoc" | "ey_il" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
-            text += _get_user_guide_years_chart_footer(
-                chart_id,
-                chart_title,
-            )
-        case "te_aoc" | "te_il" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
-            text += _get_user_guide_totals_chart_footer(
-                chart_id,
-                chart_title,
-            )
-
-    st.warning(text)
+    return ug_text
 
 
 # ------------------------------------------------------------------
@@ -943,21 +910,21 @@ def _get_user_guide_chart_header(
     chart_id: str,
     chart_title: str,
 ) -> str:
-    """Create the generic header section."""
-    chart_type = (
-        "Bar"
-        if "ey_" in chart_id or "fy_" in chart_id
-        else "Pie"
-        if CHOICE_PIE_CHARTS
-        else "Horizontal bar"
-    )
-    chart_type_1 = (
-        "Here are the data grouped by year."
-        if "ey_" in chart_id or "fy_" in chart_id
-        else "Only the total figures are shown here."
-    )
+    chart_type = "n/a"
+    chart_type_1 = "n/a"
+
+    if "d_" in chart_id:
+        chart_type = "Box Plot and Violin Plot"
+        chart_type_1 = "Only the distance figures are shown here."
+    elif "ey_" in chart_id or "fy_" in chart_id:
+        chart_type = "Bar Chart"
+        chart_type_1 = "Here are the data grouped by year."
+    elif "te_" in chart_id or "tf_" in chart_id:
+        chart_type = "Pie Chart and Horizontal Bar Chart"
+        chart_type_1 = "Only the total figures are shown here."
+
     return f"""
-#### User guide: {chart_type} chart - {chart_title}
+#### User guide: {chart_type} - {chart_title}
 
 {chart_type_1}
 """
@@ -967,26 +934,24 @@ def _get_user_guide_chart_header(
 # Creates the user guide for the 'Show data profile' task.
 # ------------------------------------------------------------------
 def _get_user_guide_data_profile() -> None:
-    """Creates the user guide for the 'Show data profile' task."""
-    text = """
+    ug_text = """
 #### User guide: Show Data Profile
 
 This task performs a data analysis of the underlying database view **io_app_ae1982**. This is done with the help of [**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/). You can select either the explorative or the minimal version. Depending on the size of the selected data, there may be delayed response times, with the exploratory version again requiring significantly more computational effort than the minimal version.
 For further explanations please consult the documentation of **Pandas Profiling**. The result of the data analysis can also be downloaded as **HTML** file if desired.
-    """
+"""
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task.
 # ------------------------------------------------------------------
 def _get_user_guide_details() -> None:
-    """Creates the user guide for the 'Show details' task."""
-    text = """
+    ug_text = """
 #### User guide: Show details
 
-This task provides the data of the underlying database view **io_app_ae1982** in a table format for display and download as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
+This task provides the data of the underlying database view **io_app_ae1982** in a table format for display and upload as **csv** file. The rows to be displayed are limited to the chosen filter options. The order of data display is based on the ascending event identification. The database columns of the selected rows are always displayed in full.
 
 ##### Usage tips
 
@@ -995,23 +960,46 @@ This task provides the data of the underlying database view **io_app_ae1982** in
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
 - **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
-    """
+"""
 
-    st.warning(text)
+    st.warning(ug_text)
 
 
 # ------------------------------------------------------------------
 # Creates the user guide for the map.
 # ------------------------------------------------------------------
 def _get_user_guide_map() -> None:
-    """Creates the user guide for the map."""
-    text = """
+    ug_text = """
 #### User guide: Map
 
-###TODO
+The dots on the interactive map show the locations where the selected events took place. By default, the map is focused on the center of the United States. You can move around the map and zoom in and out. Each point on the map contains an interactive popup with additional information such as latitude and longitude or number of fatalities. 
+
+##### Usage tips
+
+- If you hover your mouse over the dots in the map, event related extra information will be shown.
+- **Download map as png** (camera symbol): the map can be downloaded as an image file.
+- **Zoom out**, **Zoom in**, **Home** (plus, minus and cross symbols): the map can changed in size and focus.
+- **View fullscreen** (double arrow): shows the map in fullscreen mode.
 """
 
-    st.warning(text)
+    st.warning(ug_text)
+
+
+# ------------------------------------------------------------------
+# Create the generic footer section.
+# ------------------------------------------------------------------
+def _get_user_guide_distances_chart_footer(
+    _chart_id: str,
+    _chart_title: str,
+) -> str:
+    return """
+##### Usage tips
+
+- The left side displays the data points underlying the chart.
+- If you hover your mouse over the dots in the left, the exact distance in miles will be shown.
+- If you hover your mouse over the figure in the right, statistical key figures will be shown.
+- **View fullscreen** (double arrow): shows the distances chart in fullscreen mode.
+"""
 
 
 # ------------------------------------------------------------------
@@ -1021,7 +1009,6 @@ def _get_user_guide_totals_chart_footer(
     chart_id: str,
     _chart_title: str,
 ) -> str:
-    """Create the generic footer section."""
     objects = (
         "fatalities"
         if chart_id
@@ -1036,8 +1023,8 @@ def _get_user_guide_totals_chart_footer(
 
 - If you hover your mouse over the slices, the exact number of {objects} will be shown.
 - By clicking on the icons in the legend, you can hide the underlying categories in the totals chart. 
-- **`View fullscreen`** (double arrow): shows the totals chart in fullscreen mode.
-    """
+- **View fullscreen** (double arrow): shows the totals chart in fullscreen mode.
+"""
 
 
 # ------------------------------------------------------------------
@@ -1047,7 +1034,6 @@ def _get_user_guide_years_chart_footer(
     chart_id: str,
     _chart_title: str,
 ) -> str:
-    """Create the generic footer section."""
     objects = (
         "fatalities"
         if chart_id
@@ -1058,15 +1044,15 @@ def _get_user_guide_years_chart_footer(
         else "events"
     )
 
-    text = f"""
+    ug_text = f"""
 ##### Usage tips years chart
 
 - If you hover your mouse over the bars, the exact number of {objects} will be shown.
-- By clicking on the icons in the legend, you can hide the underlying categories in the bar chart. 
-- **`Download plot as png`** (camera symbol): the bar chart can be downloaded as an image file.
-- **`Zoom out`**, **`Zoom in`**, **`Autoscale`** (plus, minus and cross symbols): the bar chart can be downloaded as an image file.
-- **`Reset axes`** (home symbol): reset the axis of the bar chart.
-- **`View fullscreen`** (double arrow): shows the bar chart in fullscreen mode.
+- By clicking on the icons in the legend, you can hide the underlying categories in the chart. 
+- **Download chart as png** (camera symbol): the chart can be downloaded as an image file.
+- **Zoom out**, **Zoom in**, **Autoscale** (plus, minus and cross symbols): the chart can be resized.
+- **Reset axes** (home symbol): reset the axis of the chart.
+- **View fullscreen** (double arrow): shows the chart in fullscreen mode.
 
 ##### Usage tips detailed data
 
@@ -1076,28 +1062,51 @@ def _get_user_guide_years_chart_footer(
 - **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, 
 and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
-        """
+"""
 
     if MODE_STANDARD:
-        text += """
+        ug_text += """
 ##### Detailed chart data
 
 If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying 
 the chart displayed in a tabular form. 
-With the button **`Download the chart data`** this data can be loaded into a local **csv** file. 
-    """
+With the button **Download the chart data** this data can be loaded into a local **csv** file. 
+"""
 
-    return text
+    return ug_text
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Distance to the Nearest Airport.
+# ------------------------------------------------------------------
+def _prep_data_chart_d_na(
+    df_filtered: DataFrame,
+) -> DataFrame:
+    global CHOICE_CHARTS_TYPE_D_NA_NO  # pylint: disable=global-statement
+
+    df_chart_data = _apply_filter_incompatible(df_filtered)
+
+    if CHOICE_CHARTS_TYPE_D_NA_MAX:
+        df_chart_data = df_chart_data[
+            df_chart_data["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
+        ]
+
+    df_chart_data = df_chart_data.nearest_airport_distance.dropna()
+
+    (CHOICE_CHARTS_TYPE_D_NA_NO,) = df_chart_data.shape
+
+    return _prep_distance_chart(
+        df_chart_data,
+    )
 
 
 # ------------------------------------------------------------------
 # Prepare the chart data: Number of Events per Year by
 # CICTT Codes.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_aoc(
+def _prep_data_chart_ey_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Number of Events per Year by CICTT Codes."""
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1131,10 +1140,9 @@ def _prep_data_charts_ey_aoc(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Injury Level.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_il(
+def _prep_data_chart_ey_il(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Events per Year by Injury Level."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1158,14 +1166,94 @@ def _prep_data_charts_ey_il(
 
 
 # ------------------------------------------------------------------
+# Prepare the chart data: Events per Year by Main Phases of Flight.
+# ------------------------------------------------------------------
+def _prep_data_chart_ey_mpf(
+    df_filtered: DataFrame,
+) -> tuple[list[tuple[str, str]], DataFrame]:
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
+    df_chart = df_filtered[
+        [
+            "ev_year",
+            "description_main_phase_defining",
+        ]
+    ]
+
+    df_chart.rename(
+        columns={
+            "ev_year": "year",
+        },
+        inplace=True,
+    )
+
+    names = []
+
+    for description_main_phase_defining in (
+        FILTER_DESCRIPTION_MAIN_PHASES
+        if FILTER_DESCRIPTION_MAIN_PHASES
+        else _sql_query_description_main_phase()
+    ):
+        if (
+            description_main_phase_defining
+            in df_chart.description_main_phase_defining.values
+        ):
+            names.append(
+                (description_main_phase_defining, description_main_phase_defining)
+            )
+
+    for name, name_df in names:
+        df_chart[name] = np.where(
+            df_chart.description_main_phase_defining == name_df, 1, 0
+        )
+
+    return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Events per Year by Phases of Flight.
+# ------------------------------------------------------------------
+def _prep_data_chart_ey_pf(
+    df_filtered: DataFrame,
+) -> tuple[list[tuple[str, str]], DataFrame]:
+    df_chart = df_filtered[
+        [
+            "ev_year",
+            "phase_codes_defining",
+        ]
+    ]
+
+    df_chart.rename(
+        columns={
+            "ev_year": "year",
+        },
+        inplace=True,
+    )
+
+    names = []
+
+    for phase_desc in (
+        FILTER_DEFINING_PHASES
+        if FILTER_DEFINING_PHASES
+        else _sql_query_md_codes_phase()
+    ):
+        desc, phase = phase_desc.split(" - ")
+        if phase in df_chart.phase_codes_defining.values:
+            names.append((desc, phase))
+
+    for name, name_df in names:
+        df_chart[name] = np.where(df_chart.phase_codes_defining == name_df, 1, 0)
+
+    return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
+
+
+# ------------------------------------------------------------------
 # Prepare the chart data: Number of Preventable Events per Year by
 # Safety Systems.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_pss(
+def _prep_data_chart_ey_pss(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Number of Preventable Events per Year by Safety
-    Systems."""
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1201,10 +1289,9 @@ def _prep_data_charts_ey_pss(
 # ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Event Types.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_t(
+def _prep_data_chart_ey_t(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Events per Year by Event Types."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1231,11 +1318,9 @@ def _prep_data_charts_ey_t(
 # Prepare the chart data: Number of Events per Year by
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
-def _prep_data_charts_ey_tlp(
+def _prep_data_chart_ey_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Number of Events per Year by Top Level Logical
-    Parameters."""
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1270,11 +1355,9 @@ def _prep_data_charts_ey_tlp(
 # Prepare the chart data: Fatalities per Year under
 # FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_fy_fp(
+def _prep_data_chart_fy_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Fatalities per Year under FAR Operations
-    Parts."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1311,11 +1394,9 @@ def _prep_data_charts_fy_fp(
 # Prepare the chart data: Fatalities per Year under
 # Selected FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_fy_sfp(
+def _prep_data_chart_fy_sfp(
     df_filtered: DataFrame,
 ) -> tuple[list[tuple[str, str]], DataFrame]:
-    """Prepare the chart data: Fatalities per Year under Selected FAR
-    Operations Parts."""
     df_chart = df_filtered[
         [
             "ev_year",
@@ -1352,10 +1433,9 @@ def _prep_data_charts_fy_sfp(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by CICTT Codes.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_aoc(
+def _prep_data_chart_te_aoc(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    #   """Prepare the chart data: Total Events by CICTT Codes."""
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1388,10 +1468,9 @@ def _prep_data_charts_te_aoc(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Highest Injury Levels.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_il(
+def _prep_data_chart_te_il(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Events by Highest Injury Levels."""
     df_chart = df_filtered[
         [
             "ev_highest_injury",
@@ -1415,12 +1494,88 @@ def _prep_data_charts_te_il(
 
 
 # ------------------------------------------------------------------
-# Prepare the chart data: Total Preventable Events by Safety Systems.
+# Prepare the chart data: Total Events by Main Phases of Flight.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_pss(
+def _prep_data_chart_te_mpf(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Preventable Events by Safety Systems."""
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
+    df_chart = df_filtered[
+        [
+            "description_main_phase_defining",
+        ]
+    ]
+
+    name_value = []
+    total_pie = 0
+
+    for name in (
+        FILTER_DESCRIPTION_MAIN_PHASES
+        if FILTER_DESCRIPTION_MAIN_PHASES
+        else _sql_query_description_main_phase()
+    ):
+        df_chart[name] = np.where(
+            df_chart.description_main_phase_defining == name, 1, 0
+        )
+        value = df_chart[name].sum(numeric_only=True)
+        if value > 0:
+            name_value.append((name, value))
+            total_pie += value
+
+    return _prep_totals_chart(
+        total_pie,
+        name_value,
+        CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD / 100
+        if CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD
+        else 0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Events by Phases of Flight.
+# ------------------------------------------------------------------
+def _prep_data_chart_te_pf(
+    df_filtered: DataFrame,
+) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
+    df_chart = df_filtered[
+        [
+            "phase_codes_defining",
+        ]
+    ]
+
+    name_value = []
+    total_pie = 0
+
+    for phase_desc in (
+        FILTER_DEFINING_PHASES
+        if FILTER_DEFINING_PHASES
+        else _sql_query_md_codes_phase()
+    ):
+        desc, phase = phase_desc.split(" - ")
+        df_chart[phase] = np.where(df_chart.phase_codes_defining == phase, 1, 0)
+        value = df_chart[phase].sum(numeric_only=True)
+        if value > 0:
+            name_value.append((desc, value))
+            total_pie += value
+
+    return _prep_totals_chart(
+        total_pie,
+        name_value,
+        CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD / 100
+        if CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD
+        else 0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Preventable Events by Safety Systems.
+# ------------------------------------------------------------------
+def _prep_data_chart_te_pss(
+    df_filtered: DataFrame,
+) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1455,10 +1610,9 @@ def _prep_data_charts_te_pss(
 # ------------------------------------------------------------------
 # Prepare the chart data: Total Events by Event Types.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_t(
+def _prep_data_chart_te_t(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Events by Event Types."""
     df_chart = df_filtered[
         [
             "ev_type",
@@ -1485,10 +1639,9 @@ def _prep_data_charts_te_t(
 # Prepare the chart data: Total Events by
 # Top Level Logical Parameters.
 # ------------------------------------------------------------------
-def _prep_data_charts_te_tlp(
+def _prep_data_chart_te_tlp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Events by Top Level Logical Parameters."""
     df_filtered = _apply_filter_incompatible(df_filtered)
 
     df_chart = df_filtered[
@@ -1522,10 +1675,9 @@ def _prep_data_charts_te_tlp(
 # Prepare the chart data: Total Fatalities by
 # FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_tf_fp(
+def _prep_data_chart_tf_fp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Fatalities by FAR Operations Parts."""
     df_chart = df_filtered[
         [
             "far_parts",
@@ -1556,11 +1708,9 @@ def _prep_data_charts_tf_fp(
 # Prepare the chart data: Total Fatalities by
 # Selected FAR Operations Parts.
 # ------------------------------------------------------------------
-def _prep_data_charts_tf_sfp(
+def _prep_data_chart_tf_sfp(
     df_filtered: DataFrame,
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
-    """Prepare the chart data: Total Fatalities by Selected FAR Operations
-    Parts."""
     df_chart = df_filtered[
         [
             "is_far_part_091x",
@@ -1584,6 +1734,15 @@ def _prep_data_charts_tf_sfp(
         total_pie,
         name_value,
     )
+
+
+# ------------------------------------------------------------------
+# Prepare the distance chart.
+# ------------------------------------------------------------------
+def _prep_distance_chart(
+    chart_data: DataFrame,
+) -> DataFrame:
+    return chart_data
 
 
 # ------------------------------------------------------------------
@@ -1658,7 +1817,6 @@ def _present_bar_chart(
     prep_result,
     threshold: float | None = 0.0,
 ):
-    """Present the chart: Events per Year by CICTT Codes."""
     names, df_filtered_charts = prep_result
 
     if threshold and threshold > 0.0:
@@ -1794,7 +1952,7 @@ def _present_bar_chart(
         st.download_button(
             data=_convert_df_2_csv(df_filtered_charts),
             file_name=APP_ID + "_chart_detail_" + chart_id + ".csv",
-            help="The download includes the detailed years chart data.",
+            help="The upload includes the detailed years chart data.",
             label="Download the years chart data",
             mime="text/csv",
         )
@@ -1804,7 +1962,6 @@ def _present_bar_chart(
 # Present the bar charts.
 # ------------------------------------------------------------------
 def _present_bar_charts() -> None:
-    """Present the bar charts."""
     # Fatalities per Year by FAR Operations Parts
     if CHOICE_CHARTS_TYPE_FY_FP:
         _present_chart_fy_fp()
@@ -1817,30 +1974,35 @@ def _present_bar_charts() -> None:
     if CHOICE_CHARTS_TYPE_EY_AOC:
         _present_chart_ey_aoc()
 
-    # Events per Year by Injury Level
-    if CHOICE_CHARTS_TYPE_EY_IL:
-        _present_chart_ey_il()
-
     # Events per Year by Event Types
     if CHOICE_CHARTS_TYPE_EY_T:
         _present_chart_ey_t()
 
-    # Events per Year by Top Level Logical Parameters
-    if CHOICE_CHARTS_TYPE_EY_TLP:
-        _present_chart_ey_tlp()
+    # Events per Year by Injury Level
+    if CHOICE_CHARTS_TYPE_EY_IL:
+        _present_chart_ey_il()
+
+    # Events per Year by Main Phases of Flight
+    if CHOICE_CHARTS_TYPE_EY_MPF:
+        _present_chart_ey_mpf()
+
+    # Events per Year by Phases of Flight
+    if CHOICE_CHARTS_TYPE_EY_PF:
+        _present_chart_ey_pf()
 
     # Preventable Events per Year by Safety Systems
     if CHOICE_CHARTS_TYPE_EY_PSS:
         _present_chart_ey_pss()
+
+    # Events per Year by Top Level Logical Parameters
+    if CHOICE_CHARTS_TYPE_EY_TLP:
+        _present_chart_ey_tlp()
 
 
 # ------------------------------------------------------------------
 # Present chart: Events per Year by CICTT Codes.
 # ------------------------------------------------------------------
 def _present_chart_ey_aoc() -> None:
-    """Present chart: Events per Year by CICTT Codes."""
-    global CHOICE_UG_YEARS_CHARTS_EY_AOC  # pylint: disable=global-statement
-
     chart_id = "ey_aoc"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by CICTT Codes"
 
@@ -1854,14 +2016,14 @@ def _present_chart_ey_aoc() -> None:
         )
 
     with col2:
-        CHOICE_UG_YEARS_CHARTS_EY_AOC = st.checkbox(
+        choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
 
-    if CHOICE_UG_YEARS_CHARTS_EY_AOC:
+    if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -1870,7 +2032,7 @@ def _present_chart_ey_aoc() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_aoc(DF_FILTERED),
+        _prep_data_chart_ey_aoc(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
         else 0.0,
@@ -1881,9 +2043,6 @@ def _present_chart_ey_aoc() -> None:
 # Present chart: Events per Year by Injury Levels.
 # ------------------------------------------------------------------
 def _present_chart_ey_il() -> None:
-    """Present chart: Events per Year by Injury Levels."""
-    global CHOICE_UG_YEARS_CHARTS_EY_IL  # pylint: disable=global-statement
-
     chart_id = "ey_il"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Injury Levels"
     col1, col2 = st.columns([2, 1])
@@ -1894,13 +2053,13 @@ def _present_chart_ey_il() -> None:
             unsafe_allow_html=True,
         )
     with col2:
-        CHOICE_UG_YEARS_CHARTS_EY_IL = st.checkbox(
+        choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
-    if CHOICE_UG_YEARS_CHARTS_EY_IL:
+    if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -1908,7 +2067,83 @@ def _present_chart_ey_il() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_il(DF_FILTERED),
+        _prep_data_chart_ey_il(DF_FILTERED),
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Main Phases of Flight.
+# ------------------------------------------------------------------
+def _present_chart_ey_mpf() -> None:
+    chart_id = "ey_mpf"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Main Phases of Flight"
+
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        choice_ug = st.checkbox(
+            help="Explanations and operating instructions related to this years chart.",
+            key=chart_title,
+            label="**User guide: Years chart**",
+            value=False,
+        )
+
+    if choice_ug:
+        _get_user_guide_chart(
+            chart_id,
+            chart_title,
+        )
+
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_chart_ey_mpf(DF_FILTERED),
+        CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD / 100
+        if CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
+        else 0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Phases of Flight.
+# ------------------------------------------------------------------
+def _present_chart_ey_pf() -> None:
+    chart_id = "ey_pf"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Phases of Flight"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        choice_ug = st.checkbox(
+            help="Explanations and operating instructions related to this years chart.",
+            key=chart_title,
+            label="**User guide: Years chart**",
+            value=False,
+        )
+    if choice_ug:
+        _get_user_guide_chart(
+            chart_id,
+            chart_title,
+        )
+
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_chart_ey_pf(DF_FILTERED),
+        CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD / 100
+        if CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD
+        else 0.0,
     )
 
 
@@ -1916,9 +2151,6 @@ def _present_chart_ey_il() -> None:
 # Present chart: Preventable Events per Year by Safety Systems.
 # ------------------------------------------------------------------
 def _present_chart_ey_pss() -> None:
-    """Present chart: Preventable Events per Year by Safety Systems."""
-    global CHOICE_UG_YEARS_CHARTS_EY_PSS  # pylint: disable=global-statement
-
     chart_id = "ey_pss"
     chart_title = f"Number of Preventable {EVENT_TYPE_DESC}s per Year by Safety Systems"
 
@@ -1932,14 +2164,14 @@ def _present_chart_ey_pss() -> None:
         )
 
     with col2:
-        CHOICE_UG_YEARS_CHARTS_EY_PSS = st.checkbox(
+        choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
 
-    if CHOICE_UG_YEARS_CHARTS_EY_PSS:
+    if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -1948,7 +2180,7 @@ def _present_chart_ey_pss() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_pss(DF_FILTERED),
+        _prep_data_chart_ey_pss(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD
         else 0.0,
@@ -1959,9 +2191,6 @@ def _present_chart_ey_pss() -> None:
 # Present chart: Events per Year by Event Types.
 # ------------------------------------------------------------------
 def _present_chart_ey_t() -> None:
-    """Present chart: Events per Year by Event Types."""
-    global CHOICE_UG_YEARS_CHARTS_EY_T  # pylint: disable=global-statement
-
     chart_id = "ey_t"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Event Types"
     col1, col2 = st.columns([2, 1])
@@ -1972,13 +2201,13 @@ def _present_chart_ey_t() -> None:
             unsafe_allow_html=True,
         )
     with col2:
-        CHOICE_UG_YEARS_CHARTS_EY_T = st.checkbox(
+        choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
-    if CHOICE_UG_YEARS_CHARTS_EY_T:
+    if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -1986,7 +2215,7 @@ def _present_chart_ey_t() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_t(DF_FILTERED),
+        _prep_data_chart_ey_t(DF_FILTERED),
     )
 
 
@@ -1994,9 +2223,6 @@ def _present_chart_ey_t() -> None:
 # Present chart: Events per Year by Top Logical Parameters.
 # ------------------------------------------------------------------
 def _present_chart_ey_tlp() -> None:
-    """Present chart: Events per Year by Top Logical Parameters."""
-    global CHOICE_UG_YEARS_CHARTS_EY_TLP  # pylint: disable=global-statement
-
     chart_id = "ey_tlp"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Top Logical Parameters"
 
@@ -2010,14 +2236,14 @@ def _present_chart_ey_tlp() -> None:
         )
 
     with col2:
-        CHOICE_UG_YEARS_CHARTS_EY_TLP = st.checkbox(
+        choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
 
-    if CHOICE_UG_YEARS_CHARTS_EY_TLP:
+    if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -2026,7 +2252,7 @@ def _present_chart_ey_tlp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_ey_tlp(DF_FILTERED),
+        _prep_data_chart_ey_tlp(DF_FILTERED),
         CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD
         else 0.0,
@@ -2038,9 +2264,6 @@ def _present_chart_ey_tlp() -> None:
 # FAR Operations Parts.
 # ------------------------------------------------------------------
 def _present_chart_fy_fp() -> None:
-    """Present chart: Number of Fatalities per Year by FAR Operations Parts."""
-    global CHOICE_UG_YEARS_CHARTS_FY_FP  # pylint: disable=global-statement
-
     chart_id = "fy_fp"
     chart_title = "Number of Fatalities per Year by FAR Operations Parts"
 
@@ -2054,14 +2277,14 @@ def _present_chart_fy_fp() -> None:
         )
 
     with col2:
-        CHOICE_UG_YEARS_CHARTS_FY_FP = st.checkbox(
+        choice_ug_years_charts_fy_fp = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
 
-    if CHOICE_UG_YEARS_CHARTS_FY_FP:
+    if choice_ug_years_charts_fy_fp:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -2070,7 +2293,7 @@ def _present_chart_fy_fp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_fy_fp(DF_FILTERED),
+        _prep_data_chart_fy_fp(DF_FILTERED),
         CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
         else 0.0,
@@ -2082,11 +2305,8 @@ def _present_chart_fy_fp() -> None:
 # Selected FAR Operations Parts.
 # ------------------------------------------------------------------
 def _present_chart_fy_sfp() -> None:
-    """Present chart: Number of Fatalities per Year by Selected FAR Operations
-    Parts."""
-    global CHOICE_UG_YEARS_CHARTS_FY_SFP  # pylint: disable=global-statement
-
     chart_id = "fy_sfp"
+
     chart_title = "Number of Fatalities per Year by Selected FAR Operations Parts"
 
     col1, col2 = st.columns([2, 1])
@@ -2097,14 +2317,14 @@ def _present_chart_fy_sfp() -> None:
             unsafe_allow_html=True,
         )
     with col2:
-        CHOICE_UG_YEARS_CHARTS_FY_SFP = st.checkbox(
+        choice_ug_years_charts_fy_sfp = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
             key=chart_title,
-            label="**User Guide: Years chart**",
+            label="**User guide: Years chart**",
             value=False,
         )
 
-    if CHOICE_UG_YEARS_CHARTS_FY_SFP:
+    if choice_ug_years_charts_fy_sfp:
         _get_user_guide_chart(
             chart_id,
             chart_title,
@@ -2113,7 +2333,7 @@ def _present_chart_fy_sfp() -> None:
     _present_bar_chart(
         chart_id,
         chart_title,
-        _prep_data_charts_fy_sfp(DF_FILTERED),
+        _prep_data_chart_fy_sfp(DF_FILTERED),
     )
 
 
@@ -2160,27 +2380,36 @@ def _present_data() -> None:
         st.error("##### Error: No data has been selected.")
         st.stop()
 
-    if CHOICE_MAP:
-        _present_map()
-        _print_timestamp("_present_data() - CHOICE_MAP")
+    # ------------------------------------------------------------------
+    # Run analysis.
+    # ------------------------------------------------------------------
 
-    if CHOICE_DATA_GRAPHS_YEARS:
-        _present_bar_charts()
-        _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_YEARS")
+    if CHOICE_RUN_ANALYSIS or not MODE_STANDARD:
+        if CHOICE_MAP:
+            _present_map()
+            _print_timestamp("_present_data() - CHOICE_MAP")
 
-    if CHOICE_DATA_GRAPHS_TOTALS and (
-        CHOICE_HORIZONTAL_BAR_CHARTS or CHOICE_PIE_CHARTS
-    ):
-        _present_totals_charts()
-        _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_TOTALS")
+        if CHOICE_DATA_GRAPHS_YEARS:
+            _present_bar_charts()
+            _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_YEARS")
 
-    if CHOICE_DATA_PROFILE:
-        _present_data_profile()
-        _print_timestamp("_present_data() - CHOICE_DATA_PROFILE")
+        if CHOICE_DATA_GRAPHS_TOTALS and (
+            CHOICE_HORIZONTAL_BAR_CHARTS or CHOICE_PIE_CHARTS
+        ):
+            _present_totals_charts()
+            _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_TOTALS")
 
-    if CHOICE_DETAILS:
-        _present_details()
-        _print_timestamp("_present_data() - CHOICE_DETAILS")
+        if CHOICE_DATA_GRAPHS_DISTANCES and (CHOICE_BOX_PLOTS or CHOICE_VIOLIN_PLOTS):
+            _present_distance_charts()
+            _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_DISTANCE")
+
+        if CHOICE_DATA_PROFILE:
+            _present_data_profile()
+            _print_timestamp("_present_data() - CHOICE_DATA_PROFILE")
+
+        if CHOICE_DETAILS:
+            _present_details()
+            _print_timestamp("_present_data() - CHOICE_DETAILS")
 
     _print_timestamp("_present_data() - End")
 
@@ -2189,7 +2418,6 @@ def _present_data() -> None:
 # Present data profile.
 # ------------------------------------------------------------------
 def _present_data_profile() -> None:
-    """Present data profile."""
     global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
 
     col1, col2 = st.columns(
@@ -2211,7 +2439,7 @@ def _present_data_profile() -> None:
         CHOICE_UG_DATA_PROFILE = st.checkbox(
             help="Explanations and operating instructions related to profiling "
             + "of the database view **io_app_ae1982",
-            label="**User Guide: Show data profile**",
+            label="**User guide: Show data profile**",
             value=False,
         )
 
@@ -2235,7 +2463,7 @@ def _present_data_profile() -> None:
     st.download_button(
         data=profile_report.to_html(),
         file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",  # type: ignore
-        help="The download includes a profile report from the dataframe "
+        help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
         mime="text/html",
@@ -2246,7 +2474,6 @@ def _present_data_profile() -> None:
 # Present details.
 # ------------------------------------------------------------------
 def _present_details() -> None:
-    """Present details."""
     global CHOICE_UG_DETAILS  # pylint: disable=global-statement
 
     if CHOICE_DETAILS:
@@ -2268,7 +2495,7 @@ def _present_details() -> None:
         with col2:
             CHOICE_UG_DETAILS = st.checkbox(
                 help="Explanations and operating instructions related to the detailed view.",
-                label="**User Guide: Show details**",
+                label="**User guide: Show details**",
                 value=False,
             )
 
@@ -2285,10 +2512,85 @@ def _present_details() -> None:
         st.download_button(
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_data_detail.csv",
-            help="The download includes all data "
-            + "after applying the filter options.",
+            help="The upload includes all data " + "after applying the filter options.",
             label="Download the detailed data",
             mime="text/csv",
+        )
+
+
+# ------------------------------------------------------------------
+# Present the distance chart.
+# ------------------------------------------------------------------
+def _present_distance_chart(
+    chart_id: str,
+    chart_title: str,
+    chart_data: DataFrame,
+) -> None:
+    chart_title_int = chart_title.replace(
+        "{no_rows}", str(CHOICE_CHARTS_TYPE_D_NA_NO)
+    ).replace("{event_type}", EVENT_TYPE_DESC + "s")
+
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title_int}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        choice_charts_ug = st.checkbox(
+            help="Explanations and operating instructions related to this distance chart(s).",
+            key=chart_title_int,
+            label="**User guide: Distance chart**",
+            value=False,
+        )
+
+    if choice_charts_ug:
+        _get_user_guide_chart(
+            chart_id,
+            chart_title_int,
+        )
+
+    if CHOICE_BOX_PLOTS:
+        fig = px.box(
+            chart_data,
+            notched=True,
+            points="all",
+            title=chart_title_int,
+            y="nearest_airport_distance",
+        )
+        fig.update_layout(
+            yaxis_title="Distance (mi)",
+        )
+        st.plotly_chart(
+            fig,
+        )
+
+    if CHOICE_VIOLIN_PLOTS:
+        fig = px.violin(
+            chart_data,
+            points="all",
+            title=chart_title_int,
+            y="nearest_airport_distance",
+        )
+        fig.update_layout(
+            yaxis_title="Distance (mi)",
+        )
+        st.plotly_chart(
+            fig,
+        )
+
+
+# ------------------------------------------------------------------
+# Present the distance charts.
+# ------------------------------------------------------------------
+def _present_distance_charts() -> None:
+    # Distance to the Nearest Airport
+    if CHOICE_CHARTS_TYPE_D_NA:
+        _present_distance_chart(
+            "d_na",
+            "Distance to the Nearest Airport ({no_rows} {event_type})",
+            _prep_data_chart_d_na(DF_FILTERED),
         )
 
 
@@ -2296,7 +2598,6 @@ def _present_details() -> None:
 # Present the events on the US map.
 # ------------------------------------------------------------------
 def _present_map() -> None:
-    """Present the events on the US map."""
     global CHOICE_UG_MAP  # pylint: disable=global-statement
 
     col1, col2 = st.columns([2, 1])
@@ -2322,7 +2623,7 @@ def _present_map() -> None:
         CHOICE_UG_MAP = st.checkbox(
             help="Explanations and operating instructions related to the map.",
             key="Show Map",
-            label="**User Guide: Map**",
+            label="**User guide: Map**",
             value=False,
         )
 
@@ -2334,38 +2635,43 @@ def _present_map() -> None:
         (DF_FILTERED["dec_latitude"].notna() & DF_FILTERED["dec_longitude"].notna())
     ]
 
-    faa_layer = pdk.Layer(
-        auto_highlight=True,
-        data=df_filtered_map,
-        get_fill_color=[255, 0, 0],
-        get_position=["dec_longitude", "dec_latitude"],
-        get_radius=CHOICE_MAP_RADIUS,
-        pickable=True,
-        type=LAYER_TYPE,
+    fig = px.scatter_mapbox(
+        df_filtered_map,
+        center=_sql_query_us_ll(),
+        color="dot_color",
+        color_discrete_map={"non-fatal": "MediumBlue", "fatal": "Red"},
+        hover_data={
+            "dot_color": False,
+            "event_city": True,
+            "ev_id": True,
+            "ntsb_no": True,
+            "inj_tot_f": True,
+        },
+        labels={
+            "dec_latitude": "Latitude",
+            "dec_longitude": "Longitude",
+            "ev_id": "Event",
+            "event_city": "City",
+            "inj_tot_f": "Fatalities",
+            "ntsb_no": "NTSB No.",
+        },
+        lat="dec_latitude",
+        lon="dec_longitude",
+        title=f"Map of {EVENT_TYPE_DESC}s"
+        if MODE_STANDARD
+        else "Map of Fatal Accidents in the US",
+        zoom=ZOOM,
     )
 
-    # noinspection PyUnboundLocalVariable
-    st.pydeck_chart(
-        pdk.Deck(
-            initial_view_state=_sql_query_us_ll(PITCH, ZOOM),
-            layers=[faa_layer],
-            map_style=MAP_STYLE_PREFIX
-            + (
-                CHOICE_MAP_MAP_STYLE
-                if CHOICE_MAP_MAP_STYLE
-                else CHOICE_MAP_MAP_STYLE_DEFAULT
-            ),  # type: ignore
-            tooltip={
-                "html": "<table><tbody>"
-                + "<tr><td><b>Event Id</b></td><td>{ev_id}</td></tr>"
-                + "<tr><td><b>NTSB No</b></td><td>{ntsb_no}</td></tr>"
-                + "<tr><td><b>Fatalities</b></td><td>{inj_tot_f}</td></tr>"
-                + "<tr><td><b>Latitude</b></td><td>{dec_latitude}</td></tr>"
-                + "<tr><td><b>Longitude</b></td><td>{dec_longitude}</td></tr>"
-                + "<tr><td><b>Acquired</b></td><td>{latlong_acq}</td></tr>"
-                + "</tbody></table>"
-            },
-        )
+    fig.update_layout(
+        mapbox_style=CHOICE_MAP_MAP_STYLE
+        if MODE_STANDARD
+        else CHOICE_MAP_MAP_STYLE_DEFAULT
+    )
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
     )
 
 
@@ -2375,9 +2681,8 @@ def _present_map() -> None:
 def _present_totals_chart(
     chart_id: str,
     chart_title: str,
-    pie_chart_data: tuple[list[str], list[int], dict[str, str], DataFrame],
+    chart_data: tuple[list[str], list[int], dict[str, str], DataFrame],
 ) -> None:
-    """Present the totals chart."""
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2386,20 +2691,20 @@ def _present_totals_chart(
             unsafe_allow_html=True,
         )
     with col2:
-        choice_pie_charts_ug = st.checkbox(
+        choice_charts_ug = st.checkbox(
             help="Explanations and operating instructions related to this totals chart(s).",
             key=chart_title,
-            label="**User Guide: Totals chart**",
+            label="**User guide: Totals chart**",
             value=False,
         )
 
-    if choice_pie_charts_ug:
+    if choice_charts_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
         )
 
-    names, values, color_discrete_map, df_sum = pie_chart_data
+    names, values, color_discrete_map, df_sum = chart_data
 
     if CHOICE_HORIZONTAL_BAR_CHARTS:
         names_new = []
@@ -2474,13 +2779,12 @@ def _present_totals_chart(
 # Present the totals charts.
 # ------------------------------------------------------------------
 def _present_totals_charts() -> None:
-    """Present the totals charts."""
     # Total Fatalities by FAR Operations Parts
     if CHOICE_CHARTS_TYPE_TF_FP:
         _present_totals_chart(
             "tf_fp",
             "Total Number of Fatalities by FAR Operations Parts",
-            _prep_data_charts_tf_fp(DF_FILTERED),
+            _prep_data_chart_tf_fp(DF_FILTERED),
         )
 
     # Total Fatalities by Selected FAR Operations Parts
@@ -2488,7 +2792,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "tf_sfp",
             "Total Number of Fatalities by Selected FAR Operations Parts",
-            _prep_data_charts_tf_sfp(DF_FILTERED),
+            _prep_data_chart_tf_sfp(DF_FILTERED),
         )
 
     # Total Events by CICTT Code
@@ -2496,15 +2800,7 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_aoc",
             f"Total Number of {EVENT_TYPE_DESC}s by CICTT Codes",
-            _prep_data_charts_te_aoc(DF_FILTERED),
-        )
-
-    # Total Events by Highest Injury Levels
-    if CHOICE_CHARTS_TYPE_TE_IL:
-        _present_totals_chart(
-            "te_il",
-            f"Total Number of {EVENT_TYPE_DESC}s by Highest Injury Levels",
-            _prep_data_charts_te_il(DF_FILTERED),
+            _prep_data_chart_te_aoc(DF_FILTERED),
         )
 
     # Total Events by Event Types
@@ -2512,15 +2808,31 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_t",
             f"Total Number of {EVENT_TYPE_DESC}s by Event Types",
-            _prep_data_charts_te_t(DF_FILTERED),
+            _prep_data_chart_te_t(DF_FILTERED),
         )
 
-    # Total Events by Top Level logical Parameter
-    if CHOICE_CHARTS_TYPE_TE_TLP:
+    # Total Events by Highest Injury Levels
+    if CHOICE_CHARTS_TYPE_TE_IL:
         _present_totals_chart(
-            "te_tlp",
-            f"Total Number of {EVENT_TYPE_DESC}s  by Top Level Logical Parameters",
-            _prep_data_charts_te_tlp(DF_FILTERED),
+            "te_il",
+            f"Total Number of {EVENT_TYPE_DESC}s by Highest Injury Levels",
+            _prep_data_chart_te_il(DF_FILTERED),
+        )
+
+    # Total Events by Main Phases of Flight
+    if CHOICE_CHARTS_TYPE_TE_MPF:
+        _present_totals_chart(
+            "te_mpf",
+            f"Total Number of {EVENT_TYPE_DESC}s by Main Phases of Flight",
+            _prep_data_chart_te_mpf(DF_FILTERED),
+        )
+
+    # Total Events by Phases of Flight
+    if CHOICE_CHARTS_TYPE_TE_PF:
+        _present_totals_chart(
+            "te_pf",
+            f"Total Number of {EVENT_TYPE_DESC}s by Phases of Flight",
+            _prep_data_chart_te_pf(DF_FILTERED),
         )
 
     # Total Preventable Events by Safety Systems
@@ -2528,7 +2840,15 @@ def _present_totals_charts() -> None:
         _present_totals_chart(
             "te_pss",
             f"Total Number of Preventable {EVENT_TYPE_DESC}s by Safety Systems",
-            _prep_data_charts_te_pss(DF_FILTERED),
+            _prep_data_chart_te_pss(DF_FILTERED),
+        )
+
+    # Total Events by Top Level logical Parameter
+    if CHOICE_CHARTS_TYPE_TE_TLP:
+        _present_totals_chart(
+            "te_tlp",
+            f"Total Number of {EVENT_TYPE_DESC}s  by Top Level Logical Parameters",
+            _prep_data_chart_te_tlp(DF_FILTERED),
         )
 
 
@@ -2537,7 +2857,6 @@ def _present_totals_charts() -> None:
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
 def _print_timestamp(identifier: str) -> None:
-    """Print a timestamp."""
     global LAST_READING  # pylint: disable=global-statement
 
     if not IS_TIMEKEEPING:
@@ -2564,11 +2883,12 @@ def _print_timestamp(identifier: str) -> None:
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
 def _setup_filter() -> None:
-    """Set up the filter controls."""
     global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
     global FILTER_CICTT_CODES  # pylint: disable=global-statement
+    global FILTER_DEFINING_PHASES  # pylint: disable=global-statement
+    global FILTER_DESCRIPTION_MAIN_PHASES  # pylint: disable=global-statement
     global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
     global FILTER_EV_TYPE  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -2596,7 +2916,7 @@ def _setup_filter() -> None:
             The following filter options can be used to limit the data to be processed.
             All selected filter options are applied simultaneously, i.e. they are linked
             to a logical **`and`**.
-            """,
+""",
             label="**Filter Data ?**",
             value=True,
         )
@@ -2613,7 +2933,7 @@ def _setup_filter() -> None:
         FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
             help="""
             Here, the data can be limited to selected aircraft categories.
-            """,
+""",
             label="**Aircraft categories:**",
             options=_sql_query_acft_categories(),
         )
@@ -2626,7 +2946,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_no_aircraft = _sql_query_max_no_aircraft()
@@ -2638,7 +2958,7 @@ def _setup_filter() -> None:
         FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
             help="""
             Number of aircraft involved.
-            """,
+""",
             label="**Aircraft involved:**",
             min_value=min_no_aircraft,
             max_value=max_no_aircraft,
@@ -2660,13 +2980,13 @@ def _setup_filter() -> None:
                 "_setup_filter - FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO"
             )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_CICTT_CODES = st.sidebar.multiselect(
             help="""
             Here, data can be limited to selected CICTT codes.
-            """,
+""",
             label="**CICTT code(s):**",
             options=_sql_query_cictt_codes(),
         )
@@ -2679,7 +2999,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if MODE_STANDARD:
         FILTER_EV_TYPE = st.sidebar.multiselect(
@@ -2687,7 +3007,7 @@ def _setup_filter() -> None:
             help="""
             Here, the data can be limited to selected event types.
             Those events are selected whose event type matches.
-            """,
+""",
             label="**Event type(s):**",
             options=_sql_query_ev_type(),
         )
@@ -2700,7 +3020,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if not MODE_STANDARD:
         FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
@@ -2713,7 +3033,7 @@ def _setup_filter() -> None:
         help="""
             - **`1982`** is the first year with complete statistics.
             - **`2008`** changes were made to the data collection mode.
-            """,
+""",
         label="**Event year(s):**",
         min_value=1982,
         max_value=datetime.date.today().year,
@@ -2728,7 +3048,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     if not MODE_STANDARD:
         FILTER_FAR_PARTS = FILTER_FAR_PARTS_DEFAULT
@@ -2752,7 +3072,7 @@ def _setup_filter() -> None:
         FILTER_FAR_PARTS = st.sidebar.multiselect(
             help="""
             Under which FAR operations parts the event was conducted.
-            """,
+""",
             label="**FAR operations parts:**",
             options=_sql_query_far_parts(),
         )
@@ -2765,7 +3085,7 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_inj_f_grnd = _sql_query_max_inj_f_grnd()
@@ -2774,7 +3094,7 @@ def _setup_filter() -> None:
         FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
             help="""
             Number of fatalities on the ground.
-            """,
+""",
             label="**Fatalities on ground:**",
             min_value=0,
             max_value=max_inj_f_grnd,
@@ -2803,7 +3123,7 @@ def _setup_filter() -> None:
         FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
             help="""
             Number of total fatalities.
-            """,
+""",
             label="**Fatalities total:**",
             min_value=0,
             max_value=max_inj_tot_f,
@@ -2829,13 +3149,13 @@ def _setup_filter() -> None:
         or FILTER_INJ_TOT_F_FROM
         or FILTER_INJ_TOT_F_TO
     ):
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FINDING_CODES = st.sidebar.multiselect(
             help="""
             Here, data can be limited to selected finding codes.
-            """,
+""",
             label="**Finding code(s):**",
             options=_sql_query_finding_codes(),
         )
@@ -2848,14 +3168,14 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
         default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
         help="""
         Here, the data can be limited to selected injury levels.
         Those events are selected whose highest injury level matches.
-        """,
+""",
         label="**Highest injury level(s):**",
         options=_sql_query_ev_highest_injury(),
     )
@@ -2868,50 +3188,72 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_LATLONG_ACQ = st.sidebar.multiselect(
             help="""
             Here, the data can be limited to selected acquisition methods.
-            """,
+""",
             label="**Latitude / longitude acquisition:**",
             options=_sql_query_latlong_acq(),
         )
         _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 1")
-
         if FILTER_LATLONG_ACQ:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
+        st.sidebar.divider()
 
-        st.sidebar.markdown("""---""")
+        FILTER_DESCRIPTION_MAIN_PHASES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected main phases of flight.",
+            label="**Main phases of flight:**",
+            options=_sql_query_description_main_phase(),
+        )
+        _print_timestamp("_setup_filter - FILTER_DESCRIPTION_MAIN_PHASES - 1")
+        if FILTER_DESCRIPTION_MAIN_PHASES:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Main Phases of flight**: **`{','.join(FILTER_DESCRIPTION_MAIN_PHASES)}`**"
+            )
+        st.sidebar.divider()
 
-    if CHOICE_EXTENDED_VERSION:
         FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
             help="""
             Here, the data can be limited to selected occurrence codes.
-            """,
+""",
             label="**Occurrence code(s):**",
             options=_sql_query_occurrence_codes(),
         )
         _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 1")
-
         if FILTER_OCCURRENCE_CODES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
             )
             _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
+        st.sidebar.divider()
 
-        st.sidebar.markdown("""---""")
+    if CHOICE_EXTENDED_VERSION:
+        FILTER_DEFINING_PHASES = st.sidebar.multiselect(
+            help="Here, data can be limited to selected events sequence phases (phases of flight).",
+            label="**Phases of flight:**",
+            options=_sql_query_md_codes_phase(),
+        )
+        _print_timestamp("_setup_filter - FILTER_DEFINING_PHASES - 1")
+        if FILTER_DEFINING_PHASES:
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Phases of flight**: **`{','.join(FILTER_DEFINING_PHASES)}`**"
+            )
+        st.sidebar.divider()
 
     FILTER_PREVENTABLE_EVENTS = st.sidebar.multiselect(
         help="""
         Here, the data can be limited to events that could be prevented if an appropriate safety system were available.
-        """,
+""",
         label="**Preventable events:**",
         options=_sql_query_preventable_events(),
     )
@@ -2924,7 +3266,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_PREVENTABLE_EVENTS - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
@@ -2944,7 +3286,7 @@ def _setup_filter() -> None:
         FILTER_TLL_PARAMETERS = st.sidebar.multiselect(
             help="""
             Top logical parameters that are applied when filtering.
-            """,
+""",
             label="**Top logical parameter(s):**",
             options=_sql_query_tll_parameters(),
         )
@@ -2958,14 +3300,14 @@ def _setup_filter() -> None:
             )
             _print_timestamp("_setup_filter - FILTER_TLL_PARAMETERS - 2")
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
         help="""
         **US aviation** means that either the event occurred on US soil or 
         the departure, destination, owner, operator or registration is US.
-        """,
+""",
         label="**US aviation criteria:**",
         options=[
             FILTER_US_AVIATION_COUNTRY,
@@ -2985,7 +3327,7 @@ def _setup_filter() -> None:
         )
         _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
     _print_timestamp("_setup_filter - End")
 
@@ -2994,7 +3336,6 @@ def _setup_filter() -> None:
 # Set up the page.
 # ------------------------------------------------------------------
 def _setup_page() -> None:
-    """Set up the page."""
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
     global CHOICE_UG_APP  # pylint: disable=global-statement
@@ -3049,7 +3390,7 @@ def _setup_page() -> None:
     with col3:
         CHOICE_UG_APP = st.checkbox(
             help="Explanations and operating instructions related to the whole application.",
-            label="**User Guide: Application**",
+            label="**User guide: Application**",
             value=False,
         )
 
@@ -3058,7 +3399,6 @@ def _setup_page() -> None:
 # Set up the sidebar.
 # ------------------------------------------------------------------
 def _setup_sidebar() -> None:
-    """Set up the sidebar."""
     _print_timestamp("_setup_sidebar() - Start")
 
     _setup_task_controls()
@@ -3074,10 +3414,16 @@ def _setup_sidebar() -> None:
 # Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
-    """Set up the task controls."""
+    global CHOICE_BOX_PLOTS  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_D_NA  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_D_NA_MAX  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_AOC  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_MPF  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_PF  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_PSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_T  # pylint: disable=global-statement
@@ -3089,6 +3435,10 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_TE_AOC  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_IL  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_MPF  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_PF  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_PSS  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_T  # pylint: disable=global-statement
@@ -3097,6 +3447,7 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_TF_FP  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TF_SFP  # pylint: disable=global-statement
+    global CHOICE_DATA_GRAPHS_DISTANCES  # pylint: disable=global-statement
     global CHOICE_DATA_GRAPHS_TOTALS  # pylint: disable=global-statement
     global CHOICE_DATA_GRAPHS_YEARS  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
@@ -3106,27 +3457,48 @@ def _setup_task_controls() -> None:
     global CHOICE_HORIZONTAL_BAR_CHARTS  # pylint: disable=global-statement
     global CHOICE_MAP  # pylint: disable=global-statement
     global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
-    global CHOICE_MAP_RADIUS  # pylint: disable=global-statement
     global CHOICE_PIE_CHARTS  # pylint: disable=global-statement
+    global CHOICE_RUN_ANALYSIS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_TOTALS_CHARTS_WIDTH  # pylint: disable=global-statement
+    global CHOICE_VIOLIN_PLOTS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_HEIGHT  # pylint: disable=global-statement
     global CHOICE_YEARS_CHARTS_WIDTH  # pylint: disable=global-statement
 
+    # --------------------------------------------------------------
+    # Run the Data Analysis.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
+        # pylint: disable=line-too-long
+        CHOICE_RUN_ANALYSIS = st.sidebar.checkbox(
+            help="""
+        For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected data analysis.        """,
+            key="CHOICE_RUN_ANALYSIS",
+            label="**Run the Data Analysis**",
+            value=True,
+        )
+
+        st.sidebar.divider()
+
+        # ----------------------------------------------------------
+        # Extended Version.
+        # ----------------------------------------------------------
         CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
             help="The extended version has more complex filtering and processing options.",
             label="**Extended Version**",
             value=False,
         )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Map.
+    # --------------------------------------------------------------
     CHOICE_MAP = st.sidebar.checkbox(
         help="Display the events on a map (after filtering the data).",
         label="**Show Map**",
@@ -3137,31 +3509,32 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_MAP_MAP_STYLE = st.sidebar.radio(
                 help="""
-    light: designed to provide geographic context while highlighting the data -
-    outdoors: focused on wilderness locations with curated tile sets -
-    streets: emphasizes accurate, legible styling of road and transit networks.
-            """,
+- **carto-positron**: light base map
+- **open-street-map**: default representation
+- **stamen-terrain**: focused on terrain representation
+- **stamen-toner**: black and white representation
+- **stamen-watercolor**: focused on water representation
+- **white-bg**: pure white background
+""",
                 index=1,
                 label="Map style",
                 options=(
                     [
-                        "light-v11",
-                        "outdoors-v12",
-                        "streets-v12",
+                        "carto-positron",
+                        "open-street-map",
+                        "stamen-terrain",
+                        "stamen-toner",
+                        "stamen-watercolor",
+                        "white-bg",
                     ]
                 ),
             )
 
-        CHOICE_MAP_RADIUS = st.sidebar.slider(
-            label="Event radius in meters",
-            help="Radius for displaying the events - " + "default value is 2 miles.",
-            min_value=10,
-            max_value=1609 * 4,
-            value=(1609 * 2),
-        )
+    st.sidebar.divider()
 
-    st.sidebar.markdown("""---""")
-
+    # --------------------------------------------------------------
+    # Show Data Graph - Years.
+    # --------------------------------------------------------------
     CHOICE_DATA_GRAPHS_YEARS = st.sidebar.checkbox(
         help="Events or fatalities per year (after filtering the data).",
         label="**Show Data Graphs - Years**",
@@ -3204,7 +3577,7 @@ def _setup_task_controls() -> None:
                     value=False,
                 )
 
-            st.sidebar.markdown("""---""")
+            st.sidebar.divider()
 
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
@@ -3227,6 +3600,7 @@ def _setup_task_controls() -> None:
             label="Fatalities per Year by Selected FAR Operations Parts",
             value=not MODE_STANDARD,
         )
+
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_EY_AOC = st.sidebar.checkbox(
                 help="Events per year by CICTT codes (after filtering the data).",
@@ -3253,6 +3627,36 @@ def _setup_task_controls() -> None:
                 label="Events per Year by Highest Injury Levels",
                 value=False,
             )
+
+            CHOICE_CHARTS_TYPE_EY_MPF = st.sidebar.checkbox(
+                help="Events per year by main phases of flight (after filtering the data).",
+                label="Events per Year by Main Phases of Flight",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_EY_MPF:
+                CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD = st.sidebar.number_input(
+                    help="Threshold percentage for combined display",
+                    key="CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD",
+                    label="Threshold value in %",
+                    max_value=20.0,
+                    min_value=0.0,
+                    value=0.5,
+                )
+
+            CHOICE_CHARTS_TYPE_EY_PF = st.sidebar.checkbox(
+                help="Events per year by phases of flight (after filtering the data).",
+                label="Events per Year by Phases of Flight",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_EY_PF:
+                CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD = st.sidebar.number_input(
+                    help="Threshold percentage for combined display",
+                    key="CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD",
+                    label="Threshold value in %",
+                    max_value=20.0,
+                    min_value=0.0,
+                    value=1.5,
+                )
 
         CHOICE_CHARTS_TYPE_EY_PSS = st.sidebar.checkbox(
             help="Preventable events per year by safety systems (after filtering the data).",
@@ -3285,8 +3689,11 @@ def _setup_task_controls() -> None:
                     value=1.5,
                 )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Data Graph - Totals.
+    # --------------------------------------------------------------
     CHOICE_DATA_GRAPHS_TOTALS = st.sidebar.checkbox(
         help="Total Events or fatalities (after filtering the data).",
         label="**Show Data Graphs - Totals**",
@@ -3337,7 +3744,7 @@ def _setup_task_controls() -> None:
                     value=True,
                 )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
@@ -3388,6 +3795,36 @@ def _setup_task_controls() -> None:
                 value=False,
             )
 
+            CHOICE_CHARTS_TYPE_TE_MPF = st.sidebar.checkbox(
+                help="Total events by main phases of flight (after filtering the data).",
+                label="Total Events by Main Phases of Flight",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_TE_MPF:
+                CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD = st.sidebar.number_input(
+                    help="Threshold percentage for combined display",
+                    key="CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD",
+                    label="Threshold value in %",
+                    max_value=20.0,
+                    min_value=0.0,
+                    value=1.5,
+                )
+
+            CHOICE_CHARTS_TYPE_TE_PF = st.sidebar.checkbox(
+                help="Total events by phases of flight (after filtering the data).",
+                label="Total Events by Phases of Flight",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_TE_PF:
+                CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD = st.sidebar.number_input(
+                    help="Threshold percentage for combined display",
+                    key="CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD",
+                    label="Threshold value in %",
+                    max_value=20.0,
+                    min_value=0.0,
+                    value=1.5,
+                )
+
         CHOICE_CHARTS_TYPE_TE_PSS = st.sidebar.checkbox(
             help="Total preventable events by safety systems (after filtering the data).",
             label="Total Preventable Events by Safety Systems",
@@ -3419,8 +3856,55 @@ def _setup_task_controls() -> None:
                     value=1.5,
                 )
 
-    st.sidebar.markdown("""---""")
+    st.sidebar.divider()
 
+    if MODE_STANDARD:
+        # --------------------------------------------------------------
+        # Show Data Graph - Distances.
+        # --------------------------------------------------------------
+        CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
+            help="Distances (after filtering the data).",
+            label="**Show Data Graphs - Distances**",
+            value=not MODE_STANDARD,
+        )
+
+        if CHOICE_DATA_GRAPHS_DISTANCES:
+            CHOICE_BOX_PLOTS = st.sidebar.checkbox(
+                help="Presenting distances with box plots.",
+                key="CHOICE_BOX_PLOTS",
+                label="Show box plots",
+                value=False,
+            )
+            CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
+                help="Presenting distances with violin plots.",
+                key="CHOICE_VIOLIN_PLOTS",
+                label="Show voline plots",
+                value=True,
+            )
+
+            st.sidebar.divider()
+
+            # pylint: disable=line-too-long
+            CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
+                help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
+                label="Distance to the Nearest Airport",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_D_NA:
+                CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
+                    help="Maximum distance in miles",
+                    key="CHOICE_CHARTS_TYPE_D_NA_MAX",
+                    label="Maximum distance in miles",
+                    max_value=5000.0,
+                    step=5.0,
+                    value=100.0,
+                )
+
+        st.sidebar.divider()
+
+    # --------------------------------------------------------------
+    # Show Data Profile.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
         CHOICE_DATA_PROFILE = st.sidebar.checkbox(
             help="Profiling of the filtered dataset.",
@@ -3441,8 +3925,11 @@ def _setup_task_controls() -> None:
                 ),
             )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
+    # --------------------------------------------------------------
+    # Show Detailed Data.
+    # --------------------------------------------------------------
     if MODE_STANDARD:
         CHOICE_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the filtered detailed data.",
@@ -3450,21 +3937,20 @@ def _setup_task_controls() -> None:
             value=True,
         )
 
-        st.sidebar.markdown("""---""")
+        st.sidebar.divider()
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of aircraft categories.
 # ------------------------------------------------------------------
 def _sql_query_acft_categories() -> list[str]:
-    """Execute a query that returns a list of aircraft categories."""
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
           FROM aircraft
          WHERE acft_category IS NOT NULL;
-        """
+"""
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -3473,13 +3959,33 @@ def _sql_query_acft_categories() -> list[str]:
 # Execute a query that returns the list of CICTT codes.
 # ------------------------------------------------------------------
 def _sql_query_cictt_codes() -> list[str]:
-    """Execute a query that returns a list of CICTT codes."""
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT DISTINCT cictt_codes
           FROM io_app_ae1982;
-        """
+"""
+        )
+
+        data = []
+
+        for row in cur:
+            data.append(row[0])
+
+        return sorted(data)
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of descriptions of main phases
+# of flight.
+# ------------------------------------------------------------------
+def _sql_query_description_main_phase() -> list[str]:
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT DISTINCT description_main_phase
+          FROM io_md_codes_phase;
+"""
         )
 
         data = []
@@ -3494,14 +4000,13 @@ def _sql_query_cictt_codes() -> list[str]:
 # Execute a query that returns the list of injury levels
 # ------------------------------------------------------------------
 def _sql_query_ev_highest_injury() -> list[str]:
-    """Execute a query that returns a list of injury levels."""
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
           FROM io_app_ae1982;
-        """
+"""
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
@@ -3518,14 +4023,13 @@ def _sql_query_ev_highest_injury() -> list[str]:
 # Execute a query that returns the list of event types
 # ------------------------------------------------------------------
 def _sql_query_ev_type() -> list[str]:
-    """Execute a query that returns a list of event types."""
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END, ',' ORDER BY CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END)
           FROM io_app_ae1982;
-        """
+"""
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
@@ -3542,13 +4046,12 @@ def _sql_query_ev_type() -> list[str]:
 # Execute a query that returns the list of FAR Operations Parts.
 # ------------------------------------------------------------------
 def _sql_query_far_parts() -> list[str]:
-    """Execute a query that returns a list of FAR Operations Parts."""
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT DISTINCT far_parts
           FROM io_app_ae1982;
-        """
+"""
         )
 
         data = []
@@ -3563,11 +4066,6 @@ def _sql_query_far_parts() -> list[str]:
 # Execute a query that returns the list of finding codes.
 # ------------------------------------------------------------------
 def _sql_query_finding_codes() -> list[str]:
-    """Execute a query that returns a list of finding codes.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         # flake8: noqa: E501
         # pylint: disable=line-too-long
@@ -3586,7 +4084,7 @@ def _sql_query_finding_codes() -> list[str]:
                  WHERE (substring(finding_code, 1, 8) IN ('01062012', '01062037', '01062040', '01062042')
                     OR substring(finding_code, 1, 6) IN ('030210', '030220'))
                    AND finding_code IS NOT NULL) f
-        """
+"""
         )  # noqa: E501
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -3596,17 +4094,12 @@ def _sql_query_finding_codes() -> list[str]:
 # acquisition
 # ------------------------------------------------------------------
 def _sql_query_latlong_acq() -> list[str]:
-    """Execute a query that returns a list of latitude / longitude acquisition.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT string_agg(DISTINCT latlong_acq, ',' ORDER BY latlong_acq)
           FROM io_app_ae1982;
-        """
+"""
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
@@ -3623,17 +4116,12 @@ def _sql_query_latlong_acq() -> list[str]:
 # Determine the maximum number of fatalities on ground.
 # ------------------------------------------------------------------
 def _sql_query_max_inj_f_grnd() -> int:
-    """Determine the maximum number of total fatalities on ground.
-
-    Returns:
-        int: Maximum number of fatalities on ground.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT MAX(inj_f_grnd)
           FROM io_app_ae1982;
-        """
+"""
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -3642,17 +4130,12 @@ def _sql_query_max_inj_f_grnd() -> int:
 # Determine the maximum number of involved aircraft.
 # ------------------------------------------------------------------
 def _sql_query_max_no_aircraft() -> int:
-    """Determine the maximum number of involved aircraft.
-
-    Returns:
-        int: Maximum number of involved aircraft.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT MAX(no_aircraft)
           FROM io_app_ae1982;
-        """
+"""
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -3661,17 +4144,12 @@ def _sql_query_max_no_aircraft() -> int:
 # Determine the minimum number of involved aircraft.
 # ------------------------------------------------------------------
 def _sql_query_min_no_aircraft() -> int:
-    """Determine the minimum number of involved aircraft.
-
-    Returns:
-        int: Maximum number of involved aircraft.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT MIN(no_aircraft)
           FROM io_app_ae1982;
-        """
+"""
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -3680,30 +4158,36 @@ def _sql_query_min_no_aircraft() -> int:
 # Determine the maximum number of fatalities.
 # ------------------------------------------------------------------
 def _sql_query_max_inj_tot_f() -> int:
-    """Determine the maximum number of total fatalities.
-
-    Returns:
-        int: Maximum number of total fatalities.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT MAX(inj_tot_f)
           FROM io_app_ae1982;
-        """
+"""
         )
         return cur.fetchone()[0]  # type: ignore
+
+
+# ------------------------------------------------------------------
+# Execute a query that returns the list of phases.
+# ------------------------------------------------------------------
+@st.cache_data(persist=True)
+def _sql_query_md_codes_phase() -> list[str]:
+    with PG_CONN.cursor() as cur:  # type: ignore
+        cur.execute(
+            """
+        SELECT string_agg(CONCAT(description, ' - ', phase_code), ',' ORDER BY 1)
+          FROM io_md_codes_phase;
+"""
+        )
+
+        return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
 # ------------------------------------------------------------------
 # Execute a query that returns the list of occurrence codes.
 # ------------------------------------------------------------------
 def _sql_query_occurrence_codes() -> list[str]:
-    """Execute a query that returns a list of occurrence codes.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         # flake8: noqa: E501
         # pylint: disable=line-too-long
@@ -3727,7 +4211,7 @@ def _sql_query_occurrence_codes() -> list[str]:
                 WHERE (substring(occurrence_code, 1, 3) IN ('350', '452', '502')
                     OR substring(occurrence_code, 4, 6) IN ('120', '220', '240', '241', '250', '401', '420', '901'))
                 AND occurrence_code IS NOT NULL) o
-        """
+"""
         )  # noqa: E501
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -3737,17 +4221,12 @@ def _sql_query_occurrence_codes() -> list[str]:
 # categories.
 # ------------------------------------------------------------------
 def _sql_query_preventable_events() -> list[str]:
-    """Execute a query that returns a list of preventable event categories.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT DISTINCT preventable_events
           FROM io_app_ae1982;
-        """
+"""
         )
 
         data = []
@@ -3763,17 +4242,12 @@ def _sql_query_preventable_events() -> list[str]:
 # parameters.
 # ------------------------------------------------------------------
 def _sql_query_tll_parameters() -> list[str]:
-    """Execute a query that returns a list of top_level_logical_parameters.
-
-    Returns:
-        list[str]: Query results in a list.
-    """
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
         SELECT DISTINCT tll_parameters
           FROM io_app_ae1982;
-        """
+"""
         )
 
         data = []
@@ -3787,8 +4261,7 @@ def _sql_query_tll_parameters() -> list[str]:
 # ------------------------------------------------------------------
 # Run the US latitude and longitude query.
 # ------------------------------------------------------------------
-def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
-    """Run the US latitude and longitude query."""
+def _sql_query_us_ll() -> dict[str, float]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
             """
@@ -3796,15 +4269,10 @@ def _sql_query_us_ll(pitch: int, zoom: float) -> pdk.ViewState:
                dec_longitude
           FROM io_countries
          WHERE country = 'USA';
-        """
+"""
         )
         result = cur.fetchone()
-        return pdk.ViewState(
-            latitude=result[0],  # type: ignore
-            longitude=result[1],  # type: ignore
-            pitch=pitch,
-            zoom=zoom,
-        )
+        return {"lat": result[0], "lon": result[1]}  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -3818,7 +4286,7 @@ def _sql_query_us_states() -> list[str]:
         SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
-        """
+"""
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -3827,7 +4295,6 @@ def _sql_query_us_states() -> list[str]:
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
-    """Streamlit flow."""
     global DF_FILTERED  # pylint: disable=global-statement
     global DF_UNFILTERED  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
@@ -3835,16 +4302,17 @@ def _streamlit_flow() -> None:
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
     global USER_INFO  # pylint: disable=global-statement
+    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -3856,11 +4324,11 @@ def _streamlit_flow() -> None:
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
 
-    print(
-        str(datetime.datetime.now())
-        + f"                         - MODE_STANDARD={MODE_STANDARD}",
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + f"                         - MODE_STANDARD={MODE_STANDARD}",
+    #     flush=True,
+    # )
 
     st.set_page_config(
         layout="wide",
@@ -3911,7 +4379,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

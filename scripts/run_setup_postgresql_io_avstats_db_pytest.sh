@@ -36,6 +36,8 @@ docker ps -a | grep "${IO_AVSTATS_POSTGRES_CONTAINER_NAME}" && docker rm --force
 echo "............................................................. after:"
 docker ps -a
 
+start=$(date +%s)
+
 rm -rf ${IO_AVSTATS_POSTGRES_PGDATA}
 # ------------------------------------------------------------------------------
 

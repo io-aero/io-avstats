@@ -18,8 +18,6 @@ The following tasks can be executed with this script:
 | `d_d_f` | Delete the PostgreSQL database files                   |                         |
 | `d_d_s` | Drop the PostgreSQL database schema                    |                         |
 | `d_n_a` | Download a **NTSB** MS Access database file            | -m / -msaccess          |
-| `d_s_f` | Download basic **simplemaps** files                    |                         |
-| `d_z_f` | Download the ZIP Code Database file                    |                         |
 | `l_c_d` | Load data from a correction file into PostgreSQL       | -c / -correction        |
 | `l_c_s` | Load country and state data into PostgreSQL            |                         |
 | `l_n_a` | Load **NTSB** MS Access database data into PostgreSQL  | -m / -msaccess          |
@@ -527,68 +525,6 @@ Example protocol:
     Progress update 2022-11-23 12:20:08.297807 :        2,816,100,200 ns - Total time launcher.
     Progress update 2022-11-23 12:20:08.297807 : INFO.00.006 End   Launcher.
     Progress update 2022-11-23 12:20:08.298305 : ===============================================================================.
-
-### 1.7 **`d_s_f`** - Download basic **simplemaps** files
-
-This task downloads the basic versions of the two databases **`United States Cities`** and **`US Zip Codes`** from the **simplemaps** website to the file directory defined in **`download_work_dir`**.
-
-Subsequently, the downloaded data can be loaded into the PostgreSQL database with the task **`l_s_d`** (Load **simplemaps** data into PostgreSQL).
-
-Further details can be found [here](https://github.com/io-aero/io-avstats-db/blob/main/site/db_data_transfer.html){:target="_blank"}.
-
-Example protocol:
-
-    Progress update 2023-01-16 08:52:42.402122 : ===============================================================================.
-    Progress update 2023-01-16 08:52:42.402622 : INFO.00.004 Start Launcher.
-    Progress update 2023-01-16 08:52:42.407122 : INFO.00.001 The logger is configured and ready.
-    Progress update 2023-01-16 08:52:42.416122 : INFO.00.005 Argument task='d_s_f'.
-    Progress update 2023-01-16 08:52:42.416122 : -------------------------------------------------------------------------------.
-    Progress update 2023-01-16 08:52:42.416122 : INFO.00.048 Downloading basic simplemaps files.
-    Progress update 2023-01-16 08:52:42.416122 : --------------------------------------------------------------------------------
-    Progress update 2023-01-16 08:52:42.614735 : INFO.00.030 The connection to the US city file 'simplemaps_uscities_basicv1.75.zip' on the simplemaps download page was successfully established.
-    Progress update 2023-01-16 08:52:42.707338 : INFO.00.023 From the file 'simplemaps_uscities_basicv1.75.zip' 8 chunks were downloaded.
-    Progress update 2023-01-16 08:52:42.740839 : INFO.00.024 The file 'simplemaps_uscities_basicv1.75.zip' was successfully unpacked.
-    Progress update 2023-01-16 08:52:42.907725 : INFO.00.022 The connection to the US zip code file 'simplemaps_uszips_basicv1.81.zip' on the simplemaps download page was successfully established.
-    Progress update 2023-01-16 08:52:43.003439 : INFO.00.023 From the file 'simplemaps_uszips_basicv1.81.zip' 8 chunks were downloaded.
-    Progress update 2023-01-16 08:52:43.037441 : INFO.00.024 The file 'simplemaps_uszips_basicv1.81.zip' was successfully unpacked.
-    Progress update 2023-01-16 08:52:43.037441 : -------------------------------------------------------------------------------.
-    Progress update 2023-01-16 08:52:43.037441 :          787,318,600 ns - Total time launcher.
-    Progress update 2023-01-16 08:52:43.037441 : INFO.00.006 End   Launcher.
-    Progress update 2023-01-16 08:52:43.037939 : ===============================================================================.
-
-### 1.8 **`d_z_f`** - Download the ZIP Code Database file
-
-With this task, the free version of the file [ZIP Code Database](https://www.unitedstateszipcodes.org/zip-code-database/){:target="_blank"} can be downloaded from the website [**United States Zip Codes.org**](https://www.unitedstateszipcodes.org/).
-However, since a license window appears first before the actual download, it is better to download the file manually.
-Therefore, this task is currently not offered in the **`run_io_avstats_db`** shell script menu.
-
-<kbd>![](img/Zip Codes.org Verify License Terms.png)</kbd>
-
-Example protocol:
-
-    Progress update 2022-11-26 07:12:23.326957 : ===============================================================================.
-    Progress update 2022-11-26 07:12:23.326957 : INFO.00.004 Start Launcher.
-    Progress update 2022-11-26 07:12:23.328958 : INFO.00.001 The logger is configured and ready.
-    Progress update 2022-11-26 07:12:23.336956 : INFO.00.005 Argument task='d_z_f'.
-    Progress update 2022-11-26 07:12:23.337457 : -------------------------------------------------------------------------------.
-    Progress update 2022-11-26 07:12:23.337457 : INFO.00.055 Downloading ZIP Code Database file.
-    Progress update 2022-11-26 07:12:23.337457 : --------------------------------------------------------------------------------
-    
-      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\launcher.py", line 416, in <module>
-        main(sys.argv)
-      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\launcher.py", line 376, in main
-        avstats.download_zip_code_db_file()
-      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\avstats.py", line 98, in download_zip_code_db_file
-        db_dml_base.download_zip_code_db_file()
-      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\db_dml_base.py", line 4052, in download_zip_code_db_file
-        io_utils.terminate_fatal(
-      File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\src\io_avstats_db\io_utils.py", line 99, in terminate_fatal
-        traceback.print_stack()
-    
-    FATAL ERROR: program abort =====>
-    FATAL ERROR: program abort =====> ERROR.00.906 Unexpected response status code='403' <===== FATAL ERROR
-    FATAL ERROR: program abort =====>
-    Processing of the script run_io_avstats was aborted, error code=0
 
 ### 1.9 **`l_c_d`** - Load data from a correction file into PostgreSQL
 

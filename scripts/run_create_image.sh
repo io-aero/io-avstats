@@ -25,7 +25,7 @@ if [ -z "$1" ]; then
     echo "stats   - Aircraft Accidents in the US since 1982 - limited"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
-    export APPLICATION=${APPLICATION}
+    export APPLICATION="${APPLICATION}"
 
     if [ -z "${APPLICATION}" ]; then
         export APPLICATION=${APPLICATION_DEFAULT}
@@ -36,14 +36,14 @@ fi
 
 if [ -z "$2" ]; then
     read -p "Push image to Docker Hub (yes / no) [default: ${DOCKER_HUB_PUSH_DEFAULT}] " DOCKER_HUB_PUSH
-    export DOCKER_HUB_PUSH=${DOCKER_HUB_PUSH}
+    export DOCKER_HUB_PUSH="${DOCKER_HUB_PUSH}"
 else
     export DOCKER_HUB_PUSH=$2
 fi
 
 if [ -z "$3" ]; then
     read -p "Clear Docker cache (yes / no) [default: ${DOCKER_CLEAR_CACHE_DEFAULT}] " DOCKER_CLEAR_CACHE
-    export DOCKER_CLEAR_CACHE=${DOCKER_CLEAR_CACHE}
+    export DOCKER_CLEAR_CACHE="${DOCKER_CLEAR_CACHE}"
 else
     export DOCKER_CLEAR_CACHE=$3
 fi
@@ -77,11 +77,11 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 if [ "${APPLICATION}" = "all" ]; then
-    ( ./scripts/run_create_image.sh ae1982  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh members ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh pd1982  ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh slara   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
-    ( ./scripts/run_create_image.sh stats   ${DOCKER_HUB_PUSH} ${DOCKER_CLEAR_CACHE} )
+    ( ./scripts/run_create_image.sh ae1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
+    ( ./scripts/run_create_image.sh members "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
+    ( ./scripts/run_create_image.sh pd1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
+    ( ./scripts/run_create_image.sh slara   "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
+    ( ./scripts/run_create_image.sh stats   "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     goto END_OF_SCRIPT
 fi
 
@@ -94,8 +94,8 @@ mkdir -p tmp/docs\img
 if [ "${APPLICATION}" = "members" ]; then
     copy -i data/latest_postgres.zip          download/IO-AVSTATS-DB.zip
     copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
-    copy -i download/IO-AVSTATS-DB.pdf        tmp/download/IO-AVSTATS-DB.pdf
-    copy -i download/IO-AVSTATS-DB.zip        tmp/download/IO-AVSTATS-DB.zip
+    copy -i uoload/IO-AVSTATS-DB.pdf          tmp/download/IO-AVSTATS-DB.pdf
+    copy -i upload/IO-AVSTATS-DB.zip          tmp/download/IO-AVSTATS-DB.zip
 fi
 
 if [ "${APPLICATION}" = "stats" ]; then
@@ -110,13 +110,13 @@ fi
 
 echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
 docker ps -a
-docker ps    | find "${APPLICATION}" && docker stop       ${APPLICATION}
-docker ps -a | find "${APPLICATION}" && docker rm --force ${APPLICATION}
+docker ps    | find "${APPLICATION}" && docker stop       "${APPLICATION}"
+docker ps -a | find "${APPLICATION}" && docker rm --force "${APPLICATION}"
 echo "............................................................. after containers:"
 docker ps -a
 echo "............................................................. before images:"
 docker image ls
-docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/${APPLICATION}
+docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/"${APPLICATION}"
 echo "............................................................. after images:"
 docker image ls
 
@@ -124,22 +124,22 @@ if [ "${APPLICATION}" = "ae1982" ]; then
     export MODE=Std
 fi
 
-docker build --build-arg APP=${APPLICATION} \
+docker build --build-arg APP="${APPLICATION}" \
              --build-arg MODE=${MODE} \
              --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
-             -t ioaero/${APPLICATION} .
+             -t ioaero/"${APPLICATION}" .
 
-docker tag ioaero/${APPLICATION} ioaero/${APPLICATION}
+docker tag ioaero/"${APPLICATION}" ioaero/"${APPLICATION}"
 
 if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
-    docker push ioaero/${APPLICATION}
+    docker push ioaero/"${APPLICATION}"
 fi
 
 docker images -q -f "dangling=true" -f "label=autodelete=true"
 
 for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
 do
-    docker rmi -f ${IMAGE}
+    docker rmi -f "${IMAGE}"
 done
 
 rm -rf tmp/download

@@ -48,7 +48,7 @@ def _setup_page():
         unsafe_allow_html=True,
     )
 
-    st.markdown("""---""")
+    st.divider()
 
     # --------------------------------------------------------------
     # Application menu.
@@ -98,7 +98,7 @@ def _setup_page():
             with col2:
                 st.markdown("##### " + app_link)
 
-        st.markdown("""---""")
+        st.divider()
 
     # --------------------------------------------------------------
     # Download menu.
@@ -134,7 +134,7 @@ def _setup_page():
             with col1:
                 st.markdown("##### " + item_desc)
             with col2:
-                with open("download/" + item_file, "rb") as download:
+                with open("upload/" + item_file, "rb") as download:
                     st.download_button(
                         "**Download "
                         + pathlib.Path(item_file).suffix.upper()[1:]
@@ -143,14 +143,14 @@ def _setup_page():
                         file_name=item_file,
                     )
 
-        st.markdown("""---""")
+        st.divider()
 
     # --------------------------------------------------------------
     # Image.
     # --------------------------------------------------------------
     st.image(Image.open("docs/img/StockSnap_SLQQYN6CRR.jpg"))
 
-    st.markdown("""---""")
+    st.divider()
 
 
 # ------------------------------------------------------------------
@@ -164,12 +164,12 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    print(
-        str(datetime.datetime.now())
-        + "                         - Start application "
-        + APP_ID,
-        flush=True,
-    )
+    # print(
+    #     str(datetime.datetime.now())
+    #     + "                         - Start application "
+    #     + APP_ID,
+    #     flush=True,
+    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
@@ -201,7 +201,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID} - {USER_INFO}",
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
         flush=True,
     )
 

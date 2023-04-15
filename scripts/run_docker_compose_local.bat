@@ -8,6 +8,8 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
+set AWS_PROG_ZIP=7za
+
 set ERRORLEVEL=
 
 set IO_AVSTATS_KEYCLOAK_CONNECTION_PORT=8080
@@ -123,6 +125,11 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["clean"] (
     docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak:%IO_AVSTATS_KEYCLOAK_VERSION%
     echo ......................................................... after images:
     docker images
+
+    cd data
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-4,4%.%date:~3,2%.%date:~0,2%_postgres_keycloak.zip postgres_keycloak
+    cd ..
+
     goto END_OF_SCRIPT
 )
 
@@ -138,6 +145,11 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
     docker ps
     echo ..................................................... after containers:
     docker ps -a
+
+    cd data
+    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-4,4%.%date:~3,2%.%date:~0,2%_postgres_keycloak.zip postgres_keycloak
+    cd ..
+
     goto END_OF_SCRIPT
 )
 

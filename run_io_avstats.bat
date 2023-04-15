@@ -14,6 +14,7 @@ if ["!ENV_FOR_DYNACONF!"] EQU [""] (
     set ENV_FOR_DYNACONF=prod
 )
 
+set IO_AVSTATS_AVIATION_EVENT_STATISTICS=data\AviationAccidentStatistics
 set IO_AVSTATS_CORRECTION_WORK_DIR=data\correction
 
 set IO_AVSTATS_KEYCLOAK_CONTAINER_NAME=keycloak
@@ -67,9 +68,7 @@ if ["%1"] EQU [""] (
     echo v_n_d   - Verify selected NTSB data
     echo r_d_s   - Refresh the PostgreSQL database schema
     echo ---------------------------------------------------------
-    echo d_s_f   - Download basic simplemaps files
     echo l_s_d   - Load simplemaps data into PostgreSQL
-rem echo d_z_f   - Download the ZIP Code Database file
     echo l_z_d   - Load ZIP Code Database data into PostgreSQL
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
@@ -79,6 +78,8 @@ rem echo d_z_f   - Download the ZIP Code Database file
     echo c_p_d   - Cleansing PostgreSQL data
     echo d_d_f   - Delete the PostgreSQL database files
     echo d_d_s   - Drop the PostgreSQL database schema
+    echo f_n_a   - Find the nearest airports
+    echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
@@ -193,7 +194,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        dir /A:-D /B %IO_AVSTATS_NTSB_WORK_DIR%\*.xlsx
+        dir /A:-D /B %IO_AVSTATS_AVIATION_EVENT_STATISTICS%\*.xlsx
         echo ---------------------------------------------------------
         set /P IO_AVSTATS_MSEXCEL="Enter the stem name of the desired NTSB statistic file "
     ) else (
@@ -314,6 +315,12 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_s"] (
         exit %ERRORLEVEL%
     )
 
+    pipenv run python src\launcher.py -t "u_d_s"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
     goto END_OF_SCRIPT
 )
 
@@ -400,22 +407,9 @@ if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Download basic simplemaps files.
+rem Find the nearest airports.
 rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_s_f"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Download the ZIP Code Database file.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_z_f"] (
+if ["%IO_AVSTATS_TASK%"] EQU ["f_n_a"] (
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -430,6 +424,19 @@ rem Set up the Keycloak PostgreSQL database container.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["k_s_d"] (
     call scripts\run_setup_postgresql_keycloak
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Load airport data into PostgreSQL.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["l_a_p"] (
+    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%
@@ -655,6 +662,12 @@ if ["%IO_AVSTATS_TASK%"] EQU ["u_p_d"] (
     )
 
     pipenv run python src\launcher.py -t c_l_l
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    pipenv run python src\launcher.py -t f_n_a
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

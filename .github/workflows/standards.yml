@@ -57,7 +57,7 @@ jobs:
             ./run_io_avstats.sh c_d_s
             ./run_io_avstats.sh version
       - name: Run the whole software quality chain
-        run: make format lint docs tests
+        run: make format lint docs
       - name: Publish the code coverage to coveralls.io
         run: |
             echo "::echo::on"

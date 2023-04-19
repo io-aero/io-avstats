@@ -23,8 +23,6 @@ echo "--------------------------------------------------------------------------
 
 rm -f ${AWS_FILE_NAME}
 
-copy -i data/latest_postgrep.zip download/AVSTATS-DB.zip
-
 ${AWS_PROG_ZIP} a -tzip ${AWS_FILE_NAME} data/latest_postgres.zip \
                                          docker-compose_cloud.yml \
                                          nginx.conf \

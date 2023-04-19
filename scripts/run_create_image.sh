@@ -85,17 +85,17 @@ if [ "${APPLICATION}" = "all" ]; then
     goto END_OF_SCRIPT
 fi
 
-rm -rf tmp/download
-mkdir -p tmp/download
+rm -rf tmp/upload
+mkdir -p tmp/upload
 
 rm -rf tmp/docs/img
 mkdir -p tmp/docs\img
 
 if [ "${APPLICATION}" = "members" ]; then
-    copy -i data/latest_postgres.zip          download/IO-AVSTATS-DB.zip
+    copy -i data/latest_postgres.zip          upload/IO-AVSTATS-DB.zip
     copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
-    copy -i uoload/IO-AVSTATS-DB.pdf          tmp/download/IO-AVSTATS-DB.pdf
-    copy -i upload/IO-AVSTATS-DB.zip          tmp/download/IO-AVSTATS-DB.zip
+    copy -i uoload/IO-AVSTATS-DB.pdf          tmp/upload/IO-AVSTATS-DB.pdf
+    copy -i upload/IO-AVSTATS-DB.zip          tmp/upload/IO-AVSTATS-DB.zip
 fi
 
 if [ "${APPLICATION}" = "stats" ]; then
@@ -142,7 +142,7 @@ do
     docker rmi -f "${IMAGE}"
 done
 
-rm -rf tmp/download
+rm -rf tmp/upload
 rm -rf tmp/docs/img
 
 if [ "${APPLICATION}" = "stats" ]; then

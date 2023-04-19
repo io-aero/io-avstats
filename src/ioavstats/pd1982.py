@@ -177,6 +177,11 @@ QUERIES = {
                  i.inj_person_category,
                  i.injury_level;
     """,
+    "io_airports": """
+        SELECT *
+          FROM io_airports
+        ORDER BY ident;
+    """,
     "io_app_ae1982": """
         SELECT *
           FROM io_app_ae1982
@@ -727,13 +732,6 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    # print(
-    #     str(datetime.datetime.now())
-    #     + "                         - Start application "
-    #     + APP_ID,
-    #     flush=True,
-    # )
-
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
     else:
@@ -773,8 +771,10 @@ def _streamlit_flow() -> None:
     DF_FILTERED = DF_UNFILTERED
 
     if CHOICE_DDL_OBJECT_SELECTION not in [
+        "io_airports",
         "io_aviation_occurrence_categories",
         "io_countries",
+        "io_lat_lng",
         "io_md_codes_category",
         "io_md_codes_eventsoe",
         "io_md_codes_modifier",
@@ -783,7 +783,6 @@ def _streamlit_flow() -> None:
         "io_md_codes_subcategory",
         "io_md_codes_subsection",
         "io_processed_files",
-        "io_lat_lng",
         "io_sequence_of_events",
         "io_states",
     ]:

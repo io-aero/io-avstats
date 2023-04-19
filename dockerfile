@@ -19,7 +19,7 @@ EXPOSE ${SERVER_PORT}
 WORKDIR /home
 
 ADD ../tmp/docs/img/ ./docs/img/
-ADD ../tmp/download/ ./download/
+ADD ../tmp/upload/ ./upload/
 
 COPY Makefile                                      ./
 COPY config/.settings.io_avstats_4_dockerfile.toml ./.settings.io_avstats.toml
@@ -27,7 +27,7 @@ COPY config/Pipfile.${APP}                         ./Pipfile
 COPY config/config.toml.${APP}                     ./.streamlit/config.toml
 COPY config/secrets_4_dockerfile.toml              ./.streamlit/secrets.toml
 COPY config/settings.io_avstats_4_dockerfile.toml  ./settings.io_avstats.toml
-COPY data/latest_postgres.zip                      ./download/IO-AVSTATS-DB.zip
+COPY data/latest_postgres.zip                      ./upload/IO-AVSTATS-DB.zip
 COPY docs/img/StockSnap_SLQQYN6CRR.jpg             ./docs/img
 COPY src/ioavstats/${APP}.py                       ./${APP}.py
 COPY src/ioavstats/utils.py                        ./utils.py

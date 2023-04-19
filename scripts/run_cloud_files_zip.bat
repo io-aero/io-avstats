@@ -21,8 +21,6 @@ echo =======================================================================
 
 IF EXIST %AWS_FILE_NAME% DEL /F %AWS_FILE_NAME%
 
-copy /Y data\latest_postgres.zip download\IO-AVSTATS-DB.zip
-
 %AWS_PROG_ZIP% a -spd -tzip %AWS_FILE_NAME% data\latest_postgres.zip ^
                                             docker-compose_cloud.yml ^
                                             nginx.conf ^

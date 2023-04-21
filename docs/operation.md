@@ -1,62 +1,138 @@
-# Operation
+# **Operation**
 
 The main tool for operating **IO-AVSTATS** is the **`run_io_avstats`** script. 
 The script is available in a Windows command line version and in a Linux bash shell version.
 
-## 1. Overview
+# 1. Overview
 
 The following tasks can be executed with this script:
 
-| Code    | Task                                                   | Additional parameter(s)           |
-|---------|--------------------------------------------------------|-----------------------------------|
-| a_o_c   | Load aviation occurrence categories into PostgreSQL    |                                   |
-| c_d_c   | Run Docker Compose tasks - Cloud                       | `clean`, `down`, `logs` or `up`   |
-| c_d_i   | Create or update a Docker image                        | `all` or single Streamlit app     |
-| c_d_l   | Run Docker Compose tasks - Local                       | `clean`, `down`, `logs` or `up`   |
-| c_d_s   | Create the PostgreSQL database schema                  |                                   |
-| c_f_z   | Zip the files for the cloud                            |                                   |
-| c_l_l   | Correct decimal US latitudes and longitudes            |                                   |
-| c_p_d   | Cleansing PostgreSQL data                              |                                   |
-| d_d_f   | Delete the PostgreSQL database files                   |                                   |
-| d_d_s   | Drop the PostgreSQL database schema                    |                                   |
-| d_n_a   | Download a **NTSB** MS Access database file            | -m / -msaccess                    |
-| f_n_a   | Find the nearest airports                              |                                   |
-| l_a_p   | Load airport data into PostgreSQL                      |                                   |
-| l_c_d   | Load data from a correction file into PostgreSQL       | -e / -excel                       |
-| l_c_s   | Load country and state data into PostgreSQL            |                                   |
-| l_n_a   | Load **NTSB** MS Access database data into PostgreSQL  | -m / -msaccess                    |
-| l_n_s   | Load NTSB MS Excel statistic data into PostgreSQL      | -e / -excel                       |
-| l_s_d   | Load **simplemaps** data into PostgreSQL               |                                   |
-| l_s_e   | Load sequence of events data into PostgreSQL           |                                   |
-| l_z_d   | Load ZIP Code Database data into PostgreSQL            |                                   |
-| r_d_s   | Refresh the PostgreSQL database schema                 |                                   |
-| r_s_a   | Run a Streamlit application                            | single Streamlit app, e.g. ae1982 |
-| u_d_s   | Update the PostgreSQL database schema                  |                                   |
-| u_p_d   | Complete processing of a modifying MS Access file      | -m / -msaccess                    |
-| v_n_d   | Verify selected **NTSB** data                          |                                   |
-| version | Show the IO-AVSTATS-DB version                         |                                   | 
+| Code    | Task                                                | Additional parameter(s)           |
+|---------|-----------------------------------------------------|-----------------------------------|
+| a_o_c   | Load aviation occurrence categories into PostgreSQL |                                   |
+| c_d_c   | Run Docker Compose tasks - Cloud                    | `clean`, `down`, `logs` or `up`   |
+| c_d_i   | Create or update a Docker image                     | `all` or single Streamlit app     |
+| c_d_l   | Run Docker Compose tasks - Local                    | `clean`, `down`, `logs` or `up`   |
+| c_d_s   | Create the PostgreSQL database schema               |                                   |
+| c_f_z   | Zip the files for the cloud                         |                                   |
+| c_l_l   | Correct decimal US latitudes and longitudes         |                                   |
+| c_p_d   | Cleansing PostgreSQL data                           |                                   |
+| f_n_a   | Find the nearest airports                           |                                   |
+| l_a_p   | Load airport data into PostgreSQL                   |                                   |
+| l_c_d   | Load data from a correction file into PostgreSQL    | -e / -excel                       |
+| l_c_s   | Load country and state data into PostgreSQL         |                                   |
+| l_n_a   | Load NTSB MS Access database data into PostgreSQL   | -m / -msaccess                    |
+| l_s_d   | Load simplemaps data into PostgreSQL                |                                   |
+| l_s_e   | Load sequence of events data into PostgreSQL        |                                   |
+| l_z_d   | Load ZIP Code Database data into PostgreSQL         |                                   |
+| r_d_s   | Refresh the PostgreSQL database schema              |                                   |
+| r_s_a   | Run a Streamlit application                         | single Streamlit app, e.g. ae1982 |
+| u_d_s   | Update the PostgreSQL database schema               |                                   |
+| u_p_d   | Complete processing of a modifying MS Access file   | -m / -msaccess                    |
+| v_n_d   | Verify selected NTSB data                           |                                   |
+| version | Show the IO-AVSTATS-DB version                      |                                   | 
 
-## 2. Detailed task list
+# 2. Detailed task list
 
-### **`a_o_c`** - Load aviation occurrence categories into PostgreSQL
+## 2.1 `a_o_c` Load aviation occurrence categories into PostgreSQL
 
-- TODO
+### Purpose
 
-### **`c_d_c`** - Run Docker Compose tasks - Cloud
+Definition of the valid CICTT codes.
 
-- TODO
+### Data Source
 
-### **`c_d_i`** - Create or update a Docker image
+The data source can be found on the NTSB website here:
 
-- TODO
+- [AVIATION OCCURRENCE CATEGORIES - DEFINITIONS AND USAGE NOTES](https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf)
 
-### **`c_d_l`** - Run Docker Compose tasks - Local
+The NTSB provides the data in a `pdf` file which must then be converted to MS Excel format `xlsx` before processing.
 
-- TODO
+### Implementation
 
-### **`c_d_s`** - Create the PostgreSQL database schema
+```
+CREATE TABLE public.io_aviation_occurrence_categories (
+	cictt_code varchar(10) NOT NULL,
+	identifier varchar(100) NOT NULL,
+	definition text NOT NULL,
+	first_processed timestamp NOT NULL,
+	last_processed timestamp NULL,
+	last_seen timestamp NULL,
+	CONSTRAINT io_aviation_occurrence_categories_pkey PRIMARY KEY (cictt_code)
+);
+```
 
-- TODO
+---
+
+## 2.2 `c_d_c` Run Docker Compose tasks - Cloud
+
+### Purpose
+
+Management of the Docker containers needed in the cloud:
+
+- **portainer**: container management
+- **io_avstats_db**: PostgreSQL database
+- **keycloak_db**: PostgreSQL database
+- **keycloak**: Keycloak server
+- Application **ae1982**: Aircraft Events since 1982
+- Aoplication **members**: Members Only Area
+- Application **pd1982**: Profiling Data since 1982
+- Application **slara**: Association Rule Analysis
+- Application **stats**: Aircraft Events since 1982
+- **load_balancer**: load balancer NGINX
+
+### Processing Options
+
+```
+- clean - Remove all containers and images
+- down  - Stop  Docker Compose
+- logs  - Fetch the logs of a container
+- up    - Start Docker Compose
+```
+
+---
+
+## 2.3 `c_d_i` Create or update a Docker image
+
+### Purpose
+
+Create the application-specific Docker images and store them on DockerHub.  
+
+### Processing Options
+
+```
+- all     - All Streamlit applications
+- ae1982  - Aircraft Accidents in the US since 1982
+- members - Members Only Area
+- pd1982  - Profiling Data for the US since 1982
+- slara   - Association Rule Analysis
+- stats   - Aircraft Accidents in the US since 1982 - limited
+```
+
+---
+
+## 2.4 `c_d_l` Run Docker Compose tasks - Local
+
+### Purpose
+
+Management of the Docker containers needed locally:
+
+- **io_avstats_db**: PostgreSQL database
+
+### Processing Options
+
+```
+- clean - Remove all containers and images
+- down  - Stop  Docker Compose
+- logs  - Fetch the logs of a container
+- up    - Start Docker Compose
+```
+
+---
+
+## 2.5 `c_d_s` Create the PostgreSQL database schema
+
+### Purpose
 
 The creation of the database schema includes the following steps, among others:
 
@@ -73,21 +149,29 @@ The following parameters are used when creating the database schema:
 Subsequently, the task **`u_d_s`** (Update the PostgreSQL database schema) is also executed.
 
 Successful creation of a new database schema requires that neither the user to be created nor the database to be created exists in the PostgreSQL DBMS.
-This is achieved by the previous execution of the following task:
 
-- **`d_d_s`** - Drop the PostgreSQL database schema
+---
 
-### **`c_f_z`** - Zip the files for the cloud
+## 2.6 `c_f_z` Zip the files for the cloud
+
+### Purpose
+
+Collect and zip the elements needed for the cloud to run the **IO-AVSTATS** application there.
+The result is contained in the file **cloud.zip**.
+
+---
+
+## 2.7 `c_l_l` Correct decimal US latitudes and longitudes
+
+### Purpose
 
 - TODO
 
-### **`c_l_l`** - Correct decimal US latitudes and longitudes
+---
 
-- TODO
+## 2.8 `c_p_d` Cleansing PostgreSQL data
 
-### **`c_p_d`** - Cleansing PostgreSQL data
-
-- TODO
+### Purpose
 
 The task cleans up data abnormalities in the database. 
 This includes the following activities:
@@ -95,64 +179,41 @@ This includes the following activities:
 - remove trailing whitespace in string data types (trimming),
 - converting string data types that contain only whitespace to NULL (nullifying).
 
-As a result, a much simplified simplification of data is possible, e.g. for comparisons.
+As a result, a much simplified processing of the data is possible, e.g. for comparisons.
 
-The functionality is limited to the following database columns:
+On the one hand, the task can be executed explicitly with the **`run_io_avstats_db`** script (task **`c_p_d`**) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task **`l_n_a`** and **`u_p_d`**).
 
-| DB table | DB columns                                    |
-|----------|-----------------------------------------------|
-| events   | ev_city, ev_site_zipcode, latitude, longitude |
+---
 
-On the one hand, the task can be executed explicitly with the **`run_io_avstats_db`** script (task **`c_p_d`**) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task **`l_n_a`**).
-
-### **`d_d_f`** - Delete the PostgreSQL database files
+## 2.9 `f_n_a` Find the nearest airports
 
 - TODO
 
-This task deletes all PostgreSQL database files.
-The execution requires administration rights.
-Subsequently, the PostgreSQL database must be completely rebuilt.
+### Purpose
 
-**Tip**: The administration password is required to use the administration rights. 
-This can be difficult with the Windows operating system, as there seems to be no functionality to set the administration password. 
-The use of the Windows Subsystem for Linux can help here. 
+---
 
-### **`d_d_s`** - Drop the PostgreSQL database schema
+## 2.10 **`l_a_p`** - Load airport data into PostgreSQL
 
 - TODO
 
-Successful execution of this task requires that no other process uses the database defined with the **`postgres_dbname`** parameter.
-After execution, the database with all objects and the database user defined with the **`postgres_user`** parameter are deleted.
+### Purpose
 
-### **`d_n_a`** - Download a **NTSB** MS Access database file
+### Data Source
 
-- TODO
+### Implementation
 
-This task allows files containing aviation accident data to be downloaded from the **NTSB** download site.
-These files are there as MS Access databases in a compressed format.
-The following subtasks are executed:
+---
 
-1. A connection to the **NTSB** download page is established.
-2. The selected file is downloaded to the local system in chunks. 
-3. The downloaded file is then unpacked. 
-4. A script with the database schema definition is created with RazorSQL from the downloaded database.
-5. The newly created script is then compared with a reference script for matching.
-
-Subsequently, the downloaded data can be loaded into the PostgreSQL database with the task **`l_n_a`** (Load **NTSB** MS Access database data into PostgreSQL).
-
-Further details can be found [here](https://github.com/io-aero/io-avstats-db/blob/main/site/db_data_transfer.html){:target="_blank"}.
-
-### **`f_n_a`** - Find the nearest airports
+## 2.11 **`l_c_d`** - Load data from a correction file into PostgreSQL
 
 - TODO
 
-### **`l_a_p`** - Load airport data into PostgreSQL
+### Purpose
 
-- TODO
+### Data Source
 
-### **`l_c_d`** - Load data from a correction file into PostgreSQL
-
-- TODO
+### Implementation
 
 This task allows files containing aviation accident data to be downloaded from the NTSB download site.
 These files are there as MS Access databases in a compressed format.
@@ -165,48 +226,95 @@ The following subtasks are executed:
 5. The newly created script is then compared with a reference script for matching.
 
 
-### **`l_c_s`** - Load country and state data into PostgreSQL
+---
+
+## 2.12 **`l_c_s`** - Load country and state data into PostgreSQL
 
 - TODO
 
-### **`l_n_a`** - Load **NTSB** MS Access database data into PostgreSQL
+### Purpose
+
+### Data Source
+
+### Implementation
+
+---
+
+## 2.13 `l_n_a` Load **NTSB** MS Access database data into PostgreSQL
+
+### Purpose
+
+This task allows files containing aviation event data to be downloaded from the **NTSB** download site.
+These files are there as MS Access databases in a compressed format.
+The following subtasks are executed:
+
+1. A connection to the **NTSB** download page is established.
+2. The selected file is downloaded to the local system in chunks. 
+3. The downloaded file is then unpacked. 
+4. A script with the database schema definition is created with RazorSQL from the downloaded database.
+5. The newly created script is then compared with a reference script for matching.
+
+Subsequently, the downloaded data can be loaded into the PostgreSQL database with the task `l_n_a` (Load NTSB MS Access database data into PostgreSQL).
+
+### Data Sources
+
+- **Pre2008.zip**: data set for 1982 through 2007
+- **avall.zip**: data set from 2008 to the present 
+- **upDDMON.zip**: monthly supplements on the 1st, 8th, 15th and 22nd
+
+### Implementation
+
+The PostgreSQL database **IO-AVSTATS-DB** completely maps the database schema of the **NTSB** MS Access database.  
+
+---
+
+## **`l_s_d`** - Load **simplemaps** data into PostgreSQL
 
 - TODO
 
-This task transfers the data from an **NTSB** MS Access database previously downloaded from the **NTSB** website to the PostgreSQL database.
-The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
-The initial loading is done with both **NTSB** MS Access databases Pre2008 ubd avall.
-After that only the monthly updates are then transferred. 
+### Purpose
 
-Further details can be found [here](https://github.com/io-aero/io-avstats-db/blob/main/site/db_data_transfer.html){:target="_blank"}.
+### Data Source
 
-### **`l_n_s`** - Load **NTSB** MS Excel statistic data into PostgreSQL
-
-- TODO
-
-### **`l_s_d`** - Load **simplemaps** data into PostgreSQL
-
-- TODO
+### Implementation
 
 This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
 The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
 The initial loading is done with both MS Access databases Pre2008 ubd avall.
 After that only the monthly updates are then transferred. 
 
-### **`l_s_e`** - Load sequence of events data into PostgreSQL
+---
+
+## **`l_s_e`** - Load sequence of events data into PostgreSQL
 
 - TODO
 
-### **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
+### Purpose
+
+### Data Source
+
+### Implementation
+
+---
+
+## **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
 
 - TODO
+
+### Purpose
+
+### Data Source
+
+### Implementation
 
 This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
 The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
 The initial loading is done with both MS Access databases Pre2008 ubd avall.
 After that only the monthly updates are then transferred. 
 
-### **`r_d_s`** - Refresh the PostgreSQL database schema
+---
+
+## **`r_d_s`** - Refresh the PostgreSQL database schema
 
 - TODO
 
@@ -231,11 +339,15 @@ Example protocol:
     Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
     Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
 
-### **`r_s_a`** - Run a Streamlit application
+---
+
+## **`r_s_a`** - Run a Streamlit application
 
 - TODO
 
-### **`u_d_s`** - Update the PostgreSQL database schema
+---
+
+## **`u_d_s`** - Update the PostgreSQL database schema
 
 - TODO
 
@@ -261,11 +373,15 @@ The task can be executed several times without problems, since before a change i
 - **`io_lat_lng_issues`** - provides the data for processing the task **`c_l_l`** (Correct decimal US latitudes and longitudes).
 - **`io_accidents_us_1982`** - provides event data for aviation accidents in the U.S. since 1982.
 
-### **`u_p_d`** - Complete processing of a modifying MS Access file
+---
+
+## **`u_p_d`** - Complete processing of a modifying MS Access file
 
 - TODO
 
-### **`v_n_d`** - Verify selected **NTSB** data
+---
+
+## **`v_n_d`** - Verify selected **NTSB** data
 
 - TODO
 
@@ -305,11 +421,13 @@ The tests are performed according to the following logic:
 - **`io_invalid_us_state`**: For country `USA`, is the specified value in the **`ev_state`** column a valid state identifier?
 - **`io_invalid_us_z ipcode`**: For country `USA`, is the specified value in the **`ev_site_zipcode`** column a existing zip code?
 
-### **`version`** - Show the IO-AVSTATS-DB version
+---
+
+## **`version`** - Show the IO-AVSTATS-DB version
 
 - TODO
 
-## 2. First installation
+# 3. First installation
 
 The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:
 
@@ -326,13 +444,13 @@ The initial load in a fresh Windows environment requires the execution of the fo
 - **`u_p_d`** - Complete processing of a modifying MS Access file
   - file **`Pre2008`**
 
-## 3. Regular updates
+# 4. Regular updates
 
-### 3.1 Every first of the month
+## 4.1 Every first of the month
 
 - Restore the current state of Pre2008
 - Process the current **`avall`** file with code **`l_n_a`**
 
-### 3.2 Every 1st, 8th, 15th and 22nd of the month 
+## 4.2 Every 1st, 8th, 15th and 22nd of the month 
 
 - Process the current **`upDDMON`** file with code **`u_p_d`**

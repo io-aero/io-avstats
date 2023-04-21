@@ -36,8 +36,6 @@ l_s_d   - Load simplemaps data into PostgreSQL
 l_z_d   - Load ZIP Code Database data into PostgreSQL
 ---------------------------------------------------------
 c_d_s   - Create the PostgreSQL database schema
-d_d_f   - Delete the PostgreSQL database files
-d_d_s   - Drop the PostgreSQL database schema
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image
@@ -397,8 +395,6 @@ l_s_d   - Load simplemaps data into PostgreSQL
 l_z_d   - Load ZIP Code Database data into PostgreSQL
 ---------------------------------------------------------
 c_d_s   - Create the PostgreSQL database schema
-d_d_f   - Delete the PostgreSQL database files
-d_d_s   - Drop the PostgreSQL database schema
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image

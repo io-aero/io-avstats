@@ -76,12 +76,9 @@ if ["%1"] EQU [""] (
     echo c_d_l   - Run Docker Compose tasks - Local
     echo c_d_s   - Create the PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
-    echo d_d_f   - Delete the PostgreSQL database files
-    echo d_d_s   - Drop the PostgreSQL database schema
     echo f_n_a   - Find the nearest airports
     echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
-    echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
@@ -121,7 +118,7 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_c"] (
 if ["%IO_AVSTATS_TASK%"] EQU ["c_d_i"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        echo all      - All Streamlit applications
+        echo all     - All Streamlit applications
         echo ---------------------------------------------------------
         echo ae1982  - Aircraft Accidents in the US since 1982
         echo members - Members Only Area
@@ -153,19 +150,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_d_l"] (
     )
 )
 
-if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        echo avall   - Data from January 1, 2008 to today
-        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
-        echo upDDMON - New additions and updates until DD day in the month MON
-        echo ---------------------------------------------------------
-        set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
-    ) else (
-        set IO_AVSTATS_MSACCESS=%2
-    )
-)
-
 if ["%IO_AVSTATS_TASK%"] EQU ["l_c_d"] (
     if ["%2"] EQU [""] (
         echo =========================================================
@@ -185,17 +169,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
         set /P IO_AVSTATS_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
         set IO_AVSTATS_MSACCESS=%2
-    )
-)
-
-if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        dir /A:-D /B %IO_AVSTATS_AVIATION_EVENT_STATISTICS%\*.xlsx
-        echo ---------------------------------------------------------
-        set /P IO_AVSTATS_MSEXCEL="Enter the stem name of the desired NTSB statistic file "
-    ) else (
-        set IO_AVSTATS_MSEXCEL=%2
     )
 )
 
@@ -361,49 +334,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["c_p_d"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Delete the PostgreSQL database files.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_d_f"] (
-    if  exist "%IO_AVSTATS_POSTGRES_PGDATA%" (
-        echo "%IO_AVSTATS_POSTGRES_PGDATA%"
-        dir /a "%IO_AVSTATS_POSTGRES_PGDATA%"
-        runas /user:Administrator "rd /s /q '%IO_AVSTATS_POSTGRES_PGDATA%'"
-    )
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Drop the PostgreSQL database schema.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_d_s"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Download a NTSB MS Access database file.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["d_n_a"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
 rem Find the nearest airports.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["f_n_a"] (
@@ -478,19 +408,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
     )
 
     pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -m "%IO_AVSTATS_MSACCESS%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Load NTSB MS Excel statistic data into PostgreSQL.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["l_n_s"] (
-    pipenv run python src\launcher.py -t "%IO_AVSTATS_TASK%" -e "%IO_AVSTATS_MSEXCEL%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
         exit %ERRORLEVEL%

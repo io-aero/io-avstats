@@ -83,10 +83,7 @@ if ["%1"] EQU [""] (
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
-    echo ---------------------------------------------------------
-    echo k_s_d   - Set up the Keycloak PostgreSQL database container
     echo ---------------------------------------------------------
     echo c_d_i   - Create or update a Docker image
     echo c_d_c   - Run Docker Compose tasks - Cloud
@@ -420,19 +417,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["f_n_a"] (
 )
 
 rem ----------------------------------------------------------------------------
-rem Set up the Keycloak PostgreSQL database container.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["k_s_d"] (
-    call scripts\run_setup_postgresql_keycloak
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
 rem Load airport data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_a_p"] (
@@ -475,6 +459,12 @@ rem ----------------------------------------------------------------------------
 rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AVSTATS_TASK%"] EQU ["l_n_a"] (
+    pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
     pipenv run python src\launcher.py -t d_n_a -m "%IO_AVSTATS_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
@@ -614,19 +604,6 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         )
 
         goto END_OF_SCRIPT
-    )
-
-    goto END_OF_SCRIPT
-)
-
-rem ----------------------------------------------------------------------------
-rem Set up the IO-AVSTATS-DB PostgreSQL database container.
-rem ----------------------------------------------------------------------------
-if ["%IO_AVSTATS_TASK%"] EQU ["s_d_c"] (
-    call scripts\run_setup_postgresql_io_avstats_db
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
     )
 
     goto END_OF_SCRIPT

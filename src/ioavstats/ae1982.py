@@ -808,9 +808,7 @@ def _get_user_guide_chart_data_basis(chart_id, ug_text):
             ug_text += """
 For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:         
 - Airports in the U.S. states.
-- Aerodrome type airports.
-- Civil airports.
-- Airports in operation.
+- Airports contained in the National Plan of Integrated Airport Systems (NPIAS).
 
 Of the events, only those that occurred in U.S. states are included.
 

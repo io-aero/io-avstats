@@ -11,39 +11,44 @@ In the database table **`io_processed_files`** you can find the files already pr
 
 <kbd>![](img/io_processed_files.png)</kbd>
 
-Any file provided by **NTSB** can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.
+Any file provided by **NTSB** can be processed several times with the process described in the following, as long as one processes also afterward all newer files again.
 
 All necessary processing steps can be executed with the **`run_io_avstats`** script.
-The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22.04 bash shell.
 
 ## 1. Quick reference
 
-The following processing steps are performed only on the first of each month:
+The following steps are performed only if the source files have changed:
 
-| No. | Task  | Description                                                    |
-|----:|-------|----------------------------------------------------------------|
-|   2 | l_s_d | **Optional**: Load simplemaps data into PostgreSQL             |
-|   4 | l_z_d | **Optional**: Load ZIP Code Database data into PostgreSQL      |
-|   5 | l_c_d | **Optional**: Load data from a correction file into PostgreSQL |
+| Task  | Description                                         |
+|-------|-----------------------------------------------------|
+| l_a_p | Load airport data into PostgreSQL                   |
+| a_o_c | Load aviation occurrence categories into PostgreSQL |
+| l_c_s | Load country and state data into PostgreSQL         |
+| l_c_d | Load data from a correction file into PostgreSQL    |
+| l_n_s | Load NTSB MS Excel statistic data into PostgreSQL   |
+| l_s_e | Load sequence of events data into PostgreSQL        |
+| l_s_d | Load simplemaps data into PostgreSQL                |
+| l_z_d | Load ZIP Code Database data into PostgreSQL         |
 
 The following processing steps are performed on each of the change files delivered on the 1st, 8th, 15th and 22nd:
 
-|  No. | Task  | Description                                       |
-|-----:|-------|---------------------------------------------------|
-| 11.0 | u_p_d | Download a NTSB MS Access database file           |
-| 11.1 |       | Load NTSB MS Access database data into PostgreSQL |
-| 11.2 |       | Correct decimal US latitudes and longitudes       |
-| 11.3 |       | Verify selected NTSB data                         |
-| 11.4 |       | Refresh the PostgreSQL database schema            |
-| 11.5 |       | Optional data quality checks                      |
+|     No. | Task  | Description                                                   |
+|--------:|-------|---------------------------------------------------------------|
+|  either | u_p_d | Download a NTSB MS Access database file                       |
+| - ----- | ----- | -------------------------------------------------             |
+| or   1. | l_n_a | Load NTSB MS Access database data into PostgreSQL             |
+|      2. | l_c_d | **optional** Load data from a correction file into PostgreSQL |
+|      3. | c_l_l | Correct decimal US latitudes and longitudes                   |
+|      4. | v_n_d | Verify selected NTSB data                                     |
+|      5. | r_d_s | Refresh the PostgreSQL database schema                        |
 
-The following steps are used to back up and to update the database in the cloud:
+The following steps are used to backup and to update the database in the cloud:
 
 | No. | Task  | Description                                   |
 |----:|-------|-----------------------------------------------|
-|  21 |       | Backup the file directory **`data/postgres`** |
-|  22 |       | Update the Google Drive                       |
-|  23 | c_f_z | Zip the files for the cloud                   |
+|  1. |       | Backup the file directory **`data/postgres`** |
+|  2. |       | Update the Google Drive                       |
+|  3. | c_f_z | Zip the files for the cloud                   |
 
 ## 2. Detailed description
 

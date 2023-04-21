@@ -628,83 +628,6 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-          Reconciliation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_5">
-          <span class="md-nav__icon md-icon"></span>
-          Reconciliation
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
-        NTSB vs. IO-AVSTATS-DB
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_event_related.html" class="md-nav__link">
-        Event-related
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_fatality_related.html" class="md-nav__link">
-        Fatality-related
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     <li class="md-nav__item">
       <a href="LICENSE.html" class="md-nav__link">
         License
@@ -886,34 +809,49 @@
 In addition, an up-to-date <strong>avall</strong> database is provided on the first of every month.</p>
 <p>In the database table <strong><code>io_processed_files</code></strong> you can find the files already processed by <strong>IO-Aero</strong>:</p>
 <p><kbd><img alt="" src="img/io_processed_files.png" /></kbd></p>
-<p>Any file provided by <strong>NTSB</strong> can be processed several times with the process described in the following, as long as one processes also afterwards all newer files again.</p>
-<p>All necessary processing steps can be executed with the <strong><code>run_io_avstats</code></strong> script.
-The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22.04 bash shell.</p>
+<p>Any file provided by <strong>NTSB</strong> can be processed several times with the process described in the following, as long as one processes also afterward all newer files again.</p>
+<p>All necessary processing steps can be executed with the <strong><code>run_io_avstats</code></strong> script.</p>
 <h2 id="1-quick-reference">1. Quick reference</h2>
-<p>The following processing steps are performed only on the first of each month:</p>
+<p>The following steps are performed only if the source files have changed:</p>
 <table>
 <thead>
 <tr>
-<th align="right">No.</th>
 <th>Task</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="right">2</td>
-<td>l_s_d</td>
-<td><strong>Optional</strong>: Load simplemaps data into PostgreSQL</td>
+<td>l_a_p</td>
+<td>Load airport data into PostgreSQL</td>
 </tr>
 <tr>
-<td align="right">4</td>
-<td>l_z_d</td>
-<td><strong>Optional</strong>: Load ZIP Code Database data into PostgreSQL</td>
+<td>a_o_c</td>
+<td>Load aviation occurrence categories into PostgreSQL</td>
 </tr>
 <tr>
-<td align="right">5</td>
+<td>l_c_s</td>
+<td>Load country and state data into PostgreSQL</td>
+</tr>
+<tr>
 <td>l_c_d</td>
-<td><strong>Optional</strong>: Load data from a correction file into PostgreSQL</td>
+<td>Load data from a correction file into PostgreSQL</td>
+</tr>
+<tr>
+<td>l_n_s</td>
+<td>Load NTSB MS Excel statistic data into PostgreSQL</td>
+</tr>
+<tr>
+<td>l_s_e</td>
+<td>Load sequence of events data into PostgreSQL</td>
+</tr>
+<tr>
+<td>l_s_d</td>
+<td>Load simplemaps data into PostgreSQL</td>
+</tr>
+<tr>
+<td>l_z_d</td>
+<td>Load ZIP Code Database data into PostgreSQL</td>
 </tr>
 </tbody>
 </table>
@@ -928,38 +866,43 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 </thead>
 <tbody>
 <tr>
-<td align="right">11.0</td>
+<td align="right">either</td>
 <td>u_p_d</td>
 <td>Download a NTSB MS Access database file</td>
 </tr>
 <tr>
-<td align="right">11.1</td>
-<td></td>
+<td align="right">- -----</td>
+<td>-----</td>
+<td>-------------------------------------------------</td>
+</tr>
+<tr>
+<td align="right">or   1.</td>
+<td>l_n_a</td>
 <td>Load NTSB MS Access database data into PostgreSQL</td>
 </tr>
 <tr>
-<td align="right">11.2</td>
-<td></td>
+<td align="right">2.</td>
+<td>l_c_d</td>
+<td><strong>optional</strong> Load data from a correction file into PostgreSQL</td>
+</tr>
+<tr>
+<td align="right">3.</td>
+<td>c_l_l</td>
 <td>Correct decimal US latitudes and longitudes</td>
 </tr>
 <tr>
-<td align="right">11.3</td>
-<td></td>
+<td align="right">4.</td>
+<td>v_n_d</td>
 <td>Verify selected NTSB data</td>
 </tr>
 <tr>
-<td align="right">11.4</td>
-<td></td>
+<td align="right">5.</td>
+<td>r_d_s</td>
 <td>Refresh the PostgreSQL database schema</td>
-</tr>
-<tr>
-<td align="right">11.5</td>
-<td></td>
-<td>Optional data quality checks</td>
 </tr>
 </tbody>
 </table>
-<p>The following steps are used to back up and to update the database in the cloud:</p>
+<p>The following steps are used to backup and to update the database in the cloud:</p>
 <table>
 <thead>
 <tr>
@@ -970,17 +913,17 @@ The script is available in a version for Windows 10 and 11 cmd and for Ubuntu 22
 </thead>
 <tbody>
 <tr>
-<td align="right">21</td>
+<td align="right">1.</td>
 <td></td>
 <td>Backup the file directory <strong><code>data/postgres</code></strong></td>
 </tr>
 <tr>
-<td align="right">22</td>
+<td align="right">2.</td>
 <td></td>
 <td>Update the Google Drive</td>
 </tr>
 <tr>
-<td align="right">23</td>
+<td align="right">3.</td>
 <td>c_f_z</td>
 <td>Zip the files for the cloud</td>
 </tr>

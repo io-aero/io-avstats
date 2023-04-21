@@ -52,7 +52,7 @@ jobs:
             chmod +x ./scripts/run_prep_bash_scripts.sh
             ./scripts/run_prep_bash_scripts.sh
             ./run_io_avstats.sh d_d_f
-            ./run_io_avstats.sh s_d_c
+            ./run_io_avstats.sh c_d_l
             ./run_io_avstats.sh c_d_s
             ./run_io_avstats.sh version
       - name: Compile the Python code

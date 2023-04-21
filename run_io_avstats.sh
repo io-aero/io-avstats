@@ -76,10 +76,7 @@ if [ -z "$1" ]; then
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
-    echo "---------------------------------------------------------"
-    echo "k_s_d   - Set up the Keycloak PostgreSQL database container"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
@@ -245,14 +242,6 @@ elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the Keycloak PostgreSQL database container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
-    if ! ( ./scripts/run_setup_postgresql_keycloak.sh ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
@@ -292,14 +281,6 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
-    fi
-
-# ------------------------------------------------------------------------------
-# Set up the IO-AVSTATS-DB PostgreSQL database container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
-        exit 255
     fi
 
 # ------------------------------------------------------------------------------

@@ -38,10 +38,6 @@ nav:
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
       - ... set up an AWS instance: how_to_setup_aws_instance.md
       - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
-  - Reconciliation:
-          - NTSB vs. IO-AVSTATS-DB: data_reconc_ntsb_io_avstats_db.md
-          - Event-related: data_reconc_event_related.md
-          - Fatality-related: data_reconc_fatality_related.md
   - License: LICENSE.md
 
 plugins:

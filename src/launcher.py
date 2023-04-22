@@ -62,8 +62,6 @@ def main(argv: list[str]) -> None:
         avstats.correct_dec_lat_lng()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_C_P_D:
         avstats.cleansing_postgres_data()
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_D_D_S:
-        avstats.drop_db_schema()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_D_N_A:
         avstats.download_ntsb_msaccess_file(avstats.ARG_MSACCESS)
     elif avstats.ARG_TASK == io_glob.ARG_TASK_F_N_A:
@@ -79,8 +77,6 @@ def main(argv: list[str]) -> None:
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_N_A:
         avstats.load_ntsb_msaccess_data(avstats.ARG_MSACCESS)
         avstats.cleansing_postgres_data()
-    elif avstats.ARG_TASK == io_glob.ARG_TASK_L_N_S:
-        avstats.load_ntsb_msexcel_data(avstats.ARG_MSEXCEL)
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_D:
         avstats.load_simplemaps_data()
     elif avstats.ARG_TASK == io_glob.ARG_TASK_L_S_E:

@@ -2022,7 +2022,10 @@ def _present_details_frequent_itemsets_tree_map_eclat() -> None:
         values="transactions",
     )
 
-    st.plotly_chart(fig)
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+    )
 
     _print_timestamp("_present_details_frequent_itemsets_tree_map_eclat()")
 
@@ -4174,13 +4177,6 @@ def _streamlit_flow() -> None:
 
     # Start time measurement.
     START_TIME = time.time_ns()
-
-    # print(
-    #     str(datetime.datetime.now())
-    #     + "                         - Start application "
-    #     + APP_ID,
-    #     flush=True,
-    # )
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]

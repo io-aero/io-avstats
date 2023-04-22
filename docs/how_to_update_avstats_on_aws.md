@@ -11,8 +11,8 @@ Currently, the following Streamlit applications are supported:
 | Application | Description                             |
 |-------------|-----------------------------------------|
 | all         | All Streamlit applications              |
-| ae1982    | Aircraft Accidents in the US since 1982 |
-| pd1982    | Profiling Data for the US since 1982    |
+| ae1982      | Aircraft Accidents in the US since 1982 |
+| pd1982      | Profiling Data for the US since 1982    |
 
 The script **`run_io_avstats`** with task **`c_d_i`** can be used to create or update the necessary Docker images.
 
@@ -36,9 +36,6 @@ l_s_d   - Load simplemaps data into PostgreSQL
 l_z_d   - Load ZIP Code Database data into PostgreSQL
 ---------------------------------------------------------
 c_d_s   - Create the PostgreSQL database schema
-d_d_f   - Delete the PostgreSQL database files
-d_d_s   - Drop the PostgreSQL database schema
-s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image
@@ -398,9 +395,6 @@ l_s_d   - Load simplemaps data into PostgreSQL
 l_z_d   - Load ZIP Code Database data into PostgreSQL
 ---------------------------------------------------------
 c_d_s   - Create the PostgreSQL database schema
-d_d_f   - Delete the PostgreSQL database files
-d_d_s   - Drop the PostgreSQL database schema
-s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
 u_d_s   - Update the PostgreSQL database schema
 ---------------------------------------------------------
 c_d_i   - Create or update a Docker image
@@ -515,7 +509,7 @@ Subsequently, the shell script must be made executable:
 
 - **`chmod +x scripts/*.sh`**
 
-Afterwards , a possibly running **IO-AVSTATS** is terminated.
+Afterward                                                                                                                                                                      , a possibly running **IO-AVSTATS** is terminated.
 
 - **`./scripts/run_docker_compose.sh down`**
 

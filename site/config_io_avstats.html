@@ -519,83 +519,6 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-          Reconciliation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_5">
-          <span class="md-nav__icon md-icon"></span>
-          Reconciliation
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_ntsb_io_avstats_db.html" class="md-nav__link">
-        NTSB vs. IO-AVSTATS-DB
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_event_related.html" class="md-nav__link">
-        Event-related
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data_reconc_fatality_related.html" class="md-nav__link">
-        Fatality-related
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     <li class="md-nav__item">
       <a href="LICENSE.html" class="md-nav__link">
         License
@@ -671,169 +594,168 @@ The <code>test</code> layer is used for the automated tests.</p>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Default value</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>correction_work_dir</td>
-<td>data/correction</td>
 <td>file directory containing the files with the manual corrections</td>
 </tr>
 <tr>
 <td>database_commit_size</td>
-<td>5000</td>
 <td>number of rows processed before a progress message is created</td>
 </tr>
 <tr>
 <td>download_chunk_size</td>
-<td>524288</td>
 <td>chunk size for download from the <strong>NTSB</strong> website</td>
 </tr>
 <tr>
+<td>download_file_aviation_occurrence_categories_xlsx</td>
+<td>name of the file containing data of aviation occurrence categories</td>
+</tr>
+<tr>
 <td>download_file_countries_states_json</td>
-<td>data/Countries_States/countries_states.json</td>
 <td>name of the file containing data of countries and states</td>
 </tr>
 <tr>
+<td>download_file_faa_airports_xlsx</td>
+<td>name of the file containing data of airports</td>
+</tr>
+<tr>
+<td>download_file_faa_npias_xlsx</td>
+<td>name of the file containing National Plan of Integrated Airport Systems</td>
+</tr>
+<tr>
+<td>download_file_faa_runways_xlsx</td>
+<td>name of the file containing data of runways</td>
+</tr>
+<tr>
+<td>download_file_main_phases_of_flight_xlsx</td>
+<td>name of the file containing data of main phases of a flight</td>
+</tr>
+<tr>
+<td>download_file_sequence_of_events_xlsx</td>
+<td>name of the file containing data of sequence of events</td>
+</tr>
+<tr>
 <td>download_file_simplemaps_us_cities_xlsx</td>
-<td>uscities.xlsx</td>
 <td>simplemaps: name of the zipped US city file</td>
 </tr>
 <tr>
 <td>download_file_simplemaps_us_zips_xlsx</td>
-<td>uszips.xlsx</td>
 <td>simplemaps: name of the zipped US zip code file</td>
 </tr>
 <tr>
 <td>download_file_zip_codes_org_xls</td>
-<td>zip_code_database.xls</td>
 <td>ZIP Code Database: name of the unzipped US zip code file</td>
 </tr>
 <tr>
 <td>download_timeout</td>
-<td>10</td>
 <td>seconds to wait for the server to send data</td>
 </tr>
 <tr>
 <td>download_url_ntsb_prefix</td>
-<td>https://data.ntsb.gov/...</td>
 <td>prefix of the download link for the <strong>NTSB</strong> data sets</td>
 </tr>
 <tr>
 <td>download_work_dir</td>
-<td>data/download</td>
 <td>working directory for the processing of <strong>NTSB</strong> data sets</td>
 </tr>
 <tr>
 <td>is_runtime_environment_local</td>
-<td>false / true</td>
 <td>local execution environment - unlike Docker</td>
 </tr>
 <tr>
 <td>is_verbose</td>
-<td>true</td>
 <td>display progress messages for processing</td>
 </tr>
 <tr>
 <td>max_deviation_latitude</td>
-<td>0.01</td>
 <td>maximum decimal deviation of the latitude in the database table even</td>
 </tr>
 <tr>
 <td>max_deviation_longitude</td>
-<td>0.01</td>
 <td>maximum decimal deviation of the longitude in the database table even</td>
 </tr>
 <tr>
 <td>odbc_connection_string</td>
-<td>Driver={MS Access Driver ...</td>
 <td>connection string for the MS Access ODBC driver</td>
 </tr>
 <tr>
 <td>postgres_connection_port</td>
-<td>5432</td>
 <td>database port number</td>
 </tr>
 <tr>
 <td>postgres_container_name</td>
-<td>io_avstats_container</td>
 <td>container name</td>
 </tr>
 <tr>
 <td>postgres_database_schema</td>
-<td>public</td>
 <td>database schema name</td>
 </tr>
 <tr>
 <td>postgres_dbname</td>
-<td>io_avstats_db</td>
 <td>database name</td>
 </tr>
 <tr>
 <td>postgres_dbname_admin</td>
-<td>postgres</td>
 <td>administration database name</td>
 </tr>
 <tr>
 <td>postgres_host</td>
-<td>db</td>
 <td>database server hostname</td>
 </tr>
 <tr>
 <td>postgres_password</td>
-<td>postgresql</td>
 <td>database password</td>
 </tr>
 <tr>
 <td>postgres_password_admin</td>
-<td>postgresql</td>
 <td>administration database password</td>
 </tr>
 <tr>
+<td>postgres_password_guest</td>
+<td>guest database password</td>
+</tr>
+<tr>
 <td>postgres_pgdata</td>
-<td>data/postgres</td>
 <td>file directory on the host for the database files</td>
 </tr>
 <tr>
 <td>postgres_user</td>
-<td>io_aero</td>
 <td>database username</td>
 </tr>
 <tr>
 <td>postgres_user_admin</td>
-<td>postgres</td>
 <td>administration database username</td>
 </tr>
 <tr>
+<td>postgres_user_guest</td>
+<td>guest database username</td>
+</tr>
+<tr>
 <td>postgres_version</td>
-<td>latest</td>
 <td>requested PostgreSQL version from DockerHub</td>
 </tr>
 <tr>
 <td>razorsql_jar_file_windows</td>
-<td>C:\Program Files\RazorSQL\razorsql.jar</td>
 <td>name of the jar file (Windows version)</td>
 </tr>
 <tr>
 <td>razorsql_java_path_windows</td>
-<td>C:\Program Files\RazorSQL\jre11\bin\java</td>
 <td>name of the Java file (Windows version)</td>
 </tr>
 <tr>
 <td>razorsql_profile</td>
-<td>IO-AVSTATS</td>
 <td>name of the RazorSQL connection profile</td>
 </tr>
 <tr>
 <td>razorsql_reference_dir</td>
-<td>data/RazorSQL</td>
 <td>file directory of the database schema reference file</td>
 </tr>
 <tr>
 <td>razorsql_reference_file</td>
-<td>2022.11.01_avall.sql</td>
 <td>file name of the database schema reference file</td>
 </tr>
 </tbody>

@@ -69,17 +69,11 @@ if [ -z "$1" ]; then
     echo "c_d_l   - Run Docker Compose tasks - Local"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
-    echo "d_d_f   - Delete the PostgreSQL database files"
-    echo "d_d_s   - Drop the PostgreSQL database schema"
     echo "f_n_a   - Find the nearest airports"
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
-    echo "l_n_s   - Load NTSB MS Excel statistic data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
-    echo "---------------------------------------------------------"
-    echo "k_s_d   - Set up the Keycloak PostgreSQL database container"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
@@ -150,19 +144,6 @@ if [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
     fi
 fi
 
-if [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
-    if [ -z "$2" ]; then
-        echo "========================================================="
-        ls -ll ${IO_AVSTATS_AVIATION_EVENT_STATISTICS}/*.xlsx
-        echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired desired NTSB statistic file " IO_AVSTATS_MSEXCEL
-        export IO_AVSTATS_MSEXCEL=${IO_AVSTATS_MSEXCEL}
-    else
-        export IO_AVSTATS_MSEXCEL=$2
-    fi
-fi
-
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
@@ -184,7 +165,6 @@ echo "==========================================================================
 # c_d_s: Create the PostgreSQL database schema.
 # c_l_l: Correct decimal US latitudes and longitudes.
 # c_p_d: Cleansing PostgreSQL data.
-# d_d_s: Drop the PostgreSQL database schema.
 # f_n_a: Find the nearest airports.
 # l_a_p: Load airport data into PostgreSQL.
 # l_c_s: Load country and state data into PostgreSQL.
@@ -196,7 +176,7 @@ echo "==========================================================================
 # v_n_d: Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"d_d_s"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AVSTATS_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" ); then
         exit 255
     fi
@@ -234,36 +214,9 @@ elif [ "${IO_AVSTATS_TASK}" = "c_f_z" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Delete the PostgreSQL database files.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "d_d_f" ]; then
-    if [ -d "${IO_AVSTATS_POSTGRES_PGDATA}" ]; then
-        sudo ls -ll "${IO_AVSTATS_POSTGRES_PGDATA}"
-        if ! ( sudo rm -rf ${IO_AVSTATS_POSTGRES_PGDATA} ); then
-            exit 255
-        fi
-    fi
-
-# ------------------------------------------------------------------------------
-# Set up the Keycloak PostgreSQL database container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "k_s_d" ]; then
-    if ! ( ./scripts/run_setup_postgresql_keycloak.sh ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -e "${IO_AVSTATS_MSEXCEL}".xlsx ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
-# Load NTSB MS Excel statistic data into PostgreSQL.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "l_n_s" ]; then
     if ! ( pipenv run python src/launcher.py -t "${IO_AVSTATS_TASK}" -e "${IO_AVSTATS_MSEXCEL}".xlsx ); then
         exit 255
     fi
@@ -292,14 +245,6 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
-    fi
-
-# ------------------------------------------------------------------------------
-# Set up the IO-AVSTATS-DB PostgreSQL database container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
-        exit 255
     fi
 
 # ------------------------------------------------------------------------------

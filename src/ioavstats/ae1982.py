@@ -60,6 +60,9 @@ CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_IL: bool | None = None
 CHOICE_CHARTS_TYPE_EY_MPF: bool | None = None
 CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD: float | None = None
+CHOICE_CHARTS_TYPE_EY_NA: bool | None = None
+CHOICE_CHARTS_TYPE_EY_NA_I_1_OG: float | None = None
+CHOICE_CHARTS_TYPE_EY_NA_I_2_OG: float | None = None
 CHOICE_CHARTS_TYPE_EY_PF: bool | None = None
 CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_EY_PSS: bool | None = None
@@ -122,6 +125,9 @@ CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TE_IL: bool | None = None
 CHOICE_CHARTS_TYPE_TE_MPF: bool | None = None
 CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD: float | None = None
+CHOICE_CHARTS_TYPE_TE_NA: bool | None = None
+CHOICE_CHARTS_TYPE_TE_NA_I_1_OG: float | None = None
+CHOICE_CHARTS_TYPE_TE_NA_I_2_OG: float | None = None
 CHOICE_CHARTS_TYPE_TE_PF: bool | None = None
 CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD: float | None = None
 CHOICE_CHARTS_TYPE_TE_PSS: bool | None = None
@@ -165,15 +171,6 @@ CHOICE_UG_APP: bool | None = None
 CHOICE_UG_DATA_PROFILE: bool | None = None
 CHOICE_UG_DETAILS: bool | None = None
 CHOICE_UG_MAP: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_AOC: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_IL: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_MPF: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_PF: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_PSS: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_T: bool | None = None
-CHOICE_UG_YEARS_CHARTS_EY_TLP: bool | None = None
-CHOICE_UG_YEARS_CHARTS_FY_FP: bool | None = None
-CHOICE_UG_YEARS_CHARTS_FY_SFP: bool | None = None
 
 CHOICE_VIOLIN_PLOTS: bool | None = None
 
@@ -637,16 +634,17 @@ def _get_data() -> DataFrame:
                    dec_latitude,
                    dec_longitude,
                    description_main_phase_defining,
+                   CASE WHEN inj_tot_f = 0 THEN 'non-fatal'
+                        ELSE 'fatal'
+                   END dot_color,     
                    ev_highest_injury,
                    ev_type,
                    ev_year,
+                   UPPER(city) event_city,
                    far_parts,
                    finding_codes,
                    inj_f_grnd,
                    inj_tot_f,
-                   CASE WHEN inj_tot_f = 0 THEN 'non-fatal'
-                        ELSE 'fatal'
-                   END dot_color,     
                    is_dest_country_usa,
                    is_dprt_country_usa,
                    is_far_part_091x,
@@ -656,10 +654,9 @@ def _get_data() -> DataFrame:
                    is_owner_country_usa,
                    is_regis_country_usa,
                    latlong_acq,
-                   nearest_airport_city,
-                   UPPER(city) event_city,
-                   nearest_airport_code_iata,
                    nearest_airport_distance,
+                   nearest_airport_ident,
+                   nearest_airport_servcity,
                    no_aircraft,
                    ntsb_no,
                    occurrence_codes,
@@ -779,13 +776,13 @@ def _get_user_guide_chart(
                 chart_title,
             )
         # pylint: disable=line-too-long
-        case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
+        case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_na" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
             ug_text += _get_user_guide_years_chart_footer(
                 chart_id,
                 chart_title,
             )
         # pylint: disable=line-too-long
-        case "te_aoc" | "te_il" | "te_mpf" | "te_pf" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
+        case "te_aoc" | "te_il" | "te_mpf" | "te_na" | "te_pf" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
             ug_text += _get_user_guide_totals_chart_footer(
                 chart_id,
                 chart_title,
@@ -807,15 +804,19 @@ def _get_user_guide_chart_data_basis(chart_id, ug_text):
     )
 
     match chart_id:
-        case "d_na":
+        case "d_na" | "ey_na" | "te_na":
             ug_text += """
 For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:         
 - Airports in the U.S. states.
-- Aerodrome type airports.
-- Civil airports.
-- Airports in operation.
+- Airports contained in the National Plan of Integrated Airport Systems (NPIAS).
 
 Of the events, only those that occurred in U.S. states are included.
+
+**Hint**: A violin plot is two KDE (kernel density estimation) plots aligned on an axis. 
+Any "negative" values are an artifact of KDEs. 
+They are estimations of values in the data. 
+This does not mean that there are negative data, rather that the data contain values very close to negative values, namely 0. 
+And thus there is a non-zero estimated probability of selecting a negative value from the dataset. 
 """
 
         case "ey_aoc" | "te_aoc":
@@ -842,7 +843,6 @@ Of the events, only those that occurred in U.S. states are included.
 - In the database table **io_md_codes_phase**, each flight phase is assigned a main flight phase.
 - From this information, the main flight phases for the aircraft involved in the event can be determined.
 """
-
         case "ey_pf" | "te_pf":
             ug_text += """
 - An event can have several entries in the database table **events_sequence** assigned to it.      
@@ -1211,6 +1211,55 @@ def _prep_data_chart_ey_mpf(
 
 
 # ------------------------------------------------------------------
+# Prepare the chart data: Events per Year by Nearest Airport.
+# ------------------------------------------------------------------
+def _prep_data_chart_ey_na(
+    df_filtered: DataFrame,
+) -> tuple[list[tuple[str, str]], DataFrame]:
+    df_chart = df_filtered[
+        [
+            "ev_year",
+        ]
+    ]
+
+    df_chart.rename(
+        columns={
+            "ev_year": "year",
+        },
+        inplace=True,
+    )
+
+    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:.2f} miles"
+    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} miles"
+    interval_3 = f"Above {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} miles"
+
+    names = [
+        (interval_1, interval_1),
+        (interval_2, interval_2),
+        (interval_3, interval_3),
+    ]
+
+    intervals: list[str | None] = []
+
+    for _index, row in df_filtered.iterrows():
+        if row.nearest_airport_distance <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:
+            intervals.append(interval_1)
+        elif row.nearest_airport_distance <= CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:
+            intervals.append(interval_2)
+        elif row.nearest_airport_servcity is None:
+            intervals.append(None)
+        else:
+            intervals.append(interval_3)
+
+    df_chart["intervals"] = intervals
+
+    for name, name_df in names:
+        df_chart[name] = np.where(df_chart.intervals == name_df, 1, 0)
+
+    return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
+
+
+# ------------------------------------------------------------------
 # Prepare the chart data: Events per Year by Phases of Flight.
 # ------------------------------------------------------------------
 def _prep_data_chart_ey_pf(
@@ -1529,6 +1578,47 @@ def _prep_data_chart_te_mpf(
         CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD
         else 0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Prepare the chart data: Total Events by Phases of Flight.
+# ------------------------------------------------------------------
+def _prep_data_chart_te_na(
+    df_filtered: DataFrame,
+) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
+    df_filtered = _apply_filter_incompatible(df_filtered)
+
+    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:.2f} miles"
+    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} miles"
+    interval_3 = f"Above {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} miles"
+
+    total_interval_1 = 0
+    total_interval_2 = 0
+    total_interval_3 = 0
+
+    for _index, row in df_filtered.iterrows():
+        if row.nearest_airport_servcity is None:
+            continue
+
+        if row.nearest_airport_distance <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:
+            total_interval_1 += 1
+        elif row.nearest_airport_distance <= CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:
+            total_interval_2 += 1
+        else:
+            total_interval_3 += 1
+
+    total_pie = total_interval_1 + total_interval_2 + total_interval_3
+
+    name_value = [
+        (interval_1, total_interval_1),
+        (interval_2, total_interval_2),
+        (interval_3, total_interval_3),
+    ]
+
+    return _prep_totals_chart(
+        total_pie,
+        name_value,
     )
 
 
@@ -1923,6 +2013,7 @@ def _present_bar_chart(
 
     st.plotly_chart(
         fig,
+        use_container_width=True,
     )
 
     if CHOICE_YEARS_CHARTS_DETAILS:
@@ -1985,6 +2076,10 @@ def _present_bar_charts() -> None:
     # Events per Year by Main Phases of Flight
     if CHOICE_CHARTS_TYPE_EY_MPF:
         _present_chart_ey_mpf()
+
+    # Events per Year by Nearest Airport
+    if CHOICE_CHARTS_TYPE_EY_NA:
+        _present_chart_ey_na()
 
     # Events per Year by Phases of Flight
     if CHOICE_CHARTS_TYPE_EY_PF:
@@ -2108,6 +2203,39 @@ def _present_chart_ey_mpf() -> None:
         CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD / 100
         if CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
         else 0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Present chart: Events per Year by Nearest Airport.
+# ------------------------------------------------------------------
+def _present_chart_ey_na() -> None:
+    chart_id = "ey_na"
+    chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Nearest Airport"
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        choice_ug = st.checkbox(
+            help="Explanations and operating instructions related to this years chart.",
+            key=chart_title,
+            label="**User guide: Years chart**",
+            value=False,
+        )
+    if choice_ug:
+        _get_user_guide_chart(
+            chart_id,
+            chart_title,
+        )
+
+    _present_bar_chart(
+        chart_id,
+        chart_title,
+        _prep_data_chart_ey_na(DF_FILTERED),
     )
 
 
@@ -2564,6 +2692,7 @@ def _present_distance_chart(
         )
         st.plotly_chart(
             fig,
+            use_container_width=True,
         )
 
     if CHOICE_VIOLIN_PLOTS:
@@ -2578,6 +2707,7 @@ def _present_distance_chart(
         )
         st.plotly_chart(
             fig,
+            use_container_width=True,
         )
 
 
@@ -2585,7 +2715,7 @@ def _present_distance_chart(
 # Present the distance charts.
 # ------------------------------------------------------------------
 def _present_distance_charts() -> None:
-    # Distance to the Nearest Airport
+    # Distance to the nearest airport
     if CHOICE_CHARTS_TYPE_D_NA:
         _present_distance_chart(
             "d_na",
@@ -2749,6 +2879,7 @@ def _present_totals_chart(
         )
         st.plotly_chart(
             fig,
+            use_container_width=True,
         )
 
     if CHOICE_PIE_CHARTS:
@@ -2762,6 +2893,7 @@ def _present_totals_chart(
         )
         st.plotly_chart(
             fig,
+            use_container_width=True,
         )
 
     if CHOICE_TOTALS_CHARTS_DETAILS:
@@ -2825,6 +2957,14 @@ def _present_totals_charts() -> None:
             "te_mpf",
             f"Total Number of {EVENT_TYPE_DESC}s by Main Phases of Flight",
             _prep_data_chart_te_mpf(DF_FILTERED),
+        )
+
+    # Total Events by Nearest Airport
+    if CHOICE_CHARTS_TYPE_TE_NA:
+        _present_totals_chart(
+            "te_na",
+            f"Total Number of {EVENT_TYPE_DESC}s by Nearest Airport",
+            _prep_data_chart_te_na(DF_FILTERED),
         )
 
     # Total Events by Phases of Flight
@@ -3422,6 +3562,9 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_MPF  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_NA  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_NA_I_1_OG  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_EY_NA_I_2_OG  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_PF  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_EY_PSS  # pylint: disable=global-statement
@@ -3437,6 +3580,9 @@ def _setup_task_controls() -> None:
     global CHOICE_CHARTS_TYPE_TE_IL  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_MPF  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_NA  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_NA_I_1_OG  # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_TE_NA_I_2_OG  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_PF  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD  # pylint: disable=global-statement
     global CHOICE_CHARTS_TYPE_TE_PSS  # pylint: disable=global-statement
@@ -3640,8 +3786,41 @@ def _setup_task_controls() -> None:
                     label="Threshold value in %",
                     max_value=20.0,
                     min_value=0.0,
-                    value=0.5,
+                    value=1.5,
                 )
+
+            # pylint: disable=line-too-long
+            CHOICE_CHARTS_TYPE_EY_NA = st.sidebar.checkbox(
+                help="Events per year by distance to the nearest airport (after filtering the data).",
+                label="Events per Year by Nearest Airport",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_EY_NA:
+                col1, col2 = st.sidebar.columns(2)
+                with col1:
+                    CHOICE_CHARTS_TYPE_EY_NA_I_1_OG = col1.number_input(
+                        help="Upper limit first interval",
+                        key="CHOICE_CHARTS_TYPE_EY_NA_I_1_OG",
+                        label="Upper limit 1",
+                        max_value=100.0,
+                        min_value=0.0,
+                        value=0.5,
+                    )
+                with col2:
+                    CHOICE_CHARTS_TYPE_EY_NA_I_2_OG = col2.number_input(
+                        help="Upper limit first interval",
+                        key="CHOICE_CHARTS_TYPE_EY_NA_I_2_OG",
+                        label="Upper limit 2",
+                        max_value=100.0,
+                        min_value=0.0,
+                        value=5.0,
+                    )
+                if CHOICE_CHARTS_TYPE_EY_NA_I_2_OG <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:
+                    # pylint: disable=line-too-long
+                    st.error(
+                        "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
+                    )
+                    st.stop()
 
             CHOICE_CHARTS_TYPE_EY_PF = st.sidebar.checkbox(
                 help="Events per year by phases of flight (after filtering the data).",
@@ -3809,6 +3988,38 @@ def _setup_task_controls() -> None:
                     min_value=0.0,
                     value=1.5,
                 )
+
+            CHOICE_CHARTS_TYPE_TE_NA = st.sidebar.checkbox(
+                help="Total events by distance to the nearest airport (after filtering the data).",
+                label="Total Events by Nearest Airport",
+                value=False,
+            )
+            if CHOICE_CHARTS_TYPE_TE_NA:
+                col1, col2 = st.sidebar.columns(2)
+                with col1:
+                    CHOICE_CHARTS_TYPE_TE_NA_I_1_OG = col1.number_input(
+                        help="Upper limit first interval",
+                        key="CHOICE_CHARTS_TYPE_TE_NA_I_1_OG",
+                        label="Upper limit 1",
+                        max_value=100.0,
+                        min_value=0.0,
+                        value=0.5,
+                    )
+                with col2:
+                    CHOICE_CHARTS_TYPE_TE_NA_I_2_OG = col2.number_input(
+                        help="Upper limit first interval",
+                        key="CHOICE_CHARTS_TYPE_TE_NA_I_2_OG",
+                        label="Upper limit 2",
+                        max_value=100.0,
+                        min_value=0.0,
+                        value=5.0,
+                    )
+                if CHOICE_CHARTS_TYPE_TE_NA_I_2_OG <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:
+                    # pylint: disable=line-too-long
+                    st.error(
+                        "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
+                    )
+                    st.stop()
 
             CHOICE_CHARTS_TYPE_TE_PF = st.sidebar.checkbox(
                 help="Total events by phases of flight (after filtering the data).",
@@ -4307,13 +4518,6 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    # print(
-    #     str(datetime.datetime.now())
-    #     + "                         - Start application "
-    #     + APP_ID,
-    #     flush=True,
-    # )
-
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
@@ -4323,12 +4527,6 @@ def _streamlit_flow() -> None:
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
         MODE_STANDARD = bool(mode == "Std")
         st.session_state["MODE_STANDARD"] = MODE_STANDARD
-
-    # print(
-    #     str(datetime.datetime.now())
-    #     + f"                         - MODE_STANDARD={MODE_STANDARD}",
-    #     flush=True,
-    # )
 
     st.set_page_config(
         layout="wide",

@@ -252,11 +252,6 @@ QUERIES = {
                  section_code,
                  subsection_code;
     """,
-    "io_ntsb_2002_2021": """
-        SELECT *
-          FROM io_ntsb_2002_2021
-        ORDER BY ntsb_number;
-    """,
     "io_processed_files": """
         SELECT *
           FROM io_processed_files

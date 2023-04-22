@@ -11,8 +11,8 @@ Currently, the following Streamlit applications are supported:
 | Application | Description                             |
 |-------------|-----------------------------------------|
 | all         | All Streamlit applications              |
-| ae1982    | Aircraft Accidents in the US since 1982 |
-| pd1982    | Profiling Data for the US since 1982    |
+| ae1982      | Aircraft Accidents in the US since 1982 |
+| pd1982      | Profiling Data for the US since 1982    |
 
 The script **`run_io_avstats`** with task **`c_d_i`** can be used to create or update the necessary Docker images.
 

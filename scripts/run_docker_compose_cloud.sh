@@ -21,6 +21,7 @@ export IO_AVSTATS_POSTGRES_DBNAME=postgres
 export IO_AVSTATS_POSTGRES_PASSWORD="V3s8m4x*MYbHrX*UuU6X"
 export IO_AVSTATS_POSTGRES_PGDATA=data/postgres
 export IO_AVSTATS_POSTGRES_USER=guest
+
 export IO_AVSTATS_POSTGRES_VERSION=latest
 
 export IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
@@ -116,6 +117,7 @@ echo "POSTGRES_DBNAME                   : ${IO_AVSTATS_POSTGRES_DBNAME}"
 echo "POSTGRES_PASSWORD                 : ${IO_AVSTATS_POSTGRES_PASSWORD}"
 echo "POSTGRES_PGDATA                   : ${IO_AVSTATS_POSTGRES_PGDATA}"
 echo "POSTGRES_USER                     : ${IO_AVSTATS_POSTGRES_USER}"
+echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_VERSION                  : ${IO_AVSTATS_POSTGRES_VERSION}"
 echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_KEYCLOAK_CONNECTION_PORT : ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
@@ -199,9 +201,9 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "down" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "logs" ]; then
     if [ "${IO_AVSTATS_CONTAINER}" = "*" ]; then
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow
+        docker compose -f docker-compose_cloud.yml logs --tail=0 --follow
     else
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
+        docker compose -f docker-compose_cloud.yml logs --tail=0 --follow "${IO_AVSTATS_CONTAINER}"
     fi
 
 # ------------------------------------------------------------------------------
@@ -215,7 +217,7 @@ elif [ "${IO_AVSTATS_COMPOSE_TASK}" = "up" ]; then
     echo "....................................................... before images:"
     docker images
 
-    docker compose -f docker-compose_cloud.yml up &
+    docker compose -f docker-compose_cloud.yml up --quiet-pull &
 
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.

@@ -155,9 +155,9 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
 
 if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["logs"] (
     if ["%IO_AVSTATS_CONTAINER%"] EQU ["*"] (
-        docker-compose -f docker-compose_local.yml logs --tail=0 --follow
+        docker compose -f docker-compose_local.yml logs --tail=0 --follow
     ) else (
-        docker-compose -f docker-compose_local.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
+        docker compose -f docker-compose_local.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
     )
 )
 

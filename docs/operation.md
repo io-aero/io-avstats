@@ -485,8 +485,7 @@ The initial load in a fresh Windows environment requires the execution of the fo
 1. Restore the current state of Pre2008
 1. Start the Docker container **`io_avstats_db`**
 1. Process the current **`avall`** file with code **`l_n_a`**
-1. Process the current **`up01MON`** file with code **`u_p_d`**
 
-### 4.2 Every 8th, 15th and 22nd 
+### 4.2 Every 1st, 8th, 15th and 22nd 
 
 - Process the current **`upDDMON`** file with code **`u_p_d`**

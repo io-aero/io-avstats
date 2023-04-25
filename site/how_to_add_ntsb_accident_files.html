@@ -481,44 +481,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-detailed-description" class="md-nav__link">
-    2. Detailed description
+  <a href="#2-a-few-tips" class="md-nav__link">
+    2. A few tips
   </a>
   
-    <nav class="md-nav" aria-label="2. Detailed description">
+    <nav class="md-nav" aria-label="2. A few tips">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-optional-data-quality-check-event-completeness" class="md-nav__link">
-    2.1 Optional data quality check: Event completeness
+  <a href="#21-backup-the-file-directory-datapostgres" class="md-nav__link">
+    2.1 Backup the file directory data/postgres
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-optional-data-quality-check-latitude-longitude" class="md-nav__link">
-    2.2 Optional data quality check: Latitude &amp; longitude
+  <a href="#22-update-the-google-drive" class="md-nav__link">
+    2.2 Update the Google Drive
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-optional-data-quality-check-issue-summary" class="md-nav__link">
-    2.3 Optional data quality check: Issue summary
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-backup-the-file-directory-datapostgres" class="md-nav__link">
-    2.4 Backup the file directory data/postgres
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-update-the-google-drive" class="md-nav__link">
-    2.5 Update the Google Drive
+  <a href="#23-optional-data-quality-checks" class="md-nav__link">
+    2.3 Optional data quality checks
   </a>
   
 </li>
@@ -668,44 +654,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-detailed-description" class="md-nav__link">
-    2. Detailed description
+  <a href="#2-a-few-tips" class="md-nav__link">
+    2. A few tips
   </a>
   
-    <nav class="md-nav" aria-label="2. Detailed description">
+    <nav class="md-nav" aria-label="2. A few tips">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-optional-data-quality-check-event-completeness" class="md-nav__link">
-    2.1 Optional data quality check: Event completeness
+  <a href="#21-backup-the-file-directory-datapostgres" class="md-nav__link">
+    2.1 Backup the file directory data/postgres
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-optional-data-quality-check-latitude-longitude" class="md-nav__link">
-    2.2 Optional data quality check: Latitude &amp; longitude
+  <a href="#22-update-the-google-drive" class="md-nav__link">
+    2.2 Update the Google Drive
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-optional-data-quality-check-issue-summary" class="md-nav__link">
-    2.3 Optional data quality check: Issue summary
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-backup-the-file-directory-datapostgres" class="md-nav__link">
-    2.4 Backup the file directory data/postgres
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-update-the-google-drive" class="md-nav__link">
-    2.5 Update the Google Drive
+  <a href="#23-optional-data-quality-checks" class="md-nav__link">
+    2.3 Optional data quality checks
   </a>
   
 </li>
@@ -730,14 +702,14 @@
                   
 
 
-<h1 id="how-to-add-ntsb-accident-files">How to add NTSB accident files</h1>
+<h1 id="how-to-add-ntsb-accident-files">How to add <strong>NTSB</strong> accident files</h1>
 <p>Aviation accident data provided by <strong>NTSB</strong> can be found at the following <a href="https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx" target="_blank">website</a> under 'Downloadable data sets':</p>
 <p><kbd><img alt="" src="img/how_to_add_ntsb_01.png" /></kbd></p>
 <p><strong>NTSB</strong> provides the following files:</p>
 <ul>
-<li><strong>Pre2008.zip</strong>: data set for 1982 through 2007</li>
-<li><strong>avall.zip</strong>: data set from 2008 to the present </li>
-<li><strong>upDDMON.zip</strong>: monthly supplements on the 1st, 8th, 15th and 22nd</li>
+<li><strong><code>Pre2008.zip</code></strong>: data set for 1982 through 2007</li>
+<li><strong><code>avall.zip</code></strong>: data set from 2008 to the present </li>
+<li><strong><code>upDDMON.zip</code></strong>: monthly supplements on the 1st, 8th, 15th and 22nd</li>
 </ul>
 <p>In the database table <strong><code>io_processed_files</code></strong> you can find the files already processed by <strong>IO-AVSTATS</strong>:</p>
 <p><kbd><img alt="" src="img/io_processed_files.png" /></kbd></p>
@@ -781,7 +753,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 </tr>
 </tbody>
 </table>
-<h3 id="12-ntsb-file-avallzip">1.2 <strong>NTSB</strong> file <strong>avall.zip</strong></h3>
+<h3 id="12-ntsb-file-avallzip">1.2 <strong>NTSB</strong> file <strong><code>avall.zip</code></strong></h3>
 <p>The following task must be performed on the first of each month:</p>
 <table>
 <thead>
@@ -800,11 +772,11 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <ul>
 <li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
 <li>Remove the directory <strong><code>data/postgres</code></strong></li>
-<li>Unzip the latest file <strong>yy.mm.dd_postgres_Pre2008_20.09.30.zip</strong></li>
+<li>Unzip the latest file <strong><code>yy.mm.dd_postgres_Pre2008_20.09.30.zip</code></strong></li>
 <li>Start the Docker container <strong><code>io_avstats_db</code></strong></li>
-<li>Run script <strong>run_io_avstats</strong> with task <strong>l_n_a</strong> and file <strong>avall</strong></li>
+<li>Run script <strong><code>run_io_avstats</code></strong> with task <strong><code>l_n_a</code></strong> and file <strong><code>avall</code></strong></li>
 </ul>
-<h3 id="13-ntsb-file-upddmonzip">1.3 <strong>NTSB</strong> file <strong>upDDMON.zip</strong></h3>
+<h3 id="13-ntsb-file-upddmonzip">1.3 <strong>NTSB</strong> file <strong><code>upDDMON.zip</code></strong></h3>
 <p>The following tasks must be performed every month on the 1st, 8th, 15th and 22nd:</p>
 <table>
 <thead>
@@ -821,12 +793,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <td>Download a NTSB MS Access database file</td>
 </tr>
 <tr>
-<td align="right">-------</td>
-<td>-----</td>
-<td>-------------------------------------------------------------</td>
-</tr>
-<tr>
-<td align="right">or   1.</td>
+<td align="right">or  1.</td>
 <td>l_n_a</td>
 <td>Load NTSB MS Access database data into PostgreSQL</td>
 </tr>
@@ -880,8 +847,22 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 </tr>
 </tbody>
 </table>
-<h2 id="2-detailed-description">2. Detailed description</h2>
-<h3 id="21-optional-data-quality-check-event-completeness">2.1 Optional data quality check: Event completeness</h3>
+<h2 id="2-a-few-tips">2. A few tips</h2>
+<h3 id="21-backup-the-file-directory-datapostgres">2.1 Backup the file directory <strong><code>data/postgres</code></strong></h3>
+<ul>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
+<li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
+<li>Rename the file <strong><code>postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Create a copy of the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong> with the name <strong><code>latest_postgres.zip</code></strong>.</li>
+</ul>
+<h3 id="22-update-the-google-drive">2.2 Update the Google Drive</h3>
+<ul>
+<li>Log in to Google Drive with the Google Account <strong><code>io-avstats.io-aero@gmail.com</code></strong>.</li>
+<li>Upload the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
+<li>Share the newly uploaded file.</li>
+</ul>
+<h3 id="23-optional-data-quality-checks">2.3 Optional data quality checks</h3>
+<h4 id="231-event-completeness">2.3.1 Event completeness</h4>
 <p><strong>Query</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>       &#39;Events Total&#39; &quot;Description&quot;
@@ -964,7 +945,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a>                      FROM io_states is2)
 <a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a> ORDER BY 2
 </code></pre></div>
-<h3 id="22-optional-data-quality-check-latitude-longitude">2.2 Optional data quality check: Latitude &amp; longitude</h3>
+<h4 id="232-latitude-longitude">2.3.2 Latitude &amp; longitude</h4>
 <p><strong>Query Total:</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>       io_dec_lat_lng_actions
@@ -991,7 +972,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a> GROUP BY io_dec_lat_lng_actions 
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a> ORDER BY io_dec_lat_lng_actions
 </code></pre></div>
-<h3 id="23-optional-data-quality-check-issue-summary">2.3 Optional data quality check: Issue summary</h3>
+<h4 id="233-issue-summary">2.3.3 Issue summary</h4>
 <p><strong>Query Total:</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SELECT count(*) &quot;Count&quot;,
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>       &#39;Latitude deviation&#39; &quot;Description&quot;
@@ -1134,19 +1115,6 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <a id="__codelineno-6-47" name="__codelineno-6-47" href="#__codelineno-6-47"></a>   AND io_invalid_us_zipcode IS NOT NULL 
 <a id="__codelineno-6-48" name="__codelineno-6-48" href="#__codelineno-6-48"></a> ORDER BY 2
 </code></pre></div>
-<h3 id="24-backup-the-file-directory-datapostgres">2.4 Backup the file directory <strong><code>data/postgres</code></strong></h3>
-<ul>
-<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
-<li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
-<li>Rename the file <strong><code>postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
-<li>Create a copy of the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong> with the name <strong><code>latest_postgres.zip</code></strong>.</li>
-</ul>
-<h3 id="25-update-the-google-drive">2.5 Update the Google Drive</h3>
-<ul>
-<li>Log in to Google Drive with the Google Account <strong><code>io-avstats.io-aero@gmail.com</code></strong>.</li>
-<li>Upload the file <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
-<li>Share the newly uploaded file.</li>
-</ul>
 
 
 

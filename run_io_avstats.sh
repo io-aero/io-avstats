@@ -77,7 +77,6 @@ if [ -z "$1" ]; then
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
-    echo "c_f_z   - Zip the files for the cloud"
     echo "---------------------------------------------------------"
     echo "version - Show the IO-AVSTATS-DB version"
     echo "---------------------------------------------------------"
@@ -202,14 +201,6 @@ elif [ "${IO_AVSTATS_TASK}" = "c_d_l" ]; then
 # ------------------------------------------------------------------------------
 elif [ "${IO_AVSTATS_TASK}" = "c_d_i" ]; then
     if ! ( ./scripts/run_create_image.sh "${IO_AVSTATS_APPLICATION}" yes yes ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
-# Zip the files for the cloud.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AVSTATS_TASK}" = "c_f_z" ]; then
-    if ! ( ./scripts/run_cloud_files_zip.sh ); then
         exit 255
     fi
 

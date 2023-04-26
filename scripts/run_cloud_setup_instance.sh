@@ -21,10 +21,23 @@ echo "Start $0"
 echo "------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "=============================================================================="
-echo "Supplement necessary system software"
+echo "Uninstall existing software"
 echo "------------------------------------------------------------------------------"
 
+sudo apt-get purge -qy containerd.io \
+                       docker-buildx-plugin \
+                       docker-compose-plugin \
+                       docker-ce \
+                       docker-ce-cli
+
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+
 sudo apt-get clean -qy
+
+echo "=============================================================================="
+echo "Supplement necessary system software"
+echo "------------------------------------------------------------------------------"
 
 sudo apt-get update -qy
 
@@ -64,6 +77,9 @@ newgrp docker <<EONG
 echo "hello from within newgrp"
 id
 EONG
+
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
 
 echo " "
 echo "=============================================================================> Version  Docker Compose: "

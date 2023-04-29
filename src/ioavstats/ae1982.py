@@ -3750,7 +3750,7 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_EY_AOC = st.sidebar.checkbox(
                 help="Events per year by CICTT codes (after filtering the data).",
-                label="Events per Year by CICTT Codes",
+                label=f"{EVENT_TYPE_DESC}s per Year by CICTT Codes",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_EY_AOC:
@@ -3765,18 +3765,18 @@ def _setup_task_controls() -> None:
 
             CHOICE_CHARTS_TYPE_EY_T = st.sidebar.checkbox(
                 help="Events per year by event types (after filtering the data).",
-                label="Events per Year by Event Types",
+                label=f"{EVENT_TYPE_DESC}s per Year by Event Types",
                 value=False,
             )
             CHOICE_CHARTS_TYPE_EY_IL = st.sidebar.checkbox(
                 help="Events per year by highest injury level (after filtering the data).",
-                label="Events per Year by Highest Injury Levels",
+                label=f"{EVENT_TYPE_DESC}s per Year by Highest Injury Levels",
                 value=False,
             )
 
             CHOICE_CHARTS_TYPE_EY_MPF = st.sidebar.checkbox(
                 help="Events per year by main phases of flight (after filtering the data).",
-                label="Events per Year by Main Phases of Flight",
+                label=f"{EVENT_TYPE_DESC}s per Year by Main Phases of Flight",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_EY_MPF:
@@ -3792,7 +3792,7 @@ def _setup_task_controls() -> None:
             # pylint: disable=line-too-long
             CHOICE_CHARTS_TYPE_EY_NA = st.sidebar.checkbox(
                 help="Events per year by distance to the nearest airport (after filtering the data).",
-                label="Events per Year by Nearest Airport",
+                label=f"{EVENT_TYPE_DESC}s per Year by Nearest Airport",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_EY_NA:
@@ -3824,7 +3824,7 @@ def _setup_task_controls() -> None:
 
             CHOICE_CHARTS_TYPE_EY_PF = st.sidebar.checkbox(
                 help="Events per year by phases of flight (after filtering the data).",
-                label="Events per Year by Phases of Flight",
+                label=f"{EVENT_TYPE_DESC}s per Year by Phases of Flight",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_EY_PF:
@@ -3839,7 +3839,7 @@ def _setup_task_controls() -> None:
 
         CHOICE_CHARTS_TYPE_EY_PSS = st.sidebar.checkbox(
             help="Preventable events per year by safety systems (after filtering the data).",
-            label="Preventable Events per Year by Safety Systems",
+            label=f"Preventable {EVENT_TYPE_DESC}s per Year by Safety Systems",
             value=False,
         )
         if CHOICE_CHARTS_TYPE_EY_PSS:
@@ -3855,7 +3855,7 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_EY_TLP = st.sidebar.checkbox(
                 help="Events per year by top level logical parameters (after filtering the data).",
-                label="Events per Year by Top Level Logical Parameters",
+                label=f"{EVENT_TYPE_DESC}s per Year by Top Level Logical Parameters",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_EY_TLP:
@@ -3874,7 +3874,7 @@ def _setup_task_controls() -> None:
     # Show Data Graph - Totals.
     # --------------------------------------------------------------
     CHOICE_DATA_GRAPHS_TOTALS = st.sidebar.checkbox(
-        help="Total Events or fatalities (after filtering the data).",
+        help=f"Total {EVENT_TYPE_DESC}s or fatalities (after filtering the data).",
         label="**Show Data Graphs - Totals**",
         value=not MODE_STANDARD,
     )
@@ -3950,7 +3950,7 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_TE_AOC = st.sidebar.checkbox(
                 help="Total events by CICTT codes (after filtering the data).",
-                label="Total Events by CICTT Codes",
+                label=f"Total {EVENT_TYPE_DESC}s by CICTT Codes",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_TE_AOC:
@@ -3965,18 +3965,18 @@ def _setup_task_controls() -> None:
 
             CHOICE_CHARTS_TYPE_TE_T = st.sidebar.checkbox(
                 help="Total events by event types (after filtering the data).",
-                label="Total Events by Event Types",
+                label=f"Total {EVENT_TYPE_DESC}s by Event Types",
                 value=False,
             )
             CHOICE_CHARTS_TYPE_TE_IL = st.sidebar.checkbox(
                 help="Total events by highest injury levels (after filtering the data).",
-                label="Total Events by Highest Injury Levels",
+                label=f"Total {EVENT_TYPE_DESC}s by Highest Injury Levels",
                 value=False,
             )
 
             CHOICE_CHARTS_TYPE_TE_MPF = st.sidebar.checkbox(
                 help="Total events by main phases of flight (after filtering the data).",
-                label="Total Events by Main Phases of Flight",
+                label=f"Total {EVENT_TYPE_DESC}s by Main Phases of Flight",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_TE_MPF:
@@ -3991,7 +3991,7 @@ def _setup_task_controls() -> None:
 
             CHOICE_CHARTS_TYPE_TE_NA = st.sidebar.checkbox(
                 help="Total events by distance to the nearest airport (after filtering the data).",
-                label="Total Events by Nearest Airport",
+                label=f"Total {EVENT_TYPE_DESC}s by Nearest Airport",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_TE_NA:
@@ -4023,7 +4023,7 @@ def _setup_task_controls() -> None:
 
             CHOICE_CHARTS_TYPE_TE_PF = st.sidebar.checkbox(
                 help="Total events by phases of flight (after filtering the data).",
-                label="Total Events by Phases of Flight",
+                label=f"Total {EVENT_TYPE_DESC}s by Phases of Flight",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_TE_PF:
@@ -4038,7 +4038,7 @@ def _setup_task_controls() -> None:
 
         CHOICE_CHARTS_TYPE_TE_PSS = st.sidebar.checkbox(
             help="Total preventable events by safety systems (after filtering the data).",
-            label="Total Preventable Events by Safety Systems",
+            label=f"Total Preventable {EVENT_TYPE_DESC}s by Safety Systems",
             value=not MODE_STANDARD,
         )
         if CHOICE_CHARTS_TYPE_TE_PSS:
@@ -4054,7 +4054,7 @@ def _setup_task_controls() -> None:
         if MODE_STANDARD:
             CHOICE_CHARTS_TYPE_TE_TLP = st.sidebar.checkbox(
                 help="Total events by top level logical parameters (after filtering the data).",
-                label="Total Events by Top Level Logical Parameters",
+                label=f"Total {EVENT_TYPE_DESC}s by Top Level Logical Parameters",
                 value=False,
             )
             if CHOICE_CHARTS_TYPE_TE_TLP:
@@ -4508,6 +4508,7 @@ def _sql_query_us_states() -> list[str]:
 def _streamlit_flow() -> None:
     global DF_FILTERED  # pylint: disable=global-statement
     global DF_UNFILTERED  # pylint: disable=global-statement
+    global EVENT_TYPE_DESC  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
     global MODE_STANDARD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
@@ -4519,10 +4520,12 @@ def _streamlit_flow() -> None:
     START_TIME = time.time_ns()
 
     if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+        EVENT_TYPE_DESC = "Event"
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
         MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
         (host, mode) = utils.get_args()
+        EVENT_TYPE_DESC = "Accident"
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
         MODE_STANDARD = bool(mode == "Std")

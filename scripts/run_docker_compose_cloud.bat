@@ -107,6 +107,7 @@ echo POSTGRES_KEYCLOAK_DBNAME          : %IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME%
 echo POSTGRES_KEYCLOAK_PASSWORD        : %IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD%
 echo POSTGRES_KEYCLOAK_PGDATA          : %IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA%
 echo POSTGRES_KEYCLOAK_USER            : %IO_AVSTATS_POSTGRES_KEYCLOAK_USER%
+echo -----------------------------------------------------------------------
 echo STREAMLIT_SERVER_PORT             : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
 echo -----------------------------------------------------------------------
 echo:| TIME
@@ -182,9 +183,9 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["down"] (
 
 if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["logs"] (
     if ["%IO_AVSTATS_CONTAINER%"] EQU ["*"] (
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow
+        docker compose -f docker-compose_cloud.yml logs --tail=0 --follow
     ) else (
-        docker-compose -f docker-compose_cloud.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
+        docker compose -f docker-compose_cloud.yml logs --tail=0 --follow %IO_AVSTATS_CONTAINER%
     )
 )
 
@@ -196,7 +197,7 @@ if ["%IO_AVSTATS_COMPOSE_TASK%"] EQU ["up"] (
     echo ........................................................ before images:
     docker images
 
-    start /B docker compose -f docker-compose_cloud.yml up
+    start /B docker compose -f docker-compose_cloud.yml up --quiet-pull
     goto END_OF_SCRIPT
 )
 

@@ -21,44 +21,70 @@ echo "Start $0"
 echo "------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "=============================================================================="
+echo "Uninstall existing software"
+echo "------------------------------------------------------------------------------"
+
+sudo apt-get purge -qy containerd.io \
+                       docker-buildx-plugin \
+                       docker-compose-plugin \
+                       docker-ce \
+                       docker-ce-cli
+
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+
+sudo apt-get clean -qy
+
+echo "=============================================================================="
 echo "Supplement necessary system software"
 echo "------------------------------------------------------------------------------"
-sudo apt-get clean -qy
 
 sudo apt-get update -qy
 
-sudo apt-get update
+sudo apt-get install -qy ca-certificates \
+                         curl \
+                         gnupg \
+                         lsb-release
 
-sudo apt-get install ca-certificates \
-                     curl \
-                     gnupg \
-                     lsb-release
-
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://upload.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-get update
+sudo apt-get update -qy
 
 sudo apt-get install -qy containerd.io \
-                         curl \
+                         docker-buildx-plugin \
                          docker-ce \
                          docker-ce-cli \
-                         docker-compose \
+                         docker-compose-plugin \
                          dos2unix \
                          software-properties-common \
                          unzip \
                          zip
 
-sudo chmod 666 /var/run/docker.sock
+sudo apt autoremove -qy
+
+getent group docker || groupadd docker
+
+sudo usermod -aG docker $USER
+
+newgrp docker <<EONG
+echo "hello from within newgrp"
+id
+EONG
+
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
 
 echo " "
 echo "=============================================================================> Version  Docker Compose: "
 echo " "
-echo "Current version of Docker Compose: $(docker-compose version)"
+echo "Current version of Docker Compose: $(docker compose version)"
 echo " "
 echo "=============================================================================="
 

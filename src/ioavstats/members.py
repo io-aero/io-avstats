@@ -54,6 +54,7 @@ def _setup_page():
     # Application menu.
     # --------------------------------------------------------------
     applications = []
+    downloads = []
 
     for app_id in ["ae1982", "pd1982", "slara"]:
         if app_id in RESOURCES:
@@ -61,17 +62,17 @@ def _setup_page():
                 url = "http://" + (
                     app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8501"
                 )
-                applications.append(("Aviation Event Analysis", f"[{app_id}]({url})"))
+                applications.append(f"[Aviation Event Analysis]({url})")
             elif app_id == "pd1982":
                 url = "http://" + (
                     app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8502"
                 )
-                applications.append(("Database Profiling", f"[{app_id}]({url})"))
+                applications.append(f"[Database Profiling]({url})")
             elif app_id == "slara":
                 url = "http://" + (
                     app_id + ".io-aero.com" if HOST_CLOUD else "localhost:8503"
                 )
-                applications.append(("Association Rule Analysis", f"[{app_id}]({url})"))
+                applications.append(f"[Association Rule Analysis]({url})")
             else:
                 applications.append(
                     (
@@ -81,30 +82,19 @@ def _setup_page():
                 )
 
     if len(applications) > 0:
+        downloads.append(("IO-AVSTATS Documentation", "IO-AVSTATS.pdf"))
         applications.sort()
 
-        col1, col2 = st.columns([1, 1])
+        st.markdown("## Applications")
 
-        with col1:
-            st.markdown("## Applications")
-        with col2:
-            st.markdown(
-                """## <span style='color:white'>Link</span>""", unsafe_allow_html=True
-            )
-
-        for app_desc, app_link in applications:
-            with col1:
-                st.markdown("##### " + app_desc)
-            with col2:
-                st.markdown("##### " + app_link)
+        for app_link in applications:
+            st.markdown("##### " + app_link)
 
         st.divider()
 
     # --------------------------------------------------------------
     # Download menu.
     # --------------------------------------------------------------
-    downloads = []
-
     for item_id in ["IO-AVSTATS-DB"]:
         if item_id in RESOURCES:
             if item_id == "IO-AVSTATS-DB":
@@ -121,27 +111,19 @@ def _setup_page():
     if len(downloads) > 0:
         downloads.sort()
 
-        col1, col2 = st.columns([1, 1])
-
-        with col1:
-            st.markdown("## Downloadable Items")
-        with col2:
-            st.markdown(
-                """## <span style='color:white'>Button</span>""", unsafe_allow_html=True
-            )
+        st.markdown("## Downloads")
 
         for item_desc, item_file in downloads:
-            with col1:
-                st.markdown("##### " + item_desc)
-            with col2:
-                with open("upload/" + item_file, "rb") as download:
-                    st.download_button(
-                        "**Download "
-                        + pathlib.Path(item_file).suffix.upper()[1:]
-                        + "**",
-                        download,
-                        file_name=item_file,
-                    )
+            with open("upload/" + item_file, "rb") as download:
+                st.download_button(
+                    "**Download "
+                    + item_desc
+                    + " ("
+                    + pathlib.Path(item_file).suffix.upper()[1:]
+                    + ")**",
+                    download,
+                    file_name=item_file,
+                )
 
         st.divider()
 

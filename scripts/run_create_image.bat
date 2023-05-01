@@ -98,6 +98,7 @@ rem > %LOG_FILE% 2>&1 (
         copy /Y docs\img\StockSnap_SLQQYN6CRR.jpg tmp\docs\img\StockSnap_SLQQYN6CRR.jpg
         copy /Y upload\IO-AVSTATS-DB.pdf          tmp\upload\IO-AVSTATS-DB.pdf
         copy /Y upload\IO-AVSTATS-DB.zip          tmp\upload\IO-AVSTATS-DB.zip
+        copy /Y upload\IO-AVSTATS.pdf             tmp\upload\IO-AVSTATS.pdf
     )
 
     if ["!APPLICATION!"] EQU ["stats"]  (

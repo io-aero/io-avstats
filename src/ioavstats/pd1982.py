@@ -25,7 +25,6 @@ CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
 CHOICE_DATA_PROFILE: bool | None = None
-CHOICE_DATA_PROFILE_TYPE: str | None = None
 CHOICE_DDL_OBJECT_SELECTED: str = ""
 CHOICE_DDL_OBJECT_SELECTION: str = ""
 CHOICE_DETAILS: bool | None = None
@@ -384,8 +383,7 @@ def _get_user_guide_data_profile() -> None:
 #### User guide: Show data profile
 
 This task performs a data analysis of the selected table or view. This is done with the help of 
-[**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/). 
-You can select either the explorative or the minimal version. 
+[**ydata-profiling**](https://pandas-profiling.ydata.ai/docs/master/). 
 Depending on the size of the selected table or view, there may be delayed response times, with the exploratory version 
 again requiring significantly more computational effort than the minimal version.
 For further explanations please consult the documentation of **Pandas Profiling**. 
@@ -528,22 +526,16 @@ def _present_data():
 # ------------------------------------------------------------------
 def _present_data_data_profile():
     # noinspection PyUnboundLocalVariable
-    if CHOICE_DATA_PROFILE_TYPE == "explorative":
-        profile_report = ProfileReport(
-            DF_FILTERED,
-            explorative=True,
-        )
-    else:
-        profile_report = ProfileReport(
-            DF_FILTERED,
-            minimal=True,
-        )
+    profile_report = ProfileReport(
+        DF_FILTERED,
+        minimal=True,
+    )
 
     st_profile_report(profile_report)
 
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",
+        file_name=APP_ID + ".html",
         help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="Download the profile report",
@@ -663,26 +655,12 @@ def _setup_task_controls():
     global CHOICE_DDL_OBJECT_SELECTION  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
     global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
         label="**Show data profile**",
         value=False,
     )
-
-    if CHOICE_DATA_PROFILE:
-        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
-            help="explorative: thorough but also slow - minimal: minimal but faster.",
-            index=1,
-            label="Data profile type",
-            options=(
-                [
-                    "explorative",
-                    "minimal",
-                ]
-            ),
-        )
 
     st.sidebar.divider()
 

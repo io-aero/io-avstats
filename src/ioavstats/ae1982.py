@@ -4534,7 +4534,7 @@ def _streamlit_flow() -> None:
     st.set_page_config(
         layout="wide",
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Favicon.ico?raw=true",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
 
@@ -4548,7 +4548,7 @@ def _streamlit_flow() -> None:
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

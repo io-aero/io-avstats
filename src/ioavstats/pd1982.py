@@ -716,7 +716,7 @@ def _streamlit_flow() -> None:
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",
     )
 
@@ -727,7 +727,7 @@ def _streamlit_flow() -> None:
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

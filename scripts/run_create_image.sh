@@ -95,6 +95,7 @@ if [ "${APPLICATION}" = "members" ]; then
     copy -i data/latest_postgres.zip          upload/IO-AVSTATS-DB.zip
     copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
     copy -i uoload/IO-AVSTATS-DB.pdf          tmp/upload/IO-AVSTATS-DB.pdf
+    copy -i uoload/IO-AVSTATS.pdf             tmp/upload/IO-AVSTATS.pdf
     copy -i upload/IO-AVSTATS-DB.zip          tmp/upload/IO-AVSTATS-DB.zip
 fi
 

@@ -157,15 +157,15 @@ def _streamlit_flow() -> None:
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png",
+        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="members by IO-Aero",
     )
 
-    st.sidebar.markdown("## [IO-Aero](https://www.io-aero.com)")
+    st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

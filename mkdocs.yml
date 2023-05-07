@@ -63,15 +63,15 @@ site_description: Aviation Event Statistics
 site_author: IO-Aero Team
 
 theme:
-  favicon: img/IO-Aero_Favicon.png
+  favicon: img/IO-Aero_1_Favicon.ico
   features:
     - search.highlight
     - search.suggest
   language: en
-  logo: img/IO-Aero_Favicon.png
+  logo: img/IO-Aero_1_Logo.png
   name: material
   palette:
-    primary: blue
+    primary: white
     accent: red
 
 use_directory_urls: false

@@ -667,7 +667,7 @@ def _setup_task_controls():
     CHOICE_DETAILS = st.sidebar.checkbox(
         help="Tabular representation of the selected detailed data.",
         label="**Show details**",
-        value=True,
+        value=False,
     )
 
     st.sidebar.divider()

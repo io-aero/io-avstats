@@ -3626,7 +3626,7 @@ def _setup_task_controls() -> None:
         For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected data analysis.        """,
             key="CHOICE_RUN_ANALYSIS",
             label="**Run the Data Analysis**",
-            value=True,
+            value=False,
         )
 
         st.sidebar.divider()
@@ -4145,7 +4145,7 @@ def _setup_task_controls() -> None:
         CHOICE_DETAILS = st.sidebar.checkbox(
             help="Tabular representation of the filtered detailed data.",
             label="**Show Detailed Data**",
-            value=True,
+            value=False,
         )
 
         st.sidebar.divider()

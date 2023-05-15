@@ -6,6 +6,7 @@
 /Pipfile.lock
 /cloud.zip
 /data/*_postgres*.zip
+/data/USGS/
 /data/correction_test/
 /data/download/
 /data/download_test/

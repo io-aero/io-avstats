@@ -56,7 +56,6 @@ CHOICE_SHOW_ASSOCIATION_RULES: bool | None = None
 CHOICE_SHOW_BINARY_DATA_ECLAT: bool | None = None
 CHOICE_SHOW_FILTERED_RAW_DATA: bool | None = None
 CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE: bool | None = None
-CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE: str | None = None
 CHOICE_SHOW_FREQUENT_ITEMSETS: bool | None = None
 CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT: bool | None = None
 CHOICE_SHOW_ONE_HOT_ENCODED_DATA: bool | None = None
@@ -262,14 +261,14 @@ def _apply_algorithm() -> None:
                 ):
                     if CHOICE_ALG_APRIORI:
                         DF_FREQUENT_ITEMSETS_APRIORI = (
-                            _create_frequent_itemsets_apriori(
+                            _create_frequent_item_sets_apriori(
                                 DF_BINARY_DATA_ONE_HOT_ENCODED,
                                 CHOICE_ALG_MIN_SUPPORT,
                             )
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - _create_frequent_itemsets_apriori"
+                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - _create_frequent_item_sets_apriori"
                         )
                         DF_ASSOCIATION_RULES_APRIORI = association_rules(
                             DF_FREQUENT_ITEMSETS_APRIORI,
@@ -281,14 +280,14 @@ def _apply_algorithm() -> None:
                         )
                     if CHOICE_ALG_FPGROWTH:
                         DF_FREQUENT_ITEMSETS_FPGROWTH = (
-                            _create_frequent_itemsets_fpgrowth(
+                            _create_frequent_item_sets_fpgrowth(
                                 DF_BINARY_DATA_ONE_HOT_ENCODED,
                                 CHOICE_ALG_MIN_SUPPORT,
                             )
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - _create_frequent_itemsets_fpgrowth"
+                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - _create_frequent_item_sets_fpgrowth"
                         )
                         DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
                             DF_FREQUENT_ITEMSETS_FPGROWTH,
@@ -299,13 +298,13 @@ def _apply_algorithm() -> None:
                             "_apply_algorithm() - CHOICE_ALG_FPGROWTH - association_rules"
                         )
                     if CHOICE_ALG_FPMAX:
-                        DF_FREQUENT_ITEMSETS_FPMAX = _create_frequent_itemsets_fpmax(
+                        DF_FREQUENT_ITEMSETS_FPMAX = _create_frequent_item_sets_fpmax(
                             DF_BINARY_DATA_ONE_HOT_ENCODED,
                             CHOICE_ALG_MIN_SUPPORT,
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - _create_frequent_itemsets_fpmax"
+                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - _create_frequent_item_sets_fpmax"
                         )
                         DF_ASSOCIATION_RULES_FPMAX = association_rules(
                             DF_FREQUENT_ITEMSETS_FPMAX,
@@ -720,78 +719,78 @@ def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
 
 
 # ------------------------------------------------------------------
-# Create frequent itemsets with the Apriori Algorithm.
+# Create frequent item sets with the Apriori Algorithm.
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
-def _create_frequent_itemsets_apriori(
+def _create_frequent_item_sets_apriori(
     df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
 ) -> DataFrame:
-    df_frequent_itemsets = apriori(
+    df_frequent_item_sets = apriori(
         df_binary_data_one_hot_encoded,
         min_support=min_support,
         use_colnames=True,
     )
 
-    if df_frequent_itemsets.empty:
+    if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected Apriori Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_apriori()")
+    _print_timestamp("_create_frequent_item_sets_apriori()")
 
-    return df_frequent_itemsets
+    return df_frequent_item_sets
 
 
 # ------------------------------------------------------------------
-# Create frequent itemsets with the FP-Growth Algorithm.
+# Create frequent item sets with the FP-Growth Algorithm.
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
-def _create_frequent_itemsets_fpgrowth(
+def _create_frequent_item_sets_fpgrowth(
     df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
 ) -> DataFrame:
-    df_frequent_itemsets = fpgrowth(
+    df_frequent_item_sets = fpgrowth(
         df_binary_data_one_hot_encoded,
         min_support=min_support,
         use_colnames=True,
     )
 
-    if df_frequent_itemsets.empty:
+    if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected FP-Growth Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_fpgrowth()")
+    _print_timestamp("_create_frequent_item_sets_fpgrowth()")
 
-    return df_frequent_itemsets
+    return df_frequent_item_sets
 
 
 # ------------------------------------------------------------------
-# Create frequent itemsets with the FP-Max Algorithm.
+# Create frequent item sets with the FP-Max Algorithm.
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
-def _create_frequent_itemsets_fpmax(
+def _create_frequent_item_sets_fpmax(
     df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
 ) -> DataFrame:
-    df_frequent_itemsets = fpmax(
+    df_frequent_item_sets = fpmax(
         df_binary_data_one_hot_encoded,
         min_support=min_support,
         use_colnames=True,
     )
 
-    if df_frequent_itemsets.empty:
+    if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
             "##### Error: The selected FP-Max Algorithm did not find any data with the given items and parameters."
         )
         st.stop()
 
-    _print_timestamp("_create_frequent_itemsets_fpmax()")
+    _print_timestamp("_create_frequent_item_sets_fpmax()")
 
-    return df_frequent_itemsets
+    return df_frequent_item_sets
 
 
 # ------------------------------------------------------------------
@@ -1144,20 +1143,20 @@ def _get_description_items(df_int: DataFrame) -> DataFrame:
 
 
 # ------------------------------------------------------------------
-# Get the itemset descriptions.
+# Get the item set descriptions.
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
-def _get_description_itemsets(df_int: DataFrame) -> DataFrame:
+def _get_description_item_sets(df_int: DataFrame) -> DataFrame:
     df_ext = df_int.copy()
 
-    df_ext["itemsets_description"] = ""
+    df_ext["item sets_description"] = ""
 
     for idx in df_ext.index:
-        df_ext["itemsets_description"][idx] = _get_items_description(
-            df_ext["itemsets"][idx]
+        df_ext["item sets_description"][idx] = _get_items_description(
+            df_ext["item sets"][idx]
         )
 
-    _print_timestamp("_get_description_itemsets()")
+    _print_timestamp("_get_description_item_sets()")
 
     return df_ext
 
@@ -1250,12 +1249,12 @@ def _get_item_description(item: str) -> str:
 
 
 # ------------------------------------------------------------------
-# Determine the itemset description.
+# Determine the item set description.
 # ------------------------------------------------------------------
-def _get_items_description(itemset: list[str]) -> list[str]:
+def _get_items_description(item_set: list[str]) -> list[str]:
     descriptions = []
 
-    for item in itemset:
+    for item in item_set:
         if item != "":
             descriptions.append(_get_item_description(item))
 
@@ -1376,7 +1375,7 @@ The following terms are commonly used in association rule analysis:
 
 - **Item**: An element or attribute of interest in the dataset.
 - **Transaction**: A collection of items that occur together.
-- **Support**: The frequency with which an item or itemset appears in the dataset: ```(Item A + Item B) / (Entire dataset)```.
+- **Support**: The frequency with which an item or item set appears in the dataset: ```(Item A + Item B) / (Entire dataset)```.
 - **Confidence**: The likelihood that a rule is correct or true, given the occurrence of the antecedent and consequent in the dataset: ```(Item A + Item B)/ (Item A)```.
 - **Lif**t: A measure of how often the antecedent and consequent occur together than expected by chance: ```(Confidence) / (item B)/ (Entire dataset)```.
 
@@ -1453,7 +1452,7 @@ def _get_user_guide_details_association_rules() -> None:
 
 This task provides the detailed association rules in a table format for display and upload as **csv** file. 
 
-The table comes with columns "antecedents" and "consequents" that store itemsets, plus the scoring metric columns:
+The table comes with columns "antecedents" and "consequents" that store item sets, plus the scoring metric columns:
 
 - "antecedent support", 
 - "consequent support",
@@ -1489,15 +1488,15 @@ The **csv** upload is not limited, but may not be processable with MS Excel.
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task -
-# frequent itemsets.
+# frequent item sets.
 # ------------------------------------------------------------------
-def _get_user_guide_details_frequent_itemsets() -> None:
+def _get_user_guide_details_frequent_item_sets() -> None:
     text = """
-#### User guide: Frequent itemsets
+#### User guide: Frequent item sets
 
-This task provides the detailed frequent itemsets in a table format for display and upload as **csv** file. 
+This task provides the detailed frequent item sets in a table format for display and upload as **csv** file. 
 
-The table comes with columns ['support', 'itemsets'] of all itemsets that are >= `min_support`.
+The table comes with columns ['support', 'item sets'] of all item sets that are >= `min_support`.
 
 For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/
     """
@@ -1507,11 +1506,11 @@ For usage examples, please see http://rasbt.github.io/mlxtend/user_guide/frequen
 
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show details' task -
-# frequent itemsets - tree map.
+# frequent item sets - tree map.
 # ------------------------------------------------------------------
-def _get_user_guide_details_frequent_itemsets_tree_map() -> None:
+def _get_user_guide_details_frequent_item_sets_tree_map() -> None:
     text = """
-#### User guide: Frequent itemsets tree map
+#### User guide: Frequent item sets tree map
 
 TODO
     """
@@ -1776,9 +1775,9 @@ def _present_details_binary_data_one_hot_encoded() -> None:
 
 
 # ------------------------------------------------------------------
-# Present frequent itemset details - Apriori Algorithm.
+# Present frequent item set details - Apriori Algorithm.
 # ------------------------------------------------------------------
-def _present_details_frequent_itemsets_apriori() -> None:
+def _present_details_frequent_item_sets_apriori() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -1790,45 +1789,45 @@ def _present_details_frequent_itemsets_apriori() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Apriori Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets Apriori Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
-        choice_ug_frequent_itemsets_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+        choice_ug_frequent_item_sets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent item sets view.",
             key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_APRIORI",
-            label="**User Guide: Frequent itemset details**",
+            label="**User Guide: Frequent item set details**",
             value=False,
         )
 
-    if choice_ug_frequent_itemsets_details:
-        _get_user_guide_details_frequent_itemsets()
+    if choice_ug_frequent_item_sets_details:
+        _get_user_guide_details_frequent_item_sets()
 
-    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_APRIORI)
+    df_frequent_item_sets_ext = _get_description_item_sets(DF_FREQUENT_ITEMSETS_APRIORI)
 
-    (no_rows, _) = df_frequent_itemsets_ext.shape
+    (no_rows, _) = df_frequent_item_sets_ext.shape
 
-    st.write(f"No frequent itemsets: {no_rows}")
+    st.write(f"No frequent item sets: {no_rows}")
 
-    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
+    st.dataframe(df_frequent_item_sets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
-        file_name=APP_ID + "_frequent_itemsets_apriori_detail.csv",
-        help="The upload includes all frequent itemsets.",
-        label="**Download the frequent itemsets**",
+        data=df_frequent_item_sets_ext.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_frequent_item_sets_apriori_detail.csv",
+        help="The upload includes all frequent item sets.",
+        label="**Download the frequent item sets**",
         mime="text/csv",
     )
 
-    _print_timestamp("_present_details_frequent_itemsets_apriori()")
+    _print_timestamp("_present_details_frequent_item_sets_apriori()")
 
 
 # ------------------------------------------------------------------
-# Present frequent itemset details - Eclat Algorithm.
+# Present frequent item set details - Eclat Algorithm.
 # ------------------------------------------------------------------
-def _present_details_frequent_itemsets_eclat() -> None:
+def _present_details_frequent_item_sets_eclat() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -1840,47 +1839,47 @@ def _present_details_frequent_itemsets_eclat() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets Eclat Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
-        choice_ug_frequent_itemsets_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+        choice_ug_frequent_item_sets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent item sets view.",
             key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_ECLAT",
-            label="**User Guide: Frequent itemset details**",
+            label="**User Guide: Frequent item set details**",
             value=False,
         )
 
-    if choice_ug_frequent_itemsets_details:
-        _get_user_guide_details_frequent_itemsets()
+    if choice_ug_frequent_item_sets_details:
+        _get_user_guide_details_frequent_item_sets()
 
-    df_frequent_itemsets_ext = _get_description_items(DF_FREQUENT_ITEMSETS_ECLAT)
+    df_frequent_item_sets_ext = _get_description_items(DF_FREQUENT_ITEMSETS_ECLAT)
 
-    (no_rows, _) = df_frequent_itemsets_ext.shape
+    (no_rows, _) = df_frequent_item_sets_ext.shape
 
     st.write(
-        f"No frequent itemsets: {no_rows} - max. combinations: {CHOICE_ALG_COMBINATIONS_CURRENT}"
+        f"No frequent item sets: {no_rows} - max. combinations: {CHOICE_ALG_COMBINATIONS_CURRENT}"
     )
 
-    st.dataframe(df_frequent_itemsets_ext.sort_values("transactions", ascending=False))
+    st.dataframe(df_frequent_item_sets_ext.sort_values("transactions", ascending=False))
 
     st.download_button(
-        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
-        file_name=APP_ID + "_frequent_itemsets_eclat_detail.csv",
-        help="The upload includes all frequent itemsets.",
-        label="**Download the frequent itemsets**",
+        data=df_frequent_item_sets_ext.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_frequent_item_sets_eclat_detail.csv",
+        help="The upload includes all frequent item sets.",
+        label="**Download the frequent item sets**",
         mime="text/csv",
     )
 
-    _print_timestamp("_present_details_frequent_itemsets_eclat()")
+    _print_timestamp("_present_details_frequent_item_sets_eclat()")
 
 
 # ------------------------------------------------------------------
-# Present frequent itemset details - FP-Growth Algorithm.
+# Present frequent item set details - FP-Growth Algorithm.
 # ------------------------------------------------------------------
-def _present_details_frequent_itemsets_fpgrowth() -> None:
+def _present_details_frequent_item_sets_fpgrowth() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -1892,45 +1891,47 @@ def _present_details_frequent_itemsets_fpgrowth() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Growth Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Growth Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
-        choice_ug_frequent_itemsets_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+        choice_ug_frequent_item_sets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent item sets view.",
             key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPGROWTH",
-            label="**User Guide: Frequent itemset details**",
+            label="**User Guide: Frequent item set details**",
             value=False,
         )
 
-    if choice_ug_frequent_itemsets_details:
-        _get_user_guide_details_frequent_itemsets()
+    if choice_ug_frequent_item_sets_details:
+        _get_user_guide_details_frequent_item_sets()
 
-    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_FPGROWTH)
+    df_frequent_item_sets_ext = _get_description_item_sets(
+        DF_FREQUENT_ITEMSETS_FPGROWTH
+    )
 
-    (no_rows, _) = df_frequent_itemsets_ext.shape
+    (no_rows, _) = df_frequent_item_sets_ext.shape
 
-    st.write(f"No frequent itemsets: {no_rows}")
+    st.write(f"No frequent item sets: {no_rows}")
 
-    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
+    st.dataframe(df_frequent_item_sets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
-        file_name=APP_ID + "_frequent_itemsets_fpgrowth_detail.csv",
-        help="The upload includes all frequent itemsets.",
-        label="**Download the frequent itemsets**",
+        data=df_frequent_item_sets_ext.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_frequent_item_sets_fpgrowth_detail.csv",
+        help="The upload includes all frequent item sets.",
+        label="**Download the frequent item sets**",
         mime="text/csv",
     )
 
-    _print_timestamp("_present_details_frequent_itemsets_fpgrowth()")
+    _print_timestamp("_present_details_frequent_item_sets_fpgrowth()")
 
 
 # ------------------------------------------------------------------
-# Present frequent itemset details - FP-Max Algorithm.
+# Present frequent item set details - FP-Max Algorithm.
 # ------------------------------------------------------------------
-def _present_details_frequent_itemsets_fpmax() -> None:
+def _present_details_frequent_item_sets_fpmax() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -1942,45 +1943,45 @@ def _present_details_frequent_itemsets_fpmax() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent itemsets FP-Max Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Max Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
-        choice_ug_frequent_itemsets_details = st.checkbox(
-            help="Explanations and operating instructions related to the detailed frequent itemsets view.",
+        choice_ug_frequent_item_sets_details = st.checkbox(
+            help="Explanations and operating instructions related to the detailed frequent item sets view.",
             key="CHOICE_UG_FREQUENT_ITEMSETS_DETAILS_FPMAX",
-            label="**User Guide: Frequent itemset details**",
+            label="**User Guide: Frequent item set details**",
             value=False,
         )
 
-    if choice_ug_frequent_itemsets_details:
-        _get_user_guide_details_frequent_itemsets()
+    if choice_ug_frequent_item_sets_details:
+        _get_user_guide_details_frequent_item_sets()
 
-    df_frequent_itemsets_ext = _get_description_itemsets(DF_FREQUENT_ITEMSETS_FPMAX)
+    df_frequent_item_sets_ext = _get_description_item_sets(DF_FREQUENT_ITEMSETS_FPMAX)
 
-    (no_rows, _) = df_frequent_itemsets_ext.shape
+    (no_rows, _) = df_frequent_item_sets_ext.shape
 
-    st.write(f"No frequent itemsets: {no_rows}")
+    st.write(f"No frequent item sets: {no_rows}")
 
-    st.dataframe(df_frequent_itemsets_ext.sort_values("support", ascending=False))
+    st.dataframe(df_frequent_item_sets_ext.sort_values("support", ascending=False))
 
     st.download_button(
-        data=df_frequent_itemsets_ext.to_csv().encode("utf-8"),
-        file_name=APP_ID + "_frequent_itemsets_fpmax_detail.csv",
-        help="The upload includes all frequent itemsets.",
-        label="**Download the frequent itemsets**",
+        data=df_frequent_item_sets_ext.to_csv().encode("utf-8"),
+        file_name=APP_ID + "_frequent_item_sets_fpmax_detail.csv",
+        help="The upload includes all frequent item sets.",
+        label="**Download the frequent item sets**",
         mime="text/csv",
     )
 
-    _print_timestamp("_present_details_frequent_itemsets_fpmax()")
+    _print_timestamp("_present_details_frequent_item_sets_fpmax()")
 
 
 # ------------------------------------------------------------------
-# Present the frequent itemsets tree_map.
+# Present the frequent item sets tree_map.
 # ------------------------------------------------------------------
-def _present_details_frequent_itemsets_tree_map_eclat() -> None:
+def _present_details_frequent_item_sets_tree_map_eclat() -> None:
     col1, col2 = st.columns(
         [
             2,
@@ -1992,21 +1993,21 @@ def _present_details_frequent_itemsets_tree_map_eclat() -> None:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Frequent itemsets tree map Eclat Algorithm</p>',
+            + 'font-weight: normal;border-radius:2%;">Frequent item sets tree map Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         # pylint: disable=line-too-long
         choice_ug_item_distribution_tree_map = st.checkbox(
-            help="Explanations and operating instructions related to the frequent itemset tree map view.",
+            help="Explanations and operating instructions related to the frequent item set tree map view.",
             key="CHOICE_UG_ITEM_DISTRIBUTION_TREE_MAP",
-            label="**User Guide: Frequent itemsets tree map**",
+            label="**User Guide: Frequent item sets tree map**",
             value=False,
         )
 
     if choice_ug_item_distribution_tree_map:
-        _get_user_guide_details_frequent_itemsets_tree_map()
+        _get_user_guide_details_frequent_item_sets_tree_map()
 
     DF_ITEM_DISTRIBUTION_ECLAT_EXT["all"] = "All"
 
@@ -2027,7 +2028,7 @@ def _present_details_frequent_itemsets_tree_map_eclat() -> None:
         use_container_width=True,
     )
 
-    _print_timestamp("_present_details_frequent_itemsets_tree_map_eclat()")
+    _print_timestamp("_present_details_frequent_item_sets_tree_map_eclat()")
 
 
 # ------------------------------------------------------------------
@@ -2063,7 +2064,7 @@ def _present_details_raw_data() -> None:
 
     # pylint: disable=line-too-long
     st.write(
-        f"No itemsets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
+        f"No item sets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
     )
 
     st.dataframe(DF_RAW_DATA_FILTERED)
@@ -2163,23 +2164,17 @@ def _present_profile_raw_data() -> None:
         _get_user_guide_data_profile("Raw data")
 
     # noinspection PyUnboundLocalVariable
-    if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE == "explorative":
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            explorative=True,
-        )
-    else:
-        profile_report = ProfileReport(
-            DF_RAW_DATA_FILTERED,
-            minimal=True,
-        )
+    profile_report = ProfileReport(
+        DF_RAW_DATA_FILTERED,
+        minimal=True,
+    )
 
     st_profile_report(profile_report)
 
     # pylint: disable=line-too-long
     st.download_button(
         data=profile_report.to_html(),
-        file_name=APP_ID + "_raw_data_profile_" + CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE + ".html",  # type: ignore
+        file_name=APP_ID + "_raw_data_profile" + ".html",  # type: ignore
         help="The upload includes a profile report from the dataframe "
         + "after applying the filter options.",
         label="**Download the raw data profile report**",
@@ -2268,22 +2263,22 @@ def _present_results() -> None:
                 _present_details_binary_data()
 
         # ------------------------------------------------------------------
-        # Frequent itemsets.
+        # Frequent item sets.
         # ------------------------------------------------------------------
 
         if CHOICE_SHOW_FREQUENT_ITEMSETS:
             if CHOICE_ALG_APRIORI:
-                _present_details_frequent_itemsets_apriori()
+                _present_details_frequent_item_sets_apriori()
             if CHOICE_ALG_ECLAT:
-                _present_details_frequent_itemsets_eclat()
+                _present_details_frequent_item_sets_eclat()
             if CHOICE_ALG_FPGROWTH:
-                _present_details_frequent_itemsets_fpgrowth()
+                _present_details_frequent_item_sets_fpgrowth()
             if CHOICE_ALG_FPMAX:
-                _present_details_frequent_itemsets_fpmax()
+                _present_details_frequent_item_sets_fpmax()
 
         if CHOICE_ALG_ECLAT:
             if CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT:
-                _present_details_frequent_itemsets_tree_map_eclat()
+                _present_details_frequent_item_sets_tree_map_eclat()
 
         # ------------------------------------------------------------------
         # Association rules.
@@ -3435,7 +3430,6 @@ def _setup_task_controls() -> None:
     global CHOICE_SHOW_BINARY_DATA_ECLAT  # pylint: disable=global-statement
     global CHOICE_SHOW_FILTERED_RAW_DATA  # pylint: disable=global-statement
     global CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE  # pylint: disable=global-statement
     global CHOICE_SHOW_FREQUENT_ITEMSETS  # pylint: disable=global-statement
     global CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT  # pylint: disable=global-statement
     global CHOICE_SHOW_ONE_HOT_ENCODED_DATA  # pylint: disable=global-statement
@@ -3454,11 +3448,11 @@ For efficiency reasons, it is very useful to define the parameter settings and f
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
         help="""
-Apriori is a popular algorithm [1] for extracting frequent itemsets with applications in association rule learning. 
+Apriori is a popular algorithm [1] for extracting frequent item sets with applications in association rule learning. 
 The Apriori Algorithm has been designed to operate on databases containing transactions. 
-An itemset is considered as "frequent" if it meets a user-specified support threshold. 
+An item set is considered as "frequent" if it meets a user-specified support threshold. 
 For instance, if the support threshold is set to 0.5 (50%), 
-a frequent itemset is defined as a set of items that occur together in at least 50% of all transactions in the database.
+a frequent item set is defined as a set of items that occur together in at least 50% of all transactions in the database.
 
 **References**
 
@@ -3480,9 +3474,9 @@ Unlike the a priori method, the ECLAT method is not based on the calculation of 
 
     CHOICE_ALG_FPGROWTH = st.sidebar.checkbox(
         help="""
-FP-Growth [1] is an algorithm for extracting frequent itemsets with applications in association rule learning that emerged as a popular alternative to the established Apriori Algorithm [2].
+FP-Growth [1] is an algorithm for extracting frequent item sets with applications in association rule learning that emerged as a popular alternative to the established Apriori Algorithm [2].
 
-In general, the algorithm has been designed to operate on databases containing transactions. An itemset is considered as "frequent" if it meets a user-specified support threshold. For instance, if the support threshold is set to 0.5 (50%), a frequent itemset is defined as a set of items that occur together in at least 50% of all transactions in the database.
+In general, the algorithm has been designed to operate on databases containing transactions. An item set is considered as "frequent" if it meets a user-specified support threshold. For instance, if the support threshold is set to 0.5 (50%), a frequent item set is defined as a set of items that occur together in at least 50% of all transactions in the database.
 
 In particular, and what makes it different from the Apriori frequent pattern mining algorithm, FP-Growth is an frequent pattern mining algorithm that does not require candidate generation. Internally, it uses a so-called FP-tree (frequent pattern tree) data structure without generating the candidate sets explicitly, which makes is particularly attractive for large datasets.
 
@@ -3499,17 +3493,17 @@ In particular, and what makes it different from the Apriori frequent pattern min
 
     CHOICE_ALG_FPMAX = st.sidebar.checkbox(
         help="""
-The Apriori algorithm is among the first and most popular algorithms for frequent itemset generation (frequent itemsets are then used for association rule mining). 
+The Apriori algorithm is among the first and most popular algorithms for frequent item set generation (frequent item sets are then used for association rule mining). 
 However, the runtime of Apriori can be quite large, especially for datasets with a large number of unique items, as the runtime grows exponentially depending on the number of unique items.
 
 In contrast to Apriori, FP-Growth is a frequent pattern generation algorithm that inserts items into a pattern search tree, which allows it to have a linear increase in runtime with respect to the number of unique items or entries.
 
-FP-Max is a variant of FP-Growth, which focuses on obtaining maximal itemsets. 
-An itemset X is said to maximal if X is frequent and there exists no frequent super-pattern containing X. In other words, a frequent pattern X cannot be sub-pattern of larger frequent pattern to qualify for the definition maximal itemset.
+FP-Max is a variant of FP-Growth, which focuses on obtaining maximal item sets. 
+An item set X is said to maximal if X is frequent and there exists no frequent super-pattern containing X. In other words, a frequent pattern X cannot be sub-pattern of larger frequent pattern to qualify for the definition maximal item set.
 
 **References**
 
-[1] Grahne, G., & Zhu, J. (2003, November). Efficiently using prefix-trees in mining frequent itemsets. In FIMI (Vol. 90).
+[1] Grahne, G., & Zhu, J. (2003, November). Efficiently using prefix-trees in mining frequent item sets. In FIMI (Vol. 90).
             """,
         key="CHOICE_ALG_FPMAX",
         label="**FP-Max Algorithm**",
@@ -3524,7 +3518,7 @@ An itemset X is said to maximal if X is frequent and there exists no frequent su
     ):
         CHOICE_ALG_MIN_SUPPORT = st.sidebar.number_input(
             help="""
-A decimal value 0 and 1 for minimum support of the itemsets returned.
+A decimal value 0 and 1 for minimum support of the item sets returned.
 The support is computed as the fraction
 `transactions_where_item(s)_occur / total_transactions`.
             """,
@@ -3592,20 +3586,6 @@ to decide whether a candidate rule is of interest.
             value=False,
         )
 
-        if CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE:
-            CHOICE_SHOW_FILTERED_RAW_DATA_PROFILE_TYPE = st.sidebar.radio(
-                help="explorative: thorough but also slow - minimal: minimal but faster.",
-                index=1,
-                key="CHOICE_RAW_DATA_PROFILE_TYPE",
-                label="**Data profile type**",
-                options=(
-                    [
-                        "explorative",
-                        "minimal",
-                    ]
-                ),
-            )
-
     CHOICE_SHOW_TRANSACTION_DATA = st.sidebar.checkbox(
         help="Tabular representation of the filtered detailed transaction data.",
         key="CHOICE_TRANSACTION_DATA_DETAILS",
@@ -3636,16 +3616,16 @@ to decide whether a candidate rule is of interest.
         or CHOICE_ALG_FPMAX
     ):
         CHOICE_SHOW_FREQUENT_ITEMSETS = st.sidebar.checkbox(
-            help="Tabular representation of the frequent itemsets.",
+            help="Tabular representation of the frequent item sets.",
             key="CHOICE_FREQUENT_ITEMSETS_DETAILS",
-            label="**Show Frequent Itemsets**",
+            label="**Show Frequent Item Sets**",
             value=True,
         )
         if CHOICE_ALG_ECLAT:
             CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT = st.sidebar.checkbox(
-                help="Tree map representation of the frequent itemsets.",
+                help="Tree map representation of the frequent item sets.",
                 key="CHOICE_ITEM_DISTRIBUTION_TREE_MAP_ECLAT",
-                label="**Show Frequent Itemsets TreeMap**",
+                label="**Show Frequent Item Sets TreeMap**",
                 value=False,
             )
         CHOICE_SHOW_ASSOCIATION_RULES = st.sidebar.checkbox(

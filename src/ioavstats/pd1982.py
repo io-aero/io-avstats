@@ -674,7 +674,6 @@ def _setup_task_controls():
 
     CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(
         help="Available database tables and views for profiling.",
-        index=5,
         label="**Database tables and views**",
         options=(QUERIES.keys()),
     )

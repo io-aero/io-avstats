@@ -74,7 +74,27 @@ The following tasks must be performed every month on the 1st, 8th, 15th and 22nd
 |     5. | v_n_d | Verify selected NTSB data                                     |
 |     6. | r_d_s | Refresh the PostgreSQL database schema                        |
 
-## 3. Backup 
+## 3. Repository io-avstats
+
+- Modify the word document `upload/IO-AVSTATS.docx`
+- Create the pdf file `upload/IO-AVSTATS.pdf`
+- Modify the word document `upload/IO-AVSTATS-DB.docx`
+- Create the pdf file `upload/IO-AVSTATS-DB.pdf`
+- Run `make pipenv-dev`
+- Run `make final`
+- Create a pull request
+- Create the new release yy.mm.dd
+
+## 4. Repository io-avstats-shared
+
+- Create the log file `docs/yyyy_mm_dd_log_upddMON.md`
+- Modify the release notes file `docs/io_avstats_db_release_notes.md`
+- Modify the release notes file `docs/io_avstats_release_notes.md`
+- Modify the configuration file `mkdocs.yml`
+- Run `make final`
+- Create a pull request
+
+## 5. Backup 
 
 The following steps are used to backup the database **IO-AVSTATS-DB**:
 
@@ -83,22 +103,35 @@ The following steps are used to backup the database **IO-AVSTATS-DB**:
 |  1. | Backup the file directory **`data/postgres`** |
 |  2. | Update the Google Drive                       |
 
-### 3.1 Backup the file directory **`data/postgres`** 
+### 5.1 Backup the file directory **`data/postgres`** 
 
 - Stop the Docker container **`io_avstats_db`**.
 - Zip the file directory **`postgres`** in the file directory **`data`** - result is the file **`postgres.zip`**.
 - Rename the file **`data/postgres.sql`** to **`yy.mm.dd_postgres_upDDMON.zip`**.
 - Create a copy of the file **`data/yy.mm.dd_postgres_upDDMON.zip`** with the name **`latest_postgres.zip`**.
 
-### 3.2 Update the Google Drive 
+### 5.2 Update the Google Drive 
 
 - Log in to Google Drive with the Google Account **`io-avstats.io-aero@gmail.com`**.
 - Upload the file **`data/yy.mm.dd_postgres_upDDMON.zip`**.
 - Share the newly uploaded file.
 
-## 4 Optional data quality checks
+## 6. Create new application images
 
-#### 4.1 Event completeness
+| Task  | Description                     |
+|-------|---------------------------------|
+| c_d_i | Create or update a Docker image |
+
+## 7. Create the new cloud zip file
+
+| Task  | Description                 |
+|-------|-----------------------------|
+| c_f_z | Zip the files for the cloud |
+
+
+## 8 Optional data quality checks
+
+#### 8.1 Event completeness
 
 **Query**:
 
@@ -185,7 +218,7 @@ SELECT count(*) ,
  ORDER BY 2
 ```
 
-#### 4.2 Latitude & longitude
+#### 8.2 Latitude & longitude
 
 **Query Total:**:
 
@@ -222,7 +255,7 @@ SELECT count(*) "Count",
  ORDER BY io_dec_lat_lng_actions
 ```
 
-#### 4.3 Issue summary
+#### 8.3 Issue summary
 
 **Query Total:**:
 

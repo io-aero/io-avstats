@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 ifeq ($(OS),Windows_NT)
-	export DELETE_PIPFILE_LOCK=del Pipfile.lock
+	export DELETE_PIPFILE_LOCK=if exist pipfile.lock del /q pipfile.lock
 	export PIPENV=python -m pipenv
 	export PYTHON=python
 	export PYTHONPATH=src\\ioavstats
@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 	export PYTHONPATH_MYPY=src\\ioavstats
 	export SQLALCHEMY_WARN_20=1
 else
-	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
+	export DELETE_PIPFILE_LOCK=rm -rf pipfile.lock
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
 	export PYTHONPATH=src/ioavstats
@@ -61,8 +61,9 @@ bandit:             ## Find common security issues with Bandit.
 # Configuration file: pyproject.toml
 black:              ## Format the code with Black.
 	@echo Info **********  Start: black ****************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH_DEV}
+	@echo PIPENV        =${PIPENV}
+	@echo PYTHONPATH_DEV=${PYTHONPATH_DEV}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run black ${PYTHONPATH_DEV}
@@ -73,8 +74,8 @@ black:              ## Format the code with Black.
 # Configuration file: none
 compileall:         ## Byte-compile the Python libraries.
 	@echo Info **********  Start: Compile All Python Scripts *******************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PYTHON=${PYTHON}
+	@echo ----------------------------------------------------------------------
 	${PYTHON} --version
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m compileall
@@ -85,8 +86,9 @@ compileall:         ## Byte-compile the Python libraries.
 # Configuration file: none
 docformatter:       ## Format the docstrings with docformatter.
 	@echo Info **********  Start: docformatter *********************************
-	@echo PYTHON    =${PYTHON}
+	@echo PIPENV    =${PIPENV}
 	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run docformatter --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run docformatter --in-place -r ${PYTHONPATH}
@@ -97,8 +99,9 @@ docformatter:       ## Format the docstrings with docformatter.
 # Configuration file: cfg.cfg
 flake8:             ## Enforce the Python Style Guides with Flake8.
 	@echo Info **********  Start: Flake8 ***************************************
-	@echo PYTHON    =${PYTHON}
+	@echo PIPENV    =${PIPENV}
 	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run flake8 --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run flake8 ${PYTHONPATH}
@@ -109,20 +112,21 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 # Configuration file: pyproject.toml
 isort:              ## Edit and sort the imports with isort.
 	@echo Info **********  Start: isort ****************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH_DEV}
+	@echo PIPENV        =${PIPENV}
+	@echo PYTHONPATH_DEV=${PYTHONPATH_DEV}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run isort --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run isort ${PYTHONPATH_DEV}
-	@echo Info **********  End:   isort ***************************************
+	@echo Info **********  End:   isort ****************************************
 
 # Project documentation with Markdown.
 # https://github.com/mkdocs/mkdocs/
 # Configuration file: none
 mkdocs:             ## Create and upload the user documentation with MkDocs.
 	@echo Info **********  Start: MkDocs ***************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PIPENV=${PIPENV}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run mkdocs --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run mkdocs build
@@ -133,8 +137,9 @@ mkdocs:             ## Create and upload the user documentation with MkDocs.
 # Configuration file: pyproject.toml
 mypy:               ## Find typing issues with Mypy.
 	@echo Info **********  Start: Mypy *****************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH_MYPY}
+	@echo PIPENV         =${PIPENV}
+	@echo PYTHONPATH_MYPY=${PYTHONPATH_MYPY}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run mypy --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run mypy ${PYTHONPATH_MYPY}
@@ -148,20 +153,15 @@ mypy:               ## Find typing issues with Mypy.
 # Configuration file: Pipfile
 pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  Start: Installation of Development Packages *********
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
+	@echo PIPENV             =${PIPENV}
+	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
 	${PYTHON} -m pip install --upgrade pipenv
-	${PYTHON} -m pip uninstall -y virtualenv
-	${PYTHON} -m pip install virtualenv
-	${DELETE_PIPENV_LOCK}
-#	${PIPENV} install --skip-lock
-#	${PIPENV} graph
-	${PIPENV} install
+	${DELETE_PIPFILE_LOCK}
 	${PIPENV} --rm
 	${PIPENV} install --dev
-	${PIPENV} update --dev
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
 	@echo ----------------------------------------------------------------------
@@ -171,20 +171,15 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  End:   Installation of Development Packages *********
 pipenv-prod:        ## Install the package dependencies for production.
 	@echo Info **********  Start: Installation of Production Packages **********
+	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
+	@echo PIPENV             =${PIPENV}
 	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
 	${PYTHON} -m pip install --upgrade pipenv
-	${PYTHON} -m pip uninstall -y virtualenv
-	${PYTHON} -m pip install virtualenv
-	${DELETE_PIPENV_LOCK}
-#	${PIPENV} install --skip-lock
-#	${PIPENV} graph
-	${PIPENV} install
+	${DELETE_PIPFILE_LOCK}
 	${PIPENV} --rm
 	${PIPENV} install
-	${PIPENV} update
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
 	@echo ----------------------------------------------------------------------
@@ -198,8 +193,9 @@ pipenv-prod:        ## Install the package dependencies for production.
 # Configuration file: pyproject.toml
 pydocstyle:         ## Check the API documentation with pydocstyle.
 	@echo Info **********  Start: pydocstyle ***********************************
-	@echo PYTHON    =${PYTHON}
+	@echo PIPENV    =${PIPENV}
 	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run pydocstyle --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pydocstyle --count --match='(?!PDFLIB\\)*\.py' ${PYTHONPATH}
@@ -210,20 +206,21 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 # Configuration file: .pylintrc
 pylint:             ## Lint the code with Pylint.
 	@echo Info **********  Start: Pylint ***************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo PIPENV                  =${PIPENV}
+	@echo PYTHONPATH              =${PYTHONPATH}
+	@echo PYTHONPATH_IO_AVSTATS_DB=${PYTHONPATH_IO_AVSTATS_DB}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-#   ${PIPENV} run pylint ${PYTHONPATH}
-	${PIPENV} run pylint ${PYTHONPATH}
+	${PIPENV} run pylint ${PYTHONPATH} ${PYTHONPATH_IO_AVSTATS_DB}
 	@echo Info **********  End:   Pylint ***************************************
 
 version:            ## Show the installed software versions.
 	@echo Info **********  Start: version **************************************
 	@echo PYTHON=${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip --version
 	${PYTHON} -m pipenv --version
 	@echo Info **********  End:   version **************************************
 
-## =============================================================================
+## ============================================================================

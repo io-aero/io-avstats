@@ -21,7 +21,7 @@ On the EC2 dashboard, select **Instances** and then **Launch instance**.
 
 ### 1.2 Application and OS Images
 
-- **`Ubuntu Server 20.04 LTS (HVM), SSD Volume Type`**
+- **`Ubuntu Server 22.04 LTS (HVM), SSD Volume Type`**
 
 <kbd>![](img/aws_instance_04.png)</kbd>
 

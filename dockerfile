@@ -1,4 +1,4 @@
-FROM python:3.10.10 as base
+FROM python:3.10.11 as base
 
 LABEL maintainer="IO-Aero"
 

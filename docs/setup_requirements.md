@@ -2,7 +2,7 @@
 
 The following are the minimum requirements to run the application:
 
-- Operating System **`Windows 10`** or **`Windows 11`** - except for the tasks that require ODBC, the operating system **`Ubuntu LTS 20.04`** can also be used.
+- Operating System **`Windows 10`** or **`Windows 11`** - except for the tasks that require ODBC, the operating system **`Ubuntu LTS 22.04`** can also be used.
 
 ---
 

@@ -159,8 +159,8 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
 	${PYTHON} -m pip install --upgrade pipenv
+	${PYTHON} -m pip install --upgrade virtualenv
 	${DELETE_PIPFILE_LOCK}
-	${PIPENV} --rm
 	${PIPENV} install --dev
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
@@ -168,17 +168,18 @@ pipenv-dev:         ## Install the package dependencies for development.
 	${PYTHON} --version
 	${PYTHON} -m pip --version
 	${PYTHON} -m pipenv --version
+	${PYTHON} -m virtualenv --version
 	@echo Info **********  End:   Installation of Development Packages *********
 pipenv-prod:        ## Install the package dependencies for production.
 	@echo Info **********  Start: Installation of Production Packages **********
 	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
 	@echo PIPENV             =${PIPENV}
-	@echo PYTHON    =${PYTHON}
+	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
 	${PYTHON} -m pip install --upgrade pipenv
+	${PYTHON} -m pip install --upgrade virtualenv
 	${DELETE_PIPFILE_LOCK}
-	${PIPENV} --rm
 	${PIPENV} install
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
@@ -186,6 +187,7 @@ pipenv-prod:        ## Install the package dependencies for production.
 	${PYTHON} --version
 	${PYTHON} -m pip --version
 	${PYTHON} -m pipenv --version
+	${PYTHON} -m virtualenv --version
 	@echo Info **********  End:   Installation of Production Packages **********
 
 # pydocstyle - docstring style checker.

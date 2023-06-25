@@ -4,17 +4,15 @@ ifeq ($(OS),Windows_NT)
 	export DELETE_PIPFILE_LOCK=if exist pipfile.lock del /q pipfile.lock
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=src\\ioavstats
-	export PYTHONPATH_DEV=src\\ioavstats
-	export PYTHONPATH_MYPY=src\\ioavstats
+	export PYTHONPATH=src
+	export PYTHONPATH_IO_AVSTATS=src\\ioavstats
 	export SQLALCHEMY_WARN_20=1
 else
 	export DELETE_PIPFILE_LOCK=rm -rf pipfile.lock
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=src/ioavstats
-	export PYTHONPATH_DEV=src/ioavstats
-	export PYTHONPATH_MYPY=src/ioavstats
+	export PYTHONPATH=src
+	export PYTHONPATH_IO_AVSTATS=src/ioavstats
 	export SQLALCHEMY_WARN_20=1
 endif
 
@@ -49,11 +47,12 @@ help:
 # Configuration file: none
 bandit:             ## Find common security issues with Bandit.
 	@echo Info **********  Start: Bandit ***************************************
-	@echo PYTHON    =${PYTHON}
-	@echo PYTHONPATH=${PYTHONPATH_DEV}
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
 	${PIPENV} run bandit --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH_DEV}
+	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH}
 	@echo Info **********  End:   Bandit ***************************************
 
 # The Uncompromising Code Formatter
@@ -61,12 +60,12 @@ bandit:             ## Find common security issues with Bandit.
 # Configuration file: pyproject.toml
 black:              ## Format the code with Black.
 	@echo Info **********  Start: black ****************************************
-	@echo PIPENV        =${PIPENV}
-	@echo PYTHONPATH_DEV=${PYTHONPATH_DEV}
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run black ${PYTHONPATH_DEV}
+	${PIPENV} run black ${PYTHONPATH}
 	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
@@ -112,12 +111,12 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 # Configuration file: pyproject.toml
 isort:              ## Edit and sort the imports with isort.
 	@echo Info **********  Start: isort ****************************************
-	@echo PIPENV        =${PIPENV}
-	@echo PYTHONPATH_DEV=${PYTHONPATH_DEV}
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run isort --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run isort ${PYTHONPATH_DEV}
+	${PIPENV} run isort ${PYTHONPATH}
 	@echo Info **********  End:   isort ****************************************
 
 # Project documentation with Markdown.
@@ -137,12 +136,12 @@ mkdocs:             ## Create and upload the user documentation with MkDocs.
 # Configuration file: pyproject.toml
 mypy:               ## Find typing issues with Mypy.
 	@echo Info **********  Start: Mypy *****************************************
-	@echo PIPENV         =${PIPENV}
-	@echo PYTHONPATH_MYPY=${PYTHONPATH_MYPY}
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run mypy --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run mypy ${PYTHONPATH_MYPY}
+	${PIPENV} run mypy ${PYTHONPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
 # pip is the package installer for Python.
@@ -208,13 +207,13 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 # Configuration file: .pylintrc
 pylint:             ## Lint the code with Pylint.
 	@echo Info **********  Start: Pylint ***************************************
-	@echo PIPENV                  =${PIPENV}
-	@echo PYTHONPATH              =${PYTHONPATH}
-	@echo PYTHONPATH_IO_AVSTATS_DB=${PYTHONPATH_IO_AVSTATS_DB}
+	@echo PIPENV               =${PIPENV}
+	@echo PYTHONPATH           =${PYTHONPATH}
+	@echo PYTHONPATH_IO_AVSTATS=${PYTHONPATH_IO_AVSTATS}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pylint ${PYTHONPATH} ${PYTHONPATH_IO_AVSTATS_DB}
+	${PIPENV} run pylint ${PYTHONPATH}
 	@echo Info **********  End:   Pylint ***************************************
 
 version:            ## Show the installed software versions.
@@ -225,4 +224,4 @@ version:            ## Show the installed software versions.
 	${PYTHON} -m pipenv --version
 	@echo Info **********  End:   version **************************************
 
-## ============================================================================
+## =============================================================================

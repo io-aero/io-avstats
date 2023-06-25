@@ -10,7 +10,7 @@ import numpy
 import pandas as pd
 import plotly.express as px  # type: ignore
 import streamlit as st
-import utils  # type: ignore
+import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from mlxtend.frequent_patterns import apriori  # type: ignore
 from mlxtend.frequent_patterns import association_rules

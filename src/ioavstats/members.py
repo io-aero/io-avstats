@@ -8,7 +8,7 @@ import pathlib
 import time
 
 import streamlit as st
-import utils  # type: ignore
+import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from PIL import Image  # type: ignore
 

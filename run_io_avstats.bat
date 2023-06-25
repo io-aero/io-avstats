@@ -80,6 +80,7 @@ if ["%1"] EQU [""] (
     echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
+    echo s_d_c   - Set up the PostgreSQL database container
     echo u_d_s   - Update the PostgreSQL database schema
     echo ---------------------------------------------------------
     echo c_d_i   - Create or update a Docker image
@@ -523,6 +524,19 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
         )
 
         goto END_OF_SCRIPT
+    )
+
+    goto END_OF_SCRIPT
+)
+
+rem ----------------------------------------------------------------------------
+rem Set up the database container.
+rem ----------------------------------------------------------------------------
+if ["%IO_AVSTATS_TASK%"] EQU ["s_d_c"] (
+    call scripts\run_setup_postgresql
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
     )
 
     goto END_OF_SCRIPT

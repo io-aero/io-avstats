@@ -2,7 +2,6 @@ name: Test - Production
 
 on:
   pull_request:
-    types: [opened, reopened]
     branches: [ 'main' ]
 
 env:
@@ -49,10 +48,21 @@ jobs:
         run: make pipenv-prod
       - name: Create a PostgreSQL Container
         run: |
-            chmod +x ./scripts/run_prep_bash_scripts.sh
+            chmod -c -f -R +x ./*.sh
             ./scripts/run_prep_bash_scripts.sh
-            ./run_io_avstats.sh c_d_l
+            ./run_io_avstats.sh s_d_c
             ./run_io_avstats.sh c_d_s
+            ./run_io_avstats.sh u_d_s
             ./run_io_avstats.sh version
       - name: Compile the Python code
         run: make compileall
+      - name: Run pytest for writing better program
+        run: |
+            echo "::echo::on"
+            echo "================================================================================"
+            echo "Current version of Docker Desktop: $(docker version)" 
+            echo "Current version of Python3: $(python --version)"
+            echo "Current version of pip3: $(pip --version || true)"
+            echo "Current version of Ubuntu: $(lsb_release -a)"
+            echo "================================================================================"
+            make pytest-ci

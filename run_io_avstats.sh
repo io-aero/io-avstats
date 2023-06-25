@@ -73,6 +73,7 @@ if [ -z "$1" ]; then
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
+    echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
@@ -236,6 +237,14 @@ elif [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run src/ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
+    fi
+
+# ------------------------------------------------------------------------------
+# Set up the database container.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AVSTATS_TASK}" = "s_d_c" ]; then
+    if ! ( ./scripts/run_setup_postgresql.sh ); then
+        exit 255
     fi
 
 # ------------------------------------------------------------------------------

@@ -1,0 +1,58 @@
+name: Test - Development
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches: [ 'main' ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  test_development:
+    # --------------------------------------------------------------------------
+    # Install the development environment and run all tests based on pytest.
+    # --------------------------------------------------------------------------
+    name: OS ${{ matrix.os }} - Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: ["ubuntu-22.04"]
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1  # no history, just HEAD
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Step - Necessary system software
+        run: |
+            sudo apt-get update -y
+            sudo apt-get install -y curl \
+                                    dos2unix \
+                                    lsb-core \
+                                    software-properties-common
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" --yes
+            sudo apt-key fingerprint 0EBFCD88
+            sudo apt-get install -y docker-ce \
+                                    docker-ce-cli \
+                                    containerd.io 
+            sudo chmod 666 /var/run/docker.sock
+            if ! [ $(getent group docker | grep -q "\b$USER\b") ]; then
+                sudo usermod -aG docker $USER
+            fi
+      - name: Install dev dependencies
+        run: make pipenv-dev
+      - name: Create a PostgreSQL Container
+        run: |
+            chmod -R +x *.sh
+            ./scripts/run_prep_bash_scripts.sh
+            ./run_io_avstats.sh c_d_l
+            ./run_io_avstats.sh c_d_s
+            ./run_io_avstats.sh version
+      - name: Compile the Python code
+        run: make compileall

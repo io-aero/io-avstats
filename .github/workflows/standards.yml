@@ -49,7 +49,7 @@ jobs:
       - name: Install dev dependencies
         run: make pipenv-dev
       - name: Run the whole software quality chain
-        run: make format lint docs
+        run: make isort black               lint docs
       - name: Commit documentation and sourcecode # transfer the new html files back into the repository
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -8,7 +8,7 @@ import time
 
 import pandas as pd
 import streamlit as st
-import utils  # type: ignore
+import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg2.extensions import connection

@@ -2,7 +2,6 @@ name: Test - Development
 
 on:
   pull_request:
-    types: [opened, reopened]
     branches: [ 'main' ]
 
 env:
@@ -47,12 +46,5 @@ jobs:
             fi
       - name: Install dev dependencies
         run: make pipenv-dev
-      - name: Create a PostgreSQL Container
-        run: |
-            chmod +x ./scripts/run_prep_bash_scripts.sh
-            ./scripts/run_prep_bash_scripts.sh
-            ./run_io_avstats.sh c_d_l
-            ./run_io_avstats.sh c_d_s
-            ./run_io_avstats.sh version
       - name: Compile the Python code
         run: make compileall

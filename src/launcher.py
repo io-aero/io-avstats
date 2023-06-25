@@ -10,9 +10,11 @@ import locale
 import sys
 import time
 
-from ioavstatsdb import avstats
-from ioavstatsdb import io_glob
-from ioavstatsdb import io_utils
+# pylint: disable=import-error
+# pylint: disable=no-name-in-module
+from ioavstatsdb import avstats  # type: ignore
+from ioavstatsdb import io_glob  # type: ignore
+from ioavstatsdb import io_utils  # type: ignore
 
 
 # -----------------------------------------------------------------------------

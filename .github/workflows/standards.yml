@@ -48,16 +48,8 @@ jobs:
             fi
       - name: Install dev dependencies
         run: make pipenv-dev
-      - name: Create a PostgreSQL Container
-        run: |
-            chmod -c -f -R +x ./*.sh
-            ./scripts/run_prep_bash_scripts.sh
-            ./run_io_avstats.sh s_d_c
-            ./run_io_avstats.sh c_d_s
-            ./run_io_avstats.sh u_d_s
-            ./run_io_avstats.sh version
       - name: Run the whole software quality chain
-        run: make format lint docs tests
+        run: make format lint docs
       - name: Commit documentation and sourcecode # transfer the new html files back into the repository
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

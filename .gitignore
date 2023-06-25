@@ -2,7 +2,6 @@
 /.history/
 /.idea/
 /.mypy_cache/
-/.pytest_cache/
 /Pipfile.lock
 /cloud.zip
 /data/*_postgres*.zip
@@ -19,5 +18,5 @@
 /src/ioavstats/stats.py
 /tmp/
 /upload/IO-AVSTATS-DB.pdf
-/upload/IO-AVSTATS-DB.zip
+/upload/IO-AVSTATS.pdf
 coverage.xml

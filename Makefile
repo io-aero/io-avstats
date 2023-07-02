@@ -4,25 +4,23 @@ ifeq ($(OS),Windows_NT)
 	export DELETE_PIPFILE_LOCK=if exist pipfile.lock del /q pipfile.lock
 	export PIPENV=python -m pipenv
 	export PYTHON=python
-	export PYTHONPATH=src
-	export PYTHONPATH_IO_AVSTATS=src\\ioavstats
 	export SQLALCHEMY_WARN_20=1
 else
 	export DELETE_PIPFILE_LOCK=rm -rf pipfile.lock
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export PYTHONPATH=src
-	export PYTHONPATH_IO_AVSTATS=src/ioavstats
 	export SQLALCHEMY_WARN_20=1
 endif
 
+export PYTHONPATH=src
+
 ## =============================================================================
 ## IO-AVSTATS - Aviation Event Statistics - make Documentation.
-##                --------------------------------------------------------------
+##                ---------------------------------------------------------------
 ##                The purpose of this Makefile is to support the whole software
 ##                development process for io-avstats. It contains also the
 ##                necessary tools for the CI activities.
-##                --------------------------------------------------------------
+##                ---------------------------------------------------------------
 ##                The available make commands are:
 ## -----------------------------------------------------------------------------
 ## help:               Show this help.
@@ -31,7 +29,7 @@ endif
 dev: format lint
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: pydocstyle mkdocs
-## final:              Format, lint and the documentation.
+## final:              Format and lint the code and create the documentation.
 final: format lint docs
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
@@ -207,9 +205,8 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 # Configuration file: .pylintrc
 pylint:             ## Lint the code with Pylint.
 	@echo Info **********  Start: Pylint ***************************************
-	@echo PIPENV               =${PIPENV}
-	@echo PYTHONPATH           =${PYTHONPATH}
-	@echo PYTHONPATH_IO_AVSTATS=${PYTHONPATH_IO_AVSTATS}
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------

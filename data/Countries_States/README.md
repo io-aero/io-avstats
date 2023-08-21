@@ -4,7 +4,7 @@ This file directory contains the necessary files for the processing step:
 
 - `l_c_s` - Load country and state data into PostgreSQL
 
-The following parameter in the file **`settings.io_avstats.toml`** is used to locate the file: 
+The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
 - `download_file_countries_states_json` = "data/Countries_States/countries_states.json"
 

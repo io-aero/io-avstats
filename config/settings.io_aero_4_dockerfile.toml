@@ -1,0 +1,11 @@
+[default]
+postgres_connection_port = 5432
+postgres_dbname = "io_aero_db"
+postgres_host = "io_aero_db"
+postgres_user_guest = "guest"
+
+[dev]
+
+[prod]
+
+[test]

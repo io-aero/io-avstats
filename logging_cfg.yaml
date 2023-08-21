@@ -15,7 +15,7 @@ handlers:
   file_handler:
     class: logging.FileHandler
     level: INFO
-    filename: logging_io-avstats.log
+    filename: logging_io_aero.log
     formatter: extended
 
 loggers:

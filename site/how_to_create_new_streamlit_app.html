@@ -21,7 +21,7 @@
         <link rel="next" href="how_to_setup_aws_instance.html">
       
       <link rel="icon" href="img/IO-Aero_1_Favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
@@ -743,6 +743,9 @@
                 
                   
 
+  
+  
+
 
 <h1 id="how-to-create-a-new-streamlit-app-checklist">How to create a new Streamlit app checklist</h1>
 <h2 id="1-naming-conventions">1. Naming Conventions</h2>
@@ -832,7 +835,7 @@
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>      - db
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    image: ioaero/ae1982:latest
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    ports:
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>      - &quot;${IO_AERO_STREAMLIT_SERVER_PORT_AE1982}:${IO_AERO_STREAMLIT_SERVER_PORT}&quot;
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    restart: always
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
 <a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  # ------------------------------------------------------------------------------
@@ -844,36 +847,36 @@
 <a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>      - db
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    image: ioaero/pd1982:latest
 <a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    ports:
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>      - &quot;${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}&quot;
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>      - &quot;${IO_AERO_STREAMLIT_SERVER_PORT_PD1982}:${IO_AERO_STREAMLIT_SERVER_PORT}&quot;
 <a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    restart: always
 </code></pre></div>
 <h2 id="5-scripts">5. Scripts</h2>
 <h3 id="51-run_io_avstats">5.1 run_io_avstats</h3>
 <p><strong>cmd</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>if [&quot;%IO_AVSTATS_TASK%&quot;] EQU [&quot;r_s_a&quot;] (
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>if [&quot;%IO_AERO_TASK%&quot;] EQU [&quot;r_s_a&quot;] (
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    if [&quot;%2&quot;] EQU [&quot;&quot;] (
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        echo =========================================================
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        echo ae1982 - Aircraft Accidents in the US since 1982
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        echo pd1982 - Profiling Data for the US since 1982
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        echo ---------------------------------------------------------
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        set /P IO_AVSTATS_APPLICATION=&quot;Enter the Streamlit application name &quot;
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        set /P IO_AERO_APPLICATION=&quot;Enter the Streamlit application name &quot;
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    ) else (
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        set IO_AVSTATS_APPLICATION=%2
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        set IO_AERO_APPLICATION=%2
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    )
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>)
 </code></pre></div>
 <p><strong>bash</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>if [ &quot;${IO_AVSTATS_TASK}&quot; = &quot;r_s_a&quot; ]; then
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>if [ &quot;${IO_AERO_TASK}&quot; = &quot;r_s_a&quot; ]; then
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    if [ -z &quot;$2&quot; ]; then
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        echo &quot;=========================================================&quot;
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        echo &quot;ae1982 - Aircraft Accidents in the US since 1982&quot;
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        echo &quot;pd1982 - Profiling Data for the US since 1982&quot;
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        echo &quot;---------------------------------------------------------&quot;
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        # shellcheck disable=SC2162
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        read -p &quot;Enter the Streamlit application name &quot; IO_AVSTATS_APPLICATION
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        read -p &quot;Enter the Streamlit application name &quot; IO_AERO_APPLICATION
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        export IO_AERO_APPLICATION=${IO_AERO_APPLICATION}
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    else
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        export IO_AVSTATS_APPLICATION=$2
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        export IO_AERO_APPLICATION=$2
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    fi
 <a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>fi
 </code></pre></div>
@@ -912,14 +915,14 @@
 </code></pre></div>
 <h4 id="522-scriptsrun_docker_compose">5.2.2 scripts/run_docker_compose</h4>
 <p><strong>cmd</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>set IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>set IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>...
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>echo STREAMLIT_SRRVER_PORT_X...X : %IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X%
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>echo STREAMLIT_SRRVER_PORT_X...X : %IO_AERO_STREAMLIT_SERVER_PORT_X...X%
 </code></pre></div>
 <p><strong>bash</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>export IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>export IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>...
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>echo &quot;STREAMLIT_SRRVER_PORT_X...X : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X}&quot;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>echo &quot;STREAMLIT_SRRVER_PORT_X...X : ${IO_AERO_STREAMLIT_SERVER_PORT_X...X}&quot;
 </code></pre></div>
 
 

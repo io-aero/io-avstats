@@ -11,7 +11,7 @@ set -e
 export APPLICATION_DEFAULT=stats
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=yes
-export IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+export IO_AERO_STREAMLIT_SERVER_PORT=8501
 export MODE=n/a
 
 if [ -z "$1" ]; then
@@ -71,7 +71,7 @@ echo "Create a Docker image for application ${APPLICATION}"
 echo "--------------------------------------------------------------------------------"
 echo "DOCKER_CLEAR_CACHE       : ${DOCKER_CLEAR_CACHE}"
 echo "DOCKER_HUB_PUSH          : ${DOCKER_HUB_PUSH}"
-echo "STREAMLIT_SERVER_PORT    : ${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+echo "STREAMLIT_SERVER_PORT    : ${IO_AERO_STREAMLIT_SERVER_PORT}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -127,7 +127,7 @@ fi
 
 docker build --build-arg APP="${APPLICATION}" \
              --build-arg MODE=${MODE} \
-             --build-arg SERVER_PORT=${IO_AVSTATS_STREAMLIT_SERVER_PORT} \
+             --build-arg SERVER_PORT=${IO_AERO_STREAMLIT_SERVER_PORT} \
              -t ioaero/"${APPLICATION}" .
 
 docker tag ioaero/"${APPLICATION}" ioaero/"${APPLICATION}"

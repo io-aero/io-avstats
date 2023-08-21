@@ -4,7 +4,7 @@ This file directory contains the necessary files for the processing step:
 
 - `l_s_d` - Load simplemaps data into PostgreSQL
 
-The following parameters in the file **`settings.io_avstats.toml`** is used to locate the files: 
+The following parameters in the file **`settings.io_aero.toml`** is used to locate the files: 
 
 - `download_file_simplemaps_us_cities_xlsx` = "data/simplemaps/uscities.xlsx"
 - `download_file_simplemaps_us_zips_xlsx` = "data/simplemaps/uszips.xlsx"

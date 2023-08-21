@@ -1,9 +1,9 @@
 # Configuration - **IO-AVSTATS**
 
 For the administration of the configuration parameters of **IO-AVSTATS** the tool [**dynaconf**](https://www.dynaconf.com){:target="_blank"} is used.
-The two files `settings.io_avstats.toml` and `.settings.io_avstats.toml` are available as configuration files.
-The `.settings.io_avstats.toml` file contains the security related parameters such as passwords and is not made available in the GitHub repository.
-The names of **IO-AVSTATS** related environment variables must include the prefix `IO_AVSTATS`.
+The two files `settings.io_aero.toml` and `.settings.io_aero.toml` are available as configuration files.
+The `.settings.io_aero.toml` file contains the security related parameters such as passwords and is not made available in the GitHub repository.
+The names of **IO-AVSTATS** related environment variables must include the prefix `IO_AERO`.
 Layered environments are supported.
 The `test` layer is used for the automated tests.
 
@@ -54,5 +54,5 @@ The `test` layer is used for the automated tests.
 
 ## 2. Notes
 
-1. The configuration parameters `postgres_password` and `postgres_password_admin` can be found in the configuration file `.settings.io_avstats.toml`.
-2. The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable `IO_AVSTATS_IS_VERBOSE` overrides the configuration parameter `is_verbose`. 
+1. The configuration parameters `postgres_password` and `postgres_password_admin` can be found in the configuration file `.settings.io_aero.toml`.
+2. The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable `IO_AERO_IS_VERBOSE` overrides the configuration parameter `is_verbose`. 

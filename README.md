@@ -25,10 +25,11 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | config            | Configuration files.                                       |
 | data              | Application data related files.                            |
 | docs              | Documentation files.                                       |
+| ioavstats         | Python script files.                                       |
 | resources         | Selected manuals and software.                             |
 | scripts           | Supporting Ubuntu and Windows Scripts.                     |
 | site              | Documentation as static HTML pages.                        |
-| src               | Python script files.                                       |
+| tests             | Scripts and data for **pytest**.                           |
 | upload            | Cloud related upload directory.                            |
 
 ### 3.2 Files
@@ -36,7 +37,8 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | File                      | Functionality                                               |
 |---------------------------|-------------------------------------------------------------|
 | .gitignore                | Configuration of files and folders to be ignored.           |
-| .settings.io_avstats.toml | Configuration data - secrets.                               |
+| .pylintrc                 | **pylint** configuration file.                                     |
+| .settings.io_aero.toml    | Configuration data - secrets.                               |
 | docker-compose_cloud.yaml | Cloud related Docker Compose configuration file.            |
 | docker-compose_local.yaml | Local Docker Compose configuration file.                    |
 | dockerfile                | Build instructions for the Streamlit application images.    |
@@ -49,5 +51,5 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | pyproject.toml            | Optional configuration data for the software quality tools. |
 | README.md                 | This file.                                                  |
 | run_io_avstats            | Main script for using the functionality of **IO-AVSTATS**.  |
-| settings.io_avstats.toml  | Configuration data.                                         |
+| settings.io_aero.toml     | Configuration data.                                         |
 | setup.cfg                 | Optional configuration data for **flake8**.                 |

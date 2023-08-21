@@ -22,19 +22,19 @@ services:
   # ------------------------------------------------------------------------------
   # PostgreSQL Database IO-AVSTATS-DB.
   # ------------------------------------------------------------------------------
-  io_avstats_db:
+  IO_AERO_db:
     command: postgres -c "max_connections=200"
-    container_name: io_avstats_db
+    container_name: IO_AERO_db
     environment:
-      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_DBNAME}
-      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_PASSWORD}
-      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_USER}
-    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
+      - POSTGRES_DB=${IO_AERO_POSTGRES_DBNAME}
+      - POSTGRES_PASSWORD=${IO_AERO_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${IO_AERO_POSTGRES_USER}
+    image: postgres:${IO_AERO_POSTGRES_VERSION}
     ports:
-      - ${IO_AVSTATS_POSTGRES_CONNECTION_PORT}:5432
+      - ${IO_AERO_POSTGRES_CONNECTION_PORT}:5432
     restart: always
     volumes:
-      - ./${IO_AVSTATS_POSTGRES_PGDATA}:/var/lib/postgresql/data
+      - ./${IO_AERO_POSTGRES_PGDATA}:/var/lib/postgresql/data
 
   # ------------------------------------------------------------------------------
   # PostgreSQL Database Keycloak.
@@ -43,15 +43,15 @@ services:
     command: postgres -c "max_connections=200"
     container_name: keycloak_db
     environment:
-      - POSTGRES_DB=${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME}
-      - POSTGRES_PASSWORD=${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD}
-      - POSTGRES_USER=${IO_AVSTATS_POSTGRES_KEYCLOAK_USER}
-    image: postgres:${IO_AVSTATS_POSTGRES_VERSION}
+      - POSTGRES_DB=${IO_AERO_POSTGRES_KEYCLOAK_DBNAME}
+      - POSTGRES_PASSWORD=${IO_AERO_POSTGRES_KEYCLOAK_PASSWORD}
+      - POSTGRES_USER=${IO_AERO_POSTGRES_KEYCLOAK_USER}
+    image: postgres:${IO_AERO_POSTGRES_VERSION}
     ports:
-      - ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONNECTION_PORT}:5432
+      - ${IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT}:5432
     restart: always
     volumes:
-      - ./${IO_AVSTATS_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data
+      - ./${IO_AERO_POSTGRES_KEYCLOAK_PGDATA}:/var/lib/postgresql/data
 
   # ------------------------------------------------------------------------------
   # Keycloak.
@@ -63,19 +63,19 @@ services:
       - keycloak_db
     environment:
       KC_DB: postgres
-      KC_DB_PASSWORD: ${IO_AVSTATS_POSTGRES_KEYCLOAK_PASSWORD}
-      KC_DB_URL_DATABASE: ${IO_AVSTATS_POSTGRES_KEYCLOAK_DBNAME}
-      KC_DB_URL_HOST: ${IO_AVSTATS_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-      KC_DB_USERNAME: ${IO_AVSTATS_POSTGRES_KEYCLOAK_USER}
+      KC_DB_PASSWORD: ${IO_AERO_POSTGRES_KEYCLOAK_PASSWORD}
+      KC_DB_URL_DATABASE: ${IO_AERO_POSTGRES_KEYCLOAK_DBNAME}
+      KC_DB_URL_HOST: ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}
+      KC_DB_USERNAME: ${IO_AERO_POSTGRES_KEYCLOAK_USER}
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_URL: http://auth.io-aero.com/
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: 0.0.0.0
       KC_HTTPS_CLIENT_AUTH: none
       KC_PROXY: edge
-      KEYCLOAK_ADMIN: ${IO_AVSTATS_KEYCLOAK_USER}
-      KEYCLOAK_ADMIN_PASSWORD: ${IO_AVSTATS_KEYCLOAK_PASSWORD}
-    image: quay.io/keycloak/keycloak:${IO_AVSTATS_KEYCLOAK_VERSION}
+      KEYCLOAK_ADMIN: ${IO_AERO_KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${IO_AERO_KEYCLOAK_PASSWORD}
+    image: quay.io/keycloak/keycloak:${IO_AERO_KEYCLOAK_VERSION}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -84,10 +84,10 @@ services:
   ae1982:
     container_name: ae1982
     depends_on:
-      - io_avstats_db
+      - IO_AERO_db
     image: ioaero/ae1982:latest
     expose:
-      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+      - ${IO_AERO_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -96,10 +96,10 @@ services:
   members:
     container_name: members
     depends_on:
-      - io_avstats_db
+      - IO_AERO_db
     image: ioaero/members:latest
     expose:
-      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+      - ${IO_AERO_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -108,10 +108,10 @@ services:
   pd1982:
     container_name: pd1982
     depends_on:
-      - io_avstats_db
+      - IO_AERO_db
     image: ioaero/pd1982:latest
     expose:
-      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+      - ${IO_AERO_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -120,10 +120,10 @@ services:
   slara:
     container_name: slara
     depends_on:
-      - io_avstats_db
+      - IO_AERO_db
     image: ioaero/slara:latest
     expose:
-      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+      - ${IO_AERO_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -132,10 +132,10 @@ services:
   stats:
     container_name: stats
     depends_on:
-      - io_avstats_db
+      - IO_AERO_db
     image: ioaero/stats:latest
     expose:
-      - ${IO_AVSTATS_STREAMLIT_SERVER_PORT}
+      - ${IO_AERO_STREAMLIT_SERVER_PORT}
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -154,7 +154,7 @@ services:
       - NGINX_ENTRYPOINT_QUIET_LOGS=1
     image: nginx:stable-alpine
     ports:
-      - ${IO_AVSTATS_NGINX_CONNECTION_PORT}:80
+      - ${IO_AERO_NGINX_CONNECTION_PORT}:80
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro

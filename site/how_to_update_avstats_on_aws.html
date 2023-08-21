@@ -21,7 +21,7 @@
         <link rel="next" href="LICENSE.html">
       
       <link rel="icon" href="img/IO-Aero_1_Favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
@@ -651,6 +651,9 @@
                 
                   
 
+  
+  
+
 
 <h1 id="how-to-update-io-avstats-in-an-aws-instance">How to update <strong>IO-AVSTATS</strong> in an AWS instance</h1>
 <p>The cloud version of <strong>IO-AVSTATS</strong> consists of a series of docker containers that are launched using Docker Compose.
@@ -795,12 +798,12 @@ A separate Docker image is created for each of the Streamlit applications. </p>
 <a id="__codelineno-0-111" name="__codelineno-0-111" href="#__codelineno-0-111"></a>Total reclaimed space: 2.785GB
 <a id="__codelineno-0-112" name="__codelineno-0-112" href="#__codelineno-0-112"></a>Docker stop/rm ae1982 ................................ before containers:
 <a id="__codelineno-0-113" name="__codelineno-0-113" href="#__codelineno-0-113"></a>CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
-<a id="__codelineno-0-114" name="__codelineno-0-114" href="#__codelineno-0-114"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Up 24 minutes             0.0.0.0:5432-&gt;5432/tcp                                     io_avstats_db
+<a id="__codelineno-0-114" name="__codelineno-0-114" href="#__codelineno-0-114"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Up 24 minutes             0.0.0.0:5432-&gt;5432/tcp                                     IO_AERO_db
 <a id="__codelineno-0-115" name="__codelineno-0-115" href="#__codelineno-0-115"></a>2f53ab870011   louislam/uptime-kuma:1   &quot;/usr/bin/dumb-init …&quot;   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001-&gt;3001/tcp                                     uptime-kuma
 <a id="__codelineno-0-116" name="__codelineno-0-116" href="#__codelineno-0-116"></a>f67eb28b8888   portainer/portainer-ce   &quot;/portainer&quot;             2 months ago   Up 24 minutes             0.0.0.0:8000-&gt;8000/tcp, 0.0.0.0:9000-&gt;9000/tcp, 9443/tcp   portainer
 <a id="__codelineno-0-117" name="__codelineno-0-117" href="#__codelineno-0-117"></a>............................................................. after containers:
 <a id="__codelineno-0-118" name="__codelineno-0-118" href="#__codelineno-0-118"></a>CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
-<a id="__codelineno-0-119" name="__codelineno-0-119" href="#__codelineno-0-119"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Up 24 minutes             0.0.0.0:5432-&gt;5432/tcp                                     io_avstats_db
+<a id="__codelineno-0-119" name="__codelineno-0-119" href="#__codelineno-0-119"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Up 24 minutes             0.0.0.0:5432-&gt;5432/tcp                                     IO_AERO_db
 <a id="__codelineno-0-120" name="__codelineno-0-120" href="#__codelineno-0-120"></a>2f53ab870011   louislam/uptime-kuma:1   &quot;/usr/bin/dumb-init …&quot;   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001-&gt;3001/tcp                                     uptime-kuma
 <a id="__codelineno-0-121" name="__codelineno-0-121" href="#__codelineno-0-121"></a>f67eb28b8888   portainer/portainer-ce   &quot;/portainer&quot;             2 months ago   Up 24 minutes             0.0.0.0:8000-&gt;8000/tcp, 0.0.0.0:9000-&gt;9000/tcp, 9443/tcp   portainer
 <a id="__codelineno-0-122" name="__codelineno-0-122" href="#__codelineno-0-122"></a>............................................................. before images:
@@ -845,12 +848,12 @@ A separate Docker image is created for each of the Streamlit applications. </p>
 <a id="__codelineno-0-161" name="__codelineno-0-161" href="#__codelineno-0-161"></a> =&gt; =&gt; sha256:3aae3bded9cfb06e92d7342abf1833b156fe197522ffbde031363194c429c8d5 8.53kB / 8.53kB                                                                                        0.0s
 <a id="__codelineno-0-162" name="__codelineno-0-162" href="#__codelineno-0-162"></a> =&gt; =&gt; sha256:08dfb526b02f1b849ca4ce479b51f100448053a67b64905a63dcdad2fe6802c5 2.22kB / 2.22kB                                                                                        0.0s
 <a id="__codelineno-0-163" name="__codelineno-0-163" href="#__codelineno-0-163"></a> =&gt; [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
-<a id="__codelineno-0-164" name="__codelineno-0-164" href="#__codelineno-0-164"></a> =&gt; [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.0s
+<a id="__codelineno-0-164" name="__codelineno-0-164" href="#__codelineno-0-164"></a> =&gt; [ 3/10] COPY .settings.io_aero.toml ./                                                                                                                                         0.0s
 <a id="__codelineno-0-165" name="__codelineno-0-165" href="#__codelineno-0-165"></a> =&gt; [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
 <a id="__codelineno-0-166" name="__codelineno-0-166" href="#__codelineno-0-166"></a> =&gt; [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
 <a id="__codelineno-0-167" name="__codelineno-0-167" href="#__codelineno-0-167"></a> =&gt; [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
 <a id="__codelineno-0-168" name="__codelineno-0-168" href="#__codelineno-0-168"></a> =&gt; [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
-<a id="__codelineno-0-169" name="__codelineno-0-169" href="#__codelineno-0-169"></a> =&gt; [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.0s
+<a id="__codelineno-0-169" name="__codelineno-0-169" href="#__codelineno-0-169"></a> =&gt; [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.0s
 <a id="__codelineno-0-170" name="__codelineno-0-170" href="#__codelineno-0-170"></a> =&gt; [ 9/10] COPY src/streamlit_apps/ae1982.py ./ae1982.py                                                                                                                         0.0s
 <a id="__codelineno-0-171" name="__codelineno-0-171" href="#__codelineno-0-171"></a> =&gt; [10/10] RUN make pipenv-prod                                                                                                                                                    116.1s
 <a id="__codelineno-0-172" name="__codelineno-0-172" href="#__codelineno-0-172"></a> =&gt; exporting to image                                                                                                                                                                7.6s
@@ -929,12 +932,12 @@ A separate Docker image is created for each of the Streamlit applications. </p>
 <a id="__codelineno-0-245" name="__codelineno-0-245" href="#__codelineno-0-245"></a>Total reclaimed space: 2.787GB
 <a id="__codelineno-0-246" name="__codelineno-0-246" href="#__codelineno-0-246"></a>Docker stop/rm pd1982 ................................ before containers:
 <a id="__codelineno-0-247" name="__codelineno-0-247" href="#__codelineno-0-247"></a>CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
-<a id="__codelineno-0-248" name="__codelineno-0-248" href="#__codelineno-0-248"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+<a id="__codelineno-0-248" name="__codelineno-0-248" href="#__codelineno-0-248"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Exited (0) About a minute ago                                                              IO_AERO_db
 <a id="__codelineno-0-249" name="__codelineno-0-249" href="#__codelineno-0-249"></a>2f53ab870011   louislam/uptime-kuma:1   &quot;/usr/bin/dumb-init …&quot;   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001-&gt;3001/tcp                                     uptime-kuma
 <a id="__codelineno-0-250" name="__codelineno-0-250" href="#__codelineno-0-250"></a>f67eb28b8888   portainer/portainer-ce   &quot;/portainer&quot;             2 months ago   Up 27 minutes                   0.0.0.0:8000-&gt;8000/tcp, 0.0.0.0:9000-&gt;9000/tcp, 9443/tcp   portainer
 <a id="__codelineno-0-251" name="__codelineno-0-251" href="#__codelineno-0-251"></a>............................................................. after containers:
 <a id="__codelineno-0-252" name="__codelineno-0-252" href="#__codelineno-0-252"></a>CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
-<a id="__codelineno-0-253" name="__codelineno-0-253" href="#__codelineno-0-253"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+<a id="__codelineno-0-253" name="__codelineno-0-253" href="#__codelineno-0-253"></a>9e010303ef67   postgres:latest          &quot;docker-entrypoint.s…&quot;   7 hours ago    Exited (0) About a minute ago                                                              IO_AERO_db
 <a id="__codelineno-0-254" name="__codelineno-0-254" href="#__codelineno-0-254"></a>2f53ab870011   louislam/uptime-kuma:1   &quot;/usr/bin/dumb-init …&quot;   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001-&gt;3001/tcp                                     uptime-kuma
 <a id="__codelineno-0-255" name="__codelineno-0-255" href="#__codelineno-0-255"></a>f67eb28b8888   portainer/portainer-ce   &quot;/portainer&quot;             2 months ago   Up 27 minutes                   0.0.0.0:8000-&gt;8000/tcp, 0.0.0.0:9000-&gt;9000/tcp, 9443/tcp   portainer
 <a id="__codelineno-0-256" name="__codelineno-0-256" href="#__codelineno-0-256"></a>............................................................. before images:
@@ -978,12 +981,12 @@ A separate Docker image is created for each of the Streamlit applications. </p>
 <a id="__codelineno-0-294" name="__codelineno-0-294" href="#__codelineno-0-294"></a> =&gt; [internal] load build context                                                                                                                                                     0.0s
 <a id="__codelineno-0-295" name="__codelineno-0-295" href="#__codelineno-0-295"></a> =&gt; =&gt; transferring context: 43.50kB                                                                                                                                                  0.0s
 <a id="__codelineno-0-296" name="__codelineno-0-296" href="#__codelineno-0-296"></a> =&gt; [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
-<a id="__codelineno-0-297" name="__codelineno-0-297" href="#__codelineno-0-297"></a> =&gt; [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.1s
+<a id="__codelineno-0-297" name="__codelineno-0-297" href="#__codelineno-0-297"></a> =&gt; [ 3/10] COPY .settings.io_aero.toml ./                                                                                                                                         0.1s
 <a id="__codelineno-0-298" name="__codelineno-0-298" href="#__codelineno-0-298"></a> =&gt; [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
 <a id="__codelineno-0-299" name="__codelineno-0-299" href="#__codelineno-0-299"></a> =&gt; [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
 <a id="__codelineno-0-300" name="__codelineno-0-300" href="#__codelineno-0-300"></a> =&gt; [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
 <a id="__codelineno-0-301" name="__codelineno-0-301" href="#__codelineno-0-301"></a> =&gt; [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
-<a id="__codelineno-0-302" name="__codelineno-0-302" href="#__codelineno-0-302"></a> =&gt; [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.1s
+<a id="__codelineno-0-302" name="__codelineno-0-302" href="#__codelineno-0-302"></a> =&gt; [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.1s
 <a id="__codelineno-0-303" name="__codelineno-0-303" href="#__codelineno-0-303"></a> =&gt; [ 9/10] COPY src/streamlit_apps/pd1982.py ./pd1982.py                                                                                                                         0.0s
 <a id="__codelineno-0-304" name="__codelineno-0-304" href="#__codelineno-0-304"></a> =&gt; [10/10] RUN make pipenv-prod                                                                                                                                                    116.0s
 <a id="__codelineno-0-305" name="__codelineno-0-305" href="#__codelineno-0-305"></a> =&gt; exporting to image                                                                                                                                                                7.6s

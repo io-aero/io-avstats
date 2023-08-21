@@ -132,12 +132,12 @@ is2due0y1dwyos9twpcy88qmu
 Total reclaimed space: 2.785GB
 Docker stop/rm ae1982 ................................ before containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
-9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     io_avstats_db
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     IO_AERO_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001->3001/tcp                                     uptime-kuma
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 24 minutes             0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. after containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS                                                      NAMES
-9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     io_avstats_db
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Up 24 minutes             0.0.0.0:5432->5432/tcp                                     IO_AERO_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 24 minutes (healthy)   0.0.0.0:3001->3001/tcp                                     uptime-kuma
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 24 minutes             0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. before images:
@@ -182,12 +182,12 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
  => => sha256:3aae3bded9cfb06e92d7342abf1833b156fe197522ffbde031363194c429c8d5 8.53kB / 8.53kB                                                                                        0.0s
  => => sha256:08dfb526b02f1b849ca4ce479b51f100448053a67b64905a63dcdad2fe6802c5 2.22kB / 2.22kB                                                                                        0.0s
  => [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
- => [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.0s
+ => [ 3/10] COPY .settings.io_aero.toml ./                                                                                                                                         0.0s
  => [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
  => [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
  => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
- => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.0s
+ => [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.0s
  => [ 9/10] COPY src/streamlit_apps/ae1982.py ./ae1982.py                                                                                                                         0.0s
  => [10/10] RUN make pipenv-prod                                                                                                                                                    116.1s
  => exporting to image                                                                                                                                                                7.6s
@@ -266,12 +266,12 @@ cop4h1ejwr20j5i6ilnjm2udh
 Total reclaimed space: 2.787GB
 Docker stop/rm pd1982 ................................ before containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
-9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              IO_AERO_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001->3001/tcp                                     uptime-kuma
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 27 minutes                   0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. after containers:
 CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                          PORTS                                                      NAMES
-9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              io_avstats_db
+9e010303ef67   postgres:latest          "docker-entrypoint.s…"   7 hours ago    Exited (0) About a minute ago                                                              IO_AERO_db
 2f53ab870011   louislam/uptime-kuma:1   "/usr/bin/dumb-init …"   6 days ago     Up 27 minutes (healthy)         0.0.0.0:3001->3001/tcp                                     uptime-kuma
 f67eb28b8888   portainer/portainer-ce   "/portainer"             2 months ago   Up 27 minutes                   0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp, 9443/tcp   portainer
 ............................................................. before images:
@@ -315,12 +315,12 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
  => [internal] load build context                                                                                                                                                     0.0s
  => => transferring context: 43.50kB                                                                                                                                                  0.0s
  => [ 2/10] WORKDIR /home                                                                                                                                                             0.0s
- => [ 3/10] COPY .settings.io_avstats.toml ./                                                                                                                                         0.1s
+ => [ 3/10] COPY .settings.io_aero.toml ./                                                                                                                                         0.1s
  => [ 4/10] COPY .streamlit/config.toml ./.streamlit/                                                                                                                                 0.0s
  => [ 5/10] COPY .streamlit/secrets_4_dockerfile.toml ./.streamlit/secrets.toml                                                                                                       0.0s
  => [ 6/10] COPY Makefile ./                                                                                                                                                          0.0s
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
- => [ 8/10] COPY settings.io_avstats_4_dockerfile.toml ./settings.io_avstats.toml                                                                                                     0.1s
+ => [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.1s
  => [ 9/10] COPY src/streamlit_apps/pd1982.py ./pd1982.py                                                                                                                         0.0s
  => [10/10] RUN make pipenv-prod                                                                                                                                                    116.0s
  => exporting to image                                                                                                                                                                7.6s

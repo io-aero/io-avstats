@@ -1,40 +1,50 @@
 .DEFAULT_GOAL := help
 
 ifeq ($(OS),Windows_NT)
-	export DELETE_PIPFILE_LOCK=if exist pipfile.lock del /q pipfile.lock
-	export PIPENV=python -m pipenv
-	export PYTHON=python
-	export SQLALCHEMY_WARN_20=1
+	export DELETE_BUILD=if exist build rd /s /q build
+	export DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
+	export PIPENV=py -m pipenv
+	export PYTHON=py
 else
-	export DELETE_PIPFILE_LOCK=rm -rf pipfile.lock
+	export DELETE_BUILD=rm -rf build
+	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
 	export PIPENV=python3 -m pipenv
 	export PYTHON=python3
-	export SQLALCHEMY_WARN_20=1
 endif
 
-export PYTHONPATH=src
+export CONDA_ARG=--site-packages
+export CONDA_ARG=
+export ENV_FOR_DYNACONF=test
+export MODULE=ioavstats
+export PYTHONPATH=${MODULE} scripts
+export VERSION_PIPENV=v2023.7.23
+export VERSION_PYTHON=3.10
 
 ## =============================================================================
 ## IO-AVSTATS - Aviation Event Statistics - make Documentation.
-##                ---------------------------------------------------------------
-##                The purpose of this Makefile is to support the whole software
-##                development process for io-avstats. It contains also the
-##                necessary tools for the CI activities.
-##                ---------------------------------------------------------------
+##              ----------------------------------------------------------------
+##              The purpose of this Makefile is to support the whole software
+##              development process for io-avstats. It contains also the
+##              necessary tools for the CI activities.
+##              ----------------------------------------------------------------
 ##                The available make commands are:
 ## -----------------------------------------------------------------------------
 ## help:               Show this help.
 ## -----------------------------------------------------------------------------
-## dev:                Format and lint the code.
-dev: format lint
+## dev:                Format, lint and test the code.
+dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: pydocstyle mkdocs
-## final:              Format and lint the code and create the documentation.
-final: format lint docs
+## everything:         Do everything precheckin
+everything: dev docs
+## final:              Format, lint and test the code and create the documentation.
+final: format lint docs tests
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
 ## lint:               Lint the code with Bandit, Flake8, Pylint and Mypy.
 lint: bandit flake8 pylint mypy
+## tests:              Run all tests with pytest.
+tests: pytest
 ## -----------------------------------------------------------------------------
 
 help:
@@ -63,7 +73,7 @@ black:              ## Format the code with Black.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run black ${PYTHONPATH}
+	${PIPENV} run black ${PYTHONPATH} tests
 	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
@@ -78,6 +88,33 @@ compileall:         ## Byte-compile the Python libraries.
 	${PYTHON} -m compileall
 	@echo Info **********  End:   Compile All Python Scripts *******************
 
+# Miniconda - Minimal installer for conda.
+# https://docs.conda.io/en/latest/miniconda.html
+# Configuration file: pyproject.toml
+conda-env:          ## Create a new environment.
+	@echo Info **********  Start: Miniconda create environment *****************
+	conda --version
+	@echo ----------------------------------------------------------------------
+	conda create --yes --name ${MODULE}
+	conda activate ${MODULE}
+	conda remove --yes --name ${MODULE} --all
+	conda create --yes --name ${MODULE} python=${VERSION_PYTHON}
+	conda activate ${MODULE}
+	conda install --yes -c conda-forge gdal pdal python-pdal rasterio
+	@echo ----------------------------------------------------------------------
+	python --version
+	conda info --envs
+	conda list
+	@echo Info **********  End:   Miniconda create environment *****************
+conda-update:       ## Update Miniconda.
+	@echo Info **********  Start: Miniconda update *****************************
+	conda --version
+	@echo ----------------------------------------------------------------------
+	conda update --yes conda
+	@echo ----------------------------------------------------------------------
+	conda --version
+	@echo Info **********  End:   Miniconda update *****************************
+
 # Formats docstrings to follow PEP 257
 # https://github.com/PyCQA/docformatter
 # Configuration file: none
@@ -89,6 +126,7 @@ docformatter:       ## Format the docstrings with docformatter.
 	${PIPENV} run docformatter --version
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run docformatter --in-place -r ${PYTHONPATH}
+	${PIPENV} run docformatter --in-place -r tests
 	@echo Info **********  End:   docformatter *********************************
 
 # Flake8: Your Tool For Style Guide Enforcement.
@@ -101,7 +139,7 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run flake8 --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run flake8 ${PYTHONPATH}
+	${PIPENV} run flake8 ${PYTHONPATH} tests
 	@echo Info **********  End:   Flake8 ***************************************
 
 # isort your imports, so you don't have to.
@@ -114,7 +152,7 @@ isort:              ## Edit and sort the imports with isort.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run isort --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run isort ${PYTHONPATH}
+	${PIPENV} run isort ${PYTHONPATH} tests
 	@echo Info **********  End:   isort ****************************************
 
 # Project documentation with Markdown.
@@ -155,10 +193,13 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
-	${PYTHON} -m pip install --upgrade pipenv
+	${PYTHON} -m pip install --upgrade pipenv==${VERSION_PIPENV}
 	${PYTHON} -m pip install --upgrade virtualenv
+	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
-	${PIPENV} install --dev
+	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	${PIPENV} install ${CONDA_ARG} --dev
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
 	@echo ----------------------------------------------------------------------
@@ -174,10 +215,13 @@ pipenv-prod:        ## Install the package dependencies for production.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
-	${PYTHON} -m pip install --upgrade pipenv
+	${PYTHON} -m pip install --upgrade pipenv==${VERSION_PIPENV}
 	${PYTHON} -m pip install --upgrade virtualenv
+	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
-	${PIPENV} install
+	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	${PIPENV} install ${CONDA_ARG}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pip freeze
 	@echo ----------------------------------------------------------------------
@@ -197,7 +241,7 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pydocstyle --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pydocstyle --count --match='(?!PDFLIB\\)*\.py' ${PYTHONPATH}
+	${PIPENV} run pydocstyle --count --match='(?!PDFLIB\\)*\.py' ${PYTHONPATH} tests
 	@echo Info **********  End:   pydocstyle ***********************************
 
 # Pylint is a tool that checks for errors in Python code.
@@ -210,8 +254,66 @@ pylint:             ## Lint the code with Pylint.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pylint ${PYTHONPATH}
+	${PIPENV} run pylint ${PYTHONPATH} tests
 	@echo Info **********  End:   Pylint ***************************************
+
+# pytest: helps you write better programs.
+# https://github.com/pytest-dev/pytest/
+# Configuration file: pyproject.toml
+pytest:             ## Run all tests with pytest.
+	@echo Info **********  Start: pytest ***************************************
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --version
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --dead-fixtures tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -v tests
+	@echo Info **********  End:   pytest ***************************************
+pytest-ci:          ## Run all tests with pytest after test tool installation.
+	@echo Info **********  Start: pytest ***************************************
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PIPENV} install pytest
+	${PIPENV} install pytest-cov
+	${PIPENV} install pytest-deadfixtures
+	${PIPENV} install pytest-helpers-namespace
+	${PIPENV} install pytest-random-order
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --version
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --dead-fixtures tests
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -v tests
+	@echo Info **********  End:   pytest ***************************************
+pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
+	@echo Info **********  Start: pytest ***************************************
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --version
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -rP -v -x tests
+	@echo Info **********  End:   pytest ***************************************
+pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
+	@echo Info **********  Start: pytest ***************************************
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --version
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --cache-clear --capture=no --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
+	@echo Info **********  End:   pytest ***************************************
+pytest-module:      ## Run tests of specific module(s) with pytest - test_all & test_cfg_cls_setup & test_db_cls.
+	@echo Info **********  Start: pytest ***************************************
+	@echo PIPENV    =${PIPENV}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --version
+	@echo ----------------------------------------------------------------------
+	${PIPENV} run pytest --cache-clear --cov=${PYTHONPATH} --cov-report term-missing:skip-covered -v tests/test_db_cls_action.py
+	@echo Info **********  End:   pytest ***************************************
+
 
 version:            ## Show the installed software versions.
 	@echo Info **********  Start: version **************************************

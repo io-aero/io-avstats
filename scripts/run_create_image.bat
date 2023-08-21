@@ -11,7 +11,7 @@ setlocal EnableDelayedExpansion
 set APPLICATION_DEFAULT=stats
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
-set IO_AVSTATS_STREAMLIT_SERVER_PORT=8501
+set IO_AERO_STREAMLIT_SERVER_PORT=8501
 set MODE=n/a
 
 if ["%1"] EQU [""] (
@@ -73,7 +73,7 @@ rem > %LOG_FILE% 2>&1 (
     echo -----------------------------------------------------------------------
     echo DOCKER_CLEAR_CACHE       : %DOCKER_CLEAR_CACHE%
     echo DOCKER_HUB_PUSH          : %DOCKER_HUB_PUSH%
-    echo STREAMLIT_SERVER_PORT    : %IO_AVSTATS_STREAMLIT_SERVER_PORT%
+    echo STREAMLIT_SERVER_PORT    : %IO_AERO_STREAMLIT_SERVER_PORT%
     echo -----------------------------------------------------------------------
     echo:| TIME
     echo =======================================================================
@@ -130,7 +130,7 @@ rem > %LOG_FILE% 2>&1 (
 
     docker build --build-arg APP=!APPLICATION! ^
                  --build-arg MODE=%MODE% ^
-                 --build-arg SERVER_PORT=%IO_AVSTATS_STREAMLIT_SERVER_PORT% ^
+                 --build-arg SERVER_PORT=%IO_AERO_STREAMLIT_SERVER_PORT% ^
                  -t ioaero/!APPLICATION! .
 
     docker tag ioaero/!APPLICATION! ioaero/!APPLICATION!

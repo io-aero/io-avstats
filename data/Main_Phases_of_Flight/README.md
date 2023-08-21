@@ -1,6 +1,6 @@
 # IO-AVSTATS - File Directory **`data/Main_Phases_of_Flight`**
 
-The following parameter in the file **`settings.io_avstats.toml`** is used to locate the file: 
+The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
 - `download_file_main_phases_of_flight_xlsx` = "data/Main_Phases_of_Flight/main_phases_of_flight.xlsx"
 

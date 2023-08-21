@@ -21,7 +21,7 @@
         <link rel="next" href="config_logging.html">
       
       <link rel="icon" href="img/IO-Aero_1_Favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
@@ -583,12 +583,15 @@
                 
                   
 
+  
+  
+
 
 <h1 id="configuration-io-avstats">Configuration - <strong>IO-AVSTATS</strong></h1>
 <p>For the administration of the configuration parameters of <strong>IO-AVSTATS</strong> the tool <a href="https://www.dynaconf.com" target="_blank"><strong>dynaconf</strong></a> is used.
-The two files <code>settings.io_avstats.toml</code> and <code>.settings.io_avstats.toml</code> are available as configuration files.
-The <code>.settings.io_avstats.toml</code> file contains the security related parameters such as passwords and is not made available in the GitHub repository.
-The names of <strong>IO-AVSTATS</strong> related environment variables must include the prefix <code>IO_AVSTATS</code>.
+The two files <code>settings.io_aero.toml</code> and <code>.settings.io_aero.toml</code> are available as configuration files.
+The <code>.settings.io_aero.toml</code> file contains the security related parameters such as passwords and is not made available in the GitHub repository.
+The names of <strong>IO-AVSTATS</strong> related environment variables must include the prefix <code>IO_AERO</code>.
 Layered environments are supported.
 The <code>test</code> layer is used for the automated tests.</p>
 <h2 id="1-available-parameters">1. Available Parameters</h2>
@@ -764,8 +767,8 @@ The <code>test</code> layer is used for the automated tests.</p>
 </table>
 <h2 id="2-notes">2. Notes</h2>
 <ol>
-<li>The configuration parameters <code>postgres_password</code> and <code>postgres_password_admin</code> can be found in the configuration file <code>.settings.io_avstats.toml</code>.</li>
-<li>The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable <code>IO_AVSTATS_IS_VERBOSE</code> overrides the configuration parameter <code>is_verbose</code>. </li>
+<li>The configuration parameters <code>postgres_password</code> and <code>postgres_password_admin</code> can be found in the configuration file <code>.settings.io_aero.toml</code>.</li>
+<li>The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable <code>IO_AERO_IS_VERBOSE</code> overrides the configuration parameter <code>is_verbose</code>. </li>
 </ol>
 
 

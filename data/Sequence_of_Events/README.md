@@ -4,7 +4,7 @@ This file directory contains the necessary files for the processing step:
 
 - `l_s_e` - Load sequence of events data into PostgreSQL
 
-The following parameter in the file **`settings.io_avstats.toml`** is used to locate the file: 
+The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
 - `download_file_sequence_of_events_xlsx` = "data/Sequence_of_Events/CICTT_SOE_MAP.xlsx"
 

@@ -11,8 +11,8 @@
 4. Optionally, adjustments can be made in the following configuration files:
 
     - **`logging_cfg.yaml`**: for the logging functionality
-    - **`settings.io_avstats.toml`**: for the **IO-AVSTATS** application
+    - **`settings.io_aero.toml`**: for the **IO-AVSTATS** application
  
-5. Create the configuration file **`.settings.io_avstats.toml`** with the passwords for the PostgreSQL database users.
+5. Create the configuration file **`.settings.io_aero.toml`** with the passwords for the PostgreSQL database users.
  
 6. Use the **IO-AVSTATS** application by running the script **`run_io_avstats.bat`**.

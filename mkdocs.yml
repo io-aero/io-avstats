@@ -1,7 +1,9 @@
 copyright: Copyright &copy;2022, IO-Aero.
 
-edit_uri: ""
-
+exclude_docs: |
+  how_to_compare_ntsb_and_io_db.md
+  README.md
+  release_schedule.md
 extra:
   generator: false
 extra_css:

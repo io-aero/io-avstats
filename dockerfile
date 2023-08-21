@@ -22,15 +22,15 @@ ADD ../tmp/docs/img/ ./docs/img/
 ADD ../tmp/upload/ ./upload/
 
 COPY Makefile                                      ./
-COPY config/.settings.io_avstats_4_dockerfile.toml ./.settings.io_avstats.toml
+COPY config/.settings.io_aero_4_dockerfile.toml    ./.settings.io_aero.toml
 COPY config/Pipfile.${APP}                         ./Pipfile
 COPY config/config.toml.${APP}                     ./.streamlit/config.toml
 COPY config/secrets_4_dockerfile.toml              ./.streamlit/secrets.toml
-COPY config/settings.io_avstats_4_dockerfile.toml  ./settings.io_avstats.toml
-COPY data/latest_postgres.zip                      ./upload/IO-AVSTATS-DB.zip
+COPY config/settings.io_aero_4_dockerfile.toml     ./settings.io_aero.toml
+COPY data/latest_postgres.zip                      ./upload/IO-AERO-DB.zip
 COPY docs/img/StockSnap_SLQQYN6CRR.jpg             ./docs/img
-COPY src/ioavstats/${APP}.py                       ./${APP}.py
-COPY src/ioavstats/utils.py                        ./utils.py
+COPY ioavstats/${APP}.py                           ./${APP}.py
+COPY ioavstats/utils.py                            ./utils.py
 
 RUN make pipenv-prod
 

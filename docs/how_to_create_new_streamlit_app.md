@@ -93,7 +93,7 @@ TODO
       - db
     image: ioaero/ae1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_AE1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AERO_STREAMLIT_SERVER_PORT_AE1982}:${IO_AERO_STREAMLIT_SERVER_PORT}"
     restart: always
 
   # ------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ TODO
       - db
     image: ioaero/pd1982:latest
     ports:
-      - "${IO_AVSTATS_STREAMLIT_SERVER_PORT_PD1982}:${IO_AVSTATS_STREAMLIT_SERVER_PORT}"
+      - "${IO_AERO_STREAMLIT_SERVER_PORT_PD1982}:${IO_AERO_STREAMLIT_SERVER_PORT}"
     restart: always
 ```
 
@@ -116,15 +116,15 @@ TODO
 **cmd**:
 
 ```
-if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
+if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
         echo ae1982 - Aircraft Accidents in the US since 1982
         echo pd1982 - Profiling Data for the US since 1982
         echo ---------------------------------------------------------
-        set /P IO_AVSTATS_APPLICATION="Enter the Streamlit application name "
+        set /P IO_AERO_APPLICATION="Enter the Streamlit application name "
     ) else (
-        set IO_AVSTATS_APPLICATION=%2
+        set IO_AERO_APPLICATION=%2
     )
 )
 ```
@@ -132,17 +132,17 @@ if ["%IO_AVSTATS_TASK%"] EQU ["r_s_a"] (
 **bash**:
 
 ```
-if [ "${IO_AVSTATS_TASK}" = "r_s_a" ]; then
+if [ "${IO_AERO_TASK}" = "r_s_a" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "ae1982 - Aircraft Accidents in the US since 1982"
         echo "pd1982 - Profiling Data for the US since 1982"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
-        read -p "Enter the Streamlit application name " IO_AVSTATS_APPLICATION
-        export IO_AVSTATS_APPLICATION=${IO_AVSTATS_APPLICATION}
+        read -p "Enter the Streamlit application name " IO_AERO_APPLICATION
+        export IO_AERO_APPLICATION=${IO_AERO_APPLICATION}
     else
-        export IO_AVSTATS_APPLICATION=$2
+        export IO_AERO_APPLICATION=$2
     fi
 fi
 ```
@@ -195,15 +195,15 @@ fi
 **cmd**:
 
 ```
-set IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+set IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
 ...
-echo STREAMLIT_SRRVER_PORT_X...X : %IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X%
+echo STREAMLIT_SRRVER_PORT_X...X : %IO_AERO_STREAMLIT_SERVER_PORT_X...X%
 ```
 
 **bash**:
 
 ```
-export IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X=99999
+export IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
 ...
-echo "STREAMLIT_SRRVER_PORT_X...X : ${IO_AVSTATS_STREAMLIT_SERVER_PORT_X...X}"
+echo "STREAMLIT_SRRVER_PORT_X...X : ${IO_AERO_STREAMLIT_SERVER_PORT_X...X}"
 ```

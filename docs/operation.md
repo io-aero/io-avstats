@@ -73,7 +73,7 @@ CREATE TABLE public.io_aviation_occurrence_categories (
 Manage the Docker containers needed in the cloud:
 
 - **portainer**: container management
-- **io_avstats_db**: PostgreSQL database
+- **IO_AERO_db**: PostgreSQL database
 - **keycloak_db**: PostgreSQL database
 - **keycloak**: Keycloak server
 - Application **ae1982**: Aircraft Events since 1982
@@ -121,7 +121,7 @@ Create the application-specific Docker images and store them on DockerHub.
 
 Manage the Docker containers needed locally:
 
-- **io_avstats_db**: PostgreSQL database
+- **IO_AERO_db**: PostgreSQL database
 
 #### Processing Options
 
@@ -201,7 +201,7 @@ This includes the following activities:
 
 As a result, a much simplified processing of the data is possible, e.g. for comparisons.
 
-On the one hand, the task can be executed explicitly with the **`run_io_avstats_db`** script (task **`c_p_d`**) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task **`l_n_a`** and **`u_p_d`**).
+On the one hand, the task can be executed explicitly with the **`run_IO_AERO_db`** script (task **`c_p_d`**) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task **`l_n_a`** and **`u_p_d`**).
 
 ---
 
@@ -481,9 +481,9 @@ The initial load in a fresh Windows environment requires the execution of the fo
 
 ### 4.1 Every 1st of the month
 
-1. Stop the Docker container **`io_avstats_db`**
+1. Stop the Docker container **`IO_AERO_db`**
 1. Restore the current state of Pre2008
-1. Start the Docker container **`io_avstats_db`**
+1. Start the Docker container **`IO_AERO_db`**
 1. Process the current **`avall`** file with code **`l_n_a`**
 
 ### 4.2 Every 1st, 8th, 15th and 22nd 

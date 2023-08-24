@@ -1,6 +1,6 @@
 [packages]
-dynaconf = "*"
 ioavstatsdb = "*"
+iocommon = "*"
 mlxtend = "*"
 pandas = "*"
 plotly = "*"

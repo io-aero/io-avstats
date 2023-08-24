@@ -14,6 +14,9 @@ jobs:
     # --------------------------------------------------------------------------
     name: OS ${{ matrix.os }} - Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
     strategy:
       max-parallel: 1
       matrix:
@@ -50,7 +53,29 @@ jobs:
             if ! [ $(getent group docker | grep -q "\b$USER\b") ]; then
                 sudo usermod -aG docker $USER
             fi
-      - name: Install dev dependencies
+      - name: Set up Miniconda
+        if: ${{ vars.CONDA }} == "true"
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          miniconda-version: "latest"
+          python-version: ${{ matrix.python-version }}
+      - name: Install conda dependencies - Conda 1/2
+        if: ${{ vars.CONDA }} == "true"
+        run: conda init bash
+      - name: Install conda dependencies - Conda 2/2
+        if: ${{ vars.CONDA }} == "true"
+        run: make conda-action
+      - name: Install dev dependencies - pipenv
         run: make pipenv-dev
       - name: Compile the Python code
         run: make compileall
+      - name: Run pytest for writing better program
+        run: |
+            echo "::echo::on"
+            echo "================================================================================"
+            echo "Current version of Python3: $(python --version)"
+            echo "Current version of pip3: $(pip --version || true)"
+            echo "Current version of Ubuntu: $(lsb_release -a)"
+            echo "================================================================================"
+            make pytest

@@ -1,9 +1,6 @@
 [tool.bandit]
 skips = ["B307", "B404", "B603", "B608"]
 
-[tool.coverage.run]
-omit = ["setup.py"]
-
 [tool.isort]
 float_to_top = true
 force_single_line = true

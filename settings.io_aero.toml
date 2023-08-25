@@ -22,7 +22,7 @@ max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
 postgres_connection_port = 5432
-postgres_container_name = "io_aero_db"
+postgres_container_name = "io_avstats_db"
 postgres_database_schema = "public"
 postgres_dbname = "io_aero_db"
 postgres_dbname_admin = "postgres"
@@ -43,5 +43,5 @@ check_value = "test"
 correction_work_dir = "data/correction_test"
 download_work_dir = "data/download_test"
 postgres_connection_port = 5433
-postgres_container_name = "io_aero_db_test"
+postgres_container_name = "io_avstats_db_test"
 postgres_pgdata ="data/postgres_test"

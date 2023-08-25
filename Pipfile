@@ -16,6 +16,8 @@ ydata-profiling = "*"
 [dev-packages]
 bandit = "*"
 black = "*"
+build = "*"
+coverage = "*"
 coveralls = "*"
 docformatter = "*"
 flake8 = "*"
@@ -40,6 +42,8 @@ pytest-random-order = "*"
 sqlalchemy-stubs = "*"
 #sqlalchemy2-stubs = "*"
 types-psycopg2 = "*"
+types-setuptools = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.10"

@@ -2,6 +2,7 @@
 
 ifeq ($(OS),Windows_NT)
 	export CONDA_SHELL=
+	export CREATE_DIST=if not exist dist mkdir dist
 	export DELETE_BUILD=if exist build rd /s /q build
 	export DELETE_DIST=if exist dist rd /s /q dist
 	export DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
@@ -21,6 +22,7 @@ export CONDA_PACKAGES=gdal pdal python-pdal rasterio
 export CONDA_ARG=--site-packages
 export CONDA_ARG=
  
+export COVERALLS_REPO_TOKEN=<see coveralls.io>
 export ENV_FOR_DYNACONF=test
 export MODULE=ioavstats
 export PYTHONPATH=${MODULE} scripts
@@ -38,6 +40,12 @@ export VERSION_PYTHON=3.10
 ## -----------------------------------------------------------------------------
 ## help:               Show this help.
 ## -----------------------------------------------------------------------------
+## conda-dev:          Install the package dependencies for development incl.
+##                     Conda & pipenv.
+conda-dev: conda pipenv-dev
+## conda-prod:         Install the package dependencies for production incl.
+##                     Conda & pipenv.
+conda-prod: conda pipenv-prod
 ## dev:                Format, lint and test the code.
 dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
@@ -120,6 +128,17 @@ conda-action:       ## Create a new environment.
 	conda list
 	@echo Info **********  End:   Miniconda create environment *****************
 
+# Requires a public repository !!!
+# Python interface to coveralls.io API
+# https://github.com/TheKevJames/coveralls-python
+# Configuration file: none
+coveralls:          ## Run all the tests and upload the coverage data to coveralls.
+	@echo Info **********  Start: coveralls ***********************************
+	${PIPENV} run pytest --cov=${MODULE} --cov-report=xml --random-order tests
+	@echo ---------------------------------------------------------------------
+	${PIPENV} run coveralls --service=github
+	@echo Info **********  End:   coveralls ***********************************
+
 # Formats docstrings to follow PEP 257
 # https://github.com/PyCQA/docformatter
 # Configuration file: none
@@ -185,9 +204,6 @@ mypy:               ## Find typing issues with Mypy.
 	${PIPENV} run mypy ${PYTHONPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
-# pip is the package installer for Python.
-# https://pypi.org/project/pip/
-# Configuration file: none
 # Pipenv: Python Development Workflow for Humans.
 # https://github.com/pypa/pipenv
 # Configuration file: Pipfile

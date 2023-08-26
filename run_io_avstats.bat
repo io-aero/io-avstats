@@ -28,7 +28,7 @@ if ["!IO_AERO_POSTGRES_CONNECTION_PORT!"] EQU [""] (
     set IO_AERO_POSTGRES_CONNECTION_PORT=5432
 )
 
-set IO_AERO_POSTGRES_CONTAINER_NAME=io_aero_db
+set IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres
@@ -199,6 +199,23 @@ if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
     ) else (
         set IO_AERO_MSACCESS=%2
     )
+)
+
+echo.
+echo Script %0 is now running
+echo.
+
+rem ----------------------------------------------------------------------------
+rem Show the IO-AVSTATS-DB version.
+rem ----------------------------------------------------------------------------
+if ["%IO_AERO_TASK%"] EQU ["version"] (
+    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats_pytest was aborted, error code=%ERRORLEVEL%
+        exit %ERRORLEVEL%
+    )
+
+    goto END_OF_SCRIPT
 )
 
 echo You can find the run log in the file run_io_avstats_%IO_AERO_TASK%.log
@@ -592,19 +609,6 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
         )
 
         pipenv run python scripts\launcher.py -t r_d_s
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
-        )
-
-        goto END_OF_SCRIPT
-    )
-
-    rem ----------------------------------------------------------------------------
-    rem Show the IO-AVSTATS-DB version.
-    rem ----------------------------------------------------------------------------
-    if ["%IO_AERO_TASK%"] EQU ["version"] (
-        pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%

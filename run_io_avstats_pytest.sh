@@ -20,7 +20,7 @@ if [ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]; then
     export IO_AERO_POSTGRES_CONNECTION_PORT=5433
 fi
 
-export IO_AERO_POSTGRES_CONTAINER_NAME=io_aero_db_test
+export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db_test
 export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
@@ -118,19 +118,19 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# a_o_c: Load aviation occurrence categories into PostgreSQL.
-# c_d_s: Create the PostgreSQL database schema.
-# c_l_l: Correct decimal US latitudes and longitudes.
-# c_p_d: Cleansing PostgreSQL data.
-# f_n_a: Find the nearest airports.
-# l_a_p: Load airport data into PostgreSQL.
-# l_c_s: Load country and state data into PostgreSQL.
-# l_s_d: Load simplemaps data into PostgreSQL.
-# l_s_e: Load sequence of events data into PostgreSQL.
-# l_z_d: Load US Zip code data.
-# r_d_s: Refresh the PostgreSQL database schema.
-# u_d_s: Update the PostgreSQL database schema.
-# v_n_d: Verify selected NTSB data.
+# a_o_c:   Load aviation occurrence categories into PostgreSQL.
+# c_d_s:   Create the PostgreSQL database schema.
+# c_l_l:   Correct decimal US latitudes and longitudes.
+# c_p_d:   Cleansing PostgreSQL data.
+# f_n_a:   Find the nearest airports.
+# l_a_p:   Load airport data into PostgreSQL.
+# l_c_s:   Load country and state data into PostgreSQL.
+# l_s_d:   Load simplemaps data into PostgreSQL.
+# l_s_e:   Load sequence of events data into PostgreSQL.
+# l_z_d:   Load US Zip code data.
+# r_d_s:   Refresh the PostgreSQL database schema.
+# u_d_s:   Update the PostgreSQL database schema.
+# v_n_d:   Verify selected NTSB data.
 # version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
 if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then

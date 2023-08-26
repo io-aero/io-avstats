@@ -25,7 +25,12 @@ jobs:
         os: ["ubuntu-22.04"]
         python-version: ["3.10"]
     steps:
-      - uses: actions/checkout@v3
+      - name: Show the repository variables
+        run: |
+          echo CONDA=${{ vars.CONDA }}
+          echo COVERALLS=${{ vars.COVERALLS }}
+      - name: Checking out the repository
+        uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -54,17 +59,17 @@ jobs:
                 sudo usermod -aG docker $USER
             fi
       - name: Set up Miniconda
-        if: ${{ vars.CONDA }} == "true"
+        if: ${{ vars.CONDA == 'true' }}
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
       - name: Install conda dependencies - Conda 1/2
-        if: ${{ vars.CONDA }} == "true"
+        if: ${{ vars.CONDA == 'true' }}
         run: conda init bash
       - name: Install conda dependencies - Conda 2/2
-        if: ${{ vars.CONDA }} == "true"
+        if: ${{ vars.CONDA == 'true' }}
         run: make conda-action
       - name: Install dev dependencies - pipenv
         run: make pipenv-dev
@@ -88,8 +93,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
       - name: Create the coverage data
-        if: ${{ vars.COVERALLS }} == "true"
+        if: ${{ vars.COVERALLS == 'true' }}
         run: make coveralls
       - name: Publish the code coverage to coveralls.io
-        if: ${{ vars.COVERALLS }} == "true"
+        if: ${{ vars.COVERALLS == 'true' }}
         uses: coverallsapp/github-action@v2

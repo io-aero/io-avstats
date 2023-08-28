@@ -20,6 +20,12 @@ data/pandas_profiles/io_processed_files_*.html
 data/postgres/
 data/postgres_keycloak/
 data/postgres_test/
+docs/build/doctrees/
+docs/build/pdf/.doctrees/
+docs/build/pdf/manual.rtc
+docs/build/pdf/manual.stylelog
+ioavstats.egg-info/
+
 resources/Gammadyne/timer.txt
 tmp/
 upload/*.pdf

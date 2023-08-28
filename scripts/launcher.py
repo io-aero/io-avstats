@@ -6,15 +6,15 @@
 
 This is the entry point to the application IO-AVSTATS.
 """
-import importlib.metadata
 import locale
 import sys
 import time
 
 from ioavstatsdb import avstatsdb
-from ioavstatsdb import io_glob as ioavstatsdb_glob
-from ioavstatsdb import io_utils as ioavstatsdb_utils
+from ioavstatsdb import glob
 from iocommon import file
+from iocommon import io_glob
+from iocommon import io_utils
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -41,17 +41,17 @@ def main(argv: list[str]) -> None:
     # Provide progress messages.
     avstatsdb.progress_msg("=" * 79)
     # INFO.00.004 Start Launcher.
-    avstatsdb.progress_msg(ioavstatsdb_glob.INFO_00_004)
+    avstatsdb.progress_msg(glob.INFO_00_004)
 
     # Initialise the logging functionality.
     avstatsdb.initialise_logger()
 
-    ioavstatsdb_glob.logger.debug(ioavstatsdb_glob.LOGGER_START)
-    ioavstatsdb_glob.logger.debug("param argv=%s", argv)
+    io_glob.logger.debug(io_glob.LOGGER_START)
+    io_glob.logger.debug("param argv=%s", argv)
 
-    ioavstatsdb_glob.logger.info("Start launcher.py")
+    io_glob.logger.info("Start launcher.py")
 
-    locale.setlocale(locale.LC_ALL, ioavstatsdb_glob.LOCALE)
+    locale.setlocale(locale.LC_ALL, glob.LOCALE)
 
     # Load the command line arguments.
     avstatsdb.get_args()
@@ -59,51 +59,47 @@ def main(argv: list[str]) -> None:
     avstatsdb.progress_msg("-" * 79)
 
     # Perform the processing
-    if avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_A_O_C:
+    if avstatsdb.ARG_TASK == glob.ARG_TASK_A_O_C:
         avstatsdb.load_aviation_occurrence_categories()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_C_D_S:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_C_D_S:
         avstatsdb.create_db_schema()
-        ioavstatsdb_utils.progress_msg("-" * 80)
+        io_utils.progress_msg("-" * 80)
         avstatsdb.update_db_schema()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_C_L_L:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_C_L_L:
         avstatsdb.correct_dec_lat_lng()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_C_P_D:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_C_P_D:
         avstatsdb.cleansing_postgres_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_D_N_A:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_D_N_A:
         avstatsdb.download_ntsb_msaccess_file(avstatsdb.ARG_MSACCESS)
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_F_N_A:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_F_N_A:
         avstatsdb.find_nearest_airports()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_GENERATE:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_GENERATE:
         avstatsdb.generate_sql()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_A_P:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_A_P:
         avstatsdb.load_airport_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_C_D:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_C_D:
         avstatsdb.load_correction_data(avstatsdb.ARG_MSEXCEL)
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_C_S:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_C_S:
         avstatsdb.load_country_state_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_N_A:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_N_A:
         avstatsdb.load_ntsb_msaccess_data(avstatsdb.ARG_MSACCESS)
         avstatsdb.cleansing_postgres_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_S_D:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_S_D:
         avstatsdb.load_simplemaps_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_S_E:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_S_E:
         avstatsdb.load_sequence_of_events()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_L_Z_D:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_L_Z_D:
         avstatsdb.load_zip_code_db_data()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_R_D_S:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_R_D_S:
         avstatsdb.refresh_db_schema()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_U_D_S:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_U_D_S:
         avstatsdb.update_db_schema()
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_VERSION:
-        ioavstatsdb_glob.logger.info("Start launcher.py")
-        try:
-            print(f"Version ioavstatsdb: {importlib.metadata.version('ioavstatsdb')}")
-            file.print_package_content("ioavstatsdb")
-        except importlib.metadata.PackageNotFoundError:
-            print("Version ioavstatsdb: package not found")
-        file.print_package_content("iocommon")
-        ioavstatsdb_glob.logger.info("End   launcher.py")
-    elif avstatsdb.ARG_TASK == ioavstatsdb_glob.ARG_TASK_V_N_D:
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_VERSION:
+        io_glob.logger.info("Start launcher.py")
+        file.print_version_pkg_struct("ioavstats")
+        file.print_pkg_structs(["ioavstatsdb", "iocommon"])
+        io_glob.logger.info("End   launcher.py")
+    elif avstatsdb.ARG_TASK == glob.ARG_TASK_V_N_D:
         avstatsdb.verify_ntsb_data()
 
     avstatsdb.progress_msg("-" * 79)
@@ -115,10 +111,10 @@ def main(argv: list[str]) -> None:
     )
 
     # INFO.00.006 End   Launcher
-    avstatsdb.progress_msg(ioavstatsdb_glob.INFO_00_006)
+    avstatsdb.progress_msg(glob.INFO_00_006)
     avstatsdb.progress_msg("=" * 79)
 
-    ioavstatsdb_glob.logger.debug(ioavstatsdb_glob.LOGGER_END)
+    io_glob.logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------

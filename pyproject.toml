@@ -1,3 +1,59 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    { name = "Team IO-Aero", email = "info@io-aero.com" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+]
+dependencies = [
+    "ioavstatsdb",
+    "iocommon",
+    "mlxtend",
+    "pandas",
+    "plotly",
+    "pyodbc",
+    "pyeclat",
+    "streamlit",
+    "streamlit-keycloak",
+    "streamlit-pandas-profiling",
+    "ydata-profiling",
+]
+description = "Aviation Accident Statistics"
+keywords = [
+    "accidents",
+    "application",
+    "aviation",
+    "ntsb",
+    "statistics",
+]
+maintainers = [
+    { name = "Team IO-Aero", email = "info@io-aero.ch" },
+]
+name = "ioavstats"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "23.09.01"
+
+[project.urls]
+"Bug Tracker" = "https://github.com/io-aero/io-avstats/issues"
+Documentation = "https://io-aero.github.io/io-avstats/"
+Homepage = "https://github.com/io-aero/io-avstats"
+"Release History" = "https://io-aero.github.io/io-avstats/release_history/"
+"Release Notes" = "https://io-aero.github.io/io-avstats/release_notes/"
+Source = "https://github.com/io-aero/io-avstats/tree/main/ioavstats"
+
 [tool.bandit]
 skips = ["B307", "B404", "B603", "B608"]
 
@@ -16,7 +72,21 @@ log_cli_level = "INFO"
 log_file = "logging_io_aero_pytest.log"
 log_file_level = "DEBUG"
 log_level = "DEBUG"
-markers = ["issue"]
+markers = [
+    "issue",
+]
 norecursedirs = "./tests/helpers"
 pythonpath = "./ioavstats/"
 testpaths = "./tests/"
+
+[tool.setuptools]
+packages = [
+    "ioavstats",
+]
+
+[tool.setuptools.package-data]
+ioavstats = [
+    "*.pyi",
+    "py.typed",
+]
+

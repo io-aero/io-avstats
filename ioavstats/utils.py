@@ -15,6 +15,34 @@ from sqlalchemy.engine import Engine
 from streamlit_keycloak import login
 
 
+# ------------------------------------------------------------------
+# Determine the last processed update file.
+# ------------------------------------------------------------------
+# flake8: noqa: E501
+def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
+    """Determine the last processed update file.
+
+    Args:
+        pg_conn (connection): Database connection.
+
+    Returns:
+        tuple[str, str]: File name and processing date.
+    """
+    with pg_conn.cursor() as cur:  # type: ignore
+        # pylint: disable=line-too-long
+        cur.execute(
+            """
+        SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
+          FROM io_processed_files
+         WHERE file_name LIKE 'up%'
+            OR file_name IN ('Pre2008', 'avall')
+         ORDER BY COALESCE(last_processed, first_processed) DESC;
+        """
+        )
+
+        return cur.fetchone()  # type: ignore
+
+
 # -----------------------------------------------------------------------------
 # Load the command line arguments into the memory.
 # -----------------------------------------------------------------------------
@@ -170,31 +198,3 @@ Latest NTSB database: **{file_name} - {processed}**
 [Disclaimer](https://www.io-aero.com/disclaimer)
     """
     )
-
-
-# ------------------------------------------------------------------
-# Determine the last processed update file.
-# ------------------------------------------------------------------
-# flake8: noqa: E501
-def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
-    """Determine the last processed update file.
-
-    Args:
-        pg_conn (connection): Database connection.
-
-    Returns:
-        tuple[str, str]: File name and processing date.
-    """
-    with pg_conn.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
-        cur.execute(
-            """
-        SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
-          FROM io_processed_files
-         WHERE file_name LIKE 'up%'
-            OR file_name IN ('Pre2008', 'avall')
-         ORDER BY COALESCE(last_processed, first_processed) DESC;
-        """
-        )
-
-        return cur.fetchone()  # type: ignore

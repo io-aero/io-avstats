@@ -6,8 +6,9 @@
 import os
 import platform
 
-from ioavstatsdb import io_glob
-from ioavstatsdb.io_config import settings
+from ioavstatsdb import glob
+from iocommon import io_glob
+from iocommon.io_config import settings
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.
@@ -33,7 +34,7 @@ def test_launcher_version():
             os.system("./run_io_avstats_pytest.sh version")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -58,7 +59,7 @@ def test_launcher_d_d_c():
             os.system("./run_io_avstats_pytest.sh d_d_c")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -83,7 +84,7 @@ def test_launcher_d_d_f():
             os.system("./run_io_avstats_pytest.sh d_d_f")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -108,7 +109,7 @@ def test_launcher_s_d_c():
             os.system("./run_io_avstats_pytest.sh s_d_c")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -133,7 +134,7 @@ def test_launcher_c_d_s():
             os.system("./run_io_avstats_pytest.sh c_d_s")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -158,7 +159,7 @@ def test_launcher_u_d_s():
             os.system("./run_io_avstats_pytest.sh u_d_s")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 
@@ -184,7 +185,7 @@ def test_launcher_a_o_c():
             os.system("./run_io_avstats_pytest.sh a_o_c")
         else:
             # ERROR.00.908 The operating system '{os}' is not supported
-            assert False, io_glob.ERROR_00_908.replace("{os}", platform.system())
+            assert False, glob.ERROR_00_908.replace("{os}", platform.system())
     except OSError as error:
         assert False, error
 

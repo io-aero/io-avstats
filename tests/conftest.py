@@ -16,7 +16,7 @@ import pathlib
 import shutil
 
 import pytest
-from ioavstatsdb import io_glob
+from iocommon import io_glob
 
 # Constants & Globals.
 # -----------------------------------------------------------------------------

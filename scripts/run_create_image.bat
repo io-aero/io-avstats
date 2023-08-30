@@ -103,7 +103,7 @@ rem > %LOG_FILE% 2>&1 (
 
     if ["!APPLICATION!"] EQU ["stats"]  (
         set MODE=Ltd
-        copy /Y src\ioavstats\ae1982.py src\ioavstats\stats.py
+        copy /Y ioavstats\ae1982.py ioavstats\stats.py
         copy /Y config\Pipfile.ae1982   config\Pipfile.stats
     )
 
@@ -147,7 +147,7 @@ rem > %LOG_FILE% 2>&1 (
     rmdir /s /q tmp\docs\img
 
     if ["!APPLICATION!"] EQU ["stats"]  (
-        del /s src\ioavstats\stats.py
+        del /s ioavstats\stats.py
         del /s config\Pipfile.stats
     )
 

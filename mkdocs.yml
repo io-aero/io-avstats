@@ -51,7 +51,7 @@ plugins:
         python:
           options:
             heading_level: 3
-            paths: [src/io_avstats]
+            paths: [ioavstats]
             show_root_heading: false
             show_source: true
   - search

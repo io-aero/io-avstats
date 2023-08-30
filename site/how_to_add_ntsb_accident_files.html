@@ -876,10 +876,10 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <h2 id="1-every-first-of-the-month">1. Every first of the month</h2>
 <h3 id="11-prepare-the-database">1.1 Prepare the database</h3>
 <ul>
-<li>Stop the Docker container <strong><code>IO_AERO_db</code></strong>.</li>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
 <li>Remove the directory <strong><code>data/postgres</code></strong></li>
 <li>Unzip the latest file <strong><code>data/yy.mm.dd_postgres_Pre2008_20.09.30.zip</code></strong></li>
-<li>Start the Docker container <strong><code>IO_AERO_db</code></strong> with <strong><code>c_d_l - Run Docker Compose tasks - Local</code></strong></li>
+<li>Start the Docker container <strong><code>io_avstats_db</code></strong> with <strong><code>c_d_l - Run Docker Compose tasks - Local</code></strong></li>
 </ul>
 <h3 id="12-processing-modified-non-ntsb-data-sources">1.2 Processing modified non-<strong>NTSB</strong> data sources</h3>
 <p>The following steps are performed only if the source files have changed:</p>
@@ -951,10 +951,10 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 </table>
 <h4 id="121-backup-the-file-directory-datapostgres">1.2.1 Backup the file directory <strong><code>data/postgres</code></strong></h4>
 <ul>
-<li>Stop the Docker container <strong><code>IO_AERO_db</code></strong>.</li>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
 <li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
 <li>Rename the file <strong><code>data/postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
-<li>Start the Docker container <strong><code>IO_AERO_db</code></strong> with <strong><code>c_d_l - Run Docker Compose tasks - Local</code></strong></li>
+<li>Start the Docker container <strong><code>io_avstats_db</code></strong> with <strong><code>c_d_l - Run Docker Compose tasks - Local</code></strong></li>
 </ul>
 <h3 id="13-ntsb-file-avallzip">1.3 <strong>NTSB</strong> file <strong><code>avall.zip</code></strong></h3>
 <p>The following task must be performed on the first of each month:</p>
@@ -1034,7 +1034,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 <h2 id="4-repository-io-avstats-shared">4. Repository io-avstats-shared</h2>
 <ul>
 <li>Create the log file <code>docs/yyyy_mm_dd_log_upddMON.md</code></li>
-<li>Modify the release notes file <code>docs/IO_AERO_db_release_notes.md</code></li>
+<li>Modify the release notes file <code>docs/io_avstats_db_release_notes.md</code></li>
 <li>Modify the release notes file <code>docs/IO_AERO_release_notes.md</code></li>
 <li>Modify the configuration file <code>mkdocs.yml</code></li>
 <li>Run <code>make final</code></li>
@@ -1062,7 +1062,7 @@ For a more detailed description of these tasks, see under <strong>Operation</str
 </table>
 <h3 id="51-backup-the-file-directory-datapostgres">5.1 Backup the file directory <strong><code>data/postgres</code></strong></h3>
 <ul>
-<li>Stop the Docker container <strong><code>IO_AERO_db</code></strong>.</li>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong>.</li>
 <li>Zip the file directory <strong><code>postgres</code></strong> in the file directory <strong><code>data</code></strong> - result is the file <strong><code>postgres.zip</code></strong>.</li>
 <li>Rename the file <strong><code>data/postgres.sql</code></strong> to <strong><code>yy.mm.dd_postgres_upDDMON.zip</code></strong>.</li>
 <li>Create a copy of the file <strong><code>data/yy.mm.dd_postgres_upDDMON.zip</code></strong> with the name <strong><code>latest_postgres.zip</code></strong>.</li>

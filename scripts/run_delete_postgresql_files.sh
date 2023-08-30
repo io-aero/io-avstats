@@ -18,7 +18,6 @@ echo ---------------------------------------------------------------------------
 
 ls -ll "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
 rm -rf "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
-ls -ll "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
 
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

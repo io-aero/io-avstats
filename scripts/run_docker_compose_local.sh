@@ -62,7 +62,7 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "logs" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "*             - All Containers"
-        echo "IO_AERO_db - Database Profiling"
+        echo "io_avstats_db - Database Profiling"
         echo "keycloak      - Keycloak Server"
         echo "keycloak_db   - Keycloak Database"
         echo "---------------------------------------------------------"

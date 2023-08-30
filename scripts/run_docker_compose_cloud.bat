@@ -24,7 +24,7 @@ set IO_AERO_POSTGRES_CONNECTION_PORT=5432
 set IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AERO_POSTGRES_DBNAME=postgres
 set IO_AERO_POSTGRES_PASSWORD=V3s8m4x*MYbHrX*UuU6X
-set IO_AERO_POSTGRES_PGDATA=data/postgres
+set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER=guest
 
 if ["%IO_AERO_POSTGRES_VERSION%"] EQU [""] (
@@ -35,7 +35,7 @@ set IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
 set IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
 set IO_AERO_POSTGRES_KEYCLOAK_DBNAME=postgres
 set IO_AERO_POSTGRES_KEYCLOAK_PASSWORD=twAuk3VM2swt#Z96#zM#
-set IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
+set IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
 set IO_AERO_POSTGRES_KEYCLOAK_USER=postgres
 
 set IO_AERO_STREAMLIT_SERVER_PORT=8501
@@ -66,7 +66,7 @@ if ["%IO_AERO_COMPOSE_TASK%"] EQU ["logs"] (
         echo =========================================================
         echo *             - All Containers
         echo ae1982        - Aviation Event Analysis
-        echo IO_AERO_db - Database Profiling
+        echo io_avstats_db - Database Profiling
         echo keycloak      - Keycloak Server
         echo keycloak_db   - Keycloak Database
         echo members       - IO-Aero Member Service

@@ -1222,7 +1222,7 @@ The script is available in a Windows command line version and in a Linux bash sh
 <p>Manage the Docker containers needed in the cloud:</p>
 <ul>
 <li><strong>portainer</strong>: container management</li>
-<li><strong>IO_AERO_db</strong>: PostgreSQL database</li>
+<li><strong>io_avstats_db</strong>: PostgreSQL database</li>
 <li><strong>keycloak_db</strong>: PostgreSQL database</li>
 <li><strong>keycloak</strong>: Keycloak server</li>
 <li>Application <strong>ae1982</strong>: Aircraft Events since 1982</li>
@@ -1257,7 +1257,7 @@ The script is available in a Windows command line version and in a Linux bash sh
 <h4 id="purpose_3">Purpose</h4>
 <p>Manage the Docker containers needed locally:</p>
 <ul>
-<li><strong>IO_AERO_db</strong>: PostgreSQL database</li>
+<li><strong>io_avstats_db</strong>: PostgreSQL database</li>
 </ul>
 <h4 id="processing-options_2">Processing Options</h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>- clean - Remove all containers and images
@@ -1319,7 +1319,7 @@ This includes the following activities:</p>
 <li>converting string data types that contain only whitespace to NULL (nullifying).</li>
 </ul>
 <p>As a result, a much simplified processing of the data is possible, e.g. for comparisons.</p>
-<p>On the one hand, the task can be executed explicitly with the <strong><code>run_IO_AERO_db</code></strong> script (task <strong><code>c_p_d</code></strong>) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task <strong><code>l_n_a</code></strong> and <strong><code>u_p_d</code></strong>).</p>
+<p>On the one hand, the task can be executed explicitly with the <strong><code>run_io_avstats_db</code></strong> script (task <strong><code>c_p_d</code></strong>) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task <strong><code>l_n_a</code></strong> and <strong><code>u_p_d</code></strong>).</p>
 <hr />
 <h3 id="29-f_n_a">2.9 <code>f_n_a</code></h3>
 <p><font size="5">Find the nearest airports</font></p>
@@ -1571,9 +1571,9 @@ The task can be executed several times without problems, since before a change i
 <h2 id="4-regular-updates">4. Regular updates</h2>
 <h3 id="41-every-1st-of-the-month">4.1 Every 1st of the month</h3>
 <ol>
-<li>Stop the Docker container <strong><code>IO_AERO_db</code></strong></li>
+<li>Stop the Docker container <strong><code>io_avstats_db</code></strong></li>
 <li>Restore the current state of Pre2008</li>
-<li>Start the Docker container <strong><code>IO_AERO_db</code></strong></li>
+<li>Start the Docker container <strong><code>io_avstats_db</code></strong></li>
 <li>Process the current <strong><code>avall</code></strong> file with code <strong><code>l_n_a</code></strong></li>
 </ol>
 <h3 id="42-every-1st-8th-15th-and-22nd">4.2 Every 1st, 8th, 15th and 22nd</h3>

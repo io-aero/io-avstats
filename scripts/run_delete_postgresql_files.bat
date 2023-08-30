@@ -21,7 +21,6 @@ echo ===========================================================================
 if exist %IO_AERO_POSTGRES_PGDATA%\ (
     dir %IO_AERO_POSTGRES_PGDATA%
     rmdir /s /q %IO_AERO_POSTGRES_PGDATA%
-    dir %IO_AERO_POSTGRES_PGDATA%
 )
 
 echo --------------------------------------------------------------------------------

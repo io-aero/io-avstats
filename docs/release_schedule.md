@@ -36,7 +36,7 @@ See [here](https://semver.org/){:target="_blank"} for details.
 
 - docs/release_history.md
 - docs/release_notes.md
-- src//io_glob.py
+- ioavstats/io_glob.py
 
 ### **3. Create release candidate branch `<rel_branch>`**.
 
@@ -70,4 +70,4 @@ See [here](https://semver.org/){:target="_blank"} for details.
 
 - docs/release_history.md
 - docs/release_notes.md
-- src//io_glob.py
+- ioavstats/io_glob.py

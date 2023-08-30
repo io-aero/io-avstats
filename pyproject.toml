@@ -48,10 +48,7 @@ version = "23.09.01"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/io-aero/io-avstats/issues"
-Documentation = "https://io-aero.github.io/io-avstats/"
 Homepage = "https://github.com/io-aero/io-avstats"
-"Release History" = "https://io-aero.github.io/io-avstats/release_history/"
-"Release Notes" = "https://io-aero.github.io/io-avstats/release_notes/"
 Source = "https://github.com/io-aero/io-avstats/tree/main/ioavstats"
 
 [tool.bandit]
@@ -64,7 +61,7 @@ overwrite_in_place = true
 profile = "black"
 
 [tool.pydocstyle]
-match = '((?!test_).*\.py)'
+match = '((?!test_).*.py)'
 
 [tool.pytest.ini_options]
 console_output_style = "count"

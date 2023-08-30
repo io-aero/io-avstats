@@ -9,9 +9,9 @@ services:
   # ------------------------------------------------------------------------------
   # PostgreSQL Database IO-AVSTATS-DB.
   # ------------------------------------------------------------------------------
-  IO_AERO_db:
+  io_avstats_db:
     command: postgres -c "max_connections=200"
-    container_name: IO_AERO_db
+    container_name: io_avstats_db
     environment:
       - POSTGRES_DB=${IO_AERO_POSTGRES_DBNAME}
       - POSTGRES_PASSWORD=${IO_AERO_POSTGRES_PASSWORD}

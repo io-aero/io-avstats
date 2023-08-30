@@ -20,7 +20,7 @@ set IO_AERO_CORRECTION_WORK_DIR=data\correction
 set IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
 set IO_AERO_KEYCLOAK_PASSWORD_ADMIN=RsxAG^&hpCcuXsB2cbxSS
 set IO_AERO_KEYCLOAK_USER_ADMIN=admin
-set IO_AERO_KEYCLOAK_VERSION=22.0.1
+set IO_AERO_KEYCLOAK_VERSION=latest
 
 set IO_AERO_NTSB_WORK_DIR=data\download
 
@@ -33,7 +33,7 @@ set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
-set IO_AERO_POSTGRES_VERSION=15.3
+set IO_AERO_POSTGRES_VERSION=15.4
 
 if ["!IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
     set IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
@@ -218,16 +218,22 @@ if ["%IO_AERO_TASK%"] EQU ["version"] (
     goto END_OF_SCRIPT
 )
 
-echo You can find the run log in the file run_io_avstats_%IO_AERO_TASK%.log
+if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
+    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
+) else (
+    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%.log
+)
+
+echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.
 echo Please wait ...
 echo.
 
-if exist run_io_avstats_db_%IO_AERO_TASK%.log (
-    del /f /q run_io_avstats_db_%IO_AERO_TASK%.log
+if exist %IO_AERO_AVSTATS_LOG% (
+    del /f /q %IO_AERO_AVSTATS_LOG%
 )
 
-> run_io_avstats_db_%IO_AERO_TASK%.log 2>&1 (
+REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
 
     echo =======================================================================
     echo Start %0
@@ -496,7 +502,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
 
     if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
         if ["%IO_AERO_APPLICATION%"] EQU ["ae1982"] (
-            pipenv run streamlit run src\ioavstats\%IO_AERO_APPLICATION%.py --server.port 8501 -- --mode Std
+            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8501 -- --mode Std
             if ERRORLEVEL 1 (
                 echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
                 exit %ERRORLEVEL%
@@ -506,7 +512,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
         )
 
         if ["%IO_AERO_APPLICATION%"] EQU ["members"] (
-            pipenv run streamlit run src\ioavstats\%IO_AERO_APPLICATION%.py --server.port 8598
+            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8598
             if ERRORLEVEL 1 (
                 echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
                 exit %ERRORLEVEL%
@@ -516,7 +522,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
         )
 
         if ["%IO_AERO_APPLICATION%"] EQU ["pd1982"] (
-            pipenv run streamlit run src\ioavstats\%IO_AERO_APPLICATION%.py --server.port 8502
+            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8502
             if ERRORLEVEL 1 (
                 echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
                 exit %ERRORLEVEL%
@@ -526,7 +532,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
         )
 
         if ["%IO_AERO_APPLICATION%"] EQU ["slara"] (
-            pipenv run streamlit run src\ioavstats\%IO_AERO_APPLICATION%.py --server.port 8503
+            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8503
             if ERRORLEVEL 1 (
                 echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
                 exit %ERRORLEVEL%
@@ -536,7 +542,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
         )
 
         if ["%IO_AERO_APPLICATION%"] EQU ["stats"] (
-            pipenv run streamlit run src\ioavstats\ae1982.py --server.port 8599
+            pipenv run streamlit run ioavstats\ae1982.py --server.port 8599
             if ERRORLEVEL 1 (
                 echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
                 exit %ERRORLEVEL%
@@ -629,7 +635,7 @@ if exist run_io_avstats_db_%IO_AERO_TASK%.log (
 
         goto END_OF_SCRIPT
     )
-)
+REM )
 
 rem ----------------------------------------------------------------------------
 rem Program abort due to wrong input.

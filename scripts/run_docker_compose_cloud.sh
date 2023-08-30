@@ -66,7 +66,7 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "logs" ]; then
         echo "========================================================="
         echo "*             - All Containers"
         echo "ae1982        - Aviation Event Analysis"
-        echo "IO_AERO_db - Database Profiling"
+        echo "io_avstats_db - Database Profiling"
         echo "keycloak      - Keycloak Server"
         echo "keycloak_db   - Keycloak Database"
         echo "members       - IO-Aero Member Service"

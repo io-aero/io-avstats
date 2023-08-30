@@ -27,7 +27,7 @@ set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres_test
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
-set IO_AERO_POSTGRES_VERSION=15.3
+set IO_AERO_POSTGRES_VERSION=15.4
 
 set IO_AERO_MSACCESS=
 set IO_AERO_MSEXCEL=
@@ -143,16 +143,22 @@ if ["%IO_AERO_TASK%"] EQU ["version"] (
     goto END_OF_SCRIPT
 )
 
-echo You can find the run log in the file run_io_avstats_pytest_%IO_AERO_TASK%.log
+if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
+    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
+) else (
+    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%.log
+)
+
+echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.
 echo Please wait ...
 echo.
 
-if exist run_io_avstats_pytest_%IO_AERO_TASK%.log (
-    del /f /q run_io_avstats_pytest_%IO_AERO_TASK%.log
+if exist %IO_AERO_AVSTATS_LOG% (
+    del /f /q %IO_AERO_AVSTATS_LOG%
 )
 
-> run_io_avstats_pytest_%IO_AERO_TASK%.log 2>&1 (
+> %IO_AERO_AVSTATS_LOG% 2>&1 (
 
     echo =======================================================================
     echo Start %0

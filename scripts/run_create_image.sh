@@ -101,7 +101,7 @@ fi
 
 if [ "${APPLICATION}" = "stats" ]; then
     export MODE=Ltd
-    copy -i src/ioavstats/ae1982.py src/ioavstats/stats.py
+    copy -i ioavstats/ae1982.py ioavstats/stats.py
     copy -i config/Pipfile.ae1982   config/Pipfile.stats
 fi
 
@@ -147,7 +147,7 @@ rm -rf tmp/upload
 rm -rf tmp/docs/img
 
 if [ "${APPLICATION}" = "stats" ]; then
-    rm -f src/ioavstats/stats.py
+    rm -f ioavstats/stats.py
     rm -f config/Pipfile.stats
 fi
 

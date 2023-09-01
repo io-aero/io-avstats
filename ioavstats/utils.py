@@ -128,7 +128,7 @@ def has_access(
 ) -> tuple[str, dict[str, dict[str, list[str]]]]:
     """Authentication and authorization check."""
 
-    return app_id + "_" + host_cloud, {}  # wwe
+    return app_id + "_" + str(host_cloud), {}  # wwe
 
     # # pylint: disable=R0801
     # keycloak = login(

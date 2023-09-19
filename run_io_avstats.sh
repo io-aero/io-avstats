@@ -31,7 +31,7 @@ export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AERO_POSTGRES_PGDATA=data/postgres
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
-export IO_AERO_POSTGRES_VERSION=15.4
+export IO_AERO_POSTGRES_VERSION=16.0
 
 if [ -z "${IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ]; then
     export IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
@@ -67,14 +67,15 @@ if [ -z "$1" ]; then
     echo "---------------------------------------------------------"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
     echo "c_d_l   - Run Docker Compose tasks - Local"
-    echo "c_d_s   - Create the PostgreSQL database schema"
+    echo "c_d_s   - Create the io_avstats_db PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "f_n_a   - Find the nearest airports"
+    echo "k_d_c   - Set up the keycloak_db PostgreSQL database container"
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "s_d_c   - Set up the PostgreSQL database container"
-    echo "u_d_s   - Update the PostgreSQL database schema"
+    echo "s_d_c   - Set up the io_avstats_db PostgreSQL database container"
+    echo "u_d_s   - Update the io_avstats_db PostgreSQL database schema"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
@@ -206,6 +207,14 @@ elif [ "${IO_AERO_TASK}" = "c_d_i" ]; then
     fi
 
 # ------------------------------------------------------------------------------
+# Set up the keycloak_db PostgreSQL database container.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AERO_TASK}" = "k_d_c" ]; then
+    if ! ( ./scripts/run_setup_postgresql_keycloak_db.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
@@ -240,10 +249,10 @@ elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the database container.
+# Set up the io_avstats_db PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
+    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
         exit 255
     fi
 

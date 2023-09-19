@@ -11,6 +11,7 @@ build/
 cloud.zip
 coverage.xml
 data/*_postgres*.zip
+data/*.backup.sql
 data/USGS/
 data/correction_test/
 data/download/
@@ -25,7 +26,6 @@ docs/build/pdf/.doctrees/
 docs/build/pdf/manual.rtc
 docs/build/pdf/manual.stylelog
 ioavstats.egg-info/
-
 resources/Gammadyne/timer.txt
 tmp/
 upload/*.pdf

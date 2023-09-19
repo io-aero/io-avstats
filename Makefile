@@ -36,7 +36,6 @@ export COVERALLS_REPO_TOKEN=<see coveralls.io>
 export ENV_FOR_DYNACONF=test
 export MODULE=ioavstats
 export PYTHONPATH=${MODULE} scripts
-export VERSION_PIPENV=v2023.7.23
 export VERSION_PYTHON=3.10
 
 ## =============================================================================
@@ -232,7 +231,7 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
-	${PYTHON} -m pip install --upgrade pipenv==${VERSION_PIPENV}
+	${PYTHON} -m pip install --upgrade pipenv
 	${PYTHON} -m pip install --upgrade virtualenv
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
@@ -254,7 +253,7 @@ pipenv-prod:        ## Install the package dependencies for production.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PYTHON} -m pip install --upgrade pip
-	${PYTHON} -m pip install --upgrade pipenv==${VERSION_PIPENV}
+	${PYTHON} -m pip install --upgrade pipenv
 	${PYTHON} -m pip install --upgrade virtualenv
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}

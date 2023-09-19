@@ -25,7 +25,7 @@ export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
-export IO_AERO_POSTGRES_VERSION=15.4
+export IO_AERO_POSTGRES_VERSION=16.0
 
 export IO_AERO_MSACCESS=
 export IO_AERO_MSEXCEL=
@@ -174,7 +174,7 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
 # Set up the database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
+    if ! ( .run_setup_postgresql_io_avstats_db.sh ); then
         exit 255
     fi
 

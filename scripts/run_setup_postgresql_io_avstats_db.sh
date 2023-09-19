@@ -4,14 +4,15 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_setup_postgresql.sh: Set up a PostgreSQL Docker container.
+# run_setup_postgresql_io_avstats_db.sh: Set up the io_avstats_db PostgreSQL
+#                                        database container.
 #
 # ------------------------------------------------------------------------------
 
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
-echo "IO-AVSTATS - Set up a PostgreSQL Docker container."
+echo "IO-AVSTATS - Set up the io_avstats_db PostgreSQL Docker container."
 echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"

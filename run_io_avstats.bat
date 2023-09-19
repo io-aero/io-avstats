@@ -33,7 +33,7 @@ set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
-set IO_AERO_POSTGRES_VERSION=15.4
+set IO_AERO_POSTGRES_VERSION=16.0
 
 if ["!IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
     set IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
@@ -72,16 +72,17 @@ if ["%1"] EQU [""] (
     echo ---------------------------------------------------------
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL
     echo c_d_l   - Run Docker Compose tasks - Local
-    echo c_d_s   - Create the PostgreSQL database schema
+    echo c_d_s   - Create the io_avstats_db PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo f_n_a   - Find the nearest airports
+    echo k_d_c   - Set up the keycloak_db PostgreSQL database container
     echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo s_d_c   - Set up the PostgreSQL database container
-    echo u_d_s   - Update the PostgreSQL database schema
+    echo s_d_c   - Set up the io_avstats_db PostgreSQL database container
+    echo u_d_s   - Update the io_avstats_db PostgreSQL database schema
     echo ---------------------------------------------------------
-    echo c_d_i   - Create or update a Docker image
+    echo c_d_i   - Create or update an application Docker image
     echo c_d_c   - Run Docker Compose tasks - Cloud
     echo c_f_z   - Zip the files for the cloud
     echo ---------------------------------------------------------
@@ -278,7 +279,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Create or update a Docker image.
+    rem Create or update an application Docker image.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["c_d_i"] (
         call scripts\run_create_image %IO_AERO_APPLICATION% yes yes
@@ -304,7 +305,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Create the PostgreSQL database schema.
+    rem Create the io_avstats_db PostgreSQL database schema.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["c_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
@@ -555,10 +556,10 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Set up the database container.
+    rem Set up the keycloak_db PostgreSQL database container.
     rem ----------------------------------------------------------------------------
-    if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
-        call scripts\run_setup_postgresql
+    if ["%IO_AERO_TASK%"] EQU ["k_d_c"] (
+        call scripts\run_setup_postgresql_keycloak_db
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -568,7 +569,20 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Update the PostgreSQL database schema.
+    rem Set up the io_avstats_db PostgreSQL database container.
+    rem ----------------------------------------------------------------------------
+    if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
+        call scripts\run_setup_postgresql_io_avstats_db
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
+        )
+
+        goto END_OF_SCRIPT
+    )
+
+    rem ----------------------------------------------------------------------------
+    rem Update the io_avstats_db PostgreSQL database schema.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["u_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"

@@ -13,7 +13,7 @@ from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
-# from streamlit_keycloak import login
+# wwe from streamlit_keycloak import login
 
 
 # ------------------------------------------------------------------
@@ -130,6 +130,7 @@ def has_access(
 
     return app_id + "_" + str(host_cloud), {}  # wwe
 
+    # wwe
     # # pylint: disable=R0801
     # keycloak = login(
     #     url="http://auth.io-aero.com" if host_cloud else "http://auth.localhost:8080",

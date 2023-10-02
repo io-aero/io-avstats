@@ -52,32 +52,9 @@ nav:
           - 8. Load simplemaps data: pre2008_21_l_s_d_23_08_21.md
           - 9. Load ZIP Code Database data: pre2008_22_l_z_d.md
       - Transaction Data Logs:
+          - up01OCT 2023.10.01: 2023_10_01_log_up01OCT.md
+          - avall   2023.10.01: 2023_10_01_log_avall.md
           - up22SEP 2023.09.22: 2023_09_22_log_up22SEP.md
-          - up15SEP 2023.09.15: 2023_09_15_log_up15SEP.md
-          - up08SEP 2023.09.08: 2023_09_08_log_up08SEP.md
-          - up01SEP 2023.09.01: 2023_09_01_log_up01SEP.md
-          - avall   2023.09.01: 2023_09_01_log_avall.md
-          - Pre2008 2023.08.21: 2023_08_21_log_Pre2008.md
-          - up22JUL 2023.07.22: 2023_07_22_log_up22JUL.md
-          - up15JUL 2023.07.15: 2023_07_15_log_up15JUL.md
-          - up08JUL 2023.07.08: 2023_07_08_log_up08JUL.md
-          - up01JUL 2023.07.01: 2023_07_01_log_up01JUL.md
-          - avall   2023.07.01: 2023_07_01_log_avall.md
-          - Pre2008 2023.06.20: 2023_06_20_log_Pre2008.md
-          - up15JUN 2023.06.15: 2023_06_15_log_up15JUN.md
-          - up08JUN 2023.06.08: 2023_06_08_log_up08JUN.md
-          - up01JUN 2023.06.01: 2023_06_01_log_up01JUN.md
-          - avall   2023.06.01: 2023_06_01_log_avall.md
-          - up22MAY 2023.05.22: 2023_05_22_log_up22MAY.md
-          - up15MAY 2023.05.15: 2023_05_15_log_up15MAY.md
-          - up08MAY 2023.05.08: 2023_05_08_log_up08MAY.md
-          - up01MAY 2023.05.01: 2023_05_01_log_up01MAY.md
-          - avall   2023.05.01: 2023_05_01_log_avall.md
-          - up22APR 2023.04.22: 2023_04_22_log_up22APR.md
-          - up08APR 2023.04.15: 2023_04_15_log_up15APR.md
-          - up08APR 2023.04.08: 2023_04_08_log_up08APR.md
-          - avall   2023.04.01: 2023_04_03_log_avall.md
-          - Pre2008 2020.09.30: 2023_02_01_log_Pre2008.md
   - Release Notes: release_notes.md
   - License: LICENSE.md
 

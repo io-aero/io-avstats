@@ -24,8 +24,10 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | .streamlit        | Streamlit configuration files.                             |
 | config            | Configuration files.                                       |
 | data              | Application data related files.                            |
+| dist              | Contains an executable of this application.                |
 | docs              | Documentation files.                                       |
 | ioavstats         | Python script files.                                       |
+| libs              | Third party libraries.                                     |
 | resources         | Selected manuals and software.                             |
 | scripts           | Supporting Ubuntu and Windows Scripts.                     |
 | site              | Documentation as static HTML pages.                        |

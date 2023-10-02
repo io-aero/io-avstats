@@ -4,7 +4,6 @@
 .idea/
 .mypy_cache/
 .pytest_cache/
-.settings.io_aero.toml
 Pipfile.lock
 __pycache__
 build/

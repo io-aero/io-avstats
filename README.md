@@ -2,7 +2,7 @@
 
 ## 1. Features
 
-- Applications based on the library IO-AVSTATS-DB:
+- Applications based on the library ioavstatsdb:
   - Association Rule Analysis
   - Aviation Event Analysis
   - Database Profiling

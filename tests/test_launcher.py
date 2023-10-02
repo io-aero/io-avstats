@@ -17,7 +17,7 @@ from iocommon.io_config import settings
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - version - Show the IO-AVSTATS-DB version.
+# Test case: launcher() - version - Show the ioavstatsdb version.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_version():

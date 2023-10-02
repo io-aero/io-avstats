@@ -88,7 +88,7 @@ The following tasks must be performed every month on the 1st, 8th, 15th and 22nd
 ## 4. Repository io-avstats-shared
 
 - Create the log file `docs/yyyy_mm_dd_log_upddMON.md`
-- Modify the release notes file `docs/io_avstats_db_release_notes.md`
+- Modify the release notes file `docs/release_notes.md`
 - Modify the release notes file `docs/IO_AERO_release_notes.md`
 - Modify the configuration file `mkdocs.yml`
 - Run `make final`

@@ -86,7 +86,7 @@ if ["%1"] EQU [""] (
     echo c_d_c   - Run Docker Compose tasks - Cloud
     echo c_f_z   - Zip the files for the cloud
     echo ---------------------------------------------------------
-    echo version - Show the IO-AVSTATS-DB version
+    echo version - Show the ioavstatsdb version
     echo ---------------------------------------------------------
     set /P IO_AERO_TASK="Enter the desired task [default: %IO_AERO_TASK_DEFAULT%] "
 
@@ -207,7 +207,7 @@ echo Script %0 is now running
 echo.
 
 rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS-DB version.
+rem Show the ioavstatsdb version.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["version"] (
     pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"

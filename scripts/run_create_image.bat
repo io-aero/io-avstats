@@ -8,7 +8,7 @@ rem ----------------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
 
-set APPLICATION_DEFAULT=stats
+set APPLICATION_DEFAULT=ae1982
 set DOCKER_CLEAR_CACHE_DEFAULT=yes
 set DOCKER_HUB_PUSH_DEFAULT=yes
 set IO_AERO_STREAMLIT_SERVER_PORT=8501
@@ -19,10 +19,8 @@ if ["%1"] EQU [""] (
     echo all      - All Streamlit applications
     echo ---------------------------------------------------------
     echo ae1982  - Aircraft Accidents in the US since 1982
-    echo members - Members Only Area
     echo pd1982  - Profiling Data for the US since 1982
     echo slara   - Association Rule Analysis
-    echo stats   - Aircraft Accidents in the US since 1982 - limited
     echo ---------------------------------------------------------
     set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
 
@@ -80,10 +78,8 @@ rem > %LOG_FILE% 2>&1 (
 
     if ["!APPLICATION!"] EQU ["all"]  (
         call scripts\run_create_image ae1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image members !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         call scripts\run_create_image pd1982  !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         call scripts\run_create_image slara   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
-        call scripts\run_create_image stats   !DOCKER_HUB_PUSH! !DOCKER_CLEAR_CACHE!
         goto END_OF_SCRIPT
     )
 
@@ -92,20 +88,6 @@ rem > %LOG_FILE% 2>&1 (
 
     if exist tmp\docs\img rmdir /s /q tmp\docs\img
     mkdir tmp\docs\img
-
-    if ["!APPLICATION!"] EQU ["members"]  (
-        copy /Y data\latest_postgres.zip          upload\IO-AVSTATS-DB.zip
-        copy /Y docs\img\StockSnap_SLQQYN6CRR.jpg tmp\docs\img\StockSnap_SLQQYN6CRR.jpg
-        copy /Y upload\IO-AVSTATS-DB.pdf          tmp\upload\IO-AVSTATS-DB.pdf
-        copy /Y upload\IO-AVSTATS-DB.zip          tmp\upload\IO-AVSTATS-DB.zip
-        copy /Y upload\IO-AVSTATS.pdf             tmp\upload\IO-AVSTATS.pdf
-    )
-
-    if ["!APPLICATION!"] EQU ["stats"]  (
-        set MODE=Ltd
-        copy /Y ioavstats\ae1982.py ioavstats\stats.py
-        copy /Y config\Pipfile.ae1982   config\Pipfile.stats
-    )
 
     if ["%DOCKER_CLEAR_CACHE%"] EQU ["yes"]  (
         docker builder prune --all --force
@@ -145,11 +127,6 @@ rem > %LOG_FILE% 2>&1 (
 
     rmdir /s /q tmp\upload
     rmdir /s /q tmp\docs\img
-
-    if ["!APPLICATION!"] EQU ["stats"]  (
-        del /s ioavstats\stats.py
-        del /s config\Pipfile.stats
-    )
 
     :END_OF_SCRIPT
     echo -----------------------------------------------------------------------

@@ -26,7 +26,7 @@ For a more detailed description of these tasks, see under **Operation**.
 - Stop the Docker container **`io_avstats_db`**.
 - Remove the directory **`data/postgres`**
 - Unzip the latest file **`data/yy.mm.dd_postgres_Pre2008_20.09.30.zip`**
-- Start the Docker container **`io_avstats_db`** with **`c_d_l - Run Docker Compose tasks - Local`**
+- Start the Docker container **`io_avstats_db`** with **`s_d_c - Set up the io_avstats_db PostgreSQL database container`**
 
 ### 1.2 Processing modified non-**NTSB** data sources 
 
@@ -50,7 +50,7 @@ The following steps are performed only if the source files have changed:
 - Stop the Docker container **`io_avstats_db`**.
 - Zip the file directory **`postgres`** in the file directory **`data`** - result is the file **`postgres.zip`**.
 - Rename the file **`data/postgres.sql`** to **`yy.mm.dd_postgres_upDDMON.zip`**.
-- Start the Docker container **`io_avstats_db`** with **`c_d_l - Run Docker Compose tasks - Local`**
+- Start the Docker container **`io_avstats_db`** with **`s_d_c - Set up the io_avstats_db PostgreSQL database container`**
 
 ### 1.3 **NTSB** file **`avall.zip`**
 
@@ -88,7 +88,7 @@ The following tasks must be performed every month on the 1st, 8th, 15th and 22nd
 ## 4. Repository io-avstats-shared
 
 - Create the log file `docs/yyyy_mm_dd_log_upddMON.md`
-- Modify the release notes file `docs/io_avstats_db_release_notes.md`
+- Modify the release notes file `docs/release_notes.md`
 - Modify the release notes file `docs/IO_AERO_release_notes.md`
 - Modify the configuration file `mkdocs.yml`
 - Run `make final`

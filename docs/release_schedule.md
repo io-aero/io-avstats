@@ -62,12 +62,11 @@ See [here](https://semver.org/){:target="_blank"} for details.
 - **`x`** Create a discussion for this release
 - Publish release
 
-### **6. Preepare the next release**.
+### **6. Prepare the next release**.
 
 #### a. Choose a new version number.
 
 #### b. Prepare the following files in the **io-rsaster** repository for the new version:
 
-- docs/release_history.md
 - docs/release_notes.md
 - ioavstats/io_glob.py

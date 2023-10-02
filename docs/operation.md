@@ -12,7 +12,6 @@ The following tasks can be executed with this script:
 | a_o_c   | Load aviation occurrence categories into PostgreSQL |                                   |
 | c_d_c   | Run Docker Compose tasks - Cloud                    | `clean`, `down`, `logs` or `up`   |
 | c_d_i   | Create or update a Docker image                     | `all` or single Streamlit app     |
-| c_d_l   | Run Docker Compose tasks - Local                    | `clean`, `down`, `logs` or `up`   |
 | c_d_s   | Create the PostgreSQL database schema               |                                   |
 | c_f_z   | Zip the files for the cloud                         |                                   |
 | c_l_l   | Correct decimal US latitudes and longitudes         |                                   |
@@ -74,13 +73,9 @@ Manage the Docker containers needed in the cloud:
 
 - **portainer**: container management
 - **io_avstats_db**: PostgreSQL database
-- **keycloak_db**: PostgreSQL database
-- **keycloak**: Keycloak server
 - Application **ae1982**: Aircraft Events since 1982
-- Aoplication **members**: Members Only Area
 - Application **pd1982**: Profiling Data since 1982
 - Application **slara**: Association Rule Analysis
-- Application **stats**: Aircraft Events since 1982
 - **load_balancer**: load balancer NGINX
 
 #### Processing Options
@@ -106,35 +101,13 @@ Create the application-specific Docker images and store them on DockerHub.
 ```
 - all     - All Streamlit applications
 - ae1982  - Aircraft Accidents in the US since 1982
-- members - Members Only Area
 - pd1982  - Profiling Data for the US since 1982
 - slara   - Association Rule Analysis
-- stats   - Aircraft Accidents in the US since 1982 - limited
 ```
 
 ---
 
-### 2.4 `c_d_l`
-<font size="5">Run Docker Compose tasks - Local</font>
-
-#### Purpose
-
-Manage the Docker containers needed locally:
-
-- **io_avstats_db**: PostgreSQL database
-
-#### Processing Options
-
-```
-- clean - Remove all containers and images
-- down  - Stop  Docker Compose
-- logs  - Fetch the logs of a container
-- up    - Start Docker Compose
-```
-
----
-
-### 2.5 `c_d_s`
+### 2.4 `c_d_s`
 <font size="5">Create the PostgreSQL database schema</font>
 
 #### Purpose
@@ -157,7 +130,7 @@ Successful creation of a new database schema requires that neither the user to b
 
 ---
 
-### 2.6 `c_f_z`
+### 2.5 `c_f_z`
 <font size="5">Zip the files for the cloud</font>
 
 #### Purpose
@@ -167,7 +140,7 @@ The result is contained in the file **cloud.zip**.
 
 ---
 
-### 2.7 `c_l_l`
+### 2.6 `c_l_l`
 <font size="5">Correct decimal US latitudes and longitudes</font>
 
 #### Purpose
@@ -188,7 +161,7 @@ An attempt is made to calculate missing decimal longitudes and latitudes using t
 
 ---
 
-### 2.8 `c_p_d`
+### 2.7 `c_p_d`
 <font size="5">Cleansing PostgreSQL data</font>
 
 #### Purpose
@@ -205,7 +178,7 @@ On the one hand, the task can be executed explicitly with the **`run_io_avstats_
 
 ---
 
-### 2.9 `f_n_a`
+### 2.8 `f_n_a`
 <font size="5">Find the nearest airports</font>
 
 - TODO
@@ -214,7 +187,7 @@ On the one hand, the task can be executed explicitly with the **`run_io_avstats_
 
 ---
 
-### 2.10 `l_a_p`
+### 2.9 `l_a_p`
 <font size="5">Load airport data into PostgreSQL</font>
 
 - TODO
@@ -227,7 +200,7 @@ On the one hand, the task can be executed explicitly with the **`run_io_avstats_
 
 ---
 
-### 2.11 `l_c_d`
+### 2.10 `l_c_d`
 <font size="5">Load data from a correction file into PostgreSQL</font>
 
 - TODO
@@ -251,7 +224,7 @@ The following subtasks are executed:
 
 ---
 
-### 2.12 `l_c_s`
+### 2.11 `l_c_s`
 <font size="5">Load country and state data into PostgreSQL</font>
 
 - TODO
@@ -264,7 +237,7 @@ The following subtasks are executed:
 
 ---
 
-### 2.13 `l_n_a`
+### 2.12 `l_n_a`
 <font size="5">Load **NTSB** MS Access database data into PostgreSQL</font>
 
 #### Purpose
@@ -293,7 +266,7 @@ The PostgreSQL database **IO-AVSTATS-DB** completely maps the database schema of
 
 ---
 
-### 2.14 `l_s_d`
+### 2.13 `l_s_d`
 <font size="5">Load **simplemaps** data into PostgreSQL</font>
 
 - TODO
@@ -311,7 +284,7 @@ After that only the monthly updates are then transferred.
 
 ---
 
-### 2.15 `l_s_e`
+### 2.14 `l_s_e`
 <font size="5">Load sequence of events data into PostgreSQL</font>
 
 - TODO
@@ -324,7 +297,7 @@ After that only the monthly updates are then transferred.
 
 ---
 
-### 2.16 `l_z_d`
+### 2.15 `l_z_d`
 <font size="5">Load ZIP Code Database data into PostgreSQL</font>
 
 - TODO
@@ -342,7 +315,7 @@ After that only the monthly updates are then transferred.
 
 ---
 
-### 2.17 `r_d_s`
+### 2.16 `r_d_s`
 <font size="5">Refresh the PostgreSQL database schema</font>
 
 - TODO
@@ -370,14 +343,14 @@ Example protocol:
 
 ---
 
-### 2.18 `r_s_a`
+### 2.17 `r_s_a`
 <font size="5">Run a Streamlit application</font>
 
 - TODO
 
 ---
 
-### 2.19 `u_d_s`
+### 2.18 `u_d_s`
 <font size="5">Update the PostgreSQL database schema</font>
 
 - TODO
@@ -406,14 +379,14 @@ The task can be executed several times without problems, since before a change i
 
 ---
 
-### 2.20 `u_p_d`
+### 2.19 `u_p_d`
 <font size="5">Complete processing of a modifying MS Access file</font>
 
 - TODO
 
 ---
 
-### 2.21 `v_n_d`
+### 2.20 `v_n_d`
 <font size="5">Verify selected **NTSB** data</font>
 
 - TODO
@@ -456,7 +429,7 @@ The tests are performed according to the following logic:
 
 ---
 
-### 2.22 `version`
+### 2.21 `version`
 <font size="5">Show the IO-AVSTATS-DB version</font>
 
 - TODO
@@ -465,7 +438,6 @@ The tests are performed according to the following logic:
 
 The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:
 
-- **`c_d_l`** - Run Docker Compose tasks - Local                              
 - **`c_d_s`** - Create the PostgreSQL database schema 
 ---
 - **`l_c_s`** - Load country and state data into PostgreSQL

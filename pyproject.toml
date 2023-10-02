@@ -26,7 +26,6 @@ dependencies = [
     "pyodbc",
     "pyeclat",
     "streamlit",
-    "streamlit-keycloak",
     "streamlit-pandas-profiling",
     "ydata-profiling",
 ]

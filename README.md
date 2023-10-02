@@ -2,7 +2,7 @@
 
 ## 1. Features
 
-- Applications based on the library IO-AVSTATS-DB:
+- Applications based on the library ioavstatsdb:
   - Association Rule Analysis
   - Aviation Event Analysis
   - Database Profiling
@@ -24,8 +24,10 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | .streamlit        | Streamlit configuration files.                             |
 | config            | Configuration files.                                       |
 | data              | Application data related files.                            |
+| dist              | Contains an executable of this application.                |
 | docs              | Documentation files.                                       |
 | ioavstats         | Python script files.                                       |
+| libs              | Third party libraries.                                     |
 | resources         | Selected manuals and software.                             |
 | scripts           | Supporting Ubuntu and Windows Scripts.                     |
 | site              | Documentation as static HTML pages.                        |
@@ -38,7 +40,6 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 |---------------------------|-----------------------------------------------------------------|
 | .gitignore                | Configuration of files and folders to be ignored.               |
 | .pylintrc                 | **pylint** configuration file.                                  |
-| .settings.io_aero.toml    | Configuration data - secrets.                                   |
 | docker-compose_cloud.yaml | Cloud related Docker Compose configuration file.                |
 | docker-compose_local.yaml | Local Docker Compose configuration file.                        |
 | dockerfile                | Build instructions for the Streamlit application images.        |

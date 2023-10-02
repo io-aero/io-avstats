@@ -9,7 +9,6 @@ plotly = "*"
 psycopg2-binary = "*"
 sqlalchemy = "<2.0.0"
 streamlit = "*"
-streamlit-keycloak ="*"
 streamlit-pandas-profiling = "*"
 
 [requires]

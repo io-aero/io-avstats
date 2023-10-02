@@ -40,6 +40,22 @@ nav:
       - ... create a new Streamlit app: how_to_create_new_streamlit_app.md
       - ... set up an AWS instance: how_to_setup_aws_instance.md
       - ... update IO-AVSTATS in AWS: how_to_update_avstats_on_aws.md
+  - Data:
+      - Master Data Logs:
+          - 1. Set up the database container: pre2008_01_s_d_c_23_08_21.md
+          - 2. Create the database schema: pre2008_02_c_d_s_23_08_21.md
+          - 3. Update the database schema: pre2008_03_u_d_s_23_08_21.md
+          - 4. Load aviation occurrence categories: pre2008_11_a_o_c_23_08_21.md
+          - 5. Load airport data: pre2008_12_l_a_p.md
+          - 6. Load country and state data: pre2008_13_l_c_s_23_08_21.md
+          - 7. Load sequence of events data: pre2008_14_l_s_e_23_08_21.md
+          - 8. Load simplemaps data: pre2008_21_l_s_d_23_08_21.md
+          - 9. Load ZIP Code Database data: pre2008_22_l_z_d.md
+      - Transaction Data Logs:
+          - up01OCT 2023.10.01: 2023_10_01_log_up01OCT.md
+          - avall   2023.10.01: 2023_10_01_log_avall.md
+          - up22SEP 2023.09.22: 2023_09_22_log_up22SEP.md
+  - Release Notes: release_notes.md
   - License: LICENSE.md
 
 plugins:

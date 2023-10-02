@@ -15,11 +15,6 @@ fi
 export IO_AERO_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AERO_CORRECTION_WORK_DIR=data/correction
 
-export IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AERO_KEYCLOAK_PASSWORD_ADMIN="RsxAG&hpCcuXsB2cbxSS"
-export IO_AERO_KEYCLOAK_USER_ADMIN=admin
-export IO_AERO_KEYCLOAK_VERSION=latest
-
 export IO_AERO_NTSB_WORK_DIR=data/download
 
 if [ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]; then
@@ -32,16 +27,6 @@ export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AERO_POSTGRES_PGDATA=data/postgres
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
 export IO_AERO_POSTGRES_VERSION=16.0
-
-if [ -z "${IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT}" ]; then
-    export IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
-fi
-
-export IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-export IO_AERO_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
-export IO_AERO_POSTGRES_KEYCLOAK_PASSWORD_ADMIN="twAuk3VM2swt#Z96#zM#"
-export IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
-export IO_AERO_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
 
 export IO_AERO_APPLICATION=
 export IO_AERO_COMPOSE_TASK=
@@ -66,11 +51,9 @@ if [ -z "$1" ]; then
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
-    echo "c_d_l   - Run Docker Compose tasks - Local"
     echo "c_d_s   - Create the io_avstats_db PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "f_n_a   - Find the nearest airports"
-    echo "k_d_c   - Set up the keycloak_db PostgreSQL database container"
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
@@ -93,7 +76,7 @@ else
     export IO_AERO_TASK=$1
 fi
 
-if [ "${IO_AERO_TASK}" = "c_d_c" ] || [ "${IO_AERO_TASK}" = "c_d_l" ]; then
+if [ "${IO_AERO_TASK}" = "c_d_c" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "clean - Remove all containers and images"
@@ -119,10 +102,8 @@ if [ "${IO_AERO_TASK}" = "c_d_i" ] || [ "${IO_AERO_TASK}" = "r_s_a" ]; then
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
         echo "ae1982  - Aircraft Accidents in the US since 1982"
-        echo "members - Members Only Area"
         echo "pd1982  - Profiling Data for the US since 1982"
         echo "slara   - Association Rule Analysis"
-        echo "stats   - Aircraft Accidents in the US since 1982 - limited"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the Streamlit application name " IO_AERO_APPLICATION
@@ -191,26 +172,10 @@ elif [ "${IO_AERO_TASK}" = "c_d_c" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Run Docker Compose tasks (Local).
-# ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "c_d_l" ]; then
-    if ! ( ./scripts/run_docker_compose_local.sh "${IO_AERO_COMPOSE_TASK}" ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
 # Create or update a Docker image.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "c_d_i" ]; then
     if ! ( ./scripts/run_create_image.sh "${IO_AERO_APPLICATION}" yes yes ); then
-        exit 255
-    fi
-
-# ------------------------------------------------------------------------------
-# Set up the keycloak_db PostgreSQL database container.
-# ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "k_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql_keycloak_db.sh ); then
         exit 255
     fi
 
@@ -230,20 +195,12 @@ elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
         if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
             exit 255
         fi
-    elif [ "${IO_AERO_APPLICATION}" = "members" ]; then
-        if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8598 ); then
-            exit 255
-        fi
     elif [ "${IO_AERO_APPLICATION}" = "pd1982" ]; then
         if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8502 ); then
             exit 255
         fi
     elif [ "${IO_AERO_APPLICATION}" = "slara" ]; then
         if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8503 ); then
-            exit 255
-        fi
-    elif [ "${IO_AERO_APPLICATION}" = "stats" ]; then
-        if ! ( pipenv run streamlit run ioavstats/ae1982.py --server.port 8599 ); then
             exit 255
         fi
     fi

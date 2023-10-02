@@ -17,11 +17,6 @@ if ["!ENV_FOR_DYNACONF!"] EQU [""] (
 set IO_AERO_AVIATION_EVENT_STATISTICS=data\AviationAccidentStatistics
 set IO_AERO_CORRECTION_WORK_DIR=data\correction
 
-set IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
-set IO_AERO_KEYCLOAK_PASSWORD_ADMIN=RsxAG^&hpCcuXsB2cbxSS
-set IO_AERO_KEYCLOAK_USER_ADMIN=admin
-set IO_AERO_KEYCLOAK_VERSION=latest
-
 set IO_AERO_NTSB_WORK_DIR=data\download
 
 if ["!IO_AERO_POSTGRES_CONNECTION_PORT!"] EQU [""] (
@@ -34,16 +29,6 @@ set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
 set IO_AERO_POSTGRES_VERSION=16.0
-
-if ["!IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT!"] EQU [""] (
-    set IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
-)
-
-set IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-set IO_AERO_POSTGRES_KEYCLOAK_DBNAME_ADMIN=postgres
-set IO_AERO_POSTGRES_KEYCLOAK_PASSWORD_ADMIN=twAuk3VM2swt#Z96#zM#
-set IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
-set IO_AERO_POSTGRES_KEYCLOAK_USER_ADMIN=postgres
 
 set IO_AERO_APPLICATION=
 set IO_AERO_COMPOSE_TASK=
@@ -71,11 +56,9 @@ if ["%1"] EQU [""] (
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL
-    echo c_d_l   - Run Docker Compose tasks - Local
     echo c_d_s   - Create the io_avstats_db PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo f_n_a   - Find the nearest airports
-    echo k_d_c   - Set up the keycloak_db PostgreSQL database container
     echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
@@ -86,7 +69,7 @@ if ["%1"] EQU [""] (
     echo c_d_c   - Run Docker Compose tasks - Cloud
     echo c_f_z   - Zip the files for the cloud
     echo ---------------------------------------------------------
-    echo version - Show the IO-AVSTATS-DB version
+    echo version - Show the ioavstatsdb version
     echo ---------------------------------------------------------
     set /P IO_AERO_TASK="Enter the desired task [default: %IO_AERO_TASK_DEFAULT%] "
 
@@ -121,32 +104,12 @@ if ["%IO_AERO_TASK%"] EQU ["c_d_i"] (
         echo all     - All Streamlit applications
         echo ---------------------------------------------------------
         echo ae1982  - Aircraft Accidents in the US since 1982
-        echo members - Members Only Area
         echo pd1982  - Profiling Data for the US since 1982
         echo slara   - Association Rule Analysis
-        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AERO_APPLICATION="Enter the Streamlit application name "
     ) else (
         set IO_AERO_APPLICATION=%2
-    )
-)
-
-if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        echo clean - Remove all containers and images
-        echo down  - Stop  Docker Compose
-        echo logs  - Fetch the logs of a container
-        echo up    - Start Docker Compose
-        echo ---------------------------------------------------------
-        set /P IO_AERO_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AERO_COMPOSE_TASK_DEFAULT%] "
-
-        if ["!IO_AERO_COMPOSE_TASK!"] EQU [""] (
-            set IO_AERO_COMPOSE_TASK=%IO_AERO_COMPOSE_TASK_DEFAULT%
-        )
-    ) else (
-        set IO_AERO_COMPOSE_TASK=%2
     )
 )
 
@@ -178,10 +141,8 @@ if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
         echo ae1982  - Aircraft Accidents in the US since 1982
-        echo members - Members Only Area
         echo pd1982  - Profiling Data for the US since 1982
         echo slara   - Association Rule Analysis
-        echo stats   - Aircraft Accidents in the US since 1982 - limited
         echo ---------------------------------------------------------
         set /P IO_AERO_APPLICATION="Enter the Streamlit application name "
     ) else (
@@ -207,7 +168,7 @@ echo Script %0 is now running
 echo.
 
 rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS-DB version.
+rem Show the ioavstatsdb version.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["version"] (
     pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
@@ -283,19 +244,6 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["c_d_i"] (
         call scripts\run_create_image %IO_AERO_APPLICATION% yes yes
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
-        )
-
-        goto END_OF_SCRIPT
-    )
-
-    rem ----------------------------------------------------------------------------
-    rem Run Docker Compose tasks (Local).
-    rem ----------------------------------------------------------------------------
-    if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
-        call scripts\run_docker_compose_local %IO_AERO_COMPOSE_TASK%
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%
@@ -512,16 +460,6 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
             goto END_OF_SCRIPT
         )
 
-        if ["%IO_AERO_APPLICATION%"] EQU ["members"] (
-            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8598
-            if ERRORLEVEL 1 (
-                echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-                exit %ERRORLEVEL%
-            )
-
-            goto END_OF_SCRIPT
-        )
-
         if ["%IO_AERO_APPLICATION%"] EQU ["pd1982"] (
             pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8502
             if ERRORLEVEL 1 (
@@ -540,29 +478,6 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
             )
 
             goto END_OF_SCRIPT
-        )
-
-        if ["%IO_AERO_APPLICATION%"] EQU ["stats"] (
-            pipenv run streamlit run ioavstats\ae1982.py --server.port 8599
-            if ERRORLEVEL 1 (
-                echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-                exit %ERRORLEVEL%
-            )
-
-            goto END_OF_SCRIPT
-        )
-
-        goto END_OF_SCRIPT
-    )
-
-    rem ----------------------------------------------------------------------------
-    rem Set up the keycloak_db PostgreSQL database container.
-    rem ----------------------------------------------------------------------------
-    if ["%IO_AERO_TASK%"] EQU ["k_d_c"] (
-        call scripts\run_setup_postgresql_keycloak_db
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
         )
 
         goto END_OF_SCRIPT

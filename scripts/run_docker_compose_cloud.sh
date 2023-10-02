@@ -8,14 +8,6 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AERO_KEYCLOAK_PASSWORD="RsxAG&hpCcuXsB2cbxSS"
-export IO_AERO_KEYCLOAK_USER=admin
-
-if [ -z "${IO_AERO_KEYCLOAK_VERSION}" ]; then
-    export IO_AERO_KEYCLOAK_VERSION=latest
-fi
-
 export IO_AERO_NGINX_CONNECTION_PORT=80
 
 export IO_AERO_POSTGRES_CONNECTION_PORT=5432
@@ -28,13 +20,6 @@ export IO_AERO_POSTGRES_USER=guest
 if [ -z "${IO_AERO_POSTGRES_VERSION}" ]; then
     export IO_AERO_POSTGRES_VERSION=latest
 fi
-
-export IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
-export IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-export IO_AERO_POSTGRES_KEYCLOAK_DBNAME=postgres
-export IO_AERO_POSTGRES_KEYCLOAK_PASSWORD="twAuk3VM2swt#Z96#zM#"
-export IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
-export IO_AERO_POSTGRES_KEYCLOAK_USER=postgres
 
 export IO_AERO_STREAMLIT_SERVER_PORT=8501
 
@@ -67,12 +52,8 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "logs" ]; then
         echo "*             - All Containers"
         echo "ae1982        - Aviation Event Analysis"
         echo "io_avstats_db - Database Profiling"
-        echo "keycloak      - Keycloak Server"
-        echo "keycloak_db   - Keycloak Database"
-        echo "members       - IO-Aero Member Service"
         echo "pd1982        - Database Profiling"
         echo "slara         - Association Rule Analysis"
-        echo "stats         - US Aviation Fatal Accidents"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the desired container [default: ${IO_AERO_CONTAINER_DEFAULT}] " IO_AERO_CONTAINER
@@ -109,11 +90,6 @@ echo "--------------------------------------------------------------------------
 echo "COMPOSE_TASK                      : ${IO_AERO_COMPOSE_TASK}"
 echo "CONTAINER                         : ${IO_AERO_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
-echo "KEYCLOAK_CONTAINER_NAME           : ${IO_AERO_KEYCLOAK_CONTAINER_NAME}"
-echo "KEYCLOAK_PASSWORD                 : ${IO_AERO_KEYCLOAK_PASSWORD}"
-echo "KEYCLOAK_USER                     : ${IO_AERO_KEYCLOAK_USER}"
-echo "KEYCLOAK_VERSION                  : ${IO_AERO_KEYCLOAK_VERSION}"
-echo "--------------------------------------------------------------------------------"
 echo "NGINX_CONNECTION_PORT             : ${IO_AERO_NGINX_CONNECTION_PORT}"
 echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT          : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
@@ -124,13 +100,6 @@ echo "POSTGRES_PGDATA                   : ${IO_AERO_POSTGRES_PGDATA}"
 echo "POSTGRES_USER                     : ${IO_AERO_POSTGRES_USER}"
 echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_VERSION                  : ${IO_AERO_POSTGRES_VERSION}"
-echo "--------------------------------------------------------------------------------"
-echo "POSTGRES_KEYCLOAK_CONNECTION_PORT : ${IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
-echo "POSTGRES_KEYCLOAK_CONTAINER_NAME  : ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}"
-echo "POSTGRES_KEYCLOAK_DBNAME          : ${IO_AERO_POSTGRES_KEYCLOAK_DBNAME}"
-echo "POSTGRES_KEYCLOAK_PASSWORD        : ${IO_AERO_POSTGRES_KEYCLOAK_PASSWORD}"
-echo "POSTGRES_KEYCLOAK_PGDATA          : ${IO_AERO_POSTGRES_KEYCLOAK_PGDATA}"
-echo "POSTGRES_KEYCLOAK_USER            : ${IO_AERO_POSTGRES_KEYCLOAK_USER}"
 echo "--------------------------------------------------------------------------------"
 echo "STREAMLIT_SERVER_PORT             : ${IO_AERO_STREAMLIT_SERVER_PORT}"
 echo "--------------------------------------------------------------------------------"
@@ -145,16 +114,12 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "clean" ]; then
     docker ps
     echo "................................................... before containers:"
     docker ps -a
-    docker ps -q --filter "name=${IO_AERO_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AERO_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AERO_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AERO_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AERO_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=ae1982"                                         | grep -q . && docker stop ae1982                                         && docker rm -fv ae1982
-    docker ps -q --filter "name=load_balancer"                                  | grep -q . && docker stop load_balancer                                  && docker rm -fv load_balancer
-    docker ps -q --filter "name=members"                                        | grep -q . && docker stop members                                        && docker rm -fv members
-    docker ps -q --filter "name=pd1982"                                         | grep -q . && docker stop pd1982                                         && docker rm -fv pd1982
-    docker ps -q --filter "name=portainer"                                      | grep -q . && docker stop portainer                                      && docker rm -fv portainer
-    docker ps -q --filter "name=slara"                                          | grep -q . && docker stop slara                                          && docker rm -fv slara
-    docker ps -q --filter "name=stats"                                          | grep -q . && docker stop stats                                          && docker rm -fv stats
+    docker ps -q --filter "name=${IO_AERO_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AERO_POSTGRES_CONTAINER_NAME}
+    docker ps -q --filter "name=ae1982"                             | grep -q . && docker stop ae1982                             && docker rm -fv ae1982
+    docker ps -q --filter "name=load_balancer"                      | grep -q . && docker stop load_balancer                      && docker rm -fv load_balancer
+    docker ps -q --filter "name=pd1982"                             | grep -q . && docker stop pd1982                             && docker rm -fv pd1982
+    docker ps -q --filter "name=portainer"                          | grep -q . && docker stop portainer                          && docker rm -fv portainer
+    docker ps -q --filter "name=slara"                              | grep -q . && docker stop slara                              && docker rm -fv slara
     echo "............................................ after containers running:"
     docker ps
     echo ".................................................... after containers:"
@@ -162,22 +127,14 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "clean" ]; then
     docker ps -a
     echo "....................................................... before images:"
     docker images
-    docker images -q --filter "reference=ioaero/ae1982:latest"                                     | grep -q . && docker rmi --force ioaero/ae1982:latest
-    docker images -q --filter "reference=ioaero/members:latest"                                    | grep -q . && docker rmi --force ioaero/members:latest
-    docker images -q --filter "reference=ioaero/pd1982:latest"                                     | grep -q . && docker rmi --force ioaero/pd1982:latest
-    docker images -q --filter "reference=ioaero/slara:latest"                                      | grep -q . && docker rmi --force ioaero/slara:latest
-    docker images -q --filter "reference=ioaero/stats:latest"                                      | grep -q . && docker rmi --force ioaero/stats:latest
-    docker images -q --filter "reference=nginx:stable-alpine"                                      | grep -q . && docker rmi --force nginx:stable-alpine
-    docker images -q --filter "reference=portainer/portainer-ce"                                   | grep -q . && docker rmi --force portainer/portainer-ce:latest
-    docker images -q --filter "reference=postgres:${IO_AERO_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AERO_POSTGRES_VERSION}"
-    docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AERO_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AERO_KEYCLOAK_VERSION}"
+    docker images -q --filter "reference=ioaero/ae1982:latest"                 | grep -q . && docker rmi --force ioaero/ae1982:latest
+    docker images -q --filter "reference=ioaero/pd1982:latest"                 | grep -q . && docker rmi --force ioaero/pd1982:latest
+    docker images -q --filter "reference=ioaero/slara:latest"                  | grep -q . && docker rmi --force ioaero/slara:latest
+    docker images -q --filter "reference=nginx:stable-alpine"                  | grep -q . && docker rmi --force nginx:stable-alpine
+    docker images -q --filter "reference=portainer/portainer-ce"               | grep -q . && docker rmi --force portainer/portainer-ce:latest
+    docker images -q --filter "reference=postgres:${IO_AERO_POSTGRES_VERSION}" | grep -q . && docker rmi --force postgres:"${IO_AERO_POSTGRES_VERSION}"
     echo "........................................................ after images:"
     docker images
-
-    now=$(date +"%Y.%m.%d")
-    cd data
-    sudo zip -r "${now}_postgres_keycloak.zip" postgres_keycloak
-    cd ..
 
 # ------------------------------------------------------------------------------
 # Stop Docker Compose.
@@ -197,9 +154,6 @@ elif [ "${IO_AERO_COMPOSE_TASK}" = "down" ]; then
     docker images
 
     now=$(date +"%Y.%m.%d")
-    cd data
-    sudo zip -r "${now}_postgres_keycloak.zip" postgres_keycloak
-    cd ..
 
 # ------------------------------------------------------------------------------
 # View Container Output.

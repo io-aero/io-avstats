@@ -315,10 +315,8 @@ QUERIES = {
 SETTINGS = Dynaconf(
     environments=True,
     envvar_prefix="IO_AERO",
-    settings_files=["settings.io_aero.toml", ".settings.io_aero.toml"],
+    settings_files=["settings.io_aero.toml"],
 )
-
-USER_INFO: str = "n/a"
 
 
 # ------------------------------------------------------------------
@@ -699,7 +697,6 @@ def _streamlit_flow() -> None:
     global DF_UNFILTERED  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
-    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     start_time = time.time_ns()
@@ -729,8 +726,6 @@ def _streamlit_flow() -> None:
         "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
-
-    USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
     PG_CONN = utils.get_postgres_connection()  # type: ignore
 
@@ -768,7 +763,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
+        + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )
 

@@ -6,9 +6,8 @@ Currently, it includes the following applications:
 - **`ae1982`** - Aviation Event Analysis
 - **`pd1982`** - IO-AVSTATS-DB Database Profiling
 - **`slara`**&nbsp;&nbsp; - Association Rule Analysis
-- **`stats`**&nbsp;&nbsp; - US Aviation Fatal Accidents
 
 These applications and the database are available in the cloud via AWS.
 In addition, the maintenance of the database content is also done in this repository. 
 
-The related database software is maintained in the repository **[io-avstats-db](https://github.com/io-aero/io-avstats-db)**.
+The related database software is maintained in the repository **io-avstats-db**.

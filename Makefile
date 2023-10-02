@@ -185,7 +185,7 @@ mkdocs:             ## Create and upload the user documentation with MkDocs.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run mkdocs --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run mkdocs build
+	${PIPENV} run mkdocs gh-deploy --force
 	@echo Info **********  End:   MkDocs ***************************************
 
 # Mypy: Static Typing for Python

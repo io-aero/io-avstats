@@ -10,14 +10,6 @@ setlocal EnableDelayedExpansion
 
 set ERRORLEVEL=
 
-set IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
-set IO_AERO_KEYCLOAK_PASSWORD=RsxAG^&hpCcuXsB2cbxSS
-set IO_AERO_KEYCLOAK_USER=admin
-
-if ["%IO_AERO_KEYCLOAK_VERSION%"] EQU [""] (
-    set IO_AERO_KEYCLOAK_VERSION=latest
-}
-
 set IO_AERO_NGINX_CONNECTION_PORT=80
 
 set IO_AERO_POSTGRES_CONNECTION_PORT=5432
@@ -30,13 +22,6 @@ set IO_AERO_POSTGRES_USER=guest
 if ["%IO_AERO_POSTGRES_VERSION%"] EQU [""] (
     set IO_AERO_POSTGRES_VERSION=latest
 )
-
-set IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
-set IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-set IO_AERO_POSTGRES_KEYCLOAK_DBNAME=postgres
-set IO_AERO_POSTGRES_KEYCLOAK_PASSWORD=twAuk3VM2swt#Z96#zM#
-set IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data\postgres_keycloak
-set IO_AERO_POSTGRES_KEYCLOAK_USER=postgres
 
 set IO_AERO_STREAMLIT_SERVER_PORT=8501
 
@@ -67,12 +52,8 @@ if ["%IO_AERO_COMPOSE_TASK%"] EQU ["logs"] (
         echo *             - All Containers
         echo ae1982        - Aviation Event Analysis
         echo io_avstats_db - Database Profiling
-        echo keycloak      - Keycloak Server
-        echo keycloak_db   - Keycloak Database
-        echo members       - IO-Aero Member Service
         echo pd1982        - Database Profiling
         echo slara         - Association Rule Analysis
-        echo stats         - US Aviation Fatal Accidents
         echo ---------------------------------------------------------
         set /P IO_AERO_CONTAINER="Enter the desired container [default: %IO_AERO_CONTAINER_DEFAULT%] "
 
@@ -92,11 +73,6 @@ echo -----------------------------------------------------------------------
 echo COMPOSE_TASK                      : %IO_AERO_COMPOSE_TASK%
 echo CONTAINER                         : %IO_AERO_CONTAINER%
 echo -----------------------------------------------------------------------
-echo KEYCLOAK_CONTAINER_NAME           : %IO_AERO_KEYCLOAK_CONTAINER_NAME%
-echo KEYCLOAK_PASSWORD                 : "%IO_AERO_KEYCLOAK_PASSWORD%"
-echo KEYCLOAK_USER                     : %IO_AERO_KEYCLOAK_USER%
-echo KEYCLOAK_VERSION                  : %IO_AERO_KEYCLOAK_VERSION%
-echo -----------------------------------------------------------------------
 echo NGINX_CONNECTION_PORT             : %IO_AERO_NGINX_CONNECTION_PORT%
 echo -----------------------------------------------------------------------
 echo POSTGRES_CONNECTION_PORT          : %IO_AERO_POSTGRES_CONNECTION_PORT%
@@ -106,13 +82,6 @@ echo POSTGRES_PASSWORD                 : %IO_AERO_POSTGRES_PASSWORD%
 echo POSTGRES_PGDATA                   : %IO_AERO_POSTGRES_PGDATA%
 echo POSTGRES_USER                     : %IO_AERO_POSTGRES_USER%
 echo POSTGRES_VERSION                  : %IO_AERO_POSTGRES_VERSION%
-echo -----------------------------------------------------------------------
-echo POSTGRES_KEYCLOAK_CONNECTION_PORT : %IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT%
-echo POSTGRES_KEYCLOAK_CONTAINER_NAME  : %IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-echo POSTGRES_KEYCLOAK_DBNAME          : %IO_AERO_POSTGRES_KEYCLOAK_DBNAME%
-echo POSTGRES_KEYCLOAK_PASSWORD        : %IO_AERO_POSTGRES_KEYCLOAK_PASSWORD%
-echo POSTGRES_KEYCLOAK_PGDATA          : %IO_AERO_POSTGRES_KEYCLOAK_PGDATA%
-echo POSTGRES_KEYCLOAK_USER            : %IO_AERO_POSTGRES_KEYCLOAK_USER%
 echo -----------------------------------------------------------------------
 echo STREAMLIT_SERVER_PORT             : %IO_AERO_STREAMLIT_SERVER_PORT%
 echo -----------------------------------------------------------------------
@@ -124,45 +93,30 @@ if ["%IO_AERO_COMPOSE_TASK%"] EQU ["clean"] (
     docker ps
     echo Docker Containers .................................. before containers:
     docker ps -a
-    docker ps       | find "%IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker stop        %IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME%" && docker rm  --force %IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AERO_KEYCLOAK_CONTAINER_NAME%"          && docker stop        %IO_AERO_KEYCLOAK_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AERO_KEYCLOAK_CONTAINER_NAME%"          && docker rm  --force %IO_AERO_KEYCLOAK_CONTAINER_NAME%
-    docker ps       | find "%IO_AERO_POSTGRES_CONTAINER_NAME%"          && docker stop        %IO_AERO_POSTGRES_CONTAINER_NAME%
-    docker ps -a    | find "%IO_AERO_POSTGRES_CONTAINER_NAME%"          && docker rm  --force %IO_AERO_POSTGRES_CONTAINER_NAME%
-    docker ps       | find "load_balancer"                                 && docker stop        load_balancer
-    docker ps -a    | find "load_balancer"                                 && docker rm  --force load_balancer
-    docker ps       | find "members"                                       && docker stop        members
-    docker ps -a    | find "members"                                       && docker rm  --force members
-    docker ps       | find "pd1982"                                        && docker stop        pd1982
-    docker ps -a    | find "pd1982"                                        && docker rm  --force pd1982
-    docker ps       | find "portainer"                                     && docker stop        portainer
-    docker ps -a    | find "portainer"                                     && docker rm  --force portainer
-    docker ps       | find "slara"                                         && docker stop        slara
-    docker ps -a    | find "slara"                                         && docker rm  --force slara
-    docker ps       | find "stats"                                         && docker stop        stats
-    docker ps -a    | find "stats"                                         && docker rm  --force stats
+    docker ps       | find "%IO_AERO_POSTGRES_CONTAINER_NAME%" && docker stop        %IO_AERO_POSTGRES_CONTAINER_NAME%
+    docker ps -a    | find "%IO_AERO_POSTGRES_CONTAINER_NAME%" && docker rm  --force %IO_AERO_POSTGRES_CONTAINER_NAME%
+    docker ps       | find "load_balancer"                     && docker stop        load_balancer
+    docker ps -a    | find "load_balancer"                     && docker rm  --force load_balancer
+    docker ps       | find "pd1982"                            && docker stop        pd1982
+    docker ps -a    | find "pd1982"                            && docker rm  --force pd1982
+    docker ps       | find "portainer"                         && docker stop        portainer
+    docker ps -a    | find "portainer"                         && docker rm  --force portainer
+    docker ps       | find "slara"                             && docker stop        slara
+    docker ps -a    | find "slara"                             && docker rm  --force slara
     echo ............................................. after containers running:
     docker ps
     echo ..................................................... after containers:
     docker ps -a
     echo ........................................................ before images:
     docker images
-    docker image ls | find "ae1982"                    && docker rmi --force ioaero/ae1982:latest
-    docker image ls | find "members"                   && docker rmi --force ioaero/members:latest
-    docker image ls | find "nginx"                     && docker rmi --force nginx:stable-alpine
-    docker image ls | find "pd1982"                    && docker rmi --force ioaero/pd1982:latest
-    docker image ls | find "postgres"                  && docker rmi --force postgres:%IO_AERO_POSTGRES_VERSION%
-    docker image ls | find "portainer"                 && docker rmi --force portainer/portainer-ce:latest
-    docker image ls | find "quay.io/keycloak/keycloak" && docker rmi --force quay.io/keycloak/keycloak:%IO_AERO_KEYCLOAK_VERSION%
-    docker image ls | find "slara"                     && docker rmi --force ioaero/slara:latest
-    docker image ls | find "stats"                     && docker rmi --force ioaero/stats:latest
+    docker image ls | find "ae1982"    && docker rmi --force ioaero/ae1982:latest
+    docker image ls | find "nginx"     && docker rmi --force nginx:stable-alpine
+    docker image ls | find "pd1982"    && docker rmi --force ioaero/pd1982:latest
+    docker image ls | find "postgres"  && docker rmi --force postgres:%IO_AERO_POSTGRES_VERSION%
+    docker image ls | find "portainer" && docker rmi --force portainer/portainer-ce:latest
+    docker image ls | find "slara"     && docker rmi --force ioaero/slara:latest
     echo ......................................................... after images:
     docker images
-
-    cd data
-    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
-    cd ..
 
     goto END_OF_SCRIPT
 )
@@ -179,10 +133,6 @@ if ["%IO_AERO_COMPOSE_TASK%"] EQU ["down"] (
     docker ps
     echo ..................................................... after containers:
     docker ps -a
-
-    cd data
-    %AWS_PROG_ZIP% a -spd -tzip %DATE:~-2,2%.%date:~3,2%.%date:~7,2%_postgres_keycloak.zip postgres_keycloak
-    cd ..
 
     goto END_OF_SCRIPT
 )

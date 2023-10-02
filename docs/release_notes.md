@@ -72,16 +72,16 @@ Release Date: 02.10.2023
 
 **Important**: All software components should be installed in the 64 bit version!
 
-| Software                                                | Version   | Remark           | Status  |
-|:--------------------------------------------------------|:----------|:-----------------|---------|
-| [7-Zip]                                                 | 23.01     |                  |         |
-| [Docker Desktop]                                        | 4.23.0    |                  | upgrade |
-| [IO-AVSTATS-DB]                                         | 1.7.8     |                  | upgrade |
-| [Make for Windows]                                      | 3.81      | Windows-specific |         |
-| [Microsoft Access Database Engine 2016 Redistributable] | 8/15/2023 | Windows-specific |         |
-| [PostgreSQL]                                            | 16.0      |                  |         |
-| [Python]                                                | 3.10.11   |                  |         |
-| [RazorSQL]                                              | 10.4.5    |                  | upgrade |
+| Software                                              | Version   | Remark           | Status  |
+|:------------------------------------------------------|:----------|:-----------------|---------|
+| 7-Zip                                                 | 23.01     |                  |         |
+| Docker Desktop                                        | 4.23.0    |                  | upgrade |
+| IO-AVSTATS-DB                                         | 1.7.8     |                  | upgrade |
+| Make for Windows                                      | 3.81      | Windows-specific |         |
+| Microsoft Access Database Engine 2016 Redistributable | 8/15/2023 | Windows-specific |         |
+| PostgreSQL                                            | 16.0      |                  |         |
+| Python                                                | 3.10.11   |                  |         |
+| RazorSQL                                              | 10.4.5    |                  | upgrade |
 
 ### 2. Processed files
 
@@ -95,7 +95,7 @@ Release Date: 02.10.2023
 ##### Data source `up01OCT.zip`
 
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01OCT.zip)
-- Version: 10/22/2023 3:00:37 AM
+- Version: 10/01/2023 3:00:37 AM
 
 ## Version 23.09.22
 
@@ -105,16 +105,16 @@ Release Date: 22.09.2023
 
 **Important**: All software components should be installed in the 64 bit version!
 
-| Software                                                | Version   | Remark           | Status  |
-|:--------------------------------------------------------|:----------|:-----------------|---------|
-| [7-Zip]                                                 | 23.01     |                  |         |
-| [Docker Desktop]                                        | 4.23.0    |                  | upgrade |
-| [IO-AVSTATS-DB]                                         | 1.7.7     |                  |         |
-| [Make for Windows]                                      | 3.81      | Windows-specific |         |
-| [Microsoft Access Database Engine 2016 Redistributable] | 8/15/2023 | Windows-specific |         |
-| [PostgreSQL]                                            | 16.0      |                  |         |
-| [Python]                                                | 3.10.11   |                  |         |
-| [RazorSQL]                                              | 10.4.5    |                  | upgrade |
+| Software                                              | Version   | Remark           | Status  |
+|:------------------------------------------------------|:----------|:-----------------|---------|
+| 7-Zip                                                 | 23.01     |                  |         |
+| Docker Desktop                                        | 4.23.0    |                  | upgrade |
+| IO-AVSTATS-DB                                         | 1.7.7     |                  |         |
+| Make for Windows                                      | 3.81      | Windows-specific |         |
+| Microsoft Access Database Engine 2016 Redistributable | 8/15/2023 | Windows-specific |         |
+| PostgreSQL                                            | 16.0      |                  |         |
+| Python                                                | 3.10.11   |                  |         |
+| RazorSQL                                              | 10.4.5    |                  | upgrade |
 
 ### 2. Processed files
 

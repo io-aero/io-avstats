@@ -217,11 +217,9 @@ PG_CONN: connection | None = None
 SETTINGS = Dynaconf(
     environments=True,
     envvar_prefix="IO_AERO",
-    settings_files=["settings.io_aero.toml", ".settings.io_aero.toml"],
+    settings_files=["settings.io_aero.toml"],
 )
 START_TIME: int = 0
-
-USER_INFO: str = "n/a"
 
 
 # ------------------------------------------------------------------
@@ -4153,7 +4151,6 @@ def _streamlit_flow() -> None:
     global MD_CODES_SUBSECTION  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
-    global USER_INFO  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
@@ -4183,8 +4180,6 @@ def _streamlit_flow() -> None:
         "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
-
-    USER_INFO, _ = utils.has_access(HOST_CLOUD, APP_ID)
 
     # ------------------------------------------------------------------
     # Get data.
@@ -4243,7 +4238,7 @@ def _streamlit_flow() -> None:
     # flake8: noqa: E501
     print(
         str(datetime.datetime.now())
-        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10} - {USER_INFO}",
+        + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )
 

@@ -53,7 +53,6 @@ if ["%1"] EQU [""] (
     echo l_s_e   - Load sequence of events data into PostgreSQL
     echo l_z_d   - Load ZIP Code Database data into PostgreSQL
     echo ---------------------------------------------------------
-    echo c_d_l   - Run Docker Compose tasks - Local
     echo c_d_s   - Create the io_avstats_db PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo d_d_c   - Delete the PostgreSQL database container
@@ -71,24 +70,6 @@ if ["%1"] EQU [""] (
     )
 ) else (
     set IO_AERO_TASK=%1
-)
-
-if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        echo clean - Remove all containers and images
-        echo down  - Stop  Docker Compose
-        echo logs  - Fetch the logs of a container
-        echo up    - Start Docker Compose
-        echo ---------------------------------------------------------
-        set /P IO_AERO_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AERO_COMPOSE_TASK_DEFAULT%] "
-
-        if ["!IO_AERO_COMPOSE_TASK!"] EQU [""] (
-            set IO_AERO_COMPOSE_TASK=%IO_AERO_COMPOSE_TASK_DEFAULT%
-        )
-    ) else (
-        set IO_AERO_COMPOSE_TASK=%2
-    )
 )
 
 if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
@@ -179,19 +160,6 @@ if exist %IO_AERO_AVSTATS_LOG% (
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["a_o_c"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats_pytest was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
-        )
-
-        goto END_OF_SCRIPT
-    )
-
-    rem ----------------------------------------------------------------------------
-    rem Run Docker Compose tasks (Local).
-    rem ----------------------------------------------------------------------------
-    if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
-        call scripts\run_docker_compose_local %IO_AERO_COMPOSE_TASK%
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_pytest was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%

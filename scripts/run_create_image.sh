@@ -8,7 +8,7 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export APPLICATION_DEFAULT=stats
+export APPLICATION_DEFAULT=ae1982
 export DOCKER_CLEAR_CACHE_DEFAULT=yes
 export DOCKER_HUB_PUSH_DEFAULT=yes
 export IO_AERO_STREAMLIT_SERVER_PORT=8501
@@ -19,10 +19,8 @@ if [ -z "$1" ]; then
     echo "all      - All Streamlit applications"
     echo "---------------------------------------------------------"
     echo "ae1982  - Aircraft Accidents in the US since 1982"
-    echo "members - Members Only Area"
     echo "pd1982  - Profiling Data for the US since 1982"
     echo "slara   - Association Rule Analysis"
-    echo "stats   - Aircraft Accidents in the US since 1982 - limited"
     echo "---------------------------------------------------------"
     read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
     export APPLICATION="${APPLICATION}"
@@ -78,10 +76,8 @@ echo "==========================================================================
 
 if [ "${APPLICATION}" = "all" ]; then
     ( ./scripts/run_create_image.sh ae1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
-    ( ./scripts/run_create_image.sh members "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     ( ./scripts/run_create_image.sh pd1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     ( ./scripts/run_create_image.sh slara   "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
-    ( ./scripts/run_create_image.sh stats   "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     goto END_OF_SCRIPT
 fi
 
@@ -90,20 +86,6 @@ mkdir -p tmp/upload
 
 rm -rf tmp/docs/img
 mkdir -p tmp/docs\img
-
-if [ "${APPLICATION}" = "members" ]; then
-    copy -i data/latest_postgres.zip          upload/IO-AVSTATS-DB.zip
-    copy -i docs/img/StockSnap_SLQQYN6CRR.jpg tmp/docs/img/StockSnap_SLQQYN6CRR.jpg
-    copy -i uoload/IO-AVSTATS-DB.pdf          tmp/upload/IO-AVSTATS-DB.pdf
-    copy -i uoload/IO-AVSTATS.pdf             tmp/upload/IO-AVSTATS.pdf
-    copy -i upload/IO-AVSTATS-DB.zip          tmp/upload/IO-AVSTATS-DB.zip
-fi
-
-if [ "${APPLICATION}" = "stats" ]; then
-    export MODE=Ltd
-    copy -i ioavstats/ae1982.py ioavstats/stats.py
-    copy -i config/Pipfile.ae1982   config/Pipfile.stats
-fi
 
 if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
     docker builder prune --all --force
@@ -145,11 +127,6 @@ done
 
 rm -rf tmp/upload
 rm -rf tmp/docs/img
-
-if [ "${APPLICATION}" = "stats" ]; then
-    rm -f ioavstats/stats.py
-    rm -f config/Pipfile.stats
-fi
 
 echo ""
 echo "--------------------------------------------------------------------------------"

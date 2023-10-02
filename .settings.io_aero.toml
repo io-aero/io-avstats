@@ -1,6 +1,0 @@
-[default]
-postgres_password = "u&jT!Mox4S8@Qu7gZuxk"
-postgres_password_admin = "V3s8m4x*MYbHrX*UuU6X"
-postgres_password_guest = "YL9CGphL58Rye3nUDopw"
-
-[test]

@@ -56,12 +56,11 @@ On the EC2 dashboard, select **Instances** and then **Launch instance**.
 Each Streamlit application must be assigned its own port number so that they can run simultaneously.
 Currently, the following Streamlit applications are supported:
 
-| Application                                                 |
-|-------------------------------------------------------------|
-| ae1982 - Aviation Events since since 1982                   |
-| pd1982 - Profiling Data since 1982                          |
-| slara  - Association Rule Analysis                          |
-| stats  - Aviation Events since since 1982 - Limited Version |
+| Application                               |
+|-------------------------------------------|
+| ae1982 - Aviation Events since since 1982 |
+| pd1982 - Profiling Data since 1982        |
+| slara  - Association Rule Analysis        |
 
 ### 2.1 Determine the security
 

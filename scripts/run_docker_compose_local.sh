@@ -8,15 +8,6 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-export IO_AERO_KEYCLOAK_CONNECTION_PORT=8080
-export IO_AERO_KEYCLOAK_CONTAINER_NAME=keycloak
-export IO_AERO_KEYCLOAK_PASSWORD="RsxAG&hpCcuXsB2cbxSS"
-export IO_AERO_KEYCLOAK_USER=admin
-
-if [ -z "${IO_AERO_KEYCLOAK_VERSION}" ]; then
-    export IO_AERO_KEYCLOAK_VERSION=latest
-fi
-
 export IO_AERO_POSTGRES_CONNECTION_PORT=5432
 export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
 export IO_AERO_POSTGRES_DBNAME=postgres
@@ -27,13 +18,6 @@ export IO_AERO_POSTGRES_USER=guest
 if [ -z "${IO_AERO_POSTGRES_VERSION}" ]; then
     export IO_AERO_POSTGRES_VERSION=latest
 fi
-
-export IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT=5442
-export IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME=keycloak_db
-export IO_AERO_POSTGRES_KEYCLOAK_DBNAME=postgres
-export IO_AERO_POSTGRES_KEYCLOAK_PASSWORD="twAuk3VM2swt#Z96#zM#"
-export IO_AERO_POSTGRES_KEYCLOAK_PGDATA=data/postgres_keycloak
-export IO_AERO_POSTGRES_KEYCLOAK_USER=postgres
 
 export IO_AERO_COMPOSE_TASK=
 export IO_AERO_COMPOSE_TASK_DEFAULT=logs
@@ -63,8 +47,6 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "logs" ]; then
         echo "========================================================="
         echo "*             - All Containers"
         echo "io_avstats_db - Database Profiling"
-        echo "keycloak      - Keycloak Server"
-        echo "keycloak_db   - Keycloak Database"
         echo "---------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the desired container [default: ${IO_AERO_CONTAINER_DEFAULT}] " IO_AERO_CONTAINER
@@ -101,12 +83,6 @@ echo "--------------------------------------------------------------------------
 echo "COMPOSE_TASK                      : ${IO_AERO_COMPOSE_TASK}"
 echo "CONTAINER                         : ${IO_AERO_CONTAINER}"
 echo "--------------------------------------------------------------------------------"
-echo "KEYCLOAK_CONNECTION_PORT          : ${IO_AERO_KEYCLOAK_CONNECTION_PORT}"
-echo "KEYCLOAK_CONTAINER_NAME           : ${IO_AERO_KEYCLOAK_CONTAINER_NAME}"
-echo "KEYCLOAK_PASSWORD                 : ${IO_AERO_KEYCLOAK_PASSWORD}"
-echo "KEYCLOAK_USER                     : ${IO_AERO_KEYCLOAK_USER}"
-echo "KEYCLOAK_VERSION                  : ${IO_AERO_KEYCLOAK_VERSION}"
-echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT          : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME           : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_DBNAME                   : ${IO_AERO_POSTGRES_DBNAME}"
@@ -114,13 +90,6 @@ echo "POSTGRES_PASSWORD                 : ${IO_AERO_POSTGRES_PASSWORD}"
 echo "POSTGRES_PGDATA                   : ${IO_AERO_POSTGRES_PGDATA}"
 echo "POSTGRES_USER                     : ${IO_AERO_POSTGRES_USER}"
 echo "POSTGRES_VERSION                  : ${IO_AERO_POSTGRES_VERSION}"
-echo "--------------------------------------------------------------------------------"
-echo "POSTGRES_KEYCLOAK_CONNECTION_PORT : ${IO_AERO_POSTGRES_KEYCLOAK_CONNECTION_PORT}"
-echo "POSTGRES_KEYCLOAK_CONTAINER_NAME  : ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}"
-echo "POSTGRES_KEYCLOAK_DBNAME          : ${IO_AERO_POSTGRES_KEYCLOAK_DBNAME}"
-echo "POSTGRES_KEYCLOAK_PASSWORD        : ${IO_AERO_POSTGRES_KEYCLOAK_PASSWORD}"
-echo "POSTGRES_KEYCLOAK_PGDATA          : ${IO_AERO_POSTGRES_KEYCLOAK_PGDATA}"
-echo "POSTGRES_KEYCLOAK_USER            : ${IO_AERO_POSTGRES_KEYCLOAK_USER}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -133,9 +102,7 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "clean" ]; then
     docker ps
     echo "................................................... before containers:"
     docker ps -a
-    docker ps -q --filter "name=${IO_AERO_KEYCLOAK_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AERO_KEYCLOAK_CONTAINER_NAME}          && docker rm -fv ${IO_AERO_KEYCLOAK_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AERO_POSTGRES_CONTAINER_NAME}"          | grep -q . && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME}          && docker rm -fv ${IO_AERO_POSTGRES_CONTAINER_NAME}
-    docker ps -q --filter "name=${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME} && docker rm -fv ${IO_AERO_POSTGRES_KEYCLOAK_CONTAINER_NAME}
+    docker ps -q --filter "name=${IO_AERO_POSTGRES_CONTAINER_NAME}" | grep -q . && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME} && docker rm -fv ${IO_AERO_POSTGRES_CONTAINER_NAME}
     echo "............................................ after containers running:"
     docker ps
     echo ".................................................... after containers:"
@@ -143,15 +110,9 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "clean" ]; then
     docker ps -a
     echo "....................................................... before images:"
     docker images
-    docker images -q --filter "reference=postgres:${IO_AERO_POSTGRES_VERSION}"                  | grep -q . && docker rmi --force postgres:"${IO_AERO_POSTGRES_VERSION}"
-    docker images -q --filter "reference=quay.io/keycloak/keycloak:${IO_AERO_KEYCLOAK_VERSION}" | grep -q . && docker rmi --force quay.io/keycloak/keycloak:"${IO_AERO_KEYCLOAK_VERSION}"
+    docker images -q --filter "reference=postgres:${IO_AERO_POSTGRES_VERSION}" | grep -q . && docker rmi --force postgres:"${IO_AERO_POSTGRES_VERSION}"
     echo "........................................................ after images:"
     docker images
-
-    now=$(date +"%Y.%m.%d")
-    cd data
-    sudo zip-r "${now}_postgres_keycloak.zip" postgres_keycloak
-    cd ..
 
 # ------------------------------------------------------------------------------
 # Stop Docker Compose.
@@ -171,9 +132,6 @@ elif [ "${IO_AERO_COMPOSE_TASK}" = "down" ]; then
     docker images
 
     now=$(date +"%Y.%m.%d")
-    cd data
-    sudo zip -r "${now}_postgres_keycloak.zip" postgres_keycloak
-    cd ..
 
 # ------------------------------------------------------------------------------
 # View Container Output.

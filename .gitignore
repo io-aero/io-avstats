@@ -18,7 +18,6 @@ data/download_test/
 data/pandas_profiles/*_explorative.html
 data/pandas_profiles/io_processed_files_*.html
 data/postgres/
-data/postgres_keycloak/
 data/postgres_test/
 docs/build/doctrees/
 docs/build/pdf/.doctrees/

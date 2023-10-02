@@ -22,7 +22,6 @@ ADD ../tmp/docs/img/ ./docs/img/
 ADD ../tmp/upload/ ./upload/
 
 COPY Makefile                                      ./
-COPY config/.settings.io_aero_4_dockerfile.toml    ./.settings.io_aero.toml
 COPY config/Pipfile.${APP}                         ./Pipfile
 COPY config/config.toml.${APP}                     ./.streamlit/config.toml
 COPY config/secrets_4_dockerfile.toml              ./.streamlit/secrets.toml

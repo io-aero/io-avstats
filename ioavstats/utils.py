@@ -13,8 +13,6 @@ from psycopg2.extensions import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
-# wwe from streamlit_keycloak import login
-
 
 # ------------------------------------------------------------------
 # Determine the last processed update file.
@@ -118,64 +116,6 @@ def get_engine(settings: Dynaconf) -> Engine:
 def get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
     return psycopg2.connect(**st.secrets["db_postgres"])
-
-
-# -----------------------------------------------------------------------------
-# Authentication and authorization check.
-# -----------------------------------------------------------------------------
-def has_access(
-    host_cloud: bool, app_id: str
-) -> tuple[str, dict[str, dict[str, list[str]]]]:
-    """Authentication and authorization check."""
-
-    return app_id + "_" + str(host_cloud), {}  # wwe
-
-    # wwe
-    # # pylint: disable=R0801
-    # keycloak = login(
-    #     url="http://auth.io-aero.com" if host_cloud else "http://auth.localhost:8080",
-    #     realm="IO-Aero",
-    #     client_id=app_id,
-    # )
-    #
-    # if not keycloak.authenticated:
-    #     st.stop()
-    #
-    # if (resource_access := keycloak.user_info.get("resource_access")) is None:
-    #     keycloak.authenticated = False
-    #     # pylint: disable=line-too-long
-    #     st.error(
-    #         "##### Error: Your user info doesn't contain the resource_access property! Perhaps the client scope mapping isn't configured properly.",
-    #     )
-    #     st.stop()
-    #
-    # # pylint: disable=line-too-long
-    # user_info = f"User:  {keycloak.user_info.get('family_name')+', '+keycloak.user_info.get('given_name')} [{keycloak.user_info.get('email')}]"
-    #
-    # if (client_access := resource_access.get(app_id)) is None:
-    #     keycloak.authenticated = False
-    #     st.error("##### Error: You have no permission to access this application.")
-    #     del st.session_state["KEYCLOAK"]
-    #     print(
-    #         str(datetime.datetime.now())
-    #         + f"Authentication Error: You have no permission to access this application: {user_info}.",
-    #         flush=True,
-    #     )
-    #     st.stop()
-    #
-    # if app_id + "-access" not in client_access.get("roles", []):
-    #     keycloak.authenticated = False
-    #     st.error(
-    #         "##### Error: You are missing the required role to access this application."
-    #     )
-    #     print(
-    #         str(datetime.datetime.now())
-    #         + f"Authentication Error: You are missing the required role to access this application: {user_info}.",
-    #         flush=True,
-    #     )
-    #     st.stop()
-    #
-    # return user_info, keycloak.user_info.get("resource_access")
 
 
 # ------------------------------------------------------------------

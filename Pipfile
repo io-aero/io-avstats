@@ -9,7 +9,6 @@ pyodbc = "*"
 pyeclat = "*"
 streamlit = "*"
 #streamlit = "<=1.22.0"
-streamlit-keycloak ="*"
 streamlit-pandas-profiling = "*"
 ydata-profiling = "*"
 

@@ -40,7 +40,6 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 |---------------------------|-----------------------------------------------------------------|
 | .gitignore                | Configuration of files and folders to be ignored.               |
 | .pylintrc                 | **pylint** configuration file.                                  |
-| .settings.io_aero.toml    | Configuration data - secrets.                                   |
 | docker-compose_cloud.yaml | Cloud related Docker Compose configuration file.                |
 | docker-compose_local.yaml | Local Docker Compose configuration file.                        |
 | dockerfile                | Build instructions for the Streamlit application images.        |

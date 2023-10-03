@@ -40,7 +40,7 @@ export IO_AERO_TASK_DEFAULT=r_s_a
 
 if [ -z "$1" ]; then
     echo "========================================================="
-    echo "r_s_a   - Run a Streamlit application"
+    echo "r_s_a   - Run the IO-AVSTATS application"
     echo "---------------------------------------------------------"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
     echo "v_n_d   - Verify selected NTSB data"
@@ -62,8 +62,6 @@ if [ -z "$1" ]; then
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
-    echo "---------------------------------------------------------"
-    echo "version - Show the IO-AVSTATS-DB version"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
     read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
@@ -96,7 +94,7 @@ if [ "${IO_AERO_TASK}" = "c_d_c" ]; then
     fi
 fi
 
-if [ "${IO_AERO_TASK}" = "c_d_i" ] || [ "${IO_AERO_TASK}" = "r_s_a" ]; then
+if [ "${IO_AERO_TASK}" = "c_d_i" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
         echo "all    - All Streamlit applications"
@@ -156,9 +154,8 @@ echo "==========================================================================
 # r_d_s: Refresh the PostgreSQL database schema.
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
-# version: Show the IO-AVSTATS-DB version.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d") ]]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
         exit 255
     fi
@@ -191,18 +188,8 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
 # Run a Streamlit application.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
-    if [ "${IO_AERO_APPLICATION}" = "ae1982" ]; then
-        if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8501 -- --mode Std ); then
-            exit 255
-        fi
-    elif [ "${IO_AERO_APPLICATION}" = "pd1982" ]; then
-        if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8502 ); then
-            exit 255
-        fi
-    elif [ "${IO_AERO_APPLICATION}" = "slara" ]; then
-        if ! ( pipenv run streamlit run "ioavstats/${IO_AERO_APPLICATION}.py" --server.port 8503 ); then
-            exit 255
-        fi
+    if ! ( pipenv run streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
+        exit 255
     fi
 
 # ------------------------------------------------------------------------------

@@ -32,7 +32,6 @@ set IO_AERO_POSTGRES_VERSION=16.0
 set IO_AERO_MSACCESS=
 set IO_AERO_MSEXCEL=
 set IO_AERO_TASK=
-set IO_AERO_TASK_DEFAULT=version
 
 set PYTHONPATH=.
 
@@ -61,13 +60,7 @@ if ["%1"] EQU [""] (
     echo s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
     echo u_d_s   - Update the IO-AVSTATS-DB PostgreSQL database schema
     echo ---------------------------------------------------------
-    echo version - Show the IO-AVSTATS-DB version
-    echo ---------------------------------------------------------
-    set /P IO_AERO_TASK="Enter the desired task [default: %IO_AERO_TASK_DEFAULT%] "
-
-    if ["!IO_AERO_TASK!"] EQU [""] (
-        set IO_AERO_TASK=%IO_AERO_TASK_DEFAULT%
-    )
+    set /P IO_AERO_TASK="Enter the desired task "
 ) else (
     set IO_AERO_TASK=%1
 )
@@ -111,24 +104,7 @@ echo.
 echo Script %0 is now running
 echo.
 
-rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS-DB version.
-rem ----------------------------------------------------------------------------
-if ["%IO_AERO_TASK%"] EQU ["version"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_pytest was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
-
-if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
-) else (
-    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%.log
-)
+set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%.log
 
 echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.

@@ -69,8 +69,6 @@ if ["%1"] EQU [""] (
     echo c_d_c   - Run Docker Compose tasks - Cloud
     echo c_f_z   - Zip the files for the cloud
     echo ---------------------------------------------------------
-    echo version - Show the ioavstatsdb version
-    echo ---------------------------------------------------------
     set /P IO_AERO_TASK="Enter the desired task [default: %IO_AERO_TASK_DEFAULT%] "
 
     if ["!IO_AERO_TASK!"] EQU [""] (
@@ -153,19 +151,6 @@ if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
 echo.
 echo Script %0 is now running
 echo.
-
-rem ----------------------------------------------------------------------------
-rem Show the ioavstatsdb version.
-rem ----------------------------------------------------------------------------
-if ["%IO_AERO_TASK%"] EQU ["version"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_pytest was aborted, error code=%ERRORLEVEL%
-        exit %ERRORLEVEL%
-    )
-
-    goto END_OF_SCRIPT
-)
 
 if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
     set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
@@ -437,7 +422,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     rem ----------------------------------------------------------------------------
 
     if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-        pipenv run streamlit run ioavstats\start.py --server.port 8501
+        pipenv run streamlit run ioavstats\Menu.py --server.port 8501
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
             exit %ERRORLEVEL%

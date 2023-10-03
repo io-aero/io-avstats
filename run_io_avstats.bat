@@ -56,14 +56,14 @@ if ["%1"] EQU [""] (
     echo l_c_d   - Load data from a correction file into PostgreSQL
     echo ---------------------------------------------------------
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL
-    echo c_d_s   - Create the io_avstats_db PostgreSQL database schema
+    echo c_d_s   - Create the IO-AVSTATS-DB PostgreSQL database schema
     echo c_p_d   - Cleansing PostgreSQL data
     echo f_n_a   - Find the nearest airports
     echo l_a_p   - Load airport data into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
     echo l_s_e   - Load sequence of events data into PostgreSQL
-    echo s_d_c   - Set up the io_avstats_db PostgreSQL database container
-    echo u_d_s   - Update the io_avstats_db PostgreSQL database schema
+    echo s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container
+    echo u_d_s   - Update the IO-AVSTATS-DB PostgreSQL database schema
     echo ---------------------------------------------------------
     echo c_d_i   - Create or update an application Docker image
     echo c_d_c   - Run Docker Compose tasks - Cloud
@@ -253,7 +253,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Create the io_avstats_db PostgreSQL database schema.
+    rem Create the IO-AVSTATS-DB PostgreSQL database schema.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["c_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
@@ -484,7 +484,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Set up the io_avstats_db PostgreSQL database container.
+    rem Set up the IO-AVSTATS-DB PostgreSQL database container.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
         call scripts\run_setup_postgresql_io_avstats_db
@@ -497,7 +497,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     )
 
     rem ----------------------------------------------------------------------------
-    rem Update the io_avstats_db PostgreSQL database schema.
+    rem Update the IO-AVSTATS-DB PostgreSQL database schema.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["u_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"

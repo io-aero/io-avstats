@@ -7,29 +7,30 @@ The script is available in a Windows command line version and in a Linux bash sh
 
 The following tasks can be executed with this script:
 
-| Code    | Task                                                | Additional parameter(s)           |
-|---------|-----------------------------------------------------|-----------------------------------|
-| a_o_c   | Load aviation occurrence categories into PostgreSQL |                                   |
-| c_d_c   | Run Docker Compose tasks - Cloud                    | `clean`, `down`, `logs` or `up`   |
-| c_d_i   | Create or update a Docker image                     | `all` or single Streamlit app     |
-| c_d_s   | Create the PostgreSQL database schema               |                                   |
-| c_f_z   | Zip the files for the cloud                         |                                   |
-| c_l_l   | Correct decimal US latitudes and longitudes         |                                   |
-| c_p_d   | Cleansing PostgreSQL data                           |                                   |
-| f_n_a   | Find the nearest airports                           |                                   |
-| l_a_p   | Load airport data into PostgreSQL                   |                                   |
-| l_c_d   | Load data from a correction file into PostgreSQL    | -e / -excel                       |
-| l_c_s   | Load country and state data into PostgreSQL         |                                   |
-| l_n_a   | Load NTSB MS Access database data into PostgreSQL   | -m / -msaccess                    |
-| l_s_d   | Load simplemaps data into PostgreSQL                |                                   |
-| l_s_e   | Load sequence of events data into PostgreSQL        |                                   |
-| l_z_d   | Load ZIP Code Database data into PostgreSQL         |                                   |
-| r_d_s   | Refresh the PostgreSQL database schema              |                                   |
-| r_s_a   | Run a Streamlit application                         | single Streamlit app, e.g. ae1982 |
-| u_d_s   | Update the PostgreSQL database schema               |                                   |
-| u_p_d   | Complete processing of a modifying MS Access file   | -m / -msaccess                    |
-| v_n_d   | Verify selected NTSB data                           |                                   |
-| version | Show the IO-AVSTATS-DB version                      |                                   | 
+| Code    | Task                                                   | Additional parameter(s)           |
+|---------|--------------------------------------------------------|-----------------------------------|
+| a_o_c   | Load aviation occurrence categories into PostgreSQL    |                                   |
+| c_d_c   | Run Docker Compose tasks - Cloud                       | `clean`, `down`, `logs` or `up`   |
+| c_d_i   | Create or update an application Docker image           | `all` or single Streamlit app     |
+| c_d_s   | Create the IO-AVSTATS-DB PostgreSQL database schema    |                                   |
+| c_f_z   | Zip the files for the cloud                            |                                   |
+| c_l_l   | Correct decimal US latitudes and longitudes            |                                   |
+| c_p_d   | Cleansing PostgreSQL data                              |                                   |
+| f_n_a   | Find the nearest airports                              |                                   |
+| l_a_p   | Load airport data into PostgreSQL                      |                                   |
+| l_c_d   | Load data from a correction file into PostgreSQL       | -e / -excel                       |
+| l_c_s   | Load country and state data into PostgreSQL            |                                   |
+| l_n_a   | Load NTSB MS Access database data into PostgreSQL      | -m / -msaccess                    |
+| l_s_d   | Load simplemaps data into PostgreSQL                   |                                   |
+| l_s_e   | Load sequence of events data into PostgreSQL           |                                   |
+| l_z_d   | Load ZIP Code Database data into PostgreSQL            |                                   |
+| r_d_s   | Refresh the PostgreSQL database schema                 |                                   |
+| r_s_a   | Run a Streamlit application                            | single Streamlit app, e.g. ae1982 |
+| s_d_c   | Set up the IO-AVSTATS-DB PostgreSQL database container |                                   |
+| u_d_s   | Update the IO-AVSTATS-DB PostgreSQL database schema    |                                   |
+| u_p_d   | Complete processing of a modifying MS Access file      | -m / -msaccess                    |
+| v_n_d   | Verify selected NTSB data                              |                                   |
+| version | Show the **`IO-AVSTATS-DB`** version                   |                                   | 
 
 ## 2. Detailed task list
 
@@ -72,7 +73,7 @@ CREATE TABLE public.io_aviation_occurrence_categories (
 Manage the Docker containers needed in the cloud:
 
 - **portainer**: container management
-- **io_avstats_db**: PostgreSQL database
+- **IO-AVSTATS-DB**: PostgreSQL database
 - Application **ae1982**: Aircraft Events since 1982
 - Application **pd1982**: Profiling Data since 1982
 - Application **slara**: Association Rule Analysis
@@ -90,7 +91,7 @@ Manage the Docker containers needed in the cloud:
 ---
 
 ### 2.3 `c_d_i`
-<font size="5">Create or update a Docker image</font>
+<font size="5">Create or update an application Docker image</font>
 
 #### Purpose
 
@@ -108,7 +109,7 @@ Create the application-specific Docker images and store them on DockerHub.
 ---
 
 ### 2.4 `c_d_s`
-<font size="5">Create the PostgreSQL database schema</font>
+<font size="5">Create the IO-AVSTATS-DB PostgreSQL database schema</font>
 
 #### Purpose
 
@@ -125,8 +126,6 @@ The following parameters are used when creating the database schema:
 - `postgres_user_admin` - administration database username
 
 Subsequently, the task **`u_d_s`** (Update the PostgreSQL database schema) is also executed.
-
-Successful creation of a new database schema requires that neither the user to be created nor the database to be created exists in the PostgreSQL DBMS.
 
 ---
 
@@ -348,10 +347,18 @@ Example protocol:
 
 - TODO
 
+
+---
+
+### 2.18 `s_d_c`
+<font size="5">Set up the **`IO-AVSTATS-DB`** PostgreSQL database container</font>
+
+- TODO
+
 ---
 
 ### 2.18 `u_d_s`
-<font size="5">Update the PostgreSQL database schema</font>
+<font size="5">Update the **`IO-AVSTATS-DB`** PostgreSQL database schema</font>
 
 - TODO
 
@@ -430,7 +437,7 @@ The tests are performed according to the following logic:
 ---
 
 ### 2.21 `version`
-<font size="5">Show the IO-AVSTATS-DB version</font>
+<font size="5">Show the **`IO-AVSTATS-DB`** version</font>
 
 - TODO
 
@@ -438,24 +445,22 @@ The tests are performed according to the following logic:
 
 The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:
 
-- **`c_d_s`** - Create the PostgreSQL database schema 
----
+- **`c_d_s`** - Create the IO-AVSTATS-DB PostgreSQL database schema 
 - **`l_c_s`** - Load country and state data into PostgreSQL
 - **`l_a_p`** - Load airport data into PostgreSQL
 - **`a_o_c`** - Load aviation occurrence categories into PostgreSQL
 - **`l_s_e`** - Load sequence of events data into PostgreSQL
 - **`l_s_d`** - Load simplemaps data into PostgreSQL
 - **`l_z_d`** - Load ZIP Code Database data into PostgreSQL
----
 - **`u_p_d`** - Complete processing of a modifying MS Access file: **`Pre2008`**
 
 ## 4. Regular updates
 
 ### 4.1 Every 1st of the month
 
-1. Stop the Docker container **`io_avstats_db`**
+1. Stop the Docker container **`IO-AVSTATS-DB`**
 1. Restore the current state of Pre2008
-1. Start the Docker container **`io_avstats_db`**
+1. Start the Docker container **`IO-AVSTATS-DB`**
 1. Process the current **`avall`** file with code **`l_n_a`**
 
 ### 4.2 Every 1st, 8th, 15th and 22nd 

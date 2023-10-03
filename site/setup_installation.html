@@ -465,7 +465,7 @@
             
   
   <span class="md-ellipsis">
-    How to ...
+    Data
   </span>
   
 
@@ -474,129 +474,6 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            How to ...
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="how_to_add_ntsb_accident_files.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ... add NTSB accident files
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="how_to_create_new_streamlit_app.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ... create a new Streamlit app
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="how_to_setup_aws_instance.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ... set up an AWS instance
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="how_to_update_avstats_on_aws.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ... update IO-AVSTATS in AWS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Data
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Data
           </label>
@@ -617,10 +494,10 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -631,8 +508,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             Master Data Logs
           </label>
@@ -841,10 +718,10 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
         
           
-          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -855,8 +732,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Transaction Data Logs
           </label>
@@ -1014,6 +891,9 @@
 <h1 id="installation">Installation</h1>
 <ol>
 <li>
+<p>Addressing the requirements defined <a href="setup_requirements.html" target="_blank">here</a>. </p>
+</li>
+<li>
 <p>Clone or copy the <strong>IO-AVSTATS</strong> repository from <a href="https://github.com/io-aero/io-avstats" target="_blank">here</a>.</p>
 </li>
 <li>
@@ -1031,7 +911,16 @@
 </ul>
 </li>
 <li>
-<p>Use the <strong>IO-AVSTATS</strong> application by running the script <strong><code>run_io_avstats</code></strong>.</p>
+<p>Download the current database files from <a href="https://drive.google.com/drive/folders/1E2X__35iujWQvXQfLrvwYbiMCwAaLE53?usp=drive_link" target="_blank">here</a> to the file directory <code>data</code>. </p>
+</li>
+<li>
+<p>Unpack the downloaded database file in the <code>data</code> file directory. The result should be a subdirectory <code>postgres</code> with the database files.</p>
+</li>
+<li>
+<p>Use the script <strong><code>run_io_avstats</code></strong> with the task <code>s_d_c</code> to create a Docker container with the PostgreSQL database software.</p>
+</li>
+<li>
+<p>Use the script <strong><code>run_io_avstats</code></strong> with the task <code>r_s_a</code> to run the application.</p>
 </li>
 </ol>
 

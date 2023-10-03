@@ -2,7 +2,7 @@
 
 rem ------------------------------------------------------------------------------
 rem
-rem run_setup_postgresql_io_avstats_db.bat: Set up the io_avstats_db PostgreSQL
+rem run_setup_postgresql_io_avstats_db.bat: Set up the IO-AVSTATS-DB PostgreSQL
 rem                                         database container.
 rem
 rem ------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ setlocal EnableDelayedExpansion
 echo ================================================================================
 echo Start %0
 echo --------------------------------------------------------------------------------
-echo IO-AVSTATS - Set up the io_avstats_db PostgreSQL Docker container.
+echo IO-AVSTATS - Set up the IO-AVSTATS-DB PostgreSQL Docker container.
 echo --------------------------------------------------------------------------------
 echo POSTGRES_CONNECTION_PORT : %IO_AERO_POSTGRES_CONNECTION_PORT%
 echo POSTGRES_CONTAINER_NAME  : %IO_AERO_POSTGRES_CONTAINER_NAME%

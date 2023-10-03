@@ -51,14 +51,14 @@ if [ -z "$1" ]; then
     echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "---------------------------------------------------------"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
-    echo "c_d_s   - Create the io_avstats_db PostgreSQL database schema"
+    echo "c_d_s   - Create the IO-AVSTATS-DB PostgreSQL database schema"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "f_n_a   - Find the nearest airports"
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "s_d_c   - Set up the io_avstats_db PostgreSQL database container"
-    echo "u_d_s   - Update the io_avstats_db PostgreSQL database schema"
+    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
+    echo "u_d_s   - Update the IO-AVSTATS-DB PostgreSQL database schema"
     echo "---------------------------------------------------------"
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
@@ -206,7 +206,7 @@ elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the io_avstats_db PostgreSQL database container.
+# Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then

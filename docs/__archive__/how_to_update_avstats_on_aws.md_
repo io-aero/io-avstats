@@ -487,17 +487,17 @@ End   run_io_avstats
 
 On Windows, the [WinSCP](https://winscp.net/eng/index.php){:target="_blank"} program can be used to upload the **`cloud.zip`** file from the local system to the AWS Cloud.
 
-<kbd>![](img/WinSCP_1.png)</kbd>
+<kbd>![](../img/WinSCP_1.png)</kbd>
 
-<kbd>![](img/WinSCP_3.png)</kbd>
+<kbd>![](../img/WinSCP_3.png)</kbd>
 
 ## 4. Connect to the AWS instance
 
-<kbd>![](img/aws_instance_15.png)</kbd>
+<kbd>![](../img/aws_instance_15.png)</kbd>
 
-<kbd>![](img/aws_instance_16.png)</kbd>
+<kbd>![](../img/aws_instance_16.png)</kbd>
 
-<kbd>![](img/aws_instance_17.png)</kbd>
+<kbd>![](../img/aws_instance_17.png)</kbd>
 
 ## 5. Unzip in the cloud
 

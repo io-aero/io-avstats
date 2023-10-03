@@ -51,7 +51,7 @@ if [ "${IO_AERO_COMPOSE_TASK}" = "logs" ]; then
         echo "========================================================="
         echo "*             - All Containers"
         echo "ae1982        - Aviation Event Analysis"
-        echo "io_avstats_db - Database Profiling"
+        echo "IO-AVSTATS-DB - Database Profiling"
         echo "pd1982        - Database Profiling"
         echo "slara         - Association Rule Analysis"
         echo "---------------------------------------------------------"

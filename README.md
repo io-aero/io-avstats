@@ -6,17 +6,23 @@
   - Association Rule Analysis
   - Aviation Event Analysis
   - Database Profiling
-- Usable as cloud application:
-  - load balancer support
-  - single sign-on with identity and access management
 
-## 2. Quick Start
+## 2. Documentation
+
+The full documentation can be found [here](https://io-aero.github.io/io-avstats/).
+
+## 3. Quick Start
+
+Please follow the instructions given here:
+
+- [Requirements](https://io-aero.github.io/io-avstats/setup_requirements.html)
+- [Installation](https://io-aero.github.io/io-avstats/setup_installation.html)
 
 All processing tasks can be performed using the **`run_io_avstats`** shell script.
 
-## 3. Directory and File Structure of this Repository
+## 4. Directory and File Structure of this Repository
 
-### 3.1 Directories
+### 4.1 Directories
 
 | Directory         | Content                                                    |
 |-------------------|------------------------------------------------------------|
@@ -34,7 +40,7 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | tests             | Scripts and data for **pytest**.                           |
 | upload            | Cloud related upload directory.                            |
 
-### 3.2 Files
+### 4.2 Files
 
 | File                      | Functionality                                                   |
 |---------------------------|-----------------------------------------------------------------|

@@ -26,4 +26,3 @@ docs/build/pdf/manual.stylelog
 ioavstats.egg-info/
 resources/Gammadyne/timer.txt
 tmp/
-upload/*.pdf

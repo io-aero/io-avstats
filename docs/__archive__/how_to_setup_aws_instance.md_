@@ -5,51 +5,51 @@ Creating an AWS instance requires access to an AWS account as a root user or as 
 IO-AVSTATS can be run on EC2 instances by default. 
 The EC2 instances are managed on the EC2 Dashboard.
 
-<kbd>![](img/aws_instance_01.png)</kbd>
+<kbd>![](../img/aws_instance_01.png)</kbd>
 
 ## 1. Instance creation
 
 On the EC2 dashboard, select **Instances** and then **Launch instance**.
 
-<kbd>![](img/aws_instance_02.png)</kbd>
+<kbd>![](../img/aws_instance_02.png)</kbd>
 
 ### 1.1 Name and tags
 
 - **`IO-AVSTATS`**
 
-<kbd>![](img/aws_instance_03.png)</kbd>
+<kbd>![](../img/aws_instance_03.png)</kbd>
 
 ### 1.2 Application and OS Images
 
 - **`Ubuntu Server 22.04 LTS (HVM), SSD Volume Type`**
 
-<kbd>![](img/aws_instance_04.png)</kbd>
+<kbd>![](../img/aws_instance_04.png)</kbd>
 
 ### 1.3 Instance type
 
 - **`t3a.medium`**
 
-<kbd>![](img/aws_instance_05.png)</kbd>
+<kbd>![](../img/aws_instance_05.png)</kbd>
 
 ### 1.4 Key pair (login)
 
 - Either choose an existing one or create a new one.
 
-<kbd>![](img/aws_instance_06.png)</kbd>
+<kbd>![](../img/aws_instance_06.png)</kbd>
 
 ### 1.5 Network settings
 
-<kbd>![](img/aws_instance_07.png)</kbd>
+<kbd>![](../img/aws_instance_07.png)</kbd>
 
 ### 1.6 Configure Storage
 
 - 1x **`30`** GiB
 
-<kbd>![](img/aws_instance_08.png)</kbd>
+<kbd>![](../img/aws_instance_08.png)</kbd>
 
 ### 1.7 Launch instance
 
-<kbd>![](img/aws_instance_09.png)</kbd>
+<kbd>![](../img/aws_instance_09.png)</kbd>
 
 ## 2. Open port numbers
 
@@ -66,42 +66,42 @@ Currently, the following Streamlit applications are supported:
 
 To determine the security group assigned to the intance: on the EC2 dashboard, select **Instances** and then **Security**.
 
-<kbd>![](img/aws_instance_10.png)</kbd>
+<kbd>![](../img/aws_instance_10.png)</kbd>
 
 ### 2.2 Choose the security group
 
 To choose the security group assigned to the instance: on the EC2 dashboard, select **Security Groups** and **Security**.
 
-<kbd>![](img/aws_instance_11.png)</kbd>
+<kbd>![](../img/aws_instance_11.png)</kbd>
 
 ### 2.3 Open the port numbers 
 
 For each streamline application port number press **`Add rule`** and enter the data.
 
-<kbd>![](img/aws_instance_13.png)</kbd>
+<kbd>![](../img/aws_instance_13.png)</kbd>
 
 ### 2.4 Finsh with **`Save rules`**
 
-<kbd>![](img/aws_instance_14.png)</kbd>
+<kbd>![](../img/aws_instance_14.png)</kbd>
 
 ## 3. Upload installation script
 
 On Windows, the [WinSCP](https://winscp.net/eng/index.php){:target="_blank"} program can be used to upload data from the local system to the AWS Cloud.
 The script to be uploaded is called **`run_cloud_setup_instance.sh`**.
 
-<kbd>![](img/WinSCP_1.png)</kbd>
+<kbd>![](../img/WinSCP_1.png)</kbd>
 
-<kbd>![](img/WinSCP_2.png)</kbd>
+<kbd>![](../img/WinSCP_2.png)</kbd>
 
 ## 4. Run installation script
 
 ### 4.1 Load terminal window
 
-<kbd>![](img/aws_instance_15.png)</kbd>
+<kbd>![](../img/aws_instance_15.png)</kbd>
 
-<kbd>![](img/aws_instance_16.png)</kbd>
+<kbd>![](../img/aws_instance_16.png)</kbd>
 
-<kbd>![](img/aws_instance_17.png)</kbd>
+<kbd>![](../img/aws_instance_17.png)</kbd>
 
 ### 4.2 **`run_cloud_setup_instance`**
 

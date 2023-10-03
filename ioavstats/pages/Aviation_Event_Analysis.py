@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 # Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
@@ -2721,13 +2722,13 @@ def _present_map() -> None:
 
     with col1:
         st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Map of '
-                + EVENT_TYPE_DESC
-                + "s"
-                + "</p>",
-                unsafe_allow_html=True,
-            )
+            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
+            + 'font-weight: normal;border-radius:2%;">Map of '
+            + EVENT_TYPE_DESC
+            + "s"
+            + "</p>",
+            unsafe_allow_html=True,
+        )
 
     with col2:
         CHOICE_UG_MAP = st.checkbox(
@@ -2771,9 +2772,7 @@ def _present_map() -> None:
         zoom=ZOOM,
     )
 
-    fig.update_layout(
-        mapbox_style=CHOICE_MAP_MAP_STYLE
-    )
+    fig.update_layout(mapbox_style=CHOICE_MAP_MAP_STYLE)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     st.plotly_chart(
         fig,

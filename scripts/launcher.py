@@ -12,7 +12,6 @@ import time
 
 from ioavstatsdb import avstatsdb
 from ioavstatsdb import glob
-from iocommon import file
 from iocommon import io_glob
 from iocommon import io_utils
 

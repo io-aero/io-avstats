@@ -13,7 +13,7 @@ The full documentation can be found [here](https://io-aero.github.io/io-avstats/
 
 ## 3. Quick Start
 
-Please follow the instructions giving here:
+Please follow the instructions given here:
 
 - [Requirements](https://io-aero.github.io/io-avstats/setup_requirements.html)
 - [Installation](https://io-aero.github.io/io-avstats/setup_installation.html)

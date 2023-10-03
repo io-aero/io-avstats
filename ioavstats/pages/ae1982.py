@@ -267,9 +267,7 @@ IS_TIMEKEEPING = False
 LAST_READING: int = 0
 # LAYER_TYPE = "HexagonLayer"
 LAYER_TYPE = "ScatterplotLayer"
-LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
-
-MODE_STANDARD: bool | None = None
+LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
 OPTIONS_EV_HIGHEST_INJURY = {
     "FATL": "fatal",
@@ -704,12 +702,6 @@ def _get_user_guide_app() -> None:
 #### User guide: Application
 """
 
-    if not MODE_STANDARD:
-        ug_text += """
-**Important**: You are using a very limited version of this application. 
-You are welcome to request the use of the free full version of this application [here](https://www.io-aero.com/analytics) on IO-Aero's website.
-"""
-
     ug_text += f"""
 This application allows you to perform data analysis tasks on aviation accident and incident data provided by 
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
@@ -746,7 +738,7 @@ Where appropriate, the application allows you to print the displayed graphics or
 Further information on the application can be found [here]({LINK_GITHUB_PAGES}).
 
 If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
-[here](https://github.com/io-aero/io-avstats-shared/issues) so that we can make any necessary correction. 
+[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction. 
 Also suggestions for improvement or enhancements are welcome. 
 """
 
@@ -1062,8 +1054,7 @@ and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
 """
 
-    if MODE_STANDARD:
-        ug_text += """
+    ug_text += """
 ##### Detailed chart data
 
 If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying 
@@ -2484,9 +2475,7 @@ def _present_data() -> None:
             ]
         )
         with col2:
-            if not MODE_STANDARD:
-                extension = " - limited version"
-            elif CHOICE_EXTENDED_VERSION:
+            if CHOICE_EXTENDED_VERSION:
                 extension = " - extended version"
             else:
                 extension = " (Standard version)"
@@ -2510,7 +2499,7 @@ def _present_data() -> None:
     # Run analysis.
     # ------------------------------------------------------------------
 
-    if CHOICE_RUN_ANALYSIS or not MODE_STANDARD:
+    if CHOICE_RUN_ANALYSIS:
         if CHOICE_MAP:
             _present_map()
             _print_timestamp("_present_data() - CHOICE_MAP")
@@ -2731,19 +2720,12 @@ def _present_map() -> None:
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        if MODE_STANDARD:
-            st.markdown(
+        st.markdown(
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
                 + 'font-weight: normal;border-radius:2%;">Map of '
                 + EVENT_TYPE_DESC
                 + "s"
                 + "</p>",
-                unsafe_allow_html=True,
-            )
-        else:
-            st.markdown(
-                f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Map of Fatal Accidents in the US</p>',
                 unsafe_allow_html=True,
             )
 
@@ -2785,16 +2767,12 @@ def _present_map() -> None:
         },
         lat="dec_latitude",
         lon="dec_longitude",
-        title=f"Map of {EVENT_TYPE_DESC}s"
-        if MODE_STANDARD
-        else "Map of Fatal Accidents in the US",
+        title=f"Map of {EVENT_TYPE_DESC}s",
         zoom=ZOOM,
     )
 
     fig.update_layout(
         mapbox_style=CHOICE_MAP_MAP_STYLE
-        if MODE_STANDARD
-        else CHOICE_MAP_MAP_STYLE_DEFAULT
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     st.plotly_chart(
@@ -3048,43 +3026,38 @@ def _setup_filter() -> None:
 
     _print_timestamp("_setup_filter - Start")
 
-    if MODE_STANDARD:
-        CHOICE_FILTER_DATA = st.sidebar.checkbox(
-            help="""
-            The following filter options can be used to limit the data to be processed.
-            All selected filter options are applied simultaneously, i.e. they are linked
-            to a logical **`and`**.
+    CHOICE_FILTER_DATA = st.sidebar.checkbox(
+        help="""
+        The following filter options can be used to limit the data to be processed.
+        All selected filter options are applied simultaneously, i.e. they are linked
+        to a logical **`and`**.
 """,
-            label="**Filter Data ?**",
-            value=True,
-        )
+        label="**Filter Data ?**",
+        value=True,
+    )
 
-        if not CHOICE_FILTER_DATA:
-            return
-    else:
-        CHOICE_FILTER_DATA = True
-        st.sidebar.markdown("**Filter Data:**")
+    if not CHOICE_FILTER_DATA:
+        return
 
     CHOICE_ACTIVE_FILTERS_TEXT = ""
 
-    if MODE_STANDARD:
-        FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
-            help="""
-            Here, the data can be limited to selected aircraft categories.
+    FILTER_ACFT_CATEGORIES = st.sidebar.multiselect(
+        help="""
+        Here, the data can be limited to selected aircraft categories.
 """,
-            label="**Aircraft categories:**",
-            options=_sql_query_acft_categories(),
+        label="**Aircraft categories:**",
+        options=_sql_query_acft_categories(),
+    )
+    _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
+
+    if FILTER_ACFT_CATEGORIES:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
+        _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
 
-        if FILTER_ACFT_CATEGORIES:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
-            )
-            _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
-
-        st.sidebar.divider()
+    st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_no_aircraft = _sql_query_max_no_aircraft()
@@ -3139,33 +3112,31 @@ def _setup_filter() -> None:
 
         st.sidebar.divider()
 
-    if MODE_STANDARD:
-        FILTER_EV_TYPE = st.sidebar.multiselect(
-            default=FILTER_EV_TYPE_DEFAULT,
-            help="""
-            Here, the data can be limited to selected event types.
-            Those events are selected whose event type matches.
+    FILTER_EV_TYPE = st.sidebar.multiselect(
+        default=FILTER_EV_TYPE_DEFAULT,
+        help="""
+        Here, the data can be limited to selected event types.
+        Those events are selected whose event type matches.
 """,
-            label="**Event type(s):**",
-            options=_sql_query_ev_type(),
-        )
-        _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
+        label="**Event type(s):**",
+        options=_sql_query_ev_type(),
+    )
+    _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
 
-        if FILTER_EV_TYPE:
-            CHOICE_ACTIVE_FILTERS_TEXT = (
-                CHOICE_ACTIVE_FILTERS_TEXT
-                + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
-            )
-            _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
-
-        st.sidebar.divider()
-
-    if not MODE_STANDARD:
-        FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
+    if FILTER_EV_TYPE:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
+        _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
+
+    st.sidebar.divider()
+
+    FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
+    CHOICE_ACTIVE_FILTERS_TEXT = (
+        CHOICE_ACTIVE_FILTERS_TEXT
+        + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
+    )
 
     FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
         help="""
@@ -3187,24 +3158,6 @@ def _setup_filter() -> None:
         _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
 
     st.sidebar.divider()
-
-    if not MODE_STANDARD:
-        FILTER_FAR_PARTS = FILTER_FAR_PARTS_DEFAULT
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
-        )
-        FILTER_EV_HIGHEST_INJURY = FILTER_EV_HIGHEST_INJURY_DEFAULT
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
-        )
-        FILTER_US_AVIATION = FILTER_US_AVIATION_DEFAULT
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
-        )
-        return
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FAR_PARTS = st.sidebar.multiselect(
@@ -3493,20 +3446,12 @@ def _setup_page() -> None:
     else:
         EVENT_TYPE_DESC = "Event"
 
-    if MODE_STANDARD:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
-            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">US Aviation Fatal Accidents - Year '
-            + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
-            unsafe_allow_html=True,
-        )
+    st.markdown(
+        f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
+        + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
+        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
+        unsafe_allow_html=True,
+    )
 
     col1, col2, col3 = st.columns([1, 1, 1])
 
@@ -3617,28 +3562,27 @@ def _setup_task_controls() -> None:
     # --------------------------------------------------------------
     # Run the Data Analysis.
     # --------------------------------------------------------------
-    if MODE_STANDARD:
-        # pylint: disable=line-too-long
-        CHOICE_RUN_ANALYSIS = st.sidebar.checkbox(
-            help="""
-        For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected data analysis.        """,
-            key="CHOICE_RUN_ANALYSIS",
-            label="**Run the Data Analysis**",
-            value=False,
-        )
+    # pylint: disable=line-too-long
+    CHOICE_RUN_ANALYSIS = st.sidebar.checkbox(
+        help="""
+    For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected data analysis.        """,
+        key="CHOICE_RUN_ANALYSIS",
+        label="**Run the Data Analysis**",
+        value=False,
+    )
 
-        st.sidebar.divider()
+    st.sidebar.divider()
 
-        # ----------------------------------------------------------
-        # Extended Version.
-        # ----------------------------------------------------------
-        CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
-            help="The extended version has more complex filtering and processing options.",
-            label="**Extended Version**",
-            value=False,
-        )
+    # ----------------------------------------------------------
+    # Extended Version.
+    # ----------------------------------------------------------
+    CHOICE_EXTENDED_VERSION = st.sidebar.checkbox(
+        help="The extended version has more complex filtering and processing options.",
+        label="**Extended Version**",
+        value=False,
+    )
 
-        st.sidebar.divider()
+    st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Map.
@@ -3646,13 +3590,12 @@ def _setup_task_controls() -> None:
     CHOICE_MAP = st.sidebar.checkbox(
         help="Display the events on a map (after filtering the data).",
         label="**Show Map**",
-        value=not MODE_STANDARD,
+        value=False,
     )
 
     if CHOICE_MAP:
-        if MODE_STANDARD:
-            CHOICE_MAP_MAP_STYLE = st.sidebar.radio(
-                help="""
+        CHOICE_MAP_MAP_STYLE = st.sidebar.radio(
+            help="""
 - **carto-positron**: light base map
 - **open-street-map**: default representation
 - **stamen-terrain**: focused on terrain representation
@@ -3660,19 +3603,19 @@ def _setup_task_controls() -> None:
 - **stamen-watercolor**: focused on water representation
 - **white-bg**: pure white background
 """,
-                index=1,
-                label="Map style",
-                options=(
-                    [
-                        "carto-positron",
-                        "open-street-map",
-                        "stamen-terrain",
-                        "stamen-toner",
-                        "stamen-watercolor",
-                        "white-bg",
-                    ]
-                ),
-            )
+            index=1,
+            label="Map style",
+            options=(
+                [
+                    "carto-positron",
+                    "open-street-map",
+                    "stamen-terrain",
+                    "stamen-toner",
+                    "stamen-watercolor",
+                    "white-bg",
+                ]
+            ),
+        )
 
     st.sidebar.divider()
 
@@ -3682,7 +3625,7 @@ def _setup_task_controls() -> None:
     CHOICE_DATA_GRAPHS_YEARS = st.sidebar.checkbox(
         help="Events or fatalities per year (after filtering the data).",
         label="**Show Data Graphs - Years**",
-        value=not MODE_STANDARD,
+        value=False,
     )
 
     if CHOICE_DATA_GRAPHS_YEARS:
@@ -3723,43 +3666,41 @@ def _setup_task_controls() -> None:
 
             st.sidebar.divider()
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
-                help="Fatalities per year by FAR Operations Parts (after filtering the data).",
-                label="Fatalities per Year by FAR Operations Parts",
-                value=False,
+        CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
+            help="Fatalities per year by FAR Operations Parts (after filtering the data).",
+            label="Fatalities per Year by FAR Operations Parts",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_FY_FP:
+            CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_FY_FP:
-                CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
         CHOICE_CHARTS_TYPE_FY_SFP = st.sidebar.checkbox(
             help="Fatalities per year by selected FAR Operations Parts (after filtering the data).",
             label="Fatalities per Year by Selected FAR Operations Parts",
-            value=not MODE_STANDARD,
+            value=False,
         )
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_EY_AOC = st.sidebar.checkbox(
-                help="Events per year by CICTT codes (after filtering the data).",
-                label=f"{EVENT_TYPE_DESC}s per Year by CICTT Codes",
-                value=False,
+        CHOICE_CHARTS_TYPE_EY_AOC = st.sidebar.checkbox(
+            help="Events per year by CICTT codes (after filtering the data).",
+            label=f"{EVENT_TYPE_DESC}s per Year by CICTT Codes",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_EY_AOC:
+            CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_EY_AOC:
-                CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
             CHOICE_CHARTS_TYPE_EY_T = st.sidebar.checkbox(
                 help="Events per year by event types (after filtering the data).",
@@ -3850,21 +3791,20 @@ def _setup_task_controls() -> None:
                 value=0.5,
             )
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_EY_TLP = st.sidebar.checkbox(
-                help="Events per year by top level logical parameters (after filtering the data).",
-                label=f"{EVENT_TYPE_DESC}s per Year by Top Level Logical Parameters",
-                value=False,
+        CHOICE_CHARTS_TYPE_EY_TLP = st.sidebar.checkbox(
+            help="Events per year by top level logical parameters (after filtering the data).",
+            label=f"{EVENT_TYPE_DESC}s per Year by Top Level Logical Parameters",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_EY_TLP:
+            CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_EY_TLP:
-                CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
     st.sidebar.divider()
 
@@ -3874,7 +3814,7 @@ def _setup_task_controls() -> None:
     CHOICE_DATA_GRAPHS_TOTALS = st.sidebar.checkbox(
         help=f"Total {EVENT_TYPE_DESC}s or fatalities (after filtering the data).",
         label="**Show Data Graphs - Totals**",
-        value=not MODE_STANDARD,
+        value=False,
     )
 
     if CHOICE_DATA_GRAPHS_TOTALS:
@@ -3923,43 +3863,41 @@ def _setup_task_controls() -> None:
 
         st.sidebar.divider()
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
-                help="Total fatalities by FAR operations parts (after filtering the data).",
-                label="Total Fatalities by FAR Operations Parts",
-                value=False,
+        CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
+            help="Total fatalities by FAR operations parts (after filtering the data).",
+            label="Total Fatalities by FAR Operations Parts",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_TF_FP:
+            CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_TF_FP:
-                CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
         CHOICE_CHARTS_TYPE_TF_SFP = st.sidebar.checkbox(
             help="Total fatalities by selected FAR operations parts (after filtering the data).",
             label="Total Fatalities by Selected FAR Operations Parts",
-            value=not MODE_STANDARD,
+            value=False,
         )
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_TE_AOC = st.sidebar.checkbox(
-                help="Total events by CICTT codes (after filtering the data).",
-                label=f"Total {EVENT_TYPE_DESC}s by CICTT Codes",
-                value=False,
+        CHOICE_CHARTS_TYPE_TE_AOC = st.sidebar.checkbox(
+            help="Total events by CICTT codes (after filtering the data).",
+            label=f"Total {EVENT_TYPE_DESC}s by CICTT Codes",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_TE_AOC:
+            CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_TE_AOC:
-                CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
             CHOICE_CHARTS_TYPE_TE_T = st.sidebar.checkbox(
                 help="Total events by event types (after filtering the data).",
@@ -4037,7 +3975,7 @@ def _setup_task_controls() -> None:
         CHOICE_CHARTS_TYPE_TE_PSS = st.sidebar.checkbox(
             help="Total preventable events by safety systems (after filtering the data).",
             label=f"Total Preventable {EVENT_TYPE_DESC}s by Safety Systems",
-            value=not MODE_STANDARD,
+            value=False,
         )
         if CHOICE_CHARTS_TYPE_TE_PSS:
             CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD = st.sidebar.number_input(
@@ -4049,104 +3987,100 @@ def _setup_task_controls() -> None:
                 value=0.5,
             )
 
-        if MODE_STANDARD:
-            CHOICE_CHARTS_TYPE_TE_TLP = st.sidebar.checkbox(
-                help="Total events by top level logical parameters (after filtering the data).",
-                label=f"Total {EVENT_TYPE_DESC}s by Top Level Logical Parameters",
-                value=False,
+        CHOICE_CHARTS_TYPE_TE_TLP = st.sidebar.checkbox(
+            help="Total events by top level logical parameters (after filtering the data).",
+            label=f"Total {EVENT_TYPE_DESC}s by Top Level Logical Parameters",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_TE_TLP:
+            CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD = st.sidebar.number_input(
+                help="Threshold percentage for combined display",
+                key="CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD",
+                label="Threshold value in %",
+                max_value=20.0,
+                min_value=0.0,
+                value=1.5,
             )
-            if CHOICE_CHARTS_TYPE_TE_TLP:
-                CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD = st.sidebar.number_input(
-                    help="Threshold percentage for combined display",
-                    key="CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD",
-                    label="Threshold value in %",
-                    max_value=20.0,
-                    min_value=0.0,
-                    value=1.5,
-                )
 
     st.sidebar.divider()
 
-    if MODE_STANDARD:
-        # --------------------------------------------------------------
-        # Show Data Graph - Distances.
-        # --------------------------------------------------------------
-        CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
-            help="Distances (after filtering the data).",
-            label="**Show Data Graphs - Distances**",
-            value=not MODE_STANDARD,
+    # --------------------------------------------------------------
+    # Show Data Graph - Distances.
+    # --------------------------------------------------------------
+    CHOICE_DATA_GRAPHS_DISTANCES = st.sidebar.checkbox(
+        help="Distances (after filtering the data).",
+        label="**Show Data Graphs - Distances**",
+        value=False,
+    )
+
+    if CHOICE_DATA_GRAPHS_DISTANCES:
+        CHOICE_BOX_PLOTS = st.sidebar.checkbox(
+            help="Presenting distances with box plots.",
+            key="CHOICE_BOX_PLOTS",
+            label="Show box plots",
+            value=False,
+        )
+        CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
+            help="Presenting distances with violin plots.",
+            key="CHOICE_VIOLIN_PLOTS",
+            label="Show voline plots",
+            value=True,
         )
 
-        if CHOICE_DATA_GRAPHS_DISTANCES:
-            CHOICE_BOX_PLOTS = st.sidebar.checkbox(
-                help="Presenting distances with box plots.",
-                key="CHOICE_BOX_PLOTS",
-                label="Show box plots",
-                value=False,
-            )
-            CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(
-                help="Presenting distances with violin plots.",
-                key="CHOICE_VIOLIN_PLOTS",
-                label="Show voline plots",
-                value=True,
-            )
-
-            st.sidebar.divider()
-
-            # pylint: disable=line-too-long
-            CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
-                help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
-                label="Distance to the Nearest Airport",
-                value=False,
-            )
-            if CHOICE_CHARTS_TYPE_D_NA:
-                CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
-                    help="Maximum distance in miles",
-                    key="CHOICE_CHARTS_TYPE_D_NA_MAX",
-                    label="Maximum distance in miles",
-                    max_value=5000.0,
-                    step=5.0,
-                    value=100.0,
-                )
-
         st.sidebar.divider()
+
+        # pylint: disable=line-too-long
+        CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
+            help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
+            label="Distance to the Nearest Airport",
+            value=False,
+        )
+        if CHOICE_CHARTS_TYPE_D_NA:
+            CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
+                help="Maximum distance in miles",
+                key="CHOICE_CHARTS_TYPE_D_NA_MAX",
+                label="Maximum distance in miles",
+                max_value=5000.0,
+                step=5.0,
+                value=100.0,
+            )
+
+    st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Data Profile.
     # --------------------------------------------------------------
-    if MODE_STANDARD:
-        CHOICE_DATA_PROFILE = st.sidebar.checkbox(
-            help="Profiling of the filtered dataset.",
-            label="**Show Data Profile**",
-            value=False,
+    CHOICE_DATA_PROFILE = st.sidebar.checkbox(
+        help="Profiling of the filtered dataset.",
+        label="**Show Data Profile**",
+        value=False,
+    )
+
+    if CHOICE_DATA_PROFILE:
+        CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
+            help="explorative: thorough but also slow - minimal: minimal but faster.",
+            index=1,
+            label="Data profile type",
+            options=(
+                [
+                    "explorative",
+                    "minimal",
+                ]
+            ),
         )
 
-        if CHOICE_DATA_PROFILE:
-            CHOICE_DATA_PROFILE_TYPE = st.sidebar.radio(
-                help="explorative: thorough but also slow - minimal: minimal but faster.",
-                index=1,
-                label="Data profile type",
-                options=(
-                    [
-                        "explorative",
-                        "minimal",
-                    ]
-                ),
-            )
-
-        st.sidebar.divider()
+    st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Detailed Data.
     # --------------------------------------------------------------
-    if MODE_STANDARD:
-        CHOICE_DETAILS = st.sidebar.checkbox(
-            help="Tabular representation of the filtered detailed data.",
-            label="**Show Detailed Data**",
-            value=False,
-        )
+    CHOICE_DETAILS = st.sidebar.checkbox(
+        help="Tabular representation of the filtered detailed data.",
+        label="**Show Detailed Data**",
+        value=False,
+    )
 
-        st.sidebar.divider()
+    st.sidebar.divider()
 
 
 # ------------------------------------------------------------------
@@ -4508,43 +4442,33 @@ def _streamlit_flow() -> None:
     global DF_UNFILTERED  # pylint: disable=global-statement
     global EVENT_TYPE_DESC  # pylint: disable=global-statement
     global HOST_CLOUD  # pylint: disable=global-statement
-    global MODE_STANDARD  # pylint: disable=global-statement
     global PG_CONN  # pylint: disable=global-statement
     global START_TIME  # pylint: disable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+    if "HOST_CLOUD" in st.session_state:
         EVENT_TYPE_DESC = "Event"
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
-        MODE_STANDARD = st.session_state["MODE_STANDARD"]
     else:
-        (host, mode) = utils.get_args()
+        host = utils.get_args()
         EVENT_TYPE_DESC = "Accident"
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
-        MODE_STANDARD = bool(mode == "Std")
-        st.session_state["MODE_STANDARD"] = MODE_STANDARD
 
     st.set_page_config(
         layout="wide",
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
+        page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
 
-    if MODE_STANDARD:
-        col1, col2 = st.sidebar.columns(2)
-        col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-        url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
-        col2.markdown(f"##  [Member Menu]({url})")
-    else:
-        st.sidebar.markdown("## [IO-Aero Website](https://www.io-aero.com)")
+    st.sidebar.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

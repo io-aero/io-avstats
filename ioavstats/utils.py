@@ -45,7 +45,7 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
 # -----------------------------------------------------------------------------
 # Load the command line arguments into the memory.
 # -----------------------------------------------------------------------------
-def get_args() -> tuple[str, str]:
+def get_args() -> str:
     """Load the command line arguments into the memory."""
 
     parser = argparse.ArgumentParser(
@@ -81,17 +81,12 @@ def get_args() -> tuple[str, str]:
     # -------------------------------------------------------------------------
     parsed_args = parser.parse_args()
 
-    mode = "Ltd"
-    if parsed_args.mode is not None:
-        if parsed_args.mode == "Std":
-            mode = parsed_args.mode
-
     host = "Local"
     if parsed_args.host is not None:
         if parsed_args.host == "Cloud":
             host = parsed_args.host
 
-    return host, mode
+    return host
 
 
 # ------------------------------------------------------------------

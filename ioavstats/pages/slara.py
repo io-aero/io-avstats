@@ -184,7 +184,7 @@ LAST_READING: int = 0
 LAYER_TYPE = "ScatterplotLayer"
 LEGEND_N_A = "n/a"
 LEGEND_N_A_DESC = "no data"
-LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
+LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
 MD_CODES_CATEGORY: dict[str, str] = {}
 MD_CODES_EVENTSOE: dict[str, str] = {}
@@ -4155,10 +4155,10 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     START_TIME = time.time_ns()
 
-    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+    if "HOST_CLOUD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
     else:
-        (host, _mode) = utils.get_args()
+        host = utils.get_args()
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
@@ -4166,18 +4166,15 @@ def _streamlit_flow() -> None:
     st.set_page_config(
         layout="wide",
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
+        page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title=f"{APP_ID} by IO-Aero",
     )
 
-    col1, col2 = st.sidebar.columns(2)
-    col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
-    col2.markdown(f"##  [Member Menu]({url})")
+    st.sidebar.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

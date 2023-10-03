@@ -12,7 +12,7 @@ import streamlit as st
 # ------------------------------------------------------------------
 # Global constants and variables.
 # ------------------------------------------------------------------
-LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
+LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
 
 # ------------------------------------------------------------------
@@ -87,7 +87,7 @@ def get_pd1982_app() -> None:
     #
     # Die Datenbank **IO-AVSTATS-DB** beruht hauptsachlich auf den von der [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in Form von Microsoft Access Datenbanken [hier]( https://data.ntsb.gov/avdata) zur Verfügung gestellten Flugverkehrsunfallzahlen.
     #
-    # Detaillierte Informationen zur Anwendung **`pd1982`** finden sich [hier](https://io-aero.github.io/io-avstats-shared/).
+    # Detaillierte Informationen zur Anwendung **`pd1982`** finden sich [hier](https://io-aero.github.io/io-avstats/).
     # """
     user_guide = (
         _generic_header_section("User Guide 'Application'")

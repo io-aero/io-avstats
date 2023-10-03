@@ -42,7 +42,7 @@ set IO_AERO_TASK_DEFAULT=r_s_a
 
 if ["%1"] EQU [""] (
     echo =========================================================
-    echo r_s_a   - Run a Streamlit application
+    echo r_s_a   - Run the IO-AVSTATS application
     echo ---------------------------------------------------------
     echo u_p_d   - Complete processing of a modifying MS Access file
     echo ---------------------------------------------------------
@@ -134,19 +134,6 @@ if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
         set /P IO_AERO_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
         set IO_AERO_MSACCESS=%2
-    )
-)
-
-if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-    if ["%2"] EQU [""] (
-        echo =========================================================
-        echo ae1982  - Aircraft Accidents in the US since 1982
-        echo pd1982  - Profiling Data for the US since 1982
-        echo slara   - Association Rule Analysis
-        echo ---------------------------------------------------------
-        set /P IO_AERO_APPLICATION="Enter the Streamlit application name "
-    ) else (
-        set IO_AERO_APPLICATION=%2
     )
 )
 
@@ -450,34 +437,10 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     rem ----------------------------------------------------------------------------
 
     if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-        if ["%IO_AERO_APPLICATION%"] EQU ["ae1982"] (
-            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8501 -- --mode Std
-            if ERRORLEVEL 1 (
-                echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-                exit %ERRORLEVEL%
-            )
-
-            goto END_OF_SCRIPT
-        )
-
-        if ["%IO_AERO_APPLICATION%"] EQU ["pd1982"] (
-            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8502
-            if ERRORLEVEL 1 (
-                echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-                exit %ERRORLEVEL%
-            )
-
-            goto END_OF_SCRIPT
-        )
-
-        if ["%IO_AERO_APPLICATION%"] EQU ["slara"] (
-            pipenv run streamlit run ioavstats\%IO_AERO_APPLICATION%.py --server.port 8503
-            if ERRORLEVEL 1 (
-                echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-                exit %ERRORLEVEL%
-            )
-
-            goto END_OF_SCRIPT
+        pipenv run streamlit run ioavstats\start.py --server.port 8501
+        if ERRORLEVEL 1 (
+            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
+            exit %ERRORLEVEL%
         )
 
         goto END_OF_SCRIPT

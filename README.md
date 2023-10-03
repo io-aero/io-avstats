@@ -1,4 +1,4 @@
-# IO-AVSTATS - Aviation Event Statistic Applications
+# IO-AVSTATS - Aviation Event Statistics Application
 
 ## 1. Features
 

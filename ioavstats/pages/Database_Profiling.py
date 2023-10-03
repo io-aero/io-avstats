@@ -716,13 +716,13 @@ def _streamlit_flow() -> None:
         page_title="pd1982 by IO-Aero",
     )
 
-    st.sidebar.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-
+    col1, col2 = st.sidebar.columns(2)
     # pylint: disable=line-too-long
-    st.sidebar.image(
+    col1.image(
         "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
-        width=200,
+        width=150,
     )
+    col2.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
 
     PG_CONN = utils.get_postgres_connection()  # type: ignore
 

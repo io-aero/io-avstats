@@ -30,7 +30,6 @@ export IO_AERO_POSTGRES_VERSION=16.0
 export IO_AERO_MSACCESS=
 export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=
-export IO_AERO_TASK_DEFAULT=version
 
 export PYTHONPATH=.
 
@@ -56,10 +55,8 @@ if [ -z "$1" ]; then
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    echo "version - Show the IO-AVSTATS-DB version"
-    echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
-    read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
+    read -p "Enter the desired task " IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK}
 
     if [ -z "${IO_AERO_TASK}" ]; then
@@ -97,22 +94,21 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# a_o_c:   Load aviation occurrence categories into PostgreSQL.
-# c_d_s:   Create the PostgreSQL database schema.
-# c_l_l:   Correct decimal US latitudes and longitudes.
-# c_p_d:   Cleansing PostgreSQL data.
-# f_n_a:   Find the nearest airports.
-# l_a_p:   Load airport data into PostgreSQL.
-# l_c_s:   Load country and state data into PostgreSQL.
-# l_s_d:   Load simplemaps data into PostgreSQL.
-# l_s_e:   Load sequence of events data into PostgreSQL.
-# l_z_d:   Load US Zip code data.
-# r_d_s:   Refresh the PostgreSQL database schema.
-# u_d_s:   Update the PostgreSQL database schema.
-# v_n_d:   Verify selected NTSB data.
-# version: Show the IO-AVSTATS-DB version.
+# a_o_c: Load aviation occurrence categories into PostgreSQL.
+# c_d_s: Create the PostgreSQL database schema.
+# c_l_l: Correct decimal US latitudes and longitudes.
+# c_p_d: Cleansing PostgreSQL data.
+# f_n_a: Find the nearest airports.
+# l_a_p: Load airport data into PostgreSQL.
+# l_c_s: Load country and state data into PostgreSQL.
+# l_s_d: Load simplemaps data into PostgreSQL.
+# l_s_e: Load sequence of events data into PostgreSQL.
+# l_z_d: Load US Zip code data.
+# r_d_s: Refresh the PostgreSQL database schema.
+# u_d_s: Update the PostgreSQL database schema.
+# v_n_d: Verify selected NTSB data.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
+if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d") ]]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
         exit 255
     fi

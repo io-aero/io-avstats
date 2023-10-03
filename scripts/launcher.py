@@ -94,11 +94,6 @@ def main(argv: list[str]) -> None:
         avstatsdb.refresh_db_schema()
     elif avstatsdb.ARG_TASK == glob.ARG_TASK_U_D_S:
         avstatsdb.update_db_schema()
-    elif avstatsdb.ARG_TASK == glob.ARG_TASK_VERSION:
-        io_glob.logger.info("Start launcher.py")
-        file.print_version_pkg_struct("ioavstats")
-        file.print_pkg_structs(["ioavstatsdb", "iocommon"])
-        io_glob.logger.info("End   launcher.py")
     elif avstatsdb.ARG_TASK == glob.ARG_TASK_V_N_D:
         avstatsdb.verify_ntsb_data()
 

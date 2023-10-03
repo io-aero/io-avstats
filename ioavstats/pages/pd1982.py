@@ -47,7 +47,7 @@ FONT_SIZE_SUBHEADER = 36
 
 HOST_CLOUD: bool | None = None
 
-LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats-shared/"
+LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
 PG_CONN: connection | None = None
 
@@ -389,7 +389,7 @@ The result of the data analysis can also be downloaded as **HTML** file if desir
 
 
 If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
-[here](https://github.com/io-aero/io-avstats-shared/issues) so that we can make any necessary correction. 
+[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction. 
 Also suggestions for improvement or enhancements are welcome. 
     """
 
@@ -701,10 +701,10 @@ def _streamlit_flow() -> None:
     # Start time measurement.
     start_time = time.time_ns()
 
-    if "HOST_CLOUD" in st.session_state and "MODE_STANDARD" in st.session_state:
+    if "HOST_CLOUD" in st.session_state:
         HOST_CLOUD = st.session_state["HOST_CLOUD"]
     else:
-        (host, _mode) = utils.get_args()
+        host = utils.get_args()
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
@@ -712,18 +712,15 @@ def _streamlit_flow() -> None:
         layout="wide",
         # flake8: noqa: E501
         # pylint: disable=line-too-long
-        page_icon="https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
+        page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",
     )
 
-    col1, col2 = st.sidebar.columns(2)
-    col1.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
-    url = "http://" + ("members.io-aero.com" if HOST_CLOUD else "localhost:8598")
-    col2.markdown(f"##  [Member Menu]({url})")
+    st.sidebar.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
 
     # pylint: disable=line-too-long
     st.sidebar.image(
-        "https://github.com/io-aero/io-avstats-shared/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
+        "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=200,
     )
 

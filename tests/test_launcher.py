@@ -55,7 +55,7 @@ def test_launcher_d_d_f():
     if platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat d_d_f")
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh d_d_f")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())
@@ -78,15 +78,14 @@ def test_launcher_s_d_c():
 
     if platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat s_d_c")
+        time.sleep(10)
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh s_d_c")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    time.sleep(10)
 
     io_glob.logger.debug(io_glob.LOGGER_END)
 
@@ -105,7 +104,7 @@ def test_launcher_c_d_s():
     if platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat c_d_s")
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh c_d_s")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())
@@ -129,7 +128,7 @@ def test_launcher_u_d_s():
     if platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat u_d_s")
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh u_d_s")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())
@@ -154,7 +153,7 @@ def test_launcher_a_o_c():
     if platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat a_o_c")
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh a_o_c")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())

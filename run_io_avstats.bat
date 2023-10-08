@@ -191,8 +191,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["a_o_c"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -204,8 +204,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_d_c"] (
         call scripts\run_docker_compose_cloud %IO_AERO_COMPOSE_TASK%
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -217,8 +217,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_d_i"] (
         call scripts\run_create_image %IO_AERO_APPLICATION% yes yes
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -230,14 +230,14 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t "u_d_s"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -249,8 +249,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_f_z"] (
         call scripts\run_cloud_files_zip
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -262,8 +262,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_l_l"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -275,8 +275,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["c_p_d"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -288,8 +288,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["f_n_a"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -301,8 +301,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_a_p"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -314,8 +314,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -327,8 +327,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_c_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -340,26 +340,26 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
         pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t u_d_s
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -371,8 +371,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_s_d"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -384,8 +384,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_s_e"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -397,8 +397,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["l_z_d"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -410,8 +410,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["r_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -424,8 +424,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
         pipenv run streamlit run ioavstats\Menu.py --server.port 8501
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -437,8 +437,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
         call scripts\run_setup_postgresql_io_avstats_db
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -450,8 +450,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["u_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -463,38 +463,38 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
         pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t l_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t c_l_l
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t f_n_a
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t v_n_d
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         pipenv run python scripts\launcher.py -t r_d_s
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT
@@ -506,8 +506,8 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     if ["%IO_AERO_TASK%"] EQU ["v_n_d"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted, error code=%ERRORLEVEL%
-            exit %ERRORLEVEL%
+            echo Processing of the script run_io_avstats was aborted
+            exit 1
         )
 
         goto END_OF_SCRIPT

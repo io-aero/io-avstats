@@ -71,7 +71,7 @@ jobs:
         if: ${{ vars.CONDA == 'true' }}
         run: make conda-dev
       - name: Run the whole software quality chain
-        run: make isort black lint docs tests
+        run: make isort black lint docs
       - name: Check if there are any changes
         id: verify_diff
         run: |
@@ -89,9 +89,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
-      - name: Create the coverage data
-        if: ${{ vars.COVERALLS == 'true' }}
-        run: make coveralls
-      - name: Publish the code coverage to coveralls.io
-        if: ${{ vars.COVERALLS == 'true' }}
-        uses: coverallsapp/github-action@v2

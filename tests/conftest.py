@@ -11,6 +11,7 @@ Returns:
     [type]: None.
 """
 import configparser
+import logging
 import os
 import pathlib
 import shutil
@@ -21,6 +22,8 @@ from iocommon import io_glob
 # Constants & Globals.
 # -----------------------------------------------------------------------------
 CONFIG_PARSER: configparser.ConfigParser = configparser.ConfigParser()
+
+logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
@@ -42,7 +45,7 @@ def copy_files_4_pytest(
             ]
         ]): list of files to be copied.
     """
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert os.path.isdir(
         get_os_independent_name(get_test_files_source_directory_name())
@@ -80,7 +83,7 @@ def copy_files_4_pytest(
             "target file '" + str(target_file) + "' is missing"
         )
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -97,13 +100,13 @@ def copy_files_4_pytest_2_dir(
         source_files: list[tuple[str, str | None]]: Source file names.
         target_path: Path: Target directory.
     """
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     for source_file in source_files:
         (source_stem, source_ext) = source_file
         copy_files_4_pytest([(source_file, (target_path, [source_stem], source_ext))])
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -113,11 +116,11 @@ def copy_files_4_pytest_2_dir(
 @pytest.fixture(scope="session", autouse=True)
 def fxtr_before_any_test():
     """Fixture Factory: Before any test."""
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     os.environ["ENV_FOR_DYNACONF"] = "test"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -143,7 +146,7 @@ def get_full_name_from_components(
     Returns:
         str: Full file name.
     """
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     filename_int = (
         stem_name if file_extension == "" else stem_name + "." + file_extension
@@ -157,7 +160,7 @@ def get_full_name_from_components(
     else:
         directory_name_int = directory_name
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
     return get_os_independent_name(str(os.path.join(directory_name_int, filename_int)))
 
@@ -175,8 +178,8 @@ def get_os_independent_name(filename: pathlib.Path | str) -> str:
     Returns:
         str: Platform-independent name.
     """
-    io_glob.logger.debug(io_glob.LOGGER_START)
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_END)
 
     return filename.replace(("\\" if os.sep == "/" else "/"), os.sep)
 
@@ -190,7 +193,7 @@ def get_test_files_source_directory_name():
 
     Provide the file directory name where the test files are located.
     """
-    io_glob.logger.debug(io_glob.LOGGER_START)
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_END)
 
     return "tests/__PYTEST_FILES__/"

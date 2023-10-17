@@ -152,6 +152,10 @@ echo.
 echo Script %0 is now running
 echo.
 
+if exist logging_io_aero.log (
+    del /f /q logging_io_aero.log
+)
+
 if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
     set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
 ) else (

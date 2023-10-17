@@ -279,7 +279,7 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pydocstyle --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pydocstyle --count --match='(?!PDFLIB\\)*\.py' ${PYTHONPATH} tests
+	${PIPENV} run pydocstyle --count ${MODULE} scripts
 	@echo Info **********  End:   pydocstyle ***********************************
 
 # Pylint is a tool that checks for errors in Python code.
@@ -390,6 +390,8 @@ upload-io-aero:     ## Upload the distribution archive to io-aero-pypi.
 	${PYTHON} -m build
 	aws codeartifact login --tool twine --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
 	${PYTHON} -m twine upload --repository codeartifact --verbose dist/*
+	${DELETE_LIB}
+	${CREATE_LIB}
 	@echo Info **********  End:   twine io-aero-pypi ***************************
 
 # twine: Collection of utilities for publishing packages on PyPI.
@@ -409,6 +411,8 @@ upload-pypi:        ## Upload the distribution archive to PyPi.
 	${PIPENV} run ${PYTHON} scripts\next_version.py
 	${PYTHON} -m build
 	${PYTHON} -m twine upload -p $(SECRET_PYPI) -u io-aero dist/*
+	${DELETE_LIB}
+	${CREATE_LIB}
 	@echo Info **********  End:   twine pypi ***********************************
 
 # twine: Collection of utilities for publishing packages on Test PyPI.

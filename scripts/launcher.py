@@ -7,6 +7,7 @@
 This is the entry point to the application IO-AVSTATS.
 """
 import locale
+import logging
 import sys
 import time
 
@@ -45,10 +46,12 @@ def main(argv: list[str]) -> None:
     # Initialise the logging functionality.
     avstatsdb.initialise_logger()
 
-    io_glob.logger.debug(io_glob.LOGGER_START)
-    io_glob.logger.debug("param argv=%s", argv)
+    logger = logging.getLogger(__name__)
 
-    io_glob.logger.info("Start launcher.py")
+    logger.debug(io_glob.LOGGER_START)
+    logger.debug("param argv=%s", argv)
+
+    logger.info("Start launcher.py")
 
     locale.setlocale(locale.LC_ALL, glob.LOCALE)
 
@@ -108,7 +111,7 @@ def main(argv: list[str]) -> None:
     avstatsdb.progress_msg(glob.INFO_00_006)
     avstatsdb.progress_msg("=" * 79)
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------

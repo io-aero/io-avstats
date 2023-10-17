@@ -47,7 +47,6 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
 # -----------------------------------------------------------------------------
 def get_args() -> str:
     """Load the command line arguments into the memory."""
-
     parser = argparse.ArgumentParser(
         description="Streamlit Applications",
         prog="streamlit",

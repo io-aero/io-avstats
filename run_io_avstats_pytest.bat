@@ -111,6 +111,10 @@ echo.
 echo Please wait ...
 echo.
 
+if exist logging_io_aero.log (
+    del /f /q logging_io_aero.log
+)
+
 if exist %IO_AERO_AVSTATS_LOG% (
     del /f /q %IO_AERO_AVSTATS_LOG%
 )

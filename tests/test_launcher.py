@@ -3,6 +3,7 @@
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
 
 """Launcher: coverage testing."""
+import logging
 import os
 import platform
 import time
@@ -16,6 +17,8 @@ from iocommon.io_config import settings
 # -----------------------------------------------------------------------------
 # @pytest.mark.issue
 
+logger = logging.getLogger(__name__)
+
 
 # -----------------------------------------------------------------------------
 # Test case: d_d_c   - Delete the PostgreSQL database container.
@@ -24,7 +27,7 @@ from iocommon.io_config import settings
 def test_launcher_d_d_c():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -38,7 +41,7 @@ def test_launcher_d_d_c():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -48,7 +51,7 @@ def test_launcher_d_d_c():
 def test_launcher_d_d_f():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -62,7 +65,7 @@ def test_launcher_d_d_f():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -72,7 +75,7 @@ def test_launcher_d_d_f():
 def test_launcher_s_d_c():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -87,7 +90,7 @@ def test_launcher_s_d_c():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -97,7 +100,7 @@ def test_launcher_s_d_c():
 def test_launcher_c_d_s():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -111,7 +114,7 @@ def test_launcher_c_d_s():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -121,7 +124,7 @@ def test_launcher_c_d_s():
 def test_launcher_u_d_s():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -135,7 +138,7 @@ def test_launcher_u_d_s():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -146,7 +149,7 @@ def test_launcher_u_d_s():
 def test_launcher_a_o_c():
     """Test case: launcher()."""
     # -------------------------------------------------------------------------
-    io_glob.logger.debug(io_glob.LOGGER_START)
+    logger.debug(io_glob.LOGGER_START)
 
     assert settings.check_value == "test"
 
@@ -160,4 +163,4 @@ def test_launcher_a_o_c():
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
-    io_glob.logger.debug(io_glob.LOGGER_END)
+    logger.debug(io_glob.LOGGER_END)

@@ -2,112 +2,117 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://io-aero.com/index.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/2023_09_22_log_up22SEP.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/2023_10_01_log_avall.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/2023_10_01_log_up01OCT.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/2023_10_08_log_up08OCT.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/2023_10_15_log_up15OCT.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://io-aero.com/2023_10_22_log_up22OCT.html</loc>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/LICENSE.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/config_io_avstats.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/config_logging.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/operation.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_01_s_d_c_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_02_c_d_s_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_03_u_d_s_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_11_a_o_c_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_12_l_a_p.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_13_l_c_s_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_14_l_s_e_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_21_l_s_d_23_08_21.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/pre2008_22_l_z_d.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/release_notes.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/setup_installation.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://io-aero.com/setup_requirements.html</loc>
-         <lastmod>2023-10-17</lastmod>
+         <lastmod>2023-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

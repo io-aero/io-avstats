@@ -64,6 +64,38 @@
 
 [//]: # (- Version: 	6/08/2023 3:00:19 AM)
 
+## Version 23.10.22
+
+Release Date: 22.10.2023
+
+### 1. Modified Features
+
+- Logging improved. 
+
+### 2. Applied Software
+
+**Important**: All software components should be installed in the 64 bit version!
+
+| Software                                              | Version         | Remark           | Status  |
+|:------------------------------------------------------|:----------------|:-----------------|---------|
+| 7-Zip                                                 | 23.01           |                  |         |
+| Docker Desktop                                        | 4.24.2 / 24.0,6 |                  |         |
+| IO-AVSTATS-DB                                         | 1.7.13          |                  | upgrade |
+| Make for Windows                                      | 3.81            | Windows-specific |         |
+| Microsoft Access Database Engine 2016 Redistributable | 8/11/2020       | Windows-specific |         |
+| PostgreSQL                                            | 16.0            |                  |         |
+| Python                                                | 3.10.11         |                  |         |
+| RazorSQL                                              | 10.4.5          |                  |         |
+
+### 3. Processed files
+
+#### 3.1 [NTSB - National Transport Safety Board](https://www.ntsb.gov/Pages/home.aspx)
+
+##### Data source `up22OCT.zip`
+
+- Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22OCT.zip)
+- Version: 10/22/2023 3:00:36 AM
+
 ## Version 23.10.15
 
 Release Date: 15.10.2023

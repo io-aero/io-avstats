@@ -143,7 +143,7 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
 # Set up the database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( .run_setup_postgresql_io_avstats_db.sh ); then
+    if ! ( .run_setup_postgresql.sh ); then
         exit 255
     fi
 

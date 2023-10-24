@@ -198,7 +198,7 @@ elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
 # Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql_io_avstats_db.sh ); then
+    if ! ( ./scripts/run_setup_postgresql.sh ); then
         exit 255
     fi
 

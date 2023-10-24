@@ -439,7 +439,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
     rem Set up the IO-AVSTATS-DB PostgreSQL database container.
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
-        call scripts\run_setup_postgresql_io_avstats_db
+        call scripts\run_setup_postgresql
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted
             exit 1

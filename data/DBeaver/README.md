@@ -1,3 +1,3 @@
 # IO-AVSTATS - File Directory **`data/DBeaver`**
 
-This file directory contains an export of the DBeaver project `io-avstats`.
+This file directory contains an export of the DBeaver project `io_aero_db`.

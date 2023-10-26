@@ -745,11 +745,51 @@
   
   
     <li class="md-nav__item">
+      <a href="2023_11_01_log_up01NOV.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.01 up01NOV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_01_log_avall.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.01 avall
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="2023_10_22_log_up22OCT.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    up22OCT 2023.10.22
+    2023.10.22 up22OCT
   </span>
   
 
@@ -769,7 +809,7 @@
         
   
   <span class="md-ellipsis">
-    up15OCT 2023.10.15
+    2023.10.15 up15OCT
   </span>
   
 
@@ -789,7 +829,7 @@
         
   
   <span class="md-ellipsis">
-    up08OCT 2023.10.08
+    2023.10.08 up08OCT
   </span>
   
 
@@ -809,7 +849,7 @@
         
   
   <span class="md-ellipsis">
-    up01OCT 2023.10.01
+    2023.10.01 up01OCT
   </span>
   
 
@@ -829,27 +869,7 @@
         
   
   <span class="md-ellipsis">
-    avall   2023.10.01
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="2023_09_22_log_up22SEP.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    up22SEP 2023.09.22
+    2023.10.01 avall
   </span>
   
 
@@ -951,14 +971,31 @@
 <h1 id="installation">Installation</h1>
 <ol>
 <li>
-<p>Addressing the requirements defined <a href="setup_requirements.html" target="_blank">here</a>. </p>
+<p>Install the software components specified in the requirements.</p>
+<p>In an Ubuntu environment, the following scripts from the <code>scripts</code> 
+directory can be used for this purpose:</p>
+<ul>
+<li>run_install_4_vm_wsl2_1.sh</li>
+<li>run_install_4_vm_wsl2_2.sh</li>
+</ul>
+</li>
+<li>
+<p>Configure the AWS CLI:</p>
+<ul>
+<li><code>AWS Access Key ID:     ...</code></li>
+<li><code>AWS Secret Access Key: ...</code></li>
+<li><code>Default region name:   ...</code></li>
+<li><code>Default output form:</code></li>
+</ul>
 </li>
 <li>
 <p>Clone or copy the <strong>IO-AVSTATS</strong> repository from <a href="https://github.com/io-aero/io-avstats" target="_blank">here</a>.</p>
 </li>
 <li>
 <p>Switch to the file directory <strong>io-avstats</strong>:</p>
-<p><strong><code>cd io-avstats</code></strong></p>
+<ul>
+<li><strong><code>cd io-avstats</code></strong></li>
+</ul>
 </li>
 <li>
 <p>Install the necessary Python packages by running the command  <strong><code>make pipenv-dev</code></strong>.</p>
@@ -981,6 +1018,9 @@
 </li>
 <li>
 <p>Use the script <strong><code>run_io_avstats</code></strong> with the task <code>r_s_a</code> to run the application.</p>
+</li>
+<li>
+<p>Optional: Import the project file in the directory <code>data/DBeaver</code> as a project in DBeaver.</p>
 </li>
 </ol>
 

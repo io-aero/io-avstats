@@ -5,10 +5,19 @@ The following are the minimum requirements to run the application:
 ### Basic requirements
 
 - Operating System **`Windows 10`** or **`Windows 11`** - except for the tasks that require ODBC, the operating system **`Ubuntu LTS 22.04`** can also be used
+- [Command Line Interface - AWS CLI](https://aws.amazon.com/cli/){:target="_blank"}
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"} 
-- [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm){:target="_blank"} 
 - [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads){:target="_blank"} - only "Command Line Tools"
 - [Python](https://www.python.org){:target="_blank"}
+
+only with operating system **`Windows`**:
+
+- [7-Zip](https://www.7-zip.org){:target="_blank"} 
+- [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm){:target="_blank"} 
+
+and optional:
+
+- [DBeaver Community](https://dbeaver.io){:target="_blank"}
 
 ### Additional requirements for loading data into the database
 

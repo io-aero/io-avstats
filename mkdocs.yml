@@ -47,12 +47,13 @@ nav:
           - 8. Load simplemaps data: pre2008_21_l_s_d_23_08_21.md
           - 9. Load ZIP Code Database data: pre2008_22_l_z_d.md
       - Transaction Data Logs:
-          - up22OCT 2023.10.22: 2023_10_22_log_up22OCT.md
-          - up15OCT 2023.10.15: 2023_10_15_log_up15OCT.md
-          - up08OCT 2023.10.08: 2023_10_08_log_up08OCT.md
-          - up01OCT 2023.10.01: 2023_10_01_log_up01OCT.md
-          - avall   2023.10.01: 2023_10_01_log_avall.md
-          - up22SEP 2023.09.22: 2023_09_22_log_up22SEP.md
+          - 2023.11.01 up01NOV: 2023_11_01_log_up01NOV.md
+          - 2023.11.01 avall: 2023_11_01_log_avall.md
+          - 2023.10.22 up22OCT: 2023_10_22_log_up22OCT.md
+          - 2023.10.15 up15OCT: 2023_10_15_log_up15OCT.md
+          - 2023.10.08 up08OCT: 2023_10_08_log_up08OCT.md
+          - 2023.10.01 up01OCT: 2023_10_01_log_up01OCT.md
+          - 2023.10.01 avall: 2023_10_01_log_avall.md
   - Release Notes: release_notes.md
   - License: LICENSE.md
 

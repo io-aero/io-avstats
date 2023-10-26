@@ -38,6 +38,8 @@ export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=
 export IO_AERO_TASK_DEFAULT=r_s_a
 
+export PYTHONPATH=.
+
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "r_s_a   - Run the IO-AVSTATS application"

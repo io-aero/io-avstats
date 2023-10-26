@@ -31,11 +31,11 @@ endif
 export CONDA_PACKAGES=gdal pdal python-pdal rasterio
 export CONDA_ARG=--site-packages
 export CONDA_ARG=
- 
 export COVERALLS_REPO_TOKEN=<see coveralls.io>
 export ENV_FOR_DYNACONF=test
 export MODULE=ioavstats
-export PYTHONPATH=${MODULE} scripts
+export PYTHONPATH=.
+export SOURCEPATH=${MODULE} scripts
 export VERSION_PYTHON=3.10
 
 ## =============================================================================
@@ -80,11 +80,11 @@ help:
 bandit:             ## Find common security issues with Bandit.
 	@echo Info **********  Start: Bandit ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run bandit --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run bandit -c pyproject.toml -r ${PYTHONPATH}
+	${PIPENV} run bandit -c pyproject.toml -r ${SOURCEPATH}
 	@echo Info **********  End:   Bandit ***************************************
 
 # The Uncompromising Code Formatter
@@ -93,11 +93,11 @@ bandit:             ## Find common security issues with Bandit.
 black:              ## Format the code with Black.
 	@echo Info **********  Start: black ****************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run black --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run black ${PYTHONPATH} tests
+	${PIPENV} run black ${SOURCEPATH} tests
 	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
@@ -142,11 +142,11 @@ coveralls:          ## Run all the tests and upload the coverage data to coveral
 docformatter:       ## Format the docstrings with docformatter.
 	@echo Info **********  Start: docformatter *********************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run docformatter --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run docformatter --in-place -r ${PYTHONPATH}
+	${PIPENV} run docformatter --in-place -r ${SOURCEPATH}
 	${PIPENV} run docformatter --in-place -r tests
 	@echo Info **********  End:   docformatter *********************************
 
@@ -156,11 +156,11 @@ docformatter:       ## Format the docstrings with docformatter.
 flake8:             ## Enforce the Python Style Guides with Flake8.
 	@echo Info **********  Start: Flake8 ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run flake8 --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run flake8 ${PYTHONPATH} tests
+	${PIPENV} run flake8 ${SOURCEPATH} tests
 	@echo Info **********  End:   Flake8 ***************************************
 
 # isort your imports, so you don't have to.
@@ -169,11 +169,11 @@ flake8:             ## Enforce the Python Style Guides with Flake8.
 isort:              ## Edit and sort the imports with isort.
 	@echo Info **********  Start: isort ****************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run isort --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run isort ${PYTHONPATH} tests
+	${PIPENV} run isort ${SOURCEPATH} tests
 	@echo Info **********  End:   isort ****************************************
 
 # Project documentation with Markdown.
@@ -194,27 +194,23 @@ mkdocs:             ## Create and upload the user documentation with MkDocs.
 mypy:               ## Find typing issues with Mypy.
 	@echo Info **********  Start: Mypy *****************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run mypy --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run mypy ${PYTHONPATH}
+	${PIPENV} run mypy ${SOURCEPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
 # Nuitka: Python compiler written in Python
 # https://github.com/Nuitka/Nuitka
 nuitka:             ## Create a dynamic link library.
 	@echo Info **********  Start: nuitka ***************************************
-	@echo CREATE_DIST  =${CREATE_DIST}
-	@echo DELETE_DIST  =${DELETE_DIST}
 	@echo MODULE       =${MODULE}
 	@echo OPTION_NUITKA=${OPTION_NUITKA}
 	@echo PYTHON       =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run ${PYTHON} -m nuitka --version
 	@echo ----------------------------------------------------------------------
-	${DELETE_DIST}
-	${CREATE_DIST}
 	${PIPENV} run ${PYTHON} -m nuitka ${OPTION_NUITKA} --include-package=${MODULE} --module ${MODULE} --no-pyi-file --output-dir=dist --remove-output
 	@echo Info **********  End:   nuitka ***************************************
 
@@ -275,7 +271,7 @@ pipenv-prod:        ## Install the package dependencies for production.
 pydocstyle:         ## Check the API documentation with pydocstyle.
 	@echo Info **********  Start: pydocstyle ***********************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pydocstyle --version
 	@echo ----------------------------------------------------------------------
@@ -288,11 +284,11 @@ pydocstyle:         ## Check the API documentation with pydocstyle.
 pylint:             ## Lint the code with Pylint.
 	@echo Info **********  Start: Pylint ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pylint --version
 	@echo ----------------------------------------------------------------------
-	${PIPENV} run pylint ${PYTHONPATH} tests
+	${PIPENV} run pylint ${SOURCEPATH} tests
 	@echo Info **********  End:   Pylint ***************************************
 
 # pytest: helps you write better programs.
@@ -301,7 +297,7 @@ pylint:             ## Lint the code with Pylint.
 pytest:             ## Run all tests with pytest.
 	@echo Info **********  Start: pytest ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
@@ -311,7 +307,7 @@ pytest:             ## Run all tests with pytest.
 pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo Info **********  Start: pytest ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} install pytest
 	${PIPENV} install pytest-cov
@@ -327,7 +323,7 @@ pytest-ci:          ## Run all tests with pytest after test tool installation.
 pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo Info **********  Start: pytest ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
@@ -336,7 +332,7 @@ pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
 	@echo Info **********  Start: pytest ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
@@ -345,7 +341,7 @@ pytest-issue:       ## Run only the tests with pytest which are marked with 'iss
 pytest-module:      ## Run tests of specific module(s) with pytest - test_all & test_cfg_cls_setup & test_db_cls.
 	@echo Info **********  Start: pytest ***************************************
 	@echo PIPENV    =${PIPENV}
-	@echo PYTHONPATH=${PYTHONPATH}
+	@echo SOURCEPATH=${SOURCEPATH}
 	@echo ----------------------------------------------------------------------
 	${PIPENV} run pytest --version
 	@echo ----------------------------------------------------------------------
@@ -362,7 +358,7 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX_1}
 	cd ${DOCUMENTATION_DIR}
-	${PIPENV} run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${PYTHONPATH}
+	${PIPENV} run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${SOURCEPATH}
 	${DELETE_SPHINX_2}
 	${PIPENV} run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 #	${PIPENV} run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
@@ -370,7 +366,7 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	@echo Info **********  End:   sphinx ***************************************
 
 sphinx-api:
-	${PIPENV} run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${PYTHONPATH}
+	${PIPENV} run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${SOURCEPATH}
 
 # twine: Collection of utilities for publishing packages on io-aero-pypi.
 # https://pypi.org/project/twine/

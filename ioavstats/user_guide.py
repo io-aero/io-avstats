@@ -81,13 +81,13 @@ def get_ae1982_bar_chart(
 def get_pd1982_app() -> None:
     """pd1982 - Creates the user guide for the whole application."""
     # """
-    # Diese Anwendung stellt zum einen die Daten der Tabellen und Views der Datenbank **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum Herunterladen als **csv** Datei zur Verfügung.
+    # On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a table format for display and download as **csv** file.
     #
-    # Zum anderen ist es auch möglich eine explorative Datenanalyse von einzelnen Tabellen oder Views mithilfe von [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) durchzuführen und das Ergebnis wahlweise als **HTML** Datei herunterzuladen.
+    # On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally download the result as a **HTML** file.
     #
-    # Die Datenbank **IO-AVSTATS-DB** beruht hauptsachlich auf den von der [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in Form von Microsoft Access Datenbanken [hier]( https://data.ntsb.gov/avdata) zur Verfügung gestellten Flugverkehrsunfallzahlen.
+    # The **IO-AVSTATS-DB** database is based primarily on air traffic accident data provided by the [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in the form of Microsoft Access databases [here]( https://data.ntsb.gov/avdata).
     #
-    # Detaillierte Informationen zur Anwendung **`pd1982`** finden sich [hier](https://io-aero.github.io/io-avstats/).
+    # Detailed information on the **`pd1982`** application can be found [here](https://io-aero.github.io/io-avstats/).
     # """
     user_guide = (
         _generic_header_section("User Guide 'Application'")
@@ -110,12 +110,12 @@ Detailed information on the **`pd1982`** application can be found [here]({LINK_G
 def get_pd1982_data_profile() -> None:
     """pd1982 - Creates the user guide for the 'Show data profile' task."""
     # """
-    # Mit dieser Aufgabe erfolgt eine Datenanalyse der ausgewählten Tabelle oder View.
-    # Diese wird mithilfe von [**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/) durchgeführt.
-    # Dabei kann man entweder die explorative oder die minimale Version auswählen.
-    # Abhängig von der Größe der ausgewählten Tabelle bzw. View kann es zu verzögerten Antwortzeiten kommen, wobei die explorative Version nochmals deutlich mehr Rechenaufwand als die minimale Version erfordert.
-    # Für weiterführende Erklärungen konsultieren Sie bitte die Dokumentation von **Pandas Profiling**.
-    # Das Ergebnis der Datenanalyse kann wenn gewünscht auch als **HTML** Datei heruntergeladen werden.
+    # This task performs a data analysis of the selected table or view.
+    # This is carried out with the help of [**Pandas Profiling**](https://pandas-profiling.ydata.ai/docs/master/).
+    # One can select either the explorative or the minimal version.
+    # Depending upon the size of the selected table and/or View it can come to delayed response times, whereby the explorative version requires again clearly more computation expenditure than the minimum version.
+    # For further explanations please consult the documentation of **Pandas Profiling**.
+    # The result of the data analysis can also be downloaded as **HTML** file if desired.
     # """
     user_guide = (
         _generic_header_section("User Guide 'Show data profile'")
@@ -134,11 +134,11 @@ For further explanations please consult the documentation of **Pandas Profiling*
 # ------------------------------------------------------------------
 def get_pd1982_details() -> None:
     """pd1982 - Creates the user guide for the 'Show details' task."""
-    # Diese Aufgabe stellt die Daten der Tabellen und Views der Datenbank **IO-AVSTATS-DB** in einem Tabellenformat zur Anzeige und zum Herunterladen als **csv** Datei zur Verfügung.
+    # This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and download as **csv** file.
     #
-    # Die anzuzeigenden Reihen können bei den Filteroptionen auf ein Intervall von Ereignisjahren beschränkt werden.
-    # Die Reihenfolge der Datenanzeige richtet sich nach dem jeweiligen Primärschlüssel der Datenbanktabelle.
-    # Die Datenbankspalten der ausgewählten Reihen werden immer vollständig angezeigt.
+    # The series to be displayed can be limited to an interval of event years in the filter options.
+    # The order of data display is based on the respective primary key of the database table.
+    # The database columns of the selected series are always displayed in full.
     # """
     user_guide = (
         _generic_header_section("User Guide 'Show details'")

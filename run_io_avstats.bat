@@ -40,6 +40,8 @@ set IO_AERO_MSEXCEL=
 set IO_AERO_TASK=
 set IO_AERO_TASK_DEFAULT=r_s_a
 
+set PYTHONPATH=.
+
 if ["%1"] EQU [""] (
     echo =========================================================
     echo r_s_a   - Run the IO-AVSTATS application
@@ -171,7 +173,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
     del /f /q %IO_AERO_AVSTATS_LOG%
 )
 
-REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
+> %IO_AERO_AVSTATS_LOG% 2>&1 (
 
     echo =======================================================================
     echo Start %0
@@ -516,7 +518,7 @@ REM > %IO_AERO_AVSTATS_LOG% 2>&1 (
 
         goto END_OF_SCRIPT
     )
-REM )
+)
 
 rem ----------------------------------------------------------------------------
 rem Program abort due to wrong input.

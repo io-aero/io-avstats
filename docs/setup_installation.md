@@ -4,7 +4,7 @@
 
 
     In an Ubuntu environment, the following scripts from the `scripts` 
-    directory can be used for this purpose:
+    directory can be used for this purpose (requires step 3):
 
     - run_install_4_vm_wsl2_1.sh
     - run_install_4_vm_wsl2_2.sh
@@ -26,7 +26,7 @@
     - **`cd io-avstats`**
 
 
-5. Install the necessary Python packages by running the command  **`make pipenv-dev`**.
+5. Install the necessary Python packages by running the command  **`make pipenv-prod`**.
 
 
 6. Optionally, adjustments can be made in the following configuration files:

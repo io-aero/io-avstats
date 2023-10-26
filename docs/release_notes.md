@@ -64,6 +64,7 @@
 
 [//]: # (- Version: 	6/08/2023 3:00:19 AM)
 
+
 ## Version 23.10.22
 
 Release Date: 22.10.2023
@@ -151,7 +152,6 @@ Release Date: 08.10.2023
 
 - Download link: [here](https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08OCT.zip)
 - Version: 10/08/2023 3:00:28 AM
-
 
 ## Version 23.10.01
 

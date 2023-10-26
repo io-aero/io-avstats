@@ -6,11 +6,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://io-aero.com/2023_09_22_log_up22SEP.html</loc>
-         <lastmod>2023-10-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://io-aero.com/2023_10_01_log_avall.html</loc>
          <lastmod>2023-10-26</lastmod>
          <changefreq>daily</changefreq>
@@ -32,6 +27,16 @@
     </url>
     <url>
          <loc>https://io-aero.com/2023_10_22_log_up22OCT.html</loc>
+         <lastmod>2023-10-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://io-aero.com/2023_11_01_log_avall.html</loc>
+         <lastmod>2023-10-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://io-aero.com/2023_11_01_log_up01NOV.html</loc>
          <lastmod>2023-10-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -112,6 +117,11 @@
     </url>
     <url>
          <loc>https://io-aero.com/setup_requirements.html</loc>
+         <lastmod>2023-10-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://io-aero.com/__archive__/2023_09_22_log_up22SEP.html</loc>
          <lastmod>2023-10-26</lastmod>
          <changefreq>daily</changefreq>
     </url>

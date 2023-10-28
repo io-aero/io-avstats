@@ -13,6 +13,15 @@ echo Start %0
 echo --------------------------------------------------------------------------------
 echo IO-AVSTATS - Set up a PostgreSQL Docker container.
 echo --------------------------------------------------------------------------------
+rem set IO_AERO_POSTGRES_CONNECTION_PORT=5432
+rem set IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
+rem set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
+rem set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+rem set IO_AERO_POSTGRES_USER_ADMIN=postgres
+rem set IO_AERO_POSTGRES_VERSION=16.0
+rem echo --------------------------------------------------------------------------------
+rem set IO_AERO_POSTGRES_PGDATA=data\postgres
+rem echo --------------------------------------------------------------------------------
 echo POSTGRES_CONNECTION_PORT : %IO_AERO_POSTGRES_CONNECTION_PORT%
 echo POSTGRES_CONTAINER_NAME  : %IO_AERO_POSTGRES_CONTAINER_NAME%
 echo POSTGRES_DBNAME_ADMIN    : %IO_AERO_POSTGRES_DBNAME_ADMIN%

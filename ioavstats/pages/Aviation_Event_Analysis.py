@@ -15,6 +15,7 @@ import plotly.graph_objects as go  # type: ignore
 import streamlit as st
 import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
+from iocommon import io_config
 from pandas import DataFrame
 from psycopg2.extensions import connection
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
@@ -314,6 +315,8 @@ SETTINGS = Dynaconf(
 )
 START_TIME: int = 0
 
+TERMINAL_AREA_DISTANCE_MILES: float = io_config.settings.terminal_area_distance_miles
+
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
 # 24 (close to individual buildings)
@@ -479,6 +482,13 @@ def _apply_filter(
         _print_timestamp(
             f"_apply_filter() - {len(df_filtered):>6} - FILTER_LATLONG_ACQ"
         )
+
+    # noinspection PyUnboundLocalVariable
+    if CHOICE_CHARTS_TYPE_D_NA:
+        if CHOICE_CHARTS_TYPE_D_NA_MAX:
+            df_filtered = df_filtered.loc[
+                df_filtered["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
+            ]
 
     # noinspection PyUnboundLocalVariable
     if FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO:
@@ -1072,18 +1082,20 @@ With the button **Download the chart data** this data can be loaded into a local
 def _prep_data_chart_d_na(
     df_filtered: DataFrame,
 ) -> DataFrame:
-    global CHOICE_CHARTS_TYPE_D_NA_NO  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_CHARTS_TYPE_D_NA_NO
+    # pylint: enable=global-statement
 
-    df_chart_data = _apply_filter_incompatible(df_filtered)
+    df_chart_data = _apply_filter(df_filtered)
 
     if CHOICE_CHARTS_TYPE_D_NA_MAX:
         df_chart_data = df_chart_data[
             df_chart_data["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
         ]
 
-    df_chart_data = df_chart_data.nearest_airport_distance.dropna()
+    df_chart_data = df_chart_data.nearest_airport_distance.dropna()  # type: ignore
 
-    (CHOICE_CHARTS_TYPE_D_NA_NO,) = df_chart_data.shape
+    (CHOICE_CHARTS_TYPE_D_NA_NO, _) = df_chart_data.shape
 
     return _prep_distance_chart(
         df_chart_data,
@@ -2092,14 +2104,12 @@ def _present_chart_ey_aoc() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by CICTT Codes"
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
-
     with col2:
         choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
@@ -2123,6 +2133,9 @@ def _present_chart_ey_aoc() -> None:
         else 0.0,
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Events per Year by Injury Levels.
@@ -2130,6 +2143,7 @@ def _present_chart_ey_aoc() -> None:
 def _present_chart_ey_il() -> None:
     chart_id = "ey_il"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Injury Levels"
+
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2144,16 +2158,21 @@ def _present_chart_ey_il() -> None:
             label="**User guide: Years chart**",
             value=False,
         )
+
     if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
         )
+
     _present_bar_chart(
         chart_id,
         chart_title,
         _prep_data_chart_ey_il(DF_FILTERED),
     )
+
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
 
 
 # ------------------------------------------------------------------
@@ -2164,14 +2183,12 @@ def _present_chart_ey_mpf() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Main Phases of Flight"
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
-
     with col2:
         choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
@@ -2195,6 +2212,9 @@ def _present_chart_ey_mpf() -> None:
         else 0.0,
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Events per Year by Nearest Airport.
@@ -2202,6 +2222,7 @@ def _present_chart_ey_mpf() -> None:
 def _present_chart_ey_na() -> None:
     chart_id = "ey_na"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Nearest Airport"
+
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2216,6 +2237,7 @@ def _present_chart_ey_na() -> None:
             label="**User guide: Years chart**",
             value=False,
         )
+
     if choice_ug:
         _get_user_guide_chart(
             chart_id,
@@ -2228,6 +2250,9 @@ def _present_chart_ey_na() -> None:
         _prep_data_chart_ey_na(DF_FILTERED),
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Events per Year by Phases of Flight.
@@ -2235,6 +2260,7 @@ def _present_chart_ey_na() -> None:
 def _present_chart_ey_pf() -> None:
     chart_id = "ey_pf"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Phases of Flight"
+
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2249,6 +2275,7 @@ def _present_chart_ey_pf() -> None:
             label="**User guide: Years chart**",
             value=False,
         )
+
     if choice_ug:
         _get_user_guide_chart(
             chart_id,
@@ -2264,6 +2291,9 @@ def _present_chart_ey_pf() -> None:
         else 0.0,
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Preventable Events per Year by Safety Systems.
@@ -2273,14 +2303,12 @@ def _present_chart_ey_pss() -> None:
     chart_title = f"Number of Preventable {EVENT_TYPE_DESC}s per Year by Safety Systems"
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
-
     with col2:
         choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
@@ -2304,6 +2332,9 @@ def _present_chart_ey_pss() -> None:
         else 0.0,
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Events per Year by Event Types.
@@ -2311,6 +2342,7 @@ def _present_chart_ey_pss() -> None:
 def _present_chart_ey_t() -> None:
     chart_id = "ey_t"
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Event Types"
+
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
@@ -2325,16 +2357,21 @@ def _present_chart_ey_t() -> None:
             label="**User guide: Years chart**",
             value=False,
         )
+
     if choice_ug:
         _get_user_guide_chart(
             chart_id,
             chart_title,
         )
+
     _present_bar_chart(
         chart_id,
         chart_title,
         _prep_data_chart_ey_t(DF_FILTERED),
     )
+
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
 
 
 # ------------------------------------------------------------------
@@ -2345,14 +2382,12 @@ def _present_chart_ey_tlp() -> None:
     chart_title = f"Number of {EVENT_TYPE_DESC}s per Year by Top Logical Parameters"
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
-
     with col2:
         choice_ug = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
@@ -2376,6 +2411,9 @@ def _present_chart_ey_tlp() -> None:
         else 0.0,
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present chart: Number of Fatalities per Year by
@@ -2386,14 +2424,12 @@ def _present_chart_fy_fp() -> None:
     chart_title = "Number of Fatalities per Year by FAR Operations Parts"
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
-
     with col2:
         choice_ug_years_charts_fy_fp = st.checkbox(
             help="Explanations and operating instructions related to this years chart.",
@@ -2416,6 +2452,9 @@ def _present_chart_fy_fp() -> None:
         if CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
         else 0.0,
     )
+
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
 
 
 # ------------------------------------------------------------------
@@ -2454,13 +2493,18 @@ def _present_chart_fy_sfp() -> None:
         _prep_data_chart_fy_sfp(DF_FILTERED),
     )
 
+    (df_filtered_rows, _) = DF_FILTERED.shape
+    st.write(f"**Total: {df_filtered_rows}**")
+
 
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
-    global DF_FILTERED_ROWS  # pylint: disable=global-statement
-    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global DF_FILTERED_ROWS
+    global DF_UNFILTERED_ROWS
+    # pylint: enable=global-statement
 
     _print_timestamp("_present_data() - Start")
 
@@ -2534,7 +2578,9 @@ def _present_data() -> None:
 # Present data profile.
 # ------------------------------------------------------------------
 def _present_data_profile() -> None:
-    global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_UG_DATA_PROFILE
+    # pylint: enable=global-statement
 
     col1, col2 = st.columns(
         [
@@ -2550,6 +2596,7 @@ def _present_data_profile() -> None:
             + 'font-weight: normal;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
             unsafe_allow_html=True,
         )
+        # pylint: enable=line-too-long
 
     with col2:
         CHOICE_UG_DATA_PROFILE = st.checkbox(
@@ -2590,7 +2637,9 @@ def _present_data_profile() -> None:
 # Present details.
 # ------------------------------------------------------------------
 def _present_details() -> None:
-    global CHOICE_UG_DETAILS  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_UG_DETAILS
+    # pylint: enable=global-statement
 
     if CHOICE_DETAILS:
         col1, col2 = st.columns(
@@ -2607,6 +2656,7 @@ def _present_details() -> None:
                 + 'font-weight: normal;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
                 unsafe_allow_html=True,
             )
+            # pylint: enable=line-too-long
 
         with col2:
             CHOICE_UG_DETAILS = st.checkbox(
@@ -2622,6 +2672,7 @@ def _present_details() -> None:
         st.write(
             f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
         )
+        # pylint: enable=line-too-long
 
         st.dataframe(DF_FILTERED)
 
@@ -2704,19 +2755,20 @@ def _present_distance_chart(
 # ------------------------------------------------------------------
 def _present_distance_charts() -> None:
     # Distance to the nearest airport
-    if CHOICE_CHARTS_TYPE_D_NA:
-        _present_distance_chart(
-            "d_na",
-            "Distance to the Nearest Airport ({no_rows} {event_type})",
-            _prep_data_chart_d_na(DF_FILTERED),
-        )
+    _present_distance_chart(
+        "d_na",
+        "Distance to the Nearest Airport ({no_rows} {event_type})",
+        _prep_data_chart_d_na(DF_FILTERED),
+    )
 
 
 # ------------------------------------------------------------------
 # Present the events on the US map.
 # ------------------------------------------------------------------
 def _present_map() -> None:
-    global CHOICE_UG_MAP  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_UG_MAP
+    # pylint: enable=global-statement
 
     col1, col2 = st.columns([2, 1])
 
@@ -2966,13 +3018,31 @@ def _present_totals_charts() -> None:
             _prep_data_chart_te_tlp(DF_FILTERED),
         )
 
+    # pylint: disable=too-many-boolean-expressions
+    if (
+        CHOICE_CHARTS_TYPE_TF_FP
+        or CHOICE_CHARTS_TYPE_TF_SFP
+        or CHOICE_CHARTS_TYPE_TE_AOC
+        or CHOICE_CHARTS_TYPE_TE_T
+        or CHOICE_CHARTS_TYPE_TE_IL
+        or CHOICE_CHARTS_TYPE_TE_MPF
+        or CHOICE_CHARTS_TYPE_TE_NA
+        or CHOICE_CHARTS_TYPE_TE_PF
+        or CHOICE_CHARTS_TYPE_TE_PSS
+        or CHOICE_CHARTS_TYPE_TE_TLP
+    ):
+        (df_filtered_rows, _) = DF_FILTERED.shape
+        st.write(f"**Total: {df_filtered_rows}**")
+    # pylint: enable=too-many-boolean-expressions
+
 
 # ------------------------------------------------------------------
 # Print a timestamp.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-statements
 def _print_timestamp(identifier: str) -> None:
-    global LAST_READING  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global LAST_READING
+    # pylint: enable=global-statement
 
     if not IS_TIMEKEEPING:
         return
@@ -2998,32 +3068,38 @@ def _print_timestamp(identifier: str) -> None:
 # ------------------------------------------------------------------
 # pylint: disable=too-many-statements
 def _setup_filter() -> None:
-    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
-    global CHOICE_FILTER_DATA  # pylint: disable=global-statement
-    global FILTER_ACFT_CATEGORIES  # pylint: disable=global-statement
-    global FILTER_CICTT_CODES  # pylint: disable=global-statement
-    global FILTER_DEFINING_PHASES  # pylint: disable=global-statement
-    global FILTER_DESCRIPTION_MAIN_PHASES  # pylint: disable=global-statement
-    global FILTER_EV_HIGHEST_INJURY  # pylint: disable=global-statement
-    global FILTER_EV_TYPE  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
-    global FILTER_FAR_PARTS  # pylint: disable=global-statement
-    global FILTER_FINDING_CODES  # pylint: disable=global-statement
-    global FILTER_INJ_F_GRND_FROM  # pylint: disable=global-statement
-    global FILTER_INJ_F_GRND_TO  # pylint: disable=global-statement
-    global FILTER_INJ_TOT_F_FROM  # pylint: disable=global-statement
-    global FILTER_INJ_TOT_F_TO  # pylint: disable=global-statement
-    global FILTER_LATLONG_ACQ  # pylint: disable=global-statement
-    global FILTER_NO_AIRCRAFT_FROM  # pylint: disable=global-statement
-    global FILTER_NO_AIRCRAFT_TO  # pylint: disable=global-statement
-    global FILTER_OCCURRENCE_CODES  # pylint: disable=global-statement
-    global FILTER_PREVENTABLE_EVENTS  # pylint: disable=global-statement
-    global FILTER_TLL_PARAMETERS  # pylint: disable=global-statement
-    global FILTER_US_AVIATION  # pylint: disable=global-statement
-    global FILTER_US_STATES  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_ACTIVE_FILTERS_TEXT
+    global CHOICE_CHARTS_TYPE_D_NA
+    global CHOICE_CHARTS_TYPE_D_NA_MAX
+    global CHOICE_FILTER_DATA
+    global FILTER_ACFT_CATEGORIES
+    global FILTER_CICTT_CODES
+    global FILTER_DEFINING_PHASES
+    global FILTER_DESCRIPTION_MAIN_PHASES
+    global FILTER_EV_HIGHEST_INJURY
+    global FILTER_EV_TYPE
+    global FILTER_EV_YEAR_FROM
+    global FILTER_EV_YEAR_TO
+    global FILTER_FAR_PARTS
+    global FILTER_FINDING_CODES
+    global FILTER_INJ_F_GRND_FROM
+    global FILTER_INJ_F_GRND_TO
+    global FILTER_INJ_TOT_F_FROM
+    global FILTER_INJ_TOT_F_TO
+    global FILTER_LATLONG_ACQ
+    global FILTER_NO_AIRCRAFT_FROM
+    global FILTER_NO_AIRCRAFT_TO
+    global FILTER_OCCURRENCE_CODES
+    global FILTER_PREVENTABLE_EVENTS
+    global FILTER_TLL_PARAMETERS
+    global FILTER_US_AVIATION
+    global FILTER_US_STATES
+    # pylint: enable=global-statement
 
     _print_timestamp("_setup_filter - Start")
+
+    st.sidebar.divider()
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -3047,23 +3123,17 @@ def _setup_filter() -> None:
         label="**Aircraft categories:**",
         options=_sql_query_acft_categories(),
     )
-    _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 1")
 
     if FILTER_ACFT_CATEGORIES:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Aircraft categories**: **`{','.join(FILTER_ACFT_CATEGORIES)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_ACFT_CATEGORIES - 2")
-
-    st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_no_aircraft = _sql_query_max_no_aircraft()
-        _print_timestamp("_setup_filter - _sql_query_max_no_aircraft()")
 
         min_no_aircraft = _sql_query_min_no_aircraft()
-        _print_timestamp("_setup_filter - _sql_query_min_no_aircraft()")
 
         FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
             help="""
@@ -3086,11 +3156,7 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
             )
-            _print_timestamp(
-                "_setup_filter - FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO"
-            )
-
-        st.sidebar.divider()
+            # pylint: enable=line-too-long
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_CICTT_CODES = st.sidebar.multiselect(
@@ -3100,16 +3166,12 @@ def _setup_filter() -> None:
             label="**CICTT code(s):**",
             options=_sql_query_cictt_codes(),
         )
-        _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 1")
 
         if FILTER_CICTT_CODES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **CICTT code(s)**: **`{','.join(FILTER_CICTT_CODES)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_CICTT_CODES - 2")
-
-        st.sidebar.divider()
 
     FILTER_EV_TYPE = st.sidebar.multiselect(
         default=FILTER_EV_TYPE_DEFAULT,
@@ -3120,22 +3182,12 @@ def _setup_filter() -> None:
         label="**Event type(s):**",
         options=_sql_query_ev_type(),
     )
-    _print_timestamp("_setup_filter - FILTER_EV_TYPE - 1")
 
     if FILTER_EV_TYPE:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_EV_TYPE - 2")
-
-    st.sidebar.divider()
-
-    FILTER_EV_TYPE = FILTER_EV_TYPE_DEFAULT
-    CHOICE_ACTIVE_FILTERS_TEXT = (
-        CHOICE_ACTIVE_FILTERS_TEXT
-        + f"\n- **Event type(s)**: **`{','.join(FILTER_EV_TYPE)}`**"
-    )
 
     FILTER_EV_YEAR_FROM, FILTER_EV_YEAR_TO = st.sidebar.slider(
         help="""
@@ -3154,9 +3206,7 @@ def _setup_filter() -> None:
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO")
-
-    st.sidebar.divider()
+        # pylint: enable=line-too-long
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FAR_PARTS = st.sidebar.multiselect(
@@ -3166,20 +3216,15 @@ def _setup_filter() -> None:
             label="**FAR operations parts:**",
             options=_sql_query_far_parts(),
         )
-        _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 1")
 
         if FILTER_FAR_PARTS:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **FAR operations parts**: **`{','.join(FILTER_FAR_PARTS)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_FAR_PARTS - 2")
-
-        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         max_inj_f_grnd = _sql_query_max_inj_f_grnd()
-        _print_timestamp("_setup_filter - _sql_query_max_inj_f_grnd()")
 
         FILTER_INJ_F_GRND_FROM, FILTER_INJ_F_GRND_TO = st.sidebar.slider(
             help="""
@@ -3202,13 +3247,10 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
             )
-            _print_timestamp(
-                "_setup_filter - FILTER_INJ_F_GRND_FROM or FILTER_INJ_F_GRND_TO"
-            )
+            # pylint: enable=line-too-long
 
     if CHOICE_EXTENDED_VERSION:
         max_inj_tot_f = _sql_query_max_inj_tot_f()
-        _print_timestamp("_setup_filter - _sql_query_max_inj_tot_f()")
 
         FILTER_INJ_TOT_F_FROM, FILTER_INJ_TOT_F_TO = st.sidebar.slider(
             help="""
@@ -3231,15 +3273,7 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_INJ_TOT_F_TO")
-
-    if (
-        FILTER_INJ_F_GRND_FROM
-        or FILTER_INJ_F_GRND_TO
-        or FILTER_INJ_TOT_F_FROM
-        or FILTER_INJ_TOT_F_TO
-    ):
-        st.sidebar.divider()
+            # pylint: enable=line-too-long
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FINDING_CODES = st.sidebar.multiselect(
@@ -3249,16 +3283,12 @@ def _setup_filter() -> None:
             label="**Finding code(s):**",
             options=_sql_query_finding_codes(),
         )
-        _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 1")
 
         if FILTER_FINDING_CODES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Finding code(s)**: **`{','.join(FILTER_FINDING_CODES)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_FINDING_CODES - 2")
-
-        st.sidebar.divider()
 
     FILTER_EV_HIGHEST_INJURY = st.sidebar.multiselect(
         default=FILTER_EV_HIGHEST_INJURY_DEFAULT,
@@ -3269,16 +3299,12 @@ def _setup_filter() -> None:
         label="**Highest injury level(s):**",
         options=_sql_query_ev_highest_injury(),
     )
-    _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 1")
 
     if FILTER_EV_HIGHEST_INJURY:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Highest injury level(s)**: **`{','.join(FILTER_EV_HIGHEST_INJURY)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_EV_HIGHEST_INJURY - 2")
-
-    st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_LATLONG_ACQ = st.sidebar.multiselect(
@@ -3288,28 +3314,51 @@ def _setup_filter() -> None:
             label="**Latitude / longitude acquisition:**",
             options=_sql_query_latlong_acq(),
         )
-        _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 1")
         if FILTER_LATLONG_ACQ:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Latitude / longitude acquisition**: **`{','.join(FILTER_LATLONG_ACQ)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_LATLONG_ACQ - 2")
-        st.sidebar.divider()
 
         FILTER_DESCRIPTION_MAIN_PHASES = st.sidebar.multiselect(
             help="Here, data can be limited to selected main phases of flight.",
             label="**Main phases of flight:**",
             options=_sql_query_description_main_phase(),
         )
-        _print_timestamp("_setup_filter - FILTER_DESCRIPTION_MAIN_PHASES - 1")
         if FILTER_DESCRIPTION_MAIN_PHASES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Main Phases of flight**: **`{','.join(FILTER_DESCRIPTION_MAIN_PHASES)}`**"
             )
-        st.sidebar.divider()
 
+    # pylint: disable=line-too-long
+    CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
+        help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
+        label="Distance to the Nearest Airport",
+        value=False,
+    )
+    # pylint: enable=line-too-long
+
+    if CHOICE_CHARTS_TYPE_D_NA:
+        CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
+            format="%.4f",
+            help="Maximum distance to the nearest airport in miles",
+            key="CHOICE_CHARTS_TYPE_D_NA_MAX",
+            label="**Maximum distance to the nearest airport in miles**",
+            max_value=5000.0,
+            step=0.25,
+            value=TERMINAL_AREA_DISTANCE_MILES,
+        )
+
+    # pylint: disable=line-too-long
+    if CHOICE_CHARTS_TYPE_D_NA_MAX:
+        CHOICE_ACTIVE_FILTERS_TEXT = (
+            CHOICE_ACTIVE_FILTERS_TEXT
+            + f"\n- **Distance to the nearest airport in miles**: **`{CHOICE_CHARTS_TYPE_D_NA_MAX}`**"
+        )
+    # pylint: enable=line-too-long
+
+    if CHOICE_EXTENDED_VERSION:
         FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(
             help="""
             Here, the data can be limited to selected occurrence codes.
@@ -3317,14 +3366,11 @@ def _setup_filter() -> None:
             label="**Occurrence code(s):**",
             options=_sql_query_occurrence_codes(),
         )
-        _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 1")
         if FILTER_OCCURRENCE_CODES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Occurrence code(s)**: **`{','.join(FILTER_OCCURRENCE_CODES)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_OCCURRENCE_CODES - 2")
-        st.sidebar.divider()
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_DEFINING_PHASES = st.sidebar.multiselect(
@@ -3332,13 +3378,11 @@ def _setup_filter() -> None:
             label="**Phases of flight:**",
             options=_sql_query_md_codes_phase(),
         )
-        _print_timestamp("_setup_filter - FILTER_DEFINING_PHASES - 1")
         if FILTER_DEFINING_PHASES:
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Phases of flight**: **`{','.join(FILTER_DEFINING_PHASES)}`**"
             )
-        st.sidebar.divider()
 
     FILTER_PREVENTABLE_EVENTS = st.sidebar.multiselect(
         help="""
@@ -3347,16 +3391,12 @@ def _setup_filter() -> None:
         label="**Preventable events:**",
         options=_sql_query_preventable_events(),
     )
-    _print_timestamp("_setup_filter - FILTER_PREVENTABLE_EVENTS - 1")
 
     if FILTER_PREVENTABLE_EVENTS:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Preventable events**: **`{','.join(FILTER_PREVENTABLE_EVENTS)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_PREVENTABLE_EVENTS - 2")
-
-    st.sidebar.divider()
 
     FILTER_US_STATES = st.sidebar.multiselect(
         help="Here, data can be limited to selected U.S. states.",
@@ -3370,8 +3410,6 @@ def _setup_filter() -> None:
             + f"\n- **State(s) in the US**: **`{','.join(FILTER_US_STATES)}`**"
         )
 
-    _print_timestamp("_setup_filter - FILTER_STATES - 1")
-
     if CHOICE_EXTENDED_VERSION:
         FILTER_TLL_PARAMETERS = st.sidebar.multiselect(
             help="""
@@ -3380,7 +3418,6 @@ def _setup_filter() -> None:
             label="**Top logical parameter(s):**",
             options=_sql_query_tll_parameters(),
         )
-        _print_timestamp("_setup_filter - FILTER_TLL_PARAMETERS - 1")
 
         if FILTER_TLL_PARAMETERS:
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3388,9 +3425,6 @@ def _setup_filter() -> None:
                 + "\n- **Top logical parameter(s)**: **"
                 + f"`{','.join(FILTER_TLL_PARAMETERS)}`**"
             )
-            _print_timestamp("_setup_filter - FILTER_TLL_PARAMETERS - 2")
-
-        st.sidebar.divider()
 
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
@@ -3408,30 +3442,33 @@ def _setup_filter() -> None:
             FILTER_US_AVIATION_REGISTRATION,
         ],
     )
-    _print_timestamp("_setup_filter - FILTER_US_AVIATION - 1")
 
     if FILTER_US_AVIATION:
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **US aviation criteria**: **`{','.join(FILTER_US_AVIATION)}`**"
         )
-        _print_timestamp("_setup_filter - FILTER_US_AVIATION - 2")
 
     st.sidebar.divider()
 
     _print_timestamp("_setup_filter - End")
 
 
+# pylint: enable=too-many-statements
+
+
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
 def _setup_page() -> None:
-    global CHOICE_ABOUT  # pylint: disable=global-statement
-    global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
-    global CHOICE_UG_APP  # pylint: disable=global-statement
-    global EVENT_TYPE_DESC  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_ABOUT
+    global CHOICE_ACTIVE_FILTERS
+    global CHOICE_UG_APP
+    global EVENT_TYPE_DESC
+    global FILTER_EV_YEAR_FROM
+    global FILTER_EV_YEAR_TO
+    # pylint: enable=global-statement
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
     FILTER_EV_YEAR_TO = (
@@ -3495,68 +3532,69 @@ def _setup_sidebar() -> None:
 # ------------------------------------------------------------------
 # Set up the task controls.
 # ------------------------------------------------------------------
+# pylint: disable=too-many-statements
 def _setup_task_controls() -> None:
-    global CHOICE_BOX_PLOTS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_D_NA  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_D_NA_MAX  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_AOC  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_IL  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_MPF  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_NA  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_NA_I_1_OG  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_NA_I_2_OG  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_PF  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_PSS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_T  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_TLP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_FY_FP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_FY_SFP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_AOC  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_IL  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_MPF  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_NA  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_NA_I_1_OG  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_NA_I_2_OG  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_PF  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_PSS  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_T  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_TLP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TF_FP  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD  # pylint: disable=global-statement
-    global CHOICE_CHARTS_TYPE_TF_SFP  # pylint: disable=global-statement
-    global CHOICE_DATA_GRAPHS_DISTANCES  # pylint: disable=global-statement
-    global CHOICE_DATA_GRAPHS_TOTALS  # pylint: disable=global-statement
-    global CHOICE_DATA_GRAPHS_YEARS  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE_TYPE  # pylint: disable=global-statement
-    global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_EXTENDED_VERSION  # pylint: disable=global-statement
-    global CHOICE_HORIZONTAL_BAR_CHARTS  # pylint: disable=global-statement
-    global CHOICE_MAP  # pylint: disable=global-statement
-    global CHOICE_MAP_MAP_STYLE  # pylint: disable=global-statement
-    global CHOICE_PIE_CHARTS  # pylint: disable=global-statement
-    global CHOICE_RUN_ANALYSIS  # pylint: disable=global-statement
-    global CHOICE_TOTALS_CHARTS_DETAILS  # pylint: disable=global-statement
-    global CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
-    global CHOICE_TOTALS_CHARTS_HEIGHT  # pylint: disable=global-statement
-    global CHOICE_TOTALS_CHARTS_WIDTH  # pylint: disable=global-statement
-    global CHOICE_VIOLIN_PLOTS  # pylint: disable=global-statement
-    global CHOICE_YEARS_CHARTS_DETAILS  # pylint: disable=global-statement
-    global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS  # pylint: disable=global-statement
-    global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS  # pylint: disable=global-statement
-    global CHOICE_YEARS_CHARTS_HEIGHT  # pylint: disable=global-statement
-    global CHOICE_YEARS_CHARTS_WIDTH  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global CHOICE_BOX_PLOTS
+    global CHOICE_CHARTS_TYPE_EY_AOC
+    global CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
+    global CHOICE_CHARTS_TYPE_EY_IL
+    global CHOICE_CHARTS_TYPE_EY_MPF
+    global CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
+    global CHOICE_CHARTS_TYPE_EY_NA
+    global CHOICE_CHARTS_TYPE_EY_NA_I_1_OG
+    global CHOICE_CHARTS_TYPE_EY_NA_I_2_OG
+    global CHOICE_CHARTS_TYPE_EY_PF
+    global CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD
+    global CHOICE_CHARTS_TYPE_EY_PSS
+    global CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD
+    global CHOICE_CHARTS_TYPE_EY_T
+    global CHOICE_CHARTS_TYPE_EY_TLP
+    global CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD
+    global CHOICE_CHARTS_TYPE_FY_FP
+    global CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
+    global CHOICE_CHARTS_TYPE_FY_SFP
+    global CHOICE_CHARTS_TYPE_TE_AOC
+    global CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TE_IL
+    global CHOICE_CHARTS_TYPE_TE_MPF
+    global CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TE_NA
+    global CHOICE_CHARTS_TYPE_TE_NA_I_1_OG
+    global CHOICE_CHARTS_TYPE_TE_NA_I_2_OG
+    global CHOICE_CHARTS_TYPE_TE_PF
+    global CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TE_PSS
+    global CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TE_T
+    global CHOICE_CHARTS_TYPE_TE_TLP
+    global CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TF_FP
+    global CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD
+    global CHOICE_CHARTS_TYPE_TF_SFP
+    global CHOICE_DATA_GRAPHS_DISTANCES
+    global CHOICE_DATA_GRAPHS_TOTALS
+    global CHOICE_DATA_GRAPHS_YEARS
+    global CHOICE_DATA_PROFILE
+    global CHOICE_DATA_PROFILE_TYPE
+    global CHOICE_DETAILS
+    global CHOICE_EXTENDED_VERSION
+    global CHOICE_HORIZONTAL_BAR_CHARTS
+    global CHOICE_MAP
+    global CHOICE_MAP_MAP_STYLE
+    global CHOICE_PIE_CHARTS
+    global CHOICE_RUN_ANALYSIS
+    global CHOICE_TOTALS_CHARTS_DETAILS
+    global CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS
+    global CHOICE_TOTALS_CHARTS_HEIGHT
+    global CHOICE_TOTALS_CHARTS_WIDTH
+    global CHOICE_VIOLIN_PLOTS
+    global CHOICE_YEARS_CHARTS_DETAILS
+    global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS
+    global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS
+    global CHOICE_YEARS_CHARTS_HEIGHT
+    global CHOICE_YEARS_CHARTS_WIDTH
+    # pylint: enable=global-statement
 
     # --------------------------------------------------------------
     # Run the Data Analysis.
@@ -3569,8 +3607,7 @@ def _setup_task_controls() -> None:
         label="**Run the Data Analysis**",
         value=False,
     )
-
-    st.sidebar.divider()
+    # pylint: enable=line-too-long
 
     # ----------------------------------------------------------
     # Extended Version.
@@ -3616,8 +3653,6 @@ def _setup_task_controls() -> None:
             ),
         )
 
-    st.sidebar.divider()
-
     # --------------------------------------------------------------
     # Show Data Graph - Years.
     # --------------------------------------------------------------
@@ -3662,8 +3697,6 @@ def _setup_task_controls() -> None:
                     label="Sum all rows",
                     value=False,
                 )
-
-            st.sidebar.divider()
 
         CHOICE_CHARTS_TYPE_FY_FP = st.sidebar.checkbox(
             help="Fatalities per year by FAR Operations Parts (after filtering the data).",
@@ -3733,6 +3766,7 @@ def _setup_task_controls() -> None:
                 label=f"{EVENT_TYPE_DESC}s per Year by Nearest Airport",
                 value=False,
             )
+            # pylint: enable=line-too-long
             if CHOICE_CHARTS_TYPE_EY_NA:
                 col1, col2 = st.sidebar.columns(2)
                 with col1:
@@ -3758,6 +3792,7 @@ def _setup_task_controls() -> None:
                     st.error(
                         "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
                     )
+                    # pylint: enable=line-too-long
                     st.stop()
 
             CHOICE_CHARTS_TYPE_EY_PF = st.sidebar.checkbox(
@@ -3805,7 +3840,7 @@ def _setup_task_controls() -> None:
                 value=1.5,
             )
 
-    st.sidebar.divider()
+        st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Data Graph - Totals.
@@ -3859,8 +3894,6 @@ def _setup_task_controls() -> None:
                     label="Sum all columns",
                     value=True,
                 )
-
-        st.sidebar.divider()
 
         CHOICE_CHARTS_TYPE_TF_FP = st.sidebar.checkbox(
             help="Total fatalities by FAR operations parts (after filtering the data).",
@@ -3954,6 +3987,7 @@ def _setup_task_controls() -> None:
                     st.error(
                         "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
                     )
+                    # pylint: enable=line-too-long
                     st.stop()
 
             CHOICE_CHARTS_TYPE_TE_PF = st.sidebar.checkbox(
@@ -4001,7 +4035,7 @@ def _setup_task_controls() -> None:
                 value=1.5,
             )
 
-    st.sidebar.divider()
+        st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Data Graph - Distances.
@@ -4028,24 +4062,6 @@ def _setup_task_controls() -> None:
 
         st.sidebar.divider()
 
-        # pylint: disable=line-too-long
-        CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
-            help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
-            label="Distance to the Nearest Airport",
-            value=False,
-        )
-        if CHOICE_CHARTS_TYPE_D_NA:
-            CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
-                help="Maximum distance in miles",
-                key="CHOICE_CHARTS_TYPE_D_NA_MAX",
-                label="Maximum distance in miles",
-                max_value=5000.0,
-                step=5.0,
-                value=100.0,
-            )
-
-    st.sidebar.divider()
-
     # --------------------------------------------------------------
     # Show Data Profile.
     # --------------------------------------------------------------
@@ -4068,7 +4084,7 @@ def _setup_task_controls() -> None:
             ),
         )
 
-    st.sidebar.divider()
+        st.sidebar.divider()
 
     # --------------------------------------------------------------
     # Show Detailed Data.
@@ -4079,7 +4095,8 @@ def _setup_task_controls() -> None:
         value=False,
     )
 
-    st.sidebar.divider()
+
+# pylint: enable=too-many-statements
 
 
 # ------------------------------------------------------------------
@@ -4150,6 +4167,7 @@ def _sql_query_ev_highest_injury() -> list[str]:
           FROM io_app_ae1982;
 """
         )
+        # pylint: enable=line-too-long
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4173,6 +4191,7 @@ def _sql_query_ev_type() -> list[str]:
           FROM io_app_ae1982;
 """
         )
+        # pylint: enable=line-too-long
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4228,6 +4247,8 @@ def _sql_query_finding_codes() -> list[str]:
                    AND finding_code IS NOT NULL) f
 """
         )  # noqa: E501
+        # pylint: enable=line-too-long
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -4355,6 +4376,8 @@ def _sql_query_occurrence_codes() -> list[str]:
                 AND occurrence_code IS NOT NULL) o
 """
         )  # noqa: E501
+        # pylint: enable=line-too-long
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -4430,6 +4453,8 @@ def _sql_query_us_states() -> list[str]:
          WHERE country  = 'USA';
 """
         )
+        # pylint: enable=line-too-long
+
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
 
@@ -4437,12 +4462,14 @@ def _sql_query_us_states() -> list[str]:
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
-    global DF_FILTERED  # pylint: disable=global-statement
-    global DF_UNFILTERED  # pylint: disable=global-statement
-    global EVENT_TYPE_DESC  # pylint: disable=global-statement
-    global HOST_CLOUD  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
-    global START_TIME  # pylint: disable=global-statement
+    # pylint: disable=global-statement
+    global DF_FILTERED
+    global DF_UNFILTERED
+    global EVENT_TYPE_DESC
+    global HOST_CLOUD
+    global PG_CONN
+    global START_TIME
+    # pylint: enable=global-statement
 
     # Start time measurement.
     START_TIME = time.time_ns()
@@ -4462,6 +4489,7 @@ def _streamlit_flow() -> None:
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
+    # pylint: enable=line-too-long
 
     col1, col2 = st.sidebar.columns(2)
     # pylint: disable=line-too-long
@@ -4469,6 +4497,8 @@ def _streamlit_flow() -> None:
         "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
         width=150,
     )
+    # pylint: enable=line-too-long
+
     col2.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
 
     PG_CONN = utils.get_postgres_connection()
@@ -4494,11 +4524,13 @@ def _streamlit_flow() -> None:
     _print_timestamp("_present_data()")
 
     # Stop time measurement.
+    # pylint: disable=line-too-long
     print(
         str(datetime.datetime.now())
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )
+    # pylint: enable=line-too-long
 
 
 # -----------------------------------------------------------------------------

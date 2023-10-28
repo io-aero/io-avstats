@@ -13,6 +13,15 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Set up a PostgreSQL Docker container."
 echo "--------------------------------------------------------------------------------"
+# export IO_AERO_POSTGRES_CONNECTION_PORT=5432
+# export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
+# export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
+# export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
+# export IO_AERO_POSTGRES_USER_ADMIN=postgres
+# export IO_AERO_POSTGRES_VERSION=16.0
+# echo "--------------------------------------------------------------------------------"
+# export IO_AERO_POSTGRES_PGDATA=data/postgres
+# echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_DBNAME_ADMIN    : ${IO_AERO_POSTGRES_DBNAME_ADMIN}"

@@ -154,15 +154,25 @@ echo.
 echo Script %0 is now running
 echo.
 
+rem ----------------------------------------------------------------------------
+rem Run a Streamlit application.
+rem ----------------------------------------------------------------------------
+
+if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
+    pipenv run streamlit run ioavstats\Menu.py --server.port 8501
+    if ERRORLEVEL 1 (
+        echo Processing of the script run_io_avstats was aborted
+        exit 1
+    )
+
+    goto END_OF_SCRIPT
+)
+
 if exist logging_io_aero.log (
     del /f /q logging_io_aero.log
 )
 
-if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%_%IO_AERO_APPLICATION%.log
-) else (
-    set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%.log
-)
+set IO_AERO_AVSTATS_LOG=run_io_avstats_db_%IO_AERO_TASK%.log
 
 echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.
@@ -415,20 +425,6 @@ if exist %IO_AERO_AVSTATS_LOG% (
     rem ----------------------------------------------------------------------------
     if ["%IO_AERO_TASK%"] EQU ["r_d_s"] (
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats was aborted
-            exit 1
-        )
-
-        goto END_OF_SCRIPT
-    )
-
-    rem ----------------------------------------------------------------------------
-    rem Run a Streamlit application.
-    rem ----------------------------------------------------------------------------
-
-    if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-        pipenv run streamlit run ioavstats\Menu.py --server.port 8501
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats was aborted
             exit 1

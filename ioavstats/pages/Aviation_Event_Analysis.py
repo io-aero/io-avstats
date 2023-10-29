@@ -54,8 +54,6 @@ CHOICE_CHARTS_LEGEND_SFP_OTHER = "Other FAR Operations Parts"
 CHOICE_CHARTS_LEGEND_T_ACC = "Accident"
 CHOICE_CHARTS_LEGEND_T_INC = "Incident"
 
-CHOICE_CHARTS_TYPE_D_NA: bool | None = None
-CHOICE_CHARTS_TYPE_D_NA_MAX: float | None = None
 CHOICE_CHARTS_TYPE_D_NA_NO: int | None = None
 CHOICE_CHARTS_TYPE_EY_AOC: bool | None = None
 CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD: float | None = None
@@ -216,6 +214,9 @@ FILTER_ACFT_CATEGORIES: list[str] = []
 FILTER_CICTT_CODES: list[str] = []
 FILTER_DEFINING_PHASES: list[str] = []
 FILTER_DESCRIPTION_MAIN_PHASES: list[str] = []
+FILTER_DISTANCE_NEAREST_AIRPORT: bool | None = None
+FILTER_DISTANCE_NEAREST_AIRPORT_FROM: float | None = None
+FILTER_DISTANCE_NEAREST_AIRPORT_TO: float | None = None
 FILTER_EV_HIGHEST_INJURY: list[str] = []
 FILTER_EV_HIGHEST_INJURY_DEFAULT: list[str] = ["fatal"]
 FILTER_EV_TYPE: list[str] = []
@@ -315,7 +316,7 @@ SETTINGS = Dynaconf(
 )
 START_TIME: int = 0
 
-TERMINAL_AREA_DISTANCE_MILES: float = io_config.settings.terminal_area_distance_miles
+TERMINAL_AREA_DISTANCE_NMI = float(io_config.settings.terminal_area_distance_nmi)
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and
@@ -484,11 +485,21 @@ def _apply_filter(
         )
 
     # noinspection PyUnboundLocalVariable
-    if CHOICE_CHARTS_TYPE_D_NA:
-        if CHOICE_CHARTS_TYPE_D_NA_MAX:
+    if FILTER_DISTANCE_NEAREST_AIRPORT:
+        if FILTER_DISTANCE_NEAREST_AIRPORT_FROM or FILTER_DISTANCE_NEAREST_AIRPORT_TO:
             df_filtered = df_filtered.loc[
-                df_filtered["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
+                (
+                    df_filtered["nearest_airport_distance"]
+                    >= FILTER_DISTANCE_NEAREST_AIRPORT_FROM
+                )
+                & (
+                    df_filtered["nearest_airport_distance"]
+                    <= FILTER_DISTANCE_NEAREST_AIRPORT_TO
+                )
             ]
+            _print_timestamp(
+                f"_apply_filter() - {len(df_filtered):>6} - FILTER_DISTANCE_NEAREST_AIRPORT_FROM/TO"
+            )
 
     # noinspection PyUnboundLocalVariable
     if FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO:
@@ -497,7 +508,7 @@ def _apply_filter(
             & (df_filtered["no_aircraft"] <= FILTER_NO_AIRCRAFT_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - filter_no_aircraft_from/to"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_NO_AIRCRAFT_FROM/TO"
         )
 
     # noinspection PyUnboundLocalVariable
@@ -997,7 +1008,7 @@ def _get_user_guide_distances_chart_footer(
 ##### Usage tips
 
 - The left side displays the data points underlying the chart.
-- If you hover your mouse over the dots in the left, the exact distance in miles will be shown.
+- If you hover your mouse over the dots in the left, the exact distance in nautical miles will be shown.
 - If you hover your mouse over the figure in the right, statistical key figures will be shown.
 - **View fullscreen** (double arrow): shows the distances chart in fullscreen mode.
 """
@@ -1088,14 +1099,15 @@ def _prep_data_chart_d_na(
 
     df_chart_data = _apply_filter(df_filtered)
 
-    if CHOICE_CHARTS_TYPE_D_NA_MAX:
+    if FILTER_DISTANCE_NEAREST_AIRPORT_TO:
         df_chart_data = df_chart_data[
-            df_chart_data["nearest_airport_distance"] <= CHOICE_CHARTS_TYPE_D_NA_MAX
+            df_chart_data["nearest_airport_distance"]
+            <= FILTER_DISTANCE_NEAREST_AIRPORT_TO
         ]
 
     df_chart_data = df_chart_data.nearest_airport_distance.dropna()  # type: ignore
 
-    (CHOICE_CHARTS_TYPE_D_NA_NO, _) = df_chart_data.shape
+    (CHOICE_CHARTS_TYPE_D_NA_NO,) = df_chart_data.shape  # type: ignore
 
     return _prep_distance_chart(
         df_chart_data,
@@ -1231,9 +1243,9 @@ def _prep_data_chart_ey_na(
         inplace=True,
     )
 
-    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:.2f} miles"
-    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} miles"
-    interval_3 = f"Above {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} miles"
+    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:.2f} nmi"
+    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} nmi"
+    interval_3 = f"Above {CHOICE_CHARTS_TYPE_EY_NA_I_2_OG:.2f} nmi"
 
     names = [
         (interval_1, interval_1),
@@ -1591,9 +1603,9 @@ def _prep_data_chart_te_na(
 ) -> tuple[list[str], list[int], dict[str, str], DataFrame]:
     df_filtered = _apply_filter_incompatible(df_filtered)
 
-    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:.2f} miles"
-    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} miles"
-    interval_3 = f"Above {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} miles"
+    interval_1 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:.2f} nmi"
+    interval_2 = f"Up to {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} nmi"
+    interval_3 = f"Above {CHOICE_CHARTS_TYPE_TE_NA_I_2_OG:.2f} nmi"
 
     total_interval_1 = 0
     total_interval_2 = 0
@@ -2727,7 +2739,7 @@ def _present_distance_chart(
             y="nearest_airport_distance",
         )
         fig.update_layout(
-            yaxis_title="Distance (mi)",
+            yaxis_title="Distance (nmi)",
         )
         st.plotly_chart(
             fig,
@@ -2742,7 +2754,7 @@ def _present_distance_chart(
             y="nearest_airport_distance",
         )
         fig.update_layout(
-            yaxis_title="Distance (mi)",
+            yaxis_title="Distance (nmi)",
         )
         st.plotly_chart(
             fig,
@@ -2757,7 +2769,7 @@ def _present_distance_charts() -> None:
     # Distance to the nearest airport
     _present_distance_chart(
         "d_na",
-        "Distance to the Nearest Airport ({no_rows} {event_type})",
+        "Distance to the Nearest US Airport ({no_rows} {event_type})",
         _prep_data_chart_d_na(DF_FILTERED),
     )
 
@@ -3070,13 +3082,14 @@ def _print_timestamp(identifier: str) -> None:
 def _setup_filter() -> None:
     # pylint: disable=global-statement
     global CHOICE_ACTIVE_FILTERS_TEXT
-    global CHOICE_CHARTS_TYPE_D_NA
-    global CHOICE_CHARTS_TYPE_D_NA_MAX
     global CHOICE_FILTER_DATA
     global FILTER_ACFT_CATEGORIES
     global FILTER_CICTT_CODES
     global FILTER_DEFINING_PHASES
     global FILTER_DESCRIPTION_MAIN_PHASES
+    global FILTER_DISTANCE_NEAREST_AIRPORT
+    global FILTER_DISTANCE_NEAREST_AIRPORT_FROM
+    global FILTER_DISTANCE_NEAREST_AIRPORT_TO
     global FILTER_EV_HIGHEST_INJURY
     global FILTER_EV_TYPE
     global FILTER_EV_YEAR_FROM
@@ -3132,9 +3145,7 @@ def _setup_filter() -> None:
 
     if CHOICE_EXTENDED_VERSION:
         max_no_aircraft = _sql_query_max_no_aircraft()
-
         min_no_aircraft = _sql_query_min_no_aircraft()
-
         FILTER_NO_AIRCRAFT_FROM, FILTER_NO_AIRCRAFT_TO = st.sidebar.slider(
             help="""
             Number of aircraft involved.
@@ -3172,6 +3183,51 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **CICTT code(s)**: **`{','.join(FILTER_CICTT_CODES)}`**"
             )
+
+    # pylint: disable=line-too-long
+    FILTER_DISTANCE_NEAREST_AIRPORT = st.sidebar.checkbox(
+        help="Distance in nautical miles from the place of the event to the nearest US airport (after filtering the data).",
+        label="**Distance to the nearest US airport**",
+        value=False,
+    )
+    # pylint: enable=line-too-long
+
+    if FILTER_DISTANCE_NEAREST_AIRPORT:
+        max_distance = 2800.0
+        FILTER_DISTANCE_NEAREST_AIRPORT_FROM = st.sidebar.number_input(
+            help="Minimum distance to the nearest US airport in nautical miles (nmi)",
+            key="FILTER_DISTANCE_NEAREST_AIRPORT_FROM",
+            label="**Minimum (nmi)**",
+            max_value=max_distance,
+            min_value=0.0,
+            step=0.25,
+            value=0.0,
+        )
+        FILTER_DISTANCE_NEAREST_AIRPORT_TO = st.sidebar.number_input(
+            help="Maximum distance to the nearest US airport in nautical miles (nmi)",
+            key="FILTER_DISTANCE_NEAREST_AIRPORT_TO",
+            label="**Maximum (nmi)**",
+            max_value=max_distance,
+            min_value=0.0,
+            step=0.25,
+            value=TERMINAL_AREA_DISTANCE_NMI,
+        )
+
+    if FILTER_DISTANCE_NEAREST_AIRPORT_FROM and FILTER_DISTANCE_NEAREST_AIRPORT_TO:
+        if FILTER_DISTANCE_NEAREST_AIRPORT_TO < FILTER_DISTANCE_NEAREST_AIRPORT_FROM:
+            # pylint: disable=line-too-long
+            st.error(
+                "##### Error: Distance to the nearest US airport: Minimum must not be greater than the maximum."
+            )
+            # pylint: enable=line-too-long
+            st.stop()
+        else:
+            # pylint: disable=line-too-long
+            CHOICE_ACTIVE_FILTERS_TEXT = (
+                CHOICE_ACTIVE_FILTERS_TEXT
+                + f"\n- **Distance to the nearest US airport (nmi)**: between **`{FILTER_DISTANCE_NEAREST_AIRPORT_FROM}`** and **`{FILTER_DISTANCE_NEAREST_AIRPORT_TO}`**"
+            )
+            # pylint: enable=line-too-long
 
     FILTER_EV_TYPE = st.sidebar.multiselect(
         default=FILTER_EV_TYPE_DEFAULT,
@@ -3330,33 +3386,6 @@ def _setup_filter() -> None:
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Main Phases of flight**: **`{','.join(FILTER_DESCRIPTION_MAIN_PHASES)}`**"
             )
-
-    # pylint: disable=line-too-long
-    CHOICE_CHARTS_TYPE_D_NA = st.sidebar.checkbox(
-        help="Distance in miles from the place of the event to the nearest airport (after filtering the data).",
-        label="Distance to the Nearest Airport",
-        value=False,
-    )
-    # pylint: enable=line-too-long
-
-    if CHOICE_CHARTS_TYPE_D_NA:
-        CHOICE_CHARTS_TYPE_D_NA_MAX = st.sidebar.number_input(
-            format="%.4f",
-            help="Maximum distance to the nearest airport in miles",
-            key="CHOICE_CHARTS_TYPE_D_NA_MAX",
-            label="**Maximum distance to the nearest airport in miles**",
-            max_value=5000.0,
-            step=0.25,
-            value=TERMINAL_AREA_DISTANCE_MILES,
-        )
-
-    # pylint: disable=line-too-long
-    if CHOICE_CHARTS_TYPE_D_NA_MAX:
-        CHOICE_ACTIVE_FILTERS_TEXT = (
-            CHOICE_ACTIVE_FILTERS_TEXT
-            + f"\n- **Distance to the nearest airport in miles**: **`{CHOICE_CHARTS_TYPE_D_NA_MAX}`**"
-        )
-    # pylint: enable=line-too-long
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_OCCURRENCE_CODES = st.sidebar.multiselect(

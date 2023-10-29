@@ -40,7 +40,7 @@ razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2022.11.01_avall.sql"
-terminal_area_distance_miles = 5.7539
+terminal_area_distance_nmi = 5
 
 [test]
 check_value = "test"

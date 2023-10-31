@@ -4,7 +4,7 @@ The following are the minimum requirements to run the application:
 
 ### Basic requirements
 
-- Operating System **`Windows 10`** or **`Windows 11`** - except for the tasks that require ODBC, the operating system **`Ubuntu LTS 22.04`** can also be used
+- Operating System **`Windows 10`** or **`Windows 11`** - except for the tasks that require ODBC, the operating systems **`macOS`** or **`Ubuntu LTS 22.04`** can also be used
 - [Command Line Interface - AWS CLI](https://aws.amazon.com/cli/){:target="_blank"}
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"} 
 - [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads){:target="_blank"} - only "Command Line Tools"

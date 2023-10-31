@@ -35,7 +35,7 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | ioavstats         | Python script files.                                       |
 | libs              | Third party libraries.                                     |
 | resources         | Selected manuals and software.                             |
-| scripts           | Supporting Ubuntu and Windows Scripts.                     |
+| scripts           | Supporting macOS, Ubuntu and Windows Scripts.              |
 | site              | Documentation as static HTML pages.                        |
 | tests             | Scripts and data for **pytest**.                           |
 | upload            | Cloud related upload directory.                            |

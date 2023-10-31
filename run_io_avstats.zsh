@@ -40,30 +40,30 @@ export IO_AERO_TASK_DEFAULT=r_s_a
 export PYTHONPATH=.
 
 if [[ -z "$1" ]]; then
-    echo "========================================================="
-    echo "r_s_a   - Run the IO-AVSTATS application"
-    echo "---------------------------------------------------------"
-    echo "c_l_l   - Correct decimal US latitudes and longitudes"
-    echo "v_n_d   - Verify selected NTSB data"
-    echo "r_d_s   - Refresh the PostgreSQL database schema"
-    echo "---------------------------------------------------------"
-    echo "l_s_d   - Load simplemaps data into PostgreSQL"
-    echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
-    echo "l_c_d   - Load data from a correction file into PostgreSQL"
-    echo "---------------------------------------------------------"
-    echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
-    echo "c_d_s   - Create the IO-AVSTATS-DB PostgreSQL database schema"
-    echo "c_p_d   - Cleansing PostgreSQL data"
-    echo "f_n_a   - Find the nearest airports"
-    echo "l_a_p   - Load airport data into PostgreSQL"
-    echo "l_c_s   - Load country and state data into PostgreSQL"
-    echo "l_s_e   - Load sequence of events data into PostgreSQL"
-    echo "s_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
-    echo "u_d_s   - Update the IO-AVSTATS-DB PostgreSQL database schema"
-    echo "---------------------------------------------------------"
-    echo "c_d_i   - Create or update a Docker image"
-    echo "c_d_c   - Run Docker Compose tasks - Cloud"
-    echo "---------------------------------------------------------"
+    print "\n========================================================="
+    print "\nr_s_a   - Run the IO-AVSTATS application"
+    print "\n---------------------------------------------------------"
+    print "\nc_l_l   - Correct decimal US latitudes and longitudes"
+    print "\nv_n_d   - Verify selected NTSB data"
+    print "\nr_d_s   - Refresh the PostgreSQL database schema"
+    print "\n---------------------------------------------------------"
+    print "\nl_s_d   - Load simplemaps data into PostgreSQL"
+    print "\nl_z_d   - Load ZIP Code Database data into PostgreSQL"
+    print "\nl_c_d   - Load data from a correction file into PostgreSQL"
+    print "\n---------------------------------------------------------"
+    print "\na_o_c   - Load aviation occurrence categories into PostgreSQL"
+    print "\nc_d_s   - Create the IO-AVSTATS-DB PostgreSQL database schema"
+    print "\nc_p_d   - Cleansing PostgreSQL data"
+    print "\nf_n_a   - Find the nearest airports"
+    print "\nl_a_p   - Load airport data into PostgreSQL"
+    print "\nl_c_s   - Load country and state data into PostgreSQL"
+    print "\nl_s_e   - Load sequence of events data into PostgreSQL"
+    print "\ns_d_c   - Set up the IO-AVSTATS-DB PostgreSQL database container"
+    print "\nu_d_s   - Update the IO-AVSTATS-DB PostgreSQL database schema"
+    print "\n---------------------------------------------------------"
+    print "\nc_d_i   - Create or update a Docker image"
+    print "\nc_d_c   - Run Docker Compose tasks - Cloud"
+    print "\n---------------------------------------------------------"
     read "IO_AERO_TASK?Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] "
     export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
@@ -72,12 +72,12 @@ fi
 
 if [[ "${IO_AERO_TASK}" = "c_d_c" ]]; then
     if [[ -z "$2" ]]; then
-        echo "========================================================="
-        echo "clean - Remove all containers and images"
-        echo "down  - Stop  Docker Compose"
-        echo "logs  - Fetch the logs of a container"
-        echo "up    - Start Docker Compose"
-        echo "---------------------------------------------------------"
+        print "\n========================================================="
+        print "\nclean - Remove all containers and images"
+        print "\ndown  - Stop  Docker Compose"
+        print "\nlogs  - Fetch the logs of a container"
+        print "\nup    - Start Docker Compose"
+        print "\n---------------------------------------------------------"
         read "IO_AERO_COMPOSE_TASK?Enter the desired Docker Compose task [default: ${IO_AERO_COMPOSE_TASK_DEFAULT}] "
         export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK:-${IO_AERO_COMPOSE_TASK_DEFAULT}}
     else
@@ -87,13 +87,13 @@ fi
 
 if [[ "${IO_AERO_TASK}" = "c_d_i" ]]; then
     if [[ -z "$2" ]]; then
-        echo "========================================================="
-        echo "all    - All Streamlit applications"
-        echo "---------------------------------------------------------"
-        echo "ae1982  - Aircraft Accidents in the US since 1982"
-        echo "pd1982  - Profiling Data for the US since 1982"
-        echo "slara   - Association Rule Analysis"
-        echo "---------------------------------------------------------"
+        print "\n========================================================="
+        print "\nall    - All Streamlit applications"
+        print "\n---------------------------------------------------------"
+        print "\nae1982  - Aircraft Accidents in the US since 1982"
+        print "\npd1982  - Profiling Data for the US since 1982"
+        print "\nslara   - Association Rule Analysis"
+        print "\n---------------------------------------------------------"
         read "IO_AERO_APPLICATION?Enter the Streamlit application name "
         export IO_AERO_APPLICATION=${IO_AERO_APPLICATION}
     else
@@ -103,9 +103,9 @@ fi
 
 if [[ "${IO_AERO_TASK}" = "l_c_d" ]]; then
     if [[ -z "$2" ]]; then
-        echo "========================================================="
+        print "\n========================================================="
         ls -ll ${IO_AERO_CORRECTION_WORK_DIR}/*.xlsx
-        echo "---------------------------------------------------------"
+        print "\n---------------------------------------------------------"
         read "IO_AERO_MSEXCEL?Enter the stem name of the desired correction file "
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
@@ -115,21 +115,21 @@ fi
 
 rm -f logging_io_aero.log
 
-echo "================================================================================"
-echo "Start $0"
-echo "--------------------------------------------------------------------------------"
-echo "IO-AVSTATS - Aviation Event Statistics."
-echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH   : ${PYTHONPATH}"
-echo "--------------------------------------------------------------------------------"
-echo "TASK         : ${IO_AERO_TASK}"
-echo "APPLICATION  : ${IO_AERO_APPLICATION}"
-echo "COMPOSE_TASK : ${IO_AERO_COMPOSE_TASK}"
-echo "MSACCESS     : ${IO_AERO_MSACCESS}"
-echo "MSEXCEL      : ${IO_AERO_MSEXCEL}"
-echo "--------------------------------------------------------------------------------"
+print "\n================================================================================"
+print "\nStart $0"
+print "\n--------------------------------------------------------------------------------"
+print "\nIO-AVSTATS - Aviation Event Statistics."
+print "\n--------------------------------------------------------------------------------"
+print "\nPYTHONPATH   : ${PYTHONPATH}"
+print "\n--------------------------------------------------------------------------------"
+print "\nTASK         : ${IO_AERO_TASK}"
+print "\nAPPLICATION  : ${IO_AERO_APPLICATION}"
+print "\nCOMPOSE_TASK : ${IO_AERO_COMPOSE_TASK}"
+print "\nMSACCESS     : ${IO_AERO_MSACCESS}"
+print "\nMSEXCEL      : ${IO_AERO_MSEXCEL}"
+print "\n--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "================================================================================"
+print "\n================================================================================"
 
 # ------------------------------------------------------------------------------
 # a_o_c: Load aviation occurrence categories into PostgreSQL.
@@ -196,13 +196,13 @@ case "${IO_AERO_TASK}" in
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
     *)
-        echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
+        print "\nProcessing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
         exit 255
         ;;
 esac
 
-echo "--------------------------------------------------------------------------------"
+print "\n--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "--------------------------------------------------------------------------------"
-echo "End   $0"
-echo "================================================================================"
+print "\n--------------------------------------------------------------------------------"
+print "\nEnd   $0"
+print "\n================================================================================"

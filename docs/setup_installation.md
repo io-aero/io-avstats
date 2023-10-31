@@ -3,6 +3,13 @@
 1. Install the software components specified in the requirements.
 
 
+    In an macOS environment, the following scripts from the `scripts` 
+    directory can be used for this purpose (requires step 3):
+
+    - run_install_4_macOS_1.sh
+    - run_install_4_macOS_2.sh
+
+
     In an Ubuntu environment, the following scripts from the `scripts` 
     directory can be used for this purpose (requires step 3):
 

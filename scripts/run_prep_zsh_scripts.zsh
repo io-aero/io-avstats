@@ -19,8 +19,9 @@ echo "==========================================================================
 chmod +x ./*.zsh
 chmod +x ./*/*.zsh
 
-sed -i 's/\r$//' ./*.zsh
-sed -i 's/\r$//' ./*/*.zsh
+# Notice the '' after the -i option, which is required on macOS
+sed -i '' 's/\r$//' ./*.zsh
+sed -i '' 's/\r$//' ./*/*.zsh
 
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

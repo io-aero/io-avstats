@@ -38,14 +38,14 @@ print "-------------------------------------------------------------------------
 print "\nCurrent version of asdf is: $(asdf --version)\n"
 print "=============================================================================="
 
-sudo rm -rf ${HOME}/.asdf/downloads/python
-sudo rm -rf ${HOME}/.asdf/downloads/tmux
+rm -rf ${HOME}/.asdf/downloads/python
+rm -rf ${HOME}/.asdf/downloads/tmux
 
-sudo rm -rf ${HOME}/.asdf/installs/python
-sudo rm -rf ${HOME}/.asdf/installs/tmux
+rm -rf ${HOME}/.asdf/installs/python
+rm -rf ${HOME}/.asdf/installs/tmux
 
-sudo rm -rf ${HOME}/.asdf/plugins/python
-sudo rm -rf ${HOME}/.asdf/plugins/tmux
+rm -rf ${HOME}/.asdf/plugins/python
+rm -rf ${HOME}/.asdf/plugins/tmux
 
 print "------------------------------------------------------------------------------"
 print "Step: Install Python3 - Version ${VERSION_PYTHON3}"
@@ -53,10 +53,6 @@ print "-------------------------------------------------------------------------
 asdf plugin add python
 asdf install python ${VERSION_PYTHON3}
 asdf global python ${VERSION_PYTHON3}
-print "------------------------------------------------------------------------------"
-print "Step: Install pip"
-print "------------------------------------------------------------------------------"
-sudo apt-get install -qy python3-pip
 print "\n=============================================================================> Version  Python3:"
 print "\nCurrent version of Python3: $(python3 --version)"
 print "\nCurrent version of pip:     $(pip --version)\n"
@@ -65,8 +61,7 @@ print "=========================================================================
 print "------------------------------------------------------------------------------"
 print "Step: Cleanup"
 print "------------------------------------------------------------------------------"
-sudo apt-get -qy autoremove
-sudo rm -rf /tmp/*
+brew autoremove
 
 print "\n=============================================================================> Current Date: \n"
 date
@@ -84,7 +79,7 @@ print "=========================================================================
 pwd
 cd "${PWD_PREVIOUS}"
 pwd
-( ./run_version_check.sh )
+( ./run_version_check.zsh )
 print "\n------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 print "------------------------------------------------------------------------------"

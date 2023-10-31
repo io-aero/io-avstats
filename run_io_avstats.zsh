@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_io_avstats.sh: Process IO-AVSTATS tasks.
+# run_io_avstats.zsh: Process IO-AVSTATS tasks.
 #
 # ------------------------------------------------------------------------------
 
-if [ -z "${ENV_FOR_DYNACONF}" ]; then
+if [[ -z "${ENV_FOR_DYNACONF}" ]]; then
     export ENV_FOR_DYNACONF=prod
 fi
 
@@ -16,7 +16,7 @@ export IO_AERO_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AERO_CORRECTION_WORK_DIR=data/correction
 export IO_AERO_NTSB_WORK_DIR=data/download
 
-if [ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]; then
+if [[ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]]; then
     export IO_AERO_POSTGRES_CONNECTION_PORT=5432
 fi
 
@@ -39,7 +39,7 @@ export IO_AERO_TASK_DEFAULT=r_s_a
 
 export PYTHONPATH=.
 
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
     echo "========================================================="
     echo "r_s_a   - Run the IO-AVSTATS application"
     echo "---------------------------------------------------------"
@@ -64,39 +64,29 @@ if [ -z "$1" ]; then
     echo "c_d_i   - Create or update a Docker image"
     echo "c_d_c   - Run Docker Compose tasks - Cloud"
     echo "---------------------------------------------------------"
-    # shellcheck disable=SC2162
-    read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
-    export IO_AERO_TASK=${IO_AERO_TASK}
-
-    if [ -z "${IO_AERO_TASK}" ]; then
-        export IO_AERO_TASK=${IO_AERO_TASK_DEFAULT}
-    fi
+    read "IO_AERO_TASK?Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] "
+    export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
     export IO_AERO_TASK=$1
 fi
 
-if [ "${IO_AERO_TASK}" = "c_d_c" ]; then
-    if [ -z "$2" ]; then
+if [[ "${IO_AERO_TASK}" = "c_d_c" ]]; then
+    if [[ -z "$2" ]]; then
         echo "========================================================="
         echo "clean - Remove all containers and images"
         echo "down  - Stop  Docker Compose"
         echo "logs  - Fetch the logs of a container"
         echo "up    - Start Docker Compose"
         echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the desired Docker Compose task [default: ${IO_AERO_COMPOSE_TASK_DEFAULT}] " IO_AERO_COMPOSE_TASK
-        export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK}
-
-        if [ -z "${IO_AERO_COMPOSE_TASK}" ]; then
-            export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK_DEFAULT}
-        fi
+        read "IO_AERO_COMPOSE_TASK?Enter the desired Docker Compose task [default: ${IO_AERO_COMPOSE_TASK_DEFAULT}] "
+        export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK:-${IO_AERO_COMPOSE_TASK_DEFAULT}}
     else
         export IO_AERO_COMPOSE_TASK=$2
     fi
 fi
 
-if [ "${IO_AERO_TASK}" = "c_d_i" ]; then
-    if [ -z "$2" ]; then
+if [[ "${IO_AERO_TASK}" = "c_d_i" ]]; then
+    if [[ -z "$2" ]]; then
         echo "========================================================="
         echo "all    - All Streamlit applications"
         echo "---------------------------------------------------------"
@@ -104,21 +94,19 @@ if [ "${IO_AERO_TASK}" = "c_d_i" ]; then
         echo "pd1982  - Profiling Data for the US since 1982"
         echo "slara   - Association Rule Analysis"
         echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the Streamlit application name " IO_AERO_APPLICATION
+        read "IO_AERO_APPLICATION?Enter the Streamlit application name "
         export IO_AERO_APPLICATION=${IO_AERO_APPLICATION}
     else
         export IO_AERO_APPLICATION=$2
     fi
 fi
 
-if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
-    if [ -z "$2" ]; then
+if [[ "${IO_AERO_TASK}" = "l_c_d" ]]; then
+    if [[ -z "$2" ]]; then
         echo "========================================================="
         ls -ll ${IO_AERO_CORRECTION_WORK_DIR}/*.xlsx
         echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired correction file " IO_AERO_MSEXCEL
+        read "IO_AERO_MSEXCEL?Enter the stem name of the desired correction file "
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
         export IO_AERO_MSEXCEL=$2
@@ -158,58 +146,60 @@ echo "==========================================================================
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d") ]]; then
-    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
-        exit 255
-    fi
-
+case "${IO_AERO_TASK}" in
+    "a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d")
+        if ! pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}"; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Run Docker Compose tasks (Cloud).
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "c_d_c" ]; then
-    if ! ( ./scripts/run_docker_compose_cloud.sh "${IO_AERO_COMPOSE_TASK}" ); then
-        exit 255
-    fi
-
+    "c_d_c")
+        if ! ./scripts/run_docker_compose_cloud.zsh "${IO_AERO_COMPOSE_TASK}"; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Create or update a Docker image.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "c_d_i" ]; then
-    if ! ( ./scripts/run_create_image.sh "${IO_AERO_APPLICATION}" yes yes ); then
-        exit 255
-    fi
-
+    "c_d_i")
+        if ! ./scripts/run_create_image.zsh "${IO_AERO_APPLICATION}" yes yes; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -e "${IO_AERO_MSEXCEL}".xlsx ); then
-        exit 255
-    fi
-
+    "l_c_d")
+        if ! pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -e "${IO_AERO_MSEXCEL}".xlsx; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Run a Streamlit application.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
-    if ! ( pipenv run streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
-        exit 255
-    fi
-
+    "r_s_a")
+        if ! pipenv run streamlit run "ioavstats/Menu.py" --server.port 8501; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
-        exit 255
-    fi
-
+    "s_d_c")
+        if ! ./scripts/run_setup_postgresql.zsh; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
-else
-    echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
-    exit 255
-fi
+    *)
+        echo "Processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
+        exit 255
+        ;;
+esac
 
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

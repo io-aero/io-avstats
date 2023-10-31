@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_docker_compose_cloud.sh: Manage a multi-container Docker application (Cloud).
+# run_docker_compose_cloud.zsh: Manage a multi-container Docker application (Cloud).
 #
 # ------------------------------------------------------------------------------
 

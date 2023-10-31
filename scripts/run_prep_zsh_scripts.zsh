@@ -1,23 +1,26 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_delete_postgresql_files.sh: Delete the PostgreSQL database files.
+# run_prep_zsh_scripts.zsh: Configure EOL and execution rights.
 #
 # ------------------------------------------------------------------------------
 
 echo "================================================================================"
 echo "Start $0"
 echo "--------------------------------------------------------------------------------"
-echo "IO-AVSTATS - Delete the PostgreSQL database files."
+echo "IO-AVSTATS - Configure EOL and execution rights."
 echo "--------------------------------------------------------------------------------"
-echo "POSTGRES_PGDATA          : ${IO_AERO_POSTGRES_PGDATA}"
-echo "--------------------------------------------------------------------------------"
+date +"DATE TIME : %d.%m.%Y %H:%M:%S"
+echo "================================================================================"
 
-sudo ls -ll "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
-sudo rm -rf "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
+chmod +x ./*.zsh
+chmod +x ./*/*.zsh
+
+sed -i 's/\r$//' ./*.zsh
+sed -i 's/\r$//' ./*/*.zsh
 
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

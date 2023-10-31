@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_delete_postgresql_files.sh: Delete the PostgreSQL database files.
+# run_delete_postgresql_files.zsh: Delete the PostgreSQL database files.
 #
 # ------------------------------------------------------------------------------
 

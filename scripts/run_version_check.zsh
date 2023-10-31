@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_version_check.sh: Check the installed software versions.
+# run_version_check.zsh: Check the installed software versions.
 #
 # ------------------------------------------------------------------------------
 
@@ -64,9 +64,9 @@ echo "Current version of GNU Make: $(make --version)"
 echo " "
 echo "=============================================================================> Version Python3: "
 echo " "
-echo "Current version of Python3: $(python --version)"
+echo "Current version of Python3: $(python3 --version)"
 echo " "
-echo "Current version of pip3: $(pip --version || true)"
+echo "Current version of pip3: $(pip3 --version || true)"
 echo " "
 echo "=============================================================================> Version Rasterio: "
 echo " "

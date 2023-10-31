@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_IO_AERO_pytest.sh: Process IO-AVSTATS tasks.
+# run_IO_AERO_pytest.zsh: Process IO-AVSTATS tasks.
 #
 # ------------------------------------------------------------------------------
 
-if [ -z "${ENV_FOR_DYNACONF}" ]; then
+if [[ -z "${ENV_FOR_DYNACONF}" ]]; then
     export ENV_FOR_DYNACONF=test
 fi
 
@@ -16,7 +16,7 @@ export IO_AERO_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AERO_CORRECTION_WORK_DIR=data/correction
 export IO_AERO_NTSB_WORK_DIR=data/download
 
-if [ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]; then
+if [[ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]]; then
     export IO_AERO_POSTGRES_CONNECTION_PORT=5433
 fi
 
@@ -33,7 +33,7 @@ export IO_AERO_TASK=
 
 export PYTHONPATH=.
 
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
     echo "========================================================="
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
     echo "v_n_d   - Verify selected NTSB data"
@@ -55,24 +55,18 @@ if [ -z "$1" ]; then
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    # shellcheck disable=SC2162
-    read -p "Enter the desired task " IO_AERO_TASK
-    export IO_AERO_TASK=${IO_AERO_TASK}
-
-    if [ -z "${IO_AERO_TASK}" ]; then
-        export IO_AERO_TASK=${IO_AERO_TASK_DEFAULT}
-    fi
+    read "IO_AERO_TASK?Enter the desired task "
+    export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
     export IO_AERO_TASK=$1
 fi
 
-if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
-    if [ -z "$2" ]; then
+if [[ "${IO_AERO_TASK}" = "l_c_d" ]]; then
+    if [[ -z "$2" ]]; then
         echo "========================================================="
         ls -ll ${IO_AERO_CORRECTION_WORK_DIR}/*.xlsx
         echo "---------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired correction file " IO_AERO_MSEXCEL
+        read "IO_AERO_MSEXCEL?Enter the stem name of the desired correction file "
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
         export IO_AERO_MSEXCEL=$2
@@ -110,50 +104,52 @@ echo "==========================================================================
 # u_d_s: Update the PostgreSQL database schema.
 # v_n_d: Verify selected NTSB data.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d") ]]; then
-    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
-        exit 255
-    fi
-
+case "${IO_AERO_TASK}" in
+    "a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d")
+        if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Delete the PostgreSQL database container.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "d_d_c" ]; then
-    if ! ( ./scripts/run_delete_postgresql_container.sh ); then
-        exit 255
-    fi
-
+    "d_d_c")
+        if ! ( ./scripts/run_delete_postgresql_container.zsh ); then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Delete the PostgreSQL database files.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "d_d_f" ]; then
-    if ! ( ./scripts/run_delete_postgresql_files.sh ); then
-        exit 255
-    fi
-
+    "d_d_f")
+        if ! ( ./scripts/run_delete_postgresql_files.zsh ); then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
-    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -e "${IO_AERO_MSEXCEL}".xlsx ); then
-        exit 255
-    fi
-
+    "l_c_d")
+        if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -e "${IO_AERO_MSEXCEL}".xlsx ); then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( .run_setup_postgresql.sh ); then
-        exit 255
-    fi
-
+    "s_d_c")
+        if ! ./scripts/run_setup_postgresql.zsh; then
+            exit 255
+        fi
+        ;;
 # ------------------------------------------------------------------------------
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
-else
-    echo "Processing of the script run_IO_AERO_pytest is aborted: unknown task='${IO_AERO_TASK}'"
-    exit 255
-fi
+    *)
+        echo "Processing of the script run_IO_AERO_pytest is aborted: unknown task='${IO_AERO_TASK}'"
+        exit 255
+        ;;
+esac
 
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

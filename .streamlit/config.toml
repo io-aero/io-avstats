@@ -1,5 +1,4 @@
 [global]
-dataFrameSerialization = "legacy"
 
 [mapbox]
 token = "pk.eyJ1IjoiaW8tYWVybyIsImEiOiJjbGJid2pxMXYwMXR1M3BwOXhkbWE3NWJmIn0.ddV6Y6jzpKpq9o9dNGt9VA"

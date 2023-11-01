@@ -3,18 +3,19 @@
 1. Install the software components specified in the requirements.
 
 
-    In an macOS environment, the following scripts from the `scripts` 
+    In a macOS environment, the following script from the `scripts` 
     directory can be used for this purpose (requires step 3):
 
-    - run_install_4_macOS_1.sh
-    - run_install_4_macOS_2.sh
+    - cd scripts
+    - ./run_install_4_macOS.sh
 
 
     In an Ubuntu environment, the following scripts from the `scripts` 
     directory can be used for this purpose (requires step 3):
 
-    - run_install_4_vm_wsl2_1.sh
-    - run_install_4_vm_wsl2_2.sh
+    - cd scripts
+    - ./run_install_4_vm_wsl2_1.sh
+    - ./run_install_4_vm_wsl2_2.sh
 
 
 2. Configure the AWS CLI:

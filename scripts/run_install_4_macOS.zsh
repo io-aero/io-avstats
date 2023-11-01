@@ -4,7 +4,7 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_install_4_macOS_1.zsh: Install a io-avstats environment for macOS
+# run_install_4_macOS.zsh: Install a io-avstats environment for macOS
 #
 # Step 1.
 #
@@ -16,28 +16,13 @@ export PWD_PREVIOUS="${PWD}"
 cd ${HOME}
 
 # Setting Environment Variables ----------------------------------------------------
-export LOCALE=en_US.UTF-8
-
 PATH_ADD_ON=${HOME}/.local/bin
 PATH_ORIG=${PATH_ORIG:-${PATH}}
-
-export TIMEZONE=America/Chicago
 
 echo '' >> ${HOME}/.zshrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.zshrc
 echo '# Environment io-avstats for macOS - Start' >> ${HOME}/.zshrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.zshrc
-print "\n "
-print "\nScript $0 is now running"
-
-export LOG_FILE=run_install_4_macOS_1.log
-
-print "\n"
-print "\nYou can find the run log in the file ${LOG_FILE}"
-print "\n"
-
-exec &> >(tee -i ${LOG_FILE}) 2>&1
-sleep .1
 
 print "\n=============================================================================="
 print "\nStart $0"
@@ -55,7 +40,6 @@ if ! command -v brew &> /dev/null; then
 fi
 
 brew cleanup
-
 brew update
 brew upgrade
 
@@ -116,10 +100,31 @@ print "\n=======================================================================
 # Initializing the interactive shell session ---------------------------------------
 source ${HOME}/.zshrc
 
+print "\n------------------------------------------------------------------------------"
+print "\nStep: Install Python3 - Version ${VERSION_PYTHON3}"
+print "\n------------------------------------------------------------------------------"
+rm -rf ${HOME}/.asdf/downloads/python
+rm -rf ${HOME}/.asdf/installs/python
+rm -rf ${HOME}/.asdf/plugins/python
+
+asdf plugin add python
+asdf install python ${VERSION_PYTHON3}
+asdf global python ${VERSION_PYTHON3}
+print "\n=============================================================================> Version  Python3:"
+print "\nCurrent version of Python3: $(python3 --version)"
+print "\nCurrent version of pip:     $(pip --version)\n"
+print "\n=============================================================================="
+
+print "\n------------------------------------------------------------------------------"
+print "\nStep: Cleanup"
+print "\n------------------------------------------------------------------------------"
+brew autoremove
 pwd
 cd "${PWD_PREVIOUS}"
 pwd
-print "\n "
+
+( ./run_version_check.zsh )
+
 print "\n------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 print "\n------------------------------------------------------------------------------"

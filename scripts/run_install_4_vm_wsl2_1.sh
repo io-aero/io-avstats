@@ -60,17 +60,6 @@ echo '' >> ${HOME}/.bashrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.bashrc
 echo '# Environment io-avstats for Ubuntu 22.04 - Start' >> ${HOME}/.bashrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.bashrc
-echo " "
-echo "Script $0 is now running"
-
-export LOG_FILE=run_install_4_vm_wsl2_1.log
-
-echo ""
-echo "You can find the run log in the file ${LOG_FILE}"
-echo ""
-
-exec &> >(tee -i ${LOG_FILE}) 2>&1
-sleep .1
 
 echo "=============================================================================="
 echo "Start $0"

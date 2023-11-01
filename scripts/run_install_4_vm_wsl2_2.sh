@@ -13,18 +13,6 @@ set -e
 export PWD_PREVIOUS="${PWD}"
 cd ${HOME}
 
-echo " "
-echo "Script $0 is now running"
-
-export LOG_FILE=run_install_4_vm_wsl2_2.log
-
-echo " "
-echo "You can find the run log in the file ${LOG_FILE}"
-echo " "
-
-exec &> >(tee -i ${LOG_FILE}) 2>&1
-sleep .1
-
 echo "=============================================================================="
 echo "Start $0"
 echo "------------------------------------------------------------------------------"
@@ -42,18 +30,13 @@ echo "Current version of asdf is: $(asdf --version)"
 echo " "
 echo "=============================================================================="
 
-sudo rm -rf ${HOME}/.asdf/downloads/python
-sudo rm -rf ${HOME}/.asdf/downloads/tmux
-
-sudo rm -rf ${HOME}/.asdf/installs/python
-sudo rm -rf ${HOME}/.asdf/installs/tmux
-
-sudo rm -rf ${HOME}/.asdf/plugins/python
-sudo rm -rf ${HOME}/.asdf/plugins/tmux
-
 echo "------------------------------------------------------------------------------"
 echo "Step: Install Python3 - Version ${VERSION_PYTHON3}"
 echo "------------------------------------------------------------------------------"
+sudo rm -rf ${HOME}/.asdf/downloads/python
+sudo rm -rf ${HOME}/.asdf/installs/python
+sudo rm -rf ${HOME}/.asdf/plugins/python
+
 asdf plugin add python
 asdf install python ${VERSION_PYTHON3}
 asdf global python ${VERSION_PYTHON3}

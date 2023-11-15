@@ -18,7 +18,7 @@ echo "--------------------------------------------------------------------------
 # export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 # export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 # export IO_AERO_POSTGRES_USER_ADMIN=postgres
-# export IO_AERO_POSTGRES_VERSION=16.0
+# export IO_AERO_POSTGRES_VERSION=16.1
 # echo "--------------------------------------------------------------------------------"
 # export IO_AERO_POSTGRES_PGDATA=data/postgres
 # echo "--------------------------------------------------------------------------------"

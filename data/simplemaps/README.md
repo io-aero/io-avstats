@@ -18,8 +18,8 @@ The FAA provides the data in a `csv` file which must then be converted to MS Exc
 
 The current versions are dated 
 
-- January 31, 2023 (United States Cities Database),
-- February 13, 2023 (US Zip Codes Database).
+- November 12, 2023 (United States Cities Database),
+- October 30, 2023 (US Zip Codes Database).
 
 ### Processing:
 

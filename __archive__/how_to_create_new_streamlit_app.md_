@@ -1,0 +1,209 @@
+# How to create a new Streamlit app checklist
+ 
+## 1. Naming Conventions
+
+| Identification | Header                                  |
+|----------------|-----------------------------------------|
+| ae1982       | Aircraft Accidents in the US since 1982 |
+| pd1982       | Profiling Data for the US since 1982    |
+
+## 2. Coding
+
+Adherence to the following recommendations will ensure consistent usability across all of IO-Aero's Streamlit applications:
+
+- Use the sidebar for task and filter related controls
+- Position the task-related controls in the sidebar at the top and the global filter elements at the bottom
+- Make the task-related control elements visible only after the associated task has been selected
+
+```
+choice_data_profile = st.sidebar.checkbox(
+    help="Pandas profiling of the dataset.",
+    label="**`Show data profile`**",
+    value=False,
+)
+
+if choice_data_profile:
+    choice_data_profile_type = st.sidebar.radio(
+        help="explorative: thorough but also slow - minimal: minimal but faster.",
+        index=1,
+        label="Data profile type",
+        options=(
+            [
+                "explorative",
+                "minimal",
+            ]
+        ),
+    )
+    choice_data_profile_file = st.sidebar.checkbox(
+        help="Export the Pandas profile into a file.",
+        label="Export profile to file",
+        value=False,
+    )
+```
+
+- Separate the individual tasks and the filter elements with separator line
+
+```
+st.sidebar.markdown("""---""")
+```
+
+## 3. Documentation
+
+see file directory **`docs`**
+
+### 3.1 how_to_update_avstats_on_aws.md
+
+```
+## 1. Docker images
+
+Currently, the following Streamlit applications are supported:
+
+| Application | Description                             |
+|-------------|-----------------------------------------|
+| ae1982      | Aircraft Accidents in the US since 1982 |
+| pd1982      | Profiling Data for the US since 1982    |
+```
+
+### 3.2 index.md
+
+```
+Currently, it includes the following applications:
+
+- ae1982 - Aircraft Accidents in the US since 1982
+- pd1982 - Profiling Data for the US since 1982
+```
+
+### 3.3 Operation.md
+
+```
+TODO
+```
+
+## 4. Parameterization
+
+### 4.1 docker-compose.yml
+
+```
+  # ------------------------------------------------------------------------------
+  # ae1982 - Aircraft Accidents in the US since 1982.
+  # ------------------------------------------------------------------------------
+  app_ae1982:
+    container_name: ae1982
+    depends_on:
+      - db
+    image: ioaero/ae1982:latest
+    ports:
+      - "${IO_AERO_STREAMLIT_SERVER_PORT_AE1982}:${IO_AERO_STREAMLIT_SERVER_PORT}"
+    restart: always
+
+  # ------------------------------------------------------------------------------
+  # pd1982 - Profiling Data for the US since 1982.
+  # ------------------------------------------------------------------------------
+  app_pd1982:
+    container_name: pd1982
+    depends_on:
+      - db
+    image: ioaero/pd1982:latest
+    ports:
+      - "${IO_AERO_STREAMLIT_SERVER_PORT_PD1982}:${IO_AERO_STREAMLIT_SERVER_PORT}"
+    restart: always
+```
+
+## 5. Scripts
+
+### 5.1 run_io_avstats
+
+**cmd**:
+
+```
+if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
+    if ["%2"] EQU [""] (
+        echo =========================================================
+        echo ae1982 - Aircraft Accidents in the US since 1982
+        echo pd1982 - Profiling Data for the US since 1982
+        echo ---------------------------------------------------------
+        set /P IO_AERO_APPLICATION="Enter the Streamlit application name "
+    ) else (
+        set IO_AERO_APPLICATION=%2
+    )
+)
+```
+
+**bash**:
+
+```
+if [ "${IO_AERO_TASK}" = "r_s_a" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "ae1982 - Aircraft Accidents in the US since 1982"
+        echo "pd1982 - Profiling Data for the US since 1982"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the Streamlit application name " IO_AERO_APPLICATION
+        export IO_AERO_APPLICATION=${IO_AERO_APPLICATION}
+    else
+        export IO_AERO_APPLICATION=$2
+    fi
+fi
+```
+
+
+### 5.2 See file directory **`scripts`**
+
+
+#### 5.2.1 scripts/run_create_image
+
+**cmd**:
+
+```
+if ["%1"] EQU [""] (
+    echo =========================================================
+    echo ae1982 - Aircraft Accidents in the US since 1982
+    echo pd1982 - Profiling Data for the US since 1982
+    echo ---------------------------------------------------------
+    set /P APPLICATION="Enter the desired application name [default: %APPLICATION_DEFAULT%] "
+
+    if ["!APPLICATION!"] EQU [""] (
+        set APPLICATION=%APPLICATION_DEFAULT%
+    )
+) else (
+    set APPLICATION=%1
+)
+```
+
+**bash**:
+
+```
+if [ -z "$1" ]; then
+    echo "========================================================="
+    echo "ae1982 - Aircraft Accidents in the US since 1982"
+    echo "pd1982 - Profiling Data for the US since 1982"
+    echo "---------------------------------------------------------"
+    read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
+    export APPLICATION=${APPLICATION}
+
+    if [ -z "${APPLICATION}" ]; then
+        export APPLICATION=${APPLICATION_DEFAULT}
+    fi
+else
+    export APPLICATION=$1
+fi
+```
+
+#### 5.2.2 scripts/run_docker_compose
+
+**cmd**:
+
+```
+set IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
+...
+echo STREAMLIT_SRRVER_PORT_X...X : %IO_AERO_STREAMLIT_SERVER_PORT_X...X%
+```
+
+**bash**:
+
+```
+export IO_AERO_STREAMLIT_SERVER_PORT_X...X=99999
+...
+echo "STREAMLIT_SRRVER_PORT_X...X : ${IO_AERO_STREAMLIT_SERVER_PORT_X...X}"
+```

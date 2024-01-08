@@ -1,0 +1,2346 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aviation Event Statistics">
+      
+      
+        <meta name="author" content="IO-Aero Team">
+      
+      
+        <link rel="canonical" href="https://io-aero.com/operation.html">
+      
+      
+        <link rel="prev" href="config_logging.html">
+      
+      
+        <link rel="next" href="pre2008_01_s_d_c_23_08_21.html">
+      
+      
+      <link rel="icon" href="img/IO-Aero_1_Favicon.ico">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Operation - IO-AVSTATS - Aviation Event Statistics</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="assets/pymdownx-extras/extra-b1466b3f51.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#operation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-header__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero_1_Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IO-AVSTATS - Aviation Event Statistics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Operation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="IO-AVSTATS - Aviation Event Statistics" class="md-nav__button md-logo" aria-label="IO-AVSTATS - Aviation Event Statistics" data-md-component="logo">
+      
+  <img src="img/IO-Aero_1_Logo.png" alt="logo">
+
+    </a>
+    IO-AVSTATS - Aviation Event Statistics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/io-aero/io-avstats" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Setup
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_requirements.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_installation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_io_avstats.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IO-AVSTATS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="config_logging.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Operation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="operation.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Operation
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-task-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Detailed task list
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed task list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-a_o_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 a_o_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-c_d_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 c_d_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-c_d_i" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 c_d_i
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-c_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 c_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-c_f_z" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.5 c_f_z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-c_l_l" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.6 c_l_l
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-c_p_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.7 c_p_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-f_n_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.8 f_n_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-l_a_p" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.9 l_a_p
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-l_c_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.10 l_c_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-l_c_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.11 l_c_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-l_n_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.12 l_n_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-l_s_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.13 l_s_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-l_s_e" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.14 l_s_e
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-l_z_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.15 l_z_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#216-r_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.16 r_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#217-r_s_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.17 r_s_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#218-s_d_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.18 s_d_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#218-u_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.18 u_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#219-u_p_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.19 u_p_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#220-v_n_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.20 v_n_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.21 version
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-first-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. First installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-regular-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Regular updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Regular updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-every-1st-of-the-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Every 1st of the month
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-every-1st-8th-15th-and-22nd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Every 1st, 8th, 15th and 22nd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Data
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Data
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Master Data Logs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Master Data Logs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_01_s_d_c_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Set up the database container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_02_c_d_s_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Create the database schema
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_03_u_d_s_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Update the database schema
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_11_a_o_c_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Load aviation occurrence categories
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_12_l_a_p.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Load airport data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_13_l_c_s_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Load country and state data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_14_l_s_e_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Load sequence of events data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_21_l_s_d_23_08_21.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Load simplemaps data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pre2008_22_l_z_d.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Load ZIP Code Database data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Transaction Data Logs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Transaction Data Logs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2024_01_08_log_up08JAN.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024.01.08 up08JAN
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2024_01_01_log_up01JAN.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024.01.01 up01JAN
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2024_01_01_log_avall.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024.01.01 avall
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_12_22_log_up22DEC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.12.22 up22DEC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_12_15_log_up15DEC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.12.15 up15DEC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_12_08_log_up08DEC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.12.08 up08DEC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_12_04_log_up01DEC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.12.01 up01DEC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_12_04_log_avall.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.12.01 avall
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_22_log_up22NOV.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.22 up22NOV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_15_log_up15NOV.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.15 up15NOV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_08_log_up08NOV.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.08 up08NOV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_01_log_up01NOV.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.01 up01NOV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_11_01_log_avall.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.11.01 avall
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_10_22_log_up22OCT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.10.22 up22OCT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_10_15_log_up15OCT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.10.15 up15OCT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_10_08_log_up08OCT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.10.08 up08OCT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_10_01_log_up01OCT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.10.01 up01OCT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2023_10_01_log_avall.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023.10.01 avall
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_notes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LICENSE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-detailed-task-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Detailed task list
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Detailed task list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-a_o_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 a_o_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-c_d_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 c_d_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-c_d_i" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 c_d_i
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-c_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 c_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-c_f_z" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.5 c_f_z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-c_l_l" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.6 c_l_l
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-c_p_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.7 c_p_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-f_n_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.8 f_n_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-l_a_p" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.9 l_a_p
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-l_c_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.10 l_c_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-l_c_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.11 l_c_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-l_n_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.12 l_n_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-l_s_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.13 l_s_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-l_s_e" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.14 l_s_e
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-l_z_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.15 l_z_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#216-r_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.16 r_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#217-r_s_a" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.17 r_s_a
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#218-s_d_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.18 s_d_c
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#218-u_d_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.18 u_d_s
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#219-u_p_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.19 u_p_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#220-v_n_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.20 v_n_d
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.21 version
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-first-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. First installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-regular-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Regular updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Regular updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-every-1st-of-the-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Every 1st of the month
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-every-1st-8th-15th-and-22nd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Every 1st, 8th, 15th and 22nd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="operation">Operation</h1>
+<p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong><code>run_io_avstats</code></strong> script. 
+The script is available in a Windows command line version and in a Linux bash shell version.</p>
+<h2 id="1-overview">1. Overview</h2>
+<p>The following tasks can be executed with this script:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Task</th>
+<th>Additional parameter(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a_o_c</td>
+<td>Load aviation occurrence categories into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>c_d_c</td>
+<td>Run Docker Compose tasks - Cloud</td>
+<td><code>clean</code>, <code>down</code>, <code>logs</code> or <code>up</code></td>
+</tr>
+<tr>
+<td>c_d_i</td>
+<td>Create or update an application Docker image</td>
+<td><code>all</code> or single Streamlit app</td>
+</tr>
+<tr>
+<td>c_d_s</td>
+<td>Create the IO-AVSTATS-DB PostgreSQL database schema</td>
+<td></td>
+</tr>
+<tr>
+<td>c_f_z</td>
+<td>Zip the files for the cloud</td>
+<td></td>
+</tr>
+<tr>
+<td>c_l_l</td>
+<td>Correct decimal US latitudes and longitudes</td>
+<td></td>
+</tr>
+<tr>
+<td>c_p_d</td>
+<td>Cleansing PostgreSQL data</td>
+<td></td>
+</tr>
+<tr>
+<td>f_n_a</td>
+<td>Find the nearest airports</td>
+<td></td>
+</tr>
+<tr>
+<td>l_a_p</td>
+<td>Load airport data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>l_c_d</td>
+<td>Load data from a correction file into PostgreSQL</td>
+<td>-e / -excel</td>
+</tr>
+<tr>
+<td>l_c_s</td>
+<td>Load country and state data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>l_n_a</td>
+<td>Load NTSB MS Access database data into PostgreSQL</td>
+<td>-m / -msaccess</td>
+</tr>
+<tr>
+<td>l_s_d</td>
+<td>Load simplemaps data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>l_s_e</td>
+<td>Load sequence of events data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>l_z_d</td>
+<td>Load ZIP Code Database data into PostgreSQL</td>
+<td></td>
+</tr>
+<tr>
+<td>r_d_s</td>
+<td>Refresh the PostgreSQL database schema</td>
+<td></td>
+</tr>
+<tr>
+<td>r_s_a</td>
+<td>Run a Streamlit application</td>
+<td>single Streamlit app, e.g. ae1982</td>
+</tr>
+<tr>
+<td>s_d_c</td>
+<td>Set up the IO-AVSTATS-DB PostgreSQL database container</td>
+<td></td>
+</tr>
+<tr>
+<td>u_d_s</td>
+<td>Update the IO-AVSTATS-DB PostgreSQL database schema</td>
+<td></td>
+</tr>
+<tr>
+<td>u_p_d</td>
+<td>Complete processing of a modifying MS Access file</td>
+<td>-m / -msaccess</td>
+</tr>
+<tr>
+<td>v_n_d</td>
+<td>Verify selected NTSB data</td>
+<td></td>
+</tr>
+<tr>
+<td>version</td>
+<td>Show the <strong><code>IO-AVSTATS-DB</code></strong> version</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-detailed-task-list">2. Detailed task list</h2>
+<h3 id="21-a_o_c">2.1 <code>a_o_c</code></h3>
+<p><font size="5">Load aviation occurrence categories into PostgreSQL</font></p>
+<h4 id="purpose">Purpose</h4>
+<p>Load the definition of the valid CICTT codes.</p>
+<h4 id="data-source">Data Source</h4>
+<p>The data source can be found on the NTSB website here:</p>
+<ul>
+<li><a href="https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf">AVIATION OCCURRENCE CATEGORIES - DEFINITIONS AND USAGE NOTES</a></li>
+</ul>
+<p>The NTSB provides the data in a <code>pdf</code> file which must then be converted to MS Excel format <code>xlsx</code> before processing.</p>
+<h4 id="implementation">Implementation</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>CREATE TABLE public.io_aviation_occurrence_categories (
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    cictt_code varchar(10) NOT NULL,
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    identifier varchar(100) NOT NULL,
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    definition text NOT NULL,
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    first_processed timestamp NOT NULL,
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    last_processed timestamp NULL,
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    last_seen timestamp NULL,
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    CONSTRAINT io_aviation_occurrence_categories_pkey PRIMARY KEY (cictt_code)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>);
+</code></pre></div>
+<hr />
+<h3 id="22-c_d_c">2.2 <code>c_d_c</code></h3>
+<p><font size="5">Run Docker Compose tasks - Cloud</font></p>
+<h4 id="purpose_1">Purpose</h4>
+<p>Manage the Docker containers needed in the cloud:</p>
+<ul>
+<li><strong>portainer</strong>: container management</li>
+<li><strong>IO-AVSTATS-DB</strong>: PostgreSQL database</li>
+<li>Application <strong>ae1982</strong>: Aircraft Events since 1982</li>
+<li>Application <strong>pd1982</strong>: Profiling Data since 1982</li>
+<li>Application <strong>slara</strong>: Association Rule Analysis</li>
+<li><strong>load_balancer</strong>: load balancer NGINX</li>
+</ul>
+<h4 id="processing-options">Processing Options</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>- clean - Remove all containers and images
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>- down  - Stop  Docker Compose
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>- logs  - Fetch the logs of a container
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>- up    - Start Docker Compose
+</code></pre></div>
+<hr />
+<h3 id="23-c_d_i">2.3 <code>c_d_i</code></h3>
+<p><font size="5">Create or update an application Docker image</font></p>
+<h4 id="purpose_2">Purpose</h4>
+<p>Create the application-specific Docker images and store them on DockerHub.  </p>
+<h4 id="processing-options_1">Processing Options</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>- all     - All Streamlit applications
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>- ae1982  - Aircraft Accidents in the US since 1982
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>- pd1982  - Profiling Data for the US since 1982
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>- slara   - Association Rule Analysis
+</code></pre></div>
+<hr />
+<h3 id="24-c_d_s">2.4 <code>c_d_s</code></h3>
+<p><font size="5">Create the IO-AVSTATS-DB PostgreSQL database schema</font></p>
+<h4 id="purpose_3">Purpose</h4>
+<p>Create the database schema including the following steps, among others:</p>
+<ol>
+<li>creation of a new database user, and</li>
+<li>creation of a new database, and</li>
+<li>creation of database objects such as database tables and so on.</li>
+</ol>
+<p>The following parameters are used when creating the database schema:</p>
+<ul>
+<li><code>postgres_dbname_admin</code> - administration database name</li>
+<li><code>postgres_password_admin</code> - administration database password</li>
+<li><code>postgres_user_admin</code> - administration database username</li>
+</ul>
+<p>Subsequently, the task <strong><code>u_d_s</code></strong> (Update the PostgreSQL database schema) is also executed.</p>
+<hr />
+<h3 id="25-c_f_z">2.5 <code>c_f_z</code></h3>
+<p><font size="5">Zip the files for the cloud</font></p>
+<h4 id="purpose_4">Purpose</h4>
+<p>Collect and zip the elements needed for the cloud to run the <strong>IO-AVSTATS</strong> application there.
+The result is contained in the file <strong>cloud.zip</strong>.</p>
+<hr />
+<h3 id="26-c_l_l">2.6 <code>c_l_l</code></h3>
+<p><font size="5">Correct decimal US latitudes and longitudes</font></p>
+<h4 id="purpose_5">Purpose</h4>
+<p>An attempt is made to calculate missing decimal longitudes and latitudes using the database tables <strong><code>io_lat_lng</code></strong> and <strong><code>io_states</code></strong>.</p>
+<h4 id="implementation_1">Implementation</h4>
+<ol>
+<li>In the database table <strong><code>events</code></strong> the values in the columns <strong><code>io_dec_lat_lng_actions</code></strong>, <strong><code>io_dec_latitude</code></strong>, <strong><code>io_dec_longitude</code></strong> and <strong><code>io_latlong_acq</code></strong> are deleted.</li>
+<li>All rows in the database table <strong><code>events</code></strong> are processed where at least one of the columns <strong><code>dec_latitude</code></strong> or <strong><code>dec_longitude</code></strong> is empty or 0 and the column <strong><code>ev_country</code></strong> has the content <strong><code>USA</code></strong>.</li>
+</ol>
+<hr />
+<ul>
+<li>2.1 An erroneous swapping of latitude and longitude is corrected.</li>
+<li>2.2 An attempt is made to calculate a missing column <strong><code>dec_latitude</code></strong> from the column <strong><code>latitude</code></strong> and a missing column <strong><code>dec_longitude</code></strong> from the column <strong><code>longitude</code></strong>.</li>
+<li>2.3 An attempt is made to calculate a missing column <strong><code>dec_latitude</code></strong> or- <strong><code>dec_longitude</code></strong> from the column <strong><code>ev_site_zipcode</code></strong>.</li>
+<li>2.4 It tries to calculate a missing column <strong><code>dec_latitude</code></strong> or- <strong><code>dec_longitude</code></strong> from the column <strong><code>ev_city</code></strong>.</li>
+<li>2.5 An attempt is made to calculate a missing column <strong><code>dec_latitude</code></strong> or- <strong><code>dec_longitude</code></strong> from the column <strong><code>ev_state</code></strong>.</li>
+<li>2.6 For a missing column <strong><code>dec_latitude</code></strong> resp. <strong><code>dec_longitude</code></strong> the center of the USA is assumed.</li>
+</ul>
+<hr />
+<h3 id="27-c_p_d">2.7 <code>c_p_d</code></h3>
+<p><font size="5">Cleansing PostgreSQL data</font></p>
+<h4 id="purpose_6">Purpose</h4>
+<p>Clean up data the abnormalities in the database. 
+This includes the following activities:</p>
+<ul>
+<li>remove trailing whitespace in string data types (trimming),</li>
+<li>converting string data types that contain only whitespace to NULL (nullifying).</li>
+</ul>
+<p>As a result, a much simplified processing of the data is possible, e.g. for comparisons.</p>
+<p>On the one hand, the task can be executed explicitly with the <strong><code>run_io_avstats_db</code></strong> script (task <strong><code>c_p_d</code></strong>) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task <strong><code>l_n_a</code></strong> and <strong><code>u_p_d</code></strong>).</p>
+<hr />
+<h3 id="28-f_n_a">2.8 <code>f_n_a</code></h3>
+<p><font size="5">Find the nearest airports</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_7">Purpose</h4>
+<hr />
+<h3 id="29-l_a_p">2.9 <code>l_a_p</code></h3>
+<p><font size="5">Load airport data into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_8">Purpose</h4>
+<h4 id="data-source_1">Data Source</h4>
+<h4 id="implementation_2">Implementation</h4>
+<hr />
+<h3 id="210-l_c_d">2.10 <code>l_c_d</code></h3>
+<p><font size="5">Load data from a correction file into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_9">Purpose</h4>
+<h4 id="data-source_2">Data Source</h4>
+<h4 id="implementation_3">Implementation</h4>
+<p>This task allows files containing aviation accident data to be downloaded from the NTSB download site.
+These files are there as MS Access databases in a compressed format.
+The following subtasks are executed:</p>
+<ol>
+<li>A connection to the NTSB download page is established.</li>
+<li>The selected file is downloaded to the local system in chunks. </li>
+<li>The downloaded file is then unpacked. </li>
+<li>A script with the database schema definition is created with RazorSQL from the downloaded database.</li>
+<li>The newly created script is then compared with a reference script for matching.</li>
+</ol>
+<hr />
+<h3 id="211-l_c_s">2.11 <code>l_c_s</code></h3>
+<p><font size="5">Load country and state data into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_10">Purpose</h4>
+<h4 id="data-source_3">Data Source</h4>
+<h4 id="implementation_4">Implementation</h4>
+<hr />
+<h3 id="212-l_n_a">2.12 <code>l_n_a</code></h3>
+<p><font size="5">Load <strong>NTSB</strong> MS Access database data into PostgreSQL</font></p>
+<h4 id="purpose_11">Purpose</h4>
+<p>This task allows files containing aviation event data to be downloaded from the <strong>NTSB</strong> download site.
+These files are there as MS Access databases in a compressed format.
+The following subtasks are executed:</p>
+<ol>
+<li>A connection to the <strong>NTSB</strong> download page is established.</li>
+<li>The selected file is downloaded to the local system in chunks. </li>
+<li>The downloaded file is then unpacked. </li>
+<li>A script with the database schema definition is created with RazorSQL from the downloaded database.</li>
+<li>The newly created script is then compared with a reference script for matching.</li>
+</ol>
+<p>Subsequently, the downloaded data can be loaded into the PostgreSQL database with the task <code>l_n_a</code> (Load NTSB MS Access database data into PostgreSQL).</p>
+<h4 id="data-sources">Data Sources</h4>
+<ul>
+<li><strong>Pre2008.zip</strong>: data set for 1982 through 2007</li>
+<li><strong>avall.zip</strong>: data set from 2008 to the present </li>
+<li><strong>upDDMON.zip</strong>: monthly supplements on the 1st, 8th, 15th and 22nd</li>
+</ul>
+<h4 id="implementation_5">Implementation</h4>
+<p>The PostgreSQL database <strong>IO-AVSTATS-DB</strong> completely maps the database schema of the <strong>NTSB</strong> MS Access database.  </p>
+<hr />
+<h3 id="213-l_s_d">2.13 <code>l_s_d</code></h3>
+<p><font size="5">Load <strong>simplemaps</strong> data into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_12">Purpose</h4>
+<h4 id="data-source_4">Data Source</h4>
+<h4 id="implementation_6">Implementation</h4>
+<p>This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
+The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
+The initial loading is done with both MS Access databases Pre2008 ubd avall.
+After that only the monthly updates are then transferred. </p>
+<hr />
+<h3 id="214-l_s_e">2.14 <code>l_s_e</code></h3>
+<p><font size="5">Load sequence of events data into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_13">Purpose</h4>
+<h4 id="data-source_5">Data Source</h4>
+<h4 id="implementation_7">Implementation</h4>
+<hr />
+<h3 id="215-l_z_d">2.15 <code>l_z_d</code></h3>
+<p><font size="5">Load ZIP Code Database data into PostgreSQL</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h4 id="purpose_14">Purpose</h4>
+<h4 id="data-source_6">Data Source</h4>
+<h4 id="implementation_8">Implementation</h4>
+<p>This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
+The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
+The initial loading is done with both MS Access databases Pre2008 ubd avall.
+After that only the monthly updates are then transferred. </p>
+<hr />
+<h3 id="216-r_d_s">2.16 <code>r_d_s</code></h3>
+<p><font size="5">Refresh the PostgreSQL database schema</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>Hereby changes can be made to the database schema.
+The task can be executed several times without problems, since before a change is always first checked whether this has already been done.</p>
+<ol>
+<li>
+<p>Materialized database view</p>
+</li>
+<li>
+<p><strong><code>io_app_ae1982</code></strong> - provides the data for processing the task <strong><code>c_l_l</code></strong> (Correct decimal US latitudes and longitudes).</p>
+</li>
+</ol>
+<p>Example protocol:</p>
+<div class="highlight"><pre><span></span><code>Progress update 2022-12-19 08:37:09.337180 : INFO.00.004 Start Launcher.
+Progress update 2022-12-19 08:37:09.342679 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-12-19 08:37:09.352180 : INFO.00.005 Argument task=&#39;r_d_s&#39;.
+Progress update 2022-12-19 08:37:09.352180 : -------------------------------------------------------------------------------.
+Progress update 2022-12-19 08:37:09.352180 : INFO.00.071 Refreshing the database schema.
+Progress update 2022-12-19 08:37:09.352180 : --------------------------------------------------------------------------------
+Progress update 2022-12-19 08:37:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
+Progress update 2022-12-19 08:37:19.366370 : -------------------------------------------------------------------------------.
+Progress update 2022-12-19 08:37:19.366370 :       10,187,690,800 ns - Total time launcher.
+Progress update 2022-12-19 08:37:19.366370 : INFO.00.006 End   Launcher.
+Progress update 2022-12-19 08:37:19.366370 : ===============================================================================.
+</code></pre></div>
+<hr />
+<h3 id="217-r_s_a">2.17 <code>r_s_a</code></h3>
+<p><font size="5">Run a Streamlit application</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<hr />
+<h3 id="218-s_d_c">2.18 <code>s_d_c</code></h3>
+<p><font size="5">Set up the <strong><code>IO-AVSTATS-DB</code></strong> PostgreSQL database container</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<hr />
+<h3 id="218-u_d_s">2.18 <code>u_d_s</code></h3>
+<p><font size="5">Update the <strong><code>IO-AVSTATS-DB</code></strong> PostgreSQL database schema</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>Hereby changes can be made to the database schema.
+The task can be executed several times without problems, since before a change is always first checked whether this has already been done.</p>
+<ol>
+<li>
+<p>New database tables:</p>
+</li>
+<li>
+<p><strong><code>io_countries</code></strong>: contains latitude and longitude of selected countries.</p>
+</li>
+<li><strong><code>io_lat_lng</code></strong>: used to store the <strong>simplemaps</strong> and <strong>United States Zip Codes.org</strong> data.</li>
+<li>
+<p><strong><code>io_states</code></strong>: contains the identification, name, latitude and longitude of all US states.</p>
+</li>
+<li>
+<p>Extensions for database tables:</p>
+</li>
+</ol>
+<p>2.1 Database table <strong><code>events</code></strong>.</p>
+<ul>
+<li>The columns <strong><code>io_city</code></strong>, <strong><code>io_country</code></strong>, <strong><code>io_latitude</code></strong>, <strong><code>io_longitude</code></strong>, <strong><code>io_site_zipcode</code></strong> and <strong><code>io_state</code></strong> to store manual corrections.</li>
+<li>The columns <strong><code>io_deviating_dec_latitude</code></strong>, <strong><code>io_deviating_dec_longitude</code></strong>, <strong><code>io_invalid_latitude</code></strong>, <strong><code>io_invalid_longitude</code></strong>, <strong><code>io_invalid_us_city</code></strong>, <strong><code>io_invalid_us_state</code></strong> and , <strong><code>io_invalid_us_zipcode</code></strong> for documenting data plausibility (task <strong><code>v_n_d</code></strong>).</li>
+<li>
+<p>the columns <strong><code>io_dec_lat_lng_actions</code></strong>, <strong><code>io_dec_latitude</code></strong> and <strong><code>io_dec_longitude</code></strong> to store corrected decimal latitude and longitude values.</p>
+</li>
+<li>
+<p>New database views:</p>
+</li>
+<li>
+<p><strong><code>io_lat_lng_issues</code></strong> - provides the data for processing the task <strong><code>c_l_l</code></strong> (Correct decimal US latitudes and longitudes).</p>
+</li>
+<li><strong><code>io_accidents_us_1982</code></strong> - provides event data for aviation accidents in the U.S. since 1982.</li>
+</ul>
+<hr />
+<h3 id="219-u_p_d">2.19 <code>u_p_d</code></h3>
+<p><font size="5">Complete processing of a modifying MS Access file</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<hr />
+<h3 id="220-v_n_d">2.20 <code>v_n_d</code></h3>
+<p><font size="5">Verify selected <strong>NTSB</strong> data</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>This task can be used to perform a plausibility check for the following columns in the database table <strong><code>events</code></strong>:</p>
+<ul>
+<li><strong><code>dec_latitude</code></strong>,</li>
+<li><strong><code>dec_longitude</code></strong>,</li>
+<li><strong><code>ev_state</code></strong>,</li>
+<li><strong><code>ev_site_zipcode</code></strong>,</li>
+<li><strong><code>latitude</code></strong>,</li>
+<li><strong><code>longitude</code></strong>,</li>
+</ul>
+<p>and the combination of:</p>
+<ul>
+<li><strong><code>ev_state</code></strong> and <strong><code>ev_city</code></strong>,</li>
+<li><strong><code>ev_state</code></strong>, <strong><code>ev_city</code></strong> and <strong><code>ev_site_zipcode</code></strong>.</li>
+</ul>
+<p>The results of the check are stored in the following columns:</p>
+<ul>
+<li><strong><code>io_deviating_dec_latitude</code></strong> (absolute difference),</li>
+<li><strong><code>io_deviating_dec_longitude</code></strong> (absolute difference),</li>
+<li><strong><code>io_invalid_latitude</code></strong> (true),</li>
+<li><strong><code>io_invalid_longitude</code></strong> (true),</li>
+<li><strong><code>io_invalid_us_city</code></strong> (true),</li>
+<li><strong><code>io_invalid_us_city_zipcode</code></strong> (true),</li>
+<li><strong><code>io_invalid_us_state</code></strong> (true),</li>
+<li><strong><code>io_invalid_us_zipcode</code></strong> (true).</li>
+</ul>
+<p>The tests are performed according to the following logic:</p>
+<ul>
+<li><strong><code>io_deviating_dec_latitude</code></strong>: Absolute difference between <strong><code>dec_latitude</code></strong> and <strong><code>latitude</code></strong> exceeding a given limit in <strong><code>max_deviation_latitude</code></strong>.</li>
+<li><strong><code>io_deviating_dec_longitude</code></strong>: Absolute difference between <strong><code>dec_longitude</code></strong> and <strong><code>longitude</code></strong> exceeding a given limit <strong><code>max_deviation_longitude</code></strong>.</li>
+<li><strong><code>io_invalid_latitude</code></strong>: Can the latitude in the <strong><code>latitude</code></strong> column be converted to its decimal equivalent?</li>
+<li><strong><code>io_invalid_longitude</code></strong>: Can the longitude in the <strong><code>longitude</code></strong> column be converted to its decimal equivalent?</li>
+<li><strong><code>io_invalid_us_city</code></strong>: For country <code>USA</code> and the given state, is the specified value in the <strong><code>ev_city</code></strong> column a existing city?</li>
+<li><strong><code>io_invalid_us_city_zipcode</code></strong>: For country <code>USA</code> and the given state, are the specified values in the <strong><code>ev_city</code></strong> column and in the <strong><code>ev_site_zipcode</code></strong> column a existing city?</li>
+<li><strong><code>io_invalid_us_state</code></strong>: For country <code>USA</code>, is the specified value in the <strong><code>ev_state</code></strong> column a valid state identifier?</li>
+<li><strong><code>io_invalid_us_z ipcode</code></strong>: For country <code>USA</code>, is the specified value in the <strong><code>ev_site_zipcode</code></strong> column a existing zip code?</li>
+</ul>
+<hr />
+<h3 id="221-version">2.21 <code>version</code></h3>
+<p><font size="5">Show the <strong><code>IO-AVSTATS-DB</code></strong> version</font></p>
+<ul>
+<li>TODO</li>
+</ul>
+<h2 id="3-first-installation">3. First installation</h2>
+<p>The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:</p>
+<ul>
+<li><strong><code>c_d_s</code></strong> - Create the IO-AVSTATS-DB PostgreSQL database schema </li>
+<li><strong><code>l_c_s</code></strong> - Load country and state data into PostgreSQL</li>
+<li><strong><code>l_a_p</code></strong> - Load airport data into PostgreSQL</li>
+<li><strong><code>a_o_c</code></strong> - Load aviation occurrence categories into PostgreSQL</li>
+<li><strong><code>l_s_e</code></strong> - Load sequence of events data into PostgreSQL</li>
+<li><strong><code>l_s_d</code></strong> - Load simplemaps data into PostgreSQL</li>
+<li><strong><code>l_z_d</code></strong> - Load ZIP Code Database data into PostgreSQL</li>
+<li><strong><code>u_p_d</code></strong> - Complete processing of a modifying MS Access file: <strong><code>Pre2008</code></strong></li>
+</ul>
+<h2 id="4-regular-updates">4. Regular updates</h2>
+<h3 id="41-every-1st-of-the-month">4.1 Every 1st of the month</h3>
+<ol>
+<li>Stop the Docker container <strong><code>IO-AVSTATS-DB</code></strong></li>
+<li>Restore the current state of Pre2008</li>
+<li>Start the Docker container <strong><code>IO-AVSTATS-DB</code></strong></li>
+<li>Process the current <strong><code>avall</code></strong> file with code <strong><code>l_n_a</code></strong></li>
+</ol>
+<h3 id="42-every-1st-8th-15th-and-22nd">4.2 Every 1st, 8th, 15th and 22nd</h3>
+<ul>
+<li>Process the current <strong><code>upDDMON</code></strong> file with code <strong><code>u_p_d</code></strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy;2022, IO-Aero.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.13.3/dist/mermaid.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="assets/pymdownx-extras/extra-loader-9e2c67b9.js"></script>
+      
+    
+  </body>
+</html>

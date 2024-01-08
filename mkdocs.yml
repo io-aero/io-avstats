@@ -47,6 +47,7 @@ nav:
           - 8. Load simplemaps data: pre2008_21_l_s_d_23_08_21.md
           - 9. Load ZIP Code Database data: pre2008_22_l_z_d.md
       - Transaction Data Logs:
+          - 2024.01.08 up08JAN: 2024_01_08_log_up08JAN.md
           - 2024.01.01 up01JAN: 2024_01_01_log_up01JAN.md
           - 2024.01.01 avall: 2024_01_01_log_avall.md
           - 2023.12.22 up22DEC: 2023_12_22_log_up22DEC.md

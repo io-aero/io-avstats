@@ -8,6 +8,7 @@ env:
   IO_CONDA: 'false'
   IO_COVERALLS: 'true'
   IO_DOCKER: 'true'
+  IO_ODBC: 'true'
   IO_PAGES: 'true'
 
 jobs:
@@ -110,6 +111,18 @@ jobs:
       - name: Set up Docker - Ubuntu
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}
         uses: docker/setup-buildx-action@v3
+
+      - name: Install ODBC - macOS
+        if: ${{ env.IO_ODBC == 'true' && runner.os == 'macOS' }}
+        run: |
+          brew update
+          brew upgrade unixodbc-dev
+
+      - name: Install ODBC - Ubuntu
+        if: ${{ env.IO_ODBC == 'true' && runner.os == 'Linux' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unixodbc-dev
 
       - name: Install dependencies - pipenv - prod
         if: ${{ env.IO_CONDA != 'true' }}

@@ -22,39 +22,43 @@ fi
 
 export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db_test
 export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
+export IO_AERO_POSTGRES_PASSWORD_ADMIN=postgres_password_admin
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
 export IO_AERO_POSTGRES_VERSION=16.1
 
-export IO_AERO_MSACCESS=
 export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=
+export IO_AERO_TASK_DEFAULT=version
 
 export PYTHONPATH=.
 
 if [[ -z "$1" ]]; then
-    print "\n========================================================="
-    print "\nc_l_l   - Correct decimal US latitudes and longitudes"
-    print "\nv_n_d   - Verify selected NTSB data"
-    print "\nr_d_s   - Refresh the PostgreSQL database schema"
-    print "\n---------------------------------------------------------"
-    print "\na_o_c   - Load aviation occurrence categories into PostgreSQL"
-    print "\nl_a_p   - Load airport data into PostgreSQL"
-    print "\nl_c_d   - Load data from a correction file into PostgreSQL"
-    print "\nl_c_s   - Load country and state data into PostgreSQL"
-    print "\nl_s_d   - Load simplemaps data into PostgreSQL"
-    print "\nl_s_e   - Load sequence of events data into PostgreSQL"
-    print "\nl_z_d   - Load ZIP Code Database data into PostgreSQL"
-    print "\n---------------------------------------------------------"
-    print "\nc_d_s   - Create the PostgreSQL database schema"
-    print "\nc_p_d   - Cleansing PostgreSQL data"
-    print "\nd_d_c   - Delete the PostgreSQL database container"
-    print "\nd_d_f   - Delete the PostgreSQL database files"
-    print "\nf_n_a   - Find the nearest airports"
-    print "\ns_d_c   - Set up the PostgreSQL database container"
-    print "\nu_d_s   - Update the PostgreSQL database schema"
-    print "\n---------------------------------------------------------"
+    echo "========================================================="
+    echo "c_p_d   - Cleansing PostgreSQL data"
+    echo "c_l_l   - Correct decimal US latitudes and longitudes"
+    echo "f_n_a   - Find the nearest airports"
+    echo "v_n_d   - Verify selected NTSB data"
+    echo "---------------------------------------------------------"
+    echo "l_a_p   - Load airport data into PostgreSQL"
+    echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
+    echo "l_c_s   - Load country and state data into PostgreSQL"
+    echo "l_c_d   - Load data from a correction file into PostgreSQL"
+    echo "l_s_e   - Load sequence of events data into PostgreSQL"
+    echo "l_s_d   - Load simplemaps data into PostgreSQL"
+    echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
+    echo "---------------------------------------------------------"
+    echo "d_d_c   - Delete the PostgreSQL database container"
+    echo "d_d_f   - Delete the PostgreSQL database files"
+    echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "c_d_s   - Create the PostgreSQL database schema"
+    echo "u_d_s   - Update the PostgreSQL database schema"
+    echo "r_d_s   - Refresh the PostgreSQL database schema"
+    echo "---------------------------------------------------------"
+    echo "c_d_l   - Run Docker Compose tasks - Local"
+    echo "---------------------------------------------------------"
+    echo "version - Show the IO-AVSTATS version"
+    echo "---------------------------------------------------------"
     read "IO_AERO_TASK?Enter the desired task "
     export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
@@ -63,9 +67,9 @@ fi
 
 if [[ "${IO_AERO_TASK}" = "l_c_d" ]]; then
     if [[ -z "$2" ]]; then
-        print "\n========================================================="
+        echo "========================================================="
         ls -ll ${IO_AERO_CORRECTION_WORK_DIR}/*.xlsx
-        print "\n---------------------------------------------------------"
+        echo "---------------------------------------------------------"
         read "IO_AERO_MSEXCEL?Enter the stem name of the desired correction file "
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
@@ -75,37 +79,40 @@ fi
 
 rm -f logging_io_aero.log
 
-print "\n================================================================================"
-print "\nStart $0"
-print "\n--------------------------------------------------------------------------------"
-print "\nIO-AVSTATS - Aviation Event Statistics."
-print "\n--------------------------------------------------------------------------------"
-print "\nPYTHONPATH : ${PYTHONPATH}"
-print "\n--------------------------------------------------------------------------------"
-print "\nTASK       : ${IO_AERO_TASK}"
-print "\nMSACCESS   : ${IO_AERO_MSACCESS}"
-print "\nMSEXCEL    : ${IO_AERO_MSEXCEL}"
-print "\n--------------------------------------------------------------------------------"
+echo "================================================================================"
+echo "Start $0"
+echo "--------------------------------------------------------------------------------"
+echo "IO-AVSTATS - Aviation Event Statistics."
+echo "--------------------------------------------------------------------------------"
+echo "ENV_FOR_DYNACONF         : ${ENV_FOR_DYNACONF}"
+echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
+echo "PYTHONPATH : ${PYTHONPATH}"
+echo "--------------------------------------------------------------------------------"
+echo "TASK       : ${IO_AERO_TASK}"
+echo "MSACCESS   : ${IO_AERO_MSACCESS}"
+echo "MSEXCEL    : ${IO_AERO_MSEXCEL}"
+echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n================================================================================"
+echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# a_o_c: Load aviation occurrence categories into PostgreSQL.
-# c_d_s: Create the PostgreSQL database schema.
-# c_l_l: Correct decimal US latitudes and longitudes.
-# c_p_d: Cleansing PostgreSQL data.
-# f_n_a: Find the nearest airports.
-# l_a_p: Load airport data into PostgreSQL.
-# l_c_s: Load country and state data into PostgreSQL.
-# l_s_d: Load simplemaps data into PostgreSQL.
-# l_s_e: Load sequence of events data into PostgreSQL.
-# l_z_d: Load US Zip code data.
-# r_d_s: Refresh the PostgreSQL database schema.
-# u_d_s: Update the PostgreSQL database schema.
-# v_n_d: Verify selected NTSB data.
+# a_o_c  : Load aviation occurrence categories into PostgreSQL.
+# c_d_s  : Create the PostgreSQL database schema.
+# c_l_l  : Correct decimal US latitudes and longitudes.
+# c_p_d  : Cleansing PostgreSQL data.
+# f_n_a  : Find the nearest airports.
+# l_a_p  : Load airport data into PostgreSQL.
+# l_c_s  : Load country and state data into PostgreSQL.
+# l_s_d  : Load simplemaps data into PostgreSQL.
+# l_s_e  : Load sequence of events data into PostgreSQL.
+# l_z_d  : Load US Zip code data.
+# r_d_s  : Refresh the PostgreSQL database schema.
+# u_d_s  : Update the PostgreSQL database schema.
+# v_n_d  : Verify selected NTSB data.
+# version: Show the IO-AVSTATS version.
 # ------------------------------------------------------------------------------
 case "${IO_AERO_TASK}" in
-    "a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d")
+    "a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version")
         if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
             exit 255
         fi
@@ -146,13 +153,13 @@ case "${IO_AERO_TASK}" in
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
     *)
-        print "\nProcessing of the script run_IO_AERO_pytest is aborted: unknown task='${IO_AERO_TASK}'"
+        echo "Processing of the script run_IO_AERO_pytest is aborted: unknown task='${IO_AERO_TASK}'"
         exit 255
         ;;
 esac
 
-print "\n--------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n--------------------------------------------------------------------------------"
-print "\nEnd   $0"
-print "\n================================================================================"
+echo "--------------------------------------------------------------------------------"
+echo "End   $0"
+echo "================================================================================"

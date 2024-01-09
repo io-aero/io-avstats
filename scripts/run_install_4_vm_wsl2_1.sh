@@ -14,7 +14,7 @@ sudo rm -rf /tmp/*
 
 export HOST_ENVIRONMENT_DEFAULT=vm
 
-export VERSION_IO_AVSTATS_DB=1.7.8
+export VERSION_IO_AVSTATS=1.7.8
 
 export VERSION_DBEAVER=23.2.3
 export VERSION_PYTHON3=3.10.11
@@ -143,7 +143,7 @@ eval echo 'export LC_ALL=${LOCALE}' >> ${HOME}/.bashrc
 eval echo 'export LOCALE=${LOCALE}' >> ${HOME}/.bashrc
 
 echo '' >> ${HOME}/.bashrc
-eval echo 'export VERSION_IO_AVSTATS_DB=${VERSION_IO_AVSTATS_DB}' >> ${HOME}/.bashrc
+eval echo 'export VERSION_IO_AVSTATS=${VERSION_IO_AVSTATS}' >> ${HOME}/.bashrc
 
 echo '' >> ${HOME}/.bashrc
 if [ "${HOST_ENVIRONMENT}" = "vm" ]; then

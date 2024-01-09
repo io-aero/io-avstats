@@ -24,18 +24,18 @@ echo '# ------------------------------------------------------------------------
 echo '# Environment io-avstats for macOS - Start' >> ${HOME}/.zshrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.zshrc
 
-print "\n=============================================================================="
-print "\nStart $0"
-print "\n------------------------------------------------------------------------------"
-print "\nInstall a io-avstats_dev environment for macOS - Step 1."
-print "\n------------------------------------------------------------------------------"
+echo "=============================================================================="
+echo "Start $0"
+echo "------------------------------------------------------------------------------"
+echo "Install a io-avstats_dev environment for macOS - Step 1."
+echo "------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n=============================================================================="
-print "\nSupplement necessary system software"
-print "\n------------------------------------------------------------------------------"
+echo "=============================================================================="
+echo "Supplement necessary system software"
+echo "------------------------------------------------------------------------------"
 # Check if Homebrew is installed
 if ! command -v brew &> /dev/null; then
-    print "\nHomebrew is not installed. Installing now..."
+    echo "Homebrew is not installed. Installing now..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
@@ -65,9 +65,9 @@ brew install asdf \
              wget \
              xz
 
-print "\n------------------------------------------------------------------------------"
-print "\nStep: Setting up the environment: 1. Setting the environment variables"
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Step: Setting up the environment: 1. Setting the environment variables"
+echo "------------------------------------------------------------------------------"
 
 # from Python 3 ----------------------------------------------------------------------
 PATH_ADD_ON=${HOME}/.asdf/installs/python/${VERSION_PYTHON3}/bin:${PATH_ADD_ON}
@@ -75,9 +75,9 @@ PATH_ADD_ON=${HOME}/.asdf/installs/python/${VERSION_PYTHON3}/bin:${PATH_ADD_ON}
 echo '' >> ${HOME}/.zshrc
 echo 'export VERSION_PYTHON3='${VERSION_PYTHON3} >> ${HOME}/.zshrc
 
-print "\n------------------------------------------------------------------------------"
-print "\nStep: Setting up the environment: 2. Initializing the interactive shell session"
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Step: Setting up the environment: 2. Initializing the interactive shell session"
+echo "------------------------------------------------------------------------------"
 echo '' >> ${HOME}/.zshrc
 echo 'alias python=python3' >> ${HOME}/.zshrc
 echo 'alias vi=vim' >> ${HOME}/.zshrc
@@ -90,19 +90,19 @@ echo '# ------------------------------------------------------------------------
 echo '# Environment io-avstats for macOS - End' >> ${HOME}/.zshrc
 echo '# ----------------------------------------------------------------------------' >> ${HOME}/.zshrc
 
-print "\n------------------------------------------------------------------------------"
-print "\nStep: Install AWS CLI"
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Step: Install AWS CLI"
+echo "------------------------------------------------------------------------------"
 aws --version
 aws configure
-print "\n=============================================================================="
+echo "=============================================================================="
 
 # Initializing the interactive shell session ---------------------------------------
 source ${HOME}/.zshrc
 
-print "\n------------------------------------------------------------------------------"
-print "\nStep: Install Python3 - Version ${VERSION_PYTHON3}"
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Step: Install Python3 - Version ${VERSION_PYTHON3}"
+echo "------------------------------------------------------------------------------"
 rm -rf ${HOME}/.asdf/downloads/python
 rm -rf ${HOME}/.asdf/installs/python
 rm -rf ${HOME}/.asdf/plugins/python
@@ -110,14 +110,14 @@ rm -rf ${HOME}/.asdf/plugins/python
 asdf plugin add python
 asdf install python ${VERSION_PYTHON3}
 asdf global python ${VERSION_PYTHON3}
-print "\n=============================================================================> Version  Python3:"
-print "\nCurrent version of Python3: $(python3 --version)"
-print "\nCurrent version of pip:     $(pip --version)\n"
-print "\n=============================================================================="
+echo "=============================================================================> Version  Python3:"
+echo "Current version of Python3: $(python3 --version)"
+echo "Current version of pip:     $(pip --version)\n"
+echo "=============================================================================="
 
-print "\n------------------------------------------------------------------------------"
-print "\nStep: Cleanup"
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Step: Cleanup"
+echo "------------------------------------------------------------------------------"
 brew autoremove
 pwd
 cd "${PWD_PREVIOUS}"
@@ -125,10 +125,10 @@ pwd
 
 ( ./run_version_check.zsh )
 
-print "\n------------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n------------------------------------------------------------------------------"
-print "\nEnd   $0"
-print "\n=============================================================================="
+echo "------------------------------------------------------------------------------"
+echo "End   $0"
+echo "=============================================================================="
 
 exit 0

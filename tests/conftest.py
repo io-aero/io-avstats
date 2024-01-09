@@ -9,6 +9,7 @@ Setup test configuration and store fixtures.
 
 Returns:
     [type]: None.
+
 """
 import configparser
 import logging
@@ -19,8 +20,10 @@ import shutil
 import pytest
 from iocommon import io_glob
 
+# -----------------------------------------------------------------------------
 # Constants & Globals.
 # -----------------------------------------------------------------------------
+
 CONFIG_PARSER: configparser.ConfigParser = configparser.ConfigParser()
 
 logger = logging.getLogger(__name__)
@@ -44,6 +47,7 @@ def copy_files_4_pytest(
                 tuple[pathlib.Path, list[str], str | None]
             ]
         ]): list of files to be copied.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -99,6 +103,7 @@ def copy_files_4_pytest_2_dir(
     Args:
         source_files: list[tuple[str, str | None]]: Source file names.
         target_path: Path: Target directory.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -145,6 +150,7 @@ def get_full_name_from_components(
 
     Returns:
         str: Full file name.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -177,6 +183,7 @@ def get_os_independent_name(filename: pathlib.Path | str) -> str:
 
     Returns:
         str: Platform-independent name.
+
     """
     logger.debug(io_glob.LOGGER_START)
     logger.debug(io_glob.LOGGER_END)
@@ -192,6 +199,7 @@ def get_test_files_source_directory_name():
     """Provide test file directory.
 
     Provide the file directory name where the test files are located.
+
     """
     logger.debug(io_glob.LOGGER_START)
     logger.debug(io_glob.LOGGER_END)

@@ -15,13 +15,13 @@ export IO_AERO_STREAMLIT_SERVER_PORT=8501
 export MODE=n/a
 
 if [[ -z "$1" ]]; then
-    print "\n========================================================="
-    print "\nall      - All Streamlit applications"
-    print "\n---------------------------------------------------------"
-    print "\nae1982  - Aircraft Accidents in the US since 1982"
-    print "\npd1982  - Profiling Data for the US since 1982"
-    print "\nslara   - Association Rule Analysis"
-    print "\n---------------------------------------------------------"
+    echo "========================================================="
+    echo "all      - All Streamlit applications"
+    echo "---------------------------------------------------------"
+    echo "ae1982  - Aircraft Accidents in the US since 1982"
+    echo "pd1982  - Profiling Data for the US since 1982"
+    echo "slara   - Association Rule Analysis"
+    echo "---------------------------------------------------------"
     read "APPLICATION?Enter the desired application name [default: ${APPLICATION_DEFAULT}] "
     APPLICATION="${APPLICATION:-$APPLICATION_DEFAULT}"
     export APPLICATION
@@ -45,33 +45,33 @@ else
     export DOCKER_CLEAR_CACHE=$3
 fi
 
-print "\n"
-print "\nScript $0 is now running - Application: ${APPLICATION}"
+echo ""
+echo "Script $0 is now running - Application: ${APPLICATION}"
 
 export LOG_FILE=run_create_image.log
 
-print "\n"
-print "\nYou can find the run log in the file ${LOG_FILE}"
-print "\n"
-print "\nPlease wait ..."
-print "\n"
+echo ""
+echo "You can find the run log in the file ${LOG_FILE}"
+echo ""
+echo "Please wait ..."
+echo ""
 
 exec &> >(tee -i "${LOG_FILE}") 2>&1
 sleep .1
 
-print "\n================================================================================"
-print "\nStart $0"
-print "\n--------------------------------------------------------------------------------"
+echo "================================================================================"
+echo "Start $0"
+echo "--------------------------------------------------------------------------------"
 
-print "\nCreate a Docker image for application ${APPLICATION}"
+echo "Create a Docker image for application ${APPLICATION}"
 
-print "\n--------------------------------------------------------------------------------"
-print "\nDOCKER_CLEAR_CACHE       : ${DOCKER_CLEAR_CACHE}"
-print "\nDOCKER_HUB_PUSH          : ${DOCKER_HUB_PUSH}"
-print "\nSTREAMLIT_SERVER_PORT    : ${IO_AERO_STREAMLIT_SERVER_PORT}"
-print "\n--------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------"
+echo "DOCKER_CLEAR_CACHE       : ${DOCKER_CLEAR_CACHE}"
+echo "DOCKER_HUB_PUSH          : ${DOCKER_HUB_PUSH}"
+echo "STREAMLIT_SERVER_PORT    : ${IO_AERO_STREAMLIT_SERVER_PORT}"
+echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n================================================================================"
+echo "================================================================================"
 
 if [[ "${APPLICATION}" = "all" ]]; then
     ( ./scripts/run_create_image.sh ae1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
@@ -90,16 +90,16 @@ if [[ "${DOCKER_CLEAR_CACHE}" = "yes" ]]; then
     docker builder prune --all --force
 fi
 
-print "\nDocker stop/rm ${APPLICATION} ................................ before containers:"
+echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
 docker ps -a
 docker ps    | grep "${APPLICATION}" && docker stop       "${APPLICATION}"
 docker ps -a | grep "${APPLICATION}" && docker rm --force "${APPLICATION}"
-print "\n............................................................. after containers:"
+echo "............................................................. after containers:"
 docker ps -a
-print "\n............................................................. before images:"
+echo "............................................................. before images:"
 docker image ls
 docker image ls | grep "${APPLICATION}" && docker rmi --force ioaero/"${APPLICATION}"
-print "\n............................................................. after images:"
+echo "............................................................. after images:"
 docker image ls
 
 if [[ "${APPLICATION}" = "ae1982" ]]; then
@@ -127,9 +127,9 @@ done
 rm -rf tmp/upload
 rm -rf tmp/docs/img
 
-print "\n"
-print "\n--------------------------------------------------------------------------------"
+echo ""
+echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n--------------------------------------------------------------------------------"
-print "\nEnd   $0"
-print "\n================================================================================"
+echo "--------------------------------------------------------------------------------"
+echo "End   $0"
+echo "================================================================================"

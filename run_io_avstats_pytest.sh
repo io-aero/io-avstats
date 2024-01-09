@@ -22,41 +22,45 @@ fi
 
 export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db_test
 export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
-export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
+export IO_AERO_POSTGRES_PASSWORD_ADMIN=postgres_password_admin
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
 export IO_AERO_POSTGRES_VERSION=16.1
 
-export IO_AERO_MSACCESS=
 export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=
+export IO_AERO_TASK_DEFAULT=version
 
 export PYTHONPATH=.
 
 if [ -z "$1" ]; then
     echo "========================================================="
+    echo "c_p_d   - Cleansing PostgreSQL data"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
+    echo "f_n_a   - Find the nearest airports"
     echo "v_n_d   - Verify selected NTSB data"
-    echo "r_d_s   - Refresh the PostgreSQL database schema"
     echo "---------------------------------------------------------"
-    echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
     echo "l_a_p   - Load airport data into PostgreSQL"
-    echo "l_c_d   - Load data from a correction file into PostgreSQL"
+    echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
-    echo "l_s_d   - Load simplemaps data into PostgreSQL"
+    echo "l_c_d   - Load data from a correction file into PostgreSQL"
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
+    echo "l_s_d   - Load simplemaps data into PostgreSQL"
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
     echo "---------------------------------------------------------"
-    echo "c_d_s   - Create the PostgreSQL database schema"
-    echo "c_p_d   - Cleansing PostgreSQL data"
     echo "d_d_c   - Delete the PostgreSQL database container"
     echo "d_d_f   - Delete the PostgreSQL database files"
-    echo "f_n_a   - Find the nearest airports"
     echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "c_d_s   - Create the PostgreSQL database schema"
     echo "u_d_s   - Update the PostgreSQL database schema"
+    echo "r_d_s   - Refresh the PostgreSQL database schema"
+    echo "---------------------------------------------------------"
+    echo "c_d_l   - Run Docker Compose tasks - Local"
+    echo "---------------------------------------------------------"
+    echo "version - Show the IO-AVSTATS version"
     echo "---------------------------------------------------------"
     # shellcheck disable=SC2162
-    read -p "Enter the desired task " IO_AERO_TASK
+    read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK}
 
     if [ -z "${IO_AERO_TASK}" ]; then
@@ -79,7 +83,20 @@ if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     fi
 fi
 
-rm -f logging_io_aero.log
+# Path to the log file
+log_file="run_io_avstats_pytest_${IO_AERO_TASK}.log"
+
+# Function for logging messages
+log_message() {
+  local message="$1"
+  # Format current date and time with timestamp
+  timestamp=$(date +"%d.%m.%Y %H:%M:%S")
+  # Write message with timestamp in the log file
+  echo "$timestamp: $message" >> "$log_file"
+}
+
+# Redirection of the standard output and the standard error output to the log file
+exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
 
 echo "================================================================================"
 echo "Start $0"
@@ -89,28 +106,28 @@ echo "--------------------------------------------------------------------------
 echo "PYTHONPATH : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
 echo "TASK       : ${IO_AERO_TASK}"
-echo "MSACCESS   : ${IO_AERO_MSACCESS}"
 echo "MSEXCEL    : ${IO_AERO_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
 # ------------------------------------------------------------------------------
-# a_o_c: Load aviation occurrence categories into PostgreSQL.
-# c_d_s: Create the PostgreSQL database schema.
-# c_l_l: Correct decimal US latitudes and longitudes.
-# c_p_d: Cleansing PostgreSQL data.
-# f_n_a: Find the nearest airports.
-# l_a_p: Load airport data into PostgreSQL.
-# l_c_s: Load country and state data into PostgreSQL.
-# l_s_d: Load simplemaps data into PostgreSQL.
-# l_s_e: Load sequence of events data into PostgreSQL.
-# l_z_d: Load US Zip code data.
-# r_d_s: Refresh the PostgreSQL database schema.
-# u_d_s: Update the PostgreSQL database schema.
-# v_n_d: Verify selected NTSB data.
+# a_o_c  : Load aviation occurrence categories into PostgreSQL.
+# c_d_s  : Create the PostgreSQL database schema.
+# c_l_l  : Correct decimal US latitudes and longitudes.
+# c_p_d  : Cleansing PostgreSQL data.
+# f_n_a  : Find the nearest airports.
+# l_a_p  : Load airport data into PostgreSQL.
+# l_c_s  : Load country and state data into PostgreSQL.
+# l_s_d  : Load simplemaps data into PostgreSQL.
+# l_s_e  : Load sequence of events data into PostgreSQL.
+# l_z_d  : Load US Zip code data.
+# r_d_s  : Refresh the PostgreSQL database schema.
+# u_d_s  : Update the PostgreSQL database schema.
+# version: Show the IO-AVSTATS version
+# v_n_d  : Verify selected NTSB data.
 # ------------------------------------------------------------------------------
-if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d") ]]; then
+if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
         exit 255
     fi
@@ -140,10 +157,10 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the IO-AVSTATS-DB PostgreSQL database container.
+# Set up the PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( .run_setup_postgresql.sh ); then
+    if ! ( ./scripts/run_setup_postgresql.sh ); then
         exit 255
     fi
 
@@ -151,7 +168,7 @@ elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
 # Program abort due to wrong input.
 # ------------------------------------------------------------------------------
 else
-    echo "Processing of the script run_IO_AERO_pytest is aborted: unknown task='${IO_AERO_TASK}'"
+    echo "Processing of the script run_io_avstats_pytest is aborted: unknown task='${IO_AERO_TASK}'"
     exit 255
 fi
 

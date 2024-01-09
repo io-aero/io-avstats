@@ -8,33 +8,33 @@ set -e
 #
 # ------------------------------------------------------------------------------
 
-print "\n================================================================================"
-print "\nStart $0"
-print "\n--------------------------------------------------------------------------------"
-print "\nIO-AVSTATS - Set up a PostgreSQL Docker container."
-print "\n--------------------------------------------------------------------------------"
+echo "================================================================================"
+echo "Start $0"
+echo "--------------------------------------------------------------------------------"
+echo "IO-AVSTATS - Set up a PostgreSQL Docker container."
+echo "--------------------------------------------------------------------------------"
 # export IO_AERO_POSTGRES_CONNECTION_PORT=5432
 # export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
 # export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 # export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 # export IO_AERO_POSTGRES_USER_ADMIN=postgres
 # export IO_AERO_POSTGRES_VERSION=16.1
-# print "\n--------------------------------------------------------------------------------"
+# echo "--------------------------------------------------------------------------------"
 # export IO_AERO_POSTGRES_PGDATA=data/postgres
-# print "\n--------------------------------------------------------------------------------"
-print "\nPOSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
-print "\nPOSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
-print "\nPOSTGRES_DBNAME_ADMIN    : ${IO_AERO_POSTGRES_DBNAME_ADMIN}"
-print "\nPOSTGRES_PGDATA          : ${IO_AERO_POSTGRES_PGDATA}"
-print "\nPOSTGRES_USER_ADMIN      : ${IO_AERO_POSTGRES_USER}"
-print "\nPOSTGRES_VERSION         : ${IO_AERO_POSTGRES_VERSION}"
+# echo "--------------------------------------------------------------------------------"
+echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
+echo "POSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
+echo "POSTGRES_DBNAME_ADMIN    : ${IO_AERO_POSTGRES_DBNAME_ADMIN}"
+echo "POSTGRES_PGDATA          : ${IO_AERO_POSTGRES_PGDATA}"
+echo "POSTGRES_USER_ADMIN      : ${IO_AERO_POSTGRES_USER}"
+echo "POSTGRES_VERSION         : ${IO_AERO_POSTGRES_VERSION}"
 echo --------------------------------------------------------------------------------
 
-print "\nDocker stop/rm ${IO_AERO_POSTGRES_CONTAINER_NAME} ...................................... before:"
+echo "Docker stop/rm ${IO_AERO_POSTGRES_CONTAINER_NAME} ...................................... before:"
 docker ps -a
 docker ps | grep "${IO_AERO_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME}
 docker ps -a | grep "${IO_AERO_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AERO_POSTGRES_CONTAINER_NAME}
-print "\n............................................................. after:"
+echo "............................................................. after:"
 docker ps -a
 
 start=$(date +%s)
@@ -43,9 +43,9 @@ start=$(date +%s)
 # PostgreSQL                                   https://hub.docker.com/_/postgres
 # ------------------------------------------------------------------------------
 
-print "\nPostgreSQL."
-print "\n--------------------------------------------------------------------------------"
-print "\nDocker create ${IO_AERO_POSTGRES_CONTAINER_NAME} (PostgreSQL ${IO_AERO_POSTGRES_VERSION})"
+echo "PostgreSQL."
+echo "--------------------------------------------------------------------------------"
+echo "Docker create ${IO_AERO_POSTGRES_CONTAINER_NAME} (PostgreSQL ${IO_AERO_POSTGRES_VERSION})"
 
 mkdir -p "${PWD}/${IO_AERO_POSTGRES_PGDATA}"
 
@@ -59,7 +59,7 @@ docker create -e        POSTGRES_DB=${IO_AERO_POSTGRES_DBNAME_ADMIN} \
               --restart always \
               postgres:${IO_AERO_POSTGRES_VERSION}
 
-print "\nDocker start ${IO_AERO_POSTGRES_CONTAINER_NAME} (PostgreSQL ${IO_AERO_POSTGRES_VERSION}) ..."
+echo "Docker start ${IO_AERO_POSTGRES_CONTAINER_NAME} (PostgreSQL ${IO_AERO_POSTGRES_VERSION}) ..."
 if ! docker start ${IO_AERO_POSTGRES_CONTAINER_NAME}; then
     exit 255
 fi
@@ -67,12 +67,12 @@ fi
 sleep 30
 
 end=$(date +%s)
-print "\nDOCKER PostgreSQL was ready in $((end - start)) seconds"
+echo "DOCKER PostgreSQL was ready in $((end - start)) seconds"
 
 docker ps
 
-print "\n--------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-print "\n--------------------------------------------------------------------------------"
-print "\nEnd   $0"
-print "\n================================================================================"
+echo "--------------------------------------------------------------------------------"
+echo "End   $0"
+echo "================================================================================"

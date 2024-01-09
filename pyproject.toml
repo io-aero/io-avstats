@@ -18,13 +18,18 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "ioavstatsdb",
+    "haversine",
     "iocommon",
+    "lat_lon_parser",
     "mlxtend",
+    "numpy",
+    "openpyxl",
     "pandas",
     "plotly",
     "pyodbc",
     "pyeclat",
+    "requests",
+    "sqlalchemy<2.0.0",
     "streamlit",
     "streamlit-pandas-profiling",
     "ydata-profiling",
@@ -43,7 +48,7 @@ maintainers = [
 name = "ioavstats"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "23.11.01"
+version = "24.01.08"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/io-aero/io-avstats/issues"
@@ -51,7 +56,19 @@ Homepage = "https://github.com/io-aero/io-avstats"
 Source = "https://github.com/io-aero/io-avstats/tree/main/ioavstats"
 
 [tool.bandit]
-skips = ["B307", "B404", "B603", "B608"]
+skips = [
+	"B307", 
+	"B404", 
+	"B603", 
+	"B608"
+]
+
+[tool.docformatter]
+black = true
+blank = true
+recursive = true
+wrap-descriptions = 100
+wrap-summaries = 100
 
 [tool.isort]
 float_to_top = true
@@ -60,7 +77,7 @@ overwrite_in_place = true
 profile = "black"
 
 [tool.pydocstyle]
-match = '((?!test_).*.py)'
+match = "((?!test_).*.py)"
 
 [tool.pytest.ini_options]
 console_output_style = "count"
@@ -81,4 +98,3 @@ ioavstats = [
     "*.pyi",
     "py.typed",
 ]
-

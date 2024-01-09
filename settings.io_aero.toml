@@ -48,4 +48,6 @@ correction_work_dir = "data/correction_test"
 download_work_dir = "data/download_test"
 postgres_connection_port = 5433
 postgres_container_name = "io_avstats_db_test"
+postgres_password = "postgres_password"
+postgres_password_admin = "postgres_password_admin"
 postgres_pgdata ="data/postgres_test"

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ioavstats" href="modules.html" /><link rel="prev" title="First Steps" href="first_steps.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Data Sources" href="data_sources.html" /><link rel="prev" title="First Steps" href="first_steps.html" />
 
     <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Advanced Usage - IO-AVSTATS 24-1-8 documentation</title>
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -161,9 +161,12 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_io_avstats.html">Configuration IO-AVSTATS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_logging.html">Configuration Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Advanced Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db_administration.html">PostgreSQL Administration</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
@@ -207,7 +210,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -215,9 +218,484 @@
         <article role="main">
           <section id="advanced-usage">
 <h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h1>
-<p>TODO</p>
+<p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong>``run_io_avstats``</strong> script.
+The script is available in a Windows command line version and in a Linux bash shell version.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The following tasks can be executed with this script:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Task</p></th>
+<th class="head"><p>Additional parameter(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a_o_c</p></td>
+<td><p>Load aviation occurrence categories into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>c_d_c</p></td>
+<td><p>Run Docker Compose tasks - Cloud</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">clean</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, <code class="docutils literal notranslate"><span class="pre">logs</span></code>
+or <code class="docutils literal notranslate"><span class="pre">up</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>c_d_i</p></td>
+<td><p>Create or update an application Docker image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">all</span></code> or single Streamlit
+app</p></td>
+</tr>
+<tr class="row-odd"><td><p>c_d_s</p></td>
+<td><p>Create the IO-AVSTATS-DB PostgreSQL database schema</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>c_f_z</p></td>
+<td><p>Zip the files for the cloud</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>c_l_l</p></td>
+<td><p>Correct decimal US latitudes and longitudes</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>c_p_d</p></td>
+<td><p>Cleansing PostgreSQL data</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>f_n_a</p></td>
+<td><p>Find the nearest airports</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>l_a_p</p></td>
+<td><p>Load airport data into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>l_c_d</p></td>
+<td><p>Load data from a correction file into PostgreSQL</p></td>
+<td><p>-e / -excel</p></td>
+</tr>
+<tr class="row-even"><td><p>l_c_s</p></td>
+<td><p>Load country and state data into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>l_n_a</p></td>
+<td><p>Load NTSB MS Access database data into PostgreSQL</p></td>
+<td><p>-m / -msaccess</p></td>
+</tr>
+<tr class="row-even"><td><p>l_s_d</p></td>
+<td><p>Load simplemaps data into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>l_s_e</p></td>
+<td><p>Load sequence of events data into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>l_z_d</p></td>
+<td><p>Load ZIP Code Database data into PostgreSQL</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>r_d_s</p></td>
+<td><p>Refresh the PostgreSQL database schema</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>r_s_a</p></td>
+<td><p>Run a Streamlit application</p></td>
+<td><p>single Streamlit app, e.g.
+ae1982</p></td>
+</tr>
+<tr class="row-odd"><td><p>s_d_c</p></td>
+<td><p>Set up the IO-AVSTATS-DB PostgreSQL database container</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>u_d_s</p></td>
+<td><p>Update the IO-AVSTATS-DB PostgreSQL database schema</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>u_p_d</p></td>
+<td><p>Complete processing of a modifying MS Access file</p></td>
+<td><p>-m / -msaccess</p></td>
+</tr>
+<tr class="row-even"><td><p>v_n_d</p></td>
+<td><p>Verify selected NTSB data</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p>Show the <strong>IO-AVSTATS</strong> version</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="detailed-task-list">
+<h2>Detailed task list<a class="headerlink" href="#detailed-task-list" title="Link to this heading">#</a></h2>
+<section id="a-o-c-load-aviation-occurrence-categories-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">a_o_c</span></code> - Load aviation occurrence categories into PostgreSQL<a class="headerlink" href="#a-o-c-load-aviation-occurrence-categories-into-postgresql" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Load the definition of the valid CICTT codes.</p>
+<p><strong>Data Source</strong></p>
+<p>The data source can be found on the NTSB website here:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf">AVIATION OCCURRENCE CATEGORIES - DEFINITIONS AND USAGE NOTES</a></p></li>
+</ul>
+<p>The NTSB provides the data in a <code class="docutils literal notranslate"><span class="pre">pdf</span></code> file which must then be converted to MS Excel format <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> before processing.</p>
+<p><strong>Implementation</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">io_aviation_occurrence_categories</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">cictt_code</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">identifier</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">definition</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">first_processed</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_processed</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_seen</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">io_aviation_occurrence_categories_pkey</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">cictt_code</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>…</p>
+</section>
+<section id="c-d-c-run-docker-compose-tasks-cloud">
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_c</span></code> - Run Docker Compose tasks - Cloud<a class="headerlink" href="#c-d-c-run-docker-compose-tasks-cloud" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Manage the Docker containers needed in the cloud:</p>
+<ul class="simple">
+<li><p><strong>portainer</strong>: container management</p></li>
+<li><p><strong>IO-AVSTATS-DB</strong>: PostgreSQL database</p></li>
+<li><p>Application <strong>ae1982</strong>: Aircraft Events since 1982</p></li>
+<li><p>Application <strong>pd1982</strong>: Profiling Data since 1982</p></li>
+<li><p>Application <strong>slara</strong>: Association Rule Analysis</p></li>
+<li><p><strong>load_balancer</strong>: load balancer NGINX</p></li>
+</ul>
+<p><strong>Processing Options</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- clean - Remove all containers and images
+- down  - Stop  Docker Compose
+- logs  - Fetch the logs of a container
+- up    - Start Docker Compose
+</pre></div>
+</div>
+</section>
+<section id="c-d-i-create-or-update-an-application-docker-image">
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_i</span></code> - Create or update an application Docker image<a class="headerlink" href="#c-d-i-create-or-update-an-application-docker-image" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Create the application-specific Docker images and store them on DockerHub.</p>
+<p><strong>Processing Options</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- all     - All Streamlit applications
+- ae1982  - Aircraft Accidents in the US since 1982
+- pd1982  - Profiling Data for the US since 1982
+- slara   - Association Rule Analysis
+</pre></div>
+</div>
+</section>
+<section id="c-d-s-create-the-io-avstats-db-postgresql-database-schema">
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_s</span></code> - Create the IO-AVSTATS-DB PostgreSQL database schema<a class="headerlink" href="#c-d-s-create-the-io-avstats-db-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Create the database schema including the following steps, among others:</p>
+<ol class="arabic simple">
+<li><p>creation of a new database user, and</p></li>
+<li><p>creation of a new database, and</p></li>
+<li><p>creation of database objects such as database tables and so on.</p></li>
+</ol>
+<p>The following parameters are used when creating the database schema:</p>
+<ul class="simple">
+<li><p><cite>postgres_dbname_admin</cite> - administration database name</p></li>
+<li><p><cite>postgres_password_admin</cite> - administration database password</p></li>
+<li><p><cite>postgres_user_admin</cite> - administration database username</p></li>
+</ul>
+<p>Subsequently, the task <code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> (Update the PostgreSQL database schema) is also executed.</p>
+</section>
+<section id="c-f-z-zip-the-files-for-the-cloud">
+<h3><code class="docutils literal notranslate"><span class="pre">c_f_z</span></code> - Zip the files for the cloud<a class="headerlink" href="#c-f-z-zip-the-files-for-the-cloud" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Collect and zip the elements needed for the cloud to run the <strong>IO-AVSTATS</strong> application there.
+The result is contained in the file <strong>cloud.zip</strong>.</p>
+</section>
+<section id="c-l-l-correct-decimal-us-latitudes-and-longitude">
+<h3><code class="docutils literal notranslate"><span class="pre">c_l_l</span></code> - Correct decimal US latitudes and longitude<a class="headerlink" href="#c-l-l-correct-decimal-us-latitudes-and-longitude" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>An attempt is made to calculate missing decimal longitudes and latitudes using the database tables <strong>`io_lat_lng`</strong> and <strong>`io_states`</strong>.</p>
+<p><strong>Implementation</strong></p>
+<ol class="arabic simple">
+<li><p>In the database table <strong>`events`</strong> the values in the columns <strong>`io_dec_lat_lng_actions`</strong>, <strong>`io_dec_latitude`</strong>, <strong>`io_dec_longitude`</strong> and <strong>`io_latlong_acq`</strong> are deleted.</p></li>
+<li><dl class="simple">
+<dt>All rows in the database table <strong>`events`</strong> are processed where at least one of the columns <strong>`dec_latitude`</strong> or <strong>`dec_longitude`</strong> is empty or 0 and the column <strong>`ev_country`</strong> has the content <strong>`USA`</strong>.</dt><dd><ul class="simple">
+<li><p>2.1 An erroneous swapping of latitude and longitude is corrected.</p></li>
+<li><p>2.2 An attempt is made to calculate a missing column <strong>`dec_latitude`</strong> from the column <strong>`latitude`</strong> and a missing column <strong>`dec_longitude`</strong> from the column <strong>`longitude`</strong>.</p></li>
+<li><p>2.3 An attempt is made to calculate a missing column <strong>`dec_latitude`</strong> or <strong>`dec_longitude`</strong> from the column <strong>`ev_site_zipcode`</strong>.</p></li>
+<li><p>2.4 It tries to calculate a missing column <strong>`dec_latitude`</strong> or <strong>`dec_longitude`</strong> from the column <strong>`ev_city`</strong>.</p></li>
+<li><p>2.5 An attempt is made to calculate a missing column <strong>`dec_latitude`</strong> or <strong>`dec_longitude`</strong> from the column <strong>`ev_state`</strong>.</p></li>
+<li><p>2.6 For a missing column <strong>`dec_latitude`</strong> resp. <strong>`dec_longitude`</strong> the center of the USA is assumed.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="c-p-d-cleansing-postgresql-data">
+<h3><code class="docutils literal notranslate"><span class="pre">c_p_d</span></code> - Cleansing PostgreSQL data<a class="headerlink" href="#c-p-d-cleansing-postgresql-data" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>Clean up data the abnormalities in the database.
+This includes the following activities:</p>
+<ul class="simple">
+<li><p>remove trailing whitespace in string data types (trimming),</p></li>
+<li><p>converting string data types that contain only whitespace to NULL (nullifying).</p></li>
+</ul>
+<p>As a result, a much simplified processing of the data is possible, e.g. for comparisons.</p>
+<p>On the one hand, the task can be executed explicitly with the <strong>``run_io_avstats_db``</strong> script (task <strong>``c_p_d``</strong>) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task <strong>``l_n_a``</strong> and <strong>``u_p_d``</strong>).</p>
+</section>
+<section id="f-n-a-find-the-nearest-airports">
+<h3><code class="docutils literal notranslate"><span class="pre">f_n_a</span></code> - Find the nearest airports<a class="headerlink" href="#f-n-a-find-the-nearest-airports" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+</section>
+<section id="l-a-p-load-airport-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_a_p</span></code> - Load airport data into PostgreSQL<a class="headerlink" href="#l-a-p-load-airport-data-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+</section>
+<section id="l-c-d-load-data-from-a-correction-file-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_c_d</span></code> - Load data from a correction file into PostgreSQL<a class="headerlink" href="#l-c-d-load-data-from-a-correction-file-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+<p>This task allows files containing aviation accident data to be downloaded from the NTSB download site.
+These files are there as MS Access databases in a compressed format.
+The following subtasks are executed:</p>
+<ol class="arabic simple">
+<li><p>A connection to the NTSB download page is established.</p></li>
+<li><p>The selected file is downloaded to the local system in chunks.</p></li>
+<li><p>The downloaded file is then unpacked.</p></li>
+<li><p>A script with the database schema definition is created with RazorSQL from the downloaded database.</p></li>
+<li><p>The newly created script is then compared with a reference script for matching.</p></li>
+</ol>
+</section>
+<section id="l-c-s-load-country-and-state-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_c_s</span></code> - Load country and state data into PostgreSQL<a class="headerlink" href="#l-c-s-load-country-and-state-data-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+</section>
+<section id="l-n-a-load-ntsb-ms-access-database-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_n_a</span></code> - Load NTSB MS Access database data into PostgreSQL<a class="headerlink" href="#l-n-a-load-ntsb-ms-access-database-data-into-postgresql" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>This task allows files containing aviation event data to be downloaded from the <strong>NTSB</strong> download site.
+These files are there as MS Access databases in a compressed format.
+The following subtasks are executed:</p>
+<ol class="arabic simple">
+<li><p>A connection to the <strong>NTSB</strong> download page is established.</p></li>
+<li><p>The selected file is downloaded to the local system in chunks.</p></li>
+<li><p>The downloaded file is then unpacked.</p></li>
+<li><p>A script with the database schema definition is created with RazorSQL from the downloaded database.</p></li>
+<li><p>The newly created script is then compared with a reference script for matching.</p></li>
+</ol>
+<p>Subsequently, the downloaded data can be loaded into the PostgreSQL database with the task <code class="docutils literal notranslate"><span class="pre">l_n_a</span></code> (Load NTSB MS Access database data into PostgreSQL).</p>
+<p><strong>Data Sources</strong></p>
+<ul class="simple">
+<li><p><strong>Pre2008.zip</strong>: data set for 1982 through 2007</p></li>
+<li><p><strong>avall.zip</strong>: data set from 2008 to the present</p></li>
+<li><p><strong>upDDMON.zip</strong>: monthly supplements on the 1st, 8th, 15th and 22nd</p></li>
+</ul>
+<p><strong>Implementation</strong></p>
+<p>The PostgreSQL database <strong>IO-AVSTATS-DB</strong> completely maps the database schema of the <strong>NTSB</strong> MS Access database.</p>
+</section>
+<section id="l-s-d-load-simplemaps-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_s_d</span></code> - Load simplemaps data into PostgreSQL<a class="headerlink" href="#l-s-d-load-simplemaps-data-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+<p>This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
+The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
+The initial loading is done with both MS Access databases Pre2008 ubd avall.
+After that only the monthly updates are then transferred.</p>
+</section>
+<section id="l-s-e-load-sequence-of-events-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_s_e</span></code> - Load sequence of events data into PostgreSQL<a class="headerlink" href="#l-s-e-load-sequence-of-events-data-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+</section>
+<section id="l-z-d-load-zip-code-database-data-into-postgresql">
+<h3><code class="docutils literal notranslate"><span class="pre">l_z_d</span></code> - Load ZIP Code Database data into PostgreSQL<a class="headerlink" href="#l-z-d-load-zip-code-database-data-into-postgresql" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p><strong>Purpose</strong></p>
+<p><strong>Data Source</strong></p>
+<p><strong>Implementation</strong></p>
+<p>This task transfers the data from an NTSB MS Access database previously downloaded from the NTSB website to the PostgreSQL database.
+The same MS Access database can be processed several times with this task without any problems, since only the changes are newly transferred to the PostgreSQL database.
+The initial loading is done with both MS Access databases Pre2008 ubd avall.
+After that only the monthly updates are then transferred.</p>
+</section>
+<section id="r-d-s-refresh-the-postgresql-database-schema">
+<h3><code class="docutils literal notranslate"><span class="pre">r_d_s</span></code> - Refresh the PostgreSQL database schema<a class="headerlink" href="#r-d-s-refresh-the-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p>Hereby changes can be made to the database schema.
+The task can be executed several times without problems, since before a change is always first checked whether this has already been done.</p>
+<ol class="arabic simple">
+<li><p>Materialized database view</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>``io_app_ae1982``</strong> - provides the data for processing the task <strong>``c_l_l``</strong> (Correct decimal US latitudes and longitudes).</p></li>
+</ul>
+<p>Example protocol:</p>
 <blockquote>
-<div></div></blockquote>
+<div><p>Progress update 2022-…:09.337180 : INFO.00.004 Start Launcher.
+Progress update 2022-…:09.342679 : INFO.00.001 The logger is configured and ready.
+Progress update 2022-…:09.352180 : INFO.00.005 Argument task=’r_d_s’.
+Progress update 2022-…:09.352180 : ——————————————————————————-.
+Progress update 2022-…:09.352180 : INFO.00.071 Refreshing the database schema.
+Progress update 2022-…:09.352180 : ——————————————————————————–
+Progress update 2022-…:19.366370 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
+Progress update 2022-…:19.366370 : ——————————————————————————-.
+Progress update 2022-…:19.366370 :       10,187,690,800 ns - Total time launcher.
+Progress update 2022-…:19.366370 : INFO.00.006 End   Launcher.
+Progress update 2022-…:19.366370 : ===============================================================================.</p>
+</div></blockquote>
+</section>
+<section id="r-s-a-run-the-io-avstats-application">
+<h3><code class="docutils literal notranslate"><span class="pre">r_s_a</span></code> - Run the IO-AVSTATS application<a class="headerlink" href="#r-s-a-run-the-io-avstats-application" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+</section>
+<section id="s-d-c-set-up-the-postgresql-database-container">
+<h3><code class="docutils literal notranslate"><span class="pre">s_d_c</span></code> - Set up the PostgreSQL database container<a class="headerlink" href="#s-d-c-set-up-the-postgresql-database-container" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+</section>
+<section id="u-d-s-update-the-postgresql-database-schema">
+<h3><code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> - Update the PostgreSQL database schema<a class="headerlink" href="#u-d-s-update-the-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+<p>Hereby changes can be made to the database schema.
+The task can be executed several times without problems, since before a change is always first checked whether this has already been done.</p>
+<ol class="arabic simple">
+<li><p>New database tables:</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>``io_countries``</strong>: contains latitude and longitude of selected countries.</p></li>
+<li><p><strong>``io_lat_lng``</strong>: used to store the <strong>simplemaps</strong> and <strong>United States Zip Codes.org</strong> data.</p></li>
+<li><p><strong>``io_states``</strong>: contains the identification, name, latitude and longitude of all US states.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Extensions for database tables:</p></li>
+</ol>
+<p>2.1 Database table <strong>``events``</strong>.</p>
+<ul class="simple">
+<li><p>The columns <strong>``io_city``</strong>, <strong>``io_country``</strong>, <strong>``io_latitude``</strong>, <strong>``io_longitude``</strong>, <strong>``io_site_zipcode``</strong> and <strong>``io_state``</strong> to store manual corrections.</p></li>
+<li><p>The columns <strong>``io_deviating_dec_latitude``</strong>, <strong>``io_deviating_dec_longitude``</strong>, <strong>``io_invalid_latitude``</strong>, <strong>``io_invalid_longitude``</strong>, <strong>``io_invalid_us_city``</strong>, <strong>``io_invalid_us_state``</strong> and , <strong>``io_invalid_us_zipcode``</strong> for documenting data plausibility (task <strong>``v_n_d``</strong>).</p></li>
+<li><p>the columns <strong>``io_dec_lat_lng_actions``</strong>, <strong>``io_dec_latitude``</strong> and <strong>``io_dec_longitude``</strong> to store corrected decimal latitude and longitude values.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>New database views:</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>``io_lat_lng_issues``</strong> - provides the data for processing the task <strong>``c_l_l``</strong> (Correct decimal US latitudes and longitudes).</p></li>
+<li><p><strong>``io_accidents_us_1982``</strong> - provides event data for aviation accidents in the U.S. since 1982.</p></li>
+</ul>
+</section>
+<section id="u-p-d-complete-processing-of-a-modifying-ms-access-file">
+<h3><code class="docutils literal notranslate"><span class="pre">u_p_d</span></code> - Complete processing of a modifying MS Access file<a class="headerlink" href="#u-p-d-complete-processing-of-a-modifying-ms-access-file" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+</section>
+<section id="v-n-d-verify-selected-ntsb-data">
+<h3><code class="docutils literal notranslate"><span class="pre">v_n_d</span></code> - Verify selected <strong>NTSB</strong> data<a class="headerlink" href="#v-n-d-verify-selected-ntsb-data" title="Link to this heading">#</a></h3>
+<p><strong>Purpose</strong></p>
+<p>This task can be used to perform a plausibility check for the following columns in the database table <strong>`events`</strong>:</p>
+<ul class="simple">
+<li><p><strong>`dec_latitude`</strong>,</p></li>
+<li><p><strong>`dec_longitude`</strong>,</p></li>
+<li><p><strong>`ev_state`</strong>,</p></li>
+<li><p><strong>`ev_site_zipcode`</strong>,</p></li>
+<li><p><strong>`latitude`</strong>,</p></li>
+<li><p><strong>`longitude`</strong>,</p></li>
+</ul>
+<p>and the combination of:</p>
+<ul class="simple">
+<li><p><strong>`ev_state`</strong> and <strong>`ev_city`</strong>,</p></li>
+<li><p><strong>`ev_state`</strong>, <strong>`ev_city`</strong> and <strong>`ev_site_zipcode`</strong>.</p></li>
+</ul>
+<p>The results of the check are stored in the following columns:</p>
+<ul class="simple">
+<li><p><strong>`io_deviating_dec_latitude`</strong> (absolute difference),</p></li>
+<li><p><strong>`io_deviating_dec_longitude`</strong> (absolute difference),</p></li>
+<li><p><strong>`io_invalid_latitude`</strong> (true),</p></li>
+<li><p><strong>`io_invalid_longitude`</strong> (true),</p></li>
+<li><p><strong>`io_invalid_us_city`</strong> (true),</p></li>
+<li><p><strong>`io_invalid_us_city_zipcode`</strong> (true),</p></li>
+<li><p><strong>`io_invalid_us_state`</strong> (true),</p></li>
+<li><p><strong>`io_invalid_us_zipcode`</strong> (true).</p></li>
+</ul>
+<p>The tests are performed according to the following logic:</p>
+<ul class="simple">
+<li><p><strong>`io_deviating_dec_latitude`</strong>: Absolute difference between <strong>`dec_latitude`</strong> and <strong>`latitude`</strong> exceeding a given limit in <strong>`max_deviation_latitude`</strong>.</p></li>
+<li><p><strong>`io_deviating_dec_longitude`</strong>: Absolute difference between <strong>`dec_longitude`</strong> and <strong>`longitude`</strong> exceeding a given limit <strong>`max_deviation_longitude`</strong>.</p></li>
+<li><p><strong>`io_invalid_latitude`</strong>: Can the latitude in the <strong>`latitude`</strong> column be converted to its decimal equivalent?</p></li>
+<li><p><strong>`io_invalid_longitude`</strong>: Can the longitude in the <strong>`longitude`</strong> column be converted to its decimal equivalent?</p></li>
+<li><p><strong>`io_invalid_us_city`</strong>: For country <cite>USA</cite> and the given state, is the specified value in the <strong>`ev_city`</strong> column an existing city?</p></li>
+<li><p><strong>`io_invalid_us_city_zipcode`</strong>: For country <cite>USA</cite> and the given state, are the specified values in the <strong>`ev_city`</strong> column and in the <strong>`ev_site_zipcode`</strong> column an existing city?</p></li>
+<li><p><strong>`io_invalid_us_state`</strong>: For country <cite>USA</cite>, is the specified value in the <strong>`ev_state`</strong> column a valid state identifier?</p></li>
+<li><p><strong>`io_invalid_us_zipcode`</strong>: For country <cite>USA</cite>, is the specified value in the <strong>`ev_site_zipcode`</strong> column an existing zip code?</p></li>
+</ul>
+</section>
+<section id="version-show-the-io-avstats-version">
+<h3><code class="docutils literal notranslate"><span class="pre">version</span></code> - Show the <strong>``IO-AVSTATS``</strong> version<a class="headerlink" href="#version-show-the-io-avstats-version" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TODO</p></li>
+</ul>
+</section>
+</section>
+<section id="first-installation">
+<h2>First installation<a class="headerlink" href="#first-installation" title="Link to this heading">#</a></h2>
+<p>The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:</p>
+<ul class="simple">
+<li><p><strong>``c_d_s``</strong> - Create the IO-AVSTATS-DB PostgreSQL database schema</p></li>
+<li><p><strong>``l_c_s``</strong> - Load country and state data into PostgreSQL</p></li>
+<li><p><strong>``l_a_p``</strong> - Load airport data into PostgreSQL</p></li>
+<li><p><strong>``a_o_c``</strong> - Load aviation occurrence categories into PostgreSQL</p></li>
+<li><p><strong>``l_s_e``</strong> - Load sequence of events data into PostgreSQL</p></li>
+<li><p><strong>``l_s_d``</strong> - Load simplemaps data into PostgreSQL</p></li>
+<li><p><strong>``l_z_d``</strong> - Load ZIP Code Database data into PostgreSQL</p></li>
+<li><p><strong>``u_p_d``</strong> - Complete processing of a modifying MS Access file: <strong>``Pre2008``</strong></p></li>
+</ul>
+</section>
+<section id="regular-updates">
+<h2>Regular updates<a class="headerlink" href="#regular-updates" title="Link to this heading">#</a></h2>
+<p>### Every 1st of the month</p>
+<ol class="arabic simple">
+<li><p>Stop the Docker container <strong>``IO-AVSTATS-DB``</strong></p></li>
+<li><p>Restore the current state of Pre2008</p></li>
+<li><p>Start the Docker container <strong>``IO-AVSTATS-DB``</strong></p></li>
+<li><p>Process the current <strong>``avall``</strong> file with code <strong>``l_n_a``</strong></p></li>
+</ol>
+<p>### Every 1st, 8th, 15th and 22nd</p>
+<ul class="simple">
+<li><p>Process the current <strong>``upDDMON``</strong> file with code <strong>``u_p_d``</strong></p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -225,12 +703,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="modules.html">
+          <a class="next-page" href="data_sources.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ioavstats</div>
+                <div class="title">Data Sources</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -263,8 +741,54 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Advanced Usage</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#detailed-task-list">Detailed task list</a><ul>
+<li><a class="reference internal" href="#a-o-c-load-aviation-occurrence-categories-into-postgresql"><code class="docutils literal notranslate"><span class="pre">a_o_c</span></code> - Load aviation occurrence categories into PostgreSQL</a></li>
+<li><a class="reference internal" href="#c-d-c-run-docker-compose-tasks-cloud"><code class="docutils literal notranslate"><span class="pre">c_d_c</span></code> - Run Docker Compose tasks - Cloud</a></li>
+<li><a class="reference internal" href="#c-d-i-create-or-update-an-application-docker-image"><code class="docutils literal notranslate"><span class="pre">c_d_i</span></code> - Create or update an application Docker image</a></li>
+<li><a class="reference internal" href="#c-d-s-create-the-io-avstats-db-postgresql-database-schema"><code class="docutils literal notranslate"><span class="pre">c_d_s</span></code> - Create the IO-AVSTATS-DB PostgreSQL database schema</a></li>
+<li><a class="reference internal" href="#c-f-z-zip-the-files-for-the-cloud"><code class="docutils literal notranslate"><span class="pre">c_f_z</span></code> - Zip the files for the cloud</a></li>
+<li><a class="reference internal" href="#c-l-l-correct-decimal-us-latitudes-and-longitude"><code class="docutils literal notranslate"><span class="pre">c_l_l</span></code> - Correct decimal US latitudes and longitude</a></li>
+<li><a class="reference internal" href="#c-p-d-cleansing-postgresql-data"><code class="docutils literal notranslate"><span class="pre">c_p_d</span></code> - Cleansing PostgreSQL data</a></li>
+<li><a class="reference internal" href="#f-n-a-find-the-nearest-airports"><code class="docutils literal notranslate"><span class="pre">f_n_a</span></code> - Find the nearest airports</a></li>
+<li><a class="reference internal" href="#l-a-p-load-airport-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_a_p</span></code> - Load airport data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-c-d-load-data-from-a-correction-file-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_c_d</span></code> - Load data from a correction file into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-c-s-load-country-and-state-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_c_s</span></code> - Load country and state data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-n-a-load-ntsb-ms-access-database-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_n_a</span></code> - Load NTSB MS Access database data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-s-d-load-simplemaps-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_s_d</span></code> - Load simplemaps data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-s-e-load-sequence-of-events-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_s_e</span></code> - Load sequence of events data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#l-z-d-load-zip-code-database-data-into-postgresql"><code class="docutils literal notranslate"><span class="pre">l_z_d</span></code> - Load ZIP Code Database data into PostgreSQL</a></li>
+<li><a class="reference internal" href="#r-d-s-refresh-the-postgresql-database-schema"><code class="docutils literal notranslate"><span class="pre">r_d_s</span></code> - Refresh the PostgreSQL database schema</a></li>
+<li><a class="reference internal" href="#r-s-a-run-the-io-avstats-application"><code class="docutils literal notranslate"><span class="pre">r_s_a</span></code> - Run the IO-AVSTATS application</a></li>
+<li><a class="reference internal" href="#s-d-c-set-up-the-postgresql-database-container"><code class="docutils literal notranslate"><span class="pre">s_d_c</span></code> - Set up the PostgreSQL database container</a></li>
+<li><a class="reference internal" href="#u-d-s-update-the-postgresql-database-schema"><code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> - Update the PostgreSQL database schema</a></li>
+<li><a class="reference internal" href="#u-p-d-complete-processing-of-a-modifying-ms-access-file"><code class="docutils literal notranslate"><span class="pre">u_p_d</span></code> - Complete processing of a modifying MS Access file</a></li>
+<li><a class="reference internal" href="#v-n-d-verify-selected-ntsb-data"><code class="docutils literal notranslate"><span class="pre">v_n_d</span></code> - Verify selected <strong>NTSB</strong> data</a></li>
+<li><a class="reference internal" href="#version-show-the-io-avstats-version"><code class="docutils literal notranslate"><span class="pre">version</span></code> - Show the <strong>``IO-AVSTATS``</strong> version</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#first-installation">First installation</a></li>
+<li><a class="reference internal" href="#regular-updates">Regular updates</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

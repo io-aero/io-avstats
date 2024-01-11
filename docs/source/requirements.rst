@@ -1,3 +1,4 @@
+============
 Requirements
 ============
 
@@ -9,6 +10,7 @@ Operating System
 ------------------
 
 Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.
+
 The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:
 
 .. code-block::
@@ -57,14 +59,11 @@ The project employs PostgreSQL for data storage and leverages Docker images prov
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
 
-`Miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`__\
---------------------------------------------------------------------
+`MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\
+-----------------------------------------------------------------------------------------------
 
-Some of the Python libraries required by the project are exclusively available through Conda. To maintain a minimal installation footprint, it is recommended to install Miniconda, a smaller, more lightweight version of Anaconda that includes only Conda, its dependencies, and Python.
-
-By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the ``scripts`` directory of the project, where operating system-specific installation scripts named ``run_install_miniconda`` are available for Windows (CMD shell), Ubuntu (Bash shell), and macOS (Zsh shell).
-
-Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.
+This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (``*.mdb`` and ``*.accdb``) files and Microsoft Office Excel (``*.xls``, ``*.xlsx``, and ``*.xlsb``) files to other data sources.
+Connectivity to existing text files is also supported.
 
 `DBeaver Community <https://dbeaver.io>`__\  - optional
 -------------------------------------------------------

@@ -1,10 +1,11 @@
+==========================
 End-User License Agreement
 ==========================
 
 End-User License Agreement (EULA) of IO-Aero Software
------------------------------------------------------
+=====================================================
 
-This End-User License Agreement (“**EULA**”) is a legal agreement
+This End=User License Agreement (“**EULA**”) is a legal agreement
 between you and **IO-Aero**.
 
 This **EULA** agreement governs your acquisition and use of our
@@ -38,7 +39,7 @@ Software, unless other terms accompany those items on delivery. If so,
 those terms apply.
 
 License Grant
-^^^^^^^^^^^^^
+-------------
 
 **IO-Aero** hereby grants you a personal, non-transferable,
 non-exclusive licence to use the **IO-Aero Software** on your devices in
@@ -50,7 +51,7 @@ ensuring your device meets the minimum requirements of the **IO-Aero
 Software**.
 
 You are not permitted to:
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 -  Edit, alter, modify, adapt, translate or otherwise change the whole
    or any part of the Software nor permit the whole or any part of the
@@ -77,7 +78,7 @@ modifications made thereto) are and shall remain the property of
 third parties.
 
 Termination
-^^^^^^^^^^^
+-----------
 
 This **EULA** agreement is effective from the date you first use the
 Software and shall continue until terminated. You may terminate it at
@@ -91,7 +92,7 @@ nature continue and survive will survive any termination of this
 **EULA** agreement.
 
 Governing Law
-^^^^^^^^^^^^^
+-------------
 
 This **EULA** agreement, and any dispute arising out of or in connection
 with this **EULA** agreement, shall be governed by and construed in

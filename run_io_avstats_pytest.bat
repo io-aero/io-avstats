@@ -339,18 +339,6 @@ if exist %IO_AERO_AVSTATS_LOG% (
             exit 1
         )
 
-        pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats_pytest was aborted
-            exit 1
-        )
-
-        pipenv run python scripts\launcher.py -t u_d_s
-        if ERRORLEVEL 1 (
-            echo Processing of the script run_io_avstats_pytest was aborted
-            exit 1
-        )
-
         pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_pytest was aborted

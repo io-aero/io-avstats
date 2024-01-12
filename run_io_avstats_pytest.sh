@@ -35,6 +35,9 @@ export PYTHONPATH=.
 
 if [ -z "$1" ]; then
     echo "========================================================="
+    echo "u_p_d   - Complete processing of a modifying MS Access file"
+    echo "l_n_a   - Load NTSB MS Access database data into PostgreSQL"
+    echo "---------------------------------------------------------"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
     echo "f_n_a   - Find the nearest airports"
@@ -70,6 +73,22 @@ else
     export IO_AERO_TASK=$1
 fi
 
+if [ "${IO_AERO_TASK}" = "c_d_l" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "clean - Remove all containers and images"
+        echo "down  - Stop  Docker Compose"
+        echo "logs  - Fetch the logs of a container"
+        echo "up    - Start Docker Compose"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the desired Docker Compose task [default: ${IO_AERO_COMPOSE_TASK_DEFAULT}] " IO_AERO_COMPOSE_TASK
+        export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK}
+    else
+        export IO_AERO_COMPOSE_TASK=$2
+    fi
+fi
+
 if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     if [ -z "$2" ]; then
         echo "========================================================="
@@ -80,6 +99,34 @@ if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
         export IO_AERO_MSEXCEL=$2
+    fi
+fi
+
+if [ "${IO_AERO_TASK}" = "l_n_a" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        ls -ll ${IO_AERO_NTSB_WORK_DIR}/*.mdb
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
+        export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
+    else
+        export IO_AERO_MSACCESS=$2
+    fi
+fi
+
+if [ "${IO_AERO_TASK}" = "u_p_d" ]; then
+    if [ -z "$2" ]; then
+        echo "========================================================="
+        echo "avall   - Data from January 1, 2008 to today"
+        echo "Pre2008 - Data from January 1, 1982 to December 31, 2007"
+        echo "upDDMON - New additions and updates until DD day in the month MON"
+        echo "---------------------------------------------------------"
+        # shellcheck disable=SC2162
+        read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
+        export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
+    else
+        export IO_AERO_MSACCESS=$2
     fi
 fi
 
@@ -103,10 +150,12 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
 echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH : ${PYTHONPATH}"
+echo "PYTHONPATH   : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
-echo "TASK       : ${IO_AERO_TASK}"
-echo "MSEXCEL    : ${IO_AERO_MSEXCEL}"
+echo "TASK         : ${IO_AERO_TASK}"
+echo "COMPOSE_TASK : ${IO_AERO_COMPOSE_TASK}"
+echo "MSACCESS     : ${IO_AERO_MSACCESS}"
+echo "MSEXCEL      : ${IO_AERO_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -129,6 +178,14 @@ echo "==========================================================================
 # ------------------------------------------------------------------------------
 if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Run Docker Compose tasks (Local).
+# ------------------------------------------------------------------------------
+elif [ "${IO_AERO_TASK}" = "c_d_l" ]; then
+    if ! ( ./scripts/run_docker_compose_local.sh ${IO_AERO_COMPOSE_TASK} ); then
         exit 255
     fi
 
@@ -157,10 +214,44 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     fi
 
 # ------------------------------------------------------------------------------
+# Load NTSB MS Access database data into PostgreSQL.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
+    if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -m "${IO_AERO_MSACCESS}" ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
 # Set up the PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then
+        exit 255
+    fi
+
+# ------------------------------------------------------------------------------
+# Complete processing of a modifying MS Access file.
+# ------------------------------------------------------------------------------
+elif [ "${IO_AERO_TASK}" = "u_p_d" ]; then
+    if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t l_n_a -m "${IO_AERO_MSACCESS}" ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t c_l_L ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t f_n_a ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t v_n_d ); then
+        exit 255
+    fi
+    if ! ( pipenv run python scripts/launcher.py -t r_d_s ); then
         exit 255
     fi
 

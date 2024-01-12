@@ -150,12 +150,14 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
 echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH   : ${PYTHONPATH}"
+echo "ENV_FOR_DYNACONF         : ${ENV_FOR_DYNACONF}"
+echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
+echo "PYTHONPATH               : ${PYTHONPATH}"
 echo "--------------------------------------------------------------------------------"
-echo "TASK         : ${IO_AERO_TASK}"
-echo "COMPOSE_TASK : ${IO_AERO_COMPOSE_TASK}"
-echo "MSACCESS     : ${IO_AERO_MSACCESS}"
-echo "MSEXCEL      : ${IO_AERO_MSEXCEL}"
+echo "TASK                     : ${IO_AERO_TASK}"
+echo "COMPOSE_TASK             : ${IO_AERO_COMPOSE_TASK}"
+echo "MSACCESS                 : ${IO_AERO_MSACCESS}"
+echo "MSEXCEL                  : ${IO_AERO_MSEXCEL}"
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
@@ -225,7 +227,7 @@ elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
     fi
 
 # ------------------------------------------------------------------------------
-# Set up the PostgreSQL database container.
+# Set up the IO-AVSTATS-DB PostgreSQL database container.
 # ------------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then

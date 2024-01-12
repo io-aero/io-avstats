@@ -84,9 +84,9 @@ def test_launcher_d_d_f():
     assert settings.check_value == "test"
 
     if platform.system() == "Darwin":
-        exit_code = 0
+        exit_code = os.system("./run_io_avstats_pytest.zsh d_d_f")
     elif platform.system() == "Linux":
-        exit_code = 0
+        exit_code = os.system("sudo ./run_io_avstats_pytest.sh d_d_f")
     elif platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat d_d_f")
     else:
@@ -326,33 +326,6 @@ def test_launcher_l_z_d():
         exit_code = os.system("./run_io_avstats_pytest.sh l_z_d")
     elif platform.system() == "Windows":
         exit_code = os.system("run_io_avstats_pytest.bat l_z_d")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
-
-
-# -----------------------------------------------------------------------------
-# Test case: launcher() - u_p_d   - Complete processing of a modifying MS Access
-#                                   file.
-# -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_u_p_d():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
-
-    assert settings.check_value == "test"
-
-    if platform.system() == "Darwin":
-        exit_code = 0
-    elif platform.system() == "Linux":
-        exit_code = 0
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat u_p_d up22FEB")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())

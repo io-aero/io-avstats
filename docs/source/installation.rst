@@ -1,3 +1,4 @@
+============
 Installation
 ============
 
@@ -27,19 +28,6 @@ Within the project's ``scripts`` directory, you will find a set of scripts speci
 
 Each script is named following the pattern ``run_install_aws_cli.<ext>``, with ``<ext>`` being the respective script extension suitable for the target operating system and shell environment (e.g., `.bat` for Windows CMD, `.sh` for Ubuntu Bash, `.zsh` for macOS Zsh). Users are advised to execute the corresponding script for their operating system to achieve an optimal AWS CLI installation experience.
 
-Miniconda
----------
-
-The ``scripts`` directory includes a collection of operating system-specific scripts named ``run_install_miniconda`` to streamline the installation of Miniconda. These scripts are designed to cater to the needs of different environments, making the setup process efficient and user-friendly.
-
-- **Windows CMD Shell**: The ``run_install_miniconda.bat`` script is tailored for the Windows CMD shell. It automates the Miniconda installation process on Windows, providing a hassle-free setup with a simple double-click or command line execution.
-
-- **Ubuntu Bash Shell**: Ubuntu users can take advantage of the ``run_install_miniconda.sh`` script. This Bash script is intended for use within the Ubuntu terminal, encapsulating the necessary commands to install Miniconda seamlessly on Ubuntu systems.
-
-- **macOS Zsh Shell**: For macOS, the ``run_install_miniconda.zsh`` script is available. It is optimized for the Zsh shell, which is the default on recent versions of macOS. This script simplifies the installation and configuration of Miniconda, ensuring a smooth integration with macOS.
-
-Each script in the ``scripts`` directory is named to reflect its compatibility with the corresponding operating system and shell environment. Users are encouraged to execute the script that matches their OS for a smooth and error-free Miniconda installation experience.
-
 Docker Desktop
 --------------
 
@@ -52,6 +40,25 @@ The ``scripts`` directory contains scripts that assist with installing Docker De
 - **Windows**: For Windows users, it is recommended to download and install Docker Desktop using the traditional installer available at `Docker Desktop for Windows <https://www.docker.com/products/docker-desktop>`_. This approach guarantees the most stable version and is tailored to integrate seamlessly with Windows-specific features and configurations.
 
 Please select and execute the appropriate script for your operating system from the ``scripts`` directory. Windows users should follow the provided link to obtain the official installer for a guided installation experience.
+
+MS Access Database Engine
+-------------------------
+
+- **Windows**: The software can be downloaded from `here <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\  and then installed according to the instructions provided.
+
+- **Ubuntu Bash Shell**: The necessary software can be downloaded with the package manager ``apt`` as follows:
+
+.. code-block:: bash
+
+    sudo apt-get update -y
+    sudo apt-get install -y unixodbc-dev
+
+- **macOS Zsh Shell**: The necessary software can be downloaded with the package manager ``Homebrew`` as follows:
+
+.. code-block:: zsh
+
+    brew update
+    brew install unixodbc
 
 DBeaver - optional
 ------------------

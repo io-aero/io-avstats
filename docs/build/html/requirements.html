@@ -161,9 +161,12 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_io_avstats.html">Configuration IO-AVSTATS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_logging.html">Configuration Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db_administration.html">PostgreSQL Administration</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
@@ -172,6 +175,18 @@
 <li class="toctree-l3"><a class="reference internal" href="ioavstats.pages.html">ioavstats.pages package</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Master Data Logs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data_master_logs.html">Master Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Master Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Transaction Data Logs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -220,8 +235,8 @@ software versions, you will find the detailed information in the
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
 <h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">#</a></h2>
-<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.
-The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:</p>
+<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.</p>
+<p>The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span>
 </pre></div>
 </div>
@@ -273,19 +288,16 @@ Utilizing the AWS CLI ensures efficient and reliable access to the necessary Pyt
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.</p>
 </section>
-<section id="miniconda">
-<h2><a class="reference external" href="https://docs.conda.io/projects/miniconda/en/latest/">Miniconda</a><a class="headerlink" href="#miniconda" title="Link to this heading">#</a></h2>
-<p>Some of the Python libraries required by the project are exclusively available through Conda. To maintain a minimal installation footprint, it is recommended to install Miniconda, a smaller, more lightweight version of Anaconda that includes only Conda, its dependencies, and Python.</p>
-<p>By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory of the project, where operating system-specific installation scripts named <code class="docutils literal notranslate"><span class="pre">run_install_miniconda</span></code> are available for Windows (CMD shell), Ubuntu (Bash shell), and macOS (Zsh shell).</p>
-<p>Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.</p>
+<section id="ms-access-database-engine">
+<h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a><a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">#</a></h2>
+<p>This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (<code class="docutils literal notranslate"><span class="pre">*.mdb</span></code> and <code class="docutils literal notranslate"><span class="pre">*.accdb</span></code>) files and Microsoft Office Excel (<code class="docutils literal notranslate"><span class="pre">*.xls</span></code>, <code class="docutils literal notranslate"><span class="pre">*.xlsx</span></code>, and <code class="docutils literal notranslate"><span class="pre">*.xlsb</span></code>) files to other data sources.
+Connectivity to existing text files is also supported.</p>
 </section>
 <section id="dbeaver-community-optional">
 <h2><a class="reference external" href="https://dbeaver.io">DBeaver Community</a> - optional<a class="headerlink" href="#dbeaver-community-optional" title="Link to this heading">#</a></h2>
 <p>DBeaver is recommended as the user interface for interacting with the PostgreSQL database due to its comprehensive and user-friendly features.
 It provides a flexible and intuitive platform for database management, supporting a wide range of database functionalities including SQL scripting, data visualization, and import/export capabilities.
 Additionally, the project includes predefined connection configurations for DBeaver, facilitating a hassle-free and streamlined setup process for users.</p>
-<blockquote>
-<div></div></blockquote>
 </section>
 </section>
 
@@ -349,7 +361,7 @@ Additionally, the project includes predefined connection configurations for DBea
 <li><a class="reference internal" href="#python">Python</a></li>
 <li><a class="reference internal" href="#aws-command-line-interface">AWS Command Line Interface</a></li>
 <li><a class="reference internal" href="#docker-desktop">Docker Desktop</a></li>
-<li><a class="reference internal" href="#miniconda">Miniconda</a></li>
+<li><a class="reference internal" href="#ms-access-database-engine">MS Access Database Engine</a></li>
 <li><a class="reference internal" href="#dbeaver-community-optional">DBeaver Community - optional</a></li>
 </ul>
 </li>

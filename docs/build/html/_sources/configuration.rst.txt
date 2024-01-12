@@ -1,31 +1,6 @@
+=============
 Configuration
 =============
-
-.settings.io_aero.toml
-----------------------
-
-This file controls the secrets of the **IO-AVSTATS** application.
-This file is not included in the repository.
-
-The customisable entries are:
-
-======================= ======================================
-Parameter               Description
-======================= ======================================
-postgres_password       Password of the database user
-postgres_password_admin Password of the database administrator
-======================= ======================================
-
-The secrets can be set differently for the individual
-environments (``default`` and ``test``).
-
-**Examples**:
-
-.. code-block::
-
-    [default]
-    postgres_password = "..."
-    postgres_password_admin = "..."
 
 settings.io_aero.toml
 ---------------------

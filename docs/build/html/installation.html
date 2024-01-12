@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Configuration" href="configuration.html" /><link rel="prev" title="Requirements" href="requirements.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Configuration IO-AVSTATS" href="configuration_io_avstats.html" /><link rel="prev" title="Requirements" href="requirements.html" />
 
     <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Installation - IO-AVSTATS 24-1-8 documentation</title>
@@ -161,9 +161,12 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_io_avstats.html">Configuration IO-AVSTATS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_logging.html">Configuration Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db_administration.html">PostgreSQL Administration</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
@@ -174,6 +177,39 @@
 </li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Master Data Logs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_01_s_d_c_23_08_21.html">Set up the database container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_02_c_d_s_23_08_21.html">Create the database schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_03_u_d_s_23_08_21.html">Update the database schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_11_a_o_c_23_08_21.html">Load aviation occurrence categories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_12_l_a_p.html">Load airport data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_13_l_c_s_23_08_21.html">Load country and state data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_14_l_s_e_23_08_21.html">Load sequence of events data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_21_l_s_d_23_08_21.html">Load simplemaps data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_master/pre2008_22_l_z_d.html">Load ZIP Code Database data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Transaction Data Logs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2024_01_08_log_up08JAN.html">2024.01.08 up08JAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2024_01_01_log_up01JAN.html">2024.01.01 up01JAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2024_01_01_log_avall.html">2024.01.01 avall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_12_22_log_up22DEC.html">2023.12.22 up22DEC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_12_15_log_up15DEC.html">2023.12.15 up15DEC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_12_08_log_up08DEC.html">2023.12.08 up08DEC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_12_04_log_up01DEC.html">2023.12.01 up01DEC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_12_04_log_avall.html">2023.12.01 avall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_11_22_log_up22NOV.html">2023.11.22 up22NOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_11_15_log_up15NOV.html">2023.11.15 up15NOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_11_08_log_up08NOV.html">2023.11.08 up08NOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_11_01_log_up01NOV.html">2023.11.01 up01NOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_11_01_log_avall.html">2023.11.01 avall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_10_22_log_up22OCT.html">2023.10.22 up22OCT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_10_15_log_up15OCT.html">2023.10.15 up15OCT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_10_08_log_up08OCT.html">2023.10.08 up08OCT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_10_01_log_up01OCT.html">2023.10.01 up01OCT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_transaction/2023_10_01_log_avall.html">2023.10.01 avall</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">About</span></p>
 <ul>
@@ -235,16 +271,6 @@
 </ul>
 <p>Each script is named following the pattern <code class="docutils literal notranslate"><span class="pre">run_install_aws_cli.&lt;ext&gt;</span></code>, with <code class="docutils literal notranslate"><span class="pre">&lt;ext&gt;</span></code> being the respective script extension suitable for the target operating system and shell environment (e.g., <cite>.bat</cite> for Windows CMD, <cite>.sh</cite> for Ubuntu Bash, <cite>.zsh</cite> for macOS Zsh). Users are advised to execute the corresponding script for their operating system to achieve an optimal AWS CLI installation experience.</p>
 </section>
-<section id="miniconda">
-<h2>Miniconda<a class="headerlink" href="#miniconda" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory includes a collection of operating system-specific scripts named <code class="docutils literal notranslate"><span class="pre">run_install_miniconda</span></code> to streamline the installation of Miniconda. These scripts are designed to cater to the needs of different environments, making the setup process efficient and user-friendly.</p>
-<ul class="simple">
-<li><p><strong>Windows CMD Shell</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.bat</span></code> script is tailored for the Windows CMD shell. It automates the Miniconda installation process on Windows, providing a hassle-free setup with a simple double-click or command line execution.</p></li>
-<li><p><strong>Ubuntu Bash Shell</strong>: Ubuntu users can take advantage of the <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.sh</span></code> script. This Bash script is intended for use within the Ubuntu terminal, encapsulating the necessary commands to install Miniconda seamlessly on Ubuntu systems.</p></li>
-<li><p><strong>macOS Zsh Shell</strong>: For macOS, the <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.zsh</span></code> script is available. It is optimized for the Zsh shell, which is the default on recent versions of macOS. This script simplifies the installation and configuration of Miniconda, ensuring a smooth integration with macOS.</p></li>
-</ul>
-<p>Each script in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory is named to reflect its compatibility with the corresponding operating system and shell environment. Users are encouraged to execute the script that matches their OS for a smooth and error-free Miniconda installation experience.</p>
-</section>
 <section id="docker-desktop">
 <h2>Docker Desktop<a class="headerlink" href="#docker-desktop" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory contains scripts that assist with installing Docker Desktop on macOS and Ubuntu, facilitating an automated and streamlined setup.</p>
@@ -254,6 +280,24 @@
 <li><p><strong>Windows</strong>: For Windows users, it is recommended to download and install Docker Desktop using the traditional installer available at <a class="reference external" href="https://www.docker.com/products/docker-desktop">Docker Desktop for Windows</a>. This approach guarantees the most stable version and is tailored to integrate seamlessly with Windows-specific features and configurations.</p></li>
 </ul>
 <p>Please select and execute the appropriate script for your operating system from the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory. Windows users should follow the provided link to obtain the official installer for a guided installation experience.</p>
+</section>
+<section id="ms-access-database-engine">
+<h2>MS Access Database Engine<a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Windows</strong>: The software can be downloaded from <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">here</a> and then installed according to the instructions provided.</p></li>
+<li><p><strong>Ubuntu Bash Shell</strong>: The necessary software can be downloaded with the package manager <code class="docutils literal notranslate"><span class="pre">apt</span></code> as follows:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>unixodbc-dev
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>macOS Zsh Shell</strong>: The necessary software can be downloaded with the package manager <code class="docutils literal notranslate"><span class="pre">Homebrew</span></code> as follows:</p></li>
+</ul>
+<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>update
+brew<span class="w"> </span>install<span class="w"> </span>unixodbc
+</pre></div>
+</div>
 </section>
 <section id="dbeaver-optional">
 <h2>DBeaver - optional<a class="headerlink" href="#dbeaver-optional" title="Link to this heading">#</a></h2>
@@ -273,8 +317,6 @@
 <li><p><strong>Production Environment</strong>: Execute the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">conda-prod</span></code> for preparing a production environment. It ensures that all the required dependencies are installed following the configurations optimized for production deployment.</p></li>
 </ul>
 <p>The Makefile targets abstract away the complexity of managing multiple package managers and streamline the environment setup. It is crucial to have both Conda and the appropriate pip tools available in your system’s PATH to utilize the Makefile commands successfully.</p>
-<blockquote>
-<div></div></blockquote>
 </section>
 </section>
 
@@ -283,12 +325,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="configuration.html">
+          <a class="next-page" href="configuration_io_avstats.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Configuration</div>
+                <div class="title">Configuration IO-AVSTATS</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -336,8 +378,8 @@
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#python">Python</a></li>
 <li><a class="reference internal" href="#aws-command-line-interface">AWS Command Line Interface</a></li>
-<li><a class="reference internal" href="#miniconda">Miniconda</a></li>
 <li><a class="reference internal" href="#docker-desktop">Docker Desktop</a></li>
+<li><a class="reference internal" href="#ms-access-database-engine">MS Access Database Engine</a></li>
 <li><a class="reference internal" href="#dbeaver-optional">DBeaver - optional</a></li>
 <li><a class="reference internal" href="#python-libraries">Python Libraries</a></li>
 </ul>

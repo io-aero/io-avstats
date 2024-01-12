@@ -164,6 +164,9 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db_administration.html">PostgreSQL Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation.html">Operation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
@@ -216,38 +219,7 @@
           <section id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h1>
 <section id="settings-io-aero-toml">
-<h2>.settings.io_aero.toml<a class="headerlink" href="#settings-io-aero-toml" title="Link to this heading">#</a></h2>
-<p>This file controls the secrets of the <strong>IO-AVSTATS</strong> application.
-This file is not included in the repository.</p>
-<p>The customisable entries are:</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>postgres_password</p></td>
-<td><p>Password of the database user</p></td>
-</tr>
-<tr class="row-odd"><td><p>postgres_password_admin</p></td>
-<td><p>Password of the database administrator</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The secrets can be set differently for the individual
-environments (<code class="docutils literal notranslate"><span class="pre">default</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>).</p>
-<p><strong>Examples</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default</span><span class="p">]</span>
-<span class="n">postgres_password</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
-<span class="n">postgres_password_admin</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
-</pre></div>
-</div>
-</section>
-<section id="id1">
-<h2>settings.io_aero.toml<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2>settings.io_aero.toml<a class="headerlink" href="#settings-io-aero-toml" title="Link to this heading">#</a></h2>
 <p>This file controls the behaviour of the <strong>IO-AVSTATS</strong> application.</p>
 <p>The customisable entries are:</p>
 <div class="table-wrapper docutils container">
@@ -283,7 +255,7 @@ environments (<code class="docutils literal notranslate"><span class="pre">defau
 
 
         <span class="o">..</span> <span class="o">|</span><span class="n">version</span><span class="o">|</span> <span class="n">replace</span><span class="p">::</span> <span class="mf">24.1.8</span>
-        <span class="o">..</span> <span class="o">|</span><span class="n">today</span><span class="o">|</span> <span class="n">replace</span><span class="p">::</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">09</span>
+        <span class="o">..</span> <span class="o">|</span><span class="n">today</span><span class="o">|</span> <span class="n">replace</span><span class="p">::</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">11</span>
         <span class="o">..</span> <span class="o">|</span><span class="n">release</span><span class="o">|</span> <span class="n">replace</span><span class="p">::</span> <span class="mi">24</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">8</span>
 </pre></div>
 </div>
@@ -346,8 +318,7 @@ environments (<code class="docutils literal notranslate"><span class="pre">defau
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Configuration</a><ul>
-<li><a class="reference internal" href="#settings-io-aero-toml">.settings.io_aero.toml</a></li>
-<li><a class="reference internal" href="#id1">settings.io_aero.toml</a></li>
+<li><a class="reference internal" href="#settings-io-aero-toml">settings.io_aero.toml</a></li>
 </ul>
 </li>
 </ul>

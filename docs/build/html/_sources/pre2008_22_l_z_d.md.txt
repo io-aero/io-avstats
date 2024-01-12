@@ -1,0 +1,179 @@
+# l_z_d - Load ZIP Code Database data into PostgreSQL
+
+## 2023-08-22
+
+```
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   : D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\dist;D:\SoftDevelopment\Projects\IO-Aero\io-maps\dist
+-----------------------------------------------------------------------
+TASK         : l_z_d
+APPLICATION  : 
+COMPOSE_TASK : 
+MSACCESS     : 
+MSEXCEL      : 
+-----------------------------------------------------------------------
+The current time is:  1:47:37.03
+Enter the new time: 
+=======================================================================
+Progress update 2023-08-22 01:47:38.263210 : ===============================================================================.
+Progress update 2023-08-22 01:47:38.263210 : INFO.00.004 Start Launcher.
+Progress update 2023-08-22 01:47:38.265206 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-08-22 01:47:38.275379 : INFO.00.005 Argument task='l_z_d'.
+Progress update 2023-08-22 01:47:38.275379 : -------------------------------------------------------------------------------.
+Progress update 2023-08-22 01:47:38.275379 : INFO.00.056 Load ZIP Code Database data.
+Progress update 2023-08-22 01:47:38.275379 : --------------------------------------------------------------------------------
+Progress update 2023-08-22 01:47:38.275379 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2023-08-22 01:47:38.342729 : INFO.00.061 Database table io_lat_lng: Load the estimated zip code data.
+Progress update 2023-08-22 01:47:38.342729 : --------------------------------------------------------------------------------
+Progress update 2023-08-22 01:47:44.344629 : Number of rows so far read :    10000.
+Progress update 2023-08-22 01:47:50.391710 : Number of rows so far read :    20000.
+Progress update 2023-08-22 01:47:56.324224 : Number of rows so far read :    30000.
+Progress update 2023-08-22 01:48:01.613681 : Number of rows so far read :    40000.
+Progress update 2023-08-22 01:48:02.872042 : Number rows selected :    42736.
+Progress update 2023-08-22 01:48:02.872042 : Number rows upserted :    13369.
+Progress update 2023-08-22 01:48:02.872042 : --------------------------------------------------------------------------------
+Progress update 2023-08-22 01:48:02.913086 : INFO.00.063 Processed data source 'average'.
+Progress update 2023-08-22 01:48:02.913086 : Number rows deleted  :     7537.
+Progress update 2023-08-22 01:48:02.913086 : --------------------------------------------------------------------------------
+Progress update 2023-08-22 01:48:02.913086 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2023-08-22 01:48:02.913086 : --------------------------------------------------------------------------------
+Progress update 2023-08-22 01:48:02.913086 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2023-08-22 01:48:07.645702 : Number of rows so far read :    10000.
+Progress update 2023-08-22 01:48:12.210835 : Number of rows so far read :    20000.
+Progress update 2023-08-22 01:48:16.692840 : Number of rows so far read :    30000.
+Progress update 2023-08-22 01:48:21.232907 : Number of rows so far read :    40000.
+Progress update 2023-08-22 01:48:24.175061 : Number rows selected :    46564.
+Progress update 2023-08-22 01:48:24.175061 : Number rows inserted :    46564.
+Progress update 2023-08-22 01:48:24.177062 : -------------------------------------------------------------------------------.
+Progress update 2023-08-22 01:48:24.177062 :       45,913,851,900 ns - Total time launcher.
+Progress update 2023-08-22 01:48:24.177062 : INFO.00.006 End   Launcher.
+Progress update 2023-08-22 01:48:24.177062 : ===============================================================================.
+```
+
+## 2023-06-30
+
+```
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   : D:\SoftDevelopment\Projects\IO-Aero\io-avstats-db\dist;D:\SoftDevelopment\Projects\IO-Aero\io-maps\dist
+-----------------------------------------------------------------------
+TASK         : l_z_d
+APPLICATION  :
+COMPOSE_TASK :
+MSACCESS     :
+MSEXCEL      :
+-----------------------------------------------------------------------
+The current time is: 17:03:57.58
+Enter the new time:
+=======================================================================
+Progress update 2023-07-31 17:03:58.713078 : ===============================================================================.
+Progress update 2023-07-31 17:03:58.713078 : INFO.00.004 Start Launcher.
+Progress update 2023-07-31 17:03:58.715078 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-07-31 17:03:58.724078 : INFO.00.005 Argument task='l_z_d'.
+Progress update 2023-07-31 17:03:58.724078 : -------------------------------------------------------------------------------.
+Progress update 2023-07-31 17:03:58.724078 : INFO.00.056 Load ZIP Code Database data.
+Progress update 2023-07-31 17:03:58.724078 : --------------------------------------------------------------------------------
+Progress update 2023-07-31 17:03:58.724078 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-07-31 17:03:58.790307 : INFO.00.061 Database table io_lat_lng: Load the estimated zip code data.
+Progress update 2023-07-31 17:03:58.790307 : --------------------------------------------------------------------------------
+Progress update 2023-07-31 17:04:04.816406 : Number of rows so far read :    10000.
+Progress update 2023-07-31 17:04:10.948322 : Number of rows so far read :    20000.
+Progress update 2023-07-31 17:04:16.971469 : Number of rows so far read :    30000.
+Progress update 2023-07-31 17:04:22.361318 : Number of rows so far read :    40000.
+Progress update 2023-07-31 17:04:23.669313 : Number rows selected :    42736.
+Progress update 2023-07-31 17:04:23.669313 : Number rows upserted :    13369.
+Progress update 2023-07-31 17:04:23.669313 : --------------------------------------------------------------------------------
+Progress update 2023-07-31 17:04:23.736829 : INFO.00.063 Processed data source 'average'.
+Progress update 2023-07-31 17:04:23.736829 : Number rows deleted  :     7537.
+Progress update 2023-07-31 17:04:23.736829 : --------------------------------------------------------------------------------
+Progress update 2023-07-31 17:04:23.736829 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2023-07-31 17:04:23.736829 : --------------------------------------------------------------------------------
+Progress update 2023-07-31 17:04:23.736829 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-07-31 17:04:28.676646 : Number of rows so far read :    10000.
+Progress update 2023-07-31 17:04:33.408908 : Number of rows so far read :    20000.
+Progress update 2023-07-31 17:04:38.232046 : Number of rows so far read :    30000.
+Progress update 2023-07-31 17:04:42.922145 : Number of rows so far read :    40000.
+Progress update 2023-07-31 17:04:46.072539 : Number rows selected :    46564.
+Progress update 2023-07-31 17:04:46.072539 : Number rows inserted :    46564.
+Progress update 2023-07-31 17:04:46.074539 : -------------------------------------------------------------------------------.
+Progress update 2023-07-31 17:04:46.074539 :       47,361,461,200 ns - Total time launcher.
+Progress update 2023-07-31 17:04:46.074539 : INFO.00.006 End   Launcher.
+Progress update 2023-07-31 17:04:46.075541 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 17:04:46.20
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+```
+
+## 2023-06-20
+
+```
+Script run_io_avstats is now running
+=======================================================================
+Start run_io_avstats
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   :
+-----------------------------------------------------------------------
+TASK         : l_z_d
+APPLICATION  :
+COMPOSE_TASK :
+MSACCESS     :
+MSEXCEL      :
+-----------------------------------------------------------------------
+The current time is: 12:26:32.17
+Enter the new time:
+=======================================================================
+Progress update 2023-06-24 12:26:33.470339 : ===============================================================================.
+Progress update 2023-06-24 12:26:33.470339 : INFO.00.004 Start Launcher.
+Progress update 2023-06-24 12:26:33.472340 : INFO.00.001 The logger is configured and ready.
+Progress update 2023-06-24 12:26:33.481848 : INFO.00.005 Argument task='l_z_d'.
+Progress update 2023-06-24 12:26:33.481848 : -------------------------------------------------------------------------------.
+Progress update 2023-06-24 12:26:33.481848 : INFO.00.056 Load ZIP Code Database data.
+Progress update 2023-06-24 12:26:33.481848 : --------------------------------------------------------------------------------
+Progress update 2023-06-24 12:26:33.481848 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-06-24 12:26:33.548853 : INFO.00.061 Database table io_lat_lng: Load the estimated zip code data.
+Progress update 2023-06-24 12:26:33.548853 : --------------------------------------------------------------------------------
+Progress update 2023-06-24 12:26:39.403838 : Number of rows so far read :    10000.
+Progress update 2023-06-24 12:26:45.511114 : Number of rows so far read :    20000.
+Progress update 2023-06-24 12:26:51.675398 : Number of rows so far read :    30000.
+Progress update 2023-06-24 12:26:57.236698 : Number of rows so far read :    40000.
+Progress update 2023-06-24 12:26:58.515447 : Number rows selected :    42736.
+Progress update 2023-06-24 12:26:58.515447 : Number rows upserted :    13369.
+Progress update 2023-06-24 12:26:58.515447 : --------------------------------------------------------------------------------
+Progress update 2023-06-24 12:26:58.556862 : INFO.00.063 Processed data source 'average'.
+Progress update 2023-06-24 12:26:58.556862 : Number rows deleted  :     7537.
+Progress update 2023-06-24 12:26:58.556862 : --------------------------------------------------------------------------------
+Progress update 2023-06-24 12:26:58.556862 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2023-06-24 12:26:58.557361 : --------------------------------------------------------------------------------
+Progress update 2023-06-24 12:26:58.557361 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_avstats_db user=io_aero.
+Progress update 2023-06-24 12:27:03.463951 : Number of rows so far read :    10000.
+Progress update 2023-06-24 12:27:08.137453 : Number of rows so far read :    20000.
+Progress update 2023-06-24 12:27:12.786236 : Number of rows so far read :    30000.
+Progress update 2023-06-24 12:27:17.335109 : Number of rows so far read :    40000.
+Progress update 2023-06-24 12:27:20.393044 : Number rows selected :    46564.
+Progress update 2023-06-24 12:27:20.393547 : Number rows inserted :    46564.
+Progress update 2023-06-24 12:27:20.396044 : -------------------------------------------------------------------------------.
+Progress update 2023-06-24 12:27:20.396044 :       46,925,704,700 ns - Total time launcher.
+Progress update 2023-06-24 12:27:20.396044 : INFO.00.006 End   Launcher.
+Progress update 2023-06-24 12:27:20.396544 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 12:27:20.51
+Enter the new time:
+-----------------------------------------------------------------------
+End   run_io_avstats
+=======================================================================
+```

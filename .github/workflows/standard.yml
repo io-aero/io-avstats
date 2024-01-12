@@ -18,7 +18,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, macos-latest]
+#       os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         python-version: ["3.10"]
 
     steps:
@@ -116,7 +117,7 @@ jobs:
         if: ${{ env.IO_ODBC == 'true' && runner.os == 'macOS' }}
         run: |
           brew update
-          brew upgrade unixodbc-dev
+          brew upgrade unixodbc
 
       - name: Install ODBC - Ubuntu
         if: ${{ env.IO_ODBC == 'true' && runner.os == 'Linux' }}

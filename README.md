@@ -2,14 +2,16 @@
 
 ## 1. Features
 
-- Applications based on the library ioavstats:
-  - Association Rule Analysis
-  - Aviation Event Analysis
-  - Database Profiling
+Currently, **`IO-AVSTATS`** includes the following applications:
+
+- **`ae1982`** - Aviation Event Analysis
+- **`pd1982`** - IO-AVSTATS-DB Database Profiling
+- **`slara`**&nbsp;&nbsp; - Association Rule Analysis
 
 ## 2. Documentation
 
-The full documentation can be found [here](https://io-aero.github.io/io-avstats/).
+The complete documentation for this repository is contained in the GitHub pages [here](https://io-aero.github.io/io-avstats/). 
+See that documentation for installation instructions
 
 ## 3. Quick Start
 
@@ -36,11 +38,10 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | libs              | Third party libraries.                                     |
 | resources         | Selected manuals and software.                             |
 | scripts           | Supporting macOS, Ubuntu and Windows Scripts.              |
-| site              | Documentation as static HTML pages.                        |
 | tests             | Scripts and data for **pytest**.                           |
 | upload            | Cloud related upload directory.                            |
 
-### 4.2 Files
+### 3.2 Files
 
 | File                      | Functionality                                                   |
 |---------------------------|-----------------------------------------------------------------|

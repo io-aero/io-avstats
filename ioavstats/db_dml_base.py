@@ -45,8 +45,6 @@ def _load_airport_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     # ------------------------------------------------------------------
     # Delete existing data.
     # ------------------------------------------------------------------
@@ -329,8 +327,6 @@ def _load_aviation_occurrence_categories() -> None:
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     count_delete = 0
     count_upsert = 0
@@ -626,8 +622,6 @@ def _load_runway_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     # ------------------------------------------------------------------
     # Load airport identifications.
     # ------------------------------------------------------------------
@@ -806,8 +800,6 @@ def _load_sequence_of_events() -> None:
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     count_delete = 0
     count_upsert = 0
@@ -1450,8 +1442,6 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
-
     # pylint: disable=line-too-long
     cur_pg_2.execute(
         f"""
@@ -1541,8 +1531,6 @@ def _load_zip_codes_org_data() -> None:
         io_utils.terminate_fatal(glob.ERROR_00_935.replace("{filename}", filename_xlsx))
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     # ------------------------------------------------------------------
     # Delete existing data.

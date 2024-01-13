@@ -523,11 +523,14 @@ def _load_country_data(
                     cur_pg.execute(
                         """
                     UPDATE io_countries SET
-                           country_name = %s,dec_latitude = %s,
-                           dec_longitude = %s,last_processed = %s
+                           country_name = %s,
+                           dec_latitude = %s,
+                           dec_longitude = %s,
+                           last_processed = %s
                      WHERE country = %s
-                       AND NOT (country_name = %s AND dec_latitude = %s
-                       AND dec_longitude = %s);
+                       AND NOT (country_name = %s
+                            AND dec_latitude = %s
+                            AND dec_longitude = %s);
                     """,
                         (
                             record["country_name"],
@@ -2059,8 +2062,6 @@ def load_country_state_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     # ------------------------------------------------------------------
     # Load the country data.
     # ------------------------------------------------------------------
@@ -2125,8 +2126,6 @@ def load_simplemaps_data() -> None:
     # Start processing.
     # ------------------------------------------------------------------
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     # ------------------------------------------------------------------
     # Delete existing data.

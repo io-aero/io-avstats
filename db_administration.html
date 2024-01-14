@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Release Notes" href="release_notes.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ioavstats" href="modules.html" /><link rel="prev" title="Data Sources" href="data_sources.html" />
 
     <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>End-User License Agreement - IO-AVSTATS 24-1-8 documentation</title>
+        <title>PostgreSQL Administration - IO-AVSTATS 24-1-8 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -157,7 +157,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">General Documentation</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -166,7 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_sources.html">Data Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="db_administration.html">PostgreSQL Administration</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">PostgreSQL Administration</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
@@ -179,9 +179,9 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">About</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">End-User License Agreement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">End-User License Agreement</a></li>
 </ul>
 
 </div>
@@ -216,91 +216,46 @@
           </label>
         </div>
         <article role="main">
-          <section id="end-user-license-agreement">
-<h1>End-User License Agreement<a class="headerlink" href="#end-user-license-agreement" title="Link to this heading">#</a></h1>
-<section id="end-user-license-agreement-eula-of-io-aero-software">
-<h2>End-User License Agreement (EULA) of IO-Aero Software<a class="headerlink" href="#end-user-license-agreement-eula-of-io-aero-software" title="Link to this heading">#</a></h2>
-<p>This End=User License Agreement (“<strong>EULA</strong>”) is a legal agreement
-between you and <strong>IO-Aero</strong>.</p>
-<p>This <strong>EULA</strong> agreement governs your acquisition and use of our
-<strong>IO-Aero Software</strong> (“Software”) directly from <strong>IO-Aero</strong> or
-indirectly through a <strong>IO-Aero</strong> authorized reseller or distributor (a
-“Reseller”).</p>
-<p>Please read this <strong>EULA</strong> agreement carefully before completing the
-installation process and using the <strong>IO-Aero Software</strong>. It provides a
-license to use the <strong>IO-Aero Software</strong> and contains warranty
-information and liability disclaimers.</p>
-<p>If you register for a free trial of the <strong>IO-Aero Software</strong>, this
-<strong>EULA</strong> agreement will also govern that trial. By clicking “accept” or
-installing and/or using the <strong>IO-Aero Software</strong>, you are confirming
-your acceptance of the Software and agreeing to become bound by the
-terms of this <strong>EULA</strong> agreement.</p>
-<p>If you are entering into this <strong>EULA</strong> agreement on behalf of a company
-or other legal entity, you represent that you have the authority to bind
-such entity and its affiliates to these terms and conditions. If you do
-not have such authority or if you do not agree with the terms and
-conditions of this <strong>EULA</strong> agreement, do not install or use the
-Software, and you must not accept this <strong>EULA</strong> agreement.</p>
-<p>This <strong>EULA</strong> agreement shall apply only to the Software supplied by
-<strong>IO-Aero</strong> herewith regardless of whether other software is referred to
-or described herein. The terms also apply to any <strong>IO-Aero</strong> updates,
-supplements, Internet-based services, and support services for the
-Software, unless other terms accompany those items on delivery. If so,
-those terms apply.</p>
-<section id="license-grant">
-<h3>License Grant<a class="headerlink" href="#license-grant" title="Link to this heading">#</a></h3>
-<p><strong>IO-Aero</strong> hereby grants you a personal, non-transferable,
-non-exclusive licence to use the <strong>IO-Aero Software</strong> on your devices in
-accordance with the terms of this <strong>EULA</strong> agreement.</p>
-<p>You are permitted to load the <strong>IO-Aero Software</strong> (for example a PC,
-laptop, mobile or tablet) under your control. You are responsible for
-ensuring your device meets the minimum requirements of the <strong>IO-Aero
-Software</strong>.</p>
+          <section id="postgresql-administration">
+<h1>PostgreSQL Administration<a class="headerlink" href="#postgresql-administration" title="Link to this heading">#</a></h1>
+<p><strong>IO-AVSTATS</strong> uses the <a class="reference external" href="https://www.postgresql.org">PostgreSQL DBMS</a> for data management.
+PostgreSQL is a very powerful relational database system where the SQL language can be extended by procedural add-ons like <a class="reference external" href="https://www.postgresql.org/docs/current/plpgsql.html">PL/pgSQL</a> or <a class="reference external" href="https://www.postgresql.org/docs/current/plpython.html">PL/Python</a>.</p>
+<p><strong>IO-AVSTATS</strong> provides all the tools to import the data from the MS Access databases available on the <a class="reference external" href="https://data.ntsb.gov/avdata">**NTSB**</a> website and the data from the basic flat files available on <strong>simplemaps</strong> <a class="reference external" href="https://simplemaps.com/data/us-cities">United States Cities Database</a> and <a class="reference external" href="https://simplemaps.com/data/us-zips">US Zip Codes Database</a> websites.</p>
+<section id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Link to this heading">#</a></h2>
+<p>The PostgreSQL Docker community provides PostgreSQL images suitable for <strong>IO-AVSTATS</strong> on <a class="reference external" href="https://hub.docker.com">DockerHub</a>.
+The official image can be found <a class="reference external" href="https://hub.docker.com/_/postgres">here</a>.
+The <cite>c_d_l</cite> task available in the <cite>run_io_avstats_db</cite> script downloads a selected PostgreSQL DBMS image from DockerHub and creates, configures and starts a Docker container.</p>
 </section>
-<section id="you-are-not-permitted-to">
-<h3>You are not permitted to:<a class="headerlink" href="#you-are-not-permitted-to" title="Link to this heading">#</a></h3>
+<section id="parameterization">
+<h2>Parameterization<a class="headerlink" href="#parameterization" title="Link to this heading">#</a></h2>
+<p>The parameters can be defined either via environment variables or in the <cite>settings.io_aero.toml</cite> file.
+Details can be found under <cite>Configuration</cite> and <cite>IO-AVSTATS</cite>.</p>
+<p>The following parameters are used when downloading the Docker image and creating the Docker container:</p>
 <ul class="simple">
-<li><p>Edit, alter, modify, adapt, translate or otherwise change the whole
-or any part of the Software nor permit the whole or any part of the
-Software to be combined with or become incorporated in any other
-software, nor decompile, disassemble or reverse engineer the Software
-or attempt to do any such things</p></li>
-<li><p>Reproduce, copy, distribute, resell or otherwise use the Software for
-any commercial purpose</p></li>
-<li><p>Allow any third party to use the Software on behalf of or for the
-benefit of any third party</p></li>
-<li><p>Use the Software in any way which breaches any applicable local,
-national or international law</p></li>
-<li><p>use the Software for any purpose that <strong>IO-Aero</strong> considers is a
-breach of this <strong>EULA</strong> agreement Intellectual Property and Ownership</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_connection_port</span></code> - the database IP address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_container_name</span></code> - the container name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_dbname_admin</span></code> - the administration database name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_password_admin</span></code> - the administration database password</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_pgdata</span></code> - the file directory on the host for the database files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_user_admin</span></code> - the administration database username</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postgres_version</span></code> - the requested PostgreSQL version from DockerHub</p></li>
 </ul>
-<p><strong>IO-Aero</strong> shall at all times retain ownership of the Software as
-originally downloaded by you and all subsequent downloads of the
-Software by you. The Software (and the copyright, and other intellectual
-property rights of whatever nature in the Software, including any
-modifications made thereto) are and shall remain the property of
-<strong>IO-Aero</strong>.</p>
-<p><strong>IO-Aero</strong> reserves the right to grant licences to use the Software to
-third parties.</p>
+<p>When using environment variables, they must contain the prefix <code class="docutils literal notranslate"><span class="pre">IO_AERO_</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">IO_AERO_POSTGRES_USER</span></code>.</p>
 </section>
-<section id="termination">
-<h3>Termination<a class="headerlink" href="#termination" title="Link to this heading">#</a></h3>
-<p>This <strong>EULA</strong> agreement is effective from the date you first use the
-Software and shall continue until terminated. You may terminate it at
-any time upon written notice to <strong>IO-Aero</strong>.</p>
-<p>It will also terminate immediately if you fail to comply with any term
-of this <strong>EULA</strong> agreement. Upon such termination, the licenses granted
-by this <strong>EULA</strong> agreement will immediately terminate, and you agree to
-stop all access and use of the Software. The provisions that by their
-nature continue and survive will survive any termination of this
-<strong>EULA</strong> agreement.</p>
-</section>
-<section id="governing-law">
-<h3>Governing Law<a class="headerlink" href="#governing-law" title="Link to this heading">#</a></h3>
-<p>This <strong>EULA</strong> agreement, and any dispute arising out of or in connection
-with this <strong>EULA</strong> agreement, shall be governed by and construed in
-accordance with the laws of the United States.</p>
-</section>
+<section id="backup-restore">
+<h2>Backup &amp; Restore<a class="headerlink" href="#backup-restore" title="Link to this heading">#</a></h2>
+<p>Since the <strong>IO-AVSTATS</strong> database contains only statistical data, it is subject to a relatively low frequency of change.
+The following three events can lead to a change in the <strong>IO-AVSTATS</strong> database:</p>
+<ol class="arabic simple">
+<li><p>a new change file on the <strong>NTSB</strong> download site, or</p></li>
+<li><p>an evolution of the database software or schema, or</p></li>
+<li><p>a new PostgreSQL version that requires database migration.</p></li>
+</ol>
+<p>This does not require sophisticated methods for backing up and restoring the <strong>IO-AVSTATS</strong> database, especially since the database contents reside in a dedicated local file directory.
+For data backup it is therefore sufficient to create a copy of the file directory with the <strong>IO-AVSTATS</strong> database before a change event.
+This copy can then replace the corrupted <strong>IO-AVSTATS</strong> database in the event of an error.</p>
+<p><strong>Very important</strong>: before any backup or restore, the PostgreSQL Docker container must be stopped first!</p>
 </section>
 </section>
 
@@ -309,15 +264,23 @@ accordance with the laws of the United States.</p>
       <footer>
         
         <div class="related-pages">
-          
-          <a class="prev-page" href="release_notes.html">
+          <a class="next-page" href="modules.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">ioavstats</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="data_sources.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Release Notes</div>
+                <div class="title">Data Sources</div>
                 
               </div>
             </a>
@@ -351,14 +314,10 @@ accordance with the laws of the United States.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">End-User License Agreement</a><ul>
-<li><a class="reference internal" href="#end-user-license-agreement-eula-of-io-aero-software">End-User License Agreement (EULA) of IO-Aero Software</a><ul>
-<li><a class="reference internal" href="#license-grant">License Grant</a></li>
-<li><a class="reference internal" href="#you-are-not-permitted-to">You are not permitted to:</a></li>
-<li><a class="reference internal" href="#termination">Termination</a></li>
-<li><a class="reference internal" href="#governing-law">Governing Law</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">PostgreSQL Administration</a><ul>
+<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#parameterization">Parameterization</a></li>
+<li><a class="reference internal" href="#backup-restore">Backup &amp; Restore</a></li>
 </ul>
 </li>
 </ul>

@@ -43,6 +43,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install zsh
+          zsh --version
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 
@@ -59,7 +60,6 @@ jobs:
         run: |
           brew install dos2unix
           chmod +x scripts/run_prep_zsh_scripts.zsh
-          ls -ll scripts/*
           ./scripts/run_prep_zsh_scripts.zsh
 
       - name: Preparing scripts - Ubuntu

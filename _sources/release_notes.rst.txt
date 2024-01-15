@@ -145,7 +145,7 @@ Processed files
 Data source `up15JAN.zip`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Download link: `01/08/2024 3:00:17 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08JAN.zip>`__\
+- Download link: `01/15/2024 3:00:19 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15JAN.zip>`__\
 
 Version 24.01.08
 ================

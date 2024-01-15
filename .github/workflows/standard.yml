@@ -43,7 +43,6 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install zsh
-          chsh -s /opt/homebrew/bin/zsh
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 

@@ -43,8 +43,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           sudo brew install zsh
-          zsh --version
-          which zsh
+          ln -s /usr/local/bin/zsh /bin/zsh
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 

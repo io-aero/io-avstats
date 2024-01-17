@@ -19,7 +19,7 @@ brew update
 echo "=========================================================================="
 echo "Install Python."
 echo "--------------------------------------------------------------------------"
-brew install -y python@${PYTHON_VERSION}
+brew install python@${PYTHON_VERSION}
 python3 --version
 
 echo "=========================================================================="
@@ -30,8 +30,8 @@ pip3 --version
 echo "=========================================================================="
 echo "Install pipenv."
 echo "--------------------------------------------------------------------------"
-pip3 install --user pipenv
-python3 -m pipenv --version
+brew install pipenv
+pipenv --version
 
 echo "--------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

@@ -45,8 +45,6 @@ def _load_airport_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     # ------------------------------------------------------------------
     # Delete existing data.
     # ------------------------------------------------------------------
@@ -330,8 +328,6 @@ def _load_aviation_occurrence_categories() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     count_delete = 0
     count_upsert = 0
     count_select = 0
@@ -523,11 +519,14 @@ def _load_country_data(
                     cur_pg.execute(
                         """
                     UPDATE io_countries SET
-                           country_name = %s,dec_latitude = %s,
-                           dec_longitude = %s,last_processed = %s
+                           country_name = %s,
+                           dec_latitude = %s,
+                           dec_longitude = %s,
+                           last_processed = %s
                      WHERE country = %s
-                       AND NOT (country_name = %s AND dec_latitude = %s
-                       AND dec_longitude = %s);
+                       AND NOT (country_name = %s
+                            AND dec_latitude = %s
+                            AND dec_longitude = %s);
                     """,
                         (
                             record["country_name"],
@@ -622,8 +621,6 @@ def _load_runway_data() -> None:
     logger.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     # ------------------------------------------------------------------
     # Load airport identifications.
@@ -803,8 +800,6 @@ def _load_sequence_of_events() -> None:
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     count_delete = 0
     count_upsert = 0
@@ -1447,8 +1442,6 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
-
     # pylint: disable=line-too-long
     cur_pg_2.execute(
         f"""
@@ -1538,8 +1531,6 @@ def _load_zip_codes_org_data() -> None:
         io_utils.terminate_fatal(glob.ERROR_00_935.replace("{filename}", filename_xlsx))
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     # ------------------------------------------------------------------
     # Delete existing data.
@@ -2059,8 +2050,6 @@ def load_country_state_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
-
     # ------------------------------------------------------------------
     # Load the country data.
     # ------------------------------------------------------------------
@@ -2125,8 +2114,6 @@ def load_simplemaps_data() -> None:
     # Start processing.
     # ------------------------------------------------------------------
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
-
-    conn_pg.set_session(autocommit=False)
 
     # ------------------------------------------------------------------
     # Delete existing data.

@@ -6,7 +6,7 @@ on:
 
 env:
   IO_CONDA: 'false'
-  IO_COVERALLS: 'true'
+  IO_COVERALLS: 'false'
   IO_DOCKER: 'true'
   IO_ODBC: 'true'
   IO_PAGES: 'true'
@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-#       os: [ubuntu-latest, macos-latest]
+#       os: [macos-latest, ubuntu-latest]
         os: [ubuntu-latest]
         python-version: ["3.10"]
 
@@ -42,6 +42,7 @@ jobs:
       - name: Set Locale - macOS
         if: runner.os == 'macOS'
         run: |
+          brew install zsh
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 
@@ -57,8 +58,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install dos2unix
-          chmod +x scripts/run_prep_*.zsh
-          ./scripts/run_prep_zsh_scripts.zsh
+          chmod +x scripts/run_prep_zsh_scripts.zsh
+          zsh scripts/run_prep_zsh_scripts.zsh
 
       - name: Preparing scripts - Ubuntu
         if: runner.os == 'Linux'

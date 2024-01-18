@@ -110,7 +110,9 @@ if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
 if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
     if ["%2"] EQU [""] (
         echo =========================================================
-        dir /A:-D /B %IO_AERO_NTSB_WORK_DIR%\*.mdb
+        echo avall   - Data from January 1, 2008 to today
+        echo Pre2008 - Data from January 1, 1982 to December 31, 2007
+        echo upDDMON - New additions and updates until DD day in the month MON
         echo ---------------------------------------------------------
         set /P IO_AERO_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
@@ -135,20 +137,7 @@ echo.
 echo Script %0 is now running
 echo.
 
-rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS version.
-rem ----------------------------------------------------------------------------
-if ["%IO_AERO_TASK%"] EQU ["version"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_db_pytest was aborted
-        exit 1
-    )
-
-    goto END_OF_SCRIPT
-)
-
-set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%.log
+set IO_AERO_AVSTATS_LOG=run_io_avstats_pytest_%IO_AERO_TASK%.log
 
 echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.
@@ -170,12 +159,13 @@ if exist %IO_AERO_AVSTATS_LOG% (
     echo -----------------------------------------------------------------------
     echo IO-AVSTATS - Aviation Event Statistics.
     echo -----------------------------------------------------------------------
-    echo PYTHONPATH   : %PYTHONPATH%
+    echo ENV_FOR_DYNACONF : %ENV_FOR_DYNACONF%
+    echo PYTHONPATH       : %PYTHONPATH%
     echo -----------------------------------------------------------------------
-    echo TASK         : %IO_AERO_TASK%
-	echo COMPOSE_TASK : %IO_AERO_COMPOSE_TASK%
-    echo MSACCESS     : %IO_AERO_MSACCESS%
-    echo MSEXCEL      : %IO_AERO_MSEXCEL%
+    echo TASK             : %IO_AERO_TASK%
+    echo COMPOSE_TASK     : %IO_AERO_COMPOSE_TASK%
+    echo MSACCESS         : %IO_AERO_MSACCESS%
+    echo MSEXCEL          : %IO_AERO_MSEXCEL%
     echo -----------------------------------------------------------------------
     echo:| TIME
     echo =======================================================================
@@ -468,6 +458,19 @@ if exist %IO_AERO_AVSTATS_LOG% (
 
         goto END_OF_SCRIPT
     )
+    
+	rem ----------------------------------------------------------------------------
+	rem Show the IO-AVSTATS version.
+	rem ----------------------------------------------------------------------------
+	if ["%IO_AERO_TASK%"] EQU ["version"] (
+	    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+	    if ERRORLEVEL 1 (
+	        echo Processing of the script run_io_avstats_db_pytest was aborted
+	        exit 1
+	    )
+	
+	    goto END_OF_SCRIPT
+	)
 )
 
 rem ----------------------------------------------------------------------------

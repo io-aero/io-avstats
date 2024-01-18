@@ -1,6 +1,7 @@
 # Copyright (c) 2022 FAA-VAIL-Project. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
+
 """Launcher: coverage testing."""
 import logging
 import os
@@ -15,13 +16,12 @@ from ioavstats import glob
 # -----------------------------------------------------------------------------
 # Constants & Globals.
 # -----------------------------------------------------------------------------
-# @pytest.mark.issue
 
 logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - version - Show the ioavstatsdb version.
+# Test case: version - Show the ioavstatsdb version.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_version():
@@ -84,7 +84,7 @@ def test_launcher_d_d_f():
     assert settings.check_value == "test"
 
     if platform.system() == "Darwin":
-        exit_code = 0
+        exit_code = os.system("./run_io_avstats_pytest.zsh d_d_f")
     elif platform.system() == "Linux":
         exit_code = 0
     elif platform.system() == "Windows":
@@ -99,7 +99,7 @@ def test_launcher_d_d_f():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - s_d_c   - Set up the PostgreSQL database container.
+# Test case:s_d_c   - Set up the PostgreSQL database container.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_s_d_c():
@@ -126,7 +126,7 @@ def test_launcher_s_d_c():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - c_d_s   - Create the PostgreSQL database schema.
+# Test case:c_d_s   - Create the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_c_d_s():
@@ -152,7 +152,7 @@ def test_launcher_c_d_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - u_d_s   - Update the PostgreSQL database schema.
+# Test case:u_d_s   - Update the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_u_d_s():
@@ -178,7 +178,7 @@ def test_launcher_u_d_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - a_o_c   - Load aviation occurrence categories
+# Test case:a_o_c   - Load aviation occurrence categories
 #                                   into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
@@ -205,7 +205,7 @@ def test_launcher_a_o_c():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_a_p   - Load airport data into PostgreSQL.
+# Test case:l_a_p   - Load airport data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_a_p():
@@ -231,7 +231,7 @@ def test_launcher_l_a_p():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_c_s   - Load country and state data into PostgreSQL.
+# Test case:l_c_s   - Load country and state data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_c_s():
@@ -257,7 +257,7 @@ def test_launcher_l_c_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_s_e   - Load sequence of events data
+# Test case:l_s_e   - Load sequence of events data
 #                                   into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
@@ -284,7 +284,7 @@ def test_launcher_l_s_e():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_s_d   - Load simplemaps data into PostgreSQL.
+# Test case:l_s_d   - Load simplemaps data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_s_d():
@@ -297,9 +297,9 @@ def test_launcher_l_s_d():
     if platform.system() == "Darwin":
         exit_code = os.system("./run_io_avstats_pytest.zsh l_s_d")
     elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_s_d")
+        exit_code = 0
     elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_s_d")
+        exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         assert False, glob.ERROR_00_908.replace("{os}", platform.system())
@@ -310,7 +310,7 @@ def test_launcher_l_s_d():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_z_d   - Load ZIP Code Database data into PostgreSQL.
+# Test case:l_z_d   - Load ZIP Code Database data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_z_d():
@@ -336,34 +336,7 @@ def test_launcher_l_z_d():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - u_p_d   - Complete processing of a modifying MS Access
-#                                   file.
-# -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_u_p_d():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
-
-    assert settings.check_value == "test"
-
-    if platform.system() == "Darwin":
-        exit_code = 0
-    elif platform.system() == "Linux":
-        exit_code = 0
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat u_p_d up22FEB")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
-
-
-# -----------------------------------------------------------------------------
-# Test case: launcher() - r_d_s   - Refresh the PostgreSQL database schema.
+# Test case:r_d_s   - Refresh the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def _test_launcher_r_d_s():

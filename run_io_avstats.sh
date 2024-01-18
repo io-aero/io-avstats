@@ -38,6 +38,8 @@ export IO_AERO_TASK_DEFAULT=r_s_a
 
 export PYTHONPATH=.
 
+shopt -s nocasematch
+
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "r_s_a   - Run the IO-AVSTATS application"
@@ -148,6 +150,18 @@ if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     fi
 fi
 
+# Function for logging messages
+log_message() {
+  local message="$1"
+  # Format current date and time with timestamp
+  timestamp=$(date +"%d.%m.%Y %H:%M:%S")
+  # Write message with timestamp in the log file
+  echo "$timestamp: $message" >> "$log_file"
+}
+
+# Redirection of the standard output and the standard error output to the log file
+exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
+
 rm -f logging_io_aero.log
 
 echo "================================================================================"
@@ -239,3 +253,9 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "--------------------------------------------------------------------------------"
 echo "End   $0"
 echo "================================================================================"
+
+# Close the log file
+exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
+
+# Closing the log file
+log_message "Script finished."

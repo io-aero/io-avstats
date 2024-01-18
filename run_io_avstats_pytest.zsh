@@ -121,6 +121,21 @@ if [[ "${IO_AERO_TASK}" = "u_p_d" ]]; then
     fi
 fi
 
+# Path to the log file
+log_file="run_io_avstats_pytest_${IO_AERO_TASK}.log"
+
+# Function for logging messages
+log_message() {
+  local message="$1"
+  # Format current date and time with timestamp
+  timestamp=$(date +"%d.%m.%Y %H:%M:%S")
+  # Write message with timestamp in the log file
+  echo "$timestamp: $message" >> "$log_file"
+}
+
+# Redirection of the standard output and the standard error output to the log file
+exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
+
 rm -f logging_io_aero.log
 
 echo "================================================================================"

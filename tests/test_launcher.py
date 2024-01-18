@@ -1,6 +1,7 @@
 # Copyright (c) 2022 FAA-VAIL-Project. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
+
 """Launcher: coverage testing."""
 import logging
 import os
@@ -15,13 +16,12 @@ from ioavstats import glob
 # -----------------------------------------------------------------------------
 # Constants & Globals.
 # -----------------------------------------------------------------------------
-# @pytest.mark.issue
 
 logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - version - Show the ioavstatsdb version.
+# Test case: version - Show the ioavstatsdb version.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_version():
@@ -99,7 +99,7 @@ def test_launcher_d_d_f():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - s_d_c   - Set up the PostgreSQL database container.
+# Test case:s_d_c   - Set up the PostgreSQL database container.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_s_d_c():
@@ -126,7 +126,7 @@ def test_launcher_s_d_c():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - c_d_s   - Create the PostgreSQL database schema.
+# Test case:c_d_s   - Create the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_c_d_s():
@@ -152,7 +152,7 @@ def test_launcher_c_d_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - u_d_s   - Update the PostgreSQL database schema.
+# Test case:u_d_s   - Update the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_u_d_s():
@@ -178,7 +178,7 @@ def test_launcher_u_d_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - a_o_c   - Load aviation occurrence categories
+# Test case:a_o_c   - Load aviation occurrence categories
 #                                   into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
@@ -205,7 +205,7 @@ def test_launcher_a_o_c():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_a_p   - Load airport data into PostgreSQL.
+# Test case:l_a_p   - Load airport data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_a_p():
@@ -231,7 +231,7 @@ def test_launcher_l_a_p():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_c_s   - Load country and state data into PostgreSQL.
+# Test case:l_c_s   - Load country and state data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_c_s():
@@ -257,7 +257,7 @@ def test_launcher_l_c_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_s_e   - Load sequence of events data
+# Test case:l_s_e   - Load sequence of events data
 #                                   into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
@@ -284,7 +284,7 @@ def test_launcher_l_s_e():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_s_d   - Load simplemaps data into PostgreSQL.
+# Test case:l_s_d   - Load simplemaps data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_s_d():
@@ -310,7 +310,7 @@ def test_launcher_l_s_d():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - l_z_d   - Load ZIP Code Database data into PostgreSQL.
+# Test case:l_z_d   - Load ZIP Code Database data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_z_d():
@@ -336,7 +336,7 @@ def test_launcher_l_z_d():
 
 
 # -----------------------------------------------------------------------------
-# Test case: launcher() - r_d_s   - Refresh the PostgreSQL database schema.
+# Test case:r_d_s   - Refresh the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def _test_launcher_r_d_s():

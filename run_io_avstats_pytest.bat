@@ -137,20 +137,7 @@ echo.
 echo Script %0 is now running
 echo.
 
-rem ----------------------------------------------------------------------------
-rem Show the IO-AVSTATS version.
-rem ----------------------------------------------------------------------------
-if ["%IO_AERO_TASK%"] EQU ["version"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
-    if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_db_pytest was aborted
-        exit 1
-    )
-
-    goto END_OF_SCRIPT
-)
-
-set IO_AERO_AVSTATS_LOG=run_io_avstats_db_pytest_%IO_AERO_TASK%.log
+set IO_AERO_AVSTATS_LOG=run_io_avstats_pytest_%IO_AERO_TASK%.log
 
 echo You can find the run log in the file %IO_AERO_AVSTATS_LOG%
 echo.
@@ -471,6 +458,19 @@ if exist %IO_AERO_AVSTATS_LOG% (
 
         goto END_OF_SCRIPT
     )
+    
+	rem ----------------------------------------------------------------------------
+	rem Show the IO-AVSTATS version.
+	rem ----------------------------------------------------------------------------
+	if ["%IO_AERO_TASK%"] EQU ["version"] (
+	    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+	    if ERRORLEVEL 1 (
+	        echo Processing of the script run_io_avstats_db_pytest was aborted
+	        exit 1
+	    )
+	
+	    goto END_OF_SCRIPT
+	)
 )
 
 rem ----------------------------------------------------------------------------

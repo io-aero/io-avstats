@@ -33,6 +33,8 @@ export IO_AERO_TASK_DEFAULT=version
 
 export PYTHONPATH=.
 
+shopt -s nocasematch
+
 if [ -z "$1" ]; then
     echo "========================================================="
     echo "u_p_d   - Complete processing of a modifying MS Access file"
@@ -144,6 +146,8 @@ log_message() {
 
 # Redirection of the standard output and the standard error output to the log file
 exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
+
+rm -f logging_io_aero.log
 
 echo "================================================================================"
 echo "Start $0"

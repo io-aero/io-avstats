@@ -29,6 +29,7 @@ jobs:
           echo "IO_COVERALLS= ${{ env.IO_COVERALLS }}"
           echo "IO_DOCKER   = ${{ env.IO_DOCKER }}"
           echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
+          echo "IO_ODBC     = ${{ env.IO_ODBC }}"
           echo "IO_PAGES    = ${{ env.IO_PAGES }}"
 
       - name: Set Timezone
@@ -58,8 +59,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install dos2unix
-          chmod +x scripts/run_prep_zsh_scripts.zsh
-          zsh scripts/run_prep_zsh_scripts.zsh
+          chmod +x scripts/run_prep_*.zsh
+          ./scripts/run_prep_zsh_scripts.zsh
 
       - name: Preparing scripts - Ubuntu
         if: runner.os == 'Linux'

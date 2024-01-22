@@ -2151,10 +2151,25 @@ def _load_table_findings(
             cur_pg.execute(
                 """
             INSERT INTO findings (
-                   ev_id,aircraft_key,finding_no,finding_code,finding_description,category_no,subcategory_no,section_no,subsection_no,modifier_no,
-                   cause_factor,lchg_date,lchg_userid,io_last_seen_ntsb
+                   ev_id,
+                   aircraft_key,
+                   finding_no,
+                   finding_code,
+                   finding_description,
+                   category_no,
+                   subcategory_no,
+                   section_no,
+                   subsection_no,
+                   modifier_no,
+                   cause_factor,
+                   cm_inPc,
+                   lchg_date,
+                   lchg_userid,
+                   io_last_seen_ntsb
                    ) VALUES (
-                   %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s,%s);
             """,
                 (
                     row_mdb.ev_id,
@@ -2168,6 +2183,7 @@ def _load_table_findings(
                     row_mdb.subsection_no,
                     row_mdb.modifier_no,
                     row_mdb.Cause_Factor,
+                    row_mdb.cm_inPc,
                     row_mdb.lchg_date,
                     row_mdb.lchg_userid,
                     IO_LAST_SEEN,
@@ -2178,11 +2194,32 @@ def _load_table_findings(
             cur_pg.execute(
                 """
             UPDATE findings
-               SET finding_code = %s,finding_description = %s,category_no = %s,subcategory_no = %s,section_no = %s,subsection_no = %s,modifier_no = %s,
-                   cause_factor = %s,lchg_date = %s,lchg_userid = %s,io_last_seen_ntsb = %s
-             WHERE finding_no = %s AND aircraft_key = %s AND ev_id = %s
-               AND NOT (finding_code = %s AND finding_description = %s AND category_no = %s AND subcategory_no = %s AND section_no = %s AND
-                        subsection_no = %s AND modifier_no = %s AND cause_factor = %s AND lchg_date = %s AND lchg_userid = %s);
+               SET finding_code = %s,
+                   finding_description = %s,
+                   category_no = %s,
+                   subcategory_no = %s,
+                   section_no = %s,
+                   subsection_no = %s,
+                   modifier_no = %s,
+                   cause_factor = %s,
+                   cm_inpc = %s,
+                   lchg_date = %s,
+                   lchg_userid = %s,
+                   io_last_seen_ntsb = %s
+             WHERE finding_no = %s 
+               AND aircraft_key = %s 
+               AND ev_id = %s
+               AND NOT (finding_code = %s 
+                    AND finding_description = %s 
+                    AND category_no = %s 
+                    AND subcategory_no = %s 
+                    AND section_no = %s 
+                    AND subsection_no = %s 
+                    AND modifier_no = %s 
+                    AND cause_factor = %s 
+                    AND cm_inpc = %s 
+                    AND lchg_date = %s 
+                    AND lchg_userid = %s);
             """,
                 (
                     row_mdb.finding_code,
@@ -2193,6 +2230,7 @@ def _load_table_findings(
                     row_mdb.subsection_no,
                     row_mdb.modifier_no,
                     row_mdb.Cause_Factor,
+                    row_mdb.cm_inPc,
                     row_mdb.lchg_date,
                     row_mdb.lchg_userid,
                     IO_LAST_SEEN,
@@ -2207,6 +2245,7 @@ def _load_table_findings(
                     row_mdb.subsection_no,
                     row_mdb.modifier_no,
                     row_mdb.Cause_Factor,
+                    row_mdb.cm_inPc,
                     row_mdb.lchg_date,
                     row_mdb.lchg_userid,
                 ),

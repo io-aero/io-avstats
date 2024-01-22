@@ -1,6 +1,6 @@
 # IO-AVSTATS - Aviation Event Statistics Application
 
-## 1. Features
+## Key Functionalities of IO-AVSTATS
 
 Currently, **`IO-AVSTATS`** includes the following applications:
 
@@ -8,23 +8,59 @@ Currently, **`IO-AVSTATS`** includes the following applications:
 - **`pd1982`** - IO-AVSTATS-DB Database Profiling
 - **`slara`**&nbsp;&nbsp; - Association Rule Analysis
 
-## 2. Documentation
+## Operation
 
-The complete documentation for this repository is contained in the GitHub pages [here](https://io-aero.github.io/io-avstats/). 
+The whole functionality of **IO-AVSTATS** can be used with the script `run_io_avstats`.
+The script is available in versions for macOS, Ubuntu and Windows 10/11 and provides the following functionality:
+
+    r_s_a   - Run the IO-AVSTATS application
+    ---------------------------------------------------------
+    u_p_d   - Complete processing of a modifying MS Access file
+    l_n_a   - Load NTSB MS Access database data into PostgreSQL
+    ---------------------------------------------------------
+    c_p_d   - Cleansing PostgreSQL data
+    c_l_l   - Correct decimal US latitudes and longitudes
+    f_n_a   - Find the nearest airports
+    v_n_d   - Verify selected NTSB data
+    ---------------------------------------------------------
+    l_a_p   - Load airport data into PostgreSQL
+    a_o_c   - Load aviation occurrence categories into PostgreSQL
+    l_c_s   - Load country and state data into PostgreSQL
+    l_c_d   - Load data from a correction file into PostgreSQL
+    l_s_e   - Load sequence of events data into PostgreSQL
+    l_s_d   - Load simplemaps data into PostgreSQL
+    l_z_d   - Load ZIP Code Database data into PostgreSQL
+    ---------------------------------------------------------
+    s_d_c   - Set up the PostgreSQL database container
+    c_d_s   - Create the PostgreSQL database schema
+    u_d_s   - Update the PostgreSQL database schema
+    r_d_s   - Refresh the PostgreSQL database schema
+    ---------------------------------------------------------
+    c_f_z   - Zip the files for the cloud
+    c_d_i   - Create or update an application Docker image
+    c_d_c   - Run Docker Compose tasks - Cloud
+    c_d_l   - Run Docker Compose tasks - Local
+    ---------------------------------------------------------
+    version - Show the IO-AVSTATS version
+
+## Documentation
+
+The complete documentation for this repository is contained in the github pages [here](https://io-aero.github.io/io-avstats/).
 See that documentation for installation instructions
 
-## 3. Quick Start
+Further IO-Aero software documentation can be found under the following links.
 
-Please follow the instructions given here:
+- [IO-COMMON - Common Globals, Functions, and Processes for the IO-Aero Libraries](https://io-aero.github.io/io-common/)
+- [IO-LIDAR - Lidar Processing Libraries](https://io-aero.github.io/io-lidar/)
+- [IO-LIDAR-BATCH - Maintenance of the directory of LAZ and metadata from Rockyweb](https://io-aero.github.io/io-lidar-batch/)
+- [IO-RASTER - TODO](https://io-aero.github.io/io-raster/)
+- [IO-VECTOR - Vector Map Repository](https://io-aero.github.io/io-vector/)
+- [IO-XPA-DATA - IO-XPA related data acquisition and data analysis](https://io-aero.github.io/io-xpa-data/)
+<!-- - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) -->
 
-- [Requirements](https://io-aero.github.io/io-avstats/setup_requirements.html)
-- [Installation](https://io-aero.github.io/io-avstats/setup_installation.html)
+## Directory and File Structure of this Repository
 
-All processing tasks can be performed using the **`run_io_avstats`** shell script.
-
-## 4. Directory and File Structure of this Repository
-
-### 4.1 Directories
+### 1. Directories
 
 | Directory         | Content                                                    |
 |-------------------|------------------------------------------------------------|
@@ -41,7 +77,7 @@ All processing tasks can be performed using the **`run_io_avstats`** shell scrip
 | tests             | Scripts and data for **pytest**.                           |
 | upload            | Cloud related upload directory.                            |
 
-### 3.2 Files
+### 2. Files
 
 | File                      | Functionality                                                   |
 |---------------------------|-----------------------------------------------------------------|

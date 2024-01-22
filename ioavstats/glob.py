@@ -60,7 +60,7 @@ ERROR_00_910 = (
 )
 ERROR_00_911 = (
     "ERROR.00.911 Number of lines differs: file '{filename}' lines {filename_lines}"
-    + "versus file '{reference}' lines {reference_lines}"
+    + " versus file '{reference}' lines {reference_lines}"
 )
 ERROR_00_912 = "ERROR.00.912 The MS Access database file '{filename}' is missing"
 ERROR_00_913 = "ERROR.00.913 The US zip code file '{filename}' is missing"

@@ -1653,6 +1653,7 @@ def _create_dll_tables_base() -> None:
             subsection_no       VARCHAR(2),
             modifier_no         VARCHAR(2),
             cause_factor        VARCHAR(1),
+            cm_inPc             VARCHAR(1),
             lchg_date           TIMESTAMP,
             lchg_userid         VARCHAR(50),
             PRIMARY KEY (ev_id, aircraft_key, finding_no),

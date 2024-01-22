@@ -5,6 +5,7 @@ Transaction Data Logs
 .. toctree::
    :maxdepth: 1
 
+   2024.01.22 up22JAN <data_transaction/2024_01_22_log_up22JAN>
    2024.01.15 up15JAN <data_transaction/2024_01_15_log_up15JAN>
    2024.01.08 up08JAN <data_transaction/2024_01_08_log_up08JAN>
    2024.01.01 up01JAN <data_transaction/2024_01_01_log_up01JAN>

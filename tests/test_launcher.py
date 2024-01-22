@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
-# Test case: version - Show the ioavstatsdb version.
+# Test case: version - Show the ioavstats version.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_version():
@@ -257,8 +257,7 @@ def test_launcher_l_c_s():
 
 
 # -----------------------------------------------------------------------------
-# Test case:l_s_e   - Load sequence of events data
-#                                   into PostgreSQL.
+# Test case:l_s_e   - Load sequence of events data into PostgreSQL.
 # -----------------------------------------------------------------------------
 # pylint: disable=R0801
 def test_launcher_l_s_e():

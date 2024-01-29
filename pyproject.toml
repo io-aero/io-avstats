@@ -21,17 +21,20 @@ dependencies = [
     "haversine",
     "iocommon",
     "lat_lon_parser",
+    "matplotlib",
     "mlxtend",
     "numpy",
     "openpyxl",
     "pandas",
     "plotly",
-    "pyodbc",
     "pyeclat",
+    "pyodbc",
     "requests",
-    "sqlalchemy<2.0.0",
+    "sqlalchemy",
     "streamlit",
     "streamlit-pandas-profiling",
+    "tomli",
+    "tomli-w",
     "ydata-profiling",
 ]
 description = "Aviation Accident Statistics"
@@ -57,9 +60,9 @@ Source = "https://github.com/io-aero/io-avstats/tree/main/ioavstats"
 
 [tool.bandit]
 skips = [
-	"B307", 
-	"B404", 
-	"B603", 
+	"B307",
+	"B404",
+	"B603",
 	"B608"
 ]
 

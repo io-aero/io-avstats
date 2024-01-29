@@ -11,7 +11,7 @@ import time
 from iocommon import io_glob
 from iocommon.io_config import settings
 
-from ioavstats import glob
+from ioavstats import glob_local
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.
@@ -39,7 +39,7 @@ def test_launcher_version():
         exit_code = os.system("run_io_avstats_pytest.bat version")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -65,7 +65,7 @@ def test_launcher_d_d_c():
         exit_code = os.system("run_io_avstats_pytest.bat d_d_c")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -91,7 +91,7 @@ def test_launcher_d_d_f():
         exit_code = os.system("run_io_avstats_pytest.bat d_d_f")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -118,7 +118,7 @@ def test_launcher_s_d_c():
         time.sleep(10)
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -144,7 +144,7 @@ def test_launcher_c_d_s():
         exit_code = os.system("run_io_avstats_pytest.bat c_d_s")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -170,7 +170,7 @@ def test_launcher_u_d_s():
         exit_code = os.system("run_io_avstats_pytest.bat u_d_s")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -197,7 +197,7 @@ def test_launcher_a_o_c():
         exit_code = os.system("run_io_avstats_pytest.bat a_o_c")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -223,7 +223,7 @@ def test_launcher_l_a_p():
         exit_code = os.system("run_io_avstats_pytest.bat l_a_p")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -249,7 +249,7 @@ def test_launcher_l_c_s():
         exit_code = os.system("run_io_avstats_pytest.bat l_c_s")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -275,7 +275,7 @@ def test_launcher_l_s_e():
         exit_code = os.system("run_io_avstats_pytest.bat l_s_e")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -301,7 +301,7 @@ def test_launcher_l_s_d():
         exit_code = 0
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -327,7 +327,7 @@ def test_launcher_l_z_d():
         exit_code = os.system("run_io_avstats_pytest.bat l_z_d")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -353,7 +353,7 @@ def _test_launcher_r_d_s():
         exit_code = os.system("run_io_avstats_pytest.bat r_d_s")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 
@@ -379,7 +379,7 @@ def test_launcher_clean():
         exit_code = os.system("run_io_avstats_pytest.bat d_d_c")
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob.ERROR_00_908.replace("{os}", platform.system())
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
 
     assert exit_code == 0, f"Command failed with exit code {exit_code}"
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -10,7 +10,7 @@ import pyodbc  # type: ignore
 from iocommon import io_config
 from iocommon import io_utils
 
-from ioavstats import glob
+from ioavstats import glob_local
 
 
 # ------------------------------------------------------------------
@@ -30,7 +30,9 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
 
     if not Path(filename_mdb).is_file():
         # ERROR.00.932 File '{filename}' is not existing
-        io_utils.terminate_fatal(glob.ERROR_00_932.replace("{filename}", filename_mdb))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_932.replace("{filename}", filename_mdb)
+        )
 
     # Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename}}
     driver = io_config.settings.odbc_connection_string.replace(
@@ -38,7 +40,7 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
     )
 
     # INFO.00.054 ODBC driver='{driver}'
-    io_utils.progress_msg(glob.INFO_00_054.replace("{driver}", driver))
+    io_utils.progress_msg(glob_local.INFO_00_054.replace("{driver}", driver))
 
     conn_ma = pyodbc.connect(driver)  # pylint: disable=c-extension-no-member
 

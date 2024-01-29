@@ -144,10 +144,18 @@ log_message() {
   echo "$timestamp: $message" >> "$log_file"
 }
 
+# Check if logging_io_aero.log exists and delete it
+if [ -f logging_io_aero.log ]; then
+    rm -f logging_io_aero.log
+fi
+
+# Check if the file specified in logfile exists and delete it
+if [ -f "${log_file}" ]; then
+    rm -f "${log_file}"
+fi
+
 # Redirection of the standard output and the standard error output to the log file
 exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
-
-rm -f logging_io_aero.log
 
 echo "================================================================================"
 echo "Start $0"
@@ -269,8 +277,14 @@ else
     exit 255
 fi
 
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 echo "End   $0"
-echo "================================================================================"
+echo "======================================================================="
+
+# Close the log file
+exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
+
+# Closing the log file
+log_message "Script finished."

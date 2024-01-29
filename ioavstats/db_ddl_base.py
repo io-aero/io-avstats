@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -17,7 +17,7 @@ from psycopg2.errors import DuplicateObject  # pylint: disable=no-name-in-module
 from psycopg2.extensions import connection
 from psycopg2.extensions import cursor
 
-from ioavstats import glob
+from ioavstats import glob_local
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -42,7 +42,7 @@ def _alter_db_tables(conn_pg: connection, cur_pg: cursor) -> None:
             conn_pg.commit()
             # INFO.00.007 Database table created: {table}
             io_utils.progress_msg(
-                glob.INFO_00_007.replace("{table}", table_name),
+                glob_local.INFO_00_007.replace("{table}", table_name),
             )
 
 
@@ -236,7 +236,7 @@ def _create_db_indexes(conn_pg: connection, cur_pg: cursor) -> None:
             conn_pg.commit()
             # INFO.00.077 Database index is available: {index}
             io_utils.progress_msg(
-                glob.INFO_00_077.replace("{index}", index),
+                glob_local.INFO_00_077.replace("{index}", index),
             )
 
 
@@ -1001,12 +1001,16 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
 
         # INFO.00.018 Database role is dropped: {role}
         io_utils.progress_msg(
-            glob.INFO_00_018.replace("{role}", io_config.settings.postgres_user_guest),
+            glob_local.INFO_00_018.replace(
+                "{role}", io_config.settings.postgres_user_guest
+            ),
         )
     except DatabaseError:
         # INFO.00.082 Database role is not existing: {role}
         io_utils.progress_msg(
-            glob.INFO_00_082.replace("{role}", io_config.settings.postgres_user_guest),
+            glob_local.INFO_00_082.replace(
+                "{role}", io_config.settings.postgres_user_guest
+            ),
         )
 
     cur_pg.execute(
@@ -1018,7 +1022,9 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
 
     # INFO.00.016 Database role is available: {role}
     io_utils.progress_msg(
-        glob.INFO_00_016.replace("{role}", io_config.settings.postgres_user_guest),
+        glob_local.INFO_00_016.replace(
+            "{role}", io_config.settings.postgres_user_guest
+        ),
     )
 
     cur_pg.execute(
@@ -1047,7 +1053,7 @@ def _create_db_tables(conn_pg: connection, cur_pg: cursor) -> None:
             conn_pg.commit()
             # INFO.00.007 Database table created: {table}
             io_utils.progress_msg(
-                glob.INFO_00_007.replace("{table}", table_name),
+                glob_local.INFO_00_007.replace("{table}", table_name),
             )
 
 
@@ -1167,7 +1173,7 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             # INFO.00.031 Database column added: table_schema '{schema}'
             # table_name '{table}' column_name '{column}'
             io_utils.progress_msg(
-                glob.INFO_00_031.replace(
+                glob_local.INFO_00_031.replace(
                     "{schema}", io_config.settings.postgres_database_schema
                 )
                 .replace("{table}", table_name)
@@ -1208,7 +1214,7 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             # INFO.00.031 Database column added: table_schema '{schema}'
             # table_name '{table}' column_name '{column}'
             io_utils.progress_msg(
-                glob.INFO_00_031.replace(
+                glob_local.INFO_00_031.replace(
                     "{schema}", io_config.settings.postgres_database_schema
                 )
                 .replace("{table}", table_name)
@@ -1238,7 +1244,7 @@ def _create_db_types_composite(conn_pg: connection, cur_pg: cursor) -> None:
             conn_pg.commit()
             # INFO.00.091 Database type  is available: {type}
             io_utils.progress_msg(
-                glob.INFO_00_091.replace("{type}", type_name),
+                glob_local.INFO_00_091.replace("{type}", type_name),
             )
 
 
@@ -1255,7 +1261,7 @@ def _create_db_views(conn_pg: connection, cur_pg: cursor) -> None:
         conn_pg.commit()
         # INFO.00.070 Materialized database view is dropped: {view}
         io_utils.progress_msg(
-            glob.INFO_00_070.replace("{view}", view_name),
+            glob_local.INFO_00_070.replace("{view}", view_name),
         )
 
     for view_name in reversed(DLL_VIEW_STMNTS_DROP):
@@ -1263,7 +1269,7 @@ def _create_db_views(conn_pg: connection, cur_pg: cursor) -> None:
         conn_pg.commit()
         # INFO.00.067 Database view dropped: {view}
         io_utils.progress_msg(
-            glob.INFO_00_067.replace("{view}", view_name),
+            glob_local.INFO_00_067.replace("{view}", view_name),
         )
 
     for view_name, stmnt in DLL_VIEW_STMNTS_CREATE.items():
@@ -1271,7 +1277,7 @@ def _create_db_views(conn_pg: connection, cur_pg: cursor) -> None:
         conn_pg.commit()
         # INFO.00.032 Database view created: {view}
         io_utils.progress_msg(
-            glob.INFO_00_032.replace("{view}", view_name),
+            glob_local.INFO_00_032.replace("{view}", view_name),
         )
 
     for view_name, stmnt in DLL_VIEW_STMNTS_CREATE_MAT.items():
@@ -1279,7 +1285,7 @@ def _create_db_views(conn_pg: connection, cur_pg: cursor) -> None:
         conn_pg.commit()
         # INFO.00.068 Materialized database view is created: {view}
         io_utils.progress_msg(
-            glob.INFO_00_068.replace("{view}", view_name),
+            glob_local.INFO_00_068.replace("{view}", view_name),
         )
 
 
@@ -3319,13 +3325,15 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
 
     if not os.path.isfile(filename):
         # ERROR.00.941 The Main Phases of Flight file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_941.replace("{filename}", filename))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_941.replace("{filename}", filename)
+        )
 
     io_utils.progress_msg("")
     io_utils.progress_msg("-" * 80)
     # INFO.00.084 Database table io_md_codes_phase: Load description_main_phase
     # from file '{filename}'
-    io_utils.progress_msg(glob.INFO_00_084.replace("{filename}", filename))
+    io_utils.progress_msg(glob_local.INFO_00_084.replace("{filename}", filename))
     io_utils.progress_msg("-" * 80)
 
     count_select = 0
@@ -3416,7 +3424,7 @@ def _refresh_db_views(conn_pg: connection, cur_pg: cursor) -> None:
         conn_pg.commit()
         # INFO.00.069 Materialized database view is refreshed: {view}
         io_utils.progress_msg(
-            glob.INFO_00_069.replace("{view}", view_name),
+            glob_local.INFO_00_069.replace("{view}", view_name),
         )
 
 
@@ -3439,12 +3447,12 @@ def create_db_schema() -> None:
 
         # INFO.00.016 Database role is available: {user}
         io_utils.progress_msg(
-            glob.INFO_00_016.replace("{role}", io_config.settings.postgres_user),
+            glob_local.INFO_00_016.replace("{role}", io_config.settings.postgres_user),
         )
     except DuplicateObject:
         # INFO.00.082 Database role already existing: {role}
         io_utils.progress_msg(
-            glob.INFO_00_082.replace("{role}", io_config.settings.postgres_user),
+            glob_local.INFO_00_082.replace("{role}", io_config.settings.postgres_user),
         )
 
     try:
@@ -3455,12 +3463,16 @@ def create_db_schema() -> None:
 
         # INFO.00.017 Database is available: {dbname}
         io_utils.progress_msg(
-            glob.INFO_00_017.replace("{dbname}", io_config.settings.postgres_dbname),
+            glob_local.INFO_00_017.replace(
+                "{dbname}", io_config.settings.postgres_dbname
+            ),
         )
     except DuplicateDatabase:
         # INFO.00.083 Database already existing: {dbname}
         io_utils.progress_msg(
-            glob.INFO_00_083.replace("{dbname}", io_config.settings.postgres_dbname),
+            glob_local.INFO_00_083.replace(
+                "{dbname}", io_config.settings.postgres_dbname
+            ),
         )
 
     cur_pg.close()

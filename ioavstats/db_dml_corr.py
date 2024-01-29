@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -18,7 +18,7 @@ from openpyxl import load_workbook
 from psycopg2.extensions import connection
 from psycopg2.extensions import cursor
 
-from ioavstats import glob
+from ioavstats import glob_local
 from ioavstats.utils import prepare_latitude
 from ioavstats.utils import prepare_longitude
 
@@ -65,7 +65,7 @@ def _check_corrected_value() -> bool:
 
             return True
         except ValueError:
-            _error_msg(glob.ERROR_00_920)
+            _error_msg(glob_local.ERROR_00_920)
 
     if COLUMN_NAME == "io_longitude":
         try:
@@ -73,7 +73,7 @@ def _check_corrected_value() -> bool:
 
             return True
         except ValueError:
-            _error_msg(glob.ERROR_00_921)
+            _error_msg(glob_local.ERROR_00_921)
 
     return False
 
@@ -96,7 +96,7 @@ def _check_events_ev_id(cur_pg: cursor) -> bool:
         return True
 
     # ERROR.00.931 The ev_id is missing in database table events
-    _error_msg(glob.ERROR_00_931)
+    _error_msg(glob_local.ERROR_00_931)
 
     return False
 
@@ -109,7 +109,7 @@ def _cleansing_database_column(
 ):
     # INFO.00.066 Cleansing table '{table}' column '{column}'
     io_utils.progress_msg(
-        glob.INFO_00_066.replace("{table}", table).replace("{column}", column)
+        glob_local.INFO_00_066.replace("{table}", table).replace("{column}", column)
     )
 
     # ------------------------------------------------------------------
@@ -243,7 +243,7 @@ def _process_events(
     COLUMN_NAME = ROW[ROW_COLUMN_COLUMN_NAME_IDX].value.lower() if ROW[ROW_COLUMN_COLUMN_NAME_IDX].value else None  # type: ignore
     if not COLUMN_NAME:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
-        _error_msg(glob.ERROR_00_930.replace("{column_name}", "column_name"))
+        _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "column_name"))
         return
 
     if COLUMN_NAME not in [
@@ -255,13 +255,13 @@ def _process_events(
         "io_state",
     ]:
         # ERROR.00.928 Database table column not yet supported
-        _error_msg(glob.ERROR_00_928)
+        _error_msg(glob_local.ERROR_00_928)
         return
 
     VALUE = ROW[ROW_COLUMN_VALUE_IDX].value  # type: ignore
     if not VALUE:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
-        _error_msg(glob.ERROR_00_930.replace("{column_name}", "value"))
+        _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "value"))
         return
 
     if VALUE.lower() == "null":
@@ -277,7 +277,7 @@ def _process_events(
     EV_ID = ROW[ROW_COLUMN_EV_ID_IDX].value  # type: ignore
     if not EV_ID:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
-        _error_msg(glob.ERROR_00_930.replace("{column_name}", "ev_id"))
+        _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "ev_id"))
         return
 
     if not _check_events_ev_id(cur_pg):
@@ -285,17 +285,17 @@ def _process_events(
 
     if ROW[ROW_COLUMN_AIRCRAFT_KEY_IDX].value:  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
-        _error_msg(glob.ERROR_00_929.replace("{column_name}", "aircraft_key"))
+        _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "aircraft_key"))
         return
 
     if ROW[ROW_COLUMN_CREW_NO_IDX].value:  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
-        _error_msg(glob.ERROR_00_929.replace("{column_name}", "crew_no"))
+        _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "crew_no"))
         return
 
     if ROW[ROW_COLUMN_OCCURRENCE_NO_IDX].value:  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
-        _error_msg(glob.ERROR_00_929.replace("{column_name}", "occurrence_no"))
+        _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "occurrence_no"))
         return
 
     _upd_table_events_row(cur_pg)
@@ -519,7 +519,7 @@ def correct_dec_lat_lng() -> None:
     if cur_pg.rowcount > 0:
         conn_pg.commit()
 
-        io_utils.progress_msg(glob.INFO_00_063.replace("{data_source}", "events"))
+        io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
         io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
 
@@ -560,42 +560,42 @@ def correct_dec_lat_lng() -> None:
         longitude = row_pg["longitude"]  # type: ignore
 
         state = row_pg["state"]  # type: ignore
-        if state not in glob.US_STATE_IDS:
-            io_dec_lat_lng_actions = glob.ERROR_00_922
+        if state not in glob_local.US_STATE_IDS:
+            io_dec_lat_lng_actions = glob_local.ERROR_00_922
 
         if latitude and longitude:
             if latitude[-1] in ["E", "W"]:
                 io_longitude, io_latitude = latitude, longitude
                 latitude, longitude = io_latitude, io_longitude
                 io_dec_lat_lng_actions = (
-                    io_dec_lat_lng_actions + " & " + glob.INFO_00_038
+                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_038
                     if io_dec_lat_lng_actions
-                    else glob.INFO_00_038
+                    else glob_local.INFO_00_038
                 )
                 io_latlong_acq = "LOLA"
             else:
                 io_dec_lat_lng_actions = (
-                    io_dec_lat_lng_actions + " & " + glob.INFO_00_037
+                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_037
                     if io_dec_lat_lng_actions
-                    else glob.INFO_00_037
+                    else glob_local.INFO_00_037
                 )
                 io_latlong_acq = "LALO"
             try:
                 io_dec_latitude = lat_lon_parser.parse(prepare_latitude(latitude))
             except ValueError:
                 io_dec_lat_lng_actions = (
-                    io_dec_lat_lng_actions + " & " + glob.ERROR_00_920
+                    io_dec_lat_lng_actions + " & " + glob_local.ERROR_00_920
                     if io_dec_lat_lng_actions
-                    else glob.ERROR_00_920
+                    else glob_local.ERROR_00_920
                 )
                 io_latlong_acq = "ERRA"
             try:
                 io_dec_longitude = lat_lon_parser.parse(prepare_longitude(longitude))
             except ValueError:
                 io_dec_lat_lng_actions = (
-                    io_dec_lat_lng_actions + " & " + glob.ERROR_00_921
+                    io_dec_lat_lng_actions + " & " + glob_local.ERROR_00_921
                     if io_dec_lat_lng_actions
-                    else glob.ERROR_00_921
+                    else glob_local.ERROR_00_921
                 )
                 io_latlong_acq = "ERRO"
             if io_dec_latitude or io_dec_longitude:
@@ -623,9 +623,9 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob.INFO_00_033
+                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_033
                     if io_dec_lat_lng_actions
-                    else glob.INFO_00_033,
+                    else glob_local.INFO_00_033,
                     dec_latitude,
                     dec_longitude,
                     "ZIP",
@@ -633,9 +633,9 @@ def correct_dec_lat_lng() -> None:
                 )
                 continue
             io_dec_lat_lng_actions = (
-                io_dec_lat_lng_actions + " & " + glob.ERROR_00_915
+                io_dec_lat_lng_actions + " & " + glob_local.ERROR_00_915
                 if io_dec_lat_lng_actions
-                else glob.ERROR_00_915
+                else glob_local.ERROR_00_915
             )
 
         # ------------------------------------------------------------------
@@ -649,9 +649,9 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob.INFO_00_034
+                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_034
                     if io_dec_lat_lng_actions
-                    else glob.INFO_00_034,
+                    else glob_local.INFO_00_034,
                     dec_latitude,
                     dec_longitude,
                     "CITY",
@@ -659,9 +659,9 @@ def correct_dec_lat_lng() -> None:
                 )
                 continue
             io_dec_lat_lng_actions = (
-                io_dec_lat_lng_actions + " & " + glob.ERROR_00_916
+                io_dec_lat_lng_actions + " & " + glob_local.ERROR_00_916
                 if io_dec_lat_lng_actions
-                else glob.ERROR_00_916
+                else glob_local.ERROR_00_916
             )
 
         # ------------------------------------------------------------------
@@ -674,9 +674,9 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob.INFO_00_035
+                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_035
                     if io_dec_lat_lng_actions
-                    else glob.INFO_00_035,
+                    else glob_local.INFO_00_035,
                     dec_latitude,
                     dec_longitude,
                     "STAT",
@@ -684,9 +684,9 @@ def correct_dec_lat_lng() -> None:
                 )
                 continue
             io_dec_lat_lng_actions = (
-                io_dec_lat_lng_actions + " & " + glob.ERROR_00_917
+                io_dec_lat_lng_actions + " & " + glob_local.ERROR_00_917
                 if io_dec_lat_lng_actions
-                else glob.ERROR_00_917
+                else glob_local.ERROR_00_917
             )
 
         # ------------------------------------------------------------------
@@ -697,9 +697,9 @@ def correct_dec_lat_lng() -> None:
 
         count_update += _upd_table_events_row_io_lat_lng(
             ev_id,
-            io_dec_lat_lng_actions + " & " + glob.INFO_00_036
+            io_dec_lat_lng_actions + " & " + glob_local.INFO_00_036
             if io_dec_lat_lng_actions
-            else glob.INFO_00_036,
+            else glob_local.INFO_00_036,
             dec_latitude,
             dec_longitude,
             "COUN",
@@ -757,7 +757,7 @@ def find_nearest_airports() -> None:
     if cur_pg.rowcount > 0:
         conn_pg.commit()
 
-        io_utils.progress_msg(glob.INFO_00_063.replace("{data_source}", "events"))
+        io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
         io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
 
@@ -840,7 +840,7 @@ def find_nearest_airports() -> None:
             except ValueError as err:
                 # ERROR.00.942 Issue with the Harvesine algorithm: '{error}'
                 io_utils.progress_msg(
-                    glob.ERROR_00_942.replace("{ev_id}", ev_id).replace(
+                    glob_local.ERROR_00_942.replace("{ev_id}", ev_id).replace(
                         "{error}", str(err)
                     )
                 )
@@ -912,7 +912,9 @@ def load_correction_data(filename: str) -> None:
 
     if not os.path.isfile(corr_file):
         # ERROR.00.926 The correction file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_926.replace("{filename}", corr_file))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_926.replace("{filename}", corr_file)
+        )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -941,13 +943,13 @@ def load_correction_data(filename: str) -> None:
 
         # ERROR.00.930 Excel column '{column_name}' must not be empty
         if not TABLE_NAME:
-            _error_msg(glob.ERROR_00_930.replace("{column_name}", "table_name"))
+            _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "table_name"))
             continue
 
-        if TABLE_NAME == glob.TABLE_NAME_EVENTS:
+        if TABLE_NAME == glob_local.TABLE_NAME_EVENTS:
             _process_events(cur_pg)
         else:
-            _error_msg(glob.ERROR_00_927)
+            _error_msg(glob_local.ERROR_00_927)
 
     workbook.close()
 
@@ -1012,7 +1014,7 @@ def verify_ntsb_data() -> None:
     if cur_pg.rowcount > 0:
         conn_pg.commit()
 
-        io_utils.progress_msg(glob.INFO_00_063.replace("{data_source}", "events"))
+        io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
         io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
 
@@ -1029,7 +1031,7 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
-        glob.INFO_00_064.replace("{table}", "events").replace(
+        glob_local.INFO_00_064.replace("{table}", "events").replace(
             "{column}", "latitude & longitude"
         )
     )
@@ -1144,7 +1146,9 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
-        glob.INFO_00_064.replace("{table}", "events").replace("{column}", "ev_city")
+        glob_local.INFO_00_064.replace("{table}", "events").replace(
+            "{column}", "ev_city"
+        )
     )
 
     cur_pg.execute(
@@ -1175,7 +1179,7 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
-        glob.INFO_00_064.replace("{table}", "events").replace(
+        glob_local.INFO_00_064.replace("{table}", "events").replace(
             "{column}", "ev_city & ev_site_zipcode"
         )
     )
@@ -1210,7 +1214,9 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
-        glob.INFO_00_064.replace("{table}", "events").replace("{column}", "ev_state")
+        glob_local.INFO_00_064.replace("{table}", "events").replace(
+            "{column}", "ev_state"
+        )
     )
 
     cur_pg.execute(
@@ -1238,7 +1244,7 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
-        glob.INFO_00_064.replace("{table}", "events").replace(
+        glob_local.INFO_00_064.replace("{table}", "events").replace(
             "{column}", "ev_site_zipcode"
         )
     )

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -21,7 +21,7 @@ from psycopg2.errors import UniqueViolation  # pylint: disable=no-name-in-module
 from psycopg2.extensions import connection
 from psycopg2.extensions import cursor
 
-from ioavstats import glob
+from ioavstats import glob_local
 from ioavstats import utils
 
 # -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ def _load_airport_data() -> None:
         conn_pg.commit()
         io_utils.progress_msg("-" * 80)
         # INFO.00.087 Database table io_airports: Delete the existing data
-        io_utils.progress_msg(glob.INFO_00_087)
+        io_utils.progress_msg(glob_local.INFO_00_087)
         io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
 
     # ------------------------------------------------------------------
@@ -77,12 +77,12 @@ def _load_airport_data() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.943 The airport file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob.ERROR_00_943.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_943.replace("{filename}", filename_excel)
         )
 
     # INFO.00.089 Database table io_airports: Load data from file '{filename}'
     io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob.INFO_00_089.replace("{filename}", filename_excel))
+    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
 
     count_select = 0
     count_upsert = 0
@@ -314,12 +314,12 @@ def _load_aviation_occurrence_categories() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.937 The aviation occurrence categories file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob.ERROR_00_937.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_937.replace("{filename}", filename_excel)
         )
 
     # INFO.00.074 Database table io_aviation_occurrence_categories: Load data from file '{filename}'
     io_utils.progress_msg(
-        glob.INFO_00_074.replace(
+        glob_local.INFO_00_074.replace(
             "{filename}",
             io_config.settings.download_file_aviation_occurrence_categories_xlsx,
         )
@@ -484,7 +484,9 @@ def _load_country_data(
 
     if not os.path.isfile(filename_json):
         # ERROR.00.934 The country and state data file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_934.replace("{filename}", filename_json))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_934.replace("{filename}", filename_json)
+        )
 
     count_insert = 0
     count_select = 0
@@ -574,12 +576,12 @@ def _load_npias_data(us_states) -> list[str]:
     if not os.path.isfile(filename_excel):
         # ERROR.00.945 The NPIAS file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob.ERROR_00_945.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_945.replace("{filename}", filename_excel)
         )
 
     # INFO.00.089 Database table io_airports: Load data from file '{filename}'
     io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob.INFO_00_089.replace("{filename}", filename_excel))
+    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
 
     count_select = 0
     count_usable = 0
@@ -627,7 +629,7 @@ def _load_runway_data() -> None:
     # ------------------------------------------------------------------
     # INFO.00.088 Database table io_airports: Load the global identifications
     io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob.INFO_00_088)
+    io_utils.progress_msg(glob_local.INFO_00_088)
 
     count_select = 0
 
@@ -660,11 +662,11 @@ def _load_runway_data() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.944 The runway file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob.ERROR_00_944.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_944.replace("{filename}", filename_excel)
         )
 
     # INFO.00.089 Database table io_airports: Load data from file '{filename}'
-    io_utils.progress_msg(glob.INFO_00_089.replace("{filename}", filename_excel))
+    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
 
     count_select = 0
 
@@ -712,7 +714,7 @@ def _load_runway_data() -> None:
     # ------------------------------------------------------------------
 
     # INFO.00.090 Database table io_airports: Update the runway data
-    io_utils.progress_msg(glob.INFO_00_090)
+    io_utils.progress_msg(glob_local.INFO_00_090)
 
     count_select = 0
     count_update = 0
@@ -788,12 +790,12 @@ def _load_sequence_of_events() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.938 The sequence of events file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob.ERROR_00_938.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_938.replace("{filename}", filename_excel)
         )
 
     # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
     io_utils.progress_msg(
-        glob.INFO_00_076.replace(
+        glob_local.INFO_00_076.replace(
             "{filename}", io_config.settings.download_file_sequence_of_events_xlsx
         )
     )
@@ -963,11 +965,13 @@ def _load_simplemaps_data_cities_from_us_cities(
 
     if not os.path.isfile(filename):
         # ERROR.00.914 The US city file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_914.replace("{filename}", filename))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_914.replace("{filename}", filename)
+        )
 
     # INFO.00.027 Database table io_lat_lng: Load city data from file '{filename}'
     io_utils.progress_msg(
-        glob.INFO_00_027.replace(
+        glob_local.INFO_00_027.replace(
             "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
         )
     )
@@ -1037,20 +1041,20 @@ def _load_simplemaps_data_cities_from_us_cities(
            );
         """,
             (
-                glob.IO_LAT_LNG_TYPE_CITY,
-                glob.COUNTRY_USA,
+                glob_local.IO_LAT_LNG_TYPE_CITY,
+                glob_local.COUNTRY_USA,
                 state,
                 city,
                 lat,
                 lng,
-                glob.SOURCE_SM_US_CITIES,
+                glob_local.SOURCE_SM_US_CITIES,
                 datetime.now(),
                 lat,
                 lng,
-                glob.SOURCE_SM_US_CITIES,
+                glob_local.SOURCE_SM_US_CITIES,
                 datetime.now(),
-                glob.IO_LAT_LNG_TYPE_CITY,
-                glob.COUNTRY_USA,
+                glob_local.IO_LAT_LNG_TYPE_CITY,
+                glob_local.COUNTRY_USA,
                 state,
                 city,
                 lat,
@@ -1089,11 +1093,13 @@ def _load_simplemaps_data_zips_from_us_cities(
 
     if not os.path.isfile(filename):
         # ERROR.00.914 The US city file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_914.replace("{filename}", filename))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_914.replace("{filename}", filename)
+        )
 
     # INFO.00.039 Database table io_lat_lng: Load zipcode data from file '{filename}'
     io_utils.progress_msg(
-        glob.INFO_00_039.replace(
+        glob_local.INFO_00_039.replace(
             "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
         )
     )
@@ -1152,14 +1158,14 @@ def _load_simplemaps_data_zips_from_us_cities(
             DO NOTHING;
             """,
                 (
-                    glob.IO_LAT_LNG_TYPE_ZIPCODE,
-                    glob.COUNTRY_USA,
+                    glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                    glob_local.COUNTRY_USA,
                     state,
                     city,
                     zipcode.rstrip(),
                     lat,
                     lng,
-                    glob.SOURCE_SM_US_CITIES,
+                    glob_local.SOURCE_SM_US_CITIES,
                     datetime.now(),
                 ),
             )
@@ -1194,11 +1200,13 @@ def _load_simplemaps_data_zips_from_us_zips(
 
     if not os.path.isfile(filename):
         # ERROR.00.913 The US zip code file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_913.replace("{filename}", filename))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_913.replace("{filename}", filename)
+        )
 
     # INFO.00.025 Database table io_lat_lng: Load zipcode data rom file '{filename}'
     io_utils.progress_msg(
-        glob.INFO_00_025.replace(
+        glob_local.INFO_00_025.replace(
             "{filename}", io_config.settings.download_file_simplemaps_us_zips_xlsx
         )
     )
@@ -1272,21 +1280,21 @@ def _load_simplemaps_data_zips_from_us_zips(
            );
         """,
             (
-                glob.IO_LAT_LNG_TYPE_ZIPCODE,
-                glob.COUNTRY_USA,
+                glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                glob_local.COUNTRY_USA,
                 state,
                 city,
                 zipcode,
                 lat,
                 lng,
-                glob.SOURCE_SM_US_ZIP_CODES,
+                glob_local.SOURCE_SM_US_ZIP_CODES,
                 datetime.now(),
                 lat,
                 lng,
-                glob.SOURCE_SM_US_ZIP_CODES,
+                glob_local.SOURCE_SM_US_ZIP_CODES,
                 datetime.now(),
-                glob.IO_LAT_LNG_TYPE_ZIPCODE,
-                glob.COUNTRY_USA,
+                glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                glob_local.COUNTRY_USA,
                 state,
                 city,
                 zipcode,
@@ -1331,7 +1339,9 @@ def _load_state_data(
 
     if not os.path.isfile(filename_json):
         # ERROR.00.934 The country and state data file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_934.replace("{filename}", filename_json))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_934.replace("{filename}", filename_json)
+        )
 
     count_insert = 0
     count_select = 0
@@ -1416,7 +1426,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
      WHERE
            source = %s;
     """,
-        (glob.SOURCE_AVERAGE,),
+        (glob_local.SOURCE_AVERAGE,),
     )
 
     if cur_pg.rowcount > 0:
@@ -1424,7 +1434,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob.INFO_00_063.replace("{data_source}", glob.SOURCE_AVERAGE)
+            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE)
         )
         io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
@@ -1433,7 +1443,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
     # Insert averaged data.
     # ------------------------------------------------------------------
     # INFO.00.062 Database table io_lat_lng: Load the averaged city data
-    io_utils.progress_msg(glob.INFO_00_062)
+    io_utils.progress_msg(glob_local.INFO_00_062)
     io_utils.progress_msg("-" * 80)
 
     count_duplicates = 0
@@ -1451,7 +1461,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
            sum(dec_latitude)/count(*) dec_latitude,
            sum(dec_longitude)/count(*) dec_longitude
       FROM io_lat_lng
-     WHERE type = '{glob.IO_LAT_LNG_TYPE_ZIPCODE}'
+     WHERE type = '{glob_local.IO_LAT_LNG_TYPE_ZIPCODE}'
      GROUP BY country, state, city;
         """,
     )
@@ -1485,13 +1495,13 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
             DO NOTHING;
             """,
                 (
-                    glob.IO_LAT_LNG_TYPE_CITY,
+                    glob_local.IO_LAT_LNG_TYPE_CITY,
                     row_pg["country"],  # type: ignore
                     row_pg["state"],  # type: ignore
                     row_pg["city"],  # type: ignore
                     row_pg["dec_latitude"],  # type: ignore
                     row_pg["dec_longitude"],  # type: ignore
-                    glob.SOURCE_AVERAGE,
+                    glob_local.SOURCE_AVERAGE,
                     datetime.now(),
                 ),
             )
@@ -1528,7 +1538,9 @@ def _load_zip_codes_org_data() -> None:
 
     if not os.path.isfile(filename_xlsx):
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_935.replace("{filename}", filename_xlsx))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_935.replace("{filename}", filename_xlsx)
+        )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -1540,7 +1552,7 @@ def _load_zip_codes_org_data() -> None:
     DELETE FROM io_lat_lng
      WHERE SOURCE = %s;
     """,
-        (glob.SOURCE_ZCO_ZIP_CODES,),
+        (glob_local.SOURCE_ZCO_ZIP_CODES,),
     )
 
     if cur_pg.rowcount > 0:
@@ -1548,7 +1560,9 @@ def _load_zip_codes_org_data() -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob.INFO_00_063.replace("{data_source}", glob.SOURCE_ZCO_ZIP_CODES)
+            glob_local.INFO_00_063.replace(
+                "{data_source}", glob_local.SOURCE_ZCO_ZIP_CODES
+            )
         )
         io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
@@ -1585,7 +1599,7 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
     logger.debug(io_glob.LOGGER_START)
 
     # INFO.00.061 Database table io_lat_lng: Load the estimated zip code data
-    io_utils.progress_msg(glob.INFO_00_061)
+    io_utils.progress_msg(glob_local.INFO_00_061)
     io_utils.progress_msg("-" * 80)
 
     count_upsert = 0
@@ -1673,25 +1687,25 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                    );
                 """,
                     (
-                        glob.IO_LAT_LNG_TYPE_ZIPCODE,
-                        glob.COUNTRY_USA,
+                        glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                        glob_local.COUNTRY_USA,
                         state.rstrip(),
                         city.rstrip(),
                         zipcode.rstrip(),
                         lat,
                         lng,
-                        glob.SOURCE_ZCO_ZIP_CODES,
+                        glob_local.SOURCE_ZCO_ZIP_CODES,
                         datetime.now(),
                         lat,
                         lng,
-                        glob.SOURCE_ZCO_ZIP_CODES,
+                        glob_local.SOURCE_ZCO_ZIP_CODES,
                         datetime.now(),
-                        glob.IO_LAT_LNG_TYPE_ZIPCODE,
-                        glob.COUNTRY_USA,
+                        glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                        glob_local.COUNTRY_USA,
                         state.rstrip(),
                         city.rstrip(),
                         zipcode.rstrip(),
-                        glob.SOURCE_SM_US_CITIES,
+                        glob_local.SOURCE_SM_US_CITIES,
                         lat,
                         lng,
                     ),
@@ -1774,13 +1788,15 @@ def download_us_cities_file() -> None:
         if file_resp.status_code != 200:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
-                glob.ERROR_00_906.replace("{status_code}", str(file_resp.status_code))
+                glob_local.ERROR_00_906.replace(
+                    "{status_code}", str(file_resp.status_code)
+                )
             )
 
         # INFO.00.030 The connection to the US city file '{filename}'
         # on the simplemaps download page was successfully established
         io_utils.progress_msg(
-            glob.INFO_00_030.replace(
+            glob_local.INFO_00_030.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
             )
         )
@@ -1804,7 +1820,7 @@ def download_us_cities_file() -> None:
 
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob.INFO_00_023.replace(
+            glob_local.INFO_00_023.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
             ).replace("{no_chunks}", str(no_chunks))
         )
@@ -1821,23 +1837,23 @@ def download_us_cities_file() -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File '{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob.ERROR_00_907.replace("{filename}", filename_zip)
+                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
             )
 
         os.remove(filename_zip)
         # INFO.00.024 The file '{filename}'  was successfully unpacked
         io_utils.progress_msg(
-            glob.INFO_00_024.replace(
+            glob_local.INFO_00_024.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
             )
         )
     except ConnectionError:
         # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob.ERROR_00_905.replace("{url}", url))
+        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
     except TimeoutError:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
-            glob.ERROR_00_909.replace(
+            glob_local.ERROR_00_909.replace(
                 "{timeout}", str(io_config.settings.download_timeout)
             ).replace("{url}", url)
         )
@@ -1868,13 +1884,15 @@ def download_us_zips_file() -> None:
         if file_resp.status_code != 200:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
-                glob.ERROR_00_906.replace("{status_code}", str(file_resp.status_code))
+                glob_local.ERROR_00_906.replace(
+                    "{status_code}", str(file_resp.status_code)
+                )
             )
 
         # INFO.00.022 The connection to the US zip code file '{filename}'
         # on the simplemaps download page was successfully established
         io_utils.progress_msg(
-            glob.INFO_00_022.replace(
+            glob_local.INFO_00_022.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
             )
         )
@@ -1898,7 +1916,7 @@ def download_us_zips_file() -> None:
 
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob.INFO_00_023.replace(
+            glob_local.INFO_00_023.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
             ).replace("{no_chunks}", str(no_chunks))
         )
@@ -1915,23 +1933,23 @@ def download_us_zips_file() -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File '{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob.ERROR_00_907.replace("{filename}", filename_zip)
+                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
             )
 
         os.remove(filename_zip)
         # INFO.00.024 The file '{filename}'  was successfully unpacked
         io_utils.progress_msg(
-            glob.INFO_00_024.replace(
+            glob_local.INFO_00_024.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
             )
         )
     except ConnectionError:
         # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob.ERROR_00_905.replace("{url}", url))
+        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
     except TimeoutError:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
-            glob.ERROR_00_909.replace(
+            glob_local.ERROR_00_909.replace(
                 "{timeout}", str(io_config.settings.download_timeout)
             ).replace("{url}", url)
         )
@@ -1962,13 +1980,15 @@ def download_zip_code_db_file() -> None:
         if file_resp.status_code != 200:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
-                glob.ERROR_00_906.replace("{status_code}", str(file_resp.status_code))
+                glob_local.ERROR_00_906.replace(
+                    "{status_code}", str(file_resp.status_code)
+                )
             )
 
         # INFO.00.058 The connection to the Zip Code Database file '{filename}'
         # on the Zip Codes.org download page was successfully established
         io_utils.progress_msg(
-            glob.INFO_00_058.replace(
+            glob_local.INFO_00_058.replace(
                 "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
             )
         )
@@ -1992,18 +2012,18 @@ def download_zip_code_db_file() -> None:
 
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob.INFO_00_023.replace(
+            glob_local.INFO_00_023.replace(
                 "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
             ).replace("{no_chunks}", str(no_chunks))
         )
 
     except ConnectionError:
         # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob.ERROR_00_905.replace("{url}", url))
+        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
     except TimeoutError:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
-            glob.ERROR_00_909.replace(
+            glob_local.ERROR_00_909.replace(
                 "{timeout}", str(io_config.settings.download_timeout)
             ).replace("{url}", url)
         )
@@ -2055,7 +2075,7 @@ def load_country_state_data() -> None:
     # ------------------------------------------------------------------
 
     # INFO.00.059 Load country data
-    io_utils.progress_msg(glob.INFO_00_059)
+    io_utils.progress_msg(glob_local.INFO_00_059)
     io_utils.progress_msg("-" * 80)
     _load_country_data(
         conn_pg,
@@ -2069,7 +2089,7 @@ def load_country_state_data() -> None:
     io_utils.progress_msg("-" * 80)
 
     # INFO.00.060 Load state data
-    io_utils.progress_msg(glob.INFO_00_060)
+    io_utils.progress_msg(glob_local.INFO_00_060)
     io_utils.progress_msg("-" * 80)
     _load_state_data(
         conn_pg,
@@ -2124,8 +2144,8 @@ def load_simplemaps_data() -> None:
     WHERE SOURCE IN (%s, %s);
     """,
         (
-            glob.SOURCE_SM_US_CITIES,
-            glob.SOURCE_SM_US_ZIP_CODES,
+            glob_local.SOURCE_SM_US_CITIES,
+            glob_local.SOURCE_SM_US_ZIP_CODES,
         ),
     )
 
@@ -2134,10 +2154,14 @@ def load_simplemaps_data() -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob.INFO_00_063.replace("{data_source}", glob.SOURCE_SM_US_CITIES)
+            glob_local.INFO_00_063.replace(
+                "{data_source}", glob_local.SOURCE_SM_US_CITIES
+            )
         )
         io_utils.progress_msg(
-            glob.INFO_00_063.replace("{data_source}", glob.SOURCE_SM_US_ZIP_CODES)
+            glob_local.INFO_00_063.replace(
+                "{data_source}", glob_local.SOURCE_SM_US_ZIP_CODES
+            )
         )
         io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)

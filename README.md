@@ -11,7 +11,7 @@ Currently, **`IO-AVSTATS`** includes the following applications:
 ## Operation
 
 The whole functionality of **IO-AVSTATS** can be used with the script `run_io_avstats`.
-The script is available in versions for macOS, Ubuntu and Windows 10/11 and provides the following functionality:
+The script is available in versions for Ubuntu and Windows 10/11 and provides the following functionality:
 
     r_s_a   - Run the IO-AVSTATS application
     ---------------------------------------------------------
@@ -76,7 +76,7 @@ Further IO-Aero software documentation can be found under the following links.
 | ioavstats         | Python script files.                          |
 | libs              | Third party libraries.                        |
 | resources         | Selected manuals and software.                |
-| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
+| scripts           | Supporting Ubuntu and Windows Scripts. |
 | tests             | Scripts and data for **pytest**.              |
 | upload            | Cloud related upload directory.               |
 

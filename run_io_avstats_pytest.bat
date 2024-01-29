@@ -144,10 +144,12 @@ echo.
 echo Please wait ...
 echo.
 
+rem Check if logging_io_aero.log exists and delete it
 if exist logging_io_aero.log (
     del /f /q logging_io_aero.log
 )
 
+rem Check if the file specified in IO_AERO_AVSTATS_LOG exists and delete it
 if exist %IO_AERO_AVSTATS_LOG% (
     del /f /q %IO_AERO_AVSTATS_LOG%
 )
@@ -482,8 +484,10 @@ exit 1
 
 :END_OF_SCRIPT
 echo.
-echo -----------------------------------------------------------------------
+echo ---------------------------------------------------------------------------
 echo:| TIME
-echo -----------------------------------------------------------------------
+echo ---------------------------------------------------------------------------
 echo End   %0
-echo =======================================================================
+echo ===========================================================================
+
+ENDLOCAL

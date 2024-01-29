@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 IO-Aero. All rights reserved. Use of this
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
@@ -24,7 +24,7 @@ from psycopg2.errors import UniqueViolation  # pylint: disable=no-name-in-module
 from psycopg2.extensions import connection
 from psycopg2.extensions import cursor
 
-from ioavstats import glob
+from ioavstats import glob_local
 from ioavstats import utils
 from ioavstats import utils_msaccess
 
@@ -53,11 +53,11 @@ def _check_ddl_changes(msaccess: str) -> None:
     shutil.copy(
         os.path.join(
             download_work_dir.replace("/", os.sep),
-            msaccess + "." + glob.FILE_EXTENSION_MDB,
+            msaccess + "." + glob_local.FILE_EXTENSION_MDB,
         ),
         os.path.join(
             download_work_dir.replace("/", os.sep),
-            io_config.settings.razorsql_profile + "." + glob.FILE_EXTENSION_MDB,
+            io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB,
         ),
     )
 
@@ -67,19 +67,25 @@ def _check_ddl_changes(msaccess: str) -> None:
     )
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
-    io_utils.progress_msg(glob.INFO_00_051.replace("{msaccess_file}", msaccess_mdb))
+    io_utils.progress_msg(
+        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_mdb)
+    )
 
     if not os.path.exists(msaccess_mdb):
         # ERROR.00.932 File '{filename}' is not existing
-        io_utils.terminate_fatal(glob.ERROR_00_932.replace("{filename}", msaccess_mdb))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb)
+        )
 
     msaccess_sql = os.path.join(
         download_work_dir.replace("/", os.sep),
-        msaccess + "." + glob.FILE_EXTENSION_SQL,
+        msaccess + "." + glob_local.FILE_EXTENSION_SQL,
     )
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
-    io_utils.progress_msg(glob.INFO_00_051.replace("{msaccess_file}", msaccess_sql))
+    io_utils.progress_msg(
+        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_sql)
+    )
 
     razorsql_jar_file = ""
     razorsql_java_path = ""
@@ -92,22 +98,24 @@ def _check_ddl_changes(msaccess: str) -> None:
         razorsql_java_path = io_config.settings.razorsql_java_path_linux
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
-        io_utils.terminate_fatal(glob.ERROR_00_908.replace("{os}", platform.system()))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_908.replace("{os}", platform.system())
+        )
 
     # INFO.00.052 razorsql_jar_file='{razorsql_jar_file}'
     io_utils.progress_msg(
-        glob.INFO_00_052.replace("{razorsql_jar_file}", razorsql_jar_file)
+        glob_local.INFO_00_052.replace("{razorsql_jar_file}", razorsql_jar_file)
     )
 
     if not Path(razorsql_jar_file).is_file():
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
-            glob.ERROR_00_932.replace("{filename}", razorsql_jar_file)
+            glob_local.ERROR_00_932.replace("{filename}", razorsql_jar_file)
         )
 
     # INFO.00.053 razorsql_java_path='{razorsql_java_path}'"
     io_utils.progress_msg(
-        glob.INFO_00_053.replace("{razorsql_java_path}", razorsql_java_path)
+        glob_local.INFO_00_053.replace("{razorsql_java_path}", razorsql_java_path)
     )
 
     subprocess.run(
@@ -134,12 +142,12 @@ def _check_ddl_changes(msaccess: str) -> None:
 
     # INFO.00.011 The DDL script for the MS Access database '{msaccess}'
     # was created successfully
-    io_utils.progress_msg(glob.INFO_00_011.replace("{msaccess}", msaccess))
+    io_utils.progress_msg(glob_local.INFO_00_011.replace("{msaccess}", msaccess))
 
-    if msaccess == glob.MSACCESS_PRE2008:
+    if msaccess == glob_local.MSACCESS_PRE2008:
         # INFO.00.020 The DDL script for the MS Access database '{msaccess}'
         # must be checked manually
-        io_utils.progress_msg(glob.INFO_00_020.replace("{msaccess}", msaccess))
+        io_utils.progress_msg(glob_local.INFO_00_020.replace("{msaccess}", msaccess))
     else:
         _compare_ddl(msaccess)
 
@@ -167,7 +175,7 @@ def _compare_ddl(msaccess: str) -> None:
 
     msaccess_filename = os.path.join(
         io_config.settings.download_work_dir.replace("/", os.sep),
-        msaccess + "." + glob.FILE_EXTENSION_SQL,
+        msaccess + "." + glob_local.FILE_EXTENSION_SQL,
     )
 
     # pylint: disable=consider-using-with
@@ -179,7 +187,7 @@ def _compare_ddl(msaccess: str) -> None:
         # ERROR.00.911 Number of lines differs: file '{filename}' lines
         # {filename_lines} versus file'{reference}' lines {reference_lines}
         io_utils.terminate_fatal(
-            glob.ERROR_00_911.replace("{filename}", msaccess_filename)
+            glob_local.ERROR_00_911.replace("{filename}", msaccess_filename)
             .replace("{filename_lines}", str(len(msaccess_file_lines)))
             .replace("{reference}", reference_filename)
             .replace("{reference_lines}", str(len(reference_file_lines)))
@@ -190,27 +198,29 @@ def _compare_ddl(msaccess: str) -> None:
             # INFO.00.009 line no.: {line_no}
             # INFO.00.010 {status} '{line}'
             io_utils.progress_msg_core(
-                glob.INFO_00_009.replace("{line_no}", str(line_no))
+                glob_local.INFO_00_009.replace("{line_no}", str(line_no))
             )
             io_utils.progress_msg_core(
-                glob.INFO_00_010.replace("{status}", "expected").replace("{line}", line)
+                glob_local.INFO_00_010.replace("{status}", "expected").replace(
+                    "{line}", line
+                )
             )
             io_utils.progress_msg_core(
-                glob.INFO_00_010.replace("{status}", "received").replace(
+                glob_local.INFO_00_010.replace("{status}", "received").replace(
                     "{line}", msaccess_file_lines[line_no]
                 )
             )
             # ERROR.00.910 The schema definition in file'{filename}'
             # does not match the reference definition in file'{reference}'
             io_utils.terminate_fatal(
-                glob.ERROR_00_910.replace("{filename}", msaccess_filename).replace(
-                    "{reference}", reference_filename
-                )
+                glob_local.ERROR_00_910.replace(
+                    "{filename}", msaccess_filename
+                ).replace("{reference}", reference_filename)
             )
 
     # INFO.00.012 The DDL script for the MS Access database '{msaccess}'
     # is identical to the reference script
-    io_utils.progress_msg(glob.INFO_00_012.replace("{msaccess}", msaccess))
+    io_utils.progress_msg(glob_local.INFO_00_012.replace("{msaccess}", msaccess))
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -305,20 +315,22 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     # pylint: disable=R0801
     filename = os.path.join(
         io_config.settings.download_work_dir.replace("/", os.sep),
-        msaccess + "." + glob.FILE_EXTENSION_MDB,
+        msaccess + "." + glob_local.FILE_EXTENSION_MDB,
     )
 
     if not os.path.isfile(filename):
         # ERROR.00.912 The MS Access database file '{filename}' is missing
-        io_utils.terminate_fatal(glob.ERROR_00_912.replace("{filename}", filename))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_912.replace("{filename}", filename)
+        )
 
     conn_ma, cur_ma = utils_msaccess.get_msaccess_cursor(filename)
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    if msaccess in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+    if msaccess in [glob_local.MSACCESS_AVALL, glob_local.MSACCESS_PRE2008]:
         conn_pg.set_session(autocommit=False)
 
-    if msaccess == glob.MSACCESS_PRE2008:
+    if msaccess == glob_local.MSACCESS_PRE2008:
         _delete_ntsb_data(conn_pg, cur_pg)
 
     is_table_aircraft = False
@@ -338,40 +350,40 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     is_table_seq_of_events = False
 
     for table_info in cur_ma.tables():
-        if table_info.table_name == glob.TABLE_NAME_AIRCRAFT:
+        if table_info.table_name == glob_local.TABLE_NAME_AIRCRAFT:
             is_table_aircraft = True
-        elif table_info.table_name == glob.TABLE_NAME_DT_AIRCRAFT:
+        elif table_info.table_name == glob_local.TABLE_NAME_DT_AIRCRAFT:
             is_table_dt_aircraft = True
-        elif table_info.table_name == glob.TABLE_NAME_DT_EVENTS:
+        elif table_info.table_name == glob_local.TABLE_NAME_DT_EVENTS:
             is_table_dt_events = True
-        elif table_info.table_name == glob.TABLE_NAME_DT_FLIGHT_CREW:
+        elif table_info.table_name == glob_local.TABLE_NAME_DT_FLIGHT_CREW:
             is_table_dt_flight_crew = True
-        elif table_info.table_name == glob.TABLE_NAME_ENGINES:
+        elif table_info.table_name == glob_local.TABLE_NAME_ENGINES:
             is_table_engines = True
-        elif table_info.table_name == glob.TABLE_NAME_EVENTS:
+        elif table_info.table_name == glob_local.TABLE_NAME_EVENTS:
             is_table_events = True
-        elif table_info.table_name == glob.TABLE_NAME_EVENTS_SEQUENCE:
+        elif table_info.table_name == glob_local.TABLE_NAME_EVENTS_SEQUENCE:
             is_table_events_sequence = True
-        elif table_info.table_name == glob.TABLE_NAME_FINDINGS:
+        elif table_info.table_name == glob_local.TABLE_NAME_FINDINGS:
             is_table_findings = True
-        elif table_info.table_name == glob.TABLE_NAME_FLIGHT_CREW:
+        elif table_info.table_name == glob_local.TABLE_NAME_FLIGHT_CREW:
             is_table_flight_crew = True
-        elif table_info.table_name == glob.TABLE_NAME_FLIGHT_TIME:
+        elif table_info.table_name == glob_local.TABLE_NAME_FLIGHT_TIME:
             is_table_flight_time = True
-        elif table_info.table_name == glob.TABLE_NAME_INJURY:
+        elif table_info.table_name == glob_local.TABLE_NAME_INJURY:
             is_table_injury = True
-        elif table_info.table_name == glob.TABLE_NAME_NARRATIVES:
+        elif table_info.table_name == glob_local.TABLE_NAME_NARRATIVES:
             is_table_narratives = True
-        elif table_info.table_name == glob.TABLE_NAME_NTSB_ADMIN:
+        elif table_info.table_name == glob_local.TABLE_NAME_NTSB_ADMIN:
             is_table_ntsb_admin = True
-        elif table_info.table_name == glob.TABLE_NAME_OCCURRENCES:
+        elif table_info.table_name == glob_local.TABLE_NAME_OCCURRENCES:
             is_table_occurrences = True
-        elif table_info.table_name == glob.TABLE_NAME_SEQ_OF_EVENTS:
+        elif table_info.table_name == glob_local.TABLE_NAME_SEQ_OF_EVENTS:
             is_table_seq_of_events = True
         else:
             # INFO.00.021 The following database table is not processed: '{msaccess}'
             io_utils.progress_msg(
-                glob.INFO_00_021.replace("{msaccess}", table_info.table_name)
+                glob_local.INFO_00_021.replace("{msaccess}", table_info.table_name)
             )
 
     # ------------------------------------------------------------------
@@ -380,66 +392,72 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
 
     # Level 1 - without FK
     if is_table_events:
-        _load_table_events(msaccess, glob.TABLE_NAME_EVENTS, cur_ma, conn_pg, cur_pg)
+        _load_table_events(
+            msaccess, glob_local.TABLE_NAME_EVENTS, cur_ma, conn_pg, cur_pg
+        )
 
     # Level 2 - FK: ev_id
     if is_table_aircraft:
         _load_table_aircraft(
-            msaccess, glob.TABLE_NAME_AIRCRAFT, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_AIRCRAFT, cur_ma, conn_pg, cur_pg
         )
     if is_table_dt_events:
         _load_table_dt_events(
-            msaccess, glob.TABLE_NAME_DT_EVENTS, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_DT_EVENTS, cur_ma, conn_pg, cur_pg
         )
     if is_table_ntsb_admin:
         _load_table_ntsb_admin(
-            msaccess, glob.TABLE_NAME_NTSB_ADMIN, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_NTSB_ADMIN, cur_ma, conn_pg, cur_pg
         )
 
     # Level 3 - FK: ev_id & Aircraft_Key
     if is_table_dt_aircraft:
         _load_table_dt_aircraft(
-            msaccess, glob.TABLE_NAME_DT_AIRCRAFT, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_DT_AIRCRAFT, cur_ma, conn_pg, cur_pg
         )
     if is_table_engines:
-        _load_table_engines(msaccess, glob.TABLE_NAME_ENGINES, cur_ma, conn_pg, cur_pg)
+        _load_table_engines(
+            msaccess, glob_local.TABLE_NAME_ENGINES, cur_ma, conn_pg, cur_pg
+        )
     if is_table_events_sequence:
         _load_table_events_sequence(
-            msaccess, glob.TABLE_NAME_EVENTS_SEQUENCE, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_EVENTS_SEQUENCE, cur_ma, conn_pg, cur_pg
         )
     if is_table_findings:
         _load_table_findings(
-            msaccess, glob.TABLE_NAME_FINDINGS, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_FINDINGS, cur_ma, conn_pg, cur_pg
         )
     if is_table_flight_crew:
         _load_table_flight_crew(
-            msaccess, glob.TABLE_NAME_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
         )
     if is_table_injury:
-        _load_table_injury(msaccess, glob.TABLE_NAME_INJURY, cur_ma, conn_pg, cur_pg)
+        _load_table_injury(
+            msaccess, glob_local.TABLE_NAME_INJURY, cur_ma, conn_pg, cur_pg
+        )
     if is_table_narratives:
         _load_table_narratives(
-            msaccess, glob.TABLE_NAME_NARRATIVES, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_NARRATIVES, cur_ma, conn_pg, cur_pg
         )
     if is_table_occurrences:
         _load_table_occurrences(
-            msaccess, glob.TABLE_NAME_OCCURRENCES, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_OCCURRENCES, cur_ma, conn_pg, cur_pg
         )
 
     # Level 4 - FK: ev_id & Aircraft_Key & crew_no
     if is_table_dt_flight_crew:
         _load_table_dt_flight_crew(
-            msaccess, glob.TABLE_NAME_DT_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_DT_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
         )
     if is_table_flight_time:
         _load_table_flight_time(
-            msaccess, glob.TABLE_NAME_FLIGHT_TIME, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_FLIGHT_TIME, cur_ma, conn_pg, cur_pg
         )
 
     # Level 4 - FK: ev_id & Aircraft_Key & Occurrence_No
     if is_table_seq_of_events:
         _load_table_seq_of_events(
-            msaccess, glob.TABLE_NAME_SEQ_OF_EVENTS, cur_ma, conn_pg, cur_pg
+            msaccess, glob_local.TABLE_NAME_SEQ_OF_EVENTS, cur_ma, conn_pg, cur_pg
         )
 
     # ------------------------------------------------------------------
@@ -837,7 +855,10 @@ def _load_table_aircraft(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key}"
@@ -945,7 +966,10 @@ def _load_table_dt_aircraft(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -1050,7 +1074,10 @@ def _load_table_dt_events(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"col_name={row_mdb.col_name} "
@@ -1148,7 +1175,10 @@ def _load_table_dt_flight_crew(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"Aircraft_Key={row_mdb.Aircraft_Key} "
@@ -1285,7 +1315,10 @@ def _load_table_engines(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -1341,7 +1374,7 @@ def _load_table_events(
             )
 
         try:
-            if msaccess == glob.MSACCESS_PRE2008:
+            if msaccess == glob_local.MSACCESS_PRE2008:
                 # pylint: disable=line-too-long
                 cur_pg.execute(
                     """
@@ -1558,12 +1591,12 @@ def _load_table_events(
                     ),
                 )
             count_insert += 1
-            if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+            if msaccess not in [glob_local.MSACCESS_AVALL, glob_local.MSACCESS_PRE2008]:
                 io_utils.progress_msg(
                     f"Inserted ev_id={row_mdb.ev_id} ev_year={row_mdb.ev_year}"
                 )
         except UniqueViolation:
-            if msaccess == glob.MSACCESS_PRE2008:
+            if msaccess == glob_local.MSACCESS_PRE2008:
                 # pylint: disable=line-too-long
                 cur_pg.execute(
                     """
@@ -1981,7 +2014,10 @@ def _load_table_events(
                 )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"ev_year={row_mdb.ev_year}"
@@ -2092,7 +2128,10 @@ def _load_table_events_sequence(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"Aircraft_Key={row_mdb.Aircraft_Key} "
@@ -2252,7 +2291,10 @@ def _load_table_findings(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -2442,7 +2484,10 @@ def _load_table_flight_crew(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -2543,7 +2588,10 @@ def _load_table_flight_time(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -2644,7 +2692,10 @@ def _load_table_injury(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -2680,7 +2731,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
      WHERE
            source = %s;
     """,
-        (glob.SOURCE_AVERAGE,),
+        (glob_local.SOURCE_AVERAGE,),
     )
 
     if cur_pg.rowcount > 0:
@@ -2688,7 +2739,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob.INFO_00_063.replace("{data_source}", glob.SOURCE_AVERAGE)
+            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE)
         )
         io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
         io_utils.progress_msg("-" * 80)
@@ -2697,7 +2748,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
     # Insert averaged data.
     # ------------------------------------------------------------------
     # INFO.00.062 Database table io_lat_lng: Load the averaged city data
-    io_utils.progress_msg(glob.INFO_00_062)
+    io_utils.progress_msg(glob_local.INFO_00_062)
     io_utils.progress_msg("-" * 80)
 
     count_duplicates = 0
@@ -2713,7 +2764,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
         f"""
     SELECT country, state, city, sum(dec_latitude)/count(*) dec_latitude, sum(dec_longitude)/count(*) dec_longitude
       FROM io_lat_lng
-     WHERE type = '{glob.IO_LAT_LNG_TYPE_ZIPCODE}'
+     WHERE type = '{glob_local.IO_LAT_LNG_TYPE_ZIPCODE}'
      GROUP BY country, state, city;
         """,
     )
@@ -2747,13 +2798,13 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
             DO NOTHING;
             """,
                 (
-                    glob.IO_LAT_LNG_TYPE_CITY,
+                    glob_local.IO_LAT_LNG_TYPE_CITY,
                     row_pg["country"],  # type: ignore
                     row_pg["state"],  # type: ignore
                     row_pg["city"],  # type: ignore
                     row_pg["dec_latitude"],  # type: ignore
                     row_pg["dec_longitude"],  # type: ignore
-                    glob.SOURCE_AVERAGE,
+                    glob_local.SOURCE_AVERAGE,
                     datetime.now(),
                 ),
             )
@@ -2863,7 +2914,10 @@ def _load_table_narratives(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key}"
@@ -2918,7 +2972,9 @@ def _load_table_ntsb_admin(
 
         if row_mdb.ev_id in ["20210527103155", "20220328104839"]:
             # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+            )
             continue
 
         try:
@@ -2963,11 +3019,16 @@ def _load_table_ntsb_admin(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(f"Updated  ev_id={row_mdb.ev_id}")
         except ForeignKeyViolation:
             # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+            )
             conn_pg.rollback()
 
     conn_pg.commit()
@@ -3027,7 +3088,9 @@ def _load_table_occurrences(
             "20001218X45446",
         ]:
             # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+            )
             continue
 
         try:
@@ -3079,7 +3142,10 @@ def _load_table_occurrences(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -3087,7 +3153,9 @@ def _load_table_occurrences(
                     )
         except ForeignKeyViolation:
             # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+            )
             conn_pg.rollback()
 
     conn_pg.commit()
@@ -3141,7 +3209,9 @@ def _load_table_seq_of_events(
             "20020917X03487",
         ]:
             # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+            )
             continue
 
         try:
@@ -3206,7 +3276,10 @@ def _load_table_seq_of_events(
             )
             if cur_pg.rowcount > 0:
                 count_update += cur_pg.rowcount
-                if msaccess not in [glob.MSACCESS_AVALL, glob.MSACCESS_PRE2008]:
+                if msaccess not in [
+                    glob_local.MSACCESS_AVALL,
+                    glob_local.MSACCESS_PRE2008,
+                ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
                         + f"aircraft_key={row_mdb.Aircraft_Key} "
@@ -3216,7 +3289,9 @@ def _load_table_seq_of_events(
                     )
         except ForeignKeyViolation:
             # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
-            io_utils.progress_msg(glob.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id))
+            io_utils.progress_msg(
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+            )
             conn_pg.rollback()
 
     conn_pg.commit()
@@ -3288,7 +3363,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     """
     logger.debug(io_glob.LOGGER_START)
 
-    filename_zip = msaccess + "." + glob.FILE_EXTENSION_ZIP
+    filename_zip = msaccess + "." + glob_local.FILE_EXTENSION_ZIP
     url = io_config.settings.download_url_ntsb_prefix + filename_zip
 
     try:
@@ -3302,12 +3377,14 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         if file_resp.status_code != 200:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
-                glob.ERROR_00_906.replace("{status_code}", str(file_resp.status_code))
+                glob_local.ERROR_00_906.replace(
+                    "{status_code}", str(file_resp.status_code)
+                )
             )
 
         # INFO.00.013 The connection to the MS Access database file '{msaccess}.zip'
         # on the NTSB download page was successfully established
-        io_utils.progress_msg(glob.INFO_00_013.replace("{msaccess}", msaccess))
+        io_utils.progress_msg(glob_local.INFO_00_013.replace("{msaccess}", msaccess))
 
         if not os.path.isdir(io_config.settings.download_work_dir):
             os.makedirs(io_config.settings.download_work_dir)
@@ -3327,7 +3404,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
 
         # INFO.00.014 From the file '{msaccess}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob.INFO_00_014.replace("{msaccess}", msaccess).replace(
+            glob_local.INFO_00_014.replace("{msaccess}", msaccess).replace(
                 "{no_chunks}", str(no_chunks)
             )
         )
@@ -3344,21 +3421,21 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File'{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob.ERROR_00_907.replace("{filename}", filename_zip)
+                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
             )
 
         os.remove(filename_zip)
         # INFO.00.015 The file '{msaccess}.zip'  was successfully unpacked
-        io_utils.progress_msg(glob.INFO_00_015.replace("{msaccess}", msaccess))
+        io_utils.progress_msg(glob_local.INFO_00_015.replace("{msaccess}", msaccess))
 
         _check_ddl_changes(msaccess)
     except ConnectionError:
         # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob.ERROR_00_905.replace("{url}", url))
+        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
     except TimeoutError:
         # ERROR.00.909 Timeout after'{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
-            glob.ERROR_00_909.replace(
+            glob_local.ERROR_00_909.replace(
                 "{timeout}", str(io_config.settings.download_timeout)
             ).replace("{url}", url)
         )

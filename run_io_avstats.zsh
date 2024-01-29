@@ -144,27 +144,37 @@ log_message() {
   echo "$timestamp: $message" >> "$log_file"
 }
 
+# Check if logging_io_aero.log exists and delete it
+if [ -f logging_io_aero.log ]; then
+    rm -f logging_io_aero.log
+fi
+
+# Check if the file specified in logfile exists and delete it
+if [ -f "${log_file}" ]; then
+    rm -f "${log_file}"
+fi
+
 # Redirection of the standard output and the standard error output to the log file
 exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
 
-rm -f logging_io_aero.log
-
-echo "================================================================================"
+echo "======================================================================="
 echo "Start $0"
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
-echo "--------------------------------------------------------------------------------"
-echo "PYTHONPATH   : ${PYTHONPATH}"
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
+echo "ENV_FOR_DYNACONF         : ${ENV_FOR_DYNACONF}"
+echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
+echo "PYTHONPATH               : ${PYTHONPATH}"
+echo "-----------------------------------------------------------------------"
 echo "TASK         : ${IO_AERO_TASK}"
 echo "APPLICATION  : ${IO_AERO_APPLICATION}"
 echo "COMPOSE_TASK : ${IO_AERO_COMPOSE_TASK}"
 echo "MSEXCEL      : ${IO_AERO_MSEXCEL}"
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "================================================================================"
-
-# ------------------------------------------------------------------------------
+echo "======================================================================="
+# Task handling
+# ---------------------------------------------------------------------------
 # a_o_c  : Load aviation occurrence categories into PostgreSQL.
 # c_d_s  : Create the PostgreSQL database schema.
 # c_l_l  : Correct decimal US latitudes and longitudes.
@@ -235,8 +245,14 @@ case "${IO_AERO_TASK}" in
         ;;
 esac
 
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------"
 echo "End   $0"
-echo "================================================================================"
+echo "======================================================================="
+
+# Close the log file
+exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
+
+# Closing the log file
+log_message "Script finished."

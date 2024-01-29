@@ -6,7 +6,7 @@ Currently, **`IO-AVSTATS`** includes the following applications:
 
 - **`ae1982`** - Aviation Event Analysis
 - **`pd1982`** - IO-AVSTATS-DB Database Profiling
-- **`slara`**&nbsp;&nbsp; - Association Rule Analysis
+- **`slara`** - Association Rule Analysis
 
 ## Operation
 
@@ -50,51 +50,55 @@ See that documentation for installation instructions
 
 Further IO-Aero software documentation can be found under the following links.
 
-- [IO-COMMON - Common Globals, Functions, and Processes for the IO-Aero Libraries](https://io-aero.github.io/io-common/)
-- [IO-LIDAR - Lidar Processing Libraries](https://io-aero.github.io/io-lidar/)
-- [IO-LIDAR-BATCH - Maintenance of the directory of LAZ and metadata from Rockyweb](https://io-aero.github.io/io-lidar-batch/)
-- [IO-RASTER - TODO](https://io-aero.github.io/io-raster/)
-- [IO-VECTOR - Vector Map Repository](https://io-aero.github.io/io-vector/)
-- [IO-XPA-DATA - IO-XPA related data acquisition and data analysis](https://io-aero.github.io/io-xpa-data/)
+- [IO-COMMON - Common Globals, Functions, and Processes for the IO-Aero Libraries](https://io-aero.github.io/io-common/) 
+- [IO-LIDAR - Map Processing Library](https://io-aero.github.io/io-lidar/) 
+- [IO-LIDAR-DATA - Lidar Data Management](https://io-aero.github.io/io-lidar-data/)
+- [IO-MAP-APPS - A collection of the applications that produce IO-Aero maps and map products](https://io-aero.github.io/io-map-apps/) 
+- [IO-RASTER - io raster phase II](https://io-aero.github.io/io-raster/) 
+- [IO-VECTOR - Vector Map Repository](https://io-aero.github.io/io-vector/) 
+- [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
+<!-- - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/) -->
+<!-- - [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/) -->
 <!-- - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) -->
 
 ## Directory and File Structure of this Repository
 
 ### 1. Directories
 
-| Directory         | Content                                                    |
-|-------------------|------------------------------------------------------------|
-| .github/workflows | **[GitHub Action](https://github.com/actions)** workflows. |
-| .streamlit        | Streamlit configuration files.                             |
-| config            | Configuration files.                                       |
-| data              | Application data related files.                            |
-| dist              | Contains an executable of this application.                |
-| docs              | Documentation files.                                       |
-| ioavstats         | Python script files.                                       |
-| libs              | Third party libraries.                                     |
-| resources         | Selected manuals and software.                             |
-| scripts           | Supporting macOS, Ubuntu and Windows Scripts.              |
-| tests             | Scripts and data for **pytest**.                           |
-| upload            | Cloud related upload directory.                            |
+| Directory         | Content                                       |
+|-------------------|-----------------------------------------------|
+| .github/workflows | **GitHub Action** workflow.                   |
+| .streamlit        | Streamlit configuration files.                |
+| config            | Configuration files.                          |
+| data              | Application data related files.               |
+| dist              | Contains an executable of this application.   |
+| docs              | Documentation files.                          |
+| ioavstats         | Python script files.                          |
+| libs              | Third party libraries.                        |
+| resources         | Selected manuals and software.                |
+| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
+| tests             | Scripts and data for **pytest**.              |
+| upload            | Cloud related upload directory.               |
 
 ### 2. Files
 
-| File                      | Functionality                                                   |
-|---------------------------|-----------------------------------------------------------------|
-| .gitignore                | Configuration of files and folders to be ignored.               |
-| .pylintrc                 | **pylint** configuration file.                                  |
-| docker-compose_cloud.yaml | Cloud related Docker Compose configuration file.                |
-| docker-compose_local.yaml | Local Docker Compose configuration file.                        |
-| dockerfile                | Build instructions for the Streamlit application images.        |
-| LICENSE.md                | Text of the licence terms.                                      |
-| logging_cfg.yaml          | Configuration of the Logger functionality.                      |
-| Makefile                  | Tasks to be executed with the **`make`** command.               |
-| mkdocs.yml                | Configuration file for **MkDocs**.                              |
-| nginx.conf                | Configuration file for **Nginx**.                               |
-| Pipfile                   | Definition of the Python package requirements.                  |
-| pyproject.toml            | Optional configuration data for the software quality tools.     |
-| README.md                 | This file.                                                      |
-| run_io_avstats            | Main script for using the functionality of **IO-AVSTATS**.      |
-| run_io_avstats_pytest     | Main script for using the test functionality of **IO-AVSTATS**. |
-| settings.io_aero.toml     | Configuration data.                                             |
-| setup.cfg                 | Optional configuration data for **flake8**.                     |
+| File                            | Functionality                                                   |
+|---------------------------------|-----------------------------------------------------------------|
+| .act_secrets_template           | Template file for the configuration of ``make action``.         |
+| .gitignore                      | Configuration of files and folders to be ignored.               |
+| .pylintrc                       | **pylint** configuration file.                                  |
+| .settings.io_aero_template.toml | Template file for the secret configuration data.                |
+| docker-compose_cloud.yml        | Cloud related Docker Compose configuration file.                |
+| docker-compose_local.yml        | Local Docker Compose configuration file.                        |
+| dockerfile                      | Build instructions for the Streamlit application images.        |
+| LICENSE.md                      | Text of the licence terms.                                      |
+| logging_cfg.yaml                | Configuration of the Logger functionality.                      |
+| Makefile                        | Tasks to be executed with the **`make`** command.               |
+| nginx.conf                      | Configuration file for **Nginx**.                               |
+| Pipfile                         | Definition of the Python package requirements.                  |
+| pyproject.toml                  | Optional configuration data for the software quality tools.     |
+| README.md                       | This file.                                                      |
+| run_io_avstats                  | Main script for using the functionality of **IO-AVSTATS**.      |
+| run_io_avstats_pytest           | Main script for using the test functionality of **IO-AVSTATS**. |
+| settings.io_aero.toml           | Configuration data.                                             |
+| setup.cfg                       | Optional configuration data for **flake8**.                     |

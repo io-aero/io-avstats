@@ -30,7 +30,7 @@ Progress update 2024-01-22 11:43:24.746846 : INFO.00.004 Start Launcher.
   File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\ioavstats\avstats.py", line 429, in get_args
     check_arg_msaccess(parsed_args)
   File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\ioavstats\avstats.py", line 100, in check_arg_msaccess
-    terminate_fatal(glob.ERROR_00_903.replace("{msaccess}", args.msaccess))
+    terminate_fatal(glob_local.ERROR_00_903.replace("{msaccess}", args.msaccess))
   File "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\ioavstats\avstats.py", line 655, in terminate_fatal
     io_utils.terminate_fatal(error_msg)
   File "C:\Users\walte\.virtualenvs\io-avstats-zafInMY1\lib\site-packages\iocommon\io_utils.py", line 76, in terminate_fatal

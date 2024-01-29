@@ -68,10 +68,10 @@ ioavstats.db\_dml\_msaccess module
    :undoc-members:
    :show-inheritance:
 
-ioavstats.glob module
----------------------
+ioavstats.glob\_local module
+----------------------------
 
-.. automodule:: ioavstats.glob
+.. automodule:: ioavstats.glob_local
    :members:
    :undoc-members:
    :show-inheritance:

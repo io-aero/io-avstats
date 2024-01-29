@@ -1,0 +1,7 @@
+[default]
+postgres_password = "<tbd>>"
+postgres_password_admin = "<tbd>>"
+
+[test]
+postgres_password = "postgres_password"
+postgres_password_admin = "postgres_password_admin"

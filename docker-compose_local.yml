@@ -1,0 +1,24 @@
+version: '3.3'
+
+volumes:
+  portainer_data:
+    external: true
+
+services:
+
+  # ------------------------------------------------------------------------------
+  # PostgreSQL Database IO-AVSTATS-DB.
+  # ------------------------------------------------------------------------------
+  io_avstats_db:
+    command: postgres -c "max_connections=200"
+    container_name: io_avstats_db
+    environment:
+      - POSTGRES_DB=${IO_AERO_POSTGRES_DBNAME}
+      - POSTGRES_PASSWORD=${IO_AERO_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${IO_AERO_POSTGRES_USER}
+    image: postgres:${IO_AERO_POSTGRES_VERSION}
+    ports:
+      - ${IO_AERO_POSTGRES_CONNECTION_PORT}:5432
+    restart: always
+    volumes:
+      - ./${IO_AERO_POSTGRES_PGDATA}:/var/lib/postgresql/data

@@ -17,6 +17,8 @@ requests = "*"
 sqlalchemy = "<2.0.0"
 streamlit = "*"
 streamlit-pandas-profiling = "*"
+tomli = "*"
+tomli-w = "*"
 ydata-profiling = "*"
 
 [dev-packages]

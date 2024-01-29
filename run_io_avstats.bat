@@ -205,6 +205,7 @@ echo.
 echo Please wait ...
 echo.
 
+rem Check if logging_io_aero.log exists and delete it
 if exist logging_io_aero.log (
     del /f /q logging_io_aero.log
 )

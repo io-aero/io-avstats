@@ -41,15 +41,15 @@ set IO_AERO_TASK_DEFAULT=version
 set PYTHONPATH=.
 
 if ["%1"] EQU [""] (
-    echo =========================================================
+    echo =======================================================================
     echo u_p_d   - Complete processing of a modifying MS Access file
     echo l_n_a   - Load NTSB MS Access database data into PostgreSQL
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     echo c_p_d   - Cleansing PostgreSQL data
     echo c_l_l   - Correct decimal US latitudes and longitudes
     echo f_n_a   - Find the nearest airports
     echo v_n_d   - Verify selected NTSB data
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     echo l_a_p   - Load airport data into PostgreSQL
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL
     echo l_c_s   - Load country and state data into PostgreSQL
@@ -57,18 +57,18 @@ if ["%1"] EQU [""] (
     echo l_s_e   - Load sequence of events data into PostgreSQL
     echo l_s_d   - Load simplemaps data into PostgreSQL
     echo l_z_d   - Load ZIP Code Database data into PostgreSQL
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     echo d_d_c   - Delete the PostgreSQL database container
     echo d_d_f   - Delete the PostgreSQL database files
     echo s_d_c   - Set up the PostgreSQL database container
     echo c_d_s   - Create the PostgreSQL database schema
     echo u_d_s   - Update the PostgreSQL database schema
     echo r_d_s   - Refresh the PostgreSQL database schema
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     echo c_d_l   - Run Docker Compose tasks - Local
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     echo version - Show the IO-AVSTATS version
-    echo ---------------------------------------------------------
+    echo -----------------------------------------------------------------------
     set /P IO_AERO_TASK="Enter the desired task [default: %IO_AERO_TASK_DEFAULT%] "
 
     if ["!IO_AERO_TASK!"] EQU [""] (
@@ -80,12 +80,12 @@ if ["%1"] EQU [""] (
 
 if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
     if ["%2"] EQU [""] (
-        echo =========================================================
+        echo =======================================================================
         echo clean - Remove all containers and images
         echo down  - Stop  Docker Compose
         echo logs  - Fetch the logs of a container
         echo up    - Start Docker Compose
-        echo ---------------------------------------------------------
+        echo -----------------------------------------------------------------------
         set /P IO_AERO_COMPOSE_TASK="Enter the desired Docker Compose task [default: %IO_AERO_COMPOSE_TASK_DEFAULT%] "
 
         if ["!IO_AERO_COMPOSE_TASK!"] EQU [""] (
@@ -98,9 +98,9 @@ if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
 
 if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
     if ["%2"] EQU [""] (
-        echo =========================================================
+        echo =======================================================================
         dir /A:-D /B %IO_AERO_CORRECTION_WORK_DIR%\*.xlsx
-        echo ---------------------------------------------------------
+        echo -----------------------------------------------------------------------
         set /P IO_AERO_MSEXCEL="Enter the stem name of the desired correction file "
     ) else (
         set IO_AERO_MSEXCEL=%2
@@ -109,11 +109,11 @@ if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
 
 if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
     if ["%2"] EQU [""] (
-        echo =========================================================
+        echo =======================================================================
         echo avall   - Data from January 1, 2008 to today
         echo Pre2008 - Data from January 1, 1982 to December 31, 2007
         echo upDDMON - New additions and updates until DD day in the month MON
-        echo ---------------------------------------------------------
+        echo -----------------------------------------------------------------------
         set /P IO_AERO_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
         set IO_AERO_MSACCESS=%2
@@ -122,11 +122,11 @@ if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
 
 if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
     if ["%2"] EQU [""] (
-        echo =========================================================
+        echo =======================================================================
         echo avall   - Data from January 1, 2008 to today
         echo Pre2008 - Data from January 1, 1982 to December 31, 2007
         echo upDDMON - New additions and updates until DD day in the month MON
-        echo ---------------------------------------------------------
+        echo -----------------------------------------------------------------------
         set /P IO_AERO_MSACCESS="Enter the stem name of the desired MS Access database file "
     ) else (
         set IO_AERO_MSACCESS=%2
@@ -156,21 +156,21 @@ if exist %IO_AERO_AVSTATS_LOG% (
 
 > %IO_AERO_AVSTATS_LOG% 2>&1 (
 
-    echo =======================================================================
+    echo ===========================================================================
     echo Start %0
-    echo -----------------------------------------------------------------------
+    echo ---------------------------------------------------------------------------
     echo IO-AVSTATS - Aviation Event Statistics.
-    echo -----------------------------------------------------------------------
+    echo ---------------------------------------------------------------------------
     echo ENV_FOR_DYNACONF : %ENV_FOR_DYNACONF%
     echo PYTHONPATH       : %PYTHONPATH%
-    echo -----------------------------------------------------------------------
+    echo ---------------------------------------------------------------------------
     echo TASK             : %IO_AERO_TASK%
     echo COMPOSE_TASK     : %IO_AERO_COMPOSE_TASK%
     echo MSACCESS         : %IO_AERO_MSACCESS%
     echo MSEXCEL          : %IO_AERO_MSEXCEL%
-    echo -----------------------------------------------------------------------
+    echo ---------------------------------------------------------------------------
     echo:| TIME
-    echo =======================================================================
+    echo =====================================================================================
 
     rem ----------------------------------------------------------------------------
     rem Load aviation occurrence categories into PostgreSQL.

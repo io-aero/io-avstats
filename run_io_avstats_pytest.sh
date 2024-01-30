@@ -36,15 +36,15 @@ export PYTHONPATH=.
 shopt -s nocasematch
 
 if [ -z "$1" ]; then
-    echo "========================================================="
+    echo "==================================================================="
     echo "u_p_d   - Complete processing of a modifying MS Access file"
     echo "l_n_a   - Load NTSB MS Access database data into PostgreSQL"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
     echo "f_n_a   - Find the nearest airports"
     echo "v_n_d   - Verify selected NTSB data"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     echo "l_a_p   - Load airport data into PostgreSQL"
     echo "a_o_c   - Load aviation occurrence categories into PostgreSQL"
     echo "l_c_s   - Load country and state data into PostgreSQL"
@@ -52,18 +52,18 @@ if [ -z "$1" ]; then
     echo "l_s_e   - Load sequence of events data into PostgreSQL"
     echo "l_s_d   - Load simplemaps data into PostgreSQL"
     echo "l_z_d   - Load ZIP Code Database data into PostgreSQL"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     echo "d_d_c   - Delete the PostgreSQL database container"
     echo "d_d_f   - Delete the PostgreSQL database files"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "c_d_s   - Create the PostgreSQL database schema"
     echo "u_d_s   - Update the PostgreSQL database schema"
     echo "r_d_s   - Refresh the PostgreSQL database schema"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     echo "c_d_l   - Run Docker Compose tasks - Local"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     echo "version - Show the IO-AVSTATS version"
-    echo "---------------------------------------------------------"
+    echo "-------------------------------------------------------------------"
     # shellcheck disable=SC2162
     read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK}
@@ -77,12 +77,12 @@ fi
 
 if [ "${IO_AERO_TASK}" = "c_d_l" ]; then
     if [ -z "$2" ]; then
-        echo "========================================================="
+        echo "==================================================================="
         echo "clean - Remove all containers and images"
         echo "down  - Stop  Docker Compose"
         echo "logs  - Fetch the logs of a container"
         echo "up    - Start Docker Compose"
-        echo "---------------------------------------------------------"
+        echo "-------------------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the desired Docker Compose task [default: ${IO_AERO_COMPOSE_TASK_DEFAULT}] " IO_AERO_COMPOSE_TASK
         export IO_AERO_COMPOSE_TASK=${IO_AERO_COMPOSE_TASK}
@@ -93,9 +93,9 @@ fi
 
 if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     if [ -z "$2" ]; then
-        echo "========================================================="
+        echo "==================================================================="
         ls -ll ${IO_AERO_CORRECTION_WORK_DIR}/*.xlsx
-        echo "---------------------------------------------------------"
+        echo "-------------------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the stem name of the desired correction file " IO_AERO_MSEXCEL
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
@@ -106,9 +106,9 @@ fi
 
 if [ "${IO_AERO_TASK}" = "l_n_a" ]; then
     if [ -z "$2" ]; then
-        echo "========================================================="
+        echo "==================================================================="
         ls -ll ${IO_AERO_NTSB_WORK_DIR}/*.mdb
-        echo "---------------------------------------------------------"
+        echo "-------------------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
         export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
@@ -119,11 +119,11 @@ fi
 
 if [ "${IO_AERO_TASK}" = "u_p_d" ]; then
     if [ -z "$2" ]; then
-        echo "========================================================="
+        echo "==================================================================="
         echo "avall   - Data from January 1, 2008 to today"
         echo "Pre2008 - Data from January 1, 1982 to December 31, 2007"
         echo "upDDMON - New additions and updates until DD day in the month MON"
-        echo "---------------------------------------------------------"
+        echo "-------------------------------------------------------------------"
         # shellcheck disable=SC2162
         read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
         export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
@@ -157,24 +157,24 @@ fi
 # Redirection of the standard output and the standard error output to the log file
 exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
 
-echo "================================================================================"
+echo "==================================================================="
 echo "Start $0"
-echo "--------------------------------------------------------------------------------"
+echo "-------------------------------------------------------------------"
 echo "IO-AVSTATS - Aviation Event Statistics."
-echo "--------------------------------------------------------------------------------"
+echo "-------------------------------------------------------------------"
 echo "ENV_FOR_DYNACONF         : ${ENV_FOR_DYNACONF}"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "PYTHONPATH               : ${PYTHONPATH}"
-echo "--------------------------------------------------------------------------------"
+echo "-------------------------------------------------------------------"
 echo "TASK                     : ${IO_AERO_TASK}"
 echo "COMPOSE_TASK             : ${IO_AERO_COMPOSE_TASK}"
 echo "MSACCESS                 : ${IO_AERO_MSACCESS}"
 echo "MSEXCEL                  : ${IO_AERO_MSEXCEL}"
-echo "--------------------------------------------------------------------------------"
+echo "-------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "================================================================================"
+echo "==================================================================="
 
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # a_o_c  : Load aviation occurrence categories into PostgreSQL.
 # c_d_s  : Create the PostgreSQL database schema.
 # c_l_l  : Correct decimal US latitudes and longitudes.
@@ -189,47 +189,48 @@ echo "==========================================================================
 # u_d_s  : Update the PostgreSQL database schema.
 # version: Show the IO-AVSTATS version
 # v_n_d  : Verify selected NTSB data.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Task handling
 if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c_s"|"l_s_d"|"l_s_e"|"l_z_d"|"r_d_s"|"u_d_s"|"v_n_d"|"version") ]]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Run Docker Compose tasks (Local).
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "c_d_l" ]; then
     if ! ( ./scripts/run_docker_compose_local.sh ${IO_AERO_COMPOSE_TASK} ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Delete the PostgreSQL database container.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "d_d_c" ]; then
     if ! ( ./scripts/run_delete_postgresql_container.sh ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Delete the PostgreSQL database files.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "d_d_f" ]; then
     if ! ( ./scripts/run_delete_postgresql_files.sh ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Load data from a correction file into PostgreSQL.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -e "${IO_AERO_MSEXCEL}".xlsx ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Load NTSB MS Access database data into PostgreSQL.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
     if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
         exit 255
@@ -238,17 +239,17 @@ elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Set up the IO-AVSTATS-DB PostgreSQL database container.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
     if ! ( ./scripts/run_setup_postgresql.sh ); then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Complete processing of a modifying MS Access file.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "u_p_d" ]; then
     if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
         exit 255
@@ -269,9 +270,9 @@ elif [ "${IO_AERO_TASK}" = "u_p_d" ]; then
         exit 255
     fi
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Program abort due to wrong input.
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 else
     echo "Processing of the script run_io_avstats_pytest is aborted: unknown task='${IO_AERO_TASK}'"
     exit 255

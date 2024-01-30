@@ -9,7 +9,6 @@ env:
   IO_COVERALLS: 'false'
   IO_DOCKER: 'true'
   IO_ODBC: 'true'
-  IO_PAGES: 'true'
 
 jobs:
   standard:
@@ -29,7 +28,6 @@ jobs:
           echo "IO_DOCKER   = ${{ env.IO_DOCKER }}"
           echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
           echo "IO_ODBC     = ${{ env.IO_ODBC }}"
-          echo "IO_PAGES    = ${{ env.IO_PAGES }}"
 
       - name: Set Timezone
         run: echo "TZ=UTC" >> $GITHUB_ENV
@@ -159,10 +157,3 @@ jobs:
           flag-name: run-${{ matrix.os }}-py${{ matrix.python-version }}
           parallel: false
           parallel-finished: true
-
-      - name: Deploy to GitHub Pages
-        if: ${{ env.IO_PAGES == 'true' && runner.os == 'Linux' && vars.IO_LOCAL != 'true' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/build/html

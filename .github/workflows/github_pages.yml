@@ -1,0 +1,79 @@
+name: GitHub Pages
+
+on:
+  pull_request:
+    branches: [ 'main' ]
+
+env:
+  IO_CONDA: 'false'
+  IO_PAGES: 'true'
+
+jobs:
+  standard:
+    name: OS ${{ matrix.os }} - Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10"]
+
+    steps:
+      - name: Show the environment variables
+        run: |
+          echo "IO_CONDA    = ${{ env.IO_CONDA }}"
+          echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
+          echo "IO_PAGES    = ${{ env.IO_PAGES }}"
+
+      - name: Set Timezone
+        run: echo "TZ=UTC" >> $GITHUB_ENV
+
+      - name: Checking out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1  # no history, just HEAD
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install AWS CLI - Ubuntu
+        if: ${{ vars.IO_LOCAL == 'true' }}
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Set up Miniconda
+        if: ${{ env.IO_CONDA == 'true' }}
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          miniconda-version: "latest"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies - pipenv - dev
+        if: ${{ env.IO_CONDA != 'true' }}
+        run: make pipenv-dev
+
+      - name: Install dependencies - Conda & pipenv - dev
+        if: ${{ env.IO_CONDA == 'true' }}
+        run: make conda-dev
+
+      - name: Run docs - dev
+        run: make isort black docs
+
+      - name: Deploy to GitHub Pages
+        if: ${{ vars.IO_LOCAL != 'true' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html

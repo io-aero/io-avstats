@@ -367,7 +367,7 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	${PYTHON} -m pip install .
 	${PIPENV} run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${PYTHONPATH}
 	${PIPENV} run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
-#	${PIPENV} run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
+	${PIPENV} run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************
 
 sphinx-api:

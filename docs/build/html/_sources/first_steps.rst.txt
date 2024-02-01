@@ -23,70 +23,6 @@ Once you have successfully cloned the repository, navigate to the cloned directo
 Within the `scripts` folder, you will find scripts tailored for various operating systems.
 Proceed with the subsection that corresponds to your operating system for further instructions.
 
-macOS
-.....
-
-To set up the project on a macOS system, the following steps should be performed in a terminal window within the repository directory:
-
-a. Grant Execute Permission to Installation Scripts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Provide execute permissions to the installation scripts:
-
-.. code-block:: bash
-
-    chmod +x scripts/*.zsh
-
-b. Install Python, pip, and pipenv
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run the script to install Python, pip, and pipenv:
-
-.. code-block:: bash
-
-    ./scripts/run_install_python.zsh
-
-c. Install AWS Command Line Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Execute the script to install the AWS CLI:
-
-.. code-block:: bash
-
-    ./scripts/run_install_aws_cli.zsh
-
-d. Install Miniconda and the Correct Python Version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use the following script to install Miniconda and set the right Python version:
-
-.. code-block:: bash
-
-    ./scripts/run_install_miniconda.zsh
-
-e. Install Docker Desktop
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To install Docker Desktop, run:
-
-.. code-block:: bash
-
-    ./scripts/run_install_docker.zsh
-
-f. Optionally Install DBeaver
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If needed, install DBeaver using the following script:
-
-.. code-block:: bash
-
-    ./scripts/run_install_dbeaver.zsh
-
-g. Close the Terminal Window
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Once all installations are complete, close the terminal window.
-
 Ubuntu
 .........
 
@@ -299,21 +235,14 @@ Creating the Docker Container with PostgreSQL DB
 To create the Docker container with PostgreSQL database software, you can use the provided `run_io_avstats` script.
 Depending on your operating system, follow the relevant instructions below:
 
-a. macOS (zsh):
-~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   ./scripts/run_io_avstats.zsh s_d_c
-
-b. Ubuntu (sh):
+A. Ubuntu (sh):
 ~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
    ./scripts/run_io_avstats.sh s_d_c
 
-c. Windows 10/11 (cmd):
+b. Windows 10/11 (cmd):
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: batch

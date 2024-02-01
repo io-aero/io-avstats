@@ -25,13 +25,13 @@ Welcome to IO-AVSTATS
    :maxdepth: 1
    :caption: Master Data Logs
 
-.. Master Data Logs <data_master_logs>
+   Master Data Logs <data_master_logs>
 
 .. toctree::
    :maxdepth: 1
    :caption: Transaction Data Logs
 
-.. Transaction Data Logs <data_transaction_logs>
+   Transaction Data Logs <data_transaction_logs>
 
 .. toctree::
    :maxdepth: 1
@@ -47,7 +47,7 @@ Indices and tables
 * :ref:`modindex`
 
 Repository
-.........
+..........
 
 :repo:`Link to the repository <>`
 

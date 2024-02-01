@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" /><link rel="prev" title="Introduction" href="introduction.html" />
 
     <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Requirements - IO-AVSTATS 24-1-8 documentation</title>
+        <title>Requirements - IO-AVSTATS 24-2-1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">IO-AVSTATS 24-1-8 documentation</div></a>
+      <a href="index.html"><div class="brand">IO-AVSTATS 24-2-1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -218,16 +218,12 @@
         <article role="main">
           <section id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h1>
-<p>The required software is listed below. Regarding the corresponding
-software versions, you will find the detailed information in the
+<p>The required software is listed below.
+Regarding the corresponding software versions, you will find the detailed information in the
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
 <h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">#</a></h2>
-<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.</p>
-<p>The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span>
-</pre></div>
-</div>
+<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.</p>
 <p>For the Windows operating systems, only additional the functionality of the <code class="docutils literal notranslate"><span class="pre">make</span></code> tool must be made available, e.g. via
 <a class="reference external" href="http://gnuwin32.sourceforge.net/packages/make.htm">Make for Windows</a></p>
 <p>The command-line shells supported are:</p>
@@ -243,20 +239,17 @@ software versions, you will find the detailed information in the
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>macOS</p></td>
-<td><p>zsh</p></td>
-</tr>
-<tr class="row-odd"><td><p>Ubuntu</p></td>
+<tr class="row-even"><td><p>Ubuntu</p></td>
 <td><p>bash</p></td>
 </tr>
-<tr class="row-even"><td><p>Windows 10/11</p></td>
+<tr class="row-odd"><td><p>Windows 10/11</p></td>
 <td><p>cmd and PowerShell</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the scripts <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_zsh_scripts.zsh</span></code> (macOS) or <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
+<p>For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the script <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
 </section>
 <section id="python">
 <h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">#</a></h2>
@@ -278,7 +271,7 @@ This approach streamlines the setup, ensuring that the database environment is q
 </section>
 <section id="ms-access-database-engine">
 <h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a><a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">#</a></h2>
-<p>This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (<code class="docutils literal notranslate"><span class="pre">*.mdb</span></code> and <code class="docutils literal notranslate"><span class="pre">*.accdb</span></code>) files and Microsoft Office Excel (<code class="docutils literal notranslate"><span class="pre">*.xls</span></code>, <code class="docutils literal notranslate"><span class="pre">*.xlsx</span></code>, and <code class="docutils literal notranslate"><span class="pre">*.xlsb</span></code>) files to other data sources.
+<p>This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (*.mdb and *.accdb) files and Microsoft Office Excel (*.xls, *.xlsx, and *.xlsb) files to other data sources.
 Connectivity to existing text files is also supported.</p>
 </section>
 <section id="dbeaver-community-optional">
@@ -362,7 +355,7 @@ Additionally, the project includes predefined connection configurations for DBea
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=c2918f25"></script>
+</div><script src="_static/documentation_options.js?v=d705e6d8"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

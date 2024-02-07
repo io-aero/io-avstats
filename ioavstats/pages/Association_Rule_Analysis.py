@@ -3860,9 +3860,9 @@ def _sql_query_codes_subsection() -> dict[str, str]:
                 subsection_code,
                 description,
             ) = row
-            data[
-                category_code + subcategory_code + section_code + subsection_code
-            ] = description
+            data[category_code + subcategory_code + section_code + subsection_code] = (
+                description
+            )
 
         _print_timestamp("_sql_query_codes_subsection()")
 

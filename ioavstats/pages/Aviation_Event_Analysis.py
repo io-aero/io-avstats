@@ -787,13 +787,35 @@ def _get_user_guide_chart(
                 chart_title,
             )
         # pylint: disable=line-too-long
-        case "ey_aoc" | "ey_il" | "ey_mpf" | "ey_na" | "ey_pf" | "ey_pss" | "ey_t" | "ey_tlp" | "fy_fp" | "fy_sfp":
+        case (
+            "ey_aoc"
+            | "ey_il"
+            | "ey_mpf"
+            | "ey_na"
+            | "ey_pf"
+            | "ey_pss"
+            | "ey_t"
+            | "ey_tlp"
+            | "fy_fp"
+            | "fy_sfp"
+        ):
             ug_text += _get_user_guide_years_chart_footer(
                 chart_id,
                 chart_title,
             )
         # pylint: disable=line-too-long
-        case "te_aoc" | "te_il" | "te_mpf" | "te_na" | "te_pf" | "te_pss" | "te_t" | "te_tlp" | "tf_fp" | "tf_sfp":
+        case (
+            "te_aoc"
+            | "te_il"
+            | "te_mpf"
+            | "te_na"
+            | "te_pf"
+            | "te_pss"
+            | "te_t"
+            | "te_tlp"
+            | "tf_fp"
+            | "tf_sfp"
+        ):
             ug_text += _get_user_guide_totals_chart_footer(
                 chart_id,
                 chart_title,
@@ -1521,9 +1543,11 @@ def _prep_data_chart_te_aoc(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TE_AOC_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -1588,9 +1612,11 @@ def _prep_data_chart_te_mpf(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TE_MPF_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -1667,9 +1693,11 @@ def _prep_data_chart_te_pf(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TE_PF_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -1704,9 +1732,11 @@ def _prep_data_chart_te_pss(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TE_PSS_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -1768,9 +1798,11 @@ def _prep_data_chart_te_tlp(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TE_TLP_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -1801,9 +1833,11 @@ def _prep_data_chart_tf_fp(
     return _prep_totals_chart(
         total_pie,
         name_value,
-        CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_TF_FP_THRESHOLD
+            else 0.0
+        ),
     )
 
 
@@ -2007,19 +2041,25 @@ def _present_bar_chart(
     fig.update_layout(
         bargap=0.05,
         barmode="stack",
-        height=CHOICE_YEARS_CHARTS_HEIGHT
-        if CHOICE_YEARS_CHARTS_HEIGHT
-        else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT,
-        width=CHOICE_YEARS_CHARTS_WIDTH
-        if CHOICE_YEARS_CHARTS_WIDTH
-        else CHOICE_YEARS_CHARTS_WIDTH_DEFAULT,
+        height=(
+            CHOICE_YEARS_CHARTS_HEIGHT
+            if CHOICE_YEARS_CHARTS_HEIGHT
+            else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT
+        ),
+        width=(
+            CHOICE_YEARS_CHARTS_WIDTH
+            if CHOICE_YEARS_CHARTS_WIDTH
+            else CHOICE_YEARS_CHARTS_WIDTH_DEFAULT
+        ),
         title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={
             "title": {
-                "text": "Fatalities"
-                if chart_id in ["fy_fp", "fy_sfp"]
-                else EVENT_TYPE_DESC + "s"
+                "text": (
+                    "Fatalities"
+                    if chart_id in ["fy_fp", "fy_sfp"]
+                    else EVENT_TYPE_DESC + "s"
+                )
             }
         },
     )
@@ -2139,9 +2179,11 @@ def _present_chart_ey_aoc() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_ey_aoc(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2218,9 +2260,11 @@ def _present_chart_ey_mpf() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_ey_mpf(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_EY_MPF_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2297,9 +2341,11 @@ def _present_chart_ey_pf() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_ey_pf(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_EY_PF_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2338,9 +2384,11 @@ def _present_chart_ey_pss() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_ey_pss(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_EY_PSS_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2417,9 +2465,11 @@ def _present_chart_ey_tlp() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_ey_tlp(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_EY_TLP_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2459,9 +2509,11 @@ def _present_chart_fy_fp() -> None:
         chart_id,
         chart_title,
         _prep_data_chart_fy_fp(DF_FILTERED),
-        CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD / 100
-        if CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
-        else 0.0,
+        (
+            CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD / 100
+            if CHOICE_CHARTS_TYPE_FY_FP_THRESHOLD
+            else 0.0
+        ),
     )
 
     (df_filtered_rows, _) = DF_FILTERED.shape
@@ -2898,19 +2950,25 @@ def _present_totals_chart(
         fig.update_layout(
             bargap=0.05,
             barmode="stack",
-            height=CHOICE_TOTALS_CHARTS_HEIGHT
-            if CHOICE_TOTALS_CHARTS_HEIGHT
-            else CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT,
-            width=CHOICE_TOTALS_CHARTS_WIDTH
-            if CHOICE_TOTALS_CHARTS_WIDTH
-            else CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT,
+            height=(
+                CHOICE_TOTALS_CHARTS_HEIGHT
+                if CHOICE_TOTALS_CHARTS_HEIGHT
+                else CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT
+            ),
+            width=(
+                CHOICE_TOTALS_CHARTS_WIDTH
+                if CHOICE_TOTALS_CHARTS_WIDTH
+                else CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT
+            ),
             showlegend=False,
             title=chart_title,
             xaxis={
                 "title": {
-                    "text": "Fatalities"
-                    if chart_id in ["tf_fp", "tf_sfp"]
-                    else EVENT_TYPE_DESC + "s"
+                    "text": (
+                        "Fatalities"
+                        if chart_id in ["tf_fp", "tf_sfp"]
+                        else EVENT_TYPE_DESC + "s"
+                    )
                 }
             },
             yaxis={"title": {"text": " "}},

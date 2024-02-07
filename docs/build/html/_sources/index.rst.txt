@@ -25,13 +25,13 @@ Welcome to IO-AVSTATS
    :maxdepth: 1
    :caption: Master Data Logs
 
-   Master Data Logs <data_master_logs>
+   data_master_logs
 
 .. toctree::
    :maxdepth: 1
    :caption: Transaction Data Logs
 
-   Transaction Data Logs <data_transaction_logs>
+   data_transaction_logs
 
 .. toctree::
    :maxdepth: 1

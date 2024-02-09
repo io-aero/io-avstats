@@ -87,6 +87,7 @@ Further IO-Aero software documentation can be found under the following links.
 | File                            | Functionality                                                   |
 |---------------------------------|-----------------------------------------------------------------|
 | .act_secrets_template           | Template file for the configuration of ``make action``.         |
+| .gitattributes                  | Handling of the os-specific file properties.                    |
 | .gitignore                      | Configuration of files and folders to be ignored.               |
 | .pylintrc                       | **pylint** configuration file.                                  |
 | .settings.io_aero_template.toml | Template file for the secret configuration data.                |

@@ -51,6 +51,20 @@ jobs:
           sudo locale-gen en_US.UTF-8
           sudo update-locale LANG=en_US.UTF-8
 
+      - name: Preparing scripts - macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install dos2unix
+          chmod +x scripts/run_prep_*.zsh
+          ./scripts/run_prep_zsh_scripts.zsh
+
+      - name: Preparing scripts - Ubuntu
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt-get install -y dos2unix
+          chmod +x scripts/run_prep_*.sh
+          ./scripts/run_prep_bash_scripts.sh
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:

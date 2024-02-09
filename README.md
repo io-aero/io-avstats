@@ -50,14 +50,15 @@ See that documentation for installation instructions
 
 Further IO-Aero software documentation can be found under the following links.
 
-- [IO-COMMON - Common Globals, Functions, and Processes for the IO-Aero Libraries](https://io-aero.github.io/io-common/) 
-- [IO-LIDAR - Map Processing Library](https://io-aero.github.io/io-lidar/) 
+- [IO-COMMON - Common Elemments Libraries](https://io-aero.github.io/io-common/) 
+- [IO-LIDAR - Lidar Map Processing](https://io-aero.github.io/io-lidar/) 
 - [IO-LIDAR-DATA - Lidar Data Management](https://io-aero.github.io/io-lidar-data/)
-- [IO-MAP-APPS - A collection of the applications that produce IO-Aero maps and map products](https://io-aero.github.io/io-map-apps/) 
-- [IO-RASTER - io raster phase II](https://io-aero.github.io/io-raster/) 
-- [IO-RISKMAP - Risk Map Library](https://io-aero.github.io/io-riskmap/) 
-- [IO-VECTOR - Vector Map Repository](https://io-aero.github.io/io-vector/) 
+- [IO-MAP-APPS - IO Map Applications](https://io-aero.github.io/io-map-apps/) 
+- [IO-RASTER - Raster Map Processing](https://io-aero.github.io/io-raster/) 
+- [IO-RISKMAP - Riskmap and Landing site processing](https://io-aero.github.io/io-riskmap/) 
+- [IO-VECTOR - Vector Map Processing](https://io-aero.github.io/io-vector/) 
 - [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
+- [IO-XPA-SERVER - IO-XPA Server Processing](https://io-aero.github.io/io-xpa-server/)
 <!-- - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/) -->
 <!-- - [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/) -->
 <!-- - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) -->
@@ -86,6 +87,7 @@ Further IO-Aero software documentation can be found under the following links.
 | File                            | Functionality                                                   |
 |---------------------------------|-----------------------------------------------------------------|
 | .act_secrets_template           | Template file for the configuration of ``make action``.         |
+| .gitattributes                  | Handling of the os-specific file properties.                    |
 | .gitignore                      | Configuration of files and folders to be ignored.               |
 | .pylintrc                       | **pylint** configuration file.                                  |
 | .settings.io_aero_template.toml | Template file for the secret configuration data.                |

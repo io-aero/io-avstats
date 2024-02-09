@@ -1,0 +1,1450 @@
+# 2024.01.08 up08JAN
+
+```
+=======================================================================
+Start "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\run_io_avstats.bat"
+-----------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+-----------------------------------------------------------------------
+PYTHONPATH   : .
+-----------------------------------------------------------------------
+TASK         : u_p_d
+APPLICATION  :
+COMPOSE_TASK :
+MSACCESS     : up08JAN
+MSEXCEL      :
+-----------------------------------------------------------------------
+The current time is: 13:21:10.00
+Enter the new time:
+=======================================================================
+Progress update 2024-01-08 13:21:12.902758 : ===============================================================================.
+Progress update 2024-01-08 13:21:12.902758 : INFO.00.004 Start Launcher.
+2024-01-08 13:21:12,912 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:21:12,929 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:21:12.940344 : INFO.00.008 Arguments task='d_n_a' msaccess='up08JAN'.
+Progress update 2024-01-08 13:21:12.940344 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:21:12.940344 : INFO.00.047 Download NTSB MS Access database file 'up08JAN'.
+Progress update 2024-01-08 13:21:12.940344 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:21:13.477336 : INFO.00.013 The connection to the MS Access database file 'up08JAN.zip' on the NTSB download page was successfully established.
+Progress update 2024-01-08 13:21:13.886557 : INFO.00.014 From the file 'up08JAN.zip' 2 chunks were downloaded.
+Progress update 2024-01-08 13:21:13.899558 : INFO.00.015 The file 'up08JAN.zip' was successfully unpacked.
+Progress update 2024-01-08 13:21:13.903564 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\IO-AVSTATS.mdb'.
+Progress update 2024-01-08 13:21:13.904563 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08JAN.sql'.
+Progress update 2024-01-08 13:21:13.904563 : INFO.00.052 razorsql_jar_file='C:\Program Files\RazorSQL\razorsql.jar'.
+Progress update 2024-01-08 13:21:13.904563 : INFO.00.053 razorsql_java_path='C:\Program Files\RazorSQL\jre11\bin\java'.
+1704716474145: launching RazorSQL . . .
+1704716474146: args . . .
+-backup
+IO-AVSTATS
+null
+null
+;
+null
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08JAN.sql
+NO
+tables
+YES
+null
+NO
+NO
+1704716474325: userName: walte
+1704716474325: libraryPath: C:\Program Files\RazorSQL\jre11\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\walte\.virtualenvs\io-avstats-zafInMY1\Scripts;C:\ProgramData\miniconda3\condabin;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Program Files (x86)\VMware\VMware Player\bin\;C:\Program Files (x86)\infogridpacific\AZARDI;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files\Git LFS;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Pandoc\;C:\Software\GnuWin32\bin;C:\WINDOWS;C:\WINDOWS\System32;C:\WINDOWS\System32\OpenSSH\;C:\WINDOWS\System32\wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Users\walte\.nimble\bin;C:\WINDOWS;C:\WINDOWS\System32;C:\WINDOWS\System32\OpenSSH\;C:\WINDOWS\System32\wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Software\gradle-8.1.1\bin;C:\Program Files\doxygen\bin;C:\Program Files\Graphviz\bin;C:\ProgramData\miniconda3\condabin;C:\Software\PostgreSQL\15\bin;C:\Software\Python\Python310;C:\Software\Python\Python310\Scripts;C:\Software\jdk-20.0.1\bin;C:\Program Files\PuTTY\;C:\Software\LAStools\bin;C:\Program Files\Git\cmd;C:\Software\Gpg4win\..\GnuPG\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files\nodejs\;C:\Program Files\Calibre2\;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Docker\Docker\resources\bin;C:\Software\.cargo\bin;C:\Users\walte\.cargo\bin;C:\Users\walte\AppData\Local\Microsoft\WindowsApps;C:\Software\Microsoft VS Code\bin;c:\users\walte\.local\bin;C:\Users\walte\AppData\Local\JetBrains\Toolbox\scripts;C:\Software\texlive\2022\bin\win32;C:\Users\walte\AppData\Local\Microsoft\WindowsApps;C:\Users\walte\AppData\Local\Pandoc\;C:\Users\walte\AppData\Local\GitHubDesktop\bin;C:\Users\walte\AppData\Roaming\npm;C:\Users\walte\AppData\Local\Microsoft\WinGet\Links;;.
+1704716474325: javaVersion: 17.0.7
+1704716474325:
+1704716474326: Verifying RazorSQL resources location.
+1704716474326:
+1704716474326: testing base url: / = file:/C:/Program%20Files/RazorSQL/
+1704716474326:
+1704716474326: testString1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1704716474326: testString2: file:/C:/Program%20Files/RazorSQL/data/base.ssql
+1704716474326: testFile1: C:\Program Files\RazorSQL\razorsql.jar
+1704716474326: testFile2: C:\Program Files\RazorSQL\data\base.ssql
+1704716474327: both test file exists.  Base URL found.
+1704716474327: resource directory: file:/C:/Program%20Files/RazorSQL/
+1704716474327: user home: C:\Users\walte
+1704716474328: user profile: C:\Users\walte
+1704716474328: app data: C:\Users\walte\AppData\Roaming
+1704716474329: checking write access to: C:\Users\walte\AppData\Roaming
+1704716474329: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1704716474329: can write to C:\Users\walte\AppData\Roaming
+1704716474329: user.home: C:\Users\walte\AppData\Roaming
+1704716474329: RazorSQL Scratch Directory: C:\Users\walte\AppData\Roaming\RazorSQL
+1704716474329: RazorSQL Scratch Directory exists
+1704716474329: checking for sub directories
+1704716474330: razorsql launch log: C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1704716474330: launch log file = C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1704716474330: Checking for graphics properties
+1704716474330: graphics properties file: C:\Users\walte\AppData\Roaming\RazorSQL\data\graphics_properties.txt
+1704716474331: gOverride: null
+1704716474331: not disabling advanced graphics
+1704716474331: path0: file:/C:/Program%20Files/RazorSQL/data/run.ssql
+1704716474331: path1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1704716474331: runArgs: true
+1704716474331: showScreen: false
+1704716474332: args[0]: -backup
+1704716474332: args[1]: IO-AVSTATS
+1704716474332: args[2]: null
+1704716474332: args[3]: null
+1704716474332: args[4]: ;
+1704716474332: args[5]: null
+1704716474332: args[6]: D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08JAN.sql
+1704716474332: args[7]: NO
+1704716474332: args[8]: tables
+1704716474332: args[9]: YES
+1704716474332: args[10]: null
+1704716474332: args[11]: NO
+1704716474332: args[12]: NO
+1704716474332: Command: -backup
+1704716474333: Running -backup
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+h: name = C:\Program Files\RazorSQL\razorsql.jar
+1704716474343: Attempting to load . . .
+command found
+uOne: file:/C:/Program%20Files/RazorSQL/
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+1704716474353reading file . . .C:\Program Files\RazorSQL\data\base.ssql
+1704716474384done reading . . .
+1704716474393done converting
+1704716474393starting lib load.
+1704716474405lib load complete.
+In command line processor
+Max Memory: 30688.0
+Current Total Memory: 2048.0
+Free Memory: 1918.0716705322266
+1704716474495: r init
+1704716474495: d init
+1704716474495: get default file encoding
+1704716474495: end d init
+custom home directory: null
+Checking for user data from old versions
+1704716474497: user home: C:\Users\walte
+1704716474497: user profile: C:\Users\walte
+1704716474497: app data: C:\Users\walte\AppData\Roaming
+1704716474497: checking write access to: C:\Users\walte\AppData\Roaming
+1704716474498: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1704716474498: can write to C:\Users\walte\AppData\Roaming
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1704716474510: loading icons
+1704716474724: done r init
+Getting connection data from: IO-AVSTATS
+1704716474725: r init
+1704716474725: d init
+1704716474725: get default file encoding
+1704716474725: end d init
+custom home directory: null
+Checking for user data from old versions
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1704716474725: loading icons
+1704716474735: done r init
+getting connection . . .
+Not using SSH Tunnel
+driver: sun.jdbc.odbc.JdbcOdbcDriver
+classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+loadedCommonJars: false
+commonURL: file:/C:/Program%20Files/RazorSQL/drivers/common/
+commonDir: C:\Program Files\RazorSQL\drivers\common
+commonFiles[0]: file:/C:/Program%20Files/RazorSQL/drivers/common/activation.jar
+commonFiles[1]: file:/C:/Program%20Files/RazorSQL/drivers/common/common.jar
+commonFiles[2]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-api.jar
+commonFiles[3]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-core.jar
+commonFiles[4]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-impl.jar
+commonFiles[6]: file:/C:/Program%20Files/RazorSQL/drivers/common/odbc.jar
+connection type: ODBC
+final classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+classLocation file: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+building sql manager
+Loading driver
+Done loading driver
+Getting connection with no login info
+JdbcOdbcDriver: in initialize
+OdbcApi == null
+Creating new OdbcApi, nativePrefix:
+JdbcOdbc constructor
+Attempting to load JdbcOdbc library
+Got OdbcApi: sun.jdbc.odbc.JdbcOdbc@77846d2c
+Getting charset
+JdbcOdbcDriver.OdbcApi.charSet: Cp1252
+Connection obtained
+obtained connection
+database major version = 2
+database product name: ACCESS
+multiValueInsert: false
+includeIdentifyColumns: false
+Calling backup . . .
+Retrieving Tables . . .
+Generating Table DDL . . .
+1 of 20
+number of columns 93
+column map size: 93
+foundNull: false
+2 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+3 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+4 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+5 of 20
+number of columns 6
+column map size: 6
+foundNull: false
+6 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+7 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+8 of 20
+number of columns 13
+column map size: 13
+foundNull: false
+9 of 20
+number of columns 17
+column map size: 17
+foundNull: false
+10 of 20
+number of columns 73
+column map size: 73
+foundNull: false
+11 of 20
+number of columns 10
+column map size: 10
+foundNull: false
+12 of 20
+number of columns 13
+column map size: 13
+foundNull: false
+13 of 20
+number of columns 33
+column map size: 33
+foundNull: false
+14 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+15 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+16 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+17 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+18 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+19 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+20 of 20
+number of columns 3
+column map size: 3
+foundNull: false
+Generating Alter Table DDL . . .
+1 of 20
+2 of 20
+3 of 20
+4 of 20
+5 of 20
+6 of 20
+7 of 20
+8 of 20
+9 of 20
+10 of 20
+11 of 20
+12 of 20
+13 of 20
+14 of 20
+15 of 20
+16 of 20
+17 of 20
+18 of 20
+19 of 20
+20 of 20
+backup finished
+closing connection . . .
+connection closed.
+Shutting down logging streams
+Done shutting down logging streams
+Exiting . . .
+Progress update 2024-01-08 13:21:16.026811 : INFO.00.011 The DDL script for the MS Access database 'up08JAN.mdb' was created successfully.
+Progress update 2024-01-08 13:21:16.034739 : INFO.00.012 The DDL script for the MS Access database 'up08JAN.mdb' is identical to the reference script.
+Progress update 2024-01-08 13:21:16.036296 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:21:16.037302 :                    3 s - Total time launcher.
+Progress update 2024-01-08 13:21:16.037302 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:21:16.037302 : ===============================================================================.
+Progress update 2024-01-08 13:21:17.645763 : ===============================================================================.
+Progress update 2024-01-08 13:21:17.645763 : INFO.00.004 Start Launcher.
+2024-01-08 13:21:17,649 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:21:17,650 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:21:17.660761 : INFO.00.008 Arguments task='l_n_a' msaccess='up08JAN'.
+Progress update 2024-01-08 13:21:17.660761 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:21:17.661762 : INFO.00.049 Load NTSB MS Access database data from file 'up08JAN'.
+Progress update 2024-01-08 13:21:17.661762 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:21:17.661762 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up08JAN.mdb;'.
+Progress update 2024-01-08 13:21:17.817497 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:21:18.043169 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
+Progress update 2024-01-08 13:21:18.043169 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
+Progress update 2024-01-08 13:21:18.043169 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysIMEXSpecs'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysModules2'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupCategories'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroups'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupToObjects'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysNavPaneObjectIDs'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysObjects'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysQueries'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'MSysRelationships'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'Country'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'ct_iaids'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'ct_seqevt'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'eADMSPUB_DataDictionary'.
+Progress update 2024-01-08 13:21:18.044167 : INFO.00.021 The following database table is not processed: 'states'.
+Progress update 2024-01-08 13:21:18.045168 :
+Progress update 2024-01-08 13:21:18.045168 : Database table       : events                        <-----------------------------------.
+Progress update 2024-01-08 13:21:18.297073 : Inserted ev_id=20231219193540 ev_year=2023.
+Progress update 2024-01-08 13:21:18.597951 : Updated  ev_id=20231227193571 ev_year=2023.
+Progress update 2024-01-08 13:21:18.630083 : Updated  ev_id=20231106193347 ev_year=2023.
+Progress update 2024-01-08 13:21:18.663655 : Updated  ev_id=20231204193461 ev_year=2023.
+Progress update 2024-01-08 13:21:18.696446 : Updated  ev_id=20231207193493 ev_year=2023.
+Progress update 2024-01-08 13:21:18.722018 : Inserted ev_id=20240102193583 ev_year=2023.
+Progress update 2024-01-08 13:21:18.747190 : Inserted ev_id=20240102193584 ev_year=2023.
+Progress update 2024-01-08 13:21:18.771661 : Updated  ev_id=20231219193544 ev_year=2023.
+Progress update 2024-01-08 13:21:18.804947 : Updated  ev_id=20231218193538 ev_year=2023.
+Progress update 2024-01-08 13:21:18.829998 : Inserted ev_id=20240103193589 ev_year=2023.
+Progress update 2024-01-08 13:21:18.855285 : Inserted ev_id=20231206193484 ev_year=2023.
+Progress update 2024-01-08 13:21:18.880285 : Inserted ev_id=20240103193588 ev_year=2023.
+Progress update 2024-01-08 13:21:18.905561 : Updated  ev_id=20231218193535 ev_year=2023.
+Progress update 2024-01-08 13:21:18.930264 : Inserted ev_id=20240102193585 ev_year=2023.
+Progress update 2024-01-08 13:21:18.955644 : Updated  ev_id=20231227193574 ev_year=2023.
+Progress update 2024-01-08 13:21:18.979835 : Inserted ev_id=20231109193364 ev_year=2023.
+Progress update 2024-01-08 13:21:19.004988 : Inserted ev_id=20231226193565 ev_year=2023.
+Progress update 2024-01-08 13:21:19.029642 : Inserted ev_id=20231128193442 ev_year=2023.
+Progress update 2024-01-08 13:21:19.055267 : Inserted ev_id=20231226193567 ev_year=2023.
+Progress update 2024-01-08 13:21:19.079640 : Inserted ev_id=20240103193597 ev_year=2024.
+Progress update 2024-01-08 13:21:19.121999 : Updated  ev_id=20211111104237 ev_year=2021.
+Progress update 2024-01-08 13:21:19.146574 : Updated  ev_id=20211115104243 ev_year=2021.
+Progress update 2024-01-08 13:21:19.172031 : Updated  ev_id=20211119104272 ev_year=2021.
+Progress update 2024-01-08 13:21:19.196257 : Updated  ev_id=20211119104273 ev_year=2021.
+Progress update 2024-01-08 13:21:19.221630 : Updated  ev_id=20211217104419 ev_year=2021.
+Progress update 2024-01-08 13:21:19.246003 : Updated  ev_id=20211227104443 ev_year=2021.
+Progress update 2024-01-08 13:21:19.271803 : Updated  ev_id=20220111104517 ev_year=2022.
+Progress update 2024-01-08 13:21:19.304731 : Updated  ev_id=20220130104567 ev_year=2022.
+Progress update 2024-01-08 13:21:19.329749 : Updated  ev_id=20220617105272 ev_year=2022.
+Progress update 2024-01-08 13:21:19.363749 : Updated  ev_id=20220629105383 ev_year=2022.
+Progress update 2024-01-08 13:21:19.388750 : Updated  ev_id=20220711105438 ev_year=2022.
+Progress update 2024-01-08 13:21:19.413756 : Updated  ev_id=20220712105453 ev_year=2022.
+Progress update 2024-01-08 13:21:19.438522 : Updated  ev_id=20220716105487 ev_year=2022.
+Progress update 2024-01-08 13:21:19.463520 : Updated  ev_id=20220717105495 ev_year=2022.
+Progress update 2024-01-08 13:21:19.497037 : Updated  ev_id=20220727105598 ev_year=2022.
+Progress update 2024-01-08 13:21:19.521278 : Updated  ev_id=20220805105670 ev_year=2022.
+Progress update 2024-01-08 13:21:19.546290 : Updated  ev_id=20220812105726 ev_year=2022.
+Progress update 2024-01-08 13:21:19.571421 : Updated  ev_id=20220819105770 ev_year=2022.
+Progress update 2024-01-08 13:21:19.605150 : Updated  ev_id=20220906105876 ev_year=2022.
+Progress update 2024-01-08 13:21:19.638285 : Updated  ev_id=20230710192576 ev_year=2023.
+Progress update 2024-01-08 13:21:19.679968 : Updated  ev_id=20230717192634 ev_year=2023.
+Progress update 2024-01-08 13:21:19.704644 : Updated  ev_id=20230719192666 ev_year=2023.
+Progress update 2024-01-08 13:21:19.730147 : Updated  ev_id=20230731192760 ev_year=2023.
+Progress update 2024-01-08 13:21:19.754801 : Updated  ev_id=20230809192832 ev_year=2023.
+Progress update 2024-01-08 13:21:19.787885 : Updated  ev_id=20230821192906 ev_year=2023.
+Progress update 2024-01-08 13:21:19.813435 : Updated  ev_id=20230822192920 ev_year=2023.
+Progress update 2024-01-08 13:21:19.838002 : Updated  ev_id=20230831192979 ev_year=2023.
+Progress update 2024-01-08 13:21:19.863251 : Updated  ev_id=20230901192980 ev_year=2023.
+Progress update 2024-01-08 13:21:19.888251 : Updated  ev_id=20230905193008 ev_year=2023.
+Progress update 2024-01-08 13:21:19.913503 : Updated  ev_id=20230926193147 ev_year=2023.
+Progress update 2024-01-08 13:21:19.938322 : Updated  ev_id=20231025193301 ev_year=2023.
+Progress update 2024-01-08 13:21:19.962649 : Updated  ev_id=20231101193339 ev_year=2023.
+Progress update 2024-01-08 13:21:19.987929 : Updated  ev_id=20231109193365 ev_year=2023.
+Progress update 2024-01-08 13:21:20.013494 : Updated  ev_id=20231113193376 ev_year=2023.
+Progress update 2024-01-08 13:21:20.038431 : Updated  ev_id=20231114193382 ev_year=2023.
+Progress update 2024-01-08 13:21:20.070704 : Updated  ev_id=20231122193417 ev_year=2023.
+Progress update 2024-01-08 13:21:20.096655 : Inserted ev_id=20231210193501 ev_year=2023.
+Progress update 2024-01-08 13:21:20.121274 : Updated  ev_id=20231214193525 ev_year=2023.
+Progress update 2024-01-08 13:21:20.146381 : Inserted ev_id=20231218193534 ev_year=2023.
+Progress update 2024-01-08 13:21:20.171144 : Inserted ev_id=20240104193609 ev_year=2023.
+Progress update 2024-01-08 13:21:20.196433 : Updated  ev_id=20231106193349 ev_year=2023.
+Progress update 2024-01-08 13:21:20.221437 : Inserted ev_id=20231222193557 ev_year=2023.
+Progress update 2024-01-08 13:21:20.246164 : Inserted ev_id=20240105193615 ev_year=2023.
+Progress update 2024-01-08 13:21:20.271360 : Inserted ev_id=20231231193580 ev_year=2023.
+Progress update 2024-01-08 13:21:20.296667 : Inserted ev_id=20231231193581 ev_year=2023.
+Progress update 2024-01-08 13:21:20.296667 : Number rows selected :       65.
+Progress update 2024-01-08 13:21:20.296667 : Number rows inserted :       19.
+Progress update 2024-01-08 13:21:20.296667 : Number rows updated  :       46.
+Progress update 2024-01-08 13:21:20.296667 :
+Progress update 2024-01-08 13:21:20.296667 : Database table       : aircraft                      <-----------------------------------.
+Progress update 2024-01-08 13:21:20.429894 : Updated  ev_id=20231227193571 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.463083 : Updated  ev_id=20231106193347 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.495968 : Updated  ev_id=20231204193461 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.521535 : Updated  ev_id=20231207193493 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.596424 : Updated  ev_id=20231219193544 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.621691 : Updated  ev_id=20231218193538 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.720744 : Updated  ev_id=20231218193535 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.770904 : Updated  ev_id=20231227193574 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.946010 : Updated  ev_id=20211111104237 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.971420 : Updated  ev_id=20211115104243 aircraft_key=1.
+Progress update 2024-01-08 13:21:20.995935 : Updated  ev_id=20211119104272 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.020823 : Updated  ev_id=20211119104273 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.045857 : Updated  ev_id=20211217104419 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.070857 : Updated  ev_id=20211227104443 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.095857 : Updated  ev_id=20220111104517 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.129374 : Updated  ev_id=20220130104567 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.154374 : Updated  ev_id=20220617105272 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.179375 : Updated  ev_id=20220629105383 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.204377 : Updated  ev_id=20220711105438 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.229887 : Updated  ev_id=20220712105453 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.254889 : Updated  ev_id=20220716105487 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.279889 : Updated  ev_id=20220717105495 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.304226 : Updated  ev_id=20220727105598 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.329740 : Updated  ev_id=20220805105670 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.354617 : Updated  ev_id=20220812105726 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.404659 : Updated  ev_id=20220819105770 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.429172 : Updated  ev_id=20220906105876 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.462611 : Updated  ev_id=20230710192576 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.488271 : Updated  ev_id=20230717192634 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.512956 : Updated  ev_id=20230719192666 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.537752 : Updated  ev_id=20230731192760 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.562641 : Updated  ev_id=20230809192832 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.587393 : Updated  ev_id=20230821192906 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.612645 : Updated  ev_id=20230822192920 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.637821 : Updated  ev_id=20230831192979 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.662644 : Updated  ev_id=20230901192980 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.696257 : Updated  ev_id=20230905193008 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.720724 : Updated  ev_id=20230926193147 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.746027 : Updated  ev_id=20231025193301 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.778829 : Updated  ev_id=20231101193339 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.803864 : Updated  ev_id=20231109193365 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.829436 : Updated  ev_id=20231113193376 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.854147 : Updated  ev_id=20231114193382 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.878754 : Updated  ev_id=20231122193417 aircraft_key=1.
+Progress update 2024-01-08 13:21:21.929080 : Updated  ev_id=20231214193525 aircraft_key=1.
+Progress update 2024-01-08 13:21:22.012594 : Updated  ev_id=20231106193349 aircraft_key=1.
+Progress update 2024-01-08 13:21:22.104212 : Number rows selected :       65.
+Progress update 2024-01-08 13:21:22.104212 : Number rows inserted :       19.
+Progress update 2024-01-08 13:21:22.104212 : Number rows updated  :       46.
+Progress update 2024-01-08 13:21:22.105212 :
+Progress update 2024-01-08 13:21:22.105212 : Database table       : dt_events                     <-----------------------------------.
+Progress update 2024-01-08 13:21:22.195152 : Updated  ev_id=20231227193571 col_name=launch code=None.
+Progress update 2024-01-08 13:21:22.221248 : Updated  ev_id=20231106193347 col_name=followup_travel code=N.
+Progress update 2024-01-08 13:21:22.246083 : Updated  ev_id=20231106193347 col_name=launch code=None.
+Progress update 2024-01-08 13:21:22.453972 : Updated  ev_id=20231204193461 col_name=launch code=None.
+Progress update 2024-01-08 13:21:22.679047 : Updated  ev_id=20231207193493 col_name=launch code=None.
+Progress update 2024-01-08 13:21:22.920312 : Updated  ev_id=20231219193544 col_name=launch code=None.
+Progress update 2024-01-08 13:21:22.954403 : Updated  ev_id=20231218193538 col_name=launch code=None.
+Progress update 2024-01-08 13:21:23.120473 : Updated  ev_id=20231218193535 col_name=launch code=None.
+Progress update 2024-01-08 13:21:23.203751 : Updated  ev_id=20231227193574 col_name=launch code=None.
+Progress update 2024-01-08 13:21:23.446180 : Updated  ev_id=20211111104237 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:23.461910 : Updated  ev_id=20211111104237 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:23.486910 : Updated  ev_id=20211111104237 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:23.512457 : Updated  ev_id=20211111104237 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:23.537019 : Updated  ev_id=20211111104237 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:23.570236 : Updated  ev_id=20211111104237 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:23.595433 : Updated  ev_id=20211111104237 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:23.619915 : Updated  ev_id=20211111104237 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:23.645389 : Updated  ev_id=20211111104237 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:23.687420 : Updated  ev_id=20211115104243 col_name=launch code=None.
+Progress update 2024-01-08 13:21:23.720419 : Updated  ev_id=20211115104243 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:23.745873 : Updated  ev_id=20211115104243 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:23.770837 : Updated  ev_id=20211115104243 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:23.795905 : Updated  ev_id=20211115104243 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:23.828758 : Updated  ev_id=20211115104243 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:23.862723 : Updated  ev_id=20211115104243 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:23.878767 : Updated  ev_id=20211115104243 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:23.903501 : Updated  ev_id=20211115104243 col_name=wx_brief_src code=NET.
+Progress update 2024-01-08 13:21:23.929016 : Updated  ev_id=20211119104272 col_name=launch code=None.
+Progress update 2024-01-08 13:21:23.954014 : Updated  ev_id=20211119104272 col_name=icing_actual_amt code=UNKN.
+Progress update 2024-01-08 13:21:23.978637 : Updated  ev_id=20211119104272 col_name=icing_actual_type code=UNKN.
+Progress update 2024-01-08 13:21:24.003649 : Updated  ev_id=20211119104272 col_name=icing_forecast_amt code=UNKN.
+Progress update 2024-01-08 13:21:24.028828 : Updated  ev_id=20211119104272 col_name=icing_forecast_type code=UNKN.
+Progress update 2024-01-08 13:21:24.053591 : Updated  ev_id=20211119104272 col_name=turb_fc_type code=UNKN.
+Progress update 2024-01-08 13:21:24.078934 : Updated  ev_id=20211119104272 col_name=turb_severity code=UNKN.
+Progress update 2024-01-08 13:21:24.103649 : Updated  ev_id=20211119104272 col_name=turb_type code=UNKN.
+Progress update 2024-01-08 13:21:24.128687 : Updated  ev_id=20211119104272 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:24.153996 : Updated  ev_id=20211119104273 col_name=launch code=None.
+Progress update 2024-01-08 13:21:24.178644 : Updated  ev_id=20211119104273 col_name=icing_actual_amt code=UNKN.
+Progress update 2024-01-08 13:21:24.203528 : Updated  ev_id=20211119104273 col_name=icing_actual_type code=UNKN.
+Progress update 2024-01-08 13:21:24.228233 : Updated  ev_id=20211119104273 col_name=icing_forecast_amt code=UNKN.
+Progress update 2024-01-08 13:21:24.253384 : Updated  ev_id=20211119104273 col_name=icing_forecast_type code=UNKN.
+Progress update 2024-01-08 13:21:24.278005 : Updated  ev_id=20211119104273 col_name=turb_fc_type code=UNKN.
+Progress update 2024-01-08 13:21:24.303645 : Updated  ev_id=20211119104273 col_name=turb_severity code=UNKN.
+Progress update 2024-01-08 13:21:24.328590 : Updated  ev_id=20211119104273 col_name=turb_type code=UNKN.
+Progress update 2024-01-08 13:21:24.354166 : Updated  ev_id=20211119104273 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:24.386382 : Updated  ev_id=20211217104419 col_name=launch code=None.
+Progress update 2024-01-08 13:21:24.411880 : Updated  ev_id=20211217104419 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:24.462245 : Updated  ev_id=20211217104419 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:24.520199 : Updated  ev_id=20211217104419 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:24.553383 : Updated  ev_id=20211217104419 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:24.578538 : Updated  ev_id=20211217104419 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:24.611389 : Updated  ev_id=20211217104419 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:24.637151 : Updated  ev_id=20211217104419 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:24.670212 : Updated  ev_id=20211217104419 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:24.686809 : Updated  ev_id=20211217104419 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:24.761436 : Updated  ev_id=20211227104443 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:24.786787 : Updated  ev_id=20211227104443 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:24.819856 : Updated  ev_id=20211227104443 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:24.845353 : Updated  ev_id=20211227104443 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:24.870425 : Updated  ev_id=20211227104443 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:24.894905 : Updated  ev_id=20211227104443 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:24.928528 : Updated  ev_id=20211227104443 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:24.962268 : Updated  ev_id=20211227104443 col_name=wx_brief_src code=COWX.
+Progress update 2024-01-08 13:21:24.995242 : Updated  ev_id=20220111104517 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:25.020385 : Updated  ev_id=20220111104517 col_name=spec_hand code=GA.
+Progress update 2024-01-08 13:21:25.078874 : Updated  ev_id=20220130104567 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:25.112043 : Updated  ev_id=20220130104567 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:25.137143 : Updated  ev_id=20220130104567 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:25.169823 : Updated  ev_id=20220617105272 col_name=launch code=None.
+Progress update 2024-01-08 13:21:25.230216 : Updated  ev_id=20220629105383 col_name=launch code=None.
+Progress update 2024-01-08 13:21:25.253430 : Updated  ev_id=20220629105383 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:25.277772 : Updated  ev_id=20220629105383 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:25.303603 : Updated  ev_id=20220629105383 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:25.327635 : Updated  ev_id=20220629105383 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:25.353636 : Updated  ev_id=20220629105383 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:25.386953 : Updated  ev_id=20220629105383 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:25.411849 : Updated  ev_id=20220629105383 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:25.436231 : Updated  ev_id=20220629105383 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:25.469642 : Updated  ev_id=20220711105438 col_name=launch code=None.
+Progress update 2024-01-08 13:21:25.495194 : Updated  ev_id=20220711105438 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:25.536626 : Updated  ev_id=20220711105438 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:25.569625 : Updated  ev_id=20220711105438 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:25.594864 : Updated  ev_id=20220711105438 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:25.620039 : Updated  ev_id=20220711105438 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:25.645192 : Updated  ev_id=20220711105438 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:25.669538 : Updated  ev_id=20220711105438 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:25.694865 : Updated  ev_id=20220711105438 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:25.770198 : Updated  ev_id=20220712105453 col_name=launch code=None.
+Progress update 2024-01-08 13:21:25.795211 : Updated  ev_id=20220712105453 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:25.819203 : Updated  ev_id=20220712105453 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:25.844466 : Updated  ev_id=20220712105453 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:25.869370 : Updated  ev_id=20220712105453 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:25.895008 : Updated  ev_id=20220712105453 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:25.919689 : Updated  ev_id=20220712105453 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:25.945211 : Updated  ev_id=20220712105453 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:26.003433 : Updated  ev_id=20220716105487 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:26.028210 : Updated  ev_id=20220716105487 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:26.053650 : Updated  ev_id=20220716105487 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:26.077948 : Updated  ev_id=20220716105487 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:26.103216 : Updated  ev_id=20220716105487 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:26.128209 : Updated  ev_id=20220716105487 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:26.153389 : Updated  ev_id=20220716105487 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:26.186782 : Updated  ev_id=20220716105487 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:26.211431 : Updated  ev_id=20220716105487 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:26.261540 : Updated  ev_id=20220717105495 col_name=launch code=None.
+Progress update 2024-01-08 13:21:26.286534 : Updated  ev_id=20220717105495 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:26.311261 : Updated  ev_id=20220717105495 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:26.336249 : Updated  ev_id=20220717105495 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:26.361762 : Updated  ev_id=20220717105495 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:26.386172 : Updated  ev_id=20220717105495 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:26.420179 : Updated  ev_id=20220717105495 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:26.452688 : Updated  ev_id=20220717105495 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:26.478561 : Updated  ev_id=20220717105495 col_name=wx_brief_src code=NET.
+Progress update 2024-01-08 13:21:26.511703 : Updated  ev_id=20220727105598 col_name=launch code=None.
+Progress update 2024-01-08 13:21:26.536710 : Updated  ev_id=20220727105598 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:26.569060 : Updated  ev_id=20220727105598 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:26.595065 : Updated  ev_id=20220727105598 col_name=icing_forecast_amt code=LIGT.
+Progress update 2024-01-08 13:21:26.619861 : Updated  ev_id=20220727105598 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:26.644874 : Updated  ev_id=20220727105598 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:26.669314 : Updated  ev_id=20220727105598 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:26.694252 : Updated  ev_id=20220727105598 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:26.719185 : Updated  ev_id=20220727105598 col_name=wx_brief_src code=AUTR.
+Progress update 2024-01-08 13:21:26.744322 : Updated  ev_id=20220805105670 col_name=launch code=None.
+Progress update 2024-01-08 13:21:26.769472 : Updated  ev_id=20220805105670 col_name=icing_actual_amt code=UNKN.
+Progress update 2024-01-08 13:21:26.794363 : Updated  ev_id=20220805105670 col_name=icing_actual_type code=UNKN.
+Progress update 2024-01-08 13:21:26.819073 : Updated  ev_id=20220805105670 col_name=icing_forecast_amt code=UNKN.
+Progress update 2024-01-08 13:21:26.844219 : Updated  ev_id=20220805105670 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:26.869313 : Updated  ev_id=20220805105670 col_name=turb_fc_type code=UNKN.
+Progress update 2024-01-08 13:21:26.894868 : Updated  ev_id=20220805105670 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:26.919206 : Updated  ev_id=20220805105670 col_name=turb_type code=UNKN.
+Progress update 2024-01-08 13:21:26.944095 : Updated  ev_id=20220805105670 col_name=wx_brief_src code=AUTR.
+Progress update 2024-01-08 13:21:26.969678 : Updated  ev_id=20220812105726 col_name=launch code=None.
+Progress update 2024-01-08 13:21:26.994441 : Updated  ev_id=20220812105726 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:27.019185 : Updated  ev_id=20220812105726 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:27.069446 : Updated  ev_id=20220812105726 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:27.094643 : Updated  ev_id=20220812105726 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:27.119197 : Updated  ev_id=20220812105726 col_name=turb_fc_type code=UNKN.
+Progress update 2024-01-08 13:21:27.144237 : Updated  ev_id=20220812105726 col_name=turb_severity code=UNKN.
+Progress update 2024-01-08 13:21:27.168961 : Updated  ev_id=20220812105726 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:27.219157 : Updated  ev_id=20220819105770 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:27.244393 : Updated  ev_id=20220819105770 col_name=spec_hand code=TDA.
+Progress update 2024-01-08 13:21:27.305177 : Updated  ev_id=20220906105876 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:27.327633 : Updated  ev_id=20220906105876 col_name=spec_hand code=GA.
+Progress update 2024-01-08 13:21:27.352915 : Updated  ev_id=20220906105876 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:27.377808 : Updated  ev_id=20220906105876 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:27.402738 : Updated  ev_id=20220906105876 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:27.427866 : Updated  ev_id=20220906105876 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:27.453247 : Updated  ev_id=20220906105876 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:27.477212 : Updated  ev_id=20220906105876 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:27.502680 : Updated  ev_id=20220906105876 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:27.527704 : Updated  ev_id=20220906105876 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:27.563234 : Updated  ev_id=20230710192576 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.611087 : Updated  ev_id=20230717192634 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.660664 : Updated  ev_id=20230719192666 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.710944 : Updated  ev_id=20230731192760 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.735717 : Updated  ev_id=20230731192760 col_name=wx_brief_src code=NWS.
+Progress update 2024-01-08 13:21:27.760960 : Updated  ev_id=20230809192832 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.811175 : Updated  ev_id=20230821192906 col_name=launch code=None.
+Progress update 2024-01-08 13:21:27.835085 : Updated  ev_id=20230821192906 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:27.860948 : Updated  ev_id=20230821192906 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:27.885674 : Updated  ev_id=20230821192906 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:27.911172 : Updated  ev_id=20230821192906 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:27.935752 : Updated  ev_id=20230821192906 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:27.961348 : Updated  ev_id=20230821192906 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:27.986171 : Updated  ev_id=20230821192906 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:28.035152 : Updated  ev_id=20230822192920 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.085410 : Updated  ev_id=20230831192979 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.135435 : Updated  ev_id=20230901192980 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.185715 : Updated  ev_id=20230905193008 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.235166 : Updated  ev_id=20230926193147 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.261344 : Updated  ev_id=20230926193147 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:28.285735 : Updated  ev_id=20231025193301 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.311300 : Updated  ev_id=20231025193301 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:28.335874 : Updated  ev_id=20231025193301 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:28.360344 : Updated  ev_id=20231025193301 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:28.386116 : Updated  ev_id=20231025193301 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:28.510645 : Updated  ev_id=20231101193339 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.535829 : Updated  ev_id=20231101193339 col_name=icing_actual_amt code=NONE.
+Progress update 2024-01-08 13:21:28.561256 : Updated  ev_id=20231101193339 col_name=icing_actual_type code=NA.
+Progress update 2024-01-08 13:21:28.585317 : Updated  ev_id=20231101193339 col_name=icing_forecast_amt code=NONE.
+Progress update 2024-01-08 13:21:28.611406 : Updated  ev_id=20231101193339 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:28.635577 : Updated  ev_id=20231101193339 col_name=turb_fc_type code=NONE.
+Progress update 2024-01-08 13:21:28.661383 : Updated  ev_id=20231101193339 col_name=turb_severity code=NA.
+Progress update 2024-01-08 13:21:28.685425 : Updated  ev_id=20231101193339 col_name=turb_type code=NONE.
+Progress update 2024-01-08 13:21:28.710504 : Updated  ev_id=20231101193339 col_name=wx_brief_src code=COWX.
+Progress update 2024-01-08 13:21:28.735164 : Updated  ev_id=20231109193365 col_name=launch code=None.
+Progress update 2024-01-08 13:21:28.760584 : Updated  ev_id=20231109193365 col_name=icing_forecast_type code=NA.
+Progress update 2024-01-08 13:21:28.785515 : Updated  ev_id=20231109193365 col_name=wx_brief_src0 code=UNK.
+Progress update 2024-01-08 13:21:28.810697 : Updated  ev_id=20231113193376 col_name=launch code=None.
+Progress update 2024-01-08 13:21:29.035376 : Updated  ev_id=20231114193382 col_name=launch code=None.
+Progress update 2024-01-08 13:21:29.235705 : Updated  ev_id=20231114193382 col_name=wx_brief_src code=NET.
+Progress update 2024-01-08 13:21:29.260398 : Updated  ev_id=20231122193417 col_name=launch code=None.
+Progress update 2024-01-08 13:21:29.568923 : Updated  ev_id=20231214193525 col_name=launch code=Part.
+Progress update 2024-01-08 13:21:29.719011 : Updated  ev_id=20231106193349 col_name=followup_travel code=N.
+Progress update 2024-01-08 13:21:29.743293 : Updated  ev_id=20231106193349 col_name=launch code=None.
+Progress update 2024-01-08 13:21:29.968799 : Number rows selected :      301.
+Progress update 2024-01-08 13:21:29.968799 : Number rows inserted :      106.
+Progress update 2024-01-08 13:21:29.968799 : Number rows updated  :      195.
+Progress update 2024-01-08 13:21:29.968799 :
+Progress update 2024-01-08 13:21:29.969811 : Database table       : ntsb_admin                    <-----------------------------------.
+Progress update 2024-01-08 13:21:30.060378 : Updated  ev_id=20231227193571.
+Progress update 2024-01-08 13:21:30.097172 : Updated  ev_id=20231106193347.
+Progress update 2024-01-08 13:21:30.118571 : Updated  ev_id=20231204193461.
+Progress update 2024-01-08 13:21:30.142893 : Updated  ev_id=20231207193493.
+Progress update 2024-01-08 13:21:30.218405 : Updated  ev_id=20231219193544.
+Progress update 2024-01-08 13:21:30.243667 : Updated  ev_id=20231218193538.
+Progress update 2024-01-08 13:21:30.343511 : Updated  ev_id=20231218193535.
+Progress update 2024-01-08 13:21:30.393148 : Updated  ev_id=20231227193574.
+Progress update 2024-01-08 13:21:30.563660 : Updated  ev_id=20211111104237.
+Progress update 2024-01-08 13:21:30.585260 : Updated  ev_id=20211115104243.
+Progress update 2024-01-08 13:21:30.610319 : Updated  ev_id=20211119104272.
+Progress update 2024-01-08 13:21:30.634651 : Updated  ev_id=20211119104273.
+Progress update 2024-01-08 13:21:30.660669 : Updated  ev_id=20211217104419.
+Progress update 2024-01-08 13:21:30.685165 : Updated  ev_id=20211227104443.
+Progress update 2024-01-08 13:21:30.710163 : Updated  ev_id=20220111104517.
+Progress update 2024-01-08 13:21:30.734835 : Updated  ev_id=20220130104567.
+Progress update 2024-01-08 13:21:30.760160 : Updated  ev_id=20220617105272.
+Progress update 2024-01-08 13:21:30.818437 : Updated  ev_id=20220629105383.
+Progress update 2024-01-08 13:21:30.843446 : Updated  ev_id=20220711105438.
+Progress update 2024-01-08 13:21:30.868141 : Updated  ev_id=20220712105453.
+Progress update 2024-01-08 13:21:30.893464 : Updated  ev_id=20220716105487.
+Progress update 2024-01-08 13:21:30.918666 : Updated  ev_id=20220717105495.
+Progress update 2024-01-08 13:21:30.943433 : Updated  ev_id=20220727105598.
+Progress update 2024-01-08 13:21:30.968733 : Updated  ev_id=20220805105670.
+Progress update 2024-01-08 13:21:30.993421 : Updated  ev_id=20220812105726.
+Progress update 2024-01-08 13:21:31.018321 : Updated  ev_id=20220819105770.
+Progress update 2024-01-08 13:21:31.043740 : Updated  ev_id=20220906105876.
+Progress update 2024-01-08 13:21:31.068381 : Updated  ev_id=20230710192576.
+Progress update 2024-01-08 13:21:31.093144 : Updated  ev_id=20230717192634.
+Progress update 2024-01-08 13:21:31.118354 : Updated  ev_id=20230719192666.
+Progress update 2024-01-08 13:21:31.142863 : Updated  ev_id=20230731192760.
+Progress update 2024-01-08 13:21:31.168155 : Updated  ev_id=20230809192832.
+Progress update 2024-01-08 13:21:31.193130 : Updated  ev_id=20230821192906.
+Progress update 2024-01-08 13:21:31.218311 : Updated  ev_id=20230822192920.
+Progress update 2024-01-08 13:21:31.242892 : Updated  ev_id=20230831192979.
+Progress update 2024-01-08 13:21:31.268137 : Updated  ev_id=20230901192980.
+Progress update 2024-01-08 13:21:31.292647 : Updated  ev_id=20230905193008.
+Progress update 2024-01-08 13:21:31.318264 : Updated  ev_id=20230926193147.
+Progress update 2024-01-08 13:21:31.342880 : Updated  ev_id=20231025193301.
+Progress update 2024-01-08 13:21:31.385158 : Updated  ev_id=20231101193339.
+Progress update 2024-01-08 13:21:31.409564 : Updated  ev_id=20231109193365.
+Progress update 2024-01-08 13:21:31.434368 : Updated  ev_id=20231113193376.
+Progress update 2024-01-08 13:21:31.459854 : Updated  ev_id=20231114193382.
+Progress update 2024-01-08 13:21:31.485311 : Updated  ev_id=20231122193417.
+Progress update 2024-01-08 13:21:31.534344 : Updated  ev_id=20231214193525.
+Progress update 2024-01-08 13:21:31.609780 : Updated  ev_id=20231106193349.
+Progress update 2024-01-08 13:21:31.709829 : Number rows selected :       65.
+Progress update 2024-01-08 13:21:31.709829 : Number rows inserted :       19.
+Progress update 2024-01-08 13:21:31.709829 : Number rows updated  :       46.
+Progress update 2024-01-08 13:21:31.709829 :
+Progress update 2024-01-08 13:21:31.710840 : Database table       : dt_aircraft                   <-----------------------------------.
+Progress update 2024-01-08 13:21:34.633653 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:34.658739 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=acft_awy_cert code=STU.
+Progress update 2024-01-08 13:21:34.683431 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:34.709103 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=AUTO.
+Progress update 2024-01-08 13:21:34.733561 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=DREC.
+Progress update 2024-01-08 13:21:34.767412 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=EMFD.
+Progress update 2024-01-08 13:21:34.792179 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=EPFD.
+Progress update 2024-01-08 13:21:34.817665 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=addtl_equip code=STWS.
+Progress update 2024-01-08 13:21:34.842607 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:34.867117 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:34.891976 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:34.917653 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:34.942646 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=rwy_cond1 code=ROUG.
+Progress update 2024-01-08 13:21:34.967769 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=rwy_cond1 code=SH2O.
+Progress update 2024-01-08 13:21:34.992276 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=rwy_cond1 code=VEGE.
+Progress update 2024-01-08 13:21:35.017363 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=rwy_cond1 code=WET.
+Progress update 2024-01-08 13:21:35.042604 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:35.067098 : Updated  ev_id=20211111104237 aircraft_key=1 col_name=vfr_appr0 code=NONE.
+Progress update 2024-01-08 13:21:35.092139 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=acft_awy_cert code=SPR.
+Progress update 2024-01-08 13:21:35.117731 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:35.142651 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=aircar_cert code=AGR.
+Progress update 2024-01-08 13:21:35.166880 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=aircar_cert code=EXTL.
+Progress update 2024-01-08 13:21:35.217935 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:35.242143 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:35.266644 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=landing_gear0 code=NONE.
+Progress update 2024-01-08 13:21:35.291924 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=rwy_cond1 code=SOFT.
+Progress update 2024-01-08 13:21:35.316840 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:35.341684 : Updated  ev_id=20211115104243 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:35.417341 : Updated  ev_id=20211119104272 aircraft_key=1 col_name=addtl_equip0 code=UNK.
+Progress update 2024-01-08 13:21:35.441852 : Updated  ev_id=20211119104272 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:35.466824 : Updated  ev_id=20211119104272 aircraft_key=1 col_name=airspc_type code=CLD.
+Progress update 2024-01-08 13:21:35.700092 : Updated  ev_id=20211119104273 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:35.950595 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=acft_awy_cert code=SPE.
+Progress update 2024-01-08 13:21:35.974932 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:36.000272 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:36.024763 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:36.050700 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:36.075332 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:36.121596 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:36.141637 : Updated  ev_id=20211217104419 aircraft_key=1 col_name=vfr_appr1 code=UNK.
+Progress update 2024-01-08 13:21:36.191353 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:36.275110 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=addtl_equip code=EFB.
+Progress update 2024-01-08 13:21:36.300112 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=addtl_equip code=OBWX.
+Progress update 2024-01-08 13:21:36.349839 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:36.400021 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:36.425028 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:36.450542 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:36.499931 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=type_clear code=VFR.
+Progress update 2024-01-08 13:21:36.525556 : Updated  ev_id=20211227104443 aircraft_key=1 col_name=vfr_appr0 code=NONE.
+Progress update 2024-01-08 13:21:36.549649 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:36.575471 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:36.600257 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=addtl_equip code=AUTO.
+Progress update 2024-01-08 13:21:36.625359 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=aircar_cert code=TAXI.
+Progress update 2024-01-08 13:21:36.650187 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=airspc_type code=CLE.
+Progress update 2024-01-08 13:21:36.675396 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=elt_oper_no_reason code=UNK.
+Progress update 2024-01-08 13:21:36.699325 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:36.725264 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=type_clear code=VFR.
+Progress update 2024-01-08 13:21:36.750232 : Updated  ev_id=20220111104517 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:36.800333 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:36.825484 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:36.900081 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:36.924679 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=airspc_type code=CLD.
+Progress update 2024-01-08 13:21:36.949323 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:36.975257 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:36.999480 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:37.050121 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:37.075267 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=type_clear code=VFR.
+Progress update 2024-01-08 13:21:37.099983 : Updated  ev_id=20220130104567 aircraft_key=1 col_name=vfr_appr code=TPAT.
+Progress update 2024-01-08 13:21:37.124701 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:37.200101 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:37.224862 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:37.249649 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:37.275558 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:37.300134 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=rwy_cond1 code=WACM.
+Progress update 2024-01-08 13:21:37.324611 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=type_clear code=VFR.
+Progress update 2024-01-08 13:21:37.349754 : Updated  ev_id=20220617105272 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:37.375322 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:37.399957 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=addtl_equip code=HGPS.
+Progress update 2024-01-08 13:21:37.425271 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:37.449743 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:37.479545 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=elt_oper_no_reason code=OTHR.
+Progress update 2024-01-08 13:21:37.499317 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:37.525321 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=landing_gear1 code=TAIL.
+Progress update 2024-01-08 13:21:37.549695 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=landing_surf code=GRAS.
+Progress update 2024-01-08 13:21:37.574752 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:37.599922 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:37.625010 : Updated  ev_id=20220629105383 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:37.649623 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=acft_awy_cert code=SPX.
+Progress update 2024-01-08 13:21:37.675366 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=addtl_equip0 code=UNK.
+Progress update 2024-01-08 13:21:37.699293 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:37.725254 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=airspc_type0 code=UNK.
+Progress update 2024-01-08 13:21:37.749314 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:37.774853 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:37.799312 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=landing_surf code=GRAS.
+Progress update 2024-01-08 13:21:37.825319 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:37.849441 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:37.874536 : Updated  ev_id=20220711105438 aircraft_key=1 col_name=vfr_appr0 code=NONE.
+Progress update 2024-01-08 13:21:37.899632 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:37.974531 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:37.999817 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:38.025313 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:38.075265 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:38.175063 : Updated  ev_id=20220712105453 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:38.249579 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:38.274579 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:38.300069 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:38.325101 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=landing_gear1 code=TAIL.
+Progress update 2024-01-08 13:21:38.374412 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:38.399412 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:38.425244 : Updated  ev_id=20220716105487 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:38.475236 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:38.499733 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:38.524452 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:38.549492 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=airspc_type0 code=UNK.
+Progress update 2024-01-08 13:21:38.574504 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:38.599255 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:38.624237 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:38.648921 : Updated  ev_id=20220717105495 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:38.674224 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:38.699672 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=addtl_equip0 code=NONE.
+Progress update 2024-01-08 13:21:38.724294 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:38.749065 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=airspc_type code=CLD.
+Progress update 2024-01-08 13:21:38.774770 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:38.799224 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=landing_gear0 code=NONE.
+Progress update 2024-01-08 13:21:38.824829 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:38.857550 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:38.882767 : Updated  ev_id=20220727105598 aircraft_key=1 col_name=vfr_appr0 code=NONE.
+Progress update 2024-01-08 13:21:38.932375 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:38.957051 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=addtl_equip code=SATD.
+Progress update 2024-01-08 13:21:38.982656 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=addtl_equip code=STWS.
+Progress update 2024-01-08 13:21:39.007717 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=aircar_cert code=COAC.
+Progress update 2024-01-08 13:21:39.032775 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=aircar_cert code=TAXI.
+Progress update 2024-01-08 13:21:39.058080 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=airspc_type code=CLE.
+Progress update 2024-01-08 13:21:39.083077 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=elt_oper_no_reason code=UNK.
+Progress update 2024-01-08 13:21:39.133085 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:39.157059 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:39.182700 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:39.207078 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:39.232162 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:39.257592 : Updated  ev_id=20220805105670 aircraft_key=1 col_name=vfr_appr code=TPAT.
+Progress update 2024-01-08 13:21:39.283061 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:39.307063 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=acft_awy_cert code=STU.
+Progress update 2024-01-08 13:21:39.332622 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:39.357849 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=addtl_equip code=STWS.
+Progress update 2024-01-08 13:21:39.382235 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:39.407235 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:39.432921 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:39.457235 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:39.532062 : Updated  ev_id=20220812105726 aircraft_key=1 col_name=vfr_appr code=FLND.
+Progress update 2024-01-08 13:21:39.557556 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=acft_awy_cert code=SPR.
+Progress update 2024-01-08 13:21:39.582556 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=addtl_equip code=DREC.
+Progress update 2024-01-08 13:21:39.607558 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=addtl_equip code=SATD.
+Progress update 2024-01-08 13:21:39.632235 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=aircar_cert code=AGR.
+Progress update 2024-01-08 13:21:39.682147 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:39.707010 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=landing_gear1 code=TAIL.
+Progress update 2024-01-08 13:21:39.757450 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=rwy_cond1 code=VEGE.
+Progress update 2024-01-08 13:21:39.782927 : Updated  ev_id=20220819105770 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:39.832232 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=acft_awy_cert code=SPE.
+Progress update 2024-01-08 13:21:39.857562 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:39.882565 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=addtl_equip code=AUTO.
+Progress update 2024-01-08 13:21:39.907263 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=addtl_equip code=EMFD.
+Progress update 2024-01-08 13:21:39.932053 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=addtl_equip code=EPFD.
+Progress update 2024-01-08 13:21:39.957183 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=addtl_equip code=STWS.
+Progress update 2024-01-08 13:21:39.982719 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:40.007291 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:40.032900 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:40.057305 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:40.083291 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:40.107344 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:40.132521 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:40.156947 : Updated  ev_id=20220906105876 aircraft_key=1 col_name=vfr_appr code=TPAT.
+Progress update 2024-01-08 13:21:40.323539 : Updated  ev_id=20230710192576 aircraft_key=1 col_name=aircar_cert code=141.
+Progress update 2024-01-08 13:21:40.599655 : Updated  ev_id=20230717192634 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:40.849469 : Updated  ev_id=20230719192666 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:40.899039 : Updated  ev_id=20230719192666 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:40.949252 : Updated  ev_id=20230719192666 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:40.973879 : Updated  ev_id=20230719192666 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:41.024055 : Updated  ev_id=20230719192666 aircraft_key=1 col_name=vfr_appr code=FSTP.
+Progress update 2024-01-08 13:21:41.049175 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:41.073576 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:41.098575 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=addtl_equip code=AOAI.
+Progress update 2024-01-08 13:21:41.149088 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=addtl_equip code=AUTO.
+Progress update 2024-01-08 13:21:41.181729 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:41.207062 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=airspc_type code=CLE.
+Progress update 2024-01-08 13:21:41.231966 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:41.257062 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:41.307888 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:41.332056 : Updated  ev_id=20230731192760 aircraft_key=1 col_name=vfr_appr code=STIN.
+Progress update 2024-01-08 13:21:41.415216 : Updated  ev_id=20230809192832 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:41.590056 : Updated  ev_id=20230821192906 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:41.739801 : Updated  ev_id=20230821192906 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:41.965233 : Updated  ev_id=20230822192920 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:42.248268 : Updated  ev_id=20230831192979 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:42.273232 : Updated  ev_id=20230831192979 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:42.382225 : Updated  ev_id=20230831192979 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:42.641296 : Updated  ev_id=20230901192980 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:43.006396 : Updated  ev_id=20230905193008 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:43.306866 : Updated  ev_id=20230926193147 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:43.331871 : Updated  ev_id=20230926193147 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:43.406144 : Updated  ev_id=20230926193147 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:43.507192 : Updated  ev_id=20231025193301 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:43.606714 : Updated  ev_id=20231025193301 aircraft_key=1 col_name=landing_gear1 code=TAIL.
+Progress update 2024-01-08 13:21:43.631713 : Updated  ev_id=20231025193301 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:43.682223 : Updated  ev_id=20231025193301 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:43.732237 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=acft_awy_cert0 code=NON.
+Progress update 2024-01-08 13:21:43.756535 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=addtl_equip0 code=NONE.
+Progress update 2024-01-08 13:21:43.790689 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:43.815288 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:43.848883 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:43.888557 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=landing_gear1 code=TAND.
+Progress update 2024-01-08 13:21:43.915536 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=landing_surf code=GRAS.
+Progress update 2024-01-08 13:21:44.046645 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:44.073644 : Updated  ev_id=20231101193339 aircraft_key=1 col_name=vfr_appr code=STIN.
+Progress update 2024-01-08 13:21:44.106383 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=acft_awy_cert code=SPE.
+Progress update 2024-01-08 13:21:44.131014 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=ADSB.
+Progress update 2024-01-08 13:21:44.164703 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=AUTO.
+Progress update 2024-01-08 13:21:44.196704 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=DREC.
+Progress update 2024-01-08 13:21:44.223712 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=EMFD.
+Progress update 2024-01-08 13:21:44.248182 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=EPFD.
+Progress update 2024-01-08 13:21:44.281182 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=addtl_equip code=STWS.
+Progress update 2024-01-08 13:21:44.313180 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:44.332186 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=airspc_type code=CLD.
+Progress update 2024-01-08 13:21:44.363704 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=elt_oper_no_reason code=UNK.
+Progress update 2024-01-08 13:21:44.422827 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=landing_gear1 code=TRI.
+Progress update 2024-01-08 13:21:44.456897 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=landing_surf code=CONC.
+Progress update 2024-01-08 13:21:44.487897 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:44.521901 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=type_clear code=VFR.
+Progress update 2024-01-08 13:21:44.590422 : Updated  ev_id=20231109193365 aircraft_key=1 col_name=vfr_appr code=STIN.
+Progress update 2024-01-08 13:21:44.647939 : Updated  ev_id=20231113193376 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:44.872913 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:44.905146 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=addtl_equip code=EFB.
+Progress update 2024-01-08 13:21:44.929691 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:44.958801 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:44.989877 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=elt_oper_no_reason code=OTHR.
+Progress update 2024-01-08 13:21:45.016878 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:45.047404 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=landing_gear1 code=TAIL.
+Progress update 2024-01-08 13:21:45.080405 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:45.116837 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:45.220475 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:45.294510 : Updated  ev_id=20231114193382 aircraft_key=1 col_name=vfr_appr code=SIFL.
+Progress update 2024-01-08 13:21:45.323511 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=acft_awy_cert code=STN.
+Progress update 2024-01-08 13:21:45.381575 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=aircar_cert code=None.
+Progress update 2024-01-08 13:21:45.445102 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=airspc_type code=CLG.
+Progress update 2024-01-08 13:21:45.517104 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=instm_appr0 code=NONE.
+Progress update 2024-01-08 13:21:45.622631 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=landing_surf code=ASPH.
+Progress update 2024-01-08 13:21:45.723153 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=rwy_cond1 code=DRY.
+Progress update 2024-01-08 13:21:45.765665 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=type_clear0 code=NONE.
+Progress update 2024-01-08 13:21:45.806665 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=vfr_appr code=FSTP.
+Progress update 2024-01-08 13:21:45.851187 : Updated  ev_id=20231122193417 aircraft_key=1 col_name=vfr_appr code=TPAT.
+Progress update 2024-01-08 13:21:47.656587 : Number rows selected :      561.
+Progress update 2024-01-08 13:21:47.656587 : Number rows inserted :      312.
+Progress update 2024-01-08 13:21:47.656587 : Number rows updated  :      249.
+Progress update 2024-01-08 13:21:47.657587 :
+Progress update 2024-01-08 13:21:47.657587 : Database table       : engines                       <-----------------------------------.
+Progress update 2024-01-08 13:21:48.890631 : Number rows selected :       35.
+Progress update 2024-01-08 13:21:48.890631 : Number rows inserted :       35.
+Progress update 2024-01-08 13:21:48.891632 :
+Progress update 2024-01-08 13:21:48.891632 : Database table       : events_sequence               <-----------------------------------.
+Progress update 2024-01-08 13:21:49.030202 : Updated  ev_id=20231227193571 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.113693 : Updated  ev_id=20231204193461 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.138203 : Updated  ev_id=20231207193493 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.213205 : Updated  ev_id=20231219193544 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.238717 : Updated  ev_id=20231218193538 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.338333 : Updated  ev_id=20231218193535 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.388330 : Updated  ev_id=20231227193574 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.596976 : Updated  ev_id=20211111104237 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.697502 : Updated  ev_id=20211119104272 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:49.905019 : Updated  ev_id=20211217104419 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.062962 : Updated  ev_id=20220111104517 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.296131 : Updated  ev_id=20220629105383 Aircraft_Key=1 Occurrence_No=4.
+Progress update 2024-01-08 13:21:50.346647 : Updated  ev_id=20220712105453 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.471165 : Updated  ev_id=20220717105495 Aircraft_Key=1 Occurrence_No=4.
+Progress update 2024-01-08 13:21:50.571635 : Updated  ev_id=20220805105670 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.671151 : Updated  ev_id=20220906105876 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.696150 : Updated  ev_id=20230710192576 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.805681 : Updated  ev_id=20230809192832 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.855211 : Updated  ev_id=20230821192906 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.888209 : Updated  ev_id=20230822192920 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.913213 : Updated  ev_id=20230831192979 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.946146 : Updated  ev_id=20230901192980 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.970701 : Updated  ev_id=20230905193008 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:50.995701 : Updated  ev_id=20230926193147 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.054221 : Updated  ev_id=20231025193301 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.079223 : Updated  ev_id=20231101193339 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.118223 : Updated  ev_id=20231109193365 Aircraft_Key=1 Occurrence_No=2.
+Progress update 2024-01-08 13:21:51.203835 : Updated  ev_id=20231114193382 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.229362 : Updated  ev_id=20231122193417 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.338392 : Updated  ev_id=20231214193525 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.521318 : Updated  ev_id=20231106193349 Aircraft_Key=1 Occurrence_No=1.
+Progress update 2024-01-08 13:21:51.712447 : Number rows selected :       98.
+Progress update 2024-01-08 13:21:51.713445 : Number rows inserted :       67.
+Progress update 2024-01-08 13:21:51.713445 : Number rows updated  :       31.
+Progress update 2024-01-08 13:21:51.713445 :
+Progress update 2024-01-08 13:21:51.713445 : Database table       : findings                      <-----------------------------------.
+Progress update 2024-01-08 13:21:54.220485 : Number rows selected :       88.
+Progress update 2024-01-08 13:21:54.220485 : Number rows inserted :       88.
+Progress update 2024-01-08 13:21:54.221485 :
+Progress update 2024-01-08 13:21:54.221485 : Database table       : flight_crew                   <-----------------------------------.
+Progress update 2024-01-08 13:21:56.061595 : Number rows selected :       55.
+Progress update 2024-01-08 13:21:56.061595 : Number rows inserted :       55.
+Progress update 2024-01-08 13:21:56.061595 :
+Progress update 2024-01-08 13:21:56.062595 : Database table       : injury                        <-----------------------------------.
+Progress update 2024-01-08 13:21:56.273063 : Updated  ev_id=20231227193571 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:56.298264 : Updated  ev_id=20231227193571 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.327895 : Updated  ev_id=20231227193571 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:21:56.356375 : Updated  ev_id=20231227193571 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.419865 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=Cabi injury_level=NONE.
+Progress update 2024-01-08 13:21:56.461580 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=Cabi injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.511572 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.539977 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=LapC injury_level=NONE.
+Progress update 2024-01-08 13:21:56.623689 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=LapC injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.694238 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:21:56.727899 : Updated  ev_id=20231106193347 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:56.936018 : Updated  ev_id=20231204193461 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:21:56.964988 : Updated  ev_id=20231204193461 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:56.998989 : Updated  ev_id=20231204193461 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:57.085729 : Updated  ev_id=20231204193461 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:21:57.152390 : Updated  ev_id=20231204193461 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:57.423217 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Cabi injury_level=NONE.
+Progress update 2024-01-08 13:21:57.481509 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Cabi injury_level=TOTL.
+Progress update 2024-01-08 13:21:57.506876 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:57.527872 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:57.552634 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:21:57.577273 : Updated  ev_id=20231218193538 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:57.964891 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Cabi injury_level=FATL.
+Progress update 2024-01-08 13:21:58.019112 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Cabi injury_level=SERS.
+Progress update 2024-01-08 13:21:58.057030 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Cabi injury_level=MINR.
+Progress update 2024-01-08 13:21:58.077126 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Cabi injury_level=NONE.
+Progress update 2024-01-08 13:21:58.110641 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Cabi injury_level=TOTL.
+Progress update 2024-01-08 13:21:58.152673 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:21:58.177311 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:21:58.211046 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:21:58.243558 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:58.277670 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:58.301884 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:21:58.335611 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:21:58.364502 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:21:58.398508 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:21:58.436022 : Updated  ev_id=20231218193535 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:58.652484 : Updated  ev_id=20231227193574 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:58.677293 : Updated  ev_id=20231227193574 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:59.593874 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:21:59.622853 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:21:59.652600 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:21:59.680951 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:59.714923 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:59.747478 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:21:59.781254 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:21:59.815117 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:21:59.835011 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:21:59.864519 : Updated  ev_id=20211111104237 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:21:59.893490 : Updated  ev_id=20211115104243 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:59.913894 : Updated  ev_id=20211115104243 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:21:59.948018 : Updated  ev_id=20211119104272 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:21:59.976235 : Updated  ev_id=20211119104272 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.005708 : Updated  ev_id=20211119104272 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:00.039741 : Updated  ev_id=20211119104272 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.060252 : Updated  ev_id=20211119104273 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:00.085252 : Updated  ev_id=20211119104273 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.115252 : Updated  ev_id=20211119104273 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:00.147767 : Updated  ev_id=20211119104273 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.176766 : Updated  ev_id=20211217104419 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:00.205766 : Updated  ev_id=20211217104419 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.231487 : Updated  ev_id=20211217104419 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:00.260302 : Updated  ev_id=20211217104419 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.294026 : Updated  ev_id=20211227104443 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:00.422667 : Updated  ev_id=20211227104443 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.456609 : Updated  ev_id=20211227104443 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:00.565024 : Updated  ev_id=20211227104443 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.631183 : Updated  ev_id=20220111104517 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:00.694028 : Updated  ev_id=20220111104517 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.731004 : Updated  ev_id=20220111104517 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:00.755844 : Updated  ev_id=20220111104517 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.789665 : Updated  ev_id=20220130104567 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:00.810664 : Updated  ev_id=20220130104567 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.839484 : Updated  ev_id=20220130104567 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:00.872846 : Updated  ev_id=20220130104567 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:00.923094 : Updated  ev_id=20220617105272 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:00.952060 : Updated  ev_id=20220617105272 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.006513 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:01.039519 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:01.060027 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:01.089842 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:01.122684 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.152048 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:01.176377 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:01.205866 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:01.235231 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:01.268345 : Updated  ev_id=20220629105383 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.442865 : Updated  ev_id=20220711105438 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:01.542580 : Updated  ev_id=20220711105438 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.693153 : Updated  ev_id=20220712105453 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:01.717888 : Updated  ev_id=20220712105453 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:01.743405 : Updated  ev_id=20220712105453 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.768097 : Updated  ev_id=20220716105487 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:01.793618 : Updated  ev_id=20220716105487 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.817618 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:01.842627 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:01.867832 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:01.892821 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:01.917823 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:01.942622 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:01.967341 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:02.026563 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:02.092827 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:02.117358 : Updated  ev_id=20220717105495 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.142835 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:02.168007 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:02.192842 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:02.217842 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:02.242857 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.267462 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:02.293223 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:02.317845 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:02.343279 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:02.367724 : Updated  ev_id=20220727105598 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.392828 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:02.417553 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:02.443066 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:02.467825 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:02.492990 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.517573 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:02.542610 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:02.568121 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:02.593121 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:02.617560 : Updated  ev_id=20220805105670 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.643002 : Updated  ev_id=20220812105726 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:02.667439 : Updated  ev_id=20220812105726 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.692630 : Updated  ev_id=20220819105770 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:02.717536 : Updated  ev_id=20220819105770 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.742613 : Updated  ev_id=20220819105770 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:02.767286 : Updated  ev_id=20220819105770 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.792528 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:02.842846 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:02.867005 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:02.892431 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:02.917365 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:02.942277 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:02.967942 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:02.993023 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:03.017511 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:03.042999 : Updated  ev_id=20220906105876 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.075659 : Updated  ev_id=20230710192576 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:03.101060 : Updated  ev_id=20230710192576 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.125963 : Updated  ev_id=20230710192576 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:03.151350 : Updated  ev_id=20230710192576 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.225335 : Updated  ev_id=20230717192634 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:03.251167 : Updated  ev_id=20230717192634 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.427534 : Updated  ev_id=20230719192666 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:03.476055 : Updated  ev_id=20230719192666 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.625570 : Updated  ev_id=20230731192760 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:03.651084 : Updated  ev_id=20230731192760 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.676085 : Updated  ev_id=20230731192760 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:03.701084 : Updated  ev_id=20230731192760 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.726084 : Updated  ev_id=20230809192832 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:03.751604 : Updated  ev_id=20230809192832 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.775603 : Updated  ev_id=20230809192832 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:03.801292 : Updated  ev_id=20230809192832 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.826160 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:03.851485 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:03.876191 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:03.901087 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:03.925694 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:03.975828 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:04.000827 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:04.025828 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:04.051348 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:04.075921 : Updated  ev_id=20230821192906 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.101135 : Updated  ev_id=20230822192920 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.125782 : Updated  ev_id=20230822192920 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.151614 : Updated  ev_id=20230822192920 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:04.176614 : Updated  ev_id=20230822192920 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.201613 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:04.225614 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Flig injury_level=SERS.
+Progress update 2024-01-08 13:22:04.251134 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Flig injury_level=MINR.
+Progress update 2024-01-08 13:22:04.276135 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.301134 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.326134 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:04.350649 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Pass injury_level=SERS.
+Progress update 2024-01-08 13:22:04.375649 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Pass injury_level=MINR.
+Progress update 2024-01-08 13:22:04.400647 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:04.425647 : Updated  ev_id=20230831192979 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.451166 : Updated  ev_id=20230901192980 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.476165 : Updated  ev_id=20230901192980 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.501166 : Updated  ev_id=20230901192980 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:04.526166 : Updated  ev_id=20230901192980 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.551680 : Updated  ev_id=20230905193008 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.592680 : Updated  ev_id=20230905193008 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.617680 : Updated  ev_id=20230905193008 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:04.642688 : Updated  ev_id=20230905193008 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.806697 : Updated  ev_id=20231025193301 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.825410 : Updated  ev_id=20231025193301 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.899839 : Updated  ev_id=20231101193339 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:04.925145 : Updated  ev_id=20231101193339 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:04.950803 : Updated  ev_id=20231109193365 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:05.000055 : Updated  ev_id=20231109193365 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.024978 : Updated  ev_id=20231113193376 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:05.050309 : Updated  ev_id=20231113193376 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.075030 : Updated  ev_id=20231113193376 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:05.099798 : Updated  ev_id=20231113193376 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.125194 : Updated  ev_id=20231114193382 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:05.150621 : Updated  ev_id=20231114193382 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.175142 : Updated  ev_id=20231114193382 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:05.199994 : Updated  ev_id=20231114193382 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.225341 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=Cabi injury_level=NONE.
+Progress update 2024-01-08 13:22:05.275589 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=Cabi injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.325929 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.350367 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=LapC injury_level=NONE.
+Progress update 2024-01-08 13:22:05.375186 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=LapC injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.400139 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:05.425974 : Updated  ev_id=20231122193417 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.550025 : Updated  ev_id=20231214193525 aircraft_key=1 inj_person_category=Flig injury_level=FATL.
+Progress update 2024-01-08 13:22:05.575543 : Updated  ev_id=20231214193525 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.600380 : Updated  ev_id=20231214193525 aircraft_key=1 inj_person_category=Pass injury_level=FATL.
+Progress update 2024-01-08 13:22:05.625378 : Updated  ev_id=20231214193525 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.700422 : Updated  ev_id=20231106193349 aircraft_key=1 inj_person_category=Flig injury_level=NONE.
+Progress update 2024-01-08 13:22:05.724973 : Updated  ev_id=20231106193349 aircraft_key=1 inj_person_category=Flig injury_level=TOTL.
+Progress update 2024-01-08 13:22:05.750490 : Updated  ev_id=20231106193349 aircraft_key=1 inj_person_category=Pass injury_level=NONE.
+Progress update 2024-01-08 13:22:05.775525 : Updated  ev_id=20231106193349 aircraft_key=1 inj_person_category=Pass injury_level=TOTL.
+Progress update 2024-01-08 13:22:06.049946 : Number rows selected :      335.
+Progress update 2024-01-08 13:22:06.049946 : Number rows inserted :      118.
+Progress update 2024-01-08 13:22:06.049946 : Number rows updated  :      217.
+Progress update 2024-01-08 13:22:06.050946 :
+Progress update 2024-01-08 13:22:06.050946 : Database table       : narratives                    <-----------------------------------.
+Progress update 2024-01-08 13:22:06.358746 : Updated  ev_id=20211111104237 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.425444 : Updated  ev_id=20211115104243 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.449667 : Updated  ev_id=20211119104272 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.525464 : Updated  ev_id=20211119104273 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.591804 : Updated  ev_id=20211217104419 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.716957 : Updated  ev_id=20211227104443 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.841706 : Updated  ev_id=20220111104517 aircraft_key=1.
+Progress update 2024-01-08 13:22:06.966201 : Updated  ev_id=20220130104567 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.041376 : Updated  ev_id=20220617105272 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.066782 : Updated  ev_id=20220629105383 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.132785 : Updated  ev_id=20220711105438 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.158249 : Updated  ev_id=20220712105453 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.249380 : Updated  ev_id=20220716105487 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.324421 : Updated  ev_id=20220717105495 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.391818 : Updated  ev_id=20220727105598 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.518623 : Updated  ev_id=20220805105670 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.583112 : Updated  ev_id=20220812105726 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.657706 : Updated  ev_id=20220819105770 aircraft_key=1.
+Progress update 2024-01-08 13:22:07.774949 : Updated  ev_id=20220906105876 aircraft_key=1.
+Progress update 2024-01-08 13:22:08.391558 : Number rows selected :       43.
+Progress update 2024-01-08 13:22:08.391558 : Number rows inserted :       24.
+Progress update 2024-01-08 13:22:08.391558 : Number rows updated  :       19.
+Progress update 2024-01-08 13:22:08.391558 :
+Progress update 2024-01-08 13:22:08.391558 : Database table       : occurrences                   <-----------------------------------.
+Progress update 2024-01-08 13:22:08.392556 : Number rows selected :        0.
+Progress update 2024-01-08 13:22:08.392556 :
+Progress update 2024-01-08 13:22:08.392556 : Database table       : dt_flight_crew                <-----------------------------------.
+Progress update 2024-01-08 13:22:16.013990 : Number rows selected :      299.
+Progress update 2024-01-08 13:22:16.013990 : Number rows inserted :      299.
+Progress update 2024-01-08 13:22:16.013990 :
+Progress update 2024-01-08 13:22:16.014993 : Database table       : flight_time                   <-----------------------------------.
+Progress update 2024-01-08 13:22:29.476695 : Number rows selected :      508.
+Progress update 2024-01-08 13:22:29.476695 : Number rows inserted :      508.
+Progress update 2024-01-08 13:22:29.476695 :
+Progress update 2024-01-08 13:22:29.476695 : Database table       : seq_of_events                 <-----------------------------------.
+Progress update 2024-01-08 13:22:29.477707 : Number rows selected :        0.
+Progress update 2024-01-08 13:22:29.645576 : INFO.00.065 Cleansing PostgreSQL data.
+Progress update 2024-01-08 13:22:29.645576 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:29.645576 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:22:29.772422 : INFO.00.066 Cleansing table 'aircraft' column 'acft_category'.
+Progress update 2024-01-08 13:22:31.085292 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:31.085292 : INFO.00.066 Cleansing table 'aircraft' column 'dest_country'.
+Progress update 2024-01-08 13:22:31.867395 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:31.867395 : INFO.00.066 Cleansing table 'aircraft' column 'dprt_country'.
+Progress update 2024-01-08 13:22:32.601028 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:32.601028 : INFO.00.066 Cleansing table 'aircraft' column 'far_part'.
+Progress update 2024-01-08 13:22:33.352932 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:33.352932 : INFO.00.066 Cleansing table 'aircraft' column 'oper_country'.
+Progress update 2024-01-08 13:22:34.115251 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:34.116250 : INFO.00.066 Cleansing table 'aircraft' column 'owner_country'.
+Progress update 2024-01-08 13:22:34.857291 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:34.857291 : INFO.00.066 Cleansing table 'aircraft' column 'regis_no'.
+Progress update 2024-01-08 13:22:35.579130 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:35.580130 : INFO.00.066 Cleansing table 'events' column 'ev_city'.
+Progress update 2024-01-08 13:22:37.739831 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:37.739831 : INFO.00.066 Cleansing table 'events' column 'ev_site_zipcode'.
+Progress update 2024-01-08 13:22:39.093866 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:39.093866 : INFO.00.066 Cleansing table 'events' column 'latitude'.
+Progress update 2024-01-08 13:22:40.521724 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:40.522724 : INFO.00.066 Cleansing table 'events' column 'longitude'.
+Progress update 2024-01-08 13:22:41.896827 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:41.896827 : INFO.00.066 Cleansing table 'events_sequence' column 'occurrence_code'.
+Progress update 2024-01-08 13:22:42.092691 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:22:42.092691 :                   84 s - Total time launcher.
+Progress update 2024-01-08 13:22:42.092691 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:22:42.092691 : ===============================================================================.
+Progress update 2024-01-08 13:22:43.768280 : ===============================================================================.
+Progress update 2024-01-08 13:22:43.768280 : INFO.00.004 Start Launcher.
+2024-01-08 13:22:43,773 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:22:43,773 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:22:43.784824 : INFO.00.005 Argument task='c_l_l'.
+Progress update 2024-01-08 13:22:43.784824 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:22:43.784824 : INFO.00.040 Correct decimal US latitudes and longitudes.
+Progress update 2024-01-08 13:22:43.784824 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:43.784824 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:22:46.521866 : INFO.00.063 Processed data source 'events'.
+Progress update 2024-01-08 13:22:46.522863 : Number cols deleted  :    60526.
+Progress update 2024-01-08 13:22:46.522863 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:22:46.522863 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:22:55.402688 : Number of rows so far read :    10000.
+Progress update 2024-01-08 13:23:00.551150 : Number of rows so far read :    20000.
+Progress update 2024-01-08 13:23:05.632867 : Number of rows so far read :    30000.
+Progress update 2024-01-08 13:23:11.021811 : Number of rows so far read :    40000.
+Progress update 2024-01-08 13:23:16.080058 : Number of rows so far read :    50000.
+Progress update 2024-01-08 13:23:21.178741 : Number of rows so far read :    60000.
+Progress update 2024-01-08 13:23:26.326864 : Number of rows so far read :    70000.
+Progress update 2024-01-08 13:23:31.400541 : Number of rows so far read :    80000.
+Progress update 2024-01-08 13:23:36.482574 : Number of rows so far read :    90000.
+Progress update 2024-01-08 13:23:41.606637 : Number of rows so far read :   100000.
+Progress update 2024-01-08 13:23:46.696910 : Number of rows so far read :   110000.
+Progress update 2024-01-08 13:23:51.711246 : Number of rows so far read :   120000.
+Progress update 2024-01-08 13:23:56.701854 : Number of rows so far read :   130000.
+Progress update 2024-01-08 13:24:01.545515 : Number rows selected :   139426.
+Progress update 2024-01-08 13:24:01.545515 : Number rows updated  :   139426.
+Progress update 2024-01-08 13:24:01.546514 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:24:01.546514 :                   77 s - Total time launcher.
+Progress update 2024-01-08 13:24:01.546514 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:24:01.546514 : ===============================================================================.
+Progress update 2024-01-08 13:24:03.176132 : ===============================================================================.
+Progress update 2024-01-08 13:24:03.176132 : INFO.00.004 Start Launcher.
+2024-01-08 13:24:03,181 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:24:03,181 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:24:03.192137 : INFO.00.005 Argument task='f_n_a'.
+Progress update 2024-01-08 13:24:03.192137 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:24:03.192137 : INFO.00.086 Find the nearest airports.
+Progress update 2024-01-08 13:24:03.192137 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:24:03.192137 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:24:04.066605 : INFO.00.063 Processed data source 'events'.
+Progress update 2024-01-08 13:24:04.066605 : Number cols deleted  :    69564.
+Progress update 2024-01-08 13:24:04.066605 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:24:04.067601 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:24:29.242859 : Number of rows so far read :    10000.
+Progress update 2024-01-08 13:24:52.094628 : Number of rows so far read :    20000.
+Progress update 2024-01-08 13:25:15.030561 : Number of rows so far read :    30000.
+Progress update 2024-01-08 13:25:38.515410 : Number of rows so far read :    40000.
+Progress update 2024-01-08 13:25:59.176905 : ERROR.00.942 Event '20220711105442': issue with the Harvesine algorithm: 'Longitude -894627.0 is out of range [-180, 180]'.
+Progress update 2024-01-08 13:26:01.108887 : Number of rows so far read :    50000.
+Progress update 2024-01-08 13:26:23.560376 : Number of rows so far read :    60000.
+Progress update 2024-01-08 13:26:45.491345 : ERROR.00.942 Event '20210419102938': issue with the Harvesine algorithm: 'Latitude 4603.0 is out of range [-90, 90]'.
+Progress update 2024-01-08 13:26:45.491345 : ERROR.00.942 Event '20221027106211': issue with the Harvesine algorithm: 'Latitude 36940.21 is out of range [-90, 90]'.
+Progress update 2024-01-08 13:26:45.491345 : ERROR.00.942 Event '20221108106263': issue with the Harvesine algorithm: 'Latitude 390408.0 is out of range [-90, 90]'.
+Progress update 2024-01-08 13:26:45.492345 : ERROR.00.942 Event '20220803105651': issue with the Harvesine algorithm: 'Latitude 41370104.0 is out of range [-90, 90]'.
+Progress update 2024-01-08 13:26:45.492345 : ERROR.00.942 Event '20221108106264': issue with the Harvesine algorithm: 'Latitude 43511185.0 is out of range [-90, 90]'.
+Progress update 2024-01-08 13:26:45.521827 : Number rows selected :    69580.
+Progress update 2024-01-08 13:26:45.522828 : Number rows updated  :    69574.
+Progress update 2024-01-08 13:26:45.522828 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:26:45.522828 :                  162 s - Total time launcher.
+Progress update 2024-01-08 13:26:45.522828 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:26:45.522828 : ===============================================================================.
+Progress update 2024-01-08 13:26:47.163213 : ===============================================================================.
+Progress update 2024-01-08 13:26:47.163213 : INFO.00.004 Start Launcher.
+2024-01-08 13:26:47,167 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:26:47,168 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:26:47.178231 : INFO.00.005 Argument task='v_n_d'.
+Progress update 2024-01-08 13:26:47.178231 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:26:47.178231 : INFO.00.043 Verify selected NTSB data.
+Progress update 2024-01-08 13:26:47.178231 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:26:47.179232 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:26:47.479008 : INFO.00.063 Processed data source 'events'.
+Progress update 2024-01-08 13:26:47.479008 : Number cols deleted  :    24385.
+Progress update 2024-01-08 13:26:47.479008 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:26:47.479008 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:26:47.533005 : INFO.00.064 Verification of table 'events' column(s) 'latitude & longitude'.
+Progress update 2024-01-08 13:26:47.533005 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:26:49.619929 : Number of rows so far read :    10000.
+Progress update 2024-01-08 13:26:51.144005 : Number of rows so far read :    20000.
+Progress update 2024-01-08 13:26:52.668619 : Number of rows so far read :    30000.
+Progress update 2024-01-08 13:26:54.343278 : Number of rows so far read :    40000.
+Progress update 2024-01-08 13:26:56.276037 : Number of rows so far read :    50000.
+Progress update 2024-01-08 13:26:59.417218 : Number of rows so far read :    60000.
+Progress update 2024-01-08 13:27:02.665835 : Number of rows so far read :    70000.
+Progress update 2024-01-08 13:27:04.385701 : Number rows errors   :    27168.
+Progress update 2024-01-08 13:27:04.385701 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:04.385701 : INFO.00.064 Verification of table 'events' column(s) 'ev_city'.
+Progress update 2024-01-08 13:27:04.754760 : Number rows errors   :     6211.
+Progress update 2024-01-08 13:27:04.754760 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:04.755758 : INFO.00.064 Verification of table 'events' column(s) 'ev_city & ev_site_zipcode'.
+Progress update 2024-01-08 13:27:05.308310 : Number rows errors   :    16756.
+Progress update 2024-01-08 13:27:05.308310 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:05.308310 : INFO.00.064 Verification of table 'events' column(s) 'ev_state'.
+Progress update 2024-01-08 13:27:05.364895 : Number rows errors   :      288.
+Progress update 2024-01-08 13:27:05.364895 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:05.364895 : INFO.00.064 Verification of table 'events' column(s) 'ev_site_zipcode'.
+Progress update 2024-01-08 13:27:05.465800 : Number rows errors   :     5273.
+Progress update 2024-01-08 13:27:05.465800 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:05.468803 : Number rows selected :    75356.
+Progress update 2024-01-08 13:27:05.468803 : Number rows updated  :    55696.
+Progress update 2024-01-08 13:27:05.468803 : Number rows errors   :    55696.
+Progress update 2024-01-08 13:27:05.468803 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:27:05.468803 :                   18 s - Total time launcher.
+Progress update 2024-01-08 13:27:05.468803 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:27:05.468803 : ===============================================================================.
+Progress update 2024-01-08 13:27:07.072831 : ===============================================================================.
+Progress update 2024-01-08 13:27:07.072831 : INFO.00.004 Start Launcher.
+2024-01-08 13:27:07,077 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:59 You are using io-aero's iocommon version 1.2.25 logger Copyright IO-Aero 2023
+2024-01-08 13:27:07,077 [__main__] [launcher.py  ] INFO  main:53 Start launcher.py
+Progress update 2024-01-08 13:27:07.088066 : INFO.00.005 Argument task='r_d_s'.
+Progress update 2024-01-08 13:27:07.088066 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:27:07.088066 : INFO.00.071 Refreshing the database schema.
+Progress update 2024-01-08 13:27:07.089066 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:07.089066 : INFO.00.081 User connect request host=localhost port=5432 dbname=io_aero_db user=io_aero.
+Progress update 2024-01-08 13:27:07.140086 :
+Progress update 2024-01-08 13:27:07.140086 : Database table       : io_md_codes_eventsoe          <-----------------------------------.
+Progress update 2024-01-08 13:27:07.213751 : Number rows deleted  :       96.
+Progress update 2024-01-08 13:27:07.264266 : Number rows selected :     1544.
+Progress update 2024-01-08 13:27:09.814046 : Number rows inserted :       96.
+Progress update 2024-01-08 13:27:09.815045 :
+Progress update 2024-01-08 13:27:09.815045 : Database table       : io_md_codes_phase             <-----------------------------------.
+Progress update 2024-01-08 13:27:09.856056 : Number rows deleted  :       48.
+Progress update 2024-01-08 13:27:09.904074 : Number rows selected :     1544.
+Progress update 2024-01-08 13:27:11.122223 : Number rows inserted :       48.
+Progress update 2024-01-08 13:27:11.136929 :
+Progress update 2024-01-08 13:27:11.136929 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:11.136929 : INFO.00.084 Database table io_md_codes_phase: Load description_main_phase from file 'data/Main_Phases_of_Flight/main_phases_of_flight.xlsx'.
+Progress update 2024-01-08 13:27:11.136929 : --------------------------------------------------------------------------------
+Progress update 2024-01-08 13:27:12.430413 : Number rows selected :       48.
+Progress update 2024-01-08 13:27:12.430413 : Number rows updated  :       48.
+Progress update 2024-01-08 13:27:12.430413 :
+Progress update 2024-01-08 13:27:12.430413 : Database table       : io_md_codes_category          <-----------------------------------.
+Progress update 2024-01-08 13:27:12.504921 : Number rows deleted  :        5.
+Progress update 2024-01-08 13:27:12.971304 : Number rows selected :     7399.
+Progress update 2024-01-08 13:27:13.105395 : Number rows inserted :        5.
+Progress update 2024-01-08 13:27:13.105395 :
+Progress update 2024-01-08 13:27:13.106392 : Database table       : io_md_codes_subcategory       <-----------------------------------.
+Progress update 2024-01-08 13:27:13.394671 : Number rows selected :     7399.
+Progress update 2024-01-08 13:27:13.921241 : Number rows inserted :       21.
+Progress update 2024-01-08 13:27:13.922243 :
+Progress update 2024-01-08 13:27:13.922243 : Database table       : io_md_codes_section           <-----------------------------------.
+Progress update 2024-01-08 13:27:14.170258 : Number rows selected :     7399.
+Progress update 2024-01-08 13:27:18.595626 : Number rows inserted :      129.
+Progress update 2024-01-08 13:27:18.596627 :
+Progress update 2024-01-08 13:27:18.596627 : Database table       : io_md_codes_subsection        <-----------------------------------.
+Progress update 2024-01-08 13:27:18.825684 : Number rows selected :     7399.
+Progress update 2024-01-08 13:27:39.230640 : Number rows inserted :      770.
+Progress update 2024-01-08 13:27:39.232640 :
+Progress update 2024-01-08 13:27:39.232640 : Database table       : io_md_codes_modifier          <-----------------------------------.
+Progress update 2024-01-08 13:27:39.264449 : Number rows deleted  :       73.
+Progress update 2024-01-08 13:27:39.475985 : Number rows selected :     7399.
+Progress update 2024-01-08 13:27:41.355095 : Number rows inserted :       73.
+Progress update 2024-01-08 13:30:27.731696 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
+Progress update 2024-01-08 13:30:27.731696 : -------------------------------------------------------------------------------.
+Progress update 2024-01-08 13:30:27.731696 :                  200 s - Total time launcher.
+Progress update 2024-01-08 13:30:27.731696 : INFO.00.006 End   Launcher.
+Progress update 2024-01-08 13:30:27.731696 : ===============================================================================.
+
+-----------------------------------------------------------------------
+The current time is: 13:30:27.87
+Enter the new time:
+-----------------------------------------------------------------------
+End   "D:\SoftDevelopment\Projects\IO-Aero\io-avstats\run_io_avstats.bat"
+```

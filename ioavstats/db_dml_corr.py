@@ -623,9 +623,11 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_033
-                    if io_dec_lat_lng_actions
-                    else glob_local.INFO_00_033,
+                    (
+                        io_dec_lat_lng_actions + " & " + glob_local.INFO_00_033
+                        if io_dec_lat_lng_actions
+                        else glob_local.INFO_00_033
+                    ),
                     dec_latitude,
                     dec_longitude,
                     "ZIP",
@@ -649,9 +651,11 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_034
-                    if io_dec_lat_lng_actions
-                    else glob_local.INFO_00_034,
+                    (
+                        io_dec_lat_lng_actions + " & " + glob_local.INFO_00_034
+                        if io_dec_lat_lng_actions
+                        else glob_local.INFO_00_034
+                    ),
                     dec_latitude,
                     dec_longitude,
                     "CITY",
@@ -674,9 +678,11 @@ def correct_dec_lat_lng() -> None:
             if dec_latitude or dec_longitude:
                 count_update += _upd_table_events_row_io_lat_lng(
                     ev_id,
-                    io_dec_lat_lng_actions + " & " + glob_local.INFO_00_035
-                    if io_dec_lat_lng_actions
-                    else glob_local.INFO_00_035,
+                    (
+                        io_dec_lat_lng_actions + " & " + glob_local.INFO_00_035
+                        if io_dec_lat_lng_actions
+                        else glob_local.INFO_00_035
+                    ),
                     dec_latitude,
                     dec_longitude,
                     "STAT",
@@ -697,9 +703,11 @@ def correct_dec_lat_lng() -> None:
 
         count_update += _upd_table_events_row_io_lat_lng(
             ev_id,
-            io_dec_lat_lng_actions + " & " + glob_local.INFO_00_036
-            if io_dec_lat_lng_actions
-            else glob_local.INFO_00_036,
+            (
+                io_dec_lat_lng_actions + " & " + glob_local.INFO_00_036
+                if io_dec_lat_lng_actions
+                else glob_local.INFO_00_036
+            ),
             dec_latitude,
             dec_longitude,
             "COUN",

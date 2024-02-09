@@ -31,16 +31,17 @@ todays_date = date.today()
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "README.md", "img/README.md",]
+exclude_patterns = ["__archive__", "_build", "Thumbs.db", ".DS_Store", "README.md", "img/README.md",]
 
 # Check if building with RinohType for PDF
 if 'rinoh' in sys.argv:
     # Add the files you want to exclude specifically from PDF
     exclude_patterns.extend([
-        'data_master.rst',
-        'data_master/*.md',
-        'data_transaction.rst',
-        'data_transaction/*.md'
+        '2023_*.md',
+        '2024_*.md',
+        'data_master_logs.rst',
+        'data_transaction_logs.rst',
+        'pre2008_*.md'
     ])
 
 extensions = [
@@ -89,7 +90,6 @@ rinoh_documents = [
 
 source_suffix = {
     ".rst": "restructuredtext",
-    ".txt": "markdown",
     ".md": "markdown",
 }
 

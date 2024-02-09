@@ -3,7 +3,6 @@
 # be found in the LICENSE.md file.
 """Application Utilities."""
 import argparse
-import datetime
 import logging
 from datetime import datetime
 
@@ -226,7 +225,7 @@ IO-AVSTATS Application: **{app_id}**
 
 Latest NTSB database: **{file_name} - {processed}**
 
-**:copyright: 2022-{datetime.date.today().year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
+**:copyright: 2022-{datetime.now().year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
 
 [Disclaimer](https://www.io-aero.com/disclaimer)
     """

@@ -1,0 +1,7 @@
+[default]
+postgres_password = "u&jT!Mox4S8@Qu7gZuxk"
+postgres_password_admin = "V3s8m4x*MYbHrX*UuU6X"
+
+[test]
+postgres_password = "postgres_password"
+postgres_password_admin = "postgres_password_admin"

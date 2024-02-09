@@ -1,4 +1,4 @@
-# Log from loading Pre2008 - step 11: a_o_c (2023-08-21)
+# 4. Load aviation occurrence categories
 
 ```
 =======================================================================

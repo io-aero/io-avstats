@@ -1,4 +1,4 @@
-# l_z_d - Load ZIP Code Database data into PostgreSQL
+# 9. Load ZIP Code Database data into PostgreSQL
 
 ## 2023-08-22
 

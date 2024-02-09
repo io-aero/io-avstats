@@ -1398,32 +1398,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,
@@ -1505,32 +1521,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,
@@ -1631,32 +1663,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,
@@ -1719,32 +1767,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,
@@ -1838,32 +1902,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,
@@ -1928,32 +2008,48 @@ def _load_table_events(
                         row_mdb.ev_dow,
                         row_mdb.ev_time,
                         row_mdb.ev_tmzn,
-                        None
-                        if row_mdb.ev_city is None
-                        else row_mdb.ev_city.rstrip()
-                        if len(row_mdb.ev_city.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_city is None
+                            else (
+                                row_mdb.ev_city.rstrip()
+                                if len(row_mdb.ev_city.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_state,
                         row_mdb.ev_country,
-                        None
-                        if row_mdb.ev_site_zipcode is None
-                        else row_mdb.ev_site_zipcode.rstrip()
-                        if len(row_mdb.ev_site_zipcode.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.ev_site_zipcode is None
+                            else (
+                                row_mdb.ev_site_zipcode.rstrip()
+                                if len(row_mdb.ev_site_zipcode.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.ev_year,
                         row_mdb.ev_month,
                         row_mdb.mid_air,
                         row_mdb.on_ground_collision,
-                        None
-                        if row_mdb.latitude is None
-                        else row_mdb.latitude.rstrip()
-                        if len(row_mdb.latitude.rstrip()) > 0
-                        else None,
-                        None
-                        if row_mdb.longitude is None
-                        else row_mdb.longitude.rstrip()
-                        if len(row_mdb.longitude.rstrip()) > 0
-                        else None,
+                        (
+                            None
+                            if row_mdb.latitude is None
+                            else (
+                                row_mdb.latitude.rstrip()
+                                if len(row_mdb.latitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
+                        (
+                            None
+                            if row_mdb.longitude is None
+                            else (
+                                row_mdb.longitude.rstrip()
+                                if len(row_mdb.longitude.rstrip()) > 0
+                                else None
+                            )
+                        ),
                         row_mdb.latlong_acq,
                         row_mdb.apt_name,
                         row_mdb.ev_nr_apt_id,

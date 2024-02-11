@@ -78,7 +78,7 @@ Further IO-Aero software documentation can be found under the following links.
 | ioavstats         | Python script files.                          |
 | libs              | Third party libraries.                        |
 | resources         | Selected manuals and software.                |
-| scripts           | Supporting Ubuntu and Windows Scripts. |
+| scripts           | Supporting Ubuntu and Windows Scripts.        |
 | tests             | Scripts and data for **pytest**.              |
 | upload            | Cloud related upload directory.               |
 

@@ -58,7 +58,6 @@ Further IO-Aero software documentation can be found under the following links.
 - [IO-RISKMAP - Riskmap and Landing site processing](https://io-aero.github.io/io-riskmap/) 
 - [IO-VECTOR - Vector Map Processing](https://io-aero.github.io/io-vector/) 
 - [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
-- [IO-XPA-SERVER - IO-XPA Server Processing](https://io-aero.github.io/io-xpa-server/)
 <!-- - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/) -->
 <!-- - [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/) -->
 <!-- - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) -->

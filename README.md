@@ -51,11 +51,11 @@ See that documentation for installation instructions
 Further IO-Aero software documentation can be found under the following links.
 
 - [IO-COMMON - Common Elemments Libraries](https://io-aero.github.io/io-common/) 
+- [IO-LANDINGSPOT - Landing spot identification](https://io-aero.github.io/io-landingspot/) 
 - [IO-LIDAR - Lidar Map Processing](https://io-aero.github.io/io-lidar/) 
 - [IO-LIDAR-DATA - Lidar Data Management](https://io-aero.github.io/io-lidar-data/)
 - [IO-MAP-APPS - IO Map Applications](https://io-aero.github.io/io-map-apps/) 
 - [IO-RASTER - Raster Map Processing](https://io-aero.github.io/io-raster/) 
-- [IO-RISKMAP - Riskmap and Landing site processing](https://io-aero.github.io/io-riskmap/) 
 - [IO-VECTOR - Vector Map Processing](https://io-aero.github.io/io-vector/) 
 - [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
 <!-- - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/) -->

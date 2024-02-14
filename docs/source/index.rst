@@ -1,9 +1,11 @@
 Welcome to IO-AVSTATS
 =====================
 
+General Documentation
+---------------------
+
 .. toctree::
    :maxdepth: 1
-   :caption: General Documentation
 
    introduction
    requirements
@@ -15,36 +17,30 @@ Welcome to IO-AVSTATS
    data_sources
    db_administration
 
-.. toctree::
-   :maxdepth: 1
-   :caption: API Documentation
-
-   modules
+Master Data Logs
+----------------
 
 .. toctree::
    :maxdepth: 1
-   :caption: Master Data Logs
 
    data_master_logs
 
+Transaction Data Logs
+---------------------
+
 .. toctree::
    :maxdepth: 1
-   :caption: Transaction Data Logs
 
    data_transaction_logs
 
+About
+-----
+
 .. toctree::
    :maxdepth: 1
-   :caption: About
 
    release_notes
    LICENSE
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
 
 Repository
 ..........

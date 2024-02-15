@@ -27,7 +27,7 @@ set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=postgres_password_admin
 set IO_AERO_POSTGRES_PGDATA=data\postgres_test
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
-set IO_AERO_POSTGRES_VERSION=16.1
+set IO_AERO_POSTGRES_VERSION=16.2
 
 set IO_AERO_COMPOSE_TASK=
 set IO_AERO_COMPOSE_TASK_DEFAULT=logs
@@ -460,7 +460,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
 
         goto END_OF_SCRIPT
     )
-    
+
 	rem ----------------------------------------------------------------------------
 	rem Show the IO-AVSTATS version.
 	rem ----------------------------------------------------------------------------
@@ -470,7 +470,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
 	        echo Processing of the script run_io_avstats_db_pytest was aborted
 	        exit 1
 	    )
-	
+
 	    goto END_OF_SCRIPT
 	)
 )

@@ -25,7 +25,7 @@ export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN=postgres_password_admin
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
-export IO_AERO_POSTGRES_VERSION=16.1
+export IO_AERO_POSTGRES_VERSION=16.2
 
 export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=

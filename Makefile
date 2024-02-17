@@ -9,6 +9,7 @@ ifeq ($(OS),Windows_NT)
 	export DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
 	export DELETE_SPHINX_1=del /f /q docs\\build\\*
 	export OPTION_NUITKA=
+	export PIP=pip
 	export PYTHON=py
 	export SHELL=cmd
 	export SPHINX_BUILDDIR=docs\\build
@@ -22,6 +23,7 @@ else
 	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
 	export DELETE_SPHINX_1=rm -rf docs/build/* docs/source/sua.rst docs/source/sua.vector3d.rst
 	export OPTION_NUITKA=--disable-ccache
+	export PIP=pip3
 	export PYTHON=python3
 	export SHELL=/bin/bash
 	export SPHINX_BUILDDIR=docs/build
@@ -34,6 +36,7 @@ export CONDA_ARG=
 
 export COVERALLS_REPO_TOKEN=<see coveralls.io>
 export ENV_FOR_DYNACONF=test
+export LANG=en_US.UTF-8
 export MODULE=ioavstats
 export PYTHONPATH=${MODULE} scripts
 export VERSION_PYTHON=3.10
@@ -218,7 +221,7 @@ nuitka:             ## Create a dynamic link library.
 	pipenv run ${PYTHON} -m nuitka ${OPTION_NUITKA} --include-package=${MODULE} --module ${MODULE} --no-pyi-file --output-dir=dist --remove-output
 	@echo Info **********  End:   nuitka ***************************************
 
-# pip is the package installer for Python.
+# $(PIP) is the package installer for Python.
 # https://pypi.org/project/pip/
 # Configuration file: none
 # Pipenv: Python Development Workflow for Humans.
@@ -227,11 +230,12 @@ nuitka:             ## Create a dynamic link library.
 pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  Start: Installation of Development Packages *********
 	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
+	@echo PIP                =${PIP}
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
-	pip install --upgrade pip
-	pip install --upgrade pipenv
-	pip install --upgrade virtualenv
+	$(PIP) install --upgrade pip
+	$(PIP) install --upgrade pipenv
+	$(PIP) install --upgrade virtualenv
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
 	@echo ----------------------------------------------------------------------
@@ -241,18 +245,19 @@ pipenv-dev:         ## Install the package dependencies for development.
 	pipenv run pip freeze
 	@echo ----------------------------------------------------------------------
 	${PYTHON} --version
-	pip --version
+	$(PIP) --version
 	pipenv --version
 	${PYTHON} -m virtualenv --version
 	@echo Info **********  End:   Installation of Development Packages *********
 pipenv-prod:        ## Install the package dependencies for production.
 	@echo Info **********  Start: Installation of Production Packages **********
 	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
+	@echo PIP                =${PIP}
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
-	pip install --upgrade pip
-	pip install --upgrade pipenv
-	pip install --upgrade virtualenv
+	$(PIP) install --upgrade pip
+	$(PIP) install --upgrade pipenv
+	$(PIP) install --upgrade virtualenv
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
 	@echo ----------------------------------------------------------------------
@@ -262,7 +267,7 @@ pipenv-prod:        ## Install the package dependencies for production.
 	pipenv run pip freeze
 	@echo ----------------------------------------------------------------------
 	${PYTHON} --version
-	pip --version
+	$(PIP) --version
 	pipenv --version
 	${PYTHON} -m virtualenv --version
 	@echo Info **********  End:   Installation of Production Packages **********
@@ -296,56 +301,72 @@ pylint:             ## Lint the code with Pylint.
 # Configuration file: pyproject.toml
 pytest:             ## Run all tests with pytest.
 	@echo Info **********  Start: pytest ***************************************
+	@echo PIP       =${PIP}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered --cov-report=lcov -v tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo Info **********  Start: pytest ***************************************
+	@echo PIP       =${PIP}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pipenv install pytest pytest-cov pytest-deadfixtures pytest-helpers-namespace pytest-random-order
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo Info **********  Start: pytest ***************************************
+	@echo PIP       =${PIP}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
 	@echo Info **********  Start: pytest ***************************************
+	@echo PIP       =${PIP}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	$(PIP) install .
 	pipenv run pytest --cache-clear --capture=no --cov=${MODULE} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-module:      ## Run test of a specific module with pytest.
 	@echo Info **********  Start: pytest ***************************************
+	@echo PIP       =${PIP}
 	@echo TESTMODULE=tests/$(module)
 	@echo ----------------------------------------------------------------------
+	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
+	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/$(module)
 	@echo Info **********  End:   pytest ***************************************
 
 sphinx:            ##  Create the user documentation with Sphinx.
 	@echo Info **********  Start: sphinx ***************************************
 	@echo DELETE_SPHINX_1 =${DELETE_SPHINX_1}
+	@echo PIP             =${PIP}
 	@echo SPHINX_BUILDDIR =${SPHINX_BUILDDIR}
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX_1}
 	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	pip install .
+	$(PIP) install .
 	pipenv run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 	pipenv run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************
@@ -415,9 +436,10 @@ upload-testpypi:    ## Upload the distribution archive to Test PyPi.
 
 version:            ## Show the installed software versions.
 	@echo Info **********  Start: version **************************************
+	@echo PIP   =${PIP}
 	@echo PYTHON=${PYTHON}
 	@echo ----------------------------------------------------------------------
-	pip --version
+	$(PIP) --version
 	pipenv --version
 	@echo Info **********  End:   version **************************************
 

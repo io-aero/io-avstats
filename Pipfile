@@ -19,6 +19,7 @@ streamlit = "*"
 streamlit-pandas-profiling = "*"
 tomli = "*"
 tomli-w = "*"
+virtualenv = "*"
 ydata-profiling = "*"
 
 [dev-packages]

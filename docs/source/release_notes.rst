@@ -72,10 +72,6 @@ Applied Software
      - 4.27.1
      -
      - upgrade
-   * - PostgreSQL
-     - 16.2
-     -
-     - upgrade
    * - Python
      - 3.10.11
      -

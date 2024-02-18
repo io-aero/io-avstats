@@ -371,9 +371,6 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	pipenv run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************
 
-sphinx-api:
-	pipenv run sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${PYTHONPATH}
-
 # twine: Collection of utilities for publishing packages on io-aero-pypi.
 # https://pypi.org/project/twine/
 upload-io-aero:     ## Upload the distribution archive to io-aero-pypi.

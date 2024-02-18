@@ -1,28 +1,18 @@
 .DEFAULT_GOAL := help
 
 ifeq ($(OS),Windows_NT)
-	export CREATE_DIST=if not exist dist mkdir dist
-	export CREATE_LIB=ren dist lib
 	export DELETE_BUILD=if exist build rd /s /q build
-	export DELETE_DIST=if exist dist rd /s /q dist
-	export DELETE_LIB=if exist lib rd /s /q lib
 	export DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
-	export DELETE_SPHINX_1=del /f /q docs\\build\\*
-	export OPTION_NUITKA=
+	export DELETE_SPHINX=del /f /q docs\\build\\*
 	export PIP=pip
 	export PYTHON=py
 	export SHELL=cmd
 	export SPHINX_BUILDDIR=docs\\build
 	export SPHINX_SOURCEDIR=docs\\source
 else
-	export CREATE_DIST=mkdir -p dist
-	export CREATE_LIB=mv dist lib
 	export DELETE_BUILD=rm -rf build
-	export DELETE_DIST=rm -rf dist
-	export DELETE_LIB=rm -rf lib
 	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
-	export DELETE_SPHINX_1=rm -rf docs/build/* docs/source/sua.rst docs/source/sua.vector3d.rst
-	export OPTION_NUITKA=--disable-ccache
+	export DELETE_SPHINX=rm -rf docs/build/* docs/source/sua.rst docs/source/sua.vector3d.rst
 	export PIP=pip3
 	export PYTHON=python3
 	export SHELL=/bin/bash
@@ -204,23 +194,6 @@ mypy:               ## Find typing issues with Mypy.
 	pipenv run mypy ${PYTHONPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
-# Nuitka: Python compiler written in Python
-# https://github.com/Nuitka/Nuitka
-nuitka:             ## Create a dynamic link library.
-	@echo Info **********  Start: nuitka ***************************************
-	@echo CREATE_DIST  =${CREATE_DIST}
-	@echo DELETE_DIST  =${DELETE_DIST}
-	@echo MODULE       =${MODULE}
-	@echo OPTION_NUITKA=${OPTION_NUITKA}
-	@echo PYTHON       =${PYTHON}
-	@echo ----------------------------------------------------------------------
-	pipenv run ${PYTHON} -m nuitka --version
-	@echo ----------------------------------------------------------------------
-	${DELETE_DIST}
-	${CREATE_DIST}
-	pipenv run ${PYTHON} -m nuitka ${OPTION_NUITKA} --include-package=${MODULE} --module ${MODULE} --no-pyi-file --output-dir=dist --remove-output
-	@echo Info **********  End:   nuitka ***************************************
-
 # $(PIP) is the package installer for Python.
 # https://pypi.org/project/pip/
 # Configuration file: none
@@ -359,77 +332,17 @@ pytest-module:      ## Run test of a specific module with pytest.
 
 sphinx:            ##  Create the user documentation with Sphinx.
 	@echo Info **********  Start: sphinx ***************************************
-	@echo DELETE_SPHINX_1 =${DELETE_SPHINX_1}
+	@echo DELETE_SPHINX   =${DELETE_SPHINX}
 	@echo PIP             =${PIP}
 	@echo SPHINX_BUILDDIR =${SPHINX_BUILDDIR}
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
-	${DELETE_SPHINX_1}
+	${DELETE_SPHINX}
 	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
 	$(PIP) install .
 	pipenv run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 	pipenv run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************
-
-# twine: Collection of utilities for publishing packages on io-aero-pypi.
-# https://pypi.org/project/twine/
-upload-io-aero:     ## Upload the distribution archive to io-aero-pypi.
-	@echo Info **********  Start: twine io-aero-pypi ***************************
-	@echo CREATE_DIST=${CREATE_DIST}
-	@echo DELETE_DIST=${DELETE_DIST}
-	@echo PYTHON     =${PYTHON}
-	@echo ----------------------------------------------------------------------
-	${PYTHON} -m build --version
-	${PYTHON} -m twine --version
-	@echo ----------------------------------------------------------------------
-	${DELETE_DIST}
-	${CREATE_DIST}
-	pipenv run ${PYTHON} scripts\next_version.py
-	${PYTHON} -m build
-	aws codeartifact login --tool twine --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	${PYTHON} -m twine upload --repository codeartifact --verbose dist/*
-	${DELETE_LIB}
-	${CREATE_LIB}
-	@echo Info **********  End:   twine io-aero-pypi ***************************
-
-# twine: Collection of utilities for publishing packages on PyPI.
-# https://pypi.org/project/twine/
-upload-pypi:        ## Upload the distribution archive to PyPi.
-	@echo Info **********  Start: twine pypi ***********************************
-	@echo CREATE_DIST=${CREATE_DIST}
-	@echo DELETE_DIST=${DELETE_DIST}
-	@echo PYTHON     =${PYTHON}
-	@echo ----------------------------------------------------------------------
-	${PYTHON} -m build --version
-	${PYTHON} -m twine --version
-	@echo ----------------------------------------------------------------------
-	${DELETE_DIST}
-	${CREATE_DIST}
-	pipenv run ${PYTHON} scripts\next_version.py
-	${PYTHON} -m build
-	${PYTHON} -m twine upload -p $(SECRET_PYPI) -u io-aero dist/*
-	${DELETE_LIB}
-	${CREATE_LIB}
-	@echo Info **********  End:   twine pypi ***********************************
-
-# twine: Collection of utilities for publishing packages on Test PyPI.
-# https://pypi.org/project/twine/
-# https://test.pypi.org
-upload-testpypi:    ## Upload the distribution archive to Test PyPi.
-	@echo Info **********  Start: twine testpypi *******************************
-	@echo CREATE_DIST=${CREATE_DIST}
-	@echo DELETE_DIST=${DELETE_DIST}
-	@echo PYTHON     =${PYTHON}
-	@echo ----------------------------------------------------------------------
-	${PYTHON} -m build --version
-	${PYTHON} -m twine --version
-	@echo ----------------------------------------------------------------------
-	${DELETE_DIST}
-	${CREATE_DIST}
-	pipenv run ${PYTHON} scripts\next_version.py
-	${PYTHON} -m  build
-	${PYTHON} -m  twine upload -p $(SECRET_TEST_PYPI) -r testpypi -u io-aero-test --verbose dist/*
-	@echo Info **********  End:   twine testpypi *******************************
 
 version:            ## Show the installed software versions.
 	@echo Info **********  Start: version **************************************

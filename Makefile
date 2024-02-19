@@ -1,36 +1,44 @@
 .DEFAULT_GOAL := help
 
+MODULE=ioavstats
+
 ifeq ($(OS),Windows_NT)
-	export DELETE_BUILD=if exist build rd /s /q build
-	export DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
-	export DELETE_SPHINX=del /f /q docs\\build\\*
-	export PIP=pip
-	export PYTHON=py
-	export SHELL=cmd
-	export SPHINX_BUILDDIR=docs\\build
-	export SPHINX_SOURCEDIR=docs\\source
+	COPY_MYPY_STUBGEN=xcopy /y out\\$(MODULE)\\*.* .\\$(MODULE)\\
+	DELETE_BUILD=if exist build rd /s /q build
+	DELETE_MYPY_STUBGEN=if exist out rd /s /q out
+	DELETE_PIPFILE_LOCK=del /f /q Pipfile.lock
+	PIP=pip
+	PYTHON=py
+	SHELL=cmd
+	SPHINX_BUILDDIR=docs\\build
+	SPHINX_SOURCEDIR=docs\\source
+	DELETE_SPHINX=del /f /q $(SPHINX_BUILDDIR)\\*
 else
-	export DELETE_BUILD=rm -rf build
-	export DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
-	export DELETE_SPHINX=rm -rf docs/build/* docs/source/sua.rst docs/source/sua.vector3d.rst
-	export PIP=pip3
-	export PYTHON=python3
-	export SHELL=/bin/bash
-	export SPHINX_BUILDDIR=docs/build
-	export SPHINX_SOURCEDIR=docs/source
+	COPY_MYPY_STUBGEN=cp -f out/$(MODULE)/* ./$(MODULE)/
+	DELETE_BUILD=rm -rf build
+	DELETE_MYPY_STUBGEN=rm -rf out
+	DELETE_PIPFILE_LOCK=rm -rf Pipfile.lock
+	PIP=pip3
+	PYTHON=python3
+	SHELL=/bin/bash
+	SPHINX_BUILDDIR=docs/build
+	SPHINX_SOURCEDIR=docs/source
+	DELETE_SPHINX=rm -rf $(SPHINX_BUILDDIR)/*
 endif
 
-export CONDA_PACKAGES=gdal pdal python-pdal rasterio
-export CONDA_ARG=--site-packages
-export CONDA_ARG=
+# ToDo: If Conda needed.
+CONDA_PACKAGES=gdal pdal python-pdal rasterio
+CONDA_ARG=--site-packages
+CONDA_ARG=
+COVERALLS_REPO_TOKEN=<see coveralls.io>
+PYTHONPATH=${MODULE} scripts
+#VERSION_PIPENV=v2023.7.23
+VERSION_PYTHON=3.10
 
-export COVERALLS_REPO_TOKEN=<see coveralls.io>
 export ENV_FOR_DYNACONF=test
 export LANG=en_US.UTF-8
-export MODULE=ioavstats
-export PYTHONPATH=${MODULE} scripts
-export VERSION_PYTHON=3.10
 
+##                                                                            .
 ## =============================================================================
 ## IO-AVSTATS - Aviation Event Statistics - make Documentation.
 ##              ----------------------------------------------------------------
@@ -46,10 +54,10 @@ export VERSION_PYTHON=3.10
 action: action-std
 ## conda-dev:          Install the package dependencies for development incl.
 ##                     Conda & pipenv.
-conda-dev: conda pipenv-dev
+conda-dev: conda pipenv-dev-int
 ## conda-prod:         Install the package dependencies for production incl.
 ##                     Conda & pipenv.
-conda-prod: conda pipenv-prod
+conda-prod: conda pipenv-prod-int
 ## dev:                Format, lint and test the code.
 dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
@@ -112,9 +120,9 @@ compileall:         ## Byte-compile the Python libraries.
 	@echo Info **********  Start: Compile All Python Scripts *******************
 	@echo PYTHON=${PYTHON}
 	@echo ----------------------------------------------------------------------
-	pipenv run ${PYTHON} --version
+	pipenv run python --version
 	@echo ----------------------------------------------------------------------
-	pipenv run ${PYTHON} -m compileall
+	pipenv run python -m compileall
 	@echo Info **********  End:   Compile All Python Scripts *******************
 
 # Miniconda - Minimal installer for conda.
@@ -194,12 +202,26 @@ mypy:               ## Find typing issues with Mypy.
 	pipenv run mypy ${PYTHONPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
+mypy-stubgen:       ## Autogenerate stub files
+	@echo Info **********  Start: Mypy *****************************************
+	@echo COPY_MYPY_STUBGEN  =${COPY_MYPY_STUBGEN}
+	@echo DELETE_MYPY_STUBGEN=${DELETE_MYPY_STUBGEN}
+	@echo MODULE             =${MODULE}
+	@echo ----------------------------------------------------------------------
+	${DELETE_MYPY_STUBGEN}
+	pipenv run stubgen --package ${MODULE}
+	${COPY_MYPY_STUBGEN}
+	${DELETE_MYPY_STUBGEN}
+	@echo Info **********  End:   Mypy *****************************************
+
 # $(PIP) is the package installer for Python.
 # https://pypi.org/project/pip/
 # Configuration file: none
 # Pipenv: Python Development Workflow for Humans.
 # https://github.com/pypa/pipenv
 # Configuration file: Pipfile
+# ToDo: If Conda needed.
+# pipenv-dev-int:     ## Install the package dependencies for development.
 pipenv-dev:         ## Install the package dependencies for development.
 	@echo Info **********  Start: Installation of Development Packages *********
 	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
@@ -207,6 +229,7 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	$(PIP) install --upgrade pip
+#	$(PIP) install --upgrade pipenv==${VERSION_PIPENV}
 	$(PIP) install --upgrade pipenv
 	$(PIP) install --upgrade virtualenv
 	${DELETE_BUILD}
@@ -217,11 +240,13 @@ pipenv-dev:         ## Install the package dependencies for development.
 	@echo ----------------------------------------------------------------------
 	pipenv run pip freeze
 	@echo ----------------------------------------------------------------------
-	pipenv run ${PYTHON} --version
+	pipenv run python --version
 	$(PIP) --version
 	pipenv --version
-	pipenv run ${PYTHON} -m virtualenv --version
+	pipenv run python -m virtualenv --version
 	@echo Info **********  End:   Installation of Development Packages *********
+# ToDo: If Conda needed.
+# pipenv-prod-int:    ## Install the package dependencies for production.
 pipenv-prod:        ## Install the package dependencies for production.
 	@echo Info **********  Start: Installation of Production Packages **********
 	@echo DELETE_PIPFILE_LOCK=${DELETE_PIPFILE_LOCK}
@@ -229,6 +254,7 @@ pipenv-prod:        ## Install the package dependencies for production.
 	@echo PYTHON             =${PYTHON}
 	@echo ----------------------------------------------------------------------
 	$(PIP) install --upgrade pip
+#	$(PIP) install --upgrade pipenv==${VERSION_PIPENV}
 	$(PIP) install --upgrade pipenv
 	$(PIP) install --upgrade virtualenv
 	${DELETE_BUILD}
@@ -239,10 +265,10 @@ pipenv-prod:        ## Install the package dependencies for production.
 	@echo ----------------------------------------------------------------------
 	pipenv run pip freeze
 	@echo ----------------------------------------------------------------------
-	pipenv run ${PYTHON} --version
+	pipenv run python --version
 	$(PIP) --version
 	pipenv --version
-	pipenv run ${PYTHON} -m virtualenv --version
+	pipenv run python -m virtualenv --version
 	@echo Info **********  End:   Installation of Production Packages **********
 
 # pydocstyle - docstring style checker.

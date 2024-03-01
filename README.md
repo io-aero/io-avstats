@@ -69,6 +69,7 @@ Further IO-Aero software documentation can be found under the following links.
 | Directory         | Content                                       |
 |-------------------|-----------------------------------------------|
 | .github/workflows | **GitHub Action** workflow.                   |
+| .pylintrc         | Pylint configuration file.                    |
 | .streamlit        | Streamlit configuration files.                |
 | config            | Configuration files.                          |
 | data              | Application data related files.               |

@@ -69,7 +69,7 @@ final: format lint docs tests
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
 ## lint:               Lint the code with Bandit, Flake8, Pylint and Mypy.
-lint: bandit flake8 pylint mypy
+lint: bandit flake8 vulture pylint mypy
 ## tests:              Run all tests with pytest.
 tests: pytest
 ## -----------------------------------------------------------------------------
@@ -378,5 +378,18 @@ version:            ## Show the installed software versions.
 	$(PIP) --version
 	pipenv --version
 	@echo Info **********  End:   version **************************************
+
+# Find dead Python code
+# https://github.com/jendrikseipp/vulture
+# Configuration file: pyproject.toml
+vulture:            ##  Find dead Python code.
+	@echo Info **********  Start: vulture **************************************
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	pipenv --version
+	pipenv run vulture --version
+	@echo ----------------------------------------------------------------------
+	pipenv run vulture ${PYTHONPATH} tests
+	@echo Info **********  End:   vulture **************************************
 
 ## =============================================================================

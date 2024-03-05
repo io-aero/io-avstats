@@ -11,7 +11,7 @@ import streamlit as st
 import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
-from psycopg2.extensions import connection
+from psycopg import Connection
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -49,7 +49,7 @@ HOST_CLOUD: bool | None = None
 
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
-PG_CONN: connection | None = None
+PG_CONN: Connection | None = None
 
 # ------------------------------------------------------------------
 # Query data for the US since 1982.

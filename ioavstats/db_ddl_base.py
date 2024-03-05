@@ -11,11 +11,11 @@ from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
 from openpyxl.reader.excel import load_workbook
-from psycopg2 import DatabaseError
-from psycopg2.errors import DuplicateDatabase  # pylint: disable=no-name-in-module
-from psycopg2.errors import DuplicateObject  # pylint: disable=no-name-in-module
-from psycopg2.extensions import connection
-from psycopg2.extensions import cursor
+from psycopg import DatabaseError
+from psycopg import connection
+from psycopg import cursor
+from psycopg.errors import DuplicateDatabase  # pylint: disable=no-name-in-module
+from psycopg.errors import DuplicateObject  # pylint: disable=no-name-in-module
 
 from ioavstats import glob_local
 
@@ -308,7 +308,8 @@ def _create_db_io_md_codes_category(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (category_no, finding_description) = row_tbd
+        category_no = row_tbd["category_no"]
+        finding_description = row_tbd["finding_description"]
 
         if category_no not in unstructured_desc:
             unstructured_desc[category_no] = []
@@ -404,7 +405,8 @@ def _create_db_io_md_codes_eventsoe(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (eventsoe_no, occurrence_description) = row_tbd
+        eventsoe_no = row_tbd["eventsoe_no"]
+        occurrence_description = row_tbd["occurrence_description"]
 
         if eventsoe_no not in unstructured_desc:
             unstructured_desc[eventsoe_no] = []
@@ -498,7 +500,8 @@ def _create_db_io_md_codes_modifier(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (modifier_no, finding_description) = row_tbd
+        modifier_no = row_tbd["modifier_no"]
+        finding_description = row_tbd["finding_description"]
 
         if modifier_no not in unstructured_desc:
             unstructured_desc[modifier_no] = []
@@ -594,7 +597,8 @@ def _create_db_io_md_codes_phase(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (phase_no, occurrence_description) = row_tbd
+        phase_no = row_tbd["phase_no"]
+        occurrence_description = row_tbd["occurrence_description"]
 
         if phase_no not in unstructured_desc:
             unstructured_desc[phase_no] = []
@@ -698,7 +702,10 @@ def _create_db_io_md_codes_section(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (category_no, subcategory_no, section_no, finding_description) = row_tbd
+        category_no = row_tbd["category_no"]
+        subcategory_no = row_tbd["subcategory_no"]
+        section_no = row_tbd["section_no"]
+        finding_description = row_tbd["finding_description"]
 
         if (category_no, subcategory_no, section_no) not in unstructured_desc:
             unstructured_desc[(category_no, subcategory_no, section_no)] = []
@@ -805,7 +812,9 @@ def _create_db_io_md_codes_subcategory(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (category_no, subcategory_no, finding_description) = row_tbd
+        category_no = row_tbd["category_no"]
+        subcategory_no = row_tbd["subcategory_no"]
+        finding_description = row_tbd["finding_description"]
 
         if (category_no, subcategory_no) not in unstructured_desc:
             unstructured_desc[(category_no, subcategory_no)] = []
@@ -911,13 +920,11 @@ def _create_db_io_md_codes_subsection(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (
-            category_no,
-            subcategory_no,
-            section_no,
-            subsection_no,
-            finding_description,
-        ) = row_tbd
+        category_no = row_tbd["category_no"]
+        subcategory_no = row_tbd["subcategory_no"]
+        section_no = row_tbd["section_no"]
+        subsection_no = row_tbd["subsection_no"]
+        finding_description = row_tbd["finding_description"]
 
         if (
             category_no,
@@ -990,10 +997,21 @@ def _create_db_io_md_codes_subsection(
 def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
     try:
         cur_pg.execute(
-            f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE"
+            f"""
+        SELECT count(*)
+          FROM pg_roles
+         WHERE rolname = '{io_config.settings.postgres_user_guest}'
+            """,
         )
 
-        conn_pg.commit()
+        row_pg = cur_pg.fetchone()
+
+        if row_pg and row_pg["count"] > 0:  # type: ignore
+            cur_pg.execute(
+                f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE"
+            )
+
+            conn_pg.commit()
 
         cur_pg.execute(f"DROP ROLE IF EXISTS {io_config.settings.postgres_user_guest}")
 

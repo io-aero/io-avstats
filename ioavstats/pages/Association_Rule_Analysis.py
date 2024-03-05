@@ -17,7 +17,7 @@ from mlxtend.frequent_patterns import association_rules
 from mlxtend.frequent_patterns import fpgrowth  # type: ignore
 from mlxtend.frequent_patterns import fpmax  # type: ignore
 from pandas import DataFrame
-from psycopg2.extensions import connection
+from psycopg import Connection
 from pyECLAT import ECLAT  # type: ignore
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
@@ -209,7 +209,7 @@ OPTIONS_EV_TYPE = {
     "n/a": LEGEND_N_A_DESC,
 }
 
-PG_CONN: connection | None = None
+PG_CONN: Connection | None = None
 
 # ------------------------------------------------------------------
 # Configuration parameters.

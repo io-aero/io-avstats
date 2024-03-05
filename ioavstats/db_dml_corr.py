@@ -15,8 +15,8 @@ from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
 from openpyxl import load_workbook
-from psycopg2.extensions import connection
-from psycopg2.extensions import cursor
+from psycopg import connection
+from psycopg import cursor
 
 from ioavstats import glob_local
 from ioavstats.utils import prepare_latitude
@@ -320,9 +320,9 @@ def _sql_query_io_airports(conn_pg: connection) -> list[tuple[str, float, float]
         for row in cur:
             data.append(
                 (
-                    row[0],
-                    row[1],
-                    row[2],
+                    row["global_id"],
+                    row["dec_latitude"],
+                    row["dec_longitude"],
                 )
             )
 
@@ -443,7 +443,7 @@ def cleansing_postgres_data() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
+    conn_pg.autocommit = False
 
     # ------------------------------------------------------------------
     # Database table events.
@@ -497,7 +497,7 @@ def correct_dec_lat_lng() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
+    conn_pg.autocommit = False
 
     # ------------------------------------------------------------------
     # Delete existing data.
@@ -528,7 +528,7 @@ def correct_dec_lat_lng() -> None:
     # ------------------------------------------------------------------
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
+    conn_pg_2.autocommit = False
 
     # pylint: disable=line-too-long
     cur_pg_2.execute(
@@ -745,7 +745,7 @@ def find_nearest_airports() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
+    conn_pg.autocommit = False
 
     # ------------------------------------------------------------------
     # Delete existing data.
@@ -774,7 +774,7 @@ def find_nearest_airports() -> None:
     # ------------------------------------------------------------------
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
+    conn_pg_2.autocommit = False
 
     airports = _sql_query_io_airports(conn_pg_2)
 
@@ -926,7 +926,7 @@ def load_correction_data(filename: str) -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
+    conn_pg.autocommit = False
 
     workbook = load_workbook(
         filename=corr_file,
@@ -992,7 +992,7 @@ def verify_ntsb_data() -> None:
     # ------------------------------------------------------------------
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
-    conn_pg.set_session(autocommit=False)
+    conn_pg.autocommit = False
 
     cur_pg.execute(
         """
@@ -1032,7 +1032,7 @@ def verify_ntsb_data() -> None:
 
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
+    conn_pg_2.autocommit = False
 
     # ------------------------------------------------------------------
     # Verify latitude & longitude.

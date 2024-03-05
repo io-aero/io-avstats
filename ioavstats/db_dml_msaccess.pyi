@@ -1,4 +1,6 @@
 from _typeshed import Incomplete
+from psycopg import connection as connection
+from psycopg import cursor as cursor
 
 from ioavstats import glob_local as glob_local
 from ioavstats import utils as utils

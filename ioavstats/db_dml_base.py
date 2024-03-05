@@ -16,10 +16,10 @@ from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
 from openpyxl.reader.excel import load_workbook
-from psycopg2.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
-from psycopg2.errors import UniqueViolation  # pylint: disable=no-name-in-module
-from psycopg2.extensions import connection
-from psycopg2.extensions import cursor
+from psycopg import connection
+from psycopg import cursor
+from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
+from psycopg.errors import UniqueViolation  # pylint: disable=no-name-in-module
 
 from ioavstats import glob_local
 from ioavstats import utils
@@ -645,7 +645,7 @@ def _load_runway_data() -> None:
 
     for row in cur_pg:
         count_select += 1
-        runway_data[row[0]] = (None, None)
+        runway_data[row["global_id"]] = (None, None)
 
     io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
     io_utils.progress_msg("-" * 80)
@@ -1739,7 +1739,7 @@ def _sql_query_cictt_codes(conn_pg: connection) -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0])
+            data.append(row["cictt_code"])
 
         return sorted(data)
 
@@ -1760,7 +1760,7 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0])
+            data.append(row["state"])
 
         return sorted(data)
 

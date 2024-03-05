@@ -6,12 +6,12 @@ import argparse
 import logging
 from datetime import datetime
 
-import psycopg2
+import psycopg
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
 from iocommon import io_glob
-from psycopg2.extensions import connection
-from psycopg2.extensions import cursor
+from psycopg import connection
+from psycopg import cursor
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
@@ -118,7 +118,7 @@ def get_engine(settings: Dynaconf) -> Engine:
 # pylint: disable=R0801
 def get_postgres_connection() -> connection:
     """Create a PostgreSQL connection."""
-    return psycopg2.connect(**st.secrets["db_postgres"])
+    return psycopg.connect(**st.secrets["db_postgres"])
 
 
 # -----------------------------------------------------------------------------

@@ -50,10 +50,10 @@ sphinx = "*"
 sphinx-autodoc-typehints = "*"
 sqlalchemy-stubs = "*"
 sqlalchemy2-stubs = "*"
-types-psycopg2 = "*"
 types-pyyaml = "*"
 types-requests = "*"
 types-setuptools = "*"
+vulture = "*"
 wheel = "*"
 
 [requires]

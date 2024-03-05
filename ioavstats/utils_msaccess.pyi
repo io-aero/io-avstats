@@ -1,4 +1,4 @@
-import pyodbc  # type: ignore
+import pyodbc
 
 from ioavstats import glob_local as glob_local
 

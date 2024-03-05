@@ -19,10 +19,10 @@ from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
-from psycopg2.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
-from psycopg2.errors import UniqueViolation  # pylint: disable=no-name-in-module
-from psycopg2.extensions import connection
-from psycopg2.extensions import cursor
+from psycopg import connection
+from psycopg import cursor
+from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
+from psycopg.errors import UniqueViolation  # pylint: disable=no-name-in-module
 
 from ioavstats import glob_local
 from ioavstats import utils
@@ -328,7 +328,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
     if msaccess in [glob_local.MSACCESS_AVALL, glob_local.MSACCESS_PRE2008]:
-        conn_pg.set_session(autocommit=False)
+        conn_pg.autocommit = False
 
     if msaccess == glob_local.MSACCESS_PRE2008:
         _delete_ntsb_data(conn_pg, cur_pg)
@@ -464,7 +464,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     # Finalize processing.
     # ------------------------------------------------------------------
 
-    conn_pg.set_session(autocommit=True)
+    conn_pg.autocommit = True
 
     # pylint: disable=R0801
     utils.upd_io_processed_files(msaccess, cur_pg)
@@ -2853,7 +2853,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    conn_pg_2.set_session(autocommit=False)
+    conn_pg_2.autocommit = False
 
     # pylint: disable=line-too-long
     cur_pg_2.execute(
@@ -3417,7 +3417,7 @@ def _sql_query_cictt_codes(conn_pg: connection) -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0])
+            data.append(row["cictt_code"])
 
         return sorted(data)
 
@@ -3438,7 +3438,7 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
         data = []
 
         for row in cur:
-            data.append(row[0])
+            data.append(row["state"])
 
         return sorted(data)
 

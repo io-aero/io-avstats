@@ -90,7 +90,6 @@ def _extract_column_value(row, column_name, data_type=str, is_required=False):
     # Check for required but missing or empty values
     if is_required and pd.isnull(value):
         error_message = f"Missing required value in column '{column_name}'."
-        print(error_message)
         raise ValueError(error_message)
 
     # If the value is missing in an optional column, return None
@@ -109,7 +108,6 @@ def _extract_column_value(row, column_name, data_type=str, is_required=False):
         error_message = (
             f"Error in column '{column_name}' with value '{value}': {str(e)}"
         )
-        print(error_message)
         return None
 
 
@@ -224,17 +222,14 @@ def _load_airport_data() -> None:
 
         ident = _extract_column_value(row, COLUMN_IDENT)
         if ident is None or ident not in locids:
-            print(f"Skipping ident={ident}")
             continue
 
         country = _extract_column_value(row, COLUMN_COUNTRY)
         if country != "UNITED STATES":
-            print(f"Skipping country={country}")
             continue
 
         state = _extract_column_value(row, COLUMN_STATE)
         if state is None or state not in us_states:
-            print(f"Skipping state={state}")
             continue
 
         count_usable += 1
@@ -802,7 +797,6 @@ def _load_runway_data() -> None:
 
         airport_id = _extract_column_value(row, COLUMN_AIRPORT_ID)
         if airport_id not in runway_data:
-            print(f"Skipping airport_id={airport_id}")
             continue
 
         count_select += 1

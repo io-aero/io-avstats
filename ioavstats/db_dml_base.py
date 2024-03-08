@@ -10,6 +10,7 @@ import zipfile
 from datetime import datetime
 from datetime import timezone
 
+import pandas as pd
 import requests
 from iocommon import db_utils
 from iocommon import io_config
@@ -28,9 +29,86 @@ from ioavstats import utils
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_AIRANAL = "AIRANAL"
+COLUMN_AIRPORT_ID = "AIRPORT_ID"
+COLUMN_COMP_CODE = "COMP_CODE"
+COLUMN_COUNTRY = "COUNTRY"
+COLUMN_DIM_UOM = "DIM_UOM"
+COLUMN_DODHIFLIP = "DODHIFLIP"
+COLUMN_ELEVATION = "ELEVATION"
+COLUMN_FAR91 = "FAR91"
+COLUMN_FAR93 = "FAR93"
+COLUMN_GLOBAL_ID = "GLOBAL_ID"
+COLUMN_IAPEXISTS = "IAPEXISTS"
+COLUMN_IDENT = "IDENT"
+COLUMN_LATITUDE = "LATITUDE"
+COLUMN_LENGTH = "LENGTH"
+COLUMN_LONGITUDE = "LONGITUDE"
+COLUMN_MIL_CODE = "MIL_CODE"
+COLUMN_NAME = "NAME"
+COLUMN_OPERSTATUS = "OPERSTATUS"
+COLUMN_PRIVATEUSE = "PRIVATEUSE"
+COLUMN_SERVCITY = "SERVCITY"
+COLUMN_STATE = "STATE"
+COLUMN_TYPE_CODE = "TYPE_CODE"
+COLUMN_X = "X"
+COLUMN_Y = "Y"
+
+FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
+FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
+
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
 logger = logging.getLogger(__name__)
+
+
+# ------------------------------------------------------------------
+# Extract column values.
+# ------------------------------------------------------------------
+def _extract_column_value(row, column_name, data_type=str, is_required=False):
+    """Extract and validate a value from a given column in a row with specified data type.
+
+    Parameters:
+    - row (pd.Series): The row from which to extract the value.
+    - column_name (str): The name of the column to extract the value from.
+    - data_type (type): The expected data type of the column (e.g., int, float, str, pd.Timestamp).
+    - is_required (bool): Indicates whether the column value is required (True) or optional (False).
+
+    Returns:
+    - The extracted value if valid, otherwise None.
+
+    Raises:
+    - ValueError with a message containing the column name, the invalid value,
+      and the cause of the error if the value is invalid and the column is required.
+
+    """
+    value = row.get(column_name, None)
+
+    if str(value).rstrip() == "":
+        value = None
+
+    # Check for required but missing or empty values
+    if is_required and pd.isnull(value):
+        error_message = f"Missing required value in column '{column_name}'."
+        raise ValueError(error_message)
+
+    # If the value is missing in an optional column, return None
+    if not is_required and pd.isnull(value):
+        return None
+
+    # Validate and convert the data type
+    try:
+        if data_type == pd.Timestamp:
+            # For datetime, ensure conversion to pd.Timestamp works
+            return pd.to_datetime(value)
+
+        # For other data types, attempt direct conversion
+        return data_type(value)
+    except ValueError as e:
+        error_message = (
+            f"Error in column '{column_name}' with value '{value}': {str(e)}"
+        )
+        return None
 
 
 # ------------------------------------------------------------------
@@ -69,73 +147,88 @@ def _load_airport_data() -> None:
 
     locids: list[str] = _load_npias_data(us_states)
 
-    filename_excel = os.path.join(
-        os.getcwd(),
-        io_config.settings.download_file_faa_airports_xlsx.replace("/", os.sep),
-    )
+    # ------------------------------------------------------------------
+    # Load the airport data in a Pandas dataframe.
+    # ------------------------------------------------------------------
 
-    if not os.path.isfile(filename_excel):
-        # ERROR.00.943 The airport file '{filename}' is missing
+    try:
+        columns = [
+            COLUMN_X,
+            COLUMN_Y,
+            COLUMN_GLOBAL_ID,
+            COLUMN_IDENT,
+            COLUMN_NAME,
+            COLUMN_LATITUDE,
+            COLUMN_LONGITUDE,
+            COLUMN_ELEVATION,
+            COLUMN_TYPE_CODE,
+            COLUMN_SERVCITY,
+            COLUMN_STATE,
+            COLUMN_COUNTRY,
+            COLUMN_OPERSTATUS,
+            COLUMN_PRIVATEUSE,
+            COLUMN_IAPEXISTS,
+            COLUMN_DODHIFLIP,
+            COLUMN_FAR91,
+            COLUMN_FAR93,
+            COLUMN_MIL_CODE,
+            COLUMN_AIRANAL,
+        ]
+
+        # Attempt to read the csv file
+        dataframe = pd.read_csv(FILE_FAA_AIRPORTS, sep=",", usecols=columns)
+
+    except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_943.replace("{filename}", filename_excel)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_AIRPORTS)
+        )
+
+    except pd.errors.EmptyDataError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_AIRPORTS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_AIRPORTS).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_AIRPORTS).replace(
+                "{error}", str(exc)
+            )
         )
 
     # INFO.00.089 Database table io_airports: Load data from file '{filename}'
     io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
+    io_utils.progress_msg(
+        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_AIRPORTS)
+    )
 
     count_select = 0
     count_upsert = 0
     count_usable = 0
 
-    x_idx = 0
-    y_idx = 1
-    global_idx = 3
-    ident_idx = 4
-    name_idx = 5
-    latitude_idx = 6
-    longitude_idx = 7
-    elevation_idx = 8
-    type_code_idx = 10
-    servcity_idx = 11
-    state_idx = 12
-    country_idx = 13
-    operstatus_idx = 14
-    privateuse_idx = 15
-    iapexists_idx = 16
-    dodhiflib_idx = 17
-    far91_idx = 18
-    far93_idx = 19
-    mil_code_idx = 20
-    airanal_idx = 21
-
     # ------------------------------------------------------------------
     # Load the airport data.
     # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     # pylint: disable=R0801
-    for row in workbook.active:
+    for _index, row in dataframe.iterrows():
         count_select += 1
 
-        ident = row[ident_idx].value
+        ident = _extract_column_value(row, COLUMN_IDENT)
         if ident is None or ident not in locids:
             continue
 
-        country = row[country_idx].value
+        country = _extract_column_value(row, COLUMN_COUNTRY)
         if country != "UNITED STATES":
             continue
 
-        dec_longitude = row[x_idx].value
-        if dec_longitude == "X":
-            continue
-
-        state = row[state_idx].value
+        state = _extract_column_value(row, COLUMN_STATE)
         if state is None or state not in us_states:
             continue
 
@@ -147,24 +240,25 @@ def _load_airport_data() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        airanal = row[airanal_idx].value
+        airanal = _extract_column_value(row, COLUMN_AIRANAL)
         country = "USA"
-        dec_latitude = row[y_idx].value
-        dodhiflib = row[dodhiflib_idx].value
-        elevation = row[elevation_idx].value
-        far91 = row[far91_idx].value
-        far93 = row[far93_idx].value
-        global_id = row[global_idx].value
-        iapexists = row[iapexists_idx].value
-        latitude = row[latitude_idx].value
-        longitude = row[longitude_idx].value
-        mil_code = row[mil_code_idx].value
-        name = row[name_idx].value
-        operstatus = row[operstatus_idx].value
-        privateuse = row[privateuse_idx].value
-        servcity = row[servcity_idx].value
-        state = row[state_idx].value
-        type_code = row[type_code_idx].value
+        dec_longitude = _extract_column_value(row, COLUMN_X, float)
+        dec_latitude = _extract_column_value(row, COLUMN_Y, float)
+        dodhiflib = _extract_column_value(row, COLUMN_DODHIFLIP, int)
+        elevation = _extract_column_value(row, COLUMN_ELEVATION, float)
+        far91 = _extract_column_value(row, COLUMN_FAR91, int)
+        far93 = _extract_column_value(row, COLUMN_FAR93, int)
+        global_id = _extract_column_value(row, COLUMN_GLOBAL_ID)
+        iapexists = _extract_column_value(row, COLUMN_IAPEXISTS)
+        latitude = _extract_column_value(row, COLUMN_LATITUDE)
+        longitude = _extract_column_value(row, COLUMN_LONGITUDE)
+        mil_code = _extract_column_value(row, COLUMN_MIL_CODE)
+        name = _extract_column_value(row, COLUMN_NAME)
+        operstatus = _extract_column_value(row, COLUMN_OPERSTATUS)
+        privateuse = _extract_column_value(row, COLUMN_PRIVATEUSE, int)
+        servcity = _extract_column_value(row, COLUMN_SERVCITY)
+        state = _extract_column_value(row, COLUMN_STATE)
+        type_code = _extract_column_value(row, COLUMN_TYPE_CODE)
 
         cur_pg.execute(
             """
@@ -267,8 +361,6 @@ def _load_airport_data() -> None:
             ),
         )
         count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -651,39 +743,59 @@ def _load_runway_data() -> None:
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
-    # Start processing airport data.
+    # Load the runway data in a Pandas dataframe.
     # ------------------------------------------------------------------
 
-    filename_excel = os.path.join(
-        os.getcwd(),
-        io_config.settings.download_file_faa_runways_xlsx.replace("/", os.sep),
-    )
+    try:
+        columns = [
+            COLUMN_AIRPORT_ID,
+            COLUMN_COMP_CODE,
+            COLUMN_DIM_UOM,
+            COLUMN_LENGTH,
+        ]
 
-    if not os.path.isfile(filename_excel):
-        # ERROR.00.944 The runway file '{filename}' is missing
+        # Attempt to read the csv file
+        dataframe = pd.read_csv(FILE_FAA_RUNWAYS, sep=",", usecols=columns)
+
+    except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_944.replace("{filename}", filename_excel)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS)
+        )
+
+    except pd.errors.EmptyDataError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_RUNWAYS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
+                "{error}", str(exc)
+            )
         )
 
     # INFO.00.089 Database table io_airports: Load data from file '{filename}'
-    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
+    io_utils.progress_msg(
+        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_RUNWAYS)
+    )
 
     count_select = 0
 
-    airport_id_idx = 2
-    comp_code_idx = 7
-    dim_uom_idx = 6
-    length_idx = 4
-
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the runway data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for row in workbook.active:
-        airport_id = row[airport_id_idx].value
+    for _index, row in dataframe.iterrows():
+
+        airport_id = _extract_column_value(row, COLUMN_AIRPORT_ID)
         if airport_id not in runway_data:
             continue
 
@@ -694,15 +806,15 @@ def _load_runway_data() -> None:
             length,
         ) = runway_data[airport_id]
 
-        new_length = row[length_idx].value
+        new_length = _extract_column_value(row, COLUMN_LENGTH, int)
 
-        dim_vom = row[dim_uom_idx].value
+        dim_vom = _extract_column_value(row, COLUMN_DIM_UOM)
         if dim_vom == "M":
             new_length = new_length * 3.28084
 
         if length is None or new_length > length:
             runway_data[airport_id] = (
-                row[comp_code_idx].value,
+                _extract_column_value(row, COLUMN_COMP_CODE),
                 new_length,
             )
 

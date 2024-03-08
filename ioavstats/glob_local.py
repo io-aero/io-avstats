@@ -112,6 +112,16 @@ ERROR_00_947 = (
     "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events (suspected)"
 )
 
+# Fatal error messages.
+FATAL_00_931 = "FATAL.00.931 Fatal Error - The file '{file_name}' was not found"
+FATAL_00_932 = "FATAL.00.932 Fatal Error - The file '{file_name}' is empty"
+FATAL_00_933 = (
+    "FATAL.00.933 Fatal Error - The file '{file_name}' causes the value error '{error}'"
+)
+FATAL_00_934 = (
+    "FATAL.00.934 Fatal Error - The file '{file_name}' causes the error '{error}'"
+)
+
 FILE_EXTENSION_MDB = "mdb"
 FILE_EXTENSION_SQL = "sql"
 FILE_EXTENSION_ZIP = "zip"

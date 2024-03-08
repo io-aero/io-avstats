@@ -9,7 +9,7 @@ mlxtend = "*"
 plotly = "*"
 psycopg2-binary = "*"
 pyeclat = "*"
-sqlalchemy = "<2.0.0"
+sqlalchemy = "*"
 streamlit = "*"
 streamlit-pandas-profiling = "*"
 

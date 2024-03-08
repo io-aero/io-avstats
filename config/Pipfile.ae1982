@@ -7,7 +7,7 @@ name = "pypi"
 dynaconf = "*"
 plotly = "*"
 psycopg2-binary = "*"
-sqlalchemy = "<2.0.0"
+sqlalchemy = "*"
 streamlit = "*"
 streamlit-pandas-profiling = "*"
 

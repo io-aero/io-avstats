@@ -31,8 +31,10 @@ from ioavstats import utils
 
 COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
+COLUMN_CICTT_CODE = "CICTT Code"
 COLUMN_COMP_CODE = "COMP_CODE"
 COLUMN_COUNTRY = "COUNTRY"
+COLUMN_DEFINITION = "Definition"
 COLUMN_DIM_UOM = "DIM_UOM"
 COLUMN_DODHIFLIP = "DODHIFLIP"
 COLUMN_ELEVATION = "ELEVATION"
@@ -41,6 +43,7 @@ COLUMN_FAR93 = "FAR93"
 COLUMN_GLOBAL_ID = "GLOBAL_ID"
 COLUMN_IAPEXISTS = "IAPEXISTS"
 COLUMN_IDENT = "IDENT"
+COLUMN_IDENTIFIER = "Identifier"
 COLUMN_LATITUDE = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
 COLUMN_LONGITUDE = "LONGITUDE"
@@ -148,7 +151,7 @@ def _load_airport_data() -> None:
     locids: list[str] = _load_npias_data(us_states)
 
     # ------------------------------------------------------------------
-    # Load the airport data in a Pandas dataframe.
+    # Load the data into a Pandas dataframe.
     # ------------------------------------------------------------------
 
     try:
@@ -420,6 +423,41 @@ def _load_aviation_occurrence_categories() -> None:
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            io_config.settings.download_file_aviation_occurrence_categories_xlsx,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
+                "{error}", str(exc)
+            )
+        )
+
+    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
+    io_utils.progress_msg(
+        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_RUNWAYS)
+    )
+
     count_delete = 0
     count_upsert = 0
     count_select = 0
@@ -428,21 +466,8 @@ def _load_aviation_occurrence_categories() -> None:
     # Load the aviation occurrence categories.
     # ------------------------------------------------------------------
 
-    cictt_code_idx = 0
-    identifier_idx = 1
-    definition_idx = 2
-
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     # pylint: disable=R0801
-    for row in workbook.active:
-        cictt_code = row[cictt_code_idx].value.upper().rstrip()
-        if cictt_code == "CICTT CODE":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -452,8 +477,9 @@ def _load_aviation_occurrence_categories() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        identifier = row[identifier_idx].value.upper().rstrip()
-        definition = row[definition_idx].value.rstrip()
+        cictt_code = _extract_column_value(row, COLUMN_CICTT_CODE)
+        identifier = _extract_column_value(row, COLUMN_IDENTIFIER)
+        definition = _extract_column_value(row, COLUMN_DEFINITION)
 
         cur_pg.execute(
             """
@@ -488,8 +514,6 @@ def _load_aviation_occurrence_categories() -> None:
             ),
         )
         count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -743,7 +767,7 @@ def _load_runway_data() -> None:
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
-    # Load the runway data in a Pandas dataframe.
+    # Load the data into a Pandas dataframe.
     # ------------------------------------------------------------------
 
     try:

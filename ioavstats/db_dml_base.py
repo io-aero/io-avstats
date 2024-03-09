@@ -31,13 +31,15 @@ from ioavstats import utils
 
 COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
-COLUMN_CICTT_CODE = "CICTT Code"
+COLUMN_CICTT_CODE_SPACE = "CICTT Code"
+COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
 COLUMN_COMP_CODE = "COMP_CODE"
 COLUMN_COUNTRY = "COUNTRY"
 COLUMN_DEFINITION = "Definition"
 COLUMN_DIM_UOM = "DIM_UOM"
 COLUMN_DODHIFLIP = "DODHIFLIP"
 COLUMN_ELEVATION = "ELEVATION"
+COLUMN_EVENTSOE_NO = "eventsoe_no"
 COLUMN_FAR91 = "FAR91"
 COLUMN_FAR93 = "FAR93"
 COLUMN_GLOBAL_ID = "GLOBAL_ID"
@@ -48,6 +50,7 @@ COLUMN_LATITUDE = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
 COLUMN_LOCID = "LocID"
 COLUMN_LONGITUDE = "LONGITUDE"
+COLUMN_MEANING = "meaning"
 COLUMN_MIL_CODE = "MIL_CODE"
 COLUMN_NAME = "NAME"
 COLUMN_OPERSTATUS = "OPERSTATUS"
@@ -60,11 +63,12 @@ COLUMN_X = "X"
 COLUMN_Y = "Y"
 
 FILE_AVIATION_OCCURRENCE_CATEGORIES = (
-    io_config.settings.download_file_aviation_occurrence_categories_xlsx
+    io_config.settings.download_file_aviation_occurrence_categories
 )
 FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
-FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias_xlsx
+FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias
 FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
+FILE_SEQUENCE_OF_EVENTS = io_config.settings.download_file_sequence_of_events
 
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
@@ -383,7 +387,7 @@ def _load_airport_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()
@@ -485,7 +489,7 @@ def _load_aviation_occurrence_categories() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        cictt_code = _extract_column_value(row, COLUMN_CICTT_CODE)
+        cictt_code = _extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
         identifier = _extract_column_value(row, COLUMN_IDENTIFIER)
         definition = _extract_column_value(row, COLUMN_DEFINITION)
 
@@ -834,9 +838,9 @@ def _load_runway_data() -> None:
             )
         )
 
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
+    # INFO.00.092 Database table io_runways: Load data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_RUNWAYS)
+        glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS)
     )
 
     count_select = 0
@@ -926,7 +930,7 @@ def _load_runway_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()
@@ -947,34 +951,62 @@ def _load_sequence_of_events() -> None:
     # Start processing.
     # ------------------------------------------------------------------
 
-    filename_excel = os.path.join(
-        os.getcwd(),
-        io_config.settings.download_file_sequence_of_events_xlsx.replace("/", os.sep),
-    )
-
-    if not os.path.isfile(filename_excel):
-        # ERROR.00.938 The sequence of events file '{filename}' is missing
-        io_utils.terminate_fatal(
-            glob_local.ERROR_00_938.replace("{filename}", filename_excel)
-        )
-
     # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_076.replace(
-            "{filename}", io_config.settings.download_file_sequence_of_events_xlsx
+            "{filename}", io_config.settings.download_file_sequence_of_events
         )
     )
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        columns = [
+            COLUMN_EVENTSOE_NO,
+            COLUMN_MEANING,
+            COLUMN_CICTT_CODE_UNDERSCORE,
+        ]
+
+        # Attempt to read the csv file
+        dataframe = pd.read_csv(FILE_SEQUENCE_OF_EVENTS, sep=",", usecols=columns)
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+        )
+
+    except pd.errors.EmptyDataError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SEQUENCE_OF_EVENTS
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SEQUENCE_OF_EVENTS
+            ).replace("{error}", str(exc))
+        )
+
+    # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
+    io_utils.progress_msg(
+        glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS)
+    )
+
     count_delete = 0
     count_upsert = 0
     count_select = 0
-
-    eventsoe_no_idx = 0
-    meaning_idx = 1
-    cictt_code_idx = 2
 
     # ------------------------------------------------------------------
     # Load the sequence of events data.
@@ -982,17 +1014,8 @@ def _load_sequence_of_events() -> None:
 
     cictt_codes = _sql_query_cictt_codes(conn_pg)
 
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     # pylint: disable=R0801
-    for row in workbook.active:
-        soe_no = str(row[eventsoe_no_idx].value).rjust(3, "0")
-        if soe_no == "eventsoe_no":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1002,15 +1025,13 @@ def _load_sequence_of_events() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        cictt_code = (
-            row[cictt_code_idx].value.upper().rstrip()
-            if row[cictt_code_idx].value
-            else None
-        )
+        soe_no = _extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
+
+        cictt_code = str(_extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)).rstrip()
         if cictt_code is None or cictt_code not in cictt_codes:
             continue
 
-        meaning = row[meaning_idx].value.rstrip()
+        meaning = str(_extract_column_value(row, COLUMN_MEANING)).rstrip()
 
         cur_pg.execute(
             """
@@ -1045,8 +1066,6 @@ def _load_sequence_of_events() -> None:
             ),
         )
         count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -1108,7 +1127,7 @@ def _load_sequence_of_events() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()

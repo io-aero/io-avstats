@@ -283,7 +283,7 @@ def _delete_ntsb_data(
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()

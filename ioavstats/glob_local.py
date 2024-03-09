@@ -265,8 +265,12 @@ INFO_00_088 = "INFO.00.088 Database table io_airports: Load the global identific
 INFO_00_089 = (
     "INFO.00.089 Database table io_airports: " + "Load data from file '{filename}'"
 )
-INFO_00_090 = "INFO.00.090 Database table io_airports: Update the runway data"
+INFO_00_090 = "INFO.00.090 Database table io_runways: Update the runway data"
 INFO_00_091 = "INFO.00.091 Database type    is available: {type}"
+INFO_00_092 = (
+    "INFO.00.092 Database table io_runways: " + "Load data from file '{filename}'"
+)
+
 INFORMATION_NOT_YET_AVAILABLE = "n/a"
 
 # Library version number.

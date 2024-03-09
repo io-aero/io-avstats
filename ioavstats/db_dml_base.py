@@ -33,6 +33,7 @@ COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
 COLUMN_CICTT_CODE_SPACE = "CICTT Code"
 COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
+COLUMN_CITY = "city"
 COLUMN_COMP_CODE = "COMP_CODE"
 COLUMN_COUNTRY = "COUNTRY"
 COLUMN_DEFINITION = "Definition"
@@ -46,8 +47,10 @@ COLUMN_GLOBAL_ID = "GLOBAL_ID"
 COLUMN_IAPEXISTS = "IAPEXISTS"
 COLUMN_IDENT = "IDENT"
 COLUMN_IDENTIFIER = "Identifier"
+COLUMN_LAT = "lat"
 COLUMN_LATITUDE = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
+COLUMN_LNG = "lng"
 COLUMN_LOCID = "LocID"
 COLUMN_LONGITUDE = "LONGITUDE"
 COLUMN_MEANING = "meaning"
@@ -57,10 +60,13 @@ COLUMN_OPERSTATUS = "OPERSTATUS"
 COLUMN_PRIVATEUSE = "PRIVATEUSE"
 COLUMN_SERVCITY = "SERVCITY"
 COLUMN_STATE_CAMEL = "State"
+COLUMN_STATE_ID = "state_id"
 COLUMN_STATE_UPPER = "STATE"
 COLUMN_TYPE_CODE = "TYPE_CODE"
 COLUMN_X = "X"
 COLUMN_Y = "Y"
+COLUMN_ZIP = "zip"
+COLUMN_ZIPS = "zips"
 
 FILE_AVIATION_OCCURRENCE_CATEGORIES = (
     io_config.settings.download_file_aviation_occurrence_categories
@@ -69,6 +75,8 @@ FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
 FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias
 FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
 FILE_SEQUENCE_OF_EVENTS = io_config.settings.download_file_sequence_of_events
+FILE_SIMPLEMAPS_US_CITIES = io_config.settings.download_file_simplemaps_us_cities
+FILE_SIMPLEMAPS_US_ZIPS = io_config.settings.download_file_simplemaps_us_zips
 
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
@@ -1027,7 +1035,9 @@ def _load_sequence_of_events() -> None:
 
         soe_no = _extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
 
-        cictt_code = str(_extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)).rstrip()
+        cictt_code = str(
+            _extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
+        ).rstrip()
         if cictt_code is None or cictt_code not in cictt_codes:
             continue
 
@@ -1145,41 +1155,62 @@ def _load_simplemaps_data_cities_from_us_cities(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_cities_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
         )
 
     # INFO.00.027 Database table io_lat_lng: Load city data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_027.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
-        )
+        glob_local.INFO_00_027.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_CITIES,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(exc))
+        )
 
     count_upsert = 0
     count_select = 0
 
-    city_idx = 0
-    lat_idx = 6
-    lng_idx = 7
-    state_idx = 2
-
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for row in workbook.active:
-        city = row[city_idx].value.upper().rstrip()
-        if city == "CITY":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1189,9 +1220,10 @@ def _load_simplemaps_data_cities_from_us_cities(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
+        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = _extract_column_value(row, COLUMN_LAT, float)
+        lng = _extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1227,7 +1259,7 @@ def _load_simplemaps_data_cities_from_us_cities(
             (
                 glob_local.IO_LAT_LNG_TYPE_CITY,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
                 lat,
                 lng,
@@ -1239,7 +1271,7 @@ def _load_simplemaps_data_cities_from_us_cities(
                 datetime.now(),
                 glob_local.IO_LAT_LNG_TYPE_CITY,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
                 lat,
                 lng,
@@ -1247,11 +1279,7 @@ def _load_simplemaps_data_cities_from_us_cities(
         )
         count_upsert += cur_pg.rowcount
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_cities_xlsx, cur_pg
-    )
-
-    workbook.close()
+    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
 
     conn_pg.commit()
 
@@ -1273,48 +1301,70 @@ def _load_simplemaps_data_zips_from_us_cities(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_cities_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
         )
 
     # INFO.00.039 Database table io_lat_lng: Load zipcode data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_039.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
-        )
+        glob_local.INFO_00_039.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_CITIES,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(exc))
+        )
 
     count_insert = 0
     count_select = 0
 
-    city_idx = 0
-    lat_idx = 6
-    lng_idx = 7
-    state_idx = 2
-    zipcodes_idx = 15
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # pylint: disable=R0801
+    for _index, row in dataframe.iterrows():
 
-    for row in workbook.active:
-        city = row[city_idx].value.upper().rstrip()
-        if city == "CITY":
-            continue
+        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = _extract_column_value(row, COLUMN_LAT, float)
+        lng = _extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+        zips = list(f"{_extract_column_value(row, COLUMN_ZIPS)}".split(" "))
 
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
-        zipcodes = list(f"{row[zipcodes_idx].value}".split(" "))
-
-        for zipcode in zipcodes:
+        for zipcode in zips:
             count_select += 1
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
@@ -1344,7 +1394,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                 (
                     glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                     glob_local.COUNTRY_USA,
-                    state,
+                    state_id,
                     city,
                     zipcode.rstrip(),
                     lat,
@@ -1355,11 +1405,7 @@ def _load_simplemaps_data_zips_from_us_cities(
             )
             count_insert += cur_pg.rowcount
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_cities_xlsx, cur_pg
-    )
-
-    workbook.close()
+    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
 
     conn_pg.commit()
 
@@ -1380,42 +1426,65 @@ def _load_simplemaps_data_zips_from_us_zips(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_zips_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_ZIPS.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.913 The US zip code file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_913.replace("{filename}", filename)
+            glob_local.ERROR_00_913.replace("{filename}", filename_excel)
         )
 
     # INFO.00.025 Database table io_lat_lng: Load zipcode data rom file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_025.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_zips_xlsx
+            "{filename}", io_config.settings.download_file_simplemaps_us_zips
         )
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_ZIPS,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_ZIPS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
+            ).replace("{error}", str(exc))
+        )
 
     count_duplicates = 0
     count_upsert = 0
     count_select = 0
 
-    zip_idx = 0
-    lat_idx = 1
-    lng_idx = 2
-    city_idx = 3
-    state_idx = 4
+    # ------------------------------------------------------------------
+    # Load the US zip data.
+    # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
-
-    for row in workbook.active:
-        zipcode = f"{row[zip_idx].value:05}".rstrip()
-        if zipcode == "zip00":
-            continue
+    # pylint: disable=R0801
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1425,10 +1494,11 @@ def _load_simplemaps_data_zips_from_us_zips(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        city = row[city_idx].value.upper().rstrip()
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
+        zip_code = f"{_extract_column_value(row, COLUMN_ZIP):05}".rstrip()
+        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = _extract_column_value(row, COLUMN_LAT, float)
+        lng = _extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1466,9 +1536,9 @@ def _load_simplemaps_data_zips_from_us_zips(
             (
                 glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
-                zipcode,
+                zip_code,
                 lat,
                 lng,
                 glob_local.SOURCE_SM_US_ZIP_CODES,
@@ -1479,9 +1549,9 @@ def _load_simplemaps_data_zips_from_us_zips(
                 datetime.now(),
                 glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
-                zipcode,
+                zip_code,
                 lat,
                 lng,
             ),
@@ -1489,10 +1559,8 @@ def _load_simplemaps_data_zips_from_us_zips(
         count_upsert += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_zips_xlsx, cur_pg
+        io_config.settings.download_file_simplemaps_us_zips, cur_pg
     )
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -2029,102 +2097,6 @@ def download_us_cities_file() -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_024.replace(
                 "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
-            )
-        )
-    except ConnectionError:
-        # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
-    except TimeoutError:
-        # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
-        io_utils.terminate_fatal(
-            glob_local.ERROR_00_909.replace(
-                "{timeout}", str(io_config.settings.download_timeout)
-            ).replace("{url}", url)
-        )
-
-    logger.debug(io_glob.LOGGER_END)
-
-
-# ------------------------------------------------------------------
-# Download a US zip code file.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
-def download_us_zips_file() -> None:
-    """Download a US zip code file."""
-    logger.debug(io_glob.LOGGER_START)
-
-    url = io_config.settings.download_url_simplemaps_us_zips
-
-    try:
-        file_resp = requests.get(
-            url=url,
-            allow_redirects=True,
-            stream=True,
-            timeout=io_config.settings.download_timeout,
-        )
-
-        if file_resp.status_code != 200:
-            # ERROR.00.906 Unexpected response status code='{status_code}'
-            io_utils.terminate_fatal(
-                glob_local.ERROR_00_906.replace(
-                    "{status_code}", str(file_resp.status_code)
-                )
-            )
-
-        # INFO.00.022 The connection to the US zip code file '{filename}'
-        # on the simplemaps download page was successfully established
-        io_utils.progress_msg(
-            glob_local.INFO_00_022.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
-            )
-        )
-
-        if not os.path.isdir(io_config.settings.download_work_dir):
-            os.makedirs(io_config.settings.download_work_dir)
-
-        filename_zip = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep),
-            io_config.settings.download_file_simplemaps_us_zips_zip,
-        )
-
-        no_chunks = 0
-
-        with open(filename_zip, "wb") as file_zip:
-            for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size
-            ):
-                file_zip.write(chunk)
-                no_chunks += 1
-
-        # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
-        io_utils.progress_msg(
-            glob_local.INFO_00_023.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
-            ).replace("{no_chunks}", str(no_chunks))
-        )
-
-        try:
-            zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
-                filename_zip
-            )
-
-            for zipped_file in zipped_files.namelist():
-                zipped_files.extract(zipped_file, io_config.settings.download_work_dir)
-
-            zipped_files.close()
-        except zipfile.BadZipFile:
-            # ERROR.00.907 File '{filename}' is not a zip file
-            io_utils.terminate_fatal(
-                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
-            )
-
-        os.remove(filename_zip)
-        # INFO.00.024 The file '{filename}'  was successfully unpacked
-        io_utils.progress_msg(
-            glob_local.INFO_00_024.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
             )
         )
     except ConnectionError:

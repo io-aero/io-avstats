@@ -46,18 +46,24 @@ COLUMN_IDENT = "IDENT"
 COLUMN_IDENTIFIER = "Identifier"
 COLUMN_LATITUDE = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
+COLUMN_LOCID = "LocID"
 COLUMN_LONGITUDE = "LONGITUDE"
 COLUMN_MIL_CODE = "MIL_CODE"
 COLUMN_NAME = "NAME"
 COLUMN_OPERSTATUS = "OPERSTATUS"
 COLUMN_PRIVATEUSE = "PRIVATEUSE"
 COLUMN_SERVCITY = "SERVCITY"
-COLUMN_STATE = "STATE"
+COLUMN_STATE_CAMEL = "State"
+COLUMN_STATE_UPPER = "STATE"
 COLUMN_TYPE_CODE = "TYPE_CODE"
 COLUMN_X = "X"
 COLUMN_Y = "Y"
 
+FILE_AVIATION_OCCURRENCE_CATEGORIES = (
+    io_config.settings.download_file_aviation_occurrence_categories_xlsx
+)
 FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
+FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias_xlsx
 FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
 
 IO_LAST_SEEN = datetime.now(timezone.utc)
@@ -166,7 +172,7 @@ def _load_airport_data() -> None:
             COLUMN_ELEVATION,
             COLUMN_TYPE_CODE,
             COLUMN_SERVCITY,
-            COLUMN_STATE,
+            COLUMN_STATE_UPPER,
             COLUMN_COUNTRY,
             COLUMN_OPERSTATUS,
             COLUMN_PRIVATEUSE,
@@ -231,7 +237,7 @@ def _load_airport_data() -> None:
         if country != "UNITED STATES":
             continue
 
-        state = _extract_column_value(row, COLUMN_STATE)
+        state = _extract_column_value(row, COLUMN_STATE_UPPER)
         if state is None or state not in us_states:
             continue
 
@@ -260,7 +266,7 @@ def _load_airport_data() -> None:
         operstatus = _extract_column_value(row, COLUMN_OPERSTATUS)
         privateuse = _extract_column_value(row, COLUMN_PRIVATEUSE, int)
         servcity = _extract_column_value(row, COLUMN_SERVCITY)
-        state = _extract_column_value(row, COLUMN_STATE)
+        state = _extract_column_value(row, COLUMN_STATE_UPPER)
         type_code = _extract_column_value(row, COLUMN_TYPE_CODE)
 
         cur_pg.execute(
@@ -401,9 +407,7 @@ def _load_aviation_occurrence_categories() -> None:
 
     filename_excel = os.path.join(
         os.getcwd(),
-        io_config.settings.download_file_aviation_occurrence_categories_xlsx.replace(
-            "/", os.sep
-        ),
+        FILE_AVIATION_OCCURRENCE_CATEGORIES.replace("/", os.sep),
     )
 
     if not os.path.isfile(filename_excel):
@@ -416,7 +420,7 @@ def _load_aviation_occurrence_categories() -> None:
     io_utils.progress_msg(
         glob_local.INFO_00_074.replace(
             "{filename}",
-            io_config.settings.download_file_aviation_occurrence_categories_xlsx,
+            FILE_AVIATION_OCCURRENCE_CATEGORIES,
         )
     )
     io_utils.progress_msg("-" * 80)
@@ -430,32 +434,36 @@ def _load_aviation_occurrence_categories() -> None:
     try:
         # Attempt to read the Excel file
         dataframe = pd.read_excel(
-            io_config.settings.download_file_aviation_occurrence_categories_xlsx,
+            FILE_AVIATION_OCCURRENCE_CATEGORIES,
             sheet_name="Sheet1",
         )
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS)
+            glob_local.FATAL_00_931.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            )
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
-                "{error}", str(err)
-            )
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            ).replace("{error}", str(err))
         )
 
     except Exception as exc:  # pylint: disable=broad-exception-caught
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
-                "{error}", str(exc)
-            )
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            ).replace("{error}", str(exc))
         )
 
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
+    # INFO.00.074 Database table io_aviation_occurrence_categories: Load data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_RUNWAYS)
+        glob_local.INFO_00_074.replace(
+            "{filename}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+        )
     )
 
     count_delete = 0
@@ -574,9 +582,7 @@ def _load_aviation_occurrence_categories() -> None:
     # Finalize processing.
     # ------------------------------------------------------------------
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_aviation_occurrence_categories_xlsx, cur_pg
-    )
+    utils.upd_io_processed_files(FILE_AVIATION_OCCURRENCE_CATEGORIES, cur_pg)
 
     cur_pg.close()
     conn_pg.close()
@@ -686,7 +692,7 @@ def _load_npias_data(us_states) -> list[str]:
 
     filename_excel = os.path.join(
         os.getcwd(),
-        io_config.settings.download_file_faa_npias_xlsx.replace("/", os.sep),
+        FILE_FAA_NPIAS_DATA.replace("/", os.sep),
     )
 
     if not os.path.isfile(filename_excel):
@@ -695,31 +701,54 @@ def _load_npias_data(us_states) -> list[str]:
             glob_local.ERROR_00_945.replace("{filename}", filename_excel)
         )
 
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
-    io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_FAA_NPIAS_DATA,
+            sheet_name="All NPIAS Airports",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_NPIAS_DATA)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
+                "{error}", str(exc)
+            )
+        )
 
     count_select = 0
     count_usable = 0
 
-    state_idx = 0
-    locid_idx = 3
-
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     locids: list[str] = []
 
+    # ------------------------------------------------------------------
+    # Load the NPIAS data.
+    # ------------------------------------------------------------------
+
     # pylint: disable=R0801
-    for row in workbook.active:
+    for _index, row in dataframe.iterrows():
+
         count_select += 1
-        if not row[state_idx].value in us_states:
+
+        if not _extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
             continue
 
-        locids.append(row[locid_idx].value)
+        locids.append(_extract_column_value(row, COLUMN_LOCID))
 
         count_usable += 1
 

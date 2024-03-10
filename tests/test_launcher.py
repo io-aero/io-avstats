@@ -282,33 +282,32 @@ def test_launcher_l_s_e():
     logger.debug(io_glob.LOGGER_END)
 
 
-# wwe
-# # -----------------------------------------------------------------------------
-# # Test case:l_s_d   - Load simplemaps data into PostgreSQL.
-# # -----------------------------------------------------------------------------
-# # pylint: disable=R0801
-# def test_launcher_l_s_d():
-#     """Test case: launcher()."""
-#     # -------------------------------------------------------------------------
-#     logger.debug(io_glob.LOGGER_START)
-#
-#     assert settings.check_value == "test"
-#
-#     if platform.system() == "Darwin":
-#         exit_code = os.system("./run_io_avstats_pytest.zsh l_s_d")
-#     elif platform.system() == "Linux":
-#         exit_code = 0
-#     elif platform.system() == "Windows":
-#         exit_code = 0
-#     else:
-#         # ERROR.00.908 The operating system '{os}' is not supported
-#         assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-#
-#     assert exit_code == 0, f"Command failed with exit code {exit_code}"
-#
-#     logger.debug(io_glob.LOGGER_END)
-#
-#
+# -----------------------------------------------------------------------------
+# Test case:l_s_d   - Load simplemaps data into PostgreSQL.
+# -----------------------------------------------------------------------------
+# pylint: disable=R0801
+def test_launcher_l_s_d():
+    """Test case: launcher()."""
+    # -------------------------------------------------------------------------
+    logger.debug(io_glob.LOGGER_START)
+
+    assert settings.check_value == "test"
+
+    if platform.system() == "Darwin":
+        exit_code = os.system("./run_io_avstats_pytest.zsh l_s_d")
+    elif platform.system() == "Linux":
+        exit_code = os.system("./run_io_avstats_pytest.sh l_s_d")
+    elif platform.system() == "Windows":
+        exit_code = os.system("run_io_avstats_pytest.bat l_s_d")
+    else:
+        # ERROR.00.908 The operating system '{os}' is not supported
+        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
+
+    assert exit_code == 0, f"Command failed with exit code {exit_code}"
+
+    logger.debug(io_glob.LOGGER_END)
+
+
 # -----------------------------------------------------------------------------
 # Test case:l_z_d   - Load ZIP Code Database data into PostgreSQL.
 # -----------------------------------------------------------------------------

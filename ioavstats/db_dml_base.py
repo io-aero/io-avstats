@@ -16,7 +16,6 @@ from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
-from openpyxl.reader.excel import load_workbook
 from psycopg import connection
 from psycopg import cursor
 from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
@@ -29,13 +28,15 @@ from ioavstats import utils
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_ACCEPTABLE_CITIES = "acceptable_cities"
 COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
 COLUMN_CICTT_CODE_SPACE = "CICTT Code"
 COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
 COLUMN_CITY = "city"
 COLUMN_COMP_CODE = "COMP_CODE"
-COLUMN_COUNTRY = "COUNTRY"
+COLUMN_COUNTRY_LOWER = "country"
+COLUMN_COUNTRY_UPPER = "COUNTRY"
 COLUMN_DEFINITION = "Definition"
 COLUMN_DIM_UOM = "DIM_UOM"
 COLUMN_DODHIFLIP = "DODHIFLIP"
@@ -48,20 +49,25 @@ COLUMN_IAPEXISTS = "IAPEXISTS"
 COLUMN_IDENT = "IDENT"
 COLUMN_IDENTIFIER = "Identifier"
 COLUMN_LAT = "lat"
-COLUMN_LATITUDE = "LATITUDE"
+COLUMN_LATITUDE_LOWER = "latitude"
+COLUMN_LATITUDE_UPPER = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
 COLUMN_LNG = "lng"
 COLUMN_LOCID = "LocID"
-COLUMN_LONGITUDE = "LONGITUDE"
+COLUMN_LONGITUDE_LOWER = "longitude"
+COLUMN_LONGITUDE_UPPER = "LONGITUDE"
 COLUMN_MEANING = "meaning"
 COLUMN_MIL_CODE = "MIL_CODE"
 COLUMN_NAME = "NAME"
 COLUMN_OPERSTATUS = "OPERSTATUS"
+COLUMN_PRIMARY_CITY = "primary_city"
 COLUMN_PRIVATEUSE = "PRIVATEUSE"
 COLUMN_SERVCITY = "SERVCITY"
 COLUMN_STATE_CAMEL = "State"
 COLUMN_STATE_ID = "state_id"
+COLUMN_STATE_LOWER = "state"
 COLUMN_STATE_UPPER = "STATE"
+COLUMN_TYPE = "type"
 COLUMN_TYPE_CODE = "TYPE_CODE"
 COLUMN_X = "X"
 COLUMN_Y = "Y"
@@ -77,6 +83,7 @@ FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
 FILE_SEQUENCE_OF_EVENTS = io_config.settings.download_file_sequence_of_events
 FILE_SIMPLEMAPS_US_CITIES = io_config.settings.download_file_simplemaps_us_cities
 FILE_SIMPLEMAPS_US_ZIPS = io_config.settings.download_file_simplemaps_us_zips
+FILE_ZIP_CODES_ORG = io_config.settings.download_file_zip_codes_org
 
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
@@ -179,13 +186,13 @@ def _load_airport_data() -> None:
             COLUMN_GLOBAL_ID,
             COLUMN_IDENT,
             COLUMN_NAME,
-            COLUMN_LATITUDE,
-            COLUMN_LONGITUDE,
+            COLUMN_LATITUDE_UPPER,
+            COLUMN_LONGITUDE_UPPER,
             COLUMN_ELEVATION,
             COLUMN_TYPE_CODE,
             COLUMN_SERVCITY,
             COLUMN_STATE_UPPER,
-            COLUMN_COUNTRY,
+            COLUMN_COUNTRY_UPPER,
             COLUMN_OPERSTATUS,
             COLUMN_PRIVATEUSE,
             COLUMN_IAPEXISTS,
@@ -245,7 +252,7 @@ def _load_airport_data() -> None:
         if ident is None or ident not in locids:
             continue
 
-        country = _extract_column_value(row, COLUMN_COUNTRY)
+        country = _extract_column_value(row, COLUMN_COUNTRY_UPPER)
         if country != "UNITED STATES":
             continue
 
@@ -271,8 +278,8 @@ def _load_airport_data() -> None:
         far93 = _extract_column_value(row, COLUMN_FAR93, int)
         global_id = _extract_column_value(row, COLUMN_GLOBAL_ID)
         iapexists = _extract_column_value(row, COLUMN_IAPEXISTS)
-        latitude = _extract_column_value(row, COLUMN_LATITUDE)
-        longitude = _extract_column_value(row, COLUMN_LONGITUDE)
+        latitude = _extract_column_value(row, COLUMN_LATITUDE_UPPER)
+        longitude = _extract_column_value(row, COLUMN_LONGITUDE_UPPER)
         mil_code = _extract_column_value(row, COLUMN_MIL_CODE)
         name = _extract_column_value(row, COLUMN_NAME)
         operstatus = _extract_column_value(row, COLUMN_OPERSTATUS)
@@ -1783,15 +1790,15 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 def _load_zip_codes_org_data() -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    # ------------------------------------------------------------------
-    # Start processing.
-    # ------------------------------------------------------------------
-    filename_xlsx = io_config.settings.download_file_zip_codes_org_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_ZIP_CODES_ORG.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename_xlsx):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_935.replace("{filename}", filename_xlsx)
+            glob_local.ERROR_00_935.replace("{filename}", filename_excel)
         )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
@@ -1822,7 +1829,7 @@ def _load_zip_codes_org_data() -> None:
     # ------------------------------------------------------------------
     # Insert new data.
     # ------------------------------------------------------------------
-    _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename_xlsx)
+    _load_zip_codes_org_data_zips(conn_pg, cur_pg, FILE_ZIP_CODES_ORG)
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1833,9 +1840,7 @@ def _load_zip_codes_org_data() -> None:
     # ------------------------------------------------------------------
     # Finalize processing.
     # ------------------------------------------------------------------
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_zip_codes_org_xlsx, cur_pg
-    )
+    utils.upd_io_processed_files(FILE_ZIP_CODES_ORG, cur_pg)
 
     cur_pg.close()
     conn_pg.close()
@@ -1854,29 +1859,45 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
     io_utils.progress_msg(glob_local.INFO_00_061)
     io_utils.progress_msg("-" * 80)
 
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            filename,
+            sheet_name="zip_code_database",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", filename)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", filename).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", filename).replace(
+                "{error}", str(exc)
+            )
+        )
+
     count_upsert = 0
     count_select = 0
 
-    zip_idx = 0
-    type_idx = 1
-    primary_city_idx = 3
-    acceptable_cities_idx = 4
-    state_idx = 6
-    country_idx = 11
-    latitude_idx = 12
-    longitude_idx = 13
-
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for row in workbook.active:
-        zipcode = f"{row[zip_idx].value:05}".rstrip()
-        if zipcode == "zip":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1886,18 +1907,26 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        if row[type_idx].value != "STANDARD" or row[country_idx].value != "US":
+        if (
+            _extract_column_value(row, COLUMN_TYPE) != "STANDARD"
+            or _extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
+        ):
             continue
 
-        primary_city = [row[primary_city_idx].value.upper().rstrip()]
+        zipcode = f"{str(_extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
+        primary_city = [
+            str(_extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
+        ]
         acceptable_cities = (
-            row[acceptable_cities_idx].value.upper().split(",")
-            if row[acceptable_cities_idx].value
+            str(_extract_column_value(row, COLUMN_ACCEPTABLE_CITIES))
+            .upper()
+            .split(",")
+            if _extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
             else []
         )
-        state = row[state_idx].value.upper().rstrip()
-        lat = row[latitude_idx].value
-        lng = row[longitude_idx].value
+        state = str(_extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
+        lat = _extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
+        lng = _extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
 
         for city in acceptable_cities:
             primary_city.append(city.rstrip())
@@ -1963,8 +1992,6 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                     ),
                 )
                 count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -2144,9 +2171,7 @@ def download_zip_code_db_file() -> None:
         # INFO.00.058 The connection to the Zip Code Database file '{filename}'
         # on the Zip Codes.org download page was successfully established
         io_utils.progress_msg(
-            glob_local.INFO_00_058.replace(
-                "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
-            )
+            glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG)
         )
 
         if not os.path.isdir(io_config.settings.download_work_dir):
@@ -2154,7 +2179,7 @@ def download_zip_code_db_file() -> None:
 
         filename_xls = os.path.join(
             io_config.settings.download_work_dir.replace("/", os.sep),
-            io_config.settings.download_file_zip_codes_org_xlsx,
+            FILE_ZIP_CODES_ORG,
         )
 
         no_chunks = 0
@@ -2168,9 +2193,9 @@ def download_zip_code_db_file() -> None:
 
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob_local.INFO_00_023.replace(
-                "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
-            ).replace("{no_chunks}", str(no_chunks))
+            glob_local.INFO_00_023.replace("{filename}", FILE_ZIP_CODES_ORG).replace(
+                "{no_chunks}", str(no_chunks)
+            )
         )
 
     except ConnectionError:

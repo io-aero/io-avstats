@@ -19,6 +19,7 @@ streamlit-pandas-profiling = "*"
 tomli = "*"
 tomli-w = "*"
 virtualenv = "*"
+xlrd = "*"
 ydata-profiling = "*"
 
 [dev-packages]

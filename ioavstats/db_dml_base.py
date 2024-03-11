@@ -16,7 +16,7 @@ from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
-from openpyxl.reader.excel import load_workbook
+from iocommon.io_utils import extract_column_value
 from psycopg import connection
 from psycopg import cursor
 from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
@@ -29,86 +29,66 @@ from ioavstats import utils
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_ACCEPTABLE_CITIES = "acceptable_cities"
 COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
+COLUMN_CICTT_CODE_SPACE = "CICTT Code"
+COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
+COLUMN_CITY = "city"
 COLUMN_COMP_CODE = "COMP_CODE"
-COLUMN_COUNTRY = "COUNTRY"
+COLUMN_COUNTRY_LOWER = "country"
+COLUMN_COUNTRY_UPPER = "COUNTRY"
+COLUMN_DEFINITION = "Definition"
 COLUMN_DIM_UOM = "DIM_UOM"
 COLUMN_DODHIFLIP = "DODHIFLIP"
 COLUMN_ELEVATION = "ELEVATION"
+COLUMN_EVENTSOE_NO = "eventsoe_no"
 COLUMN_FAR91 = "FAR91"
 COLUMN_FAR93 = "FAR93"
 COLUMN_GLOBAL_ID = "GLOBAL_ID"
 COLUMN_IAPEXISTS = "IAPEXISTS"
 COLUMN_IDENT = "IDENT"
-COLUMN_LATITUDE = "LATITUDE"
+COLUMN_IDENTIFIER = "Identifier"
+COLUMN_LAT = "lat"
+COLUMN_LATITUDE_LOWER = "latitude"
+COLUMN_LATITUDE_UPPER = "LATITUDE"
 COLUMN_LENGTH = "LENGTH"
-COLUMN_LONGITUDE = "LONGITUDE"
+COLUMN_LNG = "lng"
+COLUMN_LOCID = "LocID"
+COLUMN_LONGITUDE_LOWER = "longitude"
+COLUMN_LONGITUDE_UPPER = "LONGITUDE"
+COLUMN_MEANING = "meaning"
 COLUMN_MIL_CODE = "MIL_CODE"
 COLUMN_NAME = "NAME"
 COLUMN_OPERSTATUS = "OPERSTATUS"
+COLUMN_PRIMARY_CITY = "primary_city"
 COLUMN_PRIVATEUSE = "PRIVATEUSE"
 COLUMN_SERVCITY = "SERVCITY"
-COLUMN_STATE = "STATE"
+COLUMN_STATE_CAMEL = "State"
+COLUMN_STATE_ID = "state_id"
+COLUMN_STATE_LOWER = "state"
+COLUMN_STATE_UPPER = "STATE"
+COLUMN_TYPE = "type"
 COLUMN_TYPE_CODE = "TYPE_CODE"
 COLUMN_X = "X"
 COLUMN_Y = "Y"
+COLUMN_ZIP = "zip"
+COLUMN_ZIPS = "zips"
 
+FILE_AVIATION_OCCURRENCE_CATEGORIES = (
+    io_config.settings.download_file_aviation_occurrence_categories
+)
 FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
+FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias
 FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
+FILE_SEQUENCE_OF_EVENTS = io_config.settings.download_file_sequence_of_events
+FILE_SIMPLEMAPS_US_CITIES = io_config.settings.download_file_simplemaps_us_cities
+FILE_SIMPLEMAPS_US_ZIPS = io_config.settings.download_file_simplemaps_us_zips
+FILE_ZIP_CODES_ORG = io_config.settings.download_file_zip_codes_org
 
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
 logger = logging.getLogger(__name__)
-
-
-# ------------------------------------------------------------------
-# Extract column values.
-# ------------------------------------------------------------------
-def _extract_column_value(row, column_name, data_type=str, is_required=False):
-    """Extract and validate a value from a given column in a row with specified data type.
-
-    Parameters:
-    - row (pd.Series): The row from which to extract the value.
-    - column_name (str): The name of the column to extract the value from.
-    - data_type (type): The expected data type of the column (e.g., int, float, str, pd.Timestamp).
-    - is_required (bool): Indicates whether the column value is required (True) or optional (False).
-
-    Returns:
-    - The extracted value if valid, otherwise None.
-
-    Raises:
-    - ValueError with a message containing the column name, the invalid value,
-      and the cause of the error if the value is invalid and the column is required.
-
-    """
-    value = row.get(column_name, None)
-
-    if str(value).rstrip() == "":
-        value = None
-
-    # Check for required but missing or empty values
-    if is_required and pd.isnull(value):
-        error_message = f"Missing required value in column '{column_name}'."
-        raise ValueError(error_message)
-
-    # If the value is missing in an optional column, return None
-    if not is_required and pd.isnull(value):
-        return None
-
-    # Validate and convert the data type
-    try:
-        if data_type == pd.Timestamp:
-            # For datetime, ensure conversion to pd.Timestamp works
-            return pd.to_datetime(value)
-
-        # For other data types, attempt direct conversion
-        return data_type(value)
-    except ValueError as e:
-        error_message = (
-            f"Error in column '{column_name}' with value '{value}': {str(e)}"
-        )
-        return None
 
 
 # ------------------------------------------------------------------
@@ -148,7 +128,7 @@ def _load_airport_data() -> None:
     locids: list[str] = _load_npias_data(us_states)
 
     # ------------------------------------------------------------------
-    # Load the airport data in a Pandas dataframe.
+    # Load the data into a Pandas dataframe.
     # ------------------------------------------------------------------
 
     try:
@@ -158,13 +138,13 @@ def _load_airport_data() -> None:
             COLUMN_GLOBAL_ID,
             COLUMN_IDENT,
             COLUMN_NAME,
-            COLUMN_LATITUDE,
-            COLUMN_LONGITUDE,
+            COLUMN_LATITUDE_UPPER,
+            COLUMN_LONGITUDE_UPPER,
             COLUMN_ELEVATION,
             COLUMN_TYPE_CODE,
             COLUMN_SERVCITY,
-            COLUMN_STATE,
-            COLUMN_COUNTRY,
+            COLUMN_STATE_UPPER,
+            COLUMN_COUNTRY_UPPER,
             COLUMN_OPERSTATUS,
             COLUMN_PRIVATEUSE,
             COLUMN_IAPEXISTS,
@@ -220,15 +200,15 @@ def _load_airport_data() -> None:
     for _index, row in dataframe.iterrows():
         count_select += 1
 
-        ident = _extract_column_value(row, COLUMN_IDENT)
+        ident = extract_column_value(row, COLUMN_IDENT)
         if ident is None or ident not in locids:
             continue
 
-        country = _extract_column_value(row, COLUMN_COUNTRY)
+        country = extract_column_value(row, COLUMN_COUNTRY_UPPER)
         if country != "UNITED STATES":
             continue
 
-        state = _extract_column_value(row, COLUMN_STATE)
+        state = extract_column_value(row, COLUMN_STATE_UPPER)
         if state is None or state not in us_states:
             continue
 
@@ -240,25 +220,25 @@ def _load_airport_data() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        airanal = _extract_column_value(row, COLUMN_AIRANAL)
+        airanal = extract_column_value(row, COLUMN_AIRANAL)
         country = "USA"
-        dec_longitude = _extract_column_value(row, COLUMN_X, float)
-        dec_latitude = _extract_column_value(row, COLUMN_Y, float)
-        dodhiflib = _extract_column_value(row, COLUMN_DODHIFLIP, int)
-        elevation = _extract_column_value(row, COLUMN_ELEVATION, float)
-        far91 = _extract_column_value(row, COLUMN_FAR91, int)
-        far93 = _extract_column_value(row, COLUMN_FAR93, int)
-        global_id = _extract_column_value(row, COLUMN_GLOBAL_ID)
-        iapexists = _extract_column_value(row, COLUMN_IAPEXISTS)
-        latitude = _extract_column_value(row, COLUMN_LATITUDE)
-        longitude = _extract_column_value(row, COLUMN_LONGITUDE)
-        mil_code = _extract_column_value(row, COLUMN_MIL_CODE)
-        name = _extract_column_value(row, COLUMN_NAME)
-        operstatus = _extract_column_value(row, COLUMN_OPERSTATUS)
-        privateuse = _extract_column_value(row, COLUMN_PRIVATEUSE, int)
-        servcity = _extract_column_value(row, COLUMN_SERVCITY)
-        state = _extract_column_value(row, COLUMN_STATE)
-        type_code = _extract_column_value(row, COLUMN_TYPE_CODE)
+        dec_longitude = extract_column_value(row, COLUMN_X, float)
+        dec_latitude = extract_column_value(row, COLUMN_Y, float)
+        dodhiflib = extract_column_value(row, COLUMN_DODHIFLIP, int)
+        elevation = extract_column_value(row, COLUMN_ELEVATION, float)
+        far91 = extract_column_value(row, COLUMN_FAR91, int)
+        far93 = extract_column_value(row, COLUMN_FAR93, int)
+        global_id = extract_column_value(row, COLUMN_GLOBAL_ID)
+        iapexists = extract_column_value(row, COLUMN_IAPEXISTS)
+        latitude = extract_column_value(row, COLUMN_LATITUDE_UPPER)
+        longitude = extract_column_value(row, COLUMN_LONGITUDE_UPPER)
+        mil_code = extract_column_value(row, COLUMN_MIL_CODE)
+        name = extract_column_value(row, COLUMN_NAME)
+        operstatus = extract_column_value(row, COLUMN_OPERSTATUS)
+        privateuse = extract_column_value(row, COLUMN_PRIVATEUSE, int)
+        servcity = extract_column_value(row, COLUMN_SERVCITY)
+        state = extract_column_value(row, COLUMN_STATE_UPPER)
+        type_code = extract_column_value(row, COLUMN_TYPE_CODE)
 
         cur_pg.execute(
             """
@@ -374,7 +354,7 @@ def _load_airport_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()
@@ -398,9 +378,7 @@ def _load_aviation_occurrence_categories() -> None:
 
     filename_excel = os.path.join(
         os.getcwd(),
-        io_config.settings.download_file_aviation_occurrence_categories_xlsx.replace(
-            "/", os.sep
-        ),
+        FILE_AVIATION_OCCURRENCE_CATEGORIES.replace("/", os.sep),
     )
 
     if not os.path.isfile(filename_excel):
@@ -413,12 +391,51 @@ def _load_aviation_occurrence_categories() -> None:
     io_utils.progress_msg(
         glob_local.INFO_00_074.replace(
             "{filename}",
-            io_config.settings.download_file_aviation_occurrence_categories_xlsx,
+            FILE_AVIATION_OCCURRENCE_CATEGORIES,
         )
     )
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_AVIATION_OCCURRENCE_CATEGORIES,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            )
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            ).replace("{error}", str(exc))
+        )
+
+    # INFO.00.074 Database table io_aviation_occurrence_categories: Load data from file '{filename}'
+    io_utils.progress_msg(
+        glob_local.INFO_00_074.replace(
+            "{filename}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+        )
+    )
 
     count_delete = 0
     count_upsert = 0
@@ -428,21 +445,8 @@ def _load_aviation_occurrence_categories() -> None:
     # Load the aviation occurrence categories.
     # ------------------------------------------------------------------
 
-    cictt_code_idx = 0
-    identifier_idx = 1
-    definition_idx = 2
-
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     # pylint: disable=R0801
-    for row in workbook.active:
-        cictt_code = row[cictt_code_idx].value.upper().rstrip()
-        if cictt_code == "CICTT CODE":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -452,8 +456,9 @@ def _load_aviation_occurrence_categories() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        identifier = row[identifier_idx].value.upper().rstrip()
-        definition = row[definition_idx].value.rstrip()
+        cictt_code = extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
+        identifier = extract_column_value(row, COLUMN_IDENTIFIER)
+        definition = extract_column_value(row, COLUMN_DEFINITION)
 
         cur_pg.execute(
             """
@@ -488,8 +493,6 @@ def _load_aviation_occurrence_categories() -> None:
             ),
         )
         count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -550,9 +553,7 @@ def _load_aviation_occurrence_categories() -> None:
     # Finalize processing.
     # ------------------------------------------------------------------
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_aviation_occurrence_categories_xlsx, cur_pg
-    )
+    utils.upd_io_processed_files(FILE_AVIATION_OCCURRENCE_CATEGORIES, cur_pg)
 
     cur_pg.close()
     conn_pg.close()
@@ -662,7 +663,7 @@ def _load_npias_data(us_states) -> list[str]:
 
     filename_excel = os.path.join(
         os.getcwd(),
-        io_config.settings.download_file_faa_npias_xlsx.replace("/", os.sep),
+        FILE_FAA_NPIAS_DATA.replace("/", os.sep),
     )
 
     if not os.path.isfile(filename_excel):
@@ -671,31 +672,54 @@ def _load_npias_data(us_states) -> list[str]:
             glob_local.ERROR_00_945.replace("{filename}", filename_excel)
         )
 
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
-    io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(glob_local.INFO_00_089.replace("{filename}", filename_excel))
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_FAA_NPIAS_DATA,
+            sheet_name="All NPIAS Airports",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_NPIAS_DATA)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
+                "{error}", str(exc)
+            )
+        )
 
     count_select = 0
     count_usable = 0
 
-    state_idx = 0
-    locid_idx = 3
-
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     locids: list[str] = []
 
+    # ------------------------------------------------------------------
+    # Load the NPIAS data.
+    # ------------------------------------------------------------------
+
     # pylint: disable=R0801
-    for row in workbook.active:
+    for _index, row in dataframe.iterrows():
+
         count_select += 1
-        if not row[state_idx].value in us_states:
+
+        if not extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
             continue
 
-        locids.append(row[locid_idx].value)
+        locids.append(extract_column_value(row, COLUMN_LOCID))
 
         count_usable += 1
 
@@ -743,7 +767,7 @@ def _load_runway_data() -> None:
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
-    # Load the runway data in a Pandas dataframe.
+    # Load the data into a Pandas dataframe.
     # ------------------------------------------------------------------
 
     try:
@@ -781,9 +805,9 @@ def _load_runway_data() -> None:
             )
         )
 
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
+    # INFO.00.092 Database table io_runways: Load data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_RUNWAYS)
+        glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS)
     )
 
     count_select = 0
@@ -795,7 +819,7 @@ def _load_runway_data() -> None:
     # pylint: disable=R0801
     for _index, row in dataframe.iterrows():
 
-        airport_id = _extract_column_value(row, COLUMN_AIRPORT_ID)
+        airport_id = extract_column_value(row, COLUMN_AIRPORT_ID)
         if airport_id not in runway_data:
             continue
 
@@ -806,15 +830,15 @@ def _load_runway_data() -> None:
             length,
         ) = runway_data[airport_id]
 
-        new_length = _extract_column_value(row, COLUMN_LENGTH, int)
+        new_length = extract_column_value(row, COLUMN_LENGTH, int)
 
-        dim_vom = _extract_column_value(row, COLUMN_DIM_UOM)
+        dim_vom = extract_column_value(row, COLUMN_DIM_UOM)
         if dim_vom == "M":
             new_length = new_length * 3.28084
 
         if length is None or new_length > length:
             runway_data[airport_id] = (
-                _extract_column_value(row, COLUMN_COMP_CODE),
+                extract_column_value(row, COLUMN_COMP_CODE),
                 new_length,
             )
 
@@ -873,7 +897,7 @@ def _load_runway_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()
@@ -894,34 +918,62 @@ def _load_sequence_of_events() -> None:
     # Start processing.
     # ------------------------------------------------------------------
 
-    filename_excel = os.path.join(
-        os.getcwd(),
-        io_config.settings.download_file_sequence_of_events_xlsx.replace("/", os.sep),
-    )
-
-    if not os.path.isfile(filename_excel):
-        # ERROR.00.938 The sequence of events file '{filename}' is missing
-        io_utils.terminate_fatal(
-            glob_local.ERROR_00_938.replace("{filename}", filename_excel)
-        )
-
     # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_076.replace(
-            "{filename}", io_config.settings.download_file_sequence_of_events_xlsx
+            "{filename}", io_config.settings.download_file_sequence_of_events
         )
     )
     io_utils.progress_msg("-" * 80)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        columns = [
+            COLUMN_EVENTSOE_NO,
+            COLUMN_MEANING,
+            COLUMN_CICTT_CODE_UNDERSCORE,
+        ]
+
+        # Attempt to read the csv file
+        dataframe = pd.read_csv(FILE_SEQUENCE_OF_EVENTS, sep=",", usecols=columns)
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+        )
+
+    except pd.errors.EmptyDataError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SEQUENCE_OF_EVENTS
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SEQUENCE_OF_EVENTS
+            ).replace("{error}", str(exc))
+        )
+
+    # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
+    io_utils.progress_msg(
+        glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS)
+    )
+
     count_delete = 0
     count_upsert = 0
     count_select = 0
-
-    eventsoe_no_idx = 0
-    meaning_idx = 1
-    cictt_code_idx = 2
 
     # ------------------------------------------------------------------
     # Load the sequence of events data.
@@ -929,17 +981,8 @@ def _load_sequence_of_events() -> None:
 
     cictt_codes = _sql_query_cictt_codes(conn_pg)
 
-    workbook = load_workbook(
-        filename=filename_excel,
-        read_only=True,
-        data_only=True,
-    )
-
     # pylint: disable=R0801
-    for row in workbook.active:
-        soe_no = str(row[eventsoe_no_idx].value).rjust(3, "0")
-        if soe_no == "eventsoe_no":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -949,15 +992,15 @@ def _load_sequence_of_events() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        cictt_code = (
-            row[cictt_code_idx].value.upper().rstrip()
-            if row[cictt_code_idx].value
-            else None
-        )
+        soe_no = extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
+
+        cictt_code = str(
+            extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
+        ).rstrip()
         if cictt_code is None or cictt_code not in cictt_codes:
             continue
 
-        meaning = row[meaning_idx].value.rstrip()
+        meaning = str(extract_column_value(row, COLUMN_MEANING)).rstrip()
 
         cur_pg.execute(
             """
@@ -992,8 +1035,6 @@ def _load_sequence_of_events() -> None:
             ),
         )
         count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -1055,7 +1096,7 @@ def _load_sequence_of_events() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events_xlsx, cur_pg
+        io_config.settings.download_file_sequence_of_events, cur_pg
     )
 
     cur_pg.close()
@@ -1073,41 +1114,62 @@ def _load_simplemaps_data_cities_from_us_cities(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_cities_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
         )
 
     # INFO.00.027 Database table io_lat_lng: Load city data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_027.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
-        )
+        glob_local.INFO_00_027.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_CITIES,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(exc))
+        )
 
     count_upsert = 0
     count_select = 0
 
-    city_idx = 0
-    lat_idx = 6
-    lng_idx = 7
-    state_idx = 2
-
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for row in workbook.active:
-        city = row[city_idx].value.upper().rstrip()
-        if city == "CITY":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1117,9 +1179,10 @@ def _load_simplemaps_data_cities_from_us_cities(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1155,7 +1218,7 @@ def _load_simplemaps_data_cities_from_us_cities(
             (
                 glob_local.IO_LAT_LNG_TYPE_CITY,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
                 lat,
                 lng,
@@ -1167,7 +1230,7 @@ def _load_simplemaps_data_cities_from_us_cities(
                 datetime.now(),
                 glob_local.IO_LAT_LNG_TYPE_CITY,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
                 lat,
                 lng,
@@ -1175,11 +1238,7 @@ def _load_simplemaps_data_cities_from_us_cities(
         )
         count_upsert += cur_pg.rowcount
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_cities_xlsx, cur_pg
-    )
-
-    workbook.close()
+    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
 
     conn_pg.commit()
 
@@ -1201,48 +1260,70 @@ def _load_simplemaps_data_zips_from_us_cities(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_cities_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
         )
 
     # INFO.00.039 Database table io_lat_lng: Load zipcode data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_039.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_cities_xlsx
-        )
+        glob_local.INFO_00_039.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_CITIES,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
+            ).replace("{error}", str(exc))
+        )
 
     count_insert = 0
     count_select = 0
 
-    city_idx = 0
-    lat_idx = 6
-    lng_idx = 7
-    state_idx = 2
-    zipcodes_idx = 15
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # pylint: disable=R0801
+    for _index, row in dataframe.iterrows():
 
-    for row in workbook.active:
-        city = row[city_idx].value.upper().rstrip()
-        if city == "CITY":
-            continue
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+        zips = list(f"{extract_column_value(row, COLUMN_ZIPS)}".split(" "))
 
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
-        zipcodes = list(f"{row[zipcodes_idx].value}".split(" "))
-
-        for zipcode in zipcodes:
+        for zipcode in zips:
             count_select += 1
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
@@ -1272,7 +1353,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                 (
                     glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                     glob_local.COUNTRY_USA,
-                    state,
+                    state_id,
                     city,
                     zipcode.rstrip(),
                     lat,
@@ -1283,11 +1364,7 @@ def _load_simplemaps_data_zips_from_us_cities(
             )
             count_insert += cur_pg.rowcount
 
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_cities_xlsx, cur_pg
-    )
-
-    workbook.close()
+    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
 
     conn_pg.commit()
 
@@ -1308,42 +1385,65 @@ def _load_simplemaps_data_zips_from_us_zips(
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_simplemaps_us_zips_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_SIMPLEMAPS_US_ZIPS.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.913 The US zip code file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_913.replace("{filename}", filename)
+            glob_local.ERROR_00_913.replace("{filename}", filename_excel)
         )
 
     # INFO.00.025 Database table io_lat_lng: Load zipcode data rom file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_025.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_zips_xlsx
+            "{filename}", io_config.settings.download_file_simplemaps_us_zips
         )
     )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_SIMPLEMAPS_US_ZIPS,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_ZIPS)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
+            ).replace("{error}", str(exc))
+        )
 
     count_duplicates = 0
     count_upsert = 0
     count_select = 0
 
-    zip_idx = 0
-    lat_idx = 1
-    lng_idx = 2
-    city_idx = 3
-    state_idx = 4
+    # ------------------------------------------------------------------
+    # Load the US zip data.
+    # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
-
-    for row in workbook.active:
-        zipcode = f"{row[zip_idx].value:05}".rstrip()
-        if zipcode == "zip00":
-            continue
+    # pylint: disable=R0801
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1353,10 +1453,11 @@ def _load_simplemaps_data_zips_from_us_zips(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        city = row[city_idx].value.upper().rstrip()
-        lat = row[lat_idx].value
-        lng = row[lng_idx].value
-        state = row[state_idx].value.upper().rstrip()
+        zip_code = f"{extract_column_value(row, COLUMN_ZIP):05}".rstrip()
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1394,9 +1495,9 @@ def _load_simplemaps_data_zips_from_us_zips(
             (
                 glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
-                zipcode,
+                zip_code,
                 lat,
                 lng,
                 glob_local.SOURCE_SM_US_ZIP_CODES,
@@ -1407,9 +1508,9 @@ def _load_simplemaps_data_zips_from_us_zips(
                 datetime.now(),
                 glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                 glob_local.COUNTRY_USA,
-                state,
+                state_id,
                 city,
-                zipcode,
+                zip_code,
                 lat,
                 lng,
             ),
@@ -1417,10 +1518,8 @@ def _load_simplemaps_data_zips_from_us_zips(
         count_upsert += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_zips_xlsx, cur_pg
+        io_config.settings.download_file_simplemaps_us_zips, cur_pg
     )
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -1643,15 +1742,15 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 def _load_zip_codes_org_data() -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    # ------------------------------------------------------------------
-    # Start processing.
-    # ------------------------------------------------------------------
-    filename_xlsx = io_config.settings.download_file_zip_codes_org_xlsx
+    filename_excel = os.path.join(
+        os.getcwd(),
+        FILE_ZIP_CODES_ORG.replace("/", os.sep),
+    )
 
-    if not os.path.isfile(filename_xlsx):
+    if not os.path.isfile(filename_excel):
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_935.replace("{filename}", filename_xlsx)
+            glob_local.ERROR_00_935.replace("{filename}", filename_excel)
         )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
@@ -1682,7 +1781,7 @@ def _load_zip_codes_org_data() -> None:
     # ------------------------------------------------------------------
     # Insert new data.
     # ------------------------------------------------------------------
-    _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename_xlsx)
+    _load_zip_codes_org_data_zips(conn_pg, cur_pg, FILE_ZIP_CODES_ORG)
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1693,9 +1792,7 @@ def _load_zip_codes_org_data() -> None:
     # ------------------------------------------------------------------
     # Finalize processing.
     # ------------------------------------------------------------------
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_zip_codes_org_xlsx, cur_pg
-    )
+    utils.upd_io_processed_files(FILE_ZIP_CODES_ORG, cur_pg)
 
     cur_pg.close()
     conn_pg.close()
@@ -1714,29 +1811,45 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
     io_utils.progress_msg(glob_local.INFO_00_061)
     io_utils.progress_msg("-" * 80)
 
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            filename,
+            sheet_name="zip_code_database",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", filename)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", filename).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", filename).replace(
+                "{error}", str(exc)
+            )
+        )
+
     count_upsert = 0
     count_select = 0
 
-    zip_idx = 0
-    type_idx = 1
-    primary_city_idx = 3
-    acceptable_cities_idx = 4
-    state_idx = 6
-    country_idx = 11
-    latitude_idx = 12
-    longitude_idx = 13
-
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the US city data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for row in workbook.active:
-        zipcode = f"{row[zip_idx].value:05}".rstrip()
-        if zipcode == "zip":
-            continue
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -1746,18 +1859,24 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        if row[type_idx].value != "STANDARD" or row[country_idx].value != "US":
+        if (
+            extract_column_value(row, COLUMN_TYPE) != "STANDARD"
+            or extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
+        ):
             continue
 
-        primary_city = [row[primary_city_idx].value.upper().rstrip()]
+        zipcode = f"{str(extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
+        primary_city = [
+            str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
+        ]
         acceptable_cities = (
-            row[acceptable_cities_idx].value.upper().split(",")
-            if row[acceptable_cities_idx].value
+            str(extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)).upper().split(",")
+            if extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
             else []
         )
-        state = row[state_idx].value.upper().rstrip()
-        lat = row[latitude_idx].value
-        lng = row[longitude_idx].value
+        state = str(extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
+        lng = extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
 
         for city in acceptable_cities:
             primary_city.append(city.rstrip())
@@ -1823,8 +1942,6 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                     ),
                 )
                 count_upsert += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 
@@ -1974,102 +2091,6 @@ def download_us_cities_file() -> None:
 
 
 # ------------------------------------------------------------------
-# Download a US zip code file.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
-def download_us_zips_file() -> None:
-    """Download a US zip code file."""
-    logger.debug(io_glob.LOGGER_START)
-
-    url = io_config.settings.download_url_simplemaps_us_zips
-
-    try:
-        file_resp = requests.get(
-            url=url,
-            allow_redirects=True,
-            stream=True,
-            timeout=io_config.settings.download_timeout,
-        )
-
-        if file_resp.status_code != 200:
-            # ERROR.00.906 Unexpected response status code='{status_code}'
-            io_utils.terminate_fatal(
-                glob_local.ERROR_00_906.replace(
-                    "{status_code}", str(file_resp.status_code)
-                )
-            )
-
-        # INFO.00.022 The connection to the US zip code file '{filename}'
-        # on the simplemaps download page was successfully established
-        io_utils.progress_msg(
-            glob_local.INFO_00_022.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
-            )
-        )
-
-        if not os.path.isdir(io_config.settings.download_work_dir):
-            os.makedirs(io_config.settings.download_work_dir)
-
-        filename_zip = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep),
-            io_config.settings.download_file_simplemaps_us_zips_zip,
-        )
-
-        no_chunks = 0
-
-        with open(filename_zip, "wb") as file_zip:
-            for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size
-            ):
-                file_zip.write(chunk)
-                no_chunks += 1
-
-        # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
-        io_utils.progress_msg(
-            glob_local.INFO_00_023.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
-            ).replace("{no_chunks}", str(no_chunks))
-        )
-
-        try:
-            zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
-                filename_zip
-            )
-
-            for zipped_file in zipped_files.namelist():
-                zipped_files.extract(zipped_file, io_config.settings.download_work_dir)
-
-            zipped_files.close()
-        except zipfile.BadZipFile:
-            # ERROR.00.907 File '{filename}' is not a zip file
-            io_utils.terminate_fatal(
-                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
-            )
-
-        os.remove(filename_zip)
-        # INFO.00.024 The file '{filename}'  was successfully unpacked
-        io_utils.progress_msg(
-            glob_local.INFO_00_024.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_zips_zip
-            )
-        )
-    except ConnectionError:
-        # ERROR.00.905 Connection problem with url='{url}'
-        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
-    except TimeoutError:
-        # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
-        io_utils.terminate_fatal(
-            glob_local.ERROR_00_909.replace(
-                "{timeout}", str(io_config.settings.download_timeout)
-            ).replace("{url}", url)
-        )
-
-    logger.debug(io_glob.LOGGER_END)
-
-
-# ------------------------------------------------------------------
 # Download the ZIP Code Database file.
 # ------------------------------------------------------------------
 # pylint: disable=too-many-branches
@@ -2100,9 +2121,7 @@ def download_zip_code_db_file() -> None:
         # INFO.00.058 The connection to the Zip Code Database file '{filename}'
         # on the Zip Codes.org download page was successfully established
         io_utils.progress_msg(
-            glob_local.INFO_00_058.replace(
-                "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
-            )
+            glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG)
         )
 
         if not os.path.isdir(io_config.settings.download_work_dir):
@@ -2110,7 +2129,7 @@ def download_zip_code_db_file() -> None:
 
         filename_xls = os.path.join(
             io_config.settings.download_work_dir.replace("/", os.sep),
-            io_config.settings.download_file_zip_codes_org_xlsx,
+            FILE_ZIP_CODES_ORG,
         )
 
         no_chunks = 0
@@ -2124,9 +2143,9 @@ def download_zip_code_db_file() -> None:
 
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
-            glob_local.INFO_00_023.replace(
-                "{filename}", io_config.settings.download_file_zip_codes_org_xlsx
-            ).replace("{no_chunks}", str(no_chunks))
+            glob_local.INFO_00_023.replace("{filename}", FILE_ZIP_CODES_ORG).replace(
+                "{no_chunks}", str(no_chunks)
+            )
         )
 
     except ConnectionError:

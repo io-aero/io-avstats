@@ -2,7 +2,7 @@
 
 The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
-- `download_file_main_phases_of_flight_xlsx` = "data/Main_Phases_of_Flight/main_phases_of_flight.xlsx"
+- `download_file_main_phases_of_flight` = "data/Main_Phases_of_Flight/main_phases_of_flight.xlsx"
 
 The data was created by IO-Aero.
 

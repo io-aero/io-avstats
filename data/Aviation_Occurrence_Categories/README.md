@@ -6,7 +6,7 @@ This file directory contains the necessary files for the processing step:
 
 The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
-- `download_file_aviation_occurrence_categories_xlsx` = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
+- `download_file_aviation_occurrence_categories` = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 
 The data source can be found on the NTSB website here:
 

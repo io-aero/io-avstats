@@ -29,12 +29,15 @@ dependencies = [
     "plotly",
     "pyeclat",
     "pyodbc",
+    "psycopg2-binary",
     "requests",
     "sqlalchemy",
     "streamlit",
     "streamlit-pandas-profiling",
     "tomli",
     "tomli-w",
+    "virtualenv",
+    "xlrd",
     "ydata-profiling",
 ]
 description = "Aviation Accident Statistics"

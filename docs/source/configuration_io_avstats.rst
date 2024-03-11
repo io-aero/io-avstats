@@ -23,19 +23,19 @@ Available Parameters
      - number of rows processed before a progress message is created
    * - download_chunk_size
      - chunk size for download from the **NTSB** website
-   * - download_file_aviation_occurrence_categories_xlsx
+   * - download_file_aviation_occurrence_categories
      - name of the file containing data of aviation occurrence categories
    * - download_file_countries_states_json
      - name of the file containing data of countries and states
    * - download_file_faa_airports_xlsx
      - name of the file containing data of airports
-   * - download_file_faa_npias_xlsx
+   * - download_file_faa_npias
      - name of the file containing National Plan of Integrated Airport Systems
    * - download_file_faa_runways_xlsx
      - name of the file containing data of runways
-   * - download_file_main_phases_of_flight_xlsx
+   * - download_file_main_phases_of_flight
      - name of the file containing data of main phases of a flight
-   * - download_file_sequence_of_events_xlsx
+   * - download_file_sequence_of_events
      - name of the file containing data of sequence of events
    * - download_file_simplemaps_us_cities_xlsx
      - simplemaps: name of the zipped US city file

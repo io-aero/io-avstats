@@ -6,13 +6,13 @@ This file directory contains the necessary files for the processing step:
 
 The following parameter in the file **`settings.io_aero.toml`** is used to locate the file: 
 
-- `download_file_sequence_of_events_xlsx` = "data/Sequence_of_Events/CICTT_SOE_MAP.xlsx"
+- `download_file_sequence_of_events` = "data/Sequence_of_Events/CICTT_SOE_MAP.csv"
 
-The data came as a csv file directly from the NTSB.
+The data come directly from the NTSB.
 
 ### Processing
 
-Loads the data from the csv file according to the configuration parameter `download_file_sequence_of_events_xlsx` into the database table `io_sequence_of_events`.
+Loads the data from the csv file according to the configuration parameter `download_file_sequence_of_events` into the database table `io_sequence_of_events`.
 
 - Data not yet present will be added. 
 - An update only takes place if the content of a database column has changed.

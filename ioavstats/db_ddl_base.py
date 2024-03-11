@@ -6,11 +6,12 @@
 import logging
 import os.path
 
+import pandas as pd
 from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
-from openpyxl.reader.excel import load_workbook
+from iocommon.io_utils import extract_column_value
 from psycopg import DatabaseError
 from psycopg import connection
 from psycopg import cursor
@@ -23,11 +24,17 @@ from ioavstats import glob_local
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_DESCRIPTION = "description"
+COLUMN_MAIN_PHASE = "main_phase"
+COLUMN_PHASE_CODE = "phase_code"
+
 DLL_TABLE_STMNTS: dict[str, str] = {}
 DLL_VIEW_STMNTS_CREATE: dict[str, str] = {}
 DLL_VIEW_STMNTS_CREATE_MAT: dict[str, str] = {}
 DLL_VIEW_STMNTS_DROP: list[str] = []
 DLL_VIEW_STMNTS_REFRESH: list[str] = []
+
+FILE_MAIN_PHASES_OF_FLIGHT = io_config.settings.download_file_main_phases_of_flight
 
 logger = logging.getLogger(__name__)
 
@@ -3339,39 +3346,60 @@ def _create_tokens_4_finding_description(finding_description):
 def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    filename = io_config.settings.download_file_main_phases_of_flight_xlsx
-
-    if not os.path.isfile(filename):
+    if not os.path.isfile(FILE_MAIN_PHASES_OF_FLIGHT):
         # ERROR.00.941 The Main Phases of Flight file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_941.replace("{filename}", filename)
+            glob_local.ERROR_00_941.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT)
         )
 
     io_utils.progress_msg("")
     io_utils.progress_msg("-" * 80)
     # INFO.00.084 Database table io_md_codes_phase: Load description_main_phase
     # from file '{filename}'
-    io_utils.progress_msg(glob_local.INFO_00_084.replace("{filename}", filename))
+    io_utils.progress_msg(
+        glob_local.INFO_00_084.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT)
+    )
     io_utils.progress_msg("-" * 80)
+
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            FILE_MAIN_PHASES_OF_FLIGHT,
+            sheet_name="io_md_codes_phase",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_MAIN_PHASES_OF_FLIGHT)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace(
+                "{file_name}", FILE_MAIN_PHASES_OF_FLIGHT
+            ).replace("{error}", str(err))
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace(
+                "{file_name}", FILE_MAIN_PHASES_OF_FLIGHT
+            ).replace("{error}", str(exc))
+        )
 
     count_select = 0
     count_update = 0
 
-    phase_code_idx = 0
-    main_phase_idx = 2
+    # ------------------------------------------------------------------
+    # Load the NPIAS data.
+    # ------------------------------------------------------------------
 
-    workbook = load_workbook(
-        filename=filename,
-        read_only=True,
-        data_only=True,
-    )
-
-    for row in workbook.active:
-        phase_code = str(row[phase_code_idx].value)
-        if phase_code == "phase_code":
-            continue
-
-        main_phase = row[main_phase_idx].value
+    # pylint: disable=R0801
+    for _index, row in dataframe.iterrows():
 
         count_select += 1
 
@@ -3380,6 +3408,9 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             io_utils.progress_msg(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
+
+        phase_code = str(extract_column_value(row, COLUMN_PHASE_CODE))
+        main_phase = extract_column_value(row, COLUMN_MAIN_PHASE)
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -3394,8 +3425,6 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             ),
         )
         count_update += cur_pg.rowcount
-
-    workbook.close()
 
     conn_pg.commit()
 

@@ -8,13 +8,14 @@ import os
 from collections import OrderedDict
 
 import lat_lon_parser  # type: ignore
+import pandas as pd
 from haversine import Unit  # type: ignore
 from haversine import haversine
 from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
-from openpyxl import load_workbook
+from iocommon.io_utils import extract_column_value
 from psycopg import connection
 from psycopg import cursor
 
@@ -28,7 +29,18 @@ from ioavstats.utils import prepare_longitude
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_AIRCRAFT_KEY = "aircraft_key"
+COLUMN_COLUMN_NAME = "column_name"
+COLUMN_CREW_NO = "crew_no"
+COLUMN_EV_ID = "ev_id"
 COLUMN_NAME: str = ""
+COLUMN_NOTE_1 = "note_1"
+COLUMN_NOTE_2 = "note_2"
+COLUMN_NOTE_3 = "note_3"
+COLUMN_OCCURRENCE_NO = "occurrence_no"
+COLUMN_TABLE_NAME = "table_name"
+COLUMN_VALUE = "value"
+
 COUNT_ERROR = 0
 COUNT_SELECT = 0
 COUNT_UPDATE = 0
@@ -36,16 +48,6 @@ COUNT_UPDATE = 0
 EV_ID: str = ""
 
 ROW: list[OrderedDict]
-ROW_COLUMN_TABLE_NAME_IDX = 0
-ROW_COLUMN_COLUMN_NAME_IDX = 1
-ROW_COLUMN_VALUE_IDX = 2
-ROW_COLUMN_EV_ID_IDX = 3
-ROW_COLUMN_AIRCRAFT_KEY_IDX = 4
-ROW_COLUMN_CREW_NO_IDX = 5
-ROW_COLUMN_OCCURRENCE_NO_IDX = 6
-ROW_COLUMN_NOTE_1_IDX = 7
-ROW_COLUMN_NOTE_2_IDX = 8
-ROW_COLUMN_NOTE_3_IDX = 9
 
 TABLE_NAME: str = ""
 TERMINAL_AREA_DISTANCE_NMI: float = io_config.settings.terminal_area_distance_nmi
@@ -240,7 +242,7 @@ def _process_events(
     global EV_ID  # pylint: disable=global-statement
 
     # pylint: disable=line-too-long
-    COLUMN_NAME = ROW[ROW_COLUMN_COLUMN_NAME_IDX].value.lower() if ROW[ROW_COLUMN_COLUMN_NAME_IDX].value else None  # type: ignore
+    COLUMN_NAME = str(extract_column_value(ROW, COLUMN_COLUMN_NAME)).lower() if str(extract_column_value(ROW, COLUMN_COLUMN_NAME)) else None  # type: ignore
     if not COLUMN_NAME:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
         _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "column_name"))
@@ -258,7 +260,7 @@ def _process_events(
         _error_msg(glob_local.ERROR_00_928)
         return
 
-    VALUE = ROW[ROW_COLUMN_VALUE_IDX].value  # type: ignore
+    VALUE = str(extract_column_value(ROW, COLUMN_VALUE))  # type: ignore
     if not VALUE:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
         _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "value"))
@@ -274,7 +276,7 @@ def _process_events(
             if not _check_corrected_value():
                 return
 
-    EV_ID = ROW[ROW_COLUMN_EV_ID_IDX].value  # type: ignore
+    EV_ID = str(extract_column_value(ROW, COLUMN_EV_ID))  # type: ignore
     if not EV_ID:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
         _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "ev_id"))
@@ -283,17 +285,17 @@ def _process_events(
     if not _check_events_ev_id(cur_pg):
         return
 
-    if ROW[ROW_COLUMN_AIRCRAFT_KEY_IDX].value:  # type: ignore
+    if str(extract_column_value(ROW, COLUMN_AIRCRAFT_KEY)):  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
         _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "aircraft_key"))
         return
 
-    if ROW[ROW_COLUMN_CREW_NO_IDX].value:  # type: ignore
+    if str(extract_column_value(ROW, COLUMN_CREW_NO)):  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
         _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "crew_no"))
         return
 
-    if ROW[ROW_COLUMN_OCCURRENCE_NO_IDX].value:  # type: ignore
+    if str(extract_column_value(ROW, COLUMN_OCCURRENCE_NO)):  # type: ignore
         # ERROR.00.929 Excel column '{column_name}' must be empty
         _error_msg(glob_local.ERROR_00_929.replace("{column_name}", "occurrence_no"))
         return
@@ -928,18 +930,42 @@ def load_correction_data(filename: str) -> None:
 
     conn_pg.autocommit = False
 
-    workbook = load_workbook(
-        filename=corr_file,
-        read_only=True,
-        data_only=True,
-    )
+    # ------------------------------------------------------------------
+    # Load the data into a Pandas dataframe.
+    # ------------------------------------------------------------------
+
+    try:
+        # Attempt to read the Excel file
+        dataframe = pd.read_excel(
+            corr_file,
+            sheet_name="Sheet1",
+        )
+
+    except FileNotFoundError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_931.replace("{file_name}", corr_file)
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", corr_file).replace(
+                "{error}", str(err)
+            )
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", corr_file).replace(
+                "{error}", str(exc)
+            )
+        )
+
+    # ------------------------------------------------------------------
+    # Load the correction data.
+    # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    for ROW in workbook.active:
-        # pylint: disable=line-too-long
-        TABLE_NAME = ROW[ROW_COLUMN_TABLE_NAME_IDX].value.lower() if ROW[ROW_COLUMN_TABLE_NAME_IDX].value else None  # type: ignore
-        if TABLE_NAME == "table_name":
-            continue
+    for _index, ROW in dataframe.iterrows():
 
         COUNT_SELECT += 1
 
@@ -949,6 +975,11 @@ def load_correction_data(filename: str) -> None:
                 f"Number of rows so far read : {str(COUNT_SELECT):>8}"
             )
 
+        TABLE_NAME = (
+            str(extract_column_value(ROW, COLUMN_TABLE_NAME)).lower()
+            if extract_column_value(ROW, COLUMN_TABLE_NAME)
+            else None
+        )  # type: ignore
         # ERROR.00.930 Excel column '{column_name}' must not be empty
         if not TABLE_NAME:
             _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "table_name"))
@@ -958,8 +989,6 @@ def load_correction_data(filename: str) -> None:
             _process_events(cur_pg)
         else:
             _error_msg(glob_local.ERROR_00_927)
-
-    workbook.close()
 
     conn_pg.commit()
 

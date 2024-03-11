@@ -16,6 +16,7 @@ from iocommon import db_utils
 from iocommon import io_config
 from iocommon import io_glob
 from iocommon import io_utils
+from iocommon.io_utils import extract_column_value
 from psycopg import connection
 from psycopg import cursor
 from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
@@ -88,55 +89,6 @@ FILE_ZIP_CODES_ORG = io_config.settings.download_file_zip_codes_org
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
 logger = logging.getLogger(__name__)
-
-
-# ------------------------------------------------------------------
-# Extract column values.
-# ------------------------------------------------------------------
-def _extract_column_value(row, column_name, data_type=str, is_required=False):
-    """Extract and validate a value from a given column in a row with specified data type.
-
-    Parameters:
-    - row (pd.Series): The row from which to extract the value.
-    - column_name (str): The name of the column to extract the value from.
-    - data_type (type): The expected data type of the column (e.g., int, float, str, pd.Timestamp).
-    - is_required (bool): Indicates whether the column value is required (True) or optional (False).
-
-    Returns:
-    - The extracted value if valid, otherwise None.
-
-    Raises:
-    - ValueError with a message containing the column name, the invalid value,
-      and the cause of the error if the value is invalid and the column is required.
-
-    """
-    value = row.get(column_name, None)
-
-    if str(value).rstrip() == "":
-        value = None
-
-    # Check for required but missing or empty values
-    if is_required and pd.isnull(value):
-        error_message = f"Missing required value in column '{column_name}'."
-        raise ValueError(error_message)
-
-    # If the value is missing in an optional column, return None
-    if not is_required and pd.isnull(value):
-        return None
-
-    # Validate and convert the data type
-    try:
-        if data_type == pd.Timestamp:
-            # For datetime, ensure conversion to pd.Timestamp works
-            return pd.to_datetime(value)
-
-        # For other data types, attempt direct conversion
-        return data_type(value)
-    except ValueError as e:
-        error_message = (
-            f"Error in column '{column_name}' with value '{value}': {str(e)}"
-        )
-        return None
 
 
 # ------------------------------------------------------------------
@@ -248,15 +200,15 @@ def _load_airport_data() -> None:
     for _index, row in dataframe.iterrows():
         count_select += 1
 
-        ident = _extract_column_value(row, COLUMN_IDENT)
+        ident = extract_column_value(row, COLUMN_IDENT)
         if ident is None or ident not in locids:
             continue
 
-        country = _extract_column_value(row, COLUMN_COUNTRY_UPPER)
+        country = extract_column_value(row, COLUMN_COUNTRY_UPPER)
         if country != "UNITED STATES":
             continue
 
-        state = _extract_column_value(row, COLUMN_STATE_UPPER)
+        state = extract_column_value(row, COLUMN_STATE_UPPER)
         if state is None or state not in us_states:
             continue
 
@@ -268,25 +220,25 @@ def _load_airport_data() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        airanal = _extract_column_value(row, COLUMN_AIRANAL)
+        airanal = extract_column_value(row, COLUMN_AIRANAL)
         country = "USA"
-        dec_longitude = _extract_column_value(row, COLUMN_X, float)
-        dec_latitude = _extract_column_value(row, COLUMN_Y, float)
-        dodhiflib = _extract_column_value(row, COLUMN_DODHIFLIP, int)
-        elevation = _extract_column_value(row, COLUMN_ELEVATION, float)
-        far91 = _extract_column_value(row, COLUMN_FAR91, int)
-        far93 = _extract_column_value(row, COLUMN_FAR93, int)
-        global_id = _extract_column_value(row, COLUMN_GLOBAL_ID)
-        iapexists = _extract_column_value(row, COLUMN_IAPEXISTS)
-        latitude = _extract_column_value(row, COLUMN_LATITUDE_UPPER)
-        longitude = _extract_column_value(row, COLUMN_LONGITUDE_UPPER)
-        mil_code = _extract_column_value(row, COLUMN_MIL_CODE)
-        name = _extract_column_value(row, COLUMN_NAME)
-        operstatus = _extract_column_value(row, COLUMN_OPERSTATUS)
-        privateuse = _extract_column_value(row, COLUMN_PRIVATEUSE, int)
-        servcity = _extract_column_value(row, COLUMN_SERVCITY)
-        state = _extract_column_value(row, COLUMN_STATE_UPPER)
-        type_code = _extract_column_value(row, COLUMN_TYPE_CODE)
+        dec_longitude = extract_column_value(row, COLUMN_X, float)
+        dec_latitude = extract_column_value(row, COLUMN_Y, float)
+        dodhiflib = extract_column_value(row, COLUMN_DODHIFLIP, int)
+        elevation = extract_column_value(row, COLUMN_ELEVATION, float)
+        far91 = extract_column_value(row, COLUMN_FAR91, int)
+        far93 = extract_column_value(row, COLUMN_FAR93, int)
+        global_id = extract_column_value(row, COLUMN_GLOBAL_ID)
+        iapexists = extract_column_value(row, COLUMN_IAPEXISTS)
+        latitude = extract_column_value(row, COLUMN_LATITUDE_UPPER)
+        longitude = extract_column_value(row, COLUMN_LONGITUDE_UPPER)
+        mil_code = extract_column_value(row, COLUMN_MIL_CODE)
+        name = extract_column_value(row, COLUMN_NAME)
+        operstatus = extract_column_value(row, COLUMN_OPERSTATUS)
+        privateuse = extract_column_value(row, COLUMN_PRIVATEUSE, int)
+        servcity = extract_column_value(row, COLUMN_SERVCITY)
+        state = extract_column_value(row, COLUMN_STATE_UPPER)
+        type_code = extract_column_value(row, COLUMN_TYPE_CODE)
 
         cur_pg.execute(
             """
@@ -504,9 +456,9 @@ def _load_aviation_occurrence_categories() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        cictt_code = _extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
-        identifier = _extract_column_value(row, COLUMN_IDENTIFIER)
-        definition = _extract_column_value(row, COLUMN_DEFINITION)
+        cictt_code = extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
+        identifier = extract_column_value(row, COLUMN_IDENTIFIER)
+        definition = extract_column_value(row, COLUMN_DEFINITION)
 
         cur_pg.execute(
             """
@@ -764,10 +716,10 @@ def _load_npias_data(us_states) -> list[str]:
 
         count_select += 1
 
-        if not _extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
+        if not extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
             continue
 
-        locids.append(_extract_column_value(row, COLUMN_LOCID))
+        locids.append(extract_column_value(row, COLUMN_LOCID))
 
         count_usable += 1
 
@@ -867,7 +819,7 @@ def _load_runway_data() -> None:
     # pylint: disable=R0801
     for _index, row in dataframe.iterrows():
 
-        airport_id = _extract_column_value(row, COLUMN_AIRPORT_ID)
+        airport_id = extract_column_value(row, COLUMN_AIRPORT_ID)
         if airport_id not in runway_data:
             continue
 
@@ -878,15 +830,15 @@ def _load_runway_data() -> None:
             length,
         ) = runway_data[airport_id]
 
-        new_length = _extract_column_value(row, COLUMN_LENGTH, int)
+        new_length = extract_column_value(row, COLUMN_LENGTH, int)
 
-        dim_vom = _extract_column_value(row, COLUMN_DIM_UOM)
+        dim_vom = extract_column_value(row, COLUMN_DIM_UOM)
         if dim_vom == "M":
             new_length = new_length * 3.28084
 
         if length is None or new_length > length:
             runway_data[airport_id] = (
-                _extract_column_value(row, COLUMN_COMP_CODE),
+                extract_column_value(row, COLUMN_COMP_CODE),
                 new_length,
             )
 
@@ -1040,15 +992,15 @@ def _load_sequence_of_events() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        soe_no = _extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
+        soe_no = extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
 
         cictt_code = str(
-            _extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
+            extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
         ).rstrip()
         if cictt_code is None or cictt_code not in cictt_codes:
             continue
 
-        meaning = str(_extract_column_value(row, COLUMN_MEANING)).rstrip()
+        meaning = str(extract_column_value(row, COLUMN_MEANING)).rstrip()
 
         cur_pg.execute(
             """
@@ -1227,10 +1179,10 @@ def _load_simplemaps_data_cities_from_us_cities(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = _extract_column_value(row, COLUMN_LAT, float)
-        lng = _extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1365,11 +1317,11 @@ def _load_simplemaps_data_zips_from_us_cities(
     # pylint: disable=R0801
     for _index, row in dataframe.iterrows():
 
-        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = _extract_column_value(row, COLUMN_LAT, float)
-        lng = _extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
-        zips = list(f"{_extract_column_value(row, COLUMN_ZIPS)}".split(" "))
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+        zips = list(f"{extract_column_value(row, COLUMN_ZIPS)}".split(" "))
 
         for zipcode in zips:
             count_select += 1
@@ -1501,11 +1453,11 @@ def _load_simplemaps_data_zips_from_us_zips(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        zip_code = f"{_extract_column_value(row, COLUMN_ZIP):05}".rstrip()
-        city = str(_extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = _extract_column_value(row, COLUMN_LAT, float)
-        lng = _extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(_extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+        zip_code = f"{extract_column_value(row, COLUMN_ZIP):05}".rstrip()
+        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LAT, float)
+        lng = extract_column_value(row, COLUMN_LNG, float)
+        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -1908,25 +1860,23 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
             )
 
         if (
-            _extract_column_value(row, COLUMN_TYPE) != "STANDARD"
-            or _extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
+            extract_column_value(row, COLUMN_TYPE) != "STANDARD"
+            or extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
         ):
             continue
 
-        zipcode = f"{str(_extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
+        zipcode = f"{str(extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
         primary_city = [
-            str(_extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
+            str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
         ]
         acceptable_cities = (
-            str(_extract_column_value(row, COLUMN_ACCEPTABLE_CITIES))
-            .upper()
-            .split(",")
-            if _extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
+            str(extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)).upper().split(",")
+            if extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
             else []
         )
-        state = str(_extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
-        lat = _extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
-        lng = _extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
+        state = str(extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
+        lat = extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
+        lng = extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
 
         for city in acceptable_cities:
             primary_city.append(city.rstrip())

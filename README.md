@@ -66,21 +66,18 @@ Further IO-Aero software documentation can be found under the following links.
 
 ### 1. Directories
 
-| Directory         | Content                                       |
-|-------------------|-----------------------------------------------|
-| .github/workflows | **GitHub Action** workflow.                   |
-| .pylintrc         | Pylint configuration file.                    |
-| .streamlit        | Streamlit configuration files.                |
-| config            | Configuration files.                          |
-| data              | Application data related files.               |
-| dist              | Contains an executable of this application.   |
-| docs              | Documentation files.                          |
-| ioavstats         | Python script files.                          |
-| libs              | Third party libraries.                        |
-| resources         | Selected manuals and software.                |
-| scripts           | Supporting Ubuntu and Windows Scripts.        |
-| tests             | Scripts and data for **pytest**.              |
-| upload            | Cloud related upload directory.               |
+| Directory         | Content                                     |
+|-------------------|---------------------------------------------|
+| .github/workflows | **GitHub Action** workflow.                 |
+| .streamlit        | Streamlit configuration files.              |
+| config            | Configuration files.                        |
+| data              | Application data related files.             |
+| docs              | Documentation files.                        |
+| ioavstats         | Python script files.                        |
+| resources         | Selected manuals and software.              |
+| scripts           | Supporting Ubuntu and Windows Scripts.      |
+| tests             | Scripts and data for **pytest**.            |
+| upload            | Cloud related upload directory.             |
 
 ### 2. Files
 
@@ -89,7 +86,7 @@ Further IO-Aero software documentation can be found under the following links.
 | .act_secrets_template           | Template file for the configuration of ``make action``.         |
 | .gitattributes                  | Handling of the os-specific file properties.                    |
 | .gitignore                      | Configuration of files and folders to be ignored.               |
-| .pylintrc                       | **pylint** configuration file.                                  |
+| .pylintrc                       | Pylint configuration file.                                      |
 | .settings.io_aero_template.toml | Template file for the secret configuration data.                |
 | docker-compose_cloud.yml        | Cloud related Docker Compose configuration file.                |
 | docker-compose_local.yml        | Local Docker Compose configuration file.                        |
@@ -97,6 +94,7 @@ Further IO-Aero software documentation can be found under the following links.
 | LICENSE.md                      | Text of the licence terms.                                      |
 | logging_cfg.yaml                | Configuration of the Logger functionality.                      |
 | Makefile                        | Tasks to be executed with the **`make`** command.               |
+| mypy.ini                        | Mypy configuration file.                                        |
 | nginx.conf                      | Configuration file for **Nginx**.                               |
 | Pipfile                         | Definition of the Python package requirements.                  |
 | pyproject.toml                  | Optional configuration data for the software quality tools.     |

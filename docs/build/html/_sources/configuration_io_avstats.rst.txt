@@ -33,7 +33,7 @@ Available Parameters
      - name of the file containing National Plan of Integrated Airport Systems
    * - download_file_faa_runways_xlsx
      - name of the file containing data of runways
-   * - download_file_main_phases_of_flight_xlsx
+   * - download_file_main_phases_of_flight
      - name of the file containing data of main phases of a flight
    * - download_file_sequence_of_events
      - name of the file containing data of sequence of events

@@ -30,13 +30,7 @@ from ioavstats.utils import prepare_longitude
 # -----------------------------------------------------------------------------
 
 COLUMN_AIRCRAFT_KEY = "aircraft_key"
-COLUMN_CITY = "city"
-COLUMN_CITY_DEC_LATITUDE = "city_dec_latitude"
-COLUMN_CITY_DEC_LONGITUDE = "city_dec_longitude"
 COLUMN_COLUMN_NAME = "column_name"
-COLUMN_COUNTRY = "country"
-COLUMN_COUNTRY_DEC_LATITUDE = "country_dec_latitude"
-COLUMN_COUNTRY_DEC_LONGITUDE = "country_dec_longitude"
 COLUMN_CREW_NO = "crew_no"
 COLUMN_DEC_LATITUDE = "dec_latitude"
 COLUMN_DEC_LONGITUDE = "dec_longitude"
@@ -48,14 +42,20 @@ COLUMN_NOTE_1 = "note_1"
 COLUMN_NOTE_2 = "note_2"
 COLUMN_NOTE_3 = "note_3"
 COLUMN_OCCURRENCE_NO = "occurrence_no"
-COLUMN_SITE_ZIPCODE = "site_zipcode"
-COLUMN_STATE = "state"
-COLUMN_STATE_DEC_LATITUDE = "state_dec_latitude"
-COLUMN_STATE_DEC_LONGITUDE = "state_dec_longitude"
 COLUMN_TABLE_NAME = "table_name"
 COLUMN_VALUE = "value"
+COLUMN_COUNTRY = "country"
+COLUMN_COUNTRY_DEC_LATITUDE = "country_dec_latitude"
+COLUMN_COUNTRY_DEC_LONGITUDE = "country_dec_longitude"
+COLUMN_STATE = "state"
+COLUMN_SITE_ZIPCODE = "site_zipcode"
 COLUMN_ZIPCODE_DEC_LATITUDE = "zipcode_dec_latitude"
 COLUMN_ZIPCODE_DEC_LONGITUDE = "zipcode_dec_longitude"
+COLUMN_CITY = "city"
+COLUMN_CITY_DEC_LATITUDE = "city_dec_latitude"
+COLUMN_CITY_DEC_LONGITUDE = "city_dec_longitude"
+COLUMN_STATE_DEC_LATITUDE = "state_dec_latitude"
+COLUMN_STATE_DEC_LONGITUDE = "state_dec_longitude"
 
 COUNT_ERROR = 0
 COUNT_SELECT = 0
@@ -865,7 +865,7 @@ def find_nearest_airports() -> None:
                     unit=Unit.NAUTICAL_MILES,
                 )
             except ValueError as err:
-                # ERROR.00.942 Issue with the Harvesine algorithm: '{error}'
+                # ERROR.00.942 Issue with the Haversine algorithm: '{error}'
                 io_utils.progress_msg(
                     glob_local.ERROR_00_942.replace("{ev_id}", ev_id).replace(
                         "{error}", str(err)
@@ -958,6 +958,53 @@ def load_correction_data(filename: str) -> None:
             sheet_name="Sheet1",
         )
 
+        # ------------------------------------------------------------------
+        # Load the correction data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, ROW in dataframe.iterrows():
+
+            COUNT_SELECT += 1
+
+            if COUNT_SELECT % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(COUNT_SELECT):>8}"
+                )
+
+            TABLE_NAME = (
+                str(extract_column_value(ROW, COLUMN_TABLE_NAME)).lower()
+                if extract_column_value(ROW, COLUMN_TABLE_NAME)
+                else None
+            )  # type: ignore
+            # ERROR.00.930 Excel column '{column_name}' must not be empty
+            if not TABLE_NAME:
+                _error_msg(
+                    glob_local.ERROR_00_930.replace("{column_name}", "table_name")
+                )
+                continue
+
+            if TABLE_NAME == glob_local.TABLE_NAME_EVENTS:
+                _process_events(cur_pg)
+            else:
+                _error_msg(glob_local.ERROR_00_927)
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(COUNT_SELECT):>8}")
+
+        if COUNT_UPDATE > 0:
+            io_utils.progress_msg(f"Number rows updated  : {str(COUNT_UPDATE):>8}")
+
+        if COUNT_ERROR > 0:
+            io_utils.progress_msg(f"Number rows erroneous: {str(COUNT_ERROR):>8}")
+
+        cur_pg.close()
+        conn_pg.close()
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", corr_file)
@@ -976,51 +1023,6 @@ def load_correction_data(filename: str) -> None:
                 "{error}", str(exc)
             )
         )
-
-    # ------------------------------------------------------------------
-    # Load the correction data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, ROW in dataframe.iterrows():
-
-        COUNT_SELECT += 1
-
-        if COUNT_SELECT % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(COUNT_SELECT):>8}"
-            )
-
-        TABLE_NAME = (
-            str(extract_column_value(ROW, COLUMN_TABLE_NAME)).lower()
-            if extract_column_value(ROW, COLUMN_TABLE_NAME)
-            else None
-        )  # type: ignore
-        # ERROR.00.930 Excel column '{column_name}' must not be empty
-        if not TABLE_NAME:
-            _error_msg(glob_local.ERROR_00_930.replace("{column_name}", "table_name"))
-            continue
-
-        if TABLE_NAME == glob_local.TABLE_NAME_EVENTS:
-            _process_events(cur_pg)
-        else:
-            _error_msg(glob_local.ERROR_00_927)
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(COUNT_SELECT):>8}")
-
-    if COUNT_UPDATE > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(COUNT_UPDATE):>8}")
-
-    if COUNT_ERROR > 0:
-        io_utils.progress_msg(f"Number rows erroneous: {str(COUNT_ERROR):>8}")
-
-    cur_pg.close()
-    conn_pg.close()
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------

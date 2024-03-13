@@ -162,6 +162,186 @@ def _load_airport_data() -> None:
         # Attempt to read the csv file
         dataframe = pd.read_csv(FILE_FAA_AIRPORTS, sep=",", usecols=columns)
 
+        # INFO.00.089 Database table io_airports: Load data from file '{filename}'
+        io_utils.progress_msg("-" * 80)
+        io_utils.progress_msg(
+            glob_local.INFO_00_089.replace("{filename}", FILE_FAA_AIRPORTS)
+        )
+
+        count_select = 0
+        count_upsert = 0
+        count_usable = 0
+
+        # ------------------------------------------------------------------
+        # Load the airport data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+            count_select += 1
+
+            ident = extract_column_value(row, COLUMN_IDENT)
+            if ident is None or ident not in locids:
+                continue
+
+            country = extract_column_value(row, COLUMN_COUNTRY_UPPER)
+            if country != "UNITED STATES":
+                continue
+
+            state = extract_column_value(row, COLUMN_STATE_UPPER)
+            if state is None or state not in us_states:
+                continue
+
+            count_usable += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            airanal = extract_column_value(row, COLUMN_AIRANAL)
+            country = "USA"
+            dec_longitude = extract_column_value(row, COLUMN_X, float)
+            dec_latitude = extract_column_value(row, COLUMN_Y, float)
+            dodhiflib = extract_column_value(row, COLUMN_DODHIFLIP, int)
+            elevation = extract_column_value(row, COLUMN_ELEVATION, float)
+            far91 = extract_column_value(row, COLUMN_FAR91, int)
+            far93 = extract_column_value(row, COLUMN_FAR93, int)
+            global_id = extract_column_value(row, COLUMN_GLOBAL_ID)
+            iapexists = extract_column_value(row, COLUMN_IAPEXISTS)
+            latitude = extract_column_value(row, COLUMN_LATITUDE_UPPER)
+            longitude = extract_column_value(row, COLUMN_LONGITUDE_UPPER)
+            mil_code = extract_column_value(row, COLUMN_MIL_CODE)
+            name = extract_column_value(row, COLUMN_NAME)
+            operstatus = extract_column_value(row, COLUMN_OPERSTATUS)
+            privateuse = extract_column_value(row, COLUMN_PRIVATEUSE, int)
+            servcity = extract_column_value(row, COLUMN_SERVCITY)
+            state = extract_column_value(row, COLUMN_STATE_UPPER)
+            type_code = extract_column_value(row, COLUMN_TYPE_CODE)
+
+            cur_pg.execute(
+                """
+            INSERT INTO io_airports AS ia (
+                   global_id,
+                   airanal,
+                   country,
+                   dec_latitude,
+                   dec_longitude,
+                   dodhiflib,
+                   elevation,
+                   far91,
+                   far93,
+                   iapexists,
+                   ident,
+                   latitude,
+                   longitude,
+                   mil_code,
+                   name,
+                   operstatus,
+                   privateuse,
+                   servcity,
+                   state,
+                   type_code,
+                   first_processed
+                   ) VALUES (
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s,%s,
+                   %s
+                   )
+            ON CONFLICT ON CONSTRAINT io_airports_pkey
+            DO UPDATE
+               SET airanal = %s,
+                   country = %s,
+                   dec_latitude = %s,
+                   dec_longitude = %s,
+                   dodhiflib = %s,
+                   elevation = %s,
+                   far91 = %s,
+                   far93 = %s,
+                   iapexists = %s,
+                   ident = %s,
+                   latitude = %s,
+                   longitude = %s,
+                   mil_code = %s,
+                   name = %s,
+                   operstatus = %s,
+                   privateuse = %s,
+                   servcity = %s,
+                   state = %s,
+                   type_code = %s,
+                   last_processed = %s
+             WHERE ia.global_id = %s
+            """,
+                (
+                    global_id,
+                    airanal,
+                    country,
+                    dec_latitude,
+                    dec_longitude,
+                    dodhiflib,
+                    elevation,
+                    far91,
+                    far93,
+                    iapexists,
+                    ident,
+                    latitude,
+                    longitude,
+                    mil_code,
+                    name,
+                    operstatus,
+                    privateuse,
+                    servcity,
+                    state,
+                    type_code,
+                    datetime.now(),
+                    airanal,
+                    country,
+                    dec_latitude,
+                    dec_longitude,
+                    dodhiflib,
+                    elevation,
+                    far91,
+                    far93,
+                    iapexists,
+                    ident,
+                    latitude,
+                    longitude,
+                    mil_code,
+                    name,
+                    operstatus,
+                    privateuse,
+                    servcity,
+                    state,
+                    type_code,
+                    datetime.now(),
+                    global_id,
+                ),
+            )
+            count_upsert += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        # ------------------------------------------------------------------
+        # Finalize processing.
+        # ------------------------------------------------------------------
+
+        utils.upd_io_processed_files(
+            io_config.settings.download_file_sequence_of_events, cur_pg
+        )
+
+        cur_pg.close()
+        conn_pg.close()
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_AIRPORTS)
@@ -185,186 +365,6 @@ def _load_airport_data() -> None:
                 "{error}", str(exc)
             )
         )
-
-    # INFO.00.089 Database table io_airports: Load data from file '{filename}'
-    io_utils.progress_msg("-" * 80)
-    io_utils.progress_msg(
-        glob_local.INFO_00_089.replace("{filename}", FILE_FAA_AIRPORTS)
-    )
-
-    count_select = 0
-    count_upsert = 0
-    count_usable = 0
-
-    # ------------------------------------------------------------------
-    # Load the airport data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-        count_select += 1
-
-        ident = extract_column_value(row, COLUMN_IDENT)
-        if ident is None or ident not in locids:
-            continue
-
-        country = extract_column_value(row, COLUMN_COUNTRY_UPPER)
-        if country != "UNITED STATES":
-            continue
-
-        state = extract_column_value(row, COLUMN_STATE_UPPER)
-        if state is None or state not in us_states:
-            continue
-
-        count_usable += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        airanal = extract_column_value(row, COLUMN_AIRANAL)
-        country = "USA"
-        dec_longitude = extract_column_value(row, COLUMN_X, float)
-        dec_latitude = extract_column_value(row, COLUMN_Y, float)
-        dodhiflib = extract_column_value(row, COLUMN_DODHIFLIP, int)
-        elevation = extract_column_value(row, COLUMN_ELEVATION, float)
-        far91 = extract_column_value(row, COLUMN_FAR91, int)
-        far93 = extract_column_value(row, COLUMN_FAR93, int)
-        global_id = extract_column_value(row, COLUMN_GLOBAL_ID)
-        iapexists = extract_column_value(row, COLUMN_IAPEXISTS)
-        latitude = extract_column_value(row, COLUMN_LATITUDE_UPPER)
-        longitude = extract_column_value(row, COLUMN_LONGITUDE_UPPER)
-        mil_code = extract_column_value(row, COLUMN_MIL_CODE)
-        name = extract_column_value(row, COLUMN_NAME)
-        operstatus = extract_column_value(row, COLUMN_OPERSTATUS)
-        privateuse = extract_column_value(row, COLUMN_PRIVATEUSE, int)
-        servcity = extract_column_value(row, COLUMN_SERVCITY)
-        state = extract_column_value(row, COLUMN_STATE_UPPER)
-        type_code = extract_column_value(row, COLUMN_TYPE_CODE)
-
-        cur_pg.execute(
-            """
-        INSERT INTO io_airports AS ia (
-               global_id,
-               airanal,
-               country,
-               dec_latitude,
-               dec_longitude,
-               dodhiflib,
-               elevation,
-               far91,
-               far93,
-               iapexists,
-               ident,
-               latitude,
-               longitude,
-               mil_code,
-               name,
-               operstatus,
-               privateuse,
-               servcity,
-               state,
-               type_code,
-               first_processed
-               ) VALUES (
-               %s,%s,%s,%s,%s,
-               %s,%s,%s,%s,%s,
-               %s,%s,%s,%s,%s,
-               %s,%s,%s,%s,%s,
-               %s
-               )
-        ON CONFLICT ON CONSTRAINT io_airports_pkey
-        DO UPDATE
-           SET airanal = %s,
-               country = %s,
-               dec_latitude = %s,
-               dec_longitude = %s,
-               dodhiflib = %s,
-               elevation = %s,
-               far91 = %s,
-               far93 = %s,
-               iapexists = %s,
-               ident = %s,
-               latitude = %s,
-               longitude = %s,
-               mil_code = %s,
-               name = %s,
-               operstatus = %s,
-               privateuse = %s,
-               servcity = %s,
-               state = %s,
-               type_code = %s,
-               last_processed = %s
-         WHERE ia.global_id = %s
-        """,
-            (
-                global_id,
-                airanal,
-                country,
-                dec_latitude,
-                dec_longitude,
-                dodhiflib,
-                elevation,
-                far91,
-                far93,
-                iapexists,
-                ident,
-                latitude,
-                longitude,
-                mil_code,
-                name,
-                operstatus,
-                privateuse,
-                servcity,
-                state,
-                type_code,
-                datetime.now(),
-                airanal,
-                country,
-                dec_latitude,
-                dec_longitude,
-                dodhiflib,
-                elevation,
-                far91,
-                far93,
-                iapexists,
-                ident,
-                latitude,
-                longitude,
-                mil_code,
-                name,
-                operstatus,
-                privateuse,
-                servcity,
-                state,
-                type_code,
-                datetime.now(),
-                global_id,
-            ),
-        )
-        count_upsert += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    # ------------------------------------------------------------------
-    # Finalize processing.
-    # ------------------------------------------------------------------
-
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events, cur_pg
-    )
-
-    cur_pg.close()
-    conn_pg.close()
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -413,6 +413,136 @@ def _load_aviation_occurrence_categories() -> None:
             sheet_name="Sheet1",
         )
 
+        # INFO.00.074 Database table io_aviation_occurrence_categories: ...
+        io_utils.progress_msg(
+            glob_local.INFO_00_074.replace(
+                "{filename}", FILE_AVIATION_OCCURRENCE_CATEGORIES
+            )
+        )
+
+        count_delete = 0
+        count_upsert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the aviation occurrence categories.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            cictt_code = extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
+            identifier = extract_column_value(row, COLUMN_IDENTIFIER)
+            definition = extract_column_value(row, COLUMN_DEFINITION)
+
+            cur_pg.execute(
+                """
+            INSERT INTO io_aviation_occurrence_categories AS aoc (
+                   cictt_code,
+                   identifier,
+                   definition,
+                   first_processed,
+                   last_seen
+                   ) VALUES (
+                   %s,%s,%s,%s,%s
+                   )
+            ON CONFLICT ON CONSTRAINT io_aviation_occurrence_categories_pkey
+            DO UPDATE
+               SET identifier = %s,
+                   definition = %s,
+                   last_processed = %s,
+                   last_seen = %s
+             WHERE aoc.cictt_code = %s
+            """,
+                (
+                    cictt_code,
+                    identifier,
+                    definition,
+                    datetime.now(),
+                    IO_LAST_SEEN,
+                    identifier,
+                    definition,
+                    datetime.now(),
+                    IO_LAST_SEEN,
+                    cictt_code,
+                ),
+            )
+            count_upsert += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        # ------------------------------------------------------------------
+        # Delete the obsolete data.
+        # ------------------------------------------------------------------
+
+        count_select = 0
+
+        # pylint: disable=line-too-long
+        cur_pg.execute(
+            """
+        SELECT cictt_code
+          FROM io_aviation_occurrence_categories
+         WHERE last_seen <> %s
+            """,
+            (IO_LAST_SEEN,),
+        )
+
+        for row_pg in cur_pg.fetchall():
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            cictt_code = row_pg[COLUMN_CICTT_CODE_LOWER]  # type: ignore
+
+            try:
+                cur_pg.execute(
+                    """
+                DELETE FROM io_aviation_occurrence_categories
+                 WHERE cictt_code = %s;
+                """,
+                    (cictt_code,),
+                )
+                if cur_pg.rowcount > 0:
+                    count_delete += cur_pg.rowcount
+                    io_utils.progress_msg(f"Deleted cictt_code={cictt_code}")
+            except ForeignKeyViolation:
+                io_utils.progress_msg(f"Failed to delete cictt_code={cictt_code}")
+
+        conn_pg.commit()
+
+        if count_select > 0:
+            io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        if count_delete > 0:
+            io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
+
+        # ------------------------------------------------------------------
+        # Finalize processing.
+        # ------------------------------------------------------------------
+
+        utils.upd_io_processed_files(FILE_AVIATION_OCCURRENCE_CATEGORIES, cur_pg)
+
+        cur_pg.close()
+        conn_pg.close()
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace(
@@ -433,136 +563,6 @@ def _load_aviation_occurrence_categories() -> None:
                 "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
             ).replace("{error}", str(exc))
         )
-
-    # INFO.00.074 Database table io_aviation_occurrence_categories: Load data from file '{filename}'
-    io_utils.progress_msg(
-        glob_local.INFO_00_074.replace(
-            "{filename}", FILE_AVIATION_OCCURRENCE_CATEGORIES
-        )
-    )
-
-    count_delete = 0
-    count_upsert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the aviation occurrence categories.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        cictt_code = extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
-        identifier = extract_column_value(row, COLUMN_IDENTIFIER)
-        definition = extract_column_value(row, COLUMN_DEFINITION)
-
-        cur_pg.execute(
-            """
-        INSERT INTO io_aviation_occurrence_categories AS aoc (
-               cictt_code,
-               identifier,
-               definition,
-               first_processed,
-               last_seen
-               ) VALUES (
-               %s,%s,%s,%s,%s
-               )
-        ON CONFLICT ON CONSTRAINT io_aviation_occurrence_categories_pkey
-        DO UPDATE
-           SET identifier = %s,
-               definition = %s,
-               last_processed = %s,
-               last_seen = %s
-         WHERE aoc.cictt_code = %s
-        """,
-            (
-                cictt_code,
-                identifier,
-                definition,
-                datetime.now(),
-                IO_LAST_SEEN,
-                identifier,
-                definition,
-                datetime.now(),
-                IO_LAST_SEEN,
-                cictt_code,
-            ),
-        )
-        count_upsert += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    # ------------------------------------------------------------------
-    # Delete the obsolete data.
-    # ------------------------------------------------------------------
-
-    count_select = 0
-
-    # pylint: disable=line-too-long
-    cur_pg.execute(
-        """
-    SELECT cictt_code
-      FROM io_aviation_occurrence_categories
-     WHERE last_seen <> %s
-        """,
-        (IO_LAST_SEEN,),
-    )
-
-    for row_pg in cur_pg.fetchall():
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        cictt_code = row_pg[COLUMN_CICTT_CODE_LOWER]  # type: ignore
-
-        try:
-            cur_pg.execute(
-                """
-            DELETE FROM io_aviation_occurrence_categories
-             WHERE cictt_code = %s;
-            """,
-                (cictt_code,),
-            )
-            if cur_pg.rowcount > 0:
-                count_delete += cur_pg.rowcount
-                io_utils.progress_msg(f"Deleted cictt_code={cictt_code}")
-        except ForeignKeyViolation:
-            io_utils.progress_msg(f"Failed to delete cictt_code={cictt_code}")
-
-    conn_pg.commit()
-
-    if count_select > 0:
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-    if count_delete > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
-
-    # ------------------------------------------------------------------
-    # Finalize processing.
-    # ------------------------------------------------------------------
-
-    utils.upd_io_processed_files(FILE_AVIATION_OCCURRENCE_CATEGORIES, cur_pg)
-
-    cur_pg.close()
-    conn_pg.close()
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -660,6 +660,7 @@ def _load_country_data(
 # ------------------------------------------------------------------
 # Load NPIAS data from an MS Excel file.
 # ------------------------------------------------------------------
+# pylint: disable=inconsistent-return-statements
 def _load_npias_data(us_states) -> list[str]:
     # ------------------------------------------------------------------
     # Start processing NPIAS data.
@@ -687,6 +688,32 @@ def _load_npias_data(us_states) -> list[str]:
             sheet_name="All NPIAS Airports",
         )
 
+        count_select = 0
+        count_usable = 0
+
+        locids: list[str] = []
+
+        # ------------------------------------------------------------------
+        # Load the NPIAS data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if not extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
+                continue
+
+            locids.append(extract_column_value(row, COLUMN_LOCID))
+
+            count_usable += 1
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows usable   : {str(count_usable):>8}")
+
+        return locids
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_NPIAS_DATA)
@@ -705,32 +732,6 @@ def _load_npias_data(us_states) -> list[str]:
                 "{error}", str(exc)
             )
         )
-
-    count_select = 0
-    count_usable = 0
-
-    locids: list[str] = []
-
-    # ------------------------------------------------------------------
-    # Load the NPIAS data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if not extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
-            continue
-
-        locids.append(extract_column_value(row, COLUMN_LOCID))
-
-        count_usable += 1
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-    io_utils.progress_msg(f"Number rows usable   : {str(count_usable):>8}")
-
-    return locids
 
 
 # ------------------------------------------------------------------
@@ -785,6 +786,106 @@ def _load_runway_data() -> None:
         # Attempt to read the csv file
         dataframe = pd.read_csv(FILE_FAA_RUNWAYS, sep=",", usecols=columns)
 
+        # INFO.00.092 Database table io_runways: Load data from file '{filename}'
+        io_utils.progress_msg(
+            glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS)
+        )
+
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the runway data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            airport_id = extract_column_value(row, COLUMN_AIRPORT_ID)
+            if airport_id not in runway_data:
+                continue
+
+            count_select += 1
+
+            (
+                comp_code,
+                length,
+            ) = runway_data[airport_id]
+
+            new_length = extract_column_value(row, COLUMN_LENGTH, int)
+
+            dim_vom = extract_column_value(row, COLUMN_DIM_UOM)
+            if dim_vom == "M":
+                new_length = new_length * 3.28084
+
+            if length is None or new_length > length:
+                runway_data[airport_id] = (
+                    extract_column_value(row, COLUMN_COMP_CODE),
+                    new_length,
+                )
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg("-" * 80)
+
+        # ------------------------------------------------------------------
+        # Load the runway data.
+        # ------------------------------------------------------------------
+
+        # INFO.00.090 Database table io_airports: Update the runway data
+        io_utils.progress_msg(glob_local.INFO_00_090)
+
+        count_select = 0
+        count_update = 0
+
+        # pylint: disable=R0801
+        for airport_id, (comp_code, length) in runway_data.items():
+            count_select += 1
+
+            if comp_code is None:
+                continue
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            cur_pg.execute(
+                """
+            UPDATE io_airports ia
+               SET max_runway_comp_code = %s,
+                   max_runway_length = %s,
+                   last_processed = %s
+             WHERE ia.global_id = %s
+            """,
+                (
+                    comp_code,
+                    length,
+                    datetime.now(),
+                    airport_id,
+                ),
+            )
+            count_update += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_update > 0:
+            io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+
+        # ------------------------------------------------------------------
+        # Finalize processing.
+        # ------------------------------------------------------------------
+
+        utils.upd_io_processed_files(
+            io_config.settings.download_file_sequence_of_events, cur_pg
+        )
+
+        cur_pg.close()
+        conn_pg.close()
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS)
@@ -808,106 +909,6 @@ def _load_runway_data() -> None:
                 "{error}", str(exc)
             )
         )
-
-    # INFO.00.092 Database table io_runways: Load data from file '{filename}'
-    io_utils.progress_msg(
-        glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS)
-    )
-
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the runway data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        airport_id = extract_column_value(row, COLUMN_AIRPORT_ID)
-        if airport_id not in runway_data:
-            continue
-
-        count_select += 1
-
-        (
-            comp_code,
-            length,
-        ) = runway_data[airport_id]
-
-        new_length = extract_column_value(row, COLUMN_LENGTH, int)
-
-        dim_vom = extract_column_value(row, COLUMN_DIM_UOM)
-        if dim_vom == "M":
-            new_length = new_length * 3.28084
-
-        if length is None or new_length > length:
-            runway_data[airport_id] = (
-                extract_column_value(row, COLUMN_COMP_CODE),
-                new_length,
-            )
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-    io_utils.progress_msg("-" * 80)
-
-    # ------------------------------------------------------------------
-    # Load the runway data.
-    # ------------------------------------------------------------------
-
-    # INFO.00.090 Database table io_airports: Update the runway data
-    io_utils.progress_msg(glob_local.INFO_00_090)
-
-    count_select = 0
-    count_update = 0
-
-    # pylint: disable=R0801
-    for airport_id, (comp_code, length) in runway_data.items():
-        count_select += 1
-
-        if comp_code is None:
-            continue
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        cur_pg.execute(
-            """
-        UPDATE io_airports ia
-           SET max_runway_comp_code = %s,
-               max_runway_length = %s,
-               last_processed = %s
-         WHERE ia.global_id = %s
-        """,
-            (
-                comp_code,
-                length,
-                datetime.now(),
-                airport_id,
-            ),
-        )
-        count_update += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
-
-    # ------------------------------------------------------------------
-    # Finalize processing.
-    # ------------------------------------------------------------------
-
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events, cur_pg
-    )
-
-    cur_pg.close()
-    conn_pg.close()
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -946,6 +947,144 @@ def _load_sequence_of_events() -> None:
         # Attempt to read the csv file
         dataframe = pd.read_csv(FILE_SEQUENCE_OF_EVENTS, sep=",", usecols=columns)
 
+        # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
+        io_utils.progress_msg(
+            glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS)
+        )
+
+        count_delete = 0
+        count_upsert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the sequence of events data.
+        # ------------------------------------------------------------------
+
+        cictt_codes = _sql_query_cictt_codes(conn_pg)
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            soe_no = extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
+
+            cictt_code = str(
+                extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
+            ).rstrip()
+            if cictt_code is None or cictt_code not in cictt_codes:
+                continue
+
+            meaning = str(extract_column_value(row, COLUMN_MEANING)).rstrip()
+
+            cur_pg.execute(
+                """
+            INSERT INTO io_sequence_of_events AS isoe (
+                   soe_no,
+                   meaning,
+                   cictt_code,
+                   first_processed,
+                   last_seen
+                   ) VALUES (
+                   %s,%s,%s,%s,%s
+                   )
+            ON CONFLICT ON CONSTRAINT io_sequence_of_events_pkey
+            DO UPDATE
+               SET meaning = %s,
+                   cictt_code = %s,
+                   last_processed = %s,
+                   last_seen = %s
+             WHERE isoe.soe_no = %s
+            """,
+                (
+                    soe_no,
+                    meaning,
+                    cictt_code if cictt_code else None,
+                    datetime.now(),
+                    IO_LAST_SEEN,
+                    meaning,
+                    cictt_code,
+                    datetime.now(),
+                    IO_LAST_SEEN,
+                    soe_no,
+                ),
+            )
+            count_upsert += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        # ------------------------------------------------------------------
+        # Delete the obsolete data.
+        # ------------------------------------------------------------------
+
+        count_select = 0
+
+        # pylint: disable=line-too-long
+        cur_pg.execute(
+            """
+        SELECT soe_no
+          FROM io_sequence_of_events
+         WHERE last_seen <> %s
+            """,
+            (IO_LAST_SEEN,),
+        )
+
+        for row_pg in cur_pg.fetchall():
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            soe_no = row_pg[COLUMN_SOE_NO]  # type: ignore
+
+            try:
+                cur_pg.execute(
+                    """
+                DELETE FROM io_sequence_of_events
+                 WHERE soe_no = %s;
+                """,
+                    (soe_no,),
+                )
+                if cur_pg.rowcount > 0:
+                    count_delete += cur_pg.rowcount
+                    io_utils.progress_msg(f"Deleted soe_no={soe_no}")
+            except ForeignKeyViolation:
+                io_utils.progress_msg(f"Failed to delete soe_no={soe_no}")
+
+        conn_pg.commit()
+
+        if count_select > 0:
+            io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        if count_delete > 0:
+            io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
+
+        # ------------------------------------------------------------------
+        # Finalize processing.
+        # ------------------------------------------------------------------
+
+        utils.upd_io_processed_files(
+            io_config.settings.download_file_sequence_of_events, cur_pg
+        )
+
+        cur_pg.close()
+        conn_pg.close()
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
@@ -969,144 +1108,6 @@ def _load_sequence_of_events() -> None:
                 "{file_name}", FILE_SEQUENCE_OF_EVENTS
             ).replace("{error}", str(exc))
         )
-
-    # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
-    io_utils.progress_msg(
-        glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS)
-    )
-
-    count_delete = 0
-    count_upsert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the sequence of events data.
-    # ------------------------------------------------------------------
-
-    cictt_codes = _sql_query_cictt_codes(conn_pg)
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        soe_no = extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
-
-        cictt_code = str(
-            extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
-        ).rstrip()
-        if cictt_code is None or cictt_code not in cictt_codes:
-            continue
-
-        meaning = str(extract_column_value(row, COLUMN_MEANING)).rstrip()
-
-        cur_pg.execute(
-            """
-        INSERT INTO io_sequence_of_events AS isoe (
-               soe_no,
-               meaning,
-               cictt_code,
-               first_processed,
-               last_seen
-               ) VALUES (
-               %s,%s,%s,%s,%s
-               )
-        ON CONFLICT ON CONSTRAINT io_sequence_of_events_pkey
-        DO UPDATE
-           SET meaning = %s,
-               cictt_code = %s,
-               last_processed = %s,
-               last_seen = %s
-         WHERE isoe.soe_no = %s
-        """,
-            (
-                soe_no,
-                meaning,
-                cictt_code if cictt_code else None,
-                datetime.now(),
-                IO_LAST_SEEN,
-                meaning,
-                cictt_code,
-                datetime.now(),
-                IO_LAST_SEEN,
-                soe_no,
-            ),
-        )
-        count_upsert += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    # ------------------------------------------------------------------
-    # Delete the obsolete data.
-    # ------------------------------------------------------------------
-
-    count_select = 0
-
-    # pylint: disable=line-too-long
-    cur_pg.execute(
-        """
-    SELECT soe_no
-      FROM io_sequence_of_events
-     WHERE last_seen <> %s
-        """,
-        (IO_LAST_SEEN,),
-    )
-
-    for row_pg in cur_pg.fetchall():
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        soe_no = row_pg[COLUMN_SOE_NO]  # type: ignore
-
-        try:
-            cur_pg.execute(
-                """
-            DELETE FROM io_sequence_of_events
-             WHERE soe_no = %s;
-            """,
-                (soe_no,),
-            )
-            if cur_pg.rowcount > 0:
-                count_delete += cur_pg.rowcount
-                io_utils.progress_msg(f"Deleted soe_no={soe_no}")
-        except ForeignKeyViolation:
-            io_utils.progress_msg(f"Failed to delete soe_no={soe_no}")
-
-    conn_pg.commit()
-
-    if count_select > 0:
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-    if count_delete > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
-
-    # ------------------------------------------------------------------
-    # Finalize processing.
-    # ------------------------------------------------------------------
-
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events, cur_pg
-    )
-
-    cur_pg.close()
-    conn_pg.close()
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1146,6 +1147,94 @@ def _load_simplemaps_data_cities_from_us_cities(
             sheet_name="Sheet1",
         )
 
+        count_upsert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the US city data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+            lat = extract_column_value(row, COLUMN_LAT, float)
+            lng = extract_column_value(row, COLUMN_LNG, float)
+            state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+
+            # pylint: disable=line-too-long
+            cur_pg.execute(
+                """
+            INSERT INTO io_lat_lng AS ill (
+                   type,
+                   country,
+                   state,
+                   city,
+                   dec_latitude,
+                   dec_longitude,
+                   source,
+                   first_processed
+                   ) VALUES (
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s
+                   )
+            ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
+            DO UPDATE
+               SET dec_latitude = %s,
+                   dec_longitude = %s,
+                   source = %s,
+                   last_processed = %s
+             WHERE ill.type = %s
+               AND ill.country = %s
+               AND ill.state = %s
+               AND ill.city = %s
+               AND NOT (
+                   ill.dec_latitude = %s
+               AND ill.dec_longitude = %s
+               );
+            """,
+                (
+                    glob_local.IO_LAT_LNG_TYPE_CITY,
+                    glob_local.COUNTRY_USA,
+                    state_id,
+                    city,
+                    lat,
+                    lng,
+                    glob_local.SOURCE_SM_US_CITIES,
+                    datetime.now(),
+                    lat,
+                    lng,
+                    glob_local.SOURCE_SM_US_CITIES,
+                    datetime.now(),
+                    glob_local.IO_LAT_LNG_TYPE_CITY,
+                    glob_local.COUNTRY_USA,
+                    state_id,
+                    city,
+                    lat,
+                    lng,
+                ),
+            )
+            count_upsert += cur_pg.rowcount
+
+        utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
@@ -1164,94 +1253,6 @@ def _load_simplemaps_data_cities_from_us_cities(
                 "{file_name}", FILE_SIMPLEMAPS_US_CITIES
             ).replace("{error}", str(exc))
         )
-
-    count_upsert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the US city data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = extract_column_value(row, COLUMN_LAT, float)
-        lng = extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
-
-        # pylint: disable=line-too-long
-        cur_pg.execute(
-            """
-        INSERT INTO io_lat_lng AS ill (
-               type,
-               country,
-               state,
-               city,
-               dec_latitude,
-               dec_longitude,
-               source,
-               first_processed
-               ) VALUES (
-               %s,%s,%s,%s,%s,
-               %s,%s,%s
-               )
-        ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
-        DO UPDATE
-           SET dec_latitude = %s,
-               dec_longitude = %s,
-               source = %s,
-               last_processed = %s
-         WHERE ill.type = %s
-           AND ill.country = %s
-           AND ill.state = %s
-           AND ill.city = %s
-           AND NOT (
-               ill.dec_latitude = %s
-           AND ill.dec_longitude = %s
-           );
-        """,
-            (
-                glob_local.IO_LAT_LNG_TYPE_CITY,
-                glob_local.COUNTRY_USA,
-                state_id,
-                city,
-                lat,
-                lng,
-                glob_local.SOURCE_SM_US_CITIES,
-                datetime.now(),
-                lat,
-                lng,
-                glob_local.SOURCE_SM_US_CITIES,
-                datetime.now(),
-                glob_local.IO_LAT_LNG_TYPE_CITY,
-                glob_local.COUNTRY_USA,
-                state_id,
-                city,
-                lat,
-                lng,
-            ),
-        )
-        count_upsert += cur_pg.rowcount
-
-    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1292,6 +1293,74 @@ def _load_simplemaps_data_zips_from_us_cities(
             sheet_name="Sheet1",
         )
 
+        count_insert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the US city data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+            lat = extract_column_value(row, COLUMN_LAT, float)
+            lng = extract_column_value(row, COLUMN_LNG, float)
+            state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+            zips = list(f"{extract_column_value(row, COLUMN_ZIPS)}".split(" "))
+
+            for zipcode in zips:
+                count_select += 1
+                if count_select % io_config.settings.database_commit_size == 0:
+                    conn_pg.commit()
+                    io_utils.progress_msg(
+                        f"Number of rows so far read : {str(count_select):>8}"
+                    )
+
+                # pylint: disable=line-too-long
+                cur_pg.execute(
+                    """
+                INSERT INTO io_lat_lng (
+                       type,
+                       country,
+                       state,
+                       city,
+                       zipcode,
+                       dec_latitude,
+                       dec_longitude,
+                       source,
+                       first_processed
+                       ) VALUES (
+                       %s,%s,%s,%s,%s,
+                       %s,%s,%s,%s)
+                ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
+                DO NOTHING;
+                """,
+                    (
+                        glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                        glob_local.COUNTRY_USA,
+                        state_id,
+                        city,
+                        zipcode.rstrip(),
+                        lat,
+                        lng,
+                        glob_local.SOURCE_SM_US_CITIES,
+                        datetime.now(),
+                    ),
+                )
+                count_insert += cur_pg.rowcount
+
+        utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_insert > 0:
+            io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
@@ -1310,74 +1379,6 @@ def _load_simplemaps_data_zips_from_us_cities(
                 "{file_name}", FILE_SIMPLEMAPS_US_CITIES
             ).replace("{error}", str(exc))
         )
-
-    count_insert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the US city data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = extract_column_value(row, COLUMN_LAT, float)
-        lng = extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
-        zips = list(f"{extract_column_value(row, COLUMN_ZIPS)}".split(" "))
-
-        for zipcode in zips:
-            count_select += 1
-            if count_select % io_config.settings.database_commit_size == 0:
-                conn_pg.commit()
-                io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
-                )
-
-            # pylint: disable=line-too-long
-            cur_pg.execute(
-                """
-            INSERT INTO io_lat_lng (
-                   type,
-                   country,
-                   state,
-                   city,
-                   zipcode,
-                   dec_latitude,
-                   dec_longitude,
-                   source,
-                   first_processed
-                   ) VALUES (
-                   %s,%s,%s,%s,%s,
-                   %s,%s,%s,%s)
-            ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
-            DO NOTHING;
-            """,
-                (
-                    glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
-                    glob_local.COUNTRY_USA,
-                    state_id,
-                    city,
-                    zipcode.rstrip(),
-                    lat,
-                    lng,
-                    glob_local.SOURCE_SM_US_CITIES,
-                    datetime.now(),
-                ),
-            )
-            count_insert += cur_pg.rowcount
-
-    utils.upd_io_processed_files(FILE_SIMPLEMAPS_US_CITIES, cur_pg)
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1419,6 +1420,105 @@ def _load_simplemaps_data_zips_from_us_zips(
             sheet_name="Sheet1",
         )
 
+        count_duplicates = 0
+        count_upsert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the US zip data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            zip_code = f"{extract_column_value(row, COLUMN_ZIP):05}".rstrip()
+            city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
+            lat = extract_column_value(row, COLUMN_LAT, float)
+            lng = extract_column_value(row, COLUMN_LNG, float)
+            state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
+
+            # pylint: disable=line-too-long
+            cur_pg.execute(
+                """
+            INSERT INTO io_lat_lng AS ill (
+                   type,
+                   country,
+                   state,
+                   city,
+                   zipcode,
+                   dec_latitude,
+                   dec_longitude,
+                   source,
+                   first_processed
+                   ) VALUES (
+                   %s,%s,%s,%s,%s,
+                   %s,%s,%s,%s
+                   )
+            ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
+            DO UPDATE
+               SET dec_latitude = %s,
+                   dec_longitude = %s,
+                   source = %s,
+                   last_processed = %s
+             WHERE ill.type = %s
+               AND ill.country = %s
+               AND ill.state = %s
+               AND ill.city = %s
+               AND ill.zipcode = %s
+               AND NOT (
+                   ill.dec_latitude = %s
+               AND ill.dec_longitude = %s
+               );
+            """,
+                (
+                    glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                    glob_local.COUNTRY_USA,
+                    state_id,
+                    city,
+                    zip_code,
+                    lat,
+                    lng,
+                    glob_local.SOURCE_SM_US_ZIP_CODES,
+                    datetime.now(),
+                    lat,
+                    lng,
+                    glob_local.SOURCE_SM_US_ZIP_CODES,
+                    datetime.now(),
+                    glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                    glob_local.COUNTRY_USA,
+                    state_id,
+                    city,
+                    zip_code,
+                    lat,
+                    lng,
+                ),
+            )
+            count_upsert += cur_pg.rowcount
+
+        utils.upd_io_processed_files(
+            io_config.settings.download_file_simplemaps_us_zips, cur_pg
+        )
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        if count_duplicates > 0:
+            io_utils.progress_msg(f"Number rows duplicate: {str(count_duplicates):>8}")
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_ZIPS)
@@ -1437,105 +1537,6 @@ def _load_simplemaps_data_zips_from_us_zips(
                 "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
             ).replace("{error}", str(exc))
         )
-
-    count_duplicates = 0
-    count_upsert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the US zip data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        zip_code = f"{extract_column_value(row, COLUMN_ZIP):05}".rstrip()
-        city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
-        lat = extract_column_value(row, COLUMN_LAT, float)
-        lng = extract_column_value(row, COLUMN_LNG, float)
-        state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
-
-        # pylint: disable=line-too-long
-        cur_pg.execute(
-            """
-        INSERT INTO io_lat_lng AS ill (
-               type,
-               country,
-               state,
-               city,
-               zipcode,
-               dec_latitude,
-               dec_longitude,
-               source,
-               first_processed
-               ) VALUES (
-               %s,%s,%s,%s,%s,
-               %s,%s,%s,%s
-               )
-        ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
-        DO UPDATE
-           SET dec_latitude = %s,
-               dec_longitude = %s,
-               source = %s,
-               last_processed = %s
-         WHERE ill.type = %s
-           AND ill.country = %s
-           AND ill.state = %s
-           AND ill.city = %s
-           AND ill.zipcode = %s
-           AND NOT (
-               ill.dec_latitude = %s
-           AND ill.dec_longitude = %s
-           );
-        """,
-            (
-                glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
-                glob_local.COUNTRY_USA,
-                state_id,
-                city,
-                zip_code,
-                lat,
-                lng,
-                glob_local.SOURCE_SM_US_ZIP_CODES,
-                datetime.now(),
-                lat,
-                lng,
-                glob_local.SOURCE_SM_US_ZIP_CODES,
-                datetime.now(),
-                glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
-                glob_local.COUNTRY_USA,
-                state_id,
-                city,
-                zip_code,
-                lat,
-                lng,
-            ),
-        )
-        count_upsert += cur_pg.rowcount
-
-    utils.upd_io_processed_files(
-        io_config.settings.download_file_simplemaps_us_zips, cur_pg
-    )
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    if count_duplicates > 0:
-        io_utils.progress_msg(f"Number rows duplicate: {str(count_duplicates):>8}")
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1826,6 +1827,119 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
             sheet_name="zip_code_database",
         )
 
+        count_upsert = 0
+        count_select = 0
+
+        # ------------------------------------------------------------------
+        # Load the US city data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            if (
+                extract_column_value(row, COLUMN_TYPE) != "STANDARD"
+                or extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
+            ):
+                continue
+
+            zipcode = f"{str(extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
+            primary_city = [
+                str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
+            ]
+            acceptable_cities = (
+                str(extract_column_value(row, COLUMN_ACCEPTABLE_CITIES))
+                .upper()
+                .split(",")
+                if extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
+                else []
+            )
+            state = str(extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
+            lat = extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
+            lng = extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
+
+            for city in acceptable_cities:
+                primary_city.append(city.rstrip())
+
+            for city in primary_city:
+                if city and city.rstrip():
+                    # pylint: disable=line-too-long
+                    cur_pg.execute(
+                        """
+                    INSERT INTO io_lat_lng AS ill (
+                           type,
+                           country,
+                           state,
+                           city,
+                           zipcode,
+                           dec_latitude,
+                           dec_longitude,
+                           source,
+                           first_processed
+                           ) VALUES (
+                           %s,%s,%s,%s,%s,
+                           %s,%s,%s,%s
+                           )
+                    ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
+                    DO UPDATE
+                       SET dec_latitude = %s,
+                           dec_longitude = %s,
+                           source = %s,
+                           last_processed = %s
+                     WHERE ill.type = %s
+                       AND ill.country = %s
+                       AND ill.state = %s
+                       AND ill.city = %s
+                       AND ill.zipcode = %s
+                       AND ill.source = %s
+                       AND NOT (
+                           ill.dec_latitude = %s
+                       AND ill.dec_longitude = %s
+                       );
+                    """,
+                        (
+                            glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                            glob_local.COUNTRY_USA,
+                            state.rstrip(),
+                            city.rstrip(),
+                            zipcode.rstrip(),
+                            lat,
+                            lng,
+                            glob_local.SOURCE_ZCO_ZIP_CODES,
+                            datetime.now(),
+                            lat,
+                            lng,
+                            glob_local.SOURCE_ZCO_ZIP_CODES,
+                            datetime.now(),
+                            glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
+                            glob_local.COUNTRY_USA,
+                            state.rstrip(),
+                            city.rstrip(),
+                            zipcode.rstrip(),
+                            glob_local.SOURCE_SM_US_CITIES,
+                            lat,
+                            lng,
+                        ),
+                    )
+                    count_upsert += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_upsert > 0:
+            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", filename)
@@ -1844,117 +1958,6 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                 "{error}", str(exc)
             )
         )
-
-    count_upsert = 0
-    count_select = 0
-
-    # ------------------------------------------------------------------
-    # Load the US city data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        if (
-            extract_column_value(row, COLUMN_TYPE) != "STANDARD"
-            or extract_column_value(row, COLUMN_COUNTRY_LOWER) != "US"
-        ):
-            continue
-
-        zipcode = f"{str(extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
-        primary_city = [
-            str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
-        ]
-        acceptable_cities = (
-            str(extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)).upper().split(",")
-            if extract_column_value(row, COLUMN_ACCEPTABLE_CITIES)
-            else []
-        )
-        state = str(extract_column_value(row, COLUMN_STATE_LOWER)).upper().rstrip()
-        lat = extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
-        lng = extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
-
-        for city in acceptable_cities:
-            primary_city.append(city.rstrip())
-
-        for city in primary_city:
-            if city and city.rstrip():
-                # pylint: disable=line-too-long
-                cur_pg.execute(
-                    """
-                INSERT INTO io_lat_lng AS ill (
-                       type,
-                       country,
-                       state,
-                       city,
-                       zipcode,
-                       dec_latitude,
-                       dec_longitude,
-                       source,
-                       first_processed
-                       ) VALUES (
-                       %s,%s,%s,%s,%s,
-                       %s,%s,%s,%s
-                       )
-                ON CONFLICT ON CONSTRAINT io_lat_lng_type_country_state_city_zipcode_key
-                DO UPDATE
-                   SET dec_latitude = %s,
-                       dec_longitude = %s,
-                       source = %s,
-                       last_processed = %s
-                 WHERE ill.type = %s
-                   AND ill.country = %s
-                   AND ill.state = %s
-                   AND ill.city = %s
-                   AND ill.zipcode = %s
-                   AND ill.source = %s
-                   AND NOT (
-                       ill.dec_latitude = %s
-                   AND ill.dec_longitude = %s
-                   );
-                """,
-                    (
-                        glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
-                        glob_local.COUNTRY_USA,
-                        state.rstrip(),
-                        city.rstrip(),
-                        zipcode.rstrip(),
-                        lat,
-                        lng,
-                        glob_local.SOURCE_ZCO_ZIP_CODES,
-                        datetime.now(),
-                        lat,
-                        lng,
-                        glob_local.SOURCE_ZCO_ZIP_CODES,
-                        datetime.now(),
-                        glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
-                        glob_local.COUNTRY_USA,
-                        state.rstrip(),
-                        city.rstrip(),
-                        zipcode.rstrip(),
-                        glob_local.SOURCE_SM_US_CITIES,
-                        lat,
-                        lng,
-                    ),
-                )
-                count_upsert += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_upsert > 0:
-        io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------

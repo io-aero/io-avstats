@@ -102,7 +102,7 @@ ERROR_00_940 = (
 )
 ERROR_00_941 = "ERROR.00.941 The Main Phases of Flight file '{filename}' is missing"
 ERROR_00_942 = (
-    "ERROR.00.942 Event '{ev_id}': issue with the Harvesine algorithm: '{error}'"
+    "ERROR.00.942 Event '{ev_id}': issue with the Haversine algorithm: '{error}'"
 )
 ERROR_00_943 = "ERROR.00.943 The airport file '{filename}' is missing"
 ERROR_00_944 = "ERROR.00.944 The runway file '{filename}' is missing"

@@ -3385,6 +3385,50 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             sheet_name="io_md_codes_phase",
         )
 
+        count_select = 0
+        count_update = 0
+
+        # ------------------------------------------------------------------
+        # Load the NPIAS data.
+        # ------------------------------------------------------------------
+
+        # pylint: disable=R0801
+        for _index, row in dataframe.iterrows():
+
+            count_select += 1
+
+            if count_select % io_config.settings.database_commit_size == 0:
+                conn_pg.commit()
+                io_utils.progress_msg(
+                    f"Number of rows so far read : {str(count_select):>8}"
+                )
+
+            phase_code = str(extract_column_value(row, COLUMN_PHASE_CODE))
+            main_phase = extract_column_value(row, COLUMN_MAIN_PHASE)
+
+            # pylint: disable=line-too-long
+            cur_pg.execute(
+                """
+            UPDATE io_md_codes_phase imcp
+               SET description_main_phase = %s
+             WHERE imcp.phase_code = %s;
+            """,
+                (
+                    main_phase,
+                    phase_code,
+                ),
+            )
+            count_update += cur_pg.rowcount
+
+        conn_pg.commit()
+
+        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+
+        if count_update > 0:
+            io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+
+        logger.debug(io_glob.LOGGER_END)
+
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace("{file_name}", FILE_MAIN_PHASES_OF_FLIGHT)
@@ -3403,50 +3447,6 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
                 "{file_name}", FILE_MAIN_PHASES_OF_FLIGHT
             ).replace("{error}", str(exc))
         )
-
-    count_select = 0
-    count_update = 0
-
-    # ------------------------------------------------------------------
-    # Load the NPIAS data.
-    # ------------------------------------------------------------------
-
-    # pylint: disable=R0801
-    for _index, row in dataframe.iterrows():
-
-        count_select += 1
-
-        if count_select % io_config.settings.database_commit_size == 0:
-            conn_pg.commit()
-            io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
-            )
-
-        phase_code = str(extract_column_value(row, COLUMN_PHASE_CODE))
-        main_phase = extract_column_value(row, COLUMN_MAIN_PHASE)
-
-        # pylint: disable=line-too-long
-        cur_pg.execute(
-            """
-        UPDATE io_md_codes_phase imcp
-           SET description_main_phase = %s
-         WHERE imcp.phase_code = %s;
-        """,
-            (
-                main_phase,
-                phase_code,
-            ),
-        )
-        count_update += cur_pg.rowcount
-
-    conn_pg.commit()
-
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-
-    if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
-
-    logger.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------

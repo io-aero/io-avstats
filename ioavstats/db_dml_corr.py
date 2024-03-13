@@ -30,16 +30,32 @@ from ioavstats.utils import prepare_longitude
 # -----------------------------------------------------------------------------
 
 COLUMN_AIRCRAFT_KEY = "aircraft_key"
+COLUMN_CITY = "city"
+COLUMN_CITY_DEC_LATITUDE = "city_dec_latitude"
+COLUMN_CITY_DEC_LONGITUDE = "city_dec_longitude"
 COLUMN_COLUMN_NAME = "column_name"
+COLUMN_COUNTRY = "country"
+COLUMN_COUNTRY_DEC_LATITUDE = "country_dec_latitude"
+COLUMN_COUNTRY_DEC_LONGITUDE = "country_dec_longitude"
 COLUMN_CREW_NO = "crew_no"
+COLUMN_DEC_LATITUDE = "dec_latitude"
+COLUMN_DEC_LONGITUDE = "dec_longitude"
 COLUMN_EV_ID = "ev_id"
+COLUMN_LATITUDE = "latitude"
+COLUMN_LONGITUDE = "longitude"
 COLUMN_NAME: str = ""
 COLUMN_NOTE_1 = "note_1"
 COLUMN_NOTE_2 = "note_2"
 COLUMN_NOTE_3 = "note_3"
 COLUMN_OCCURRENCE_NO = "occurrence_no"
+COLUMN_SITE_ZIPCODE = "site_zipcode"
+COLUMN_STATE = "state"
+COLUMN_STATE_DEC_LATITUDE = "state_dec_latitude"
+COLUMN_STATE_DEC_LONGITUDE = "state_dec_longitude"
 COLUMN_TABLE_NAME = "table_name"
 COLUMN_VALUE = "value"
+COLUMN_ZIPCODE_DEC_LATITUDE = "zipcode_dec_latitude"
+COLUMN_ZIPCODE_DEC_LONGITUDE = "zipcode_dec_longitude"
 
 COUNT_ERROR = 0
 COUNT_SELECT = 0
@@ -189,7 +205,8 @@ def _delete_missing_aircraft(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        (ev_id, aircraft_key) = row_tbd
+        ev_id = row_tbd[COLUMN_EV_ID]
+        aircraft_key = row_tbd[COLUMN_AIRCRAFT_KEY]
 
         # pylint: disable=line-too-long
         cur_pg.execute(
@@ -557,11 +574,11 @@ def correct_dec_lat_lng() -> None:
         io_dec_latitude = None
         io_dec_longitude = None
 
-        ev_id = row_pg["ev_id"]  # type: ignore
-        latitude = row_pg["latitude"]  # type: ignore
-        longitude = row_pg["longitude"]  # type: ignore
+        ev_id = row_pg[COLUMN_EV_ID]  # type: ignore
+        latitude = row_pg[COLUMN_LATITUDE]  # type: ignore
+        longitude = row_pg[COLUMN_LONGITUDE]  # type: ignore
 
-        state = row_pg["state"]  # type: ignore
+        state = row_pg[COLUMN_STATE]  # type: ignore
         if state not in glob_local.US_STATE_IDS:
             io_dec_lat_lng_actions = glob_local.ERROR_00_922
 
@@ -614,12 +631,12 @@ def correct_dec_lat_lng() -> None:
         # ------------------------------------------------------------------
         # Correct based on US zipcode.
         # ------------------------------------------------------------------
-        if row_pg["country"] != "USA":  # type: ignore
+        if row_pg[COLUMN_COUNTRY] != "USA":  # type: ignore
             continue
 
-        site_zipcode = row_pg["site_zipcode"]  # type: ignore
-        dec_latitude = row_pg["zipcode_dec_latitude"]  # type: ignore
-        dec_longitude = row_pg["zipcode_dec_longitude"]  # type: ignore
+        site_zipcode = row_pg[COLUMN_SITE_ZIPCODE]  # type: ignore
+        dec_latitude = row_pg[COLUMN_ZIPCODE_DEC_LATITUDE]  # type: ignore
+        dec_longitude = row_pg[COLUMN_ZIPCODE_DEC_LONGITUDE]  # type: ignore
 
         if site_zipcode:
             if dec_latitude or dec_longitude:
@@ -645,9 +662,9 @@ def correct_dec_lat_lng() -> None:
         # ------------------------------------------------------------------
         # Correct based on US city.
         # ------------------------------------------------------------------
-        city = row_pg["city"]  # type: ignore
-        dec_latitude = row_pg["city_dec_latitude"]  # type: ignore
-        dec_longitude = row_pg["city_dec_longitude"]  # type: ignore
+        city = row_pg[COLUMN_CITY]  # type: ignore
+        dec_latitude = row_pg[COLUMN_CITY_DEC_LATITUDE]  # type: ignore
+        dec_longitude = row_pg[COLUMN_CITY_DEC_LONGITUDE]  # type: ignore
 
         if city:
             if dec_latitude or dec_longitude:
@@ -673,8 +690,8 @@ def correct_dec_lat_lng() -> None:
         # ------------------------------------------------------------------
         # Correct based on US state.
         # ------------------------------------------------------------------
-        dec_latitude = row_pg["state_dec_latitude"]  # type: ignore
-        dec_longitude = row_pg["state_dec_longitude"]  # type: ignore
+        dec_latitude = row_pg[COLUMN_STATE_DEC_LATITUDE]  # type: ignore
+        dec_longitude = row_pg[COLUMN_STATE_DEC_LONGITUDE]  # type: ignore
 
         if state:
             if dec_latitude or dec_longitude:
@@ -700,8 +717,8 @@ def correct_dec_lat_lng() -> None:
         # ------------------------------------------------------------------
         # Correct based on US country.
         # ------------------------------------------------------------------
-        dec_latitude = row_pg["country_dec_latitude"]  # type: ignore
-        dec_longitude = row_pg["country_dec_longitude"]  # type: ignore
+        dec_latitude = row_pg[COLUMN_COUNTRY_DEC_LATITUDE]  # type: ignore
+        dec_longitude = row_pg[COLUMN_COUNTRY_DEC_LONGITUDE]  # type: ignore
 
         count_update += _upd_table_events_row_io_lat_lng(
             ev_id,
@@ -813,9 +830,9 @@ def find_nearest_airports() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        ev_id = row_pg["ev_id"]  # type: ignore
-        ev_dec_latitude = row_pg["dec_latitude"]  # type: ignore
-        ev_dec_longitude = row_pg["dec_longitude"]  # type: ignore
+        ev_id = row_pg[COLUMN_EV_ID]  # type: ignore
+        ev_dec_latitude = row_pg[COLUMN_DEC_LATITUDE]  # type: ignore
+        ev_dec_longitude = row_pg[COLUMN_DEC_LONGITUDE]  # type: ignore
 
         if (
             ev_dec_latitude == prev_ev_dec_latitude
@@ -1109,13 +1126,13 @@ def verify_ntsb_data() -> None:
         # ------------------------------------------------------------------
         # Invalid latitude.
         # ------------------------------------------------------------------
-        latitude = row_pg["latitude"]  # type: ignore
+        latitude = row_pg[COLUMN_LATITUDE]  # type: ignore
 
         if latitude:
             try:
                 dec_latitude_comp = lat_lon_parser.parse(prepare_latitude(latitude))
 
-                dec_latitude = row_pg["dec_latitude"]  # type: ignore
+                dec_latitude = row_pg[COLUMN_DEC_LATITUDE]  # type: ignore
                 if dec_latitude:
                     deviation = abs(dec_latitude - dec_latitude_comp)
                     if deviation > io_config.settings.max_deviation_latitude:
@@ -1128,13 +1145,13 @@ def verify_ntsb_data() -> None:
         # ------------------------------------------------------------------
         # Invalid longitude.
         # ------------------------------------------------------------------
-        longitude = row_pg["longitude"]  # type: ignore
+        longitude = row_pg[COLUMN_LONGITUDE]  # type: ignore
 
         if longitude:
             try:
                 dec_longitude_comp = lat_lon_parser.parse(prepare_longitude(longitude))
 
-                dec_longitude = row_pg["dec_longitude"]  # type: ignore
+                dec_longitude = row_pg[COLUMN_DEC_LONGITUDE]  # type: ignore
                 if dec_longitude:
                     deviation = abs(dec_longitude - dec_longitude_comp)
                     if deviation > io_config.settings.max_deviation_longitude:
@@ -1153,7 +1170,7 @@ def verify_ntsb_data() -> None:
             and io_invalid_latitude is False
             and io_invalid_longitude is False
         ):
-            ev_id = row_pg["ev_id"]  # type: ignore
+            ev_id = row_pg[COLUMN_EV_ID]  # type: ignore
             cur_pg.execute(
                 """
             UPDATE events SET

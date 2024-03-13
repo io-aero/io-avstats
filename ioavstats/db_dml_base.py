@@ -32,12 +32,15 @@ from ioavstats import utils
 COLUMN_ACCEPTABLE_CITIES = "acceptable_cities"
 COLUMN_AIRANAL = "AIRANAL"
 COLUMN_AIRPORT_ID = "AIRPORT_ID"
+COLUMN_CICTT_CODE_LOWER = "cictt_code"
 COLUMN_CICTT_CODE_SPACE = "CICTT Code"
 COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
 COLUMN_CITY = "city"
 COLUMN_COMP_CODE = "COMP_CODE"
 COLUMN_COUNTRY_LOWER = "country"
 COLUMN_COUNTRY_UPPER = "COUNTRY"
+COLUMN_DEC_LATITUDE = "dec_latitude"
+COLUMN_DEC_LONGITUDE = "dec_longitude"
 COLUMN_DEFINITION = "Definition"
 COLUMN_DIM_UOM = "DIM_UOM"
 COLUMN_DODHIFLIP = "DODHIFLIP"
@@ -64,6 +67,7 @@ COLUMN_OPERSTATUS = "OPERSTATUS"
 COLUMN_PRIMARY_CITY = "primary_city"
 COLUMN_PRIVATEUSE = "PRIVATEUSE"
 COLUMN_SERVCITY = "SERVCITY"
+COLUMN_SOE_NO = "soe_no"
 COLUMN_STATE_CAMEL = "State"
 COLUMN_STATE_ID = "state_id"
 COLUMN_STATE_LOWER = "state"
@@ -526,7 +530,7 @@ def _load_aviation_occurrence_categories() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        cictt_code = row_pg["cictt_code"]  # type: ignore
+        cictt_code = row_pg[COLUMN_CICTT_CODE_LOWER]  # type: ignore
 
         try:
             cur_pg.execute(
@@ -1068,7 +1072,7 @@ def _load_sequence_of_events() -> None:
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        soe_no = row_pg["soe_no"]  # type: ignore
+        soe_no = row_pg[COLUMN_SOE_NO]  # type: ignore
 
         try:
             cur_pg.execute(
@@ -1707,11 +1711,11 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
             """,
                 (
                     glob_local.IO_LAT_LNG_TYPE_CITY,
-                    row_pg["country"],  # type: ignore
-                    row_pg["state"],  # type: ignore
-                    row_pg["city"],  # type: ignore
-                    row_pg["dec_latitude"],  # type: ignore
-                    row_pg["dec_longitude"],  # type: ignore
+                    row_pg[COLUMN_COUNTRY_LOWER],  # type: ignore
+                    row_pg[COLUMN_STATE_LOWER],  # type: ignore
+                    row_pg[COLUMN_CITY],  # type: ignore
+                    row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
+                    row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
                     datetime.now(),
                 ),

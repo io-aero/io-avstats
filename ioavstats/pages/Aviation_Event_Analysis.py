@@ -16,7 +16,7 @@ import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from iocommon import io_config
 from pandas import DataFrame
-from psycopg import Connection
+from psycopg2.extensions import connection
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
 from ydata_profiling import ProfileReport  # type: ignore
 
@@ -301,7 +301,7 @@ OPTIONS_LATLONG_ACQ = {
     "ZIP": "computed on US zip code basis",
 }
 
-PG_CONN: Connection | None = None
+PG_CONN: connection | None = None
 #  Up/down angle relative to the maps plane,
 #  with 0 being looking directly at the map
 

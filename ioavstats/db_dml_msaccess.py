@@ -32,6 +32,13 @@ from ioavstats import utils_msaccess
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_CITY = "city"
+COLUMN_COUNT = "count"
+COLUMN_COUNTRY = "country"
+COLUMN_DEC_LATITUDE = "dec_latitude"
+COLUMN_DEC_LONGITUDE = "dec_longitude"
+COLUMN_STATE = "state"
+
 IO_LAST_SEEN = datetime.now(timezone.utc)
 
 logger = logging.getLogger(__name__)
@@ -264,7 +271,8 @@ def _delete_ntsb_data(
             """,
         )
         row_pg = cur_pg.fetchone()
-        no_rows = row_pg["count"] if row_pg else 0  # type: ignore
+
+        no_rows = row_pg[COLUMN_COUNT] if row_pg else 0  # type: ignore
         if no_rows > 0:
             cur_pg.execute(
                 f"""
@@ -2895,11 +2903,11 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
             """,
                 (
                     glob_local.IO_LAT_LNG_TYPE_CITY,
-                    row_pg["country"],  # type: ignore
-                    row_pg["state"],  # type: ignore
-                    row_pg["city"],  # type: ignore
-                    row_pg["dec_latitude"],  # type: ignore
-                    row_pg["dec_longitude"],  # type: ignore
+                    row_pg[COLUMN_COUNTRY],  # type: ignore
+                    row_pg[COLUMN_STATE],  # type: ignore
+                    row_pg[COLUMN_CITY],  # type: ignore
+                    row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
+                    row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
                     datetime.now(),
                 ),

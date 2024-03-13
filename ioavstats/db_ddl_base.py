@@ -24,9 +24,22 @@ from ioavstats import glob_local
 # Global variables.
 # -----------------------------------------------------------------------------
 
+COLUMN_CATEGORY_NO = "category_no"
+COLUMN_COUNT = "count"
 COLUMN_DESCRIPTION = "description"
+COLUMN_EVENTSOE_NO = "eventsoe_no"
+COLUMN_FINDING_DESCRIPTION = "finding_description"
 COLUMN_MAIN_PHASE = "main_phase"
+COLUMN_MODIFIER_DESCRIPTION = "modifier_description"
+COLUMN_MODIFIER_NO = "modifier_no"
+COLUMN_OCCURRENCE_DESCRIPTION = "occurrence_description"
 COLUMN_PHASE_CODE = "phase_code"
+COLUMN_PHASE_NO = "phase_no"
+COLUMN_SECTION_NO = "section_no"
+COLUMN_SUBCATEGORY_CODE = "subcategory_code"
+COLUMN_SUBCATEGORY_NO = "subcategory_no"
+COLUMN_SUBSECTION_NO = "subsection_no"
+COLUMN_TABLE_NAME = "table_name"
 
 DLL_TABLE_STMNTS: dict[str, str] = {}
 DLL_VIEW_STMNTS_CREATE: dict[str, str] = {}
@@ -71,7 +84,7 @@ def _check_exists_index(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg["count"] > 0:  # type: ignore
+    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
         return True
 
     return False
@@ -96,7 +109,7 @@ def _check_exists_table(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg["count"] > 0:  # type: ignore
+    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
         return True
 
     return False
@@ -122,7 +135,7 @@ def _check_exists_table_column(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg["count"] > 0:  # type: ignore
+    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
         return True
 
     return False
@@ -145,7 +158,7 @@ def _check_exists_type(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg["count"] > 0:  # type: ignore
+    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
         return True
 
     return False
@@ -315,8 +328,8 @@ def _create_db_io_md_codes_category(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        category_no = row_tbd["category_no"]
-        finding_description = row_tbd["finding_description"]
+        category_no = row_tbd[COLUMN_CATEGORY_NO]
+        finding_description = row_tbd[COLUMN_FINDING_DESCRIPTION]
 
         if category_no not in unstructured_desc:
             unstructured_desc[category_no] = []
@@ -412,8 +425,8 @@ def _create_db_io_md_codes_eventsoe(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        eventsoe_no = row_tbd["eventsoe_no"]
-        occurrence_description = row_tbd["occurrence_description"]
+        eventsoe_no = row_tbd[COLUMN_EVENTSOE_NO]
+        occurrence_description = row_tbd[COLUMN_OCCURRENCE_DESCRIPTION]
 
         if eventsoe_no not in unstructured_desc:
             unstructured_desc[eventsoe_no] = []
@@ -507,8 +520,8 @@ def _create_db_io_md_codes_modifier(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        modifier_no = row_tbd["modifier_no"]
-        finding_description = row_tbd["finding_description"]
+        modifier_no = row_tbd[COLUMN_MODIFIER_NO]
+        finding_description = row_tbd[COLUMN_MODIFIER_DESCRIPTION]
 
         if modifier_no not in unstructured_desc:
             unstructured_desc[modifier_no] = []
@@ -604,8 +617,8 @@ def _create_db_io_md_codes_phase(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        phase_no = row_tbd["phase_no"]
-        occurrence_description = row_tbd["occurrence_description"]
+        phase_no = row_tbd[COLUMN_PHASE_NO]
+        occurrence_description = row_tbd[COLUMN_OCCURRENCE_DESCRIPTION]
 
         if phase_no not in unstructured_desc:
             unstructured_desc[phase_no] = []
@@ -709,10 +722,10 @@ def _create_db_io_md_codes_section(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        category_no = row_tbd["category_no"]
-        subcategory_no = row_tbd["subcategory_no"]
-        section_no = row_tbd["section_no"]
-        finding_description = row_tbd["finding_description"]
+        category_no = row_tbd[COLUMN_CATEGORY_NO]
+        subcategory_no = row_tbd[COLUMN_SUBCATEGORY_NO]
+        section_no = row_tbd[COLUMN_SECTION_NO]
+        finding_description = row_tbd[COLUMN_FINDING_DESCRIPTION]
 
         if (category_no, subcategory_no, section_no) not in unstructured_desc:
             unstructured_desc[(category_no, subcategory_no, section_no)] = []
@@ -819,9 +832,9 @@ def _create_db_io_md_codes_subcategory(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        category_no = row_tbd["category_no"]
-        subcategory_no = row_tbd["subcategory_no"]
-        finding_description = row_tbd["finding_description"]
+        category_no = row_tbd[COLUMN_CATEGORY_NO]
+        subcategory_no = row_tbd[COLUMN_SUBCATEGORY_NO]
+        finding_description = row_tbd[COLUMN_FINDING_DESCRIPTION]
 
         if (category_no, subcategory_no) not in unstructured_desc:
             unstructured_desc[(category_no, subcategory_no)] = []
@@ -927,11 +940,11 @@ def _create_db_io_md_codes_subsection(
                 f"Number of rows so far read : {str(count_select):>8}"
             )
 
-        category_no = row_tbd["category_no"]
-        subcategory_no = row_tbd["subcategory_no"]
-        section_no = row_tbd["section_no"]
-        subsection_no = row_tbd["subsection_no"]
-        finding_description = row_tbd["finding_description"]
+        category_no = row_tbd[COLUMN_CATEGORY_NO]
+        subcategory_no = row_tbd[COLUMN_SUBCATEGORY_NO]
+        section_no = row_tbd[COLUMN_SECTION_NO]
+        subsection_no = row_tbd[COLUMN_SUBSECTION_NO]
+        finding_description = row_tbd[COLUMN_FINDING_DESCRIPTION]
 
         if (
             category_no,
@@ -1013,7 +1026,7 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
 
         row_pg = cur_pg.fetchone()
 
-        if row_pg and row_pg["count"] > 0:  # type: ignore
+        if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
             cur_pg.execute(
                 f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE"
             )

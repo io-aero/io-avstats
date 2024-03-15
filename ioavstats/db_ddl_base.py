@@ -521,7 +521,7 @@ def _create_db_io_md_codes_modifier(
             )
 
         modifier_no = row_tbd[COLUMN_MODIFIER_NO]
-        finding_description = row_tbd[COLUMN_MODIFIER_DESCRIPTION]
+        finding_description = row_tbd[COLUMN_FINDING_DESCRIPTION]
 
         if modifier_no not in unstructured_desc:
             unstructured_desc[modifier_no] = []

@@ -14,6 +14,7 @@
 /data/*.backup.sql
 /data/*_postgres*.zip
 /data/*_postgres.zip
+/data/NTSB/
 /data/USGS/
 /data/correction_test/
 /data/download/

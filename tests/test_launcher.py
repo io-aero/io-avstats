@@ -36,7 +36,9 @@ def _run_command(command: str) -> None:
             capture_output=True,
         )
     except subprocess.CalledProcessError as e:
-        pytest.fail(f"Command failed with exit code {e.returncode}")
+        pytest.fail(
+            f"Command failed with error: {e.stderr} and exit code: {e.returncode}",
+        )
 
 
 # -----------------------------------------------------------------------------

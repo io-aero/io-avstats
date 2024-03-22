@@ -200,7 +200,7 @@ if [[ "${IO_AERO_TASK}" = @("a_o_c"|"c_d_s"|"c_l_l"|"c_p_d"|"f_n_a"|"l_a_p"|"l_c
 # Run Docker Compose tasks (Local).
 # ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "c_d_l" ]; then
-    if ! ( ./scripts/run_docker_compose_local.sh ${IO_AERO_COMPOSE_TASK} ); then
+    if ! ( ./scripts/run_docker_compose_local.sh "${IO_AERO_COMPOSE_TASK}" ); then
         exit 255
     fi
 

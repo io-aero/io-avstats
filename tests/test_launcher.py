@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # -----------------------------------------------------------------------------
 # Run shell commands safely.
 # -----------------------------------------------------------------------------
-def _run_command(command: str) -> None:
+def _run_command(command: list[str]) -> None:
     """Run shell commands safely."""
     try:
         subprocess.run(

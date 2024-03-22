@@ -9,19 +9,16 @@ from collections import OrderedDict
 
 import lat_lon_parser  # type: ignore
 import pandas as pd
-from haversine import Unit  # type: ignore
-from haversine import haversine
-from iocommon import db_utils
-from iocommon import io_config
-from iocommon import io_glob
-from iocommon import io_utils
+from haversine import (
+    Unit,  # type: ignore
+    haversine,
+)
+from iocommon import db_utils, io_config, io_glob, io_utils
 from iocommon.io_utils import extract_column_value
-from psycopg import connection
-from psycopg import cursor
+from psycopg import connection, cursor
 
 from ioavstats import glob_local
-from ioavstats.utils import prepare_latitude
-from ioavstats.utils import prepare_longitude
+from ioavstats.utils import prepare_latitude, prepare_longitude
 
 # pylint: disable=too-many-lines
 
@@ -81,7 +78,7 @@ def _check_corrected_value() -> bool:
         try:
             lat_lon_parser.parse(prepare_latitude(VALUE))
 
-            return True
+            return True  # noqa: TRY300
         except ValueError:
             _error_msg(glob_local.ERROR_00_920)
 
@@ -89,7 +86,7 @@ def _check_corrected_value() -> bool:
         try:
             lat_lon_parser.parse(prepare_longitude(VALUE))
 
-            return True
+            return True  # noqa: TRY300
         except ValueError:
             _error_msg(glob_local.ERROR_00_921)
 
@@ -123,11 +120,14 @@ def _check_events_ev_id(cur_pg: cursor) -> bool:
 # Cleansing a database column.
 # ------------------------------------------------------------------
 def _cleansing_database_column(
-    conn_pg: connection, cur_pg: cursor, table: str, column: str
-):
+    conn_pg: connection,
+    cur_pg: cursor,
+    table: str,
+    column: str,
+) -> None:
     # INFO.00.066 Cleansing table '{table}' column '{column}'
     io_utils.progress_msg(
-        glob_local.INFO_00_066.replace("{table}", table).replace("{column}", column)
+        glob_local.INFO_00_066.replace("{table}", table).replace("{column}", column),
     )
 
     # ------------------------------------------------------------------
@@ -143,7 +143,7 @@ def _cleansing_database_column(
 
     if cur_pg.rowcount > 0:
         conn_pg.commit()
-        io_utils.progress_msg(f"Number cols trimmed  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number cols trimmed  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Converting data to NULL.
@@ -158,7 +158,7 @@ def _cleansing_database_column(
 
     if cur_pg.rowcount > 0:
         conn_pg.commit()
-        io_utils.progress_msg(f"Number cols nullified: {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number cols nullified: {cur_pg.rowcount!s:>8}")
 
 
 # ------------------------------------------------------------------
@@ -177,12 +177,12 @@ def _delete_missing_aircraft(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_pg_2.execute(
         f"""
-        SELECT n.ev_id, 
+        SELECT n.ev_id,
                n.aircraft_key
           FROM {table_name} n LEFT OUTER JOIN io_pk_ntsb ipn
                                 ON ipn.table_name = %s
@@ -202,7 +202,7 @@ def _delete_missing_aircraft(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         ev_id = row_tbd[COLUMN_EV_ID]
@@ -227,10 +227,10 @@ def _delete_missing_aircraft(
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_delete > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {count_delete!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -241,8 +241,8 @@ def _delete_missing_aircraft(
 def _error_msg(msg: str) -> None:
     global COUNT_ERROR  # pylint: disable=global-statement
 
-    print(f"Row #{COUNT_SELECT + 1:4}: {ROW}")
-    print(f"has error: {msg}")
+    print(f"Row #{COUNT_SELECT + 1:4}: {ROW}")  # noqa: T201
+    print(f"has error: {msg}")  # noqa: T201
 
     COUNT_ERROR += 1
 
@@ -285,13 +285,12 @@ def _process_events(
 
     if VALUE.lower() == "null":
         VALUE = "null"
-    else:
-        if COLUMN_NAME in [
-            "io_latitude",
-            "io_longitude",
-        ]:
-            if not _check_corrected_value():
-                return
+    elif COLUMN_NAME in [
+        "io_latitude",
+        "io_longitude",
+    ]:
+        if not _check_corrected_value():
+            return
 
     EV_ID = str(extract_column_value(ROW, COLUMN_EV_ID))  # type: ignore
     if not EV_ID:
@@ -329,21 +328,14 @@ def _sql_query_io_airports(conn_pg: connection) -> list[tuple[str, float, float]
             """
         SELECT global_id,
                dec_latitude,
-               dec_longitude 
+               dec_longitude
           FROM io_airports;
-        """
+        """,
         )
 
-        data = []
-
-        for row in cur:
-            data.append(
-                (
-                    row["global_id"],
-                    row["dec_latitude"],
-                    row["dec_longitude"],
-                )
-            )
+        data = [
+            (row["global_id"], row["dec_latitude"], row["dec_longitude"]) for row in cur
+        ]
 
         return sorted(data)
 
@@ -539,7 +531,7 @@ def correct_dec_lat_lng() -> None:
         conn_pg.commit()
 
         io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
-        io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number cols deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -564,7 +556,7 @@ def correct_dec_lat_lng() -> None:
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         # ------------------------------------------------------------------
@@ -744,10 +736,10 @@ def correct_dec_lat_lng() -> None:
     cur_pg_2.close()
     conn_pg_2.close()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -785,7 +777,7 @@ def find_nearest_airports() -> None:
         conn_pg.commit()
 
         io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
-        io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number cols deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -803,7 +795,7 @@ def find_nearest_airports() -> None:
     SELECT ev_id,
            COALESCE(io_dec_latitude,  e.dec_latitude)  dec_latitude,
            COALESCE(io_dec_longitude, e.dec_longitude) dec_longitude
-      FROM events e LEFT OUTER JOIN io_states i 
+      FROM events e LEFT OUTER JOIN io_states i
                     ON (e.ev_state   = i.state
                     AND e.ev_country = i.country)
      WHERE COALESCE(io_dec_latitude,  e.dec_latitude)  IS NOT NULL
@@ -827,7 +819,7 @@ def find_nearest_airports() -> None:
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         ev_id = row_pg[COLUMN_EV_ID]  # type: ignore
@@ -868,8 +860,9 @@ def find_nearest_airports() -> None:
                 # ERROR.00.942 Issue with the Haversine algorithm: '{error}'
                 io_utils.progress_msg(
                     glob_local.ERROR_00_942.replace("{ev_id}", ev_id).replace(
-                        "{error}", str(err)
-                    )
+                        "{error}",
+                        str(err),
+                    ),
                 )
                 break
             if distance < nearest_airport_distance:
@@ -881,7 +874,7 @@ def find_nearest_airports() -> None:
                 (
                     nearest_airport_distance,
                     nearest_airport_global_id,
-                )
+                ),
             )
 
         if nearest_airport_distance < 999999.9:
@@ -910,10 +903,10 @@ def find_nearest_airports() -> None:
     cur_pg_2.close()
     conn_pg_2.close()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -925,6 +918,7 @@ def load_correction_data(filename: str) -> None:
     """Load data from a correction file into the PostgreSQL database.
 
     Args:
+    ----
         filename (str):
             The MS Excel file.
 
@@ -940,7 +934,7 @@ def load_correction_data(filename: str) -> None:
     if not os.path.isfile(corr_file):
         # ERROR.00.926 The correction file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_926.replace("{filename}", corr_file)
+            glob_local.ERROR_00_926.replace("{filename}", corr_file),
         )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
@@ -970,7 +964,7 @@ def load_correction_data(filename: str) -> None:
             if COUNT_SELECT % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(COUNT_SELECT):>8}"
+                    f"Number of rows so far read : {COUNT_SELECT!s:>8}",
                 )
 
             TABLE_NAME = (
@@ -981,7 +975,7 @@ def load_correction_data(filename: str) -> None:
             # ERROR.00.930 Excel column '{column_name}' must not be empty
             if not TABLE_NAME:
                 _error_msg(
-                    glob_local.ERROR_00_930.replace("{column_name}", "table_name")
+                    glob_local.ERROR_00_930.replace("{column_name}", "table_name"),
                 )
                 continue
 
@@ -992,13 +986,13 @@ def load_correction_data(filename: str) -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(COUNT_SELECT):>8}")
+        io_utils.progress_msg(f"Number rows selected : {COUNT_SELECT!s:>8}")
 
         if COUNT_UPDATE > 0:
-            io_utils.progress_msg(f"Number rows updated  : {str(COUNT_UPDATE):>8}")
+            io_utils.progress_msg(f"Number rows updated  : {COUNT_UPDATE!s:>8}")
 
         if COUNT_ERROR > 0:
-            io_utils.progress_msg(f"Number rows erroneous: {str(COUNT_ERROR):>8}")
+            io_utils.progress_msg(f"Number rows erroneous: {COUNT_ERROR!s:>8}")
 
         cur_pg.close()
         conn_pg.close()
@@ -1007,21 +1001,23 @@ def load_correction_data(filename: str) -> None:
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", corr_file)
+            glob_local.FATAL_00_931.replace("{file_name}", corr_file),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace("{file_name}", corr_file).replace(
-                "{error}", str(err)
-            )
+                "{error}",
+                str(err),
+            ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", corr_file).replace(
-                "{error}", str(exc)
-            )
+                "{error}",
+                str(exc),
+            ),
         )
 
 
@@ -1064,14 +1060,14 @@ def verify_ntsb_data() -> None:
         OR io_invalid_us_city_zipcode IS NOT FALSE
         OR io_invalid_us_state IS NOT FALSE
         OR io_invalid_us_zipcode IS NOT FALSE
-    """
+    """,
     )
 
     if cur_pg.rowcount > 0:
         conn_pg.commit()
 
         io_utils.progress_msg(glob_local.INFO_00_063.replace("{data_source}", "events"))
-        io_utils.progress_msg(f"Number cols deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number cols deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     count_errors = 0
@@ -1088,8 +1084,9 @@ def verify_ntsb_data() -> None:
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
         glob_local.INFO_00_064.replace("{table}", "events").replace(
-            "{column}", "latitude & longitude"
-        )
+            "{column}",
+            "latitude & longitude",
+        ),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -1106,7 +1103,7 @@ def verify_ntsb_data() -> None:
          WHERE e.latitude IS NOT NULL
             OR e.longitude IS NOT NULL
          ORDER BY e.ev_id
-    """
+    """,
     )
 
     # pylint: disable=R0801
@@ -1117,7 +1114,7 @@ def verify_ntsb_data() -> None:
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         io_dec_latitude_deviating = None
@@ -1194,7 +1191,7 @@ def verify_ntsb_data() -> None:
             count_update += cur_pg.rowcount
 
     if count_errors > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {count_update!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1203,8 +1200,9 @@ def verify_ntsb_data() -> None:
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
         glob_local.INFO_00_064.replace("{table}", "events").replace(
-            "{column}", "ev_city"
-        )
+            "{column}",
+            "ev_city",
+        ),
     )
 
     cur_pg.execute(
@@ -1227,7 +1225,7 @@ def verify_ntsb_data() -> None:
     count_update += cur_pg.rowcount
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {cur_pg.rowcount!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1236,8 +1234,9 @@ def verify_ntsb_data() -> None:
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
         glob_local.INFO_00_064.replace("{table}", "events").replace(
-            "{column}", "ev_city & ev_site_zipcode"
-        )
+            "{column}",
+            "ev_city & ev_site_zipcode",
+        ),
     )
 
     cur_pg.execute(
@@ -1262,7 +1261,7 @@ def verify_ntsb_data() -> None:
     count_update += cur_pg.rowcount
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {cur_pg.rowcount!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1271,8 +1270,9 @@ def verify_ntsb_data() -> None:
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
         glob_local.INFO_00_064.replace("{table}", "events").replace(
-            "{column}", "ev_state"
-        )
+            "{column}",
+            "ev_state",
+        ),
     )
 
     cur_pg.execute(
@@ -1292,7 +1292,7 @@ def verify_ntsb_data() -> None:
     count_update += cur_pg.rowcount
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {cur_pg.rowcount!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1301,8 +1301,9 @@ def verify_ntsb_data() -> None:
     # INFO.00.064 Verification of table '{table}' column(s) '{column}'"
     io_utils.progress_msg(
         glob_local.INFO_00_064.replace("{table}", "events").replace(
-            "{column}", "ev_site_zipcode"
-        )
+            "{column}",
+            "ev_site_zipcode",
+        ),
     )
 
     cur_pg.execute(
@@ -1324,7 +1325,7 @@ def verify_ntsb_data() -> None:
     count_update += cur_pg.rowcount
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {cur_pg.rowcount!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     cur_pg.close()
@@ -1333,12 +1334,12 @@ def verify_ntsb_data() -> None:
     cur_pg_2.close()
     conn_pg_2.close()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     if count_errors > 0:
-        io_utils.progress_msg(f"Number rows errors   : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows errors   : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)

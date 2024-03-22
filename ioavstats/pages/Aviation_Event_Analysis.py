@@ -1,4 +1,6 @@
+# noqa: N999
 # pylint: disable=invalid-name
+
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
@@ -12,7 +14,7 @@ import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
 import streamlit as st
-import utils  # type: ignore  # pylint: disable=import-error
+import utils  # type: ignore # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
 from iocommon import io_config
 from pandas import DataFrame
@@ -267,7 +269,7 @@ HOST_CLOUD: bool | None = None
 IS_TIMEKEEPING = False
 
 LAST_READING: int = 0
-# LAYER_TYPE = "HexagonLayer"
+# LAYER_TYPE = "HexagonLayer" # noqa: ERA001
 LAYER_TYPE = "ScatterplotLayer"
 LINK_GITHUB_PAGES = "https://io-aero.github.io/io-avstats/"
 
@@ -342,11 +344,11 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["acft_categories"].apply(
-                lambda x: bool(set(x) & set(FILTER_ACFT_CATEGORIES))  # type: ignore
+                lambda x: bool(set(x) & set(FILTER_ACFT_CATEGORIES)),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_ACFT_CATEGORIES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_ACFT_CATEGORIES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -354,11 +356,11 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["cictt_codes"].apply(
-                lambda x: x in FILTER_CICTT_CODES  # type: ignore
+                lambda x: x in FILTER_CICTT_CODES,  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_CICTT_CODES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_CICTT_CODES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -367,11 +369,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["phase_codes_defining"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_DEFINING_PHASES)))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_DEFINING_PHASES))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DEFINING_PHASES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DEFINING_PHASES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -380,12 +382,12 @@ def _apply_filter(
         df_filtered = df_filtered.loc[
             (
                 df_filtered["description_main_phase_defining"].isin(
-                    FILTER_DESCRIPTION_MAIN_PHASES
+                    FILTER_DESCRIPTION_MAIN_PHASES,
                 )
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DESCRIPTION_MAIN_PHASES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_DESCRIPTION_MAIN_PHASES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -401,7 +403,7 @@ def _apply_filter(
             (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury_key))
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_HIGHEST_INJURY"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_HIGHEST_INJURY",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -423,7 +425,7 @@ def _apply_filter(
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_YEAR_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_YEAR_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -431,7 +433,7 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["far_parts"].apply(
-                lambda x: x in FILTER_FAR_PARTS  # type: ignore
+                lambda x: x in FILTER_FAR_PARTS,  # type: ignore
             )
         ]
         _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_FAR_PARTS")
@@ -441,11 +443,11 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["finding_codes"].apply(
-                lambda x: bool(set(x) & set(FILTER_FINDING_CODES))  # type: ignore
+                lambda x: bool(set(x) & set(FILTER_FINDING_CODES)),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDING_CODES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDING_CODES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -455,7 +457,7 @@ def _apply_filter(
             & (df_filtered["inj_f_grnd"] <= FILTER_INJ_F_GRND_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_F_GRND_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_F_GRND_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -465,7 +467,7 @@ def _apply_filter(
             & (df_filtered["inj_tot_f"] <= FILTER_INJ_TOT_F_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_TOT_F_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_TOT_F_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -480,7 +482,7 @@ def _apply_filter(
             (df_filtered["latlong_acq"].isin(filter_latlong_acq_key))
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_LATLONG_ACQ"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_LATLONG_ACQ",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -497,7 +499,8 @@ def _apply_filter(
                 )
             ]
             _print_timestamp(
-                f"_apply_filter() - {len(df_filtered):>6} - FILTER_DISTANCE_NEAREST_AIRPORT_FROM/TO"
+                f"_apply_filter() - {len(df_filtered):>6} - "
+                "FILTER_DISTANCE_NEAREST_AIRPORT_FROM/TO",
             )
 
     # noinspection PyUnboundLocalVariable
@@ -507,7 +510,7 @@ def _apply_filter(
             & (df_filtered["no_aircraft"] <= FILTER_NO_AIRCRAFT_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_NO_AIRCRAFT_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_NO_AIRCRAFT_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -515,11 +518,11 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["occurrence_codes"].apply(
-                lambda x: bool(set(x) & set(FILTER_OCCURRENCE_CODES))  # type: ignore
+                lambda x: bool(set(x) & set(FILTER_OCCURRENCE_CODES)),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_OCCURRENCE_CODES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_OCCURRENCE_CODES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -529,7 +532,7 @@ def _apply_filter(
             (df_filtered["preventable_events"].isin(FILTER_PREVENTABLE_EVENTS))
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_PREVENTABLE_EVENTS"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_PREVENTABLE_EVENTS",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -538,14 +541,14 @@ def _apply_filter(
             (df_filtered["tll_parameters"].isin(FILTER_TLL_PARAMETERS))
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_LOGICAL_PARAMETERS_AND"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_LOGICAL_PARAMETERS_AND",
         )
 
     # noinspection PyUnboundLocalVariable
     if FILTER_US_AVIATION:
         df_filtered = _apply_filter_us_aviation(df_filtered, FILTER_US_AVIATION)
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -564,16 +567,16 @@ def _apply_filter(
 # ------------------------------------------------------------------
 # Filter the data frame - Incompatible data.
 # ------------------------------------------------------------------
-def _apply_filter_incompatible(df_filtered):
-    if FILTER_EV_YEAR_FROM < FILTER_EV_YEAR_INCOMPATIBLE:
-        year_from = FILTER_EV_YEAR_INCOMPATIBLE
+def _apply_filter_incompatible(df_filtered: DataFrame) -> DataFrame:
+    if FILTER_EV_YEAR_FROM < FILTER_EV_YEAR_INCOMPATIBLE:  # type: ignore
+        year_from = FILTER_EV_YEAR_INCOMPATIBLE  # type: ignore
     else:
-        year_from = FILTER_EV_YEAR_FROM
+        year_from = FILTER_EV_YEAR_FROM  # type: ignore
 
-    if FILTER_EV_YEAR_TO < FILTER_EV_YEAR_INCOMPATIBLE:
+    if FILTER_EV_YEAR_TO < FILTER_EV_YEAR_INCOMPATIBLE:  # type: ignore
         year_to = FILTER_EV_YEAR_INCOMPATIBLE
     else:
-        year_to = FILTER_EV_YEAR_TO
+        year_to = FILTER_EV_YEAR_TO  # type: ignore
 
     if year_from != FILTER_EV_YEAR_FROM or year_to != FILTER_EV_YEAR_TO:
         df_filtered = df_filtered.loc[
@@ -653,7 +656,7 @@ def _get_data() -> DataFrame:
                    description_main_phase_defining,
                    CASE WHEN inj_tot_f = 0 THEN 'non-fatal'
                         ELSE 'fatal'
-                   END dot_color,     
+                   END dot_color,
                    ev_highest_injury,
                    ev_type,
                    ev_year,
@@ -724,10 +727,10 @@ def _get_user_guide_app() -> None:
 """
 
     ug_text += f"""
-This application allows you to perform data analysis tasks on aviation accident and incident data provided by 
+This application allows you to perform data analysis tasks on aviation accident and incident data provided by
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx).
-The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating 
-every civil aviation accident in the United States and significant accidents in other modes of transportation – railroad, 
+The National Transportation Safety Board (NTSB) is an independent Federal agency charged by Congress with investigating
+every civil aviation accident in the United States and significant accidents in other modes of transportation - railroad,
 highway, marine and pipeline.
 For each aviation accident and incident, the NTSB provides the relevant data in the form of MS Access databases.
 
@@ -752,15 +755,15 @@ The application provides the following tools:
 - **Data Profiles**: Allows detailed analysis of data characteristics,
 - **Detailed Data**: Shows the detailed data involved,
 - **Filter**: A large number of filter options allow the evaluation of the data with any granularity,
-- **Map**: Shows the event locations on a map. 
+- **Map**: Shows the event locations on a map.
 
 Where appropriate, the application allows you to print the displayed graphics or upload detailed data in **csv** format.
 
 Further information on the application can be found [here]({LINK_GITHUB_PAGES}).
 
-If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
-[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction. 
-Also suggestions for improvement or enhancements are welcome. 
+If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us
+[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction.
+Also suggestions for improvement or enhancements are welcome.
 """
 
     st.warning(ug_text)
@@ -827,7 +830,7 @@ def _get_user_guide_chart(
 # ------------------------------------------------------------------
 # Creates the description of the data basis.
 # ------------------------------------------------------------------
-def _get_user_guide_chart_data_basis(chart_id, ug_text):
+def _get_user_guide_chart_data_basis(chart_id: str, ug_text: str) -> str:
     ug_text = (
         ug_text
         + """
@@ -839,48 +842,48 @@ def _get_user_guide_chart_data_basis(chart_id, ug_text):
     match chart_id:
         case "d_na" | "ey_na" | "te_na":
             ug_text += """
-For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:         
+For airport data, the [this FAA publication](https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00) is used with the following selection:
 - Airports in the U.S. states.
 - Airports contained in the National Plan of Integrated Airport Systems (NPIAS).
 
 Of the events, only those that occurred in U.S. states are included.
 
-**Hint**: A violin plot is two KDE (kernel density estimation) plots aligned on an axis. 
-Any "negative" values are an artifact of KDEs. 
-They are estimations of values in the data. 
-This does not mean that there are negative data, rather that the data contain values very close to negative values, namely 0. 
-And thus there is a non-zero estimated probability of selecting a negative value from the dataset. 
+**Hint**: A violin plot is two KDE (kernel density estimation) plots aligned on an axis.
+Any "negative" values are an artifact of KDEs.
+They are estimations of values in the data.
+This does not mean that there are negative data, rather that the data contain values very close to negative values, namely 0.
+And thus there is a non-zero estimated probability of selecting a negative value from the dataset.
 """
 
         case "ey_aoc" | "te_aoc":
             ug_text += """
-- In the database table **events_sequence** there are the columns **defining_code** and **eventsoe_no**. 
-- The values from **eventsoe_no** are used to determine the CICTT code in case **defining_code** equals TRUE via the tables 
-**io_sequence_of_events** and **io_aviation_occurrence_categories**. 
-- Depending on the number of aircraft involved in the event, several rows may be assigned to the same event in the 
+- In the database table **events_sequence** there are the columns **defining_code** and **eventsoe_no**.
+- The values from **eventsoe_no** are used to determine the CICTT code in case **defining_code** equals TRUE via the tables
+**io_sequence_of_events** and **io_aviation_occurrence_categories**.
+- Depending on the number of aircraft involved in the event, several rows may be assigned to the same event in the
 **events_sequence** table. However, this is only critical if it results in different CICTT codes for the same event.
 """
 
         case "ey_il" | "te_il":
             ug_text += """
-- In the database table **events** there is a column **ev_highest_injury** which contains the highest injury level per event. 
-- The available database categories are **`FATL`** (fatal injury), **`MINR`** (minor injury), **`NONE`** (no injury) and **`SERS`** (serious injury). 
+- In the database table **events** there is a column **ev_highest_injury** which contains the highest injury level per event.
+- The available database categories are **`FATL`** (fatal injury), **`MINR`** (minor injury), **`NONE`** (no injury) and **`SERS`** (serious injury).
 - If there is no information about the injuries, then the event appears in the category **`n/a`** (not available).
 """
 
         case "ey_mpf" | "te_mpf":
             ug_text += """
-- An event can have several entries in the database table **events_sequence** assigned to it.      
-- The **phase_no** column contains the flight phase at the time of the event. 
+- An event can have several entries in the database table **events_sequence** assigned to it.
+- The **phase_no** column contains the flight phase at the time of the event.
 - The flight phases can be marked as defining events in the **defining_ev** column.
 - In the database table **io_md_codes_phase**, each flight phase is assigned a main flight phase.
 - From this information, the main flight phases for the aircraft involved in the event can be determined.
 """
         case "ey_pf" | "te_pf":
             ug_text += """
-- An event can have several entries in the database table **events_sequence** assigned to it.      
-- The **phase_no** column contains the flight phase at the time of the event. 
-- The flight phases can be marked as defining events in the **defining_ev** column. 
+- An event can have several entries in the database table **events_sequence** assigned to it.
+- The **phase_no** column contains the flight phase at the time of the event.
+- The flight phases can be marked as defining events in the **defining_ev** column.
 - From this information, the flight phases for the aircraft involved in the event can be determined.
 """
 
@@ -895,8 +898,8 @@ And thus there is a non-zero estimated probability of selecting a negative value
 """
         case "ey_t" | "te_t":
             ug_text += """
-- In the database table **events** there is a column **ev_type** which contains the type of the event. 
-- The available database categories are **`ACC`** (Accident) and **`INC`** (Incident). 
+- In the database table **events** there is a column **ev_type** which contains the type of the event.
+- The available database categories are **`ACC`** (Accident) and **`INC`** (Incident).
 - If there is no information about the event type, then the event appears in the category **`n/a`** (not available).
 """
         case "ey_tlp" | "te_tlp":
@@ -930,7 +933,7 @@ And thus there is a non-zero estimated probability of selecting a negative value
 """
         case _:
             ug_text += f"""
-### Coming soon ... (chart_id={chart_id})    
+### Coming soon ... (chart_id={chart_id})
 """
 
     return ug_text
@@ -1005,7 +1008,7 @@ def _get_user_guide_map() -> None:
     ug_text = """
 #### User guide: Map
 
-The dots on the interactive map show the locations where the selected events took place. By default, the map is focused on the center of the United States. You can move around the map and zoom in and out. Each point on the map contains an interactive popup with additional information such as latitude and longitude or number of fatalities. 
+The dots on the interactive map show the locations where the selected events took place. By default, the map is focused on the center of the United States. You can move around the map and zoom in and out. Each point on the map contains an interactive popup with additional information such as latitude and longitude or number of fatalities.
 
 ##### Usage tips
 
@@ -1055,7 +1058,7 @@ def _get_user_guide_totals_chart_footer(
 ##### Usage tips
 
 - If you hover your mouse over the slices, the exact number of {objects} will be shown.
-- By clicking on the icons in the legend, you can hide the underlying categories in the totals chart. 
+- By clicking on the icons in the legend, you can hide the underlying categories in the totals chart.
 - **View fullscreen** (double arrow): shows the totals chart in fullscreen mode.
 """
 
@@ -1081,7 +1084,7 @@ def _get_user_guide_years_chart_footer(
 ##### Usage tips years chart
 
 - If you hover your mouse over the bars, the exact number of {objects} will be shown.
-- By clicking on the icons in the legend, you can hide the underlying categories in the chart. 
+- By clicking on the icons in the legend, you can hide the underlying categories in the chart.
 - **Download chart as png** (camera symbol): the chart can be downloaded as an image file.
 - **Zoom out**, **Zoom in**, **Autoscale** (plus, minus and cross symbols): the chart can be resized.
 - **Reset axes** (home symbol): reset the axis of the chart.
@@ -1092,7 +1095,7 @@ def _get_user_guide_years_chart_footer(
 - **Column sorting**: sort columns by clicking on their headers.
 - **Column resizing**: resize columns by dragging and dropping column header borders.
 - **Table (height, width) resizing**: resize tables by dragging and dropping the bottom right corner of tables.
-- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar, 
+- **Search**: search through data by clicking a table, using hotkeys ('? Cmd + F' or 'Ctrl + F') to bring up the search bar,
 and using the search bar to filter data.
 - **Copy to clipboard**: select one or multiple cells, copy them to clipboard, and paste them into your favorite spreadsheet software.
 """
@@ -1100,9 +1103,9 @@ and using the search bar to filter data.
     ug_text += """
 ##### Detailed chart data
 
-If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying 
-the chart displayed in a tabular form. 
-With the button **Download the chart data** this data can be loaded into a local **csv** file. 
+If you have selected the checkbox **`Show detailed chart data`** in the filter options, then you get the data underlying
+the chart displayed in a tabular form.
+With the button **Download the chart data** this data can be loaded into a local **csv** file.
 """
 
     return ug_text
@@ -1155,16 +1158,16 @@ def _prep_data_chart_ey_aoc(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
-    names = []
-
-    for cictt_code in (
-        FILTER_CICTT_CODES if FILTER_CICTT_CODES else _sql_query_cictt_codes()
-    ):
-        if cictt_code in df_chart.cictt_codes.values:
-            names.append((cictt_code, cictt_code))
+    names = [
+        (cictt_code, cictt_code)
+        for cictt_code in (
+            FILTER_CICTT_CODES if FILTER_CICTT_CODES else _sql_query_cictt_codes()
+        )
+        if cictt_code in df_chart.cictt_codes.to_numpy()
+    ]
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.cictt_codes == name_df, 1, 0)
@@ -1189,14 +1192,14 @@ def _prep_data_chart_ey_il(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     for name, name_df in CHOICE_CHARTS_TYPE_N_IL:
         df_chart[name] = np.where(df_chart.ev_highest_injury == name_df, 1, 0)
 
     return CHOICE_CHARTS_TYPE_N_IL, df_chart.groupby("year", as_index=False).sum(
-        numeric_only=True
+        numeric_only=True,
     )
 
 
@@ -1219,27 +1222,25 @@ def _prep_data_chart_ey_mpf(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
-    names = []
-
-    for description_main_phase_defining in (
-        FILTER_DESCRIPTION_MAIN_PHASES
-        if FILTER_DESCRIPTION_MAIN_PHASES
-        else _sql_query_description_main_phase()
-    ):
-        if (
-            description_main_phase_defining
-            in df_chart.description_main_phase_defining.values
-        ):
-            names.append(
-                (description_main_phase_defining, description_main_phase_defining)
-            )
+    names = [
+        (description_main_phase_defining, description_main_phase_defining)
+        for description_main_phase_defining in (
+            FILTER_DESCRIPTION_MAIN_PHASES
+            if FILTER_DESCRIPTION_MAIN_PHASES
+            else _sql_query_description_main_phase()
+        )
+        if description_main_phase_defining
+        in df_chart.description_main_phase_defining.to_numpy()
+    ]
 
     for name, name_df in names:
         df_chart[name] = np.where(
-            df_chart.description_main_phase_defining == name_df, 1, 0
+            df_chart.description_main_phase_defining == name_df,
+            1,
+            0,
         )
 
     return names, df_chart.groupby("year", as_index=False).sum(numeric_only=True)
@@ -1261,7 +1262,7 @@ def _prep_data_chart_ey_na(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     interval_1 = f"Up to {CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:.2f} nmi"
@@ -1311,7 +1312,7 @@ def _prep_data_chart_ey_pf(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     names = []
@@ -1322,7 +1323,7 @@ def _prep_data_chart_ey_pf(
         else _sql_query_md_codes_phase()
     ):
         desc, phase = phase_desc.split(" - ")
-        if phase in df_chart.phase_codes_defining.values:
+        if phase in df_chart.phase_codes_defining.to_numpy():
             names.append((desc, phase))
 
     for name, name_df in names:
@@ -1351,18 +1352,18 @@ def _prep_data_chart_ey_pss(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
-    names = []
-
-    for preventable_events in (
-        FILTER_PREVENTABLE_EVENTS
-        if FILTER_PREVENTABLE_EVENTS
-        else _sql_query_preventable_events()
-    ):
-        if preventable_events in df_chart.preventable_events.values:
-            names.append((preventable_events, preventable_events))
+    names = [
+        (preventable_events, preventable_events)
+        for preventable_events in (
+            FILTER_PREVENTABLE_EVENTS
+            if FILTER_PREVENTABLE_EVENTS
+            else _sql_query_preventable_events()
+        )
+        if preventable_events in df_chart.preventable_events.to_numpy()
+    ]
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.preventable_events == name_df, 1, 0)
@@ -1387,14 +1388,14 @@ def _prep_data_chart_ey_t(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     for name, name_df in CHOICE_CHARTS_TYPE_N_T:
         df_chart[name] = np.where(df_chart.ev_type == name_df, 1, 0)
 
     return CHOICE_CHARTS_TYPE_N_T, df_chart.groupby("year", as_index=False).sum(
-        numeric_only=True
+        numeric_only=True,
     )
 
 
@@ -1418,16 +1419,18 @@ def _prep_data_chart_ey_tlp(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
-    names = []
-
-    for tll_parameters in (
-        FILTER_TLL_PARAMETERS if FILTER_TLL_PARAMETERS else _sql_query_tll_parameters()
-    ):
-        if tll_parameters in df_chart.tll_parameters.values:
-            names.append((tll_parameters, tll_parameters))
+    names = [
+        (tll_parameters, tll_parameters)
+        for tll_parameters in (
+            FILTER_TLL_PARAMETERS
+            if FILTER_TLL_PARAMETERS
+            else _sql_query_tll_parameters()
+        )
+        if tll_parameters in df_chart.tll_parameters.to_numpy()
+    ]
 
     for name, name_df in names:
         df_chart[name] = np.where(df_chart.tll_parameters == name_df, 1, 0)
@@ -1454,7 +1457,7 @@ def _prep_data_chart_fy_fp(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     if FILTER_FAR_PARTS:
@@ -1463,7 +1466,7 @@ def _prep_data_chart_fy_fp(
         names = [(CHOICE_CHARTS_LEGEND_NAME_NONE, CHOICE_CHARTS_LEGEND_NAME_NONE)]
 
     for far_part in FILTER_FAR_PARTS if FILTER_FAR_PARTS else _sql_query_far_parts():
-        if far_part in df_chart.far_parts.values:
+        if far_part in df_chart.far_parts.to_numpy():
             names.append((far_part, far_part))
 
     for name, name_df in names:
@@ -1495,7 +1498,7 @@ def _prep_data_chart_fy_sfp(
         columns={
             "ev_year": "year",
         },
-        inplace=True,
+        inplace=True,  # noqa: PD002
     )
 
     for name, name_df in CHOICE_CHARTS_TYPE_N_SFP:
@@ -1510,7 +1513,7 @@ def _prep_data_chart_fy_sfp(
     del df_chart["inj_tot_f"]
 
     return CHOICE_CHARTS_TYPE_N_SFP, df_chart.groupby("year", as_index=False).sum(
-        numeric_only=True
+        numeric_only=True,
     )
 
 
@@ -1535,9 +1538,8 @@ def _prep_data_chart_te_aoc(
         df_chart[name] = np.where(df_chart.cictt_codes == name, 1, 0)
         value = df_chart[name].sum(numeric_only=True)
         if value > 0:
-            if name == "":
-                name = CHOICE_CHARTS_LEGEND_NAME_NONE
-            name_value.append((name, value))
+            name_helper = CHOICE_CHARTS_LEGEND_NAME_NONE if name == "" else name
+            name_value.append((name_helper, value))
             total_pie += value
 
     return _prep_totals_chart(
@@ -1602,7 +1604,9 @@ def _prep_data_chart_te_mpf(
         else _sql_query_description_main_phase()
     ):
         df_chart[name] = np.where(
-            df_chart.description_main_phase_defining == name, 1, 0
+            df_chart.description_main_phase_defining == name,
+            1,
+            0,
         )
         value = df_chart[name].sum(numeric_only=True)
         if value > 0:
@@ -1900,7 +1904,7 @@ def _prep_totals_chart(
             total_pie_adj_threshold += value
         else:
             name_sum_adj.append(
-                (CHARTS_LEGEND_N_A_DESC if name == CHARTS_LEGEND_N_A else name, value)
+                (CHARTS_LEGEND_N_A_DESC if name == CHARTS_LEGEND_N_A else name, value),
             )
 
     if total_pie_adj_threshold > 0:
@@ -1951,9 +1955,9 @@ def _prep_totals_chart(
 def _present_bar_chart(
     chart_id: str,
     chart_title: str,
-    prep_result,
+    prep_result: tuple[list[tuple[str, str]], DataFrame],
     threshold: float | None = 0.0,
-):
+) -> None:
     names, df_filtered_charts = prep_result
 
     if threshold and threshold > 0.0:
@@ -1962,7 +1966,7 @@ def _present_bar_chart(
         for name_df in df_filtered_charts:
             if name_df != "year":
                 value = df_filtered_charts[name_df].sum(axis=0, numeric_only=True)
-                name_value_dict[name_df] = value
+                name_value_dict[name_df] = value  # type: ignore
                 total_pie += value
         value_threshold = total_pie * threshold if threshold else 0.0
         for name_df, value in name_value_dict.items():
@@ -1973,7 +1977,7 @@ def _present_bar_chart(
                     columns={
                         name_df: CHARTS_LEGEND_THRESHOLD,
                     },
-                    inplace=True,
+                    inplace=True,  # noqa: PD002
                 )
                 names.append((CHARTS_LEGEND_THRESHOLD, CHARTS_LEGEND_THRESHOLD))
                 continue
@@ -1988,14 +1992,14 @@ def _present_bar_chart(
     for name_df in df_filtered_charts:
         if name_df != "year":
             value = df_filtered_charts[name_df].sum(axis=0, numeric_only=True)
-            name_value_list.append((name_df, value))
+            name_value_list.append((name_df, value))  # type: ignore
 
     name_value_list.sort(key=itemgetter(1), reverse=True)
 
     color_discrete_map = {}
     color_no = 0
 
-    for name, value in name_value_list:
+    for name, _value in name_value_list:
         color_discrete_map[name] = (
             COLOR_MAP[color_no % COLOR_MAP_SIZE]
             if name
@@ -2030,7 +2034,7 @@ def _present_bar_chart(
                 name=CHARTS_LEGEND_N_A_DESC if name == CHARTS_LEGEND_N_A else name,
                 x=df_filtered_charts["year"],
                 y=df_filtered_charts[name],
-            )
+            ),
         )
         details.append(name)
 
@@ -2059,8 +2063,8 @@ def _present_bar_chart(
                     "Fatalities"
                     if chart_id in ["fy_fp", "fy_sfp"]
                     else EVENT_TYPE_DESC + "s"
-                )
-            }
+                ),
+            },
         },
     )
 
@@ -2072,7 +2076,7 @@ def _present_bar_chart(
     if CHOICE_YEARS_CHARTS_DETAILS:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed Years Chart Data</p>',
+            'font-weight: normal;border-radius:2%;">Detailed Years Chart Data</p>',
             unsafe_allow_html=True,
         )
         details.insert(0, "year")
@@ -2081,16 +2085,18 @@ def _present_bar_chart(
                 columns={
                     CHARTS_LEGEND_N_A: CHARTS_LEGEND_N_A_DESC,
                 },
-                inplace=True,
+                inplace=True,  # noqa: PD002
             )
         if CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS:
             df_filtered_charts.loc[len(df_filtered_charts)] = df_filtered_charts.sum(
-                axis=0, numeric_only=True
+                axis=0,
+                numeric_only=True,
             )
             df_filtered_charts.year.iloc[-1] = "Total"
         if CHOICE_YEARS_CHARTS_DETAILS_TOTAL_COLS:
             df_filtered_charts["Total"] = df_filtered_charts.iloc[:, :].sum(
-                axis=1, numeric_only=True
+                axis=1,
+                numeric_only=True,
             )
         st.dataframe(df_filtered_charts)
         st.download_button(
@@ -2158,7 +2164,7 @@ def _present_chart_ey_aoc() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2201,7 +2207,7 @@ def _present_chart_ey_il() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2239,7 +2245,7 @@ def _present_chart_ey_mpf() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2282,7 +2288,7 @@ def _present_chart_ey_na() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2320,7 +2326,7 @@ def _present_chart_ey_pf() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2363,7 +2369,7 @@ def _present_chart_ey_pss() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2406,7 +2412,7 @@ def _present_chart_ey_t() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2444,7 +2450,7 @@ def _present_chart_ey_tlp() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2488,7 +2494,7 @@ def _present_chart_fy_fp() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2533,7 +2539,7 @@ def _present_chart_fy_sfp() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2580,13 +2586,14 @@ def _present_data() -> None:
             [
                 1,
                 2,
-            ]
+            ],
         )
         with col2:
-            if CHOICE_EXTENDED_VERSION:
-                extension = " - extended version"
-            else:
-                extension = " (Standard version)"
+            extension = (
+                " - extended version"
+                if CHOICE_EXTENDED_VERSION
+                else " (Standard version)"
+            )
             utils.present_about(PG_CONN, APP_ID + extension)
             _print_timestamp("_present_data() - CHOICE_ABOUT")
 
@@ -2649,14 +2656,14 @@ def _present_data_profile() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
+            'font-weight: normal;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
             unsafe_allow_html=True,
         )
         # pylint: enable=line-too-long
@@ -2664,7 +2671,7 @@ def _present_data_profile() -> None:
     with col2:
         CHOICE_UG_DATA_PROFILE = st.checkbox(
             help="Explanations and operating instructions related to profiling "
-            + "of the database view **io_app_ae1982",
+            "of the database view **io_app_ae1982",
             label="**User guide: Show data profile**",
             value=False,
         )
@@ -2690,7 +2697,7 @@ def _present_data_profile() -> None:
         data=profile_report.to_html(),
         file_name=APP_ID + "_" + CHOICE_DATA_PROFILE_TYPE + ".html",  # type: ignore
         help="The upload includes a profile report from the dataframe "
-        + "after applying the filter options.",
+        "after applying the filter options.",
         label="Download the profile report",
         mime="text/html",
     )
@@ -2709,14 +2716,14 @@ def _present_details() -> None:
             [
                 2,
                 1,
-            ]
+            ],
         )
 
         with col1:
             # pylint: disable=line-too-long
             st.markdown(
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
+                'font-weight: normal;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
                 unsafe_allow_html=True,
             )
             # pylint: enable=line-too-long
@@ -2733,7 +2740,7 @@ def _present_details() -> None:
 
         # pylint: disable=line-too-long
         st.write(
-            f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+            f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}",
         )
         # pylint: enable=line-too-long
 
@@ -2757,14 +2764,15 @@ def _present_distance_chart(
     chart_data: DataFrame,
 ) -> None:
     chart_title_int = chart_title.replace(
-        "{no_rows}", str(CHOICE_CHARTS_TYPE_D_NA_NO)
+        "{no_rows}",
+        str(CHOICE_CHARTS_TYPE_D_NA_NO),
     ).replace("{event_type}", EVENT_TYPE_DESC + "s")
 
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title_int}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title_int}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2838,7 +2846,7 @@ def _present_map() -> None:
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Map of '
+            'font-weight: normal;border-radius:2%;">Map of '
             + EVENT_TYPE_DESC
             + "s"
             + "</p>",
@@ -2907,7 +2915,7 @@ def _present_totals_chart(
     with col1:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
+            f'font-weight: normal;border-radius:2%;">{chart_title}</p>',
             unsafe_allow_html=True,
         )
     with col2:
@@ -2927,9 +2935,7 @@ def _present_totals_chart(
     names, values, color_discrete_map, df_sum = chart_data
 
     if CHOICE_HORIZONTAL_BAR_CHARTS:
-        names_new = []
-        for categ in names:
-            names_new.append(categ + ":")
+        names_new = [categ + ":" for categ in names]
         if values:
             fig = px.bar(
                 color=names,
@@ -2968,8 +2974,8 @@ def _present_totals_chart(
                         "Fatalities"
                         if chart_id in ["tf_fp", "tf_sfp"]
                         else EVENT_TYPE_DESC + "s"
-                    )
-                }
+                    ),
+                },
             },
             yaxis={"title": {"text": " "}},
         )
@@ -2995,7 +3001,7 @@ def _present_totals_chart(
     if CHOICE_TOTALS_CHARTS_DETAILS:
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed Totals Chart Data</p>',
+            'font-weight: normal;border-radius:2%;">Detailed Totals Chart Data</p>',
             unsafe_allow_html=True,
         )
         if CHOICE_TOTALS_CHARTS_DETAILS_TOTAL_COLS:
@@ -3122,8 +3128,8 @@ def _print_timestamp(identifier: str) -> None:
     current_time = time.time_ns()
 
     # Stop time measurement.
-    print(
-        str(datetime.datetime.now())
+    print(  # noqa: T201
+        str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{current_time - LAST_READING:,}':>20} ns - "
         + f"{APP_ID} - {identifier}",
         flush=True,
@@ -3215,9 +3221,9 @@ def _setup_filter() -> None:
 
         if (
             FILTER_NO_AIRCRAFT_FROM
-            and FILTER_NO_AIRCRAFT_FROM != min_no_aircraft
+            and min_no_aircraft != FILTER_NO_AIRCRAFT_FROM
             or FILTER_NO_AIRCRAFT_TO
-            and FILTER_NO_AIRCRAFT_TO != max_no_aircraft
+            and max_no_aircraft != FILTER_NO_AIRCRAFT_TO
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3274,7 +3280,7 @@ def _setup_filter() -> None:
         if FILTER_DISTANCE_NEAREST_AIRPORT_TO < FILTER_DISTANCE_NEAREST_AIRPORT_FROM:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: Distance to the nearest US airport: Minimum must not be greater than the maximum."
+                "##### Error: Distance to the nearest US airport: Minimum must not be greater than the maximum.",
             )
             # pylint: enable=line-too-long
             st.stop()
@@ -3309,8 +3315,8 @@ def _setup_filter() -> None:
 """,
         label="**Event year(s):**",
         min_value=1982,
-        max_value=datetime.date.today().year,
-        value=(2008, datetime.date.today().year - 1),
+        max_value=datetime.datetime.now(datetime.timezone.utc).year,
+        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -3353,7 +3359,7 @@ def _setup_filter() -> None:
             FILTER_INJ_F_GRND_FROM
             and FILTER_INJ_F_GRND_FROM != 0
             or FILTER_INJ_F_GRND_TO
-            and FILTER_INJ_F_GRND_TO != max_inj_f_grnd
+            and max_inj_f_grnd != FILTER_INJ_F_GRND_TO
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3379,7 +3385,7 @@ def _setup_filter() -> None:
             FILTER_INJ_TOT_F_FROM
             and FILTER_INJ_TOT_F_FROM != 0
             or FILTER_INJ_TOT_F_TO
-            and FILTER_INJ_TOT_F_TO != max_inj_tot_f
+            and max_inj_tot_f != FILTER_INJ_TOT_F_TO
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3515,7 +3521,7 @@ def _setup_filter() -> None:
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
         help="""
-        **US aviation** means that either the event occurred on US soil or 
+        **US aviation** means that either the event occurred on US soil or
         the departure, destination, owner, operator or registration is US.
 """,
         label="**US aviation criteria:**",
@@ -3558,20 +3564,22 @@ def _setup_page() -> None:
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
     FILTER_EV_YEAR_TO = (
-        FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else datetime.date.today().year - 1
+        FILTER_EV_YEAR_TO
+        if FILTER_EV_YEAR_TO
+        else datetime.datetime.now(datetime.timezone.utc).year - 1
     )
 
-    if FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_ACC]:
+    if [CHOICE_CHARTS_LEGEND_T_ACC] == FILTER_EV_TYPE:
         EVENT_TYPE_DESC = "Accident"
-    elif FILTER_EV_TYPE == [CHOICE_CHARTS_LEGEND_T_INC]:
+    elif [CHOICE_CHARTS_LEGEND_T_INC] == FILTER_EV_TYPE:
         EVENT_TYPE_DESC = "Incident"
     else:
         EVENT_TYPE_DESC = "Event"
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
-        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
+        f'font-weight: normal;border-radius:2%;">Aviation {EVENT_TYPE_DESC} Analysis - Year '
+        f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -3876,7 +3884,7 @@ def _setup_task_controls() -> None:
                 if CHOICE_CHARTS_TYPE_EY_NA_I_2_OG <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:
                     # pylint: disable=line-too-long
                     st.error(
-                        "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
+                        "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",
                     )
                     # pylint: enable=line-too-long
                     st.stop()
@@ -4071,7 +4079,7 @@ def _setup_task_controls() -> None:
                 if CHOICE_CHARTS_TYPE_TE_NA_I_2_OG <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:
                     # pylint: disable=line-too-long
                     st.error(
-                        "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1."
+                        "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",
                     )
                     # pylint: enable=line-too-long
                     st.stop()
@@ -4195,7 +4203,7 @@ def _sql_query_acft_categories() -> list[str]:
         SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
           FROM aircraft
          WHERE acft_category IS NOT NULL;
-"""
+""",
         )
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4209,13 +4217,10 @@ def _sql_query_cictt_codes() -> list[str]:
             """
         SELECT DISTINCT cictt_codes
           FROM io_app_ae1982;
-"""
+""",
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row[0])
+        data = [row[0] for row in cur]
 
         return sorted(data)
 
@@ -4230,13 +4235,10 @@ def _sql_query_description_main_phase() -> list[str]:
             """
         SELECT DISTINCT description_main_phase
           FROM io_md_codes_phase;
-"""
+""",
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row[0])
+        data = [row[0] for row in cur]
 
         return sorted(data)
 
@@ -4251,16 +4253,13 @@ def _sql_query_ev_highest_injury() -> list[str]:
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
           FROM io_app_ae1982;
-"""
+""",
         )
         # pylint: enable=line-too-long
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
-        data = []
-
-        for key in keys:
-            data.append(OPTIONS_EV_HIGHEST_INJURY[key])
+        data = [OPTIONS_EV_HIGHEST_INJURY[key] for key in keys]
 
         return sorted(data)
 
@@ -4275,16 +4274,13 @@ def _sql_query_ev_type() -> list[str]:
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END, ',' ORDER BY CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END)
           FROM io_app_ae1982;
-"""
+""",
         )
         # pylint: enable=line-too-long
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
-        data = []
-
-        for key in keys:
-            data.append(OPTIONS_EV_TYPE[key])
+        data = [OPTIONS_EV_TYPE[key] for key in keys]
 
         return sorted(data)
 
@@ -4298,13 +4294,10 @@ def _sql_query_far_parts() -> list[str]:
             """
         SELECT DISTINCT far_parts
           FROM io_app_ae1982;
-"""
+""",
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row[0])
+        data = [row[0] for row in cur]
 
         return sorted(data)
 
@@ -4331,8 +4324,8 @@ def _sql_query_finding_codes() -> list[str]:
                  WHERE (substring(finding_code, 1, 8) IN ('01062012', '01062037', '01062040', '01062042')
                     OR substring(finding_code, 1, 6) IN ('030210', '030220'))
                    AND finding_code IS NOT NULL) f
-"""
-        )  # noqa: E501
+""",
+        )
         # pylint: enable=line-too-long
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4348,15 +4341,12 @@ def _sql_query_latlong_acq() -> list[str]:
             """
         SELECT string_agg(DISTINCT latlong_acq, ',' ORDER BY latlong_acq)
           FROM io_app_ae1982;
-"""
+""",
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
-        data = []
-
-        for key in keys:
-            data.append(OPTIONS_LATLONG_ACQ[key])
+        data = [OPTIONS_LATLONG_ACQ[key] for key in keys]
 
         return sorted(data)
 
@@ -4370,7 +4360,7 @@ def _sql_query_max_inj_f_grnd() -> int:
             """
         SELECT MAX(inj_f_grnd)
           FROM io_app_ae1982;
-"""
+""",
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -4384,7 +4374,7 @@ def _sql_query_max_no_aircraft() -> int:
             """
         SELECT MAX(no_aircraft)
           FROM io_app_ae1982;
-"""
+""",
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -4398,7 +4388,7 @@ def _sql_query_min_no_aircraft() -> int:
             """
         SELECT MIN(no_aircraft)
           FROM io_app_ae1982;
-"""
+""",
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -4412,7 +4402,7 @@ def _sql_query_max_inj_tot_f() -> int:
             """
         SELECT MAX(inj_tot_f)
           FROM io_app_ae1982;
-"""
+""",
         )
         return cur.fetchone()[0]  # type: ignore
 
@@ -4427,7 +4417,7 @@ def _sql_query_md_codes_phase() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', phase_code), ',' ORDER BY 1)
           FROM io_md_codes_phase;
-"""
+""",
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4460,8 +4450,8 @@ def _sql_query_occurrence_codes() -> list[str]:
                 WHERE (substring(occurrence_code, 1, 3) IN ('350', '452', '502')
                     OR substring(occurrence_code, 4, 6) IN ('120', '220', '240', '241', '250', '401', '420', '901'))
                 AND occurrence_code IS NOT NULL) o
-"""
-        )  # noqa: E501
+""",
+        )
         # pylint: enable=line-too-long
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4477,13 +4467,10 @@ def _sql_query_preventable_events() -> list[str]:
             """
         SELECT DISTINCT preventable_events
           FROM io_app_ae1982;
-"""
+""",
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row[0])
+        data = [row[0] for row in cur]
 
         return sorted(data)
 
@@ -4498,13 +4485,10 @@ def _sql_query_tll_parameters() -> list[str]:
             """
         SELECT DISTINCT tll_parameters
           FROM io_app_ae1982;
-"""
+""",
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row[0])
+        data = [row[0] for row in cur]
 
         return sorted(data)
 
@@ -4520,7 +4504,7 @@ def _sql_query_us_ll() -> dict[str, float]:
                dec_longitude
           FROM io_countries
          WHERE country = 'USA';
-"""
+""",
         )
         result = cur.fetchone()
         return {"lat": result[0], "lon": result[1]}  # type: ignore
@@ -4537,7 +4521,7 @@ def _sql_query_us_states() -> list[str]:
         SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
-"""
+""",
         )
         # pylint: enable=line-too-long
 
@@ -4611,8 +4595,8 @@ def _streamlit_flow() -> None:
 
     # Stop time measurement.
     # pylint: disable=line-too-long
-    print(
-        str(datetime.datetime.now())
+    print(  # noqa: T201
+        str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

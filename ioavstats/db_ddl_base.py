@@ -7,16 +7,13 @@ import logging
 import os.path
 
 import pandas as pd
-from iocommon import db_utils
-from iocommon import io_config
-from iocommon import io_glob
-from iocommon import io_utils
+from iocommon import db_utils, io_config, io_glob, io_utils
 from iocommon.io_utils import extract_column_value
-from psycopg import DatabaseError
-from psycopg import connection
-from psycopg import cursor
-from psycopg.errors import DuplicateDatabase  # pylint: disable=no-name-in-module
-from psycopg.errors import DuplicateObject  # pylint: disable=no-name-in-module
+from psycopg import DatabaseError, connection, cursor
+from psycopg.errors import (
+    DuplicateDatabase,  # pylint: disable=no-name-in-module
+    DuplicateObject,  # pylint: disable=no-name-in-module
+)
 
 from ioavstats import glob_local
 
@@ -251,7 +248,7 @@ def _create_db_indexes(conn_pg: connection, cur_pg: cursor) -> None:
                 CREATE INDEX {index}
                     ON {table_name}
                        ({column_names});
-                """
+                """,
             )
             conn_pg.commit()
             # INFO.00.077 Database index is available: {index}
@@ -278,7 +275,9 @@ def _create_db_io_aero_data(conn_pg: connection, cur_pg: cursor) -> None:
 # Create database IO-Aero codes of categories data.
 # ------------------------------------------------------------------
 def _create_db_io_md_codes_category(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -287,7 +286,7 @@ def _create_db_io_md_codes_category(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -301,7 +300,7 @@ def _create_db_io_md_codes_category(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -309,7 +308,7 @@ def _create_db_io_md_codes_category(
     cur_pg.execute(
         """
         SELECT DISTINCT category_no,
-                        finding_description 
+                        finding_description
           FROM findings
          """,
     )
@@ -325,7 +324,7 @@ def _create_db_io_md_codes_category(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         category_no = row_tbd[COLUMN_CATEGORY_NO]
@@ -341,7 +340,7 @@ def _create_db_io_md_codes_category(
             curr_desc.append(_prep_token_4_finding_description(tokens[0]))
             unstructured_desc[category_no] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -353,7 +352,7 @@ def _create_db_io_md_codes_category(
         cur_pg.execute(
             f"""
         INSERT INTO {table_name} (
-               category_code, 
+               category_code,
                description
                ) VALUES (
                %s,
@@ -366,7 +365,7 @@ def _create_db_io_md_codes_category(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -375,7 +374,9 @@ def _create_db_io_md_codes_category(
 # Create database IO-Aero codes of occurrences data.
 # ------------------------------------------------------------------
 def _create_db_io_md_codes_eventsoe(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -384,7 +385,7 @@ def _create_db_io_md_codes_eventsoe(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -398,7 +399,7 @@ def _create_db_io_md_codes_eventsoe(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -406,7 +407,7 @@ def _create_db_io_md_codes_eventsoe(
     cur_pg.execute(
         """
         SELECT DISTINCT eventsoe_no,
-                        occurrence_description 
+                        occurrence_description
           FROM events_sequence
          """,
     )
@@ -422,7 +423,7 @@ def _create_db_io_md_codes_eventsoe(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         eventsoe_no = row_tbd[COLUMN_EVENTSOE_NO]
@@ -436,7 +437,7 @@ def _create_db_io_md_codes_eventsoe(
             curr_desc.append(occurrence_description.strip()[::-1])
             unstructured_desc[eventsoe_no] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -448,7 +449,7 @@ def _create_db_io_md_codes_eventsoe(
         cur_pg.execute(
             f"""
         INSERT INTO {table_name} (
-               eventsoe_code, 
+               eventsoe_code,
                description
                ) VALUES (
                %s,
@@ -461,7 +462,7 @@ def _create_db_io_md_codes_eventsoe(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -470,7 +471,9 @@ def _create_db_io_md_codes_eventsoe(
 # Create database IO-Aero codes of modifiers data.
 # ------------------------------------------------------------------
 def _create_db_io_md_codes_modifier(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -479,7 +482,7 @@ def _create_db_io_md_codes_modifier(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -493,7 +496,7 @@ def _create_db_io_md_codes_modifier(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -501,7 +504,7 @@ def _create_db_io_md_codes_modifier(
     cur_pg.execute(
         """
         SELECT DISTINCT modifier_no,
-                        finding_description 
+                        finding_description
           FROM findings
          """,
     )
@@ -517,7 +520,7 @@ def _create_db_io_md_codes_modifier(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         modifier_no = row_tbd[COLUMN_MODIFIER_NO]
@@ -533,7 +536,7 @@ def _create_db_io_md_codes_modifier(
             curr_desc.append(_prep_token_4_finding_description(tokens[4]))
             unstructured_desc[modifier_no] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -545,7 +548,7 @@ def _create_db_io_md_codes_modifier(
         cur_pg.execute(
             f"""
         INSERT INTO {table_name} (
-               modifier_code, 
+               modifier_code,
                description
                ) VALUES (
                %s,
@@ -558,7 +561,7 @@ def _create_db_io_md_codes_modifier(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -567,7 +570,9 @@ def _create_db_io_md_codes_modifier(
 # Create database IO-Aero codes of phases of operation data.
 # ------------------------------------------------------------------
 def _create_db_io_md_codes_phase(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -576,7 +581,7 @@ def _create_db_io_md_codes_phase(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -590,7 +595,7 @@ def _create_db_io_md_codes_phase(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -598,7 +603,7 @@ def _create_db_io_md_codes_phase(
     cur_pg.execute(
         """
         SELECT DISTINCT phase_no,
-                        occurrence_description 
+                        occurrence_description
           FROM events_sequence
          """,
     )
@@ -614,7 +619,7 @@ def _create_db_io_md_codes_phase(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         phase_no = row_tbd[COLUMN_PHASE_NO]
@@ -628,7 +633,7 @@ def _create_db_io_md_codes_phase(
             curr_desc.append(occurrence_description.strip())
             unstructured_desc[phase_no] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -640,7 +645,7 @@ def _create_db_io_md_codes_phase(
         cur_pg.execute(
             f"""
         INSERT INTO {table_name} (
-               phase_code, 
+               phase_code,
                description
                ) VALUES (
                %s,
@@ -653,7 +658,7 @@ def _create_db_io_md_codes_phase(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     # ------------------------------------------------------------------
     # Add the main phase descriptions.
@@ -669,7 +674,9 @@ def _create_db_io_md_codes_phase(
 # ------------------------------------------------------------------
 # pylint: disable=too-many-locals
 def _create_db_io_md_codes_section(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -678,7 +685,7 @@ def _create_db_io_md_codes_section(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -692,7 +699,7 @@ def _create_db_io_md_codes_section(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -702,7 +709,7 @@ def _create_db_io_md_codes_section(
         SELECT DISTINCT category_no,
                         subcategory_no,
                         section_no,
-                        finding_description 
+                        finding_description
           FROM findings
           order by 1,2,3
          """,
@@ -719,7 +726,7 @@ def _create_db_io_md_codes_section(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         category_no = row_tbd[COLUMN_CATEGORY_NO]
@@ -737,7 +744,7 @@ def _create_db_io_md_codes_section(
             curr_desc.append(_prep_token_4_finding_description(tokens[2]))
             unstructured_desc[(category_no, subcategory_no, section_no)] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -754,8 +761,8 @@ def _create_db_io_md_codes_section(
             f"""
         INSERT INTO {table_name} (
                category_code,
-               subcategory_code, 
-               section_code, 
+               subcategory_code,
+               section_code,
                description
                ) VALUES (
                %s,
@@ -772,7 +779,7 @@ def _create_db_io_md_codes_section(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -781,7 +788,9 @@ def _create_db_io_md_codes_section(
 # Create database IO-Aero codes of subcategories data.
 # ------------------------------------------------------------------
 def _create_db_io_md_codes_subcategory(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -790,7 +799,7 @@ def _create_db_io_md_codes_subcategory(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -804,7 +813,7 @@ def _create_db_io_md_codes_subcategory(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -813,7 +822,7 @@ def _create_db_io_md_codes_subcategory(
         """
         SELECT DISTINCT category_no,
                         subcategory_no,
-                        finding_description 
+                        finding_description
           FROM findings
          """,
     )
@@ -829,7 +838,7 @@ def _create_db_io_md_codes_subcategory(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         category_no = row_tbd[COLUMN_CATEGORY_NO]
@@ -846,7 +855,7 @@ def _create_db_io_md_codes_subcategory(
             curr_desc.append(_prep_token_4_finding_description(tokens[1]))
             unstructured_desc[(category_no, subcategory_no)] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -861,7 +870,7 @@ def _create_db_io_md_codes_subcategory(
         cur_pg.execute(
             f"""
         INSERT INTO {table_name} (
-               category_code, 
+               category_code,
                subcategory_code,
                description
                ) VALUES (
@@ -877,7 +886,7 @@ def _create_db_io_md_codes_subcategory(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -887,7 +896,9 @@ def _create_db_io_md_codes_subcategory(
 # ------------------------------------------------------------------
 # pylint: disable=too-many-locals
 def _create_db_io_md_codes_subsection(
-    table_name: str, conn_pg: connection, cur_pg: cursor
+    table_name: str,
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -896,7 +907,7 @@ def _create_db_io_md_codes_subsection(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     # ------------------------------------------------------------------
@@ -910,7 +921,7 @@ def _create_db_io_md_codes_subsection(
     )
 
     if cur_pg.rowcount > 0:
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Load the raw data.
@@ -921,7 +932,7 @@ def _create_db_io_md_codes_subsection(
                         subcategory_no,
                         section_no,
                         subsection_no,
-                        finding_description 
+                        finding_description
           FROM findings
          """,
     )
@@ -937,7 +948,7 @@ def _create_db_io_md_codes_subsection(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         category_no = row_tbd[COLUMN_CATEGORY_NO]
@@ -967,7 +978,7 @@ def _create_db_io_md_codes_subsection(
                 (category_no, subcategory_no, section_no, subsection_no)
             ] = curr_desc
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     # ------------------------------------------------------------------
     # Create the master data.
@@ -985,8 +996,8 @@ def _create_db_io_md_codes_subsection(
             f"""
         INSERT INTO {table_name} (
                category_code,
-               subcategory_code, 
-               section_code, 
+               subcategory_code,
+               section_code,
                subsection_code,
                description
                ) VALUES (
@@ -1006,7 +1017,7 @@ def _create_db_io_md_codes_subsection(
         )
         count_insert += 1
 
-    io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+    io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1028,7 +1039,7 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
 
         if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
             cur_pg.execute(
-                f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE"
+                f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE",
             )
 
             conn_pg.commit()
@@ -1040,20 +1051,22 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
         # INFO.00.018 Database role is dropped: {role}
         io_utils.progress_msg(
             glob_local.INFO_00_018.replace(
-                "{role}", io_config.settings.postgres_user_guest
+                "{role}",
+                io_config.settings.postgres_user_guest,
             ),
         )
     except DatabaseError:
         # INFO.00.082 Database role is not existing: {role}
         io_utils.progress_msg(
             glob_local.INFO_00_082.replace(
-                "{role}", io_config.settings.postgres_user_guest
+                "{role}",
+                io_config.settings.postgres_user_guest,
             ),
         )
 
     cur_pg.execute(
         f"CREATE ROLE {io_config.settings.postgres_user_guest} WITH LOGIN "
-        + f"PASSWORD '{io_config.settings.postgres_password_guest}'"
+        f"PASSWORD '{io_config.settings.postgres_password_guest}'",
     )
 
     conn_pg.commit()
@@ -1061,21 +1074,22 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
     # INFO.00.016 Database role is available: {role}
     io_utils.progress_msg(
         glob_local.INFO_00_016.replace(
-            "{role}", io_config.settings.postgres_user_guest
+            "{role}",
+            io_config.settings.postgres_user_guest,
         ),
     )
 
     cur_pg.execute(
         f"GRANT CONNECT ON DATABASE {io_config.settings.postgres_dbname} "
-        + f"TO {io_config.settings.postgres_user_guest}"
+        f"TO {io_config.settings.postgres_user_guest}",
     )
 
     cur_pg.execute(
-        f"GRANT USAGE ON SCHEMA public TO {io_config.settings.postgres_user_guest}"
+        f"GRANT USAGE ON SCHEMA public TO {io_config.settings.postgres_user_guest}",
     )
 
     cur_pg.execute(
-        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_config.settings.postgres_user_guest}"
+        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_config.settings.postgres_user_guest}",
     )
 
     conn_pg.commit()
@@ -1212,7 +1226,8 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             # table_name '{table}' column_name '{column}'
             io_utils.progress_msg(
                 glob_local.INFO_00_031.replace(
-                    "{schema}", io_config.settings.postgres_database_schema
+                    "{schema}",
+                    io_config.settings.postgres_database_schema,
                 )
                 .replace("{table}", table_name)
                 .replace("{column}", column_name),
@@ -1253,7 +1268,8 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             # table_name '{table}' column_name '{column}'
             io_utils.progress_msg(
                 glob_local.INFO_00_031.replace(
-                    "{schema}", io_config.settings.postgres_database_schema
+                    "{schema}",
+                    io_config.settings.postgres_database_schema,
                 )
                 .replace("{table}", table_name)
                 .replace("{column}", column_name),
@@ -1277,7 +1293,7 @@ def _create_db_types_composite(conn_pg: connection, cur_pg: cursor) -> None:
                 f"""
                 CREATE TYPE {type_name} AS (
                     {attributes});
-                """
+                """,
             )
             conn_pg.commit()
             # INFO.00.091 Database type  is available: {type}
@@ -1330,14 +1346,14 @@ def _create_db_views(conn_pg: connection, cur_pg: cursor) -> None:
 # ------------------------------------------------------------------
 # Collect the IO-Aero specific alter database table definitions.
 # ------------------------------------------------------------------
-def _create_dll_alter_tables_io():
+def _create_dll_alter_tables_io() -> None:
     _create_dll_table_io_msaccess_file_alter()
 
 
 # ------------------------------------------------------------------
 # Collect the IO-Aero specific create database table definitions.
 # ------------------------------------------------------------------
-def _create_dll_create_tables_io():
+def _create_dll_create_tables_io() -> None:
     # ------------------------------------------------------------------
     # Level 1 - without FK
     # ------------------------------------------------------------------
@@ -2194,7 +2210,7 @@ def _create_dll_table_io_sequence_of_events() -> None:
     ] = """
         CREATE TABLE IF NOT EXISTS io_sequence_of_events
         (
-            soe_no          VARCHAR(3) NOT NULL,    
+            soe_no          VARCHAR(3) NOT NULL,
             cictt_code      VARCHAR(10),
             meaning         VARCHAR(100) NOT NULL,
             first_processed TIMESTAMP NOT NULL,
@@ -2245,9 +2261,9 @@ def _create_dll_view_io_app_ae1982() -> None:
         CREATE MATERIALIZED
             VIEW io_app_ae1982
                 AS
-                    -- ------------------------------------------------------------------------------------------------------------------------------- 
+                    -- -------------------------------------------------------------------------------------------------------------------------------
                     -- Level 4
-                    -- ------------------------------------------------------------------------------------------------------------------------------- 
+                    -- -------------------------------------------------------------------------------------------------------------------------------
                     SELECT level_4.ev_id,
                            level_4.ntsb_no,
                            level_4.ev_type,
@@ -2318,12 +2334,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                            level_4.is_far_part_091x,
                            level_4.is_far_part_121,
                            level_4.is_far_part_135,
-                           level_4.is_invalid_latitude, 
-                           level_4.is_invalid_longitude, 
-                           level_4.is_invalid_us_city, 
-                           level_4.is_invalid_us_city_zipcode, 
-                           level_4.is_invalid_us_state, 
-                           level_4.is_invalid_us_zipcode, 
+                           level_4.is_invalid_latitude,
+                           level_4.is_invalid_longitude,
+                           level_4.is_invalid_us_city,
+                           level_4.is_invalid_us_city_zipcode,
+                           level_4.is_invalid_us_state,
+                           level_4.is_invalid_us_zipcode,
                            --
                            CASE WHEN level_4.is_altitude_low                           IS TRUE OR
                                      level_4.is_attitude_controllable                  IS TRUE OR
@@ -2336,7 +2352,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                      level_4.is_spin_stall                             IS TRUE THEN FALSE
                                                                                                ELSE TRUE
                             END is_lp_n_a,
-                           -- 
+                           --
                            level_4.is_midair_collision,
                            level_4.is_narrative_stall,
                            level_4.is_oper_country_usa,
@@ -2351,7 +2367,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                      level_4.is_rss_terrain_collision_avoidance        IS TRUE THEN FALSE
                                                                                               ELSE TRUE
                             END is_rss_n_a,
-                           -- 
+                           --
                            level_4.is_rss_spin_stall_prevention_and_recovery,
                            level_4.is_rss_terrain_collision_avoidance,
                            level_4.is_spin_stall,
@@ -2368,8 +2384,8 @@ def _create_dll_view_io_app_ae1982() -> None:
                            level_4.oper_countries,
                            level_4.owner_countries,
                            COALESCE(NULLIF(level_4.phase_codes_defining, ''), 'no data') phase_codes_defining,
-                           (SELECT ARRAY_TO_STRING(ARRAY(SELECT CASE WHEN level_4.is_midair_collision                       IS TRUE 
-                                                                     THEN 'Airborne collision' 
+                           (SELECT ARRAY_TO_STRING(ARRAY(SELECT CASE WHEN level_4.is_midair_collision                       IS TRUE
+                                                                     THEN 'Airborne collision'
                                                                 END
                                                           UNION
                                                          SELECT CASE WHEN level_4.is_rss_forced_landing                     IS TRUE
@@ -2381,19 +2397,19 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                 END
                                                           UNION
                                                          SELECT CASE WHEN level_4.is_rss_terrain_collision_avoidance        IS TRUE
-                                                                     THEN 'Terrain collision' 
+                                                                     THEN 'Terrain collision'
                                                                 END
                                                           UNION
                                                          SELECT CASE WHEN level_4.is_midair_collision                       IS FALSE AND
                                                                           level_4.is_rss_forced_landing                     IS FALSE AND
                                                                           level_4.is_rss_spin_stall_prevention_and_recovery IS FALSE AND
                                                                           level_4.is_rss_terrain_collision_avoidance        IS FALSE
-                                                                     THEN 'Not preventable' 
+                                                                     THEN 'Not preventable'
                                                                 END
                                                           ORDER BY 1),', ')) preventable_events,
                            level_4.regis_countries,
                            level_4.regis_nos,
-                           (SELECT ARRAY_TO_STRING(ARRAY(SELECT CASE WHEN level_4.is_spin_stall                             IS TRUE 
+                           (SELECT ARRAY_TO_STRING(ARRAY(SELECT CASE WHEN level_4.is_spin_stall                             IS TRUE
                                                                      THEN 'Aerodynamic spin / stall'
                                                                 END
                                                           UNION
@@ -2414,7 +2430,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                 END
                                                           UNION
                                                          SELECT CASE WHEN level_4.is_pilot_issue                            IS TRUE
-                                                                     THEN 'Pilot is able to perform maneuver' 
+                                                                     THEN 'Pilot is able to perform maneuver'
                                                                 END
                                                           UNION
                                                          SELECT CASE WHEN level_4.is_spin_stall                             IS FALSE AND
@@ -2423,12 +2439,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                           level_4.is_altitude_low                           IS FALSE AND
                                                                           level_4.is_attitude_controllable                  IS FALSE AND
                                                                           level_4.is_pilot_issue                            IS FALSE
-                                                                     THEN 'n/a' 
+                                                                     THEN 'n/a'
                                                                 END
                                                           ORDER BY 1),', ')) tll_parameters
-                  FROM (-- ----------------------------------------------------------------------------------------------------------------------- 
+                  FROM (-- -----------------------------------------------------------------------------------------------------------------------
                         -- Level 3
-                        -- ------------------------------------------------------------------------------------------------------------------------------- 
+                        -- -------------------------------------------------------------------------------------------------------------------------------
                         SELECT level_3.ev_id,
                                level_3.ntsb_no,
                                level_3.ev_type,
@@ -2499,12 +2515,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                                level_3.is_far_part_091x,
                                level_3.is_far_part_121,
                                level_3.is_far_part_135,
-                               level_3.is_invalid_latitude, 
-                               level_3.is_invalid_longitude, 
-                               level_3.is_invalid_us_city, 
-                               level_3.is_invalid_us_city_zipcode, 
-                               level_3.is_invalid_us_state, 
-                               level_3.is_invalid_us_zipcode, 
+                               level_3.is_invalid_latitude,
+                               level_3.is_invalid_longitude,
+                               level_3.is_invalid_us_city,
+                               level_3.is_invalid_us_city_zipcode,
+                               level_3.is_invalid_us_state,
+                               level_3.is_invalid_us_zipcode,
                                level_3.is_midair_collision,
                                level_3.is_narrative_stall,
                                level_3.is_oper_country_usa,
@@ -2527,7 +2543,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                          level_3.is_altitude_controllable IS TRUE THEN TRUE
                                                                                   ELSE FALSE
                                 END is_rss_terrain_collision_avoidance,
-                               -- 
+                               --
                                level_3.is_spin_stall,
                                --
                                -- BOOLEAN VARIABLES - END ------------------------------------------------------------------------------------------------
@@ -2544,9 +2560,9 @@ def _create_dll_view_io_app_ae1982() -> None:
                                level_3.phase_codes_defining,
                                level_3.regis_countries,
                                level_3.regis_nos
-                          FROM (-- ----------------------------------------------------------------------------------------------------------------------- 
+                          FROM (-- -----------------------------------------------------------------------------------------------------------------------
                                 -- Level 2
-                                -- ----------------------------------------------------------------------------------------------------------------------- 
+                                -- -----------------------------------------------------------------------------------------------------------------------
                                 SELECT level_2.ev_id,
                                        level_2.ntsb_no,
                                        level_2.ev_type,
@@ -2628,7 +2644,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                   level_2.is_spin_stall IS FALSE THEN TRUE
                                                                                  ELSE FALSE
                                         END is_altitude_low,
-                                       -- 
+                                       --
                                        level_2.is_attitude_controllable,
                                        --
                                        level_2.is_dest_country_usa,
@@ -2637,12 +2653,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                                        level_2.is_far_part_091x,
                                        level_2.is_far_part_121,
                                        level_2.is_far_part_135,
-                                       level_2.is_invalid_latitude, 
-                                       level_2.is_invalid_longitude, 
-                                       level_2.is_invalid_us_city, 
-                                       level_2.is_invalid_us_city_zipcode, 
-                                       level_2.is_invalid_us_state, 
-                                       level_2.is_invalid_us_zipcode, 
+                                       level_2.is_invalid_latitude,
+                                       level_2.is_invalid_longitude,
+                                       level_2.is_invalid_us_city,
+                                       level_2.is_invalid_us_city_zipcode,
+                                       level_2.is_invalid_us_state,
+                                       level_2.is_invalid_us_zipcode,
                                        level_2.is_midair_collision,
                                        level_2.is_narrative_stall,
                                        level_2.is_oper_country_usa,
@@ -2665,9 +2681,9 @@ def _create_dll_view_io_app_ae1982() -> None:
                                        level_2.phase_codes_defining,
                                        level_2.regis_countries,
                                        level_2.regis_nos
-                                  FROM (-- ----------------------------------------------------------------------------------------------------------------------- 
+                                  FROM (-- -----------------------------------------------------------------------------------------------------------------------
                                         -- Level 1
-                                        -- ----------------------------------------------------------------------------------------------------------------------- 
+                                        -- -----------------------------------------------------------------------------------------------------------------------
                                         SELECT level_1.ev_id,
                                                level_1.ntsb_no,
                                                level_1.ev_type,
@@ -2732,18 +2748,18 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                level_1.is_attitude_controllable,
                                                --
                                                CASE WHEN 'USA' = ANY (level_1.dest_countries) THEN TRUE
-                                                    ELSE FALSE      
+                                                    ELSE FALSE
                                                 END is_dest_country_usa,
                                                --
                                                CASE WHEN 'USA' = ANY (level_1.dprt_countries) THEN TRUE
-                                                    ELSE FALSE      
+                                                    ELSE FALSE
                                                 END is_dprt_country_usa,
                                                --
                                                CASE WHEN level_1.is_attitude_controllable AND
                                                          ((SELECT COUNT(*)
                                                              FROM findings f
                                                             WHERE f.ev_id = level_1.ev_id
-                                                              AND (f.modifier_no                 = '01'        -- Failure             
+                                                              AND (f.modifier_no                 = '01'        -- Failure
                                                                OR  SUBSTRING(f.finding_code,1,6) = '010224'    -- Aircraft-Aircraft systems-Electrical power system
                                                                OR  SUBSTRING(f.finding_code,1,6) = '010228'    -- Aircraft-Aircraft systems-Fuel system
                                                                OR  SUBSTRING(f.finding_code,1,6) = '010230'    -- Aircraft-Aircraft systems-Ice/rain protection system
@@ -2772,13 +2788,13 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                OR  f.modifier_no                 = '23'        -- Fluid condition
                                                                OR  f.modifier_no                 = '24'        -- Fluid level
                                                                OR  f.modifier_no                 = '25'        -- Fluid management
-                                                               OR  f.modifier_no                 = '26')       -- Inoperative 
-                                                            LIMIT 1) 
+                                                               OR  f.modifier_no                 = '26')       -- Inoperative
+                                                            LIMIT 1)
                                                         + (SELECT COUNT(*)
                                                              FROM events_sequence es
                                                              WHERE es.ev_id = level_1.ev_id
-                                                               AND (es.phase_no    = '600'   -- Emergency descent         
-                                                                OR  es.eventsoe_no = '130'   -- Emergency descent initiated  
+                                                               AND (es.phase_no    = '600'   -- Emergency descent
+                                                                OR  es.eventsoe_no = '130'   -- Emergency descent initiated
                                                                 OR  es.eventsoe_no = '140'   -- Engine shutdown
                                                                 OR  es.eventsoe_no = '190'   -- Fuel related
                                                                 OR  es.eventsoe_no = '191'   -- Fuel starvation
@@ -2786,9 +2802,9 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                 OR  es.eventsoe_no = '193'   -- Fuel contamination
                                                                 OR  es.eventsoe_no = '194'   -- Wrong fuel
                                                                 OR  es.eventsoe_no = '337'   -- Aircraft structural failure
-                                                               AND  es.defining_ev IS TRUE                      
+                                                               AND  es.defining_ev IS TRUE
                                                                 OR  es.eventsoe_no = '338'   -- Part(s) separation from AC
-                                                               AND  es.defining_ev IS TRUE                      
+                                                               AND  es.defining_ev IS TRUE
                                                                 OR  es.eventsoe_no = '340'   -- Powerplant sys/comp malf/fail
                                                                 OR  es.eventsoe_no = '341'   -- Loss of engine power (total)
                                                                 OR  es.eventsoe_no = '342'   -- Loss of engine power (partial)
@@ -2804,47 +2820,47 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                CASE WHEN ARRAY ['091', '091F', '091K'] && level_1.far_parts::TEXT[] THEN TRUE
                                                                                                                     ELSE FALSE
                                                 END is_far_part_091x,
-                                               --       
+                                               --
                                                CASE WHEN ARRAY ['121'] <@ level_1.far_parts::TEXT[] THEN TRUE
                                                                                                     ELSE FALSE
                                                 END is_far_part_121,
-                                               --           
+                                               --
                                                CASE WHEN ARRAY ['135'] <@ level_1.far_parts::TEXT[] THEN TRUE
                                                                                                     ELSE FALSE
                                                 END is_far_part_135,
-                                               -- 
-                                               level_1.is_invalid_latitude, 
-                                               level_1.is_invalid_longitude, 
-                                               level_1.is_invalid_us_city, 
-                                               level_1.is_invalid_us_city_zipcode, 
-                                               level_1.is_invalid_us_state, 
-                                               level_1.is_invalid_us_zipcode, 
+                                               --
+                                               level_1.is_invalid_latitude,
+                                               level_1.is_invalid_longitude,
+                                               level_1.is_invalid_us_city,
+                                               level_1.is_invalid_us_city_zipcode,
+                                               level_1.is_invalid_us_state,
+                                               level_1.is_invalid_us_zipcode,
                                                level_1.is_midair_collision,
                                                level_1.is_narrative_stall,
                                                --
                                                CASE WHEN 'USA' = ANY (level_1.oper_countries) THEN TRUE
-                                                                                              ELSE FALSE      
+                                                                                              ELSE FALSE
                                                 END is_oper_country_usa,
-                                               -- 
+                                               --
                                                CASE WHEN 'USA' = ANY (level_1.owner_countries) THEN TRUE
-                                                                                               ELSE FALSE      
+                                                                                               ELSE FALSE
                                                 END is_owner_country_usa,
-                                               -- 
+                                               --
                                                level_1.is_pilot_issue,
                                                --
                                                CASE WHEN 'USA' = ANY (level_1.regis_countries) THEN TRUE
-                                                                                               ELSE FALSE      
+                                                                                               ELSE FALSE
                                                 END is_regis_country_usa,
                                                --
                                                CASE WHEN (('PARAMS_AoA' = ANY (level_1.finding_codes)    OR
                                                            'STALL'      = ANY (level_1.occurrence_codes) OR
-                                                          ('LOC-I'      = ANY (level_1.occurrence_codes) AND 
+                                                          ('LOC-I'      = ANY (level_1.occurrence_codes) AND
                                                            level_1.is_narrative_stall))                  AND NOT
-                                                         ('CAA'         = ANY (level_1.occurrence_codes) OR 
+                                                         ('CAA'         = ANY (level_1.occurrence_codes) OR
                                                           'CFIT'        = ANY (level_1.occurrence_codes))) THEN TRUE
-                                                                                                           ELSE FALSE      
+                                                                                                           ELSE FALSE
                                                 END is_spin_stall,
-                                               -- 
+                                               --
                                                -- BOOLEAN VARIABLES - END ----------------------------------------------------------------------------------------
                                                -- ----------------------------------------------------------------------------------------------------------------
                                                level_1.latlong_acq,
@@ -2859,12 +2875,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                level_1.phase_codes_defining,
                                                level_1.regis_countries,
                                                level_1.regis_nos
-                                          FROM (-- --------------------------------------------------------------------------------------------------------------- 
+                                          FROM (-- ---------------------------------------------------------------------------------------------------------------
                                                 -- Base
-                                                -- --------------------------------------------------------------------------------------------------------------- 
+                                                -- ---------------------------------------------------------------------------------------------------------------
                                                 SELECT ifu.ev_id,
                                                        ifu.ntsb_no,
-                                                       ifu.ev_type,                           
+                                                       ifu.ev_type,
                                                        ifu.ev_year,
                                                        ifu.ev_month,
                                                        UPPER(ifu.ev_dow) ev_dow,
@@ -3080,7 +3096,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                        COALESCE(ifu.io_dec_longitude_deviating, 0) dec_longitude_deviating,
                                                        --
                                                        (SELECT ARRAY_TO_STRING(ARRAY (SELECT DISTINCT imcp.description_main_phase
-                                                                                        FROM events_sequence es INNER JOIN io_md_codes_phase imcp ON es.phase_no = imcp.phase_code 
+                                                                                        FROM events_sequence es INNER JOIN io_md_codes_phase imcp ON es.phase_no = imcp.phase_code
                                                                                        WHERE es.ev_id = ifu.ev_id
                                                                                          AND es.defining_ev  IS TRUE
                                                                                        ORDER BY 1),', ')) description_main_phase_defining,
@@ -3097,21 +3113,21 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                        --
                                                        CASE WHEN ifu.ev_highest_injury IN ('FATL', 'MINR', 'NONE', 'SERS') THEN ifu.ev_highest_injury
                                                                                                                            ELSE 'n/a'
-                                                            END ev_highest_injury,                           
+                                                            END ev_highest_injury,
                                                        --
                                                        (SELECT ARRAY(SELECT DISTINCT COALESCE(a.far_part, 'n/a')
                                                                        FROM aircraft a
                                                                       WHERE a.ev_id = ifu.ev_id
                                                                       ORDER BY 1)) far_parts,
                                                        --
-                                                       (SELECT ARRAY(SELECT CASE WHEN SUBSTRING(f.finding_code,1,8) = '01062012' THEN 'PARAMS_ALT'       -- Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Altitude   
+                                                       (SELECT ARRAY(SELECT CASE WHEN SUBSTRING(f.finding_code,1,8) = '01062012' THEN 'PARAMS_ALT'       -- Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Altitude
                                                                                  WHEN SUBSTRING(f.finding_code,1,8) = '01062037' THEN 'PARAMS_DEC_RATE'  -- Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Descent rate
                                                                                  WHEN SUBSTRING(f.finding_code,1,8) = '01062040' THEN 'PARAMS_DEC_APP'   -- Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Descent/approach/glide path
                                                                                  WHEN SUBSTRING(f.finding_code,1,8) = '01062042' THEN 'PARAMS_AoA'       -- Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Angle of attack
                                                                                  WHEN SUBSTRING(f.finding_code,1,6) = '030210'   THEN 'ENV_TER'          -- Environmental issues-Physical environment-Terrain
-                                                                                 WHEN SUBSTRING(f.finding_code,1,6) = '030220'   THEN 'ENV_OAS'          -- Environmental issues-Physical environment-Object/animal/substance  
+                                                                                 WHEN SUBSTRING(f.finding_code,1,6) = '030220'   THEN 'ENV_OAS'          -- Environmental issues-Physical environment-Object/animal/substance
                                                                                                                                  ELSE f.finding_code
-                                                                            END 
+                                                                            END
                                                                        FROM findings f
                                                                       WHERE (SUBSTRING(f.finding_code,1,8) IN ('01062012', '01062037', '01062040', '01062042')
                                                                          OR  SUBSTRING(f.finding_code,1,6) IN ('030210', '030220'))
@@ -3134,10 +3150,10 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                        OR  SUBSTRING(f.finding_code,1,6) = '030320'     -- Environmental issues-Conditions/weather/phenomena-Turbulence-(general)
                                                                        OR  SUBSTRING(f.finding_code,1,6) = '030330'     -- Environmental issues-Conditions/weather/phenomena-Convective weather-(general)
                                                                        OR  SUBSTRING(f.finding_code,1,8) = '03034020'   -- Environmental issues-Conditions/weather/phenomena-Wind-Windshear
-                                                                       OR  SUBSTRING(f.finding_code,1,8) = '03034030'   -- Environmental issues-Conditions/weather/phenomena-Wind-Updraft  
+                                                                       OR  SUBSTRING(f.finding_code,1,8) = '03034030'   -- Environmental issues-Conditions/weather/phenomena-Wind-Updraft
                                                                        OR  SUBSTRING(f.finding_code,1,8) = '03034050'   -- Environmental issues-Conditions/weather/phenomena-Wind-Microburst
                                                                        OR  SUBSTRING(f.finding_code,1,8) = '03034060')  -- Environmental issues-Conditions/weather/phenomena-Wind-Dust devil/whirlwind
-                                                                    LIMIT 1)   
+                                                                    LIMIT 1)
                                                                 + (SELECT COUNT(*)
                                                                      FROM events_sequence es
                                                                      WHERE es.ev_id = ifu.ev_id
@@ -3153,12 +3169,12 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                                    ELSE FALSE
                                                         END is_attitude_controllable,
                                                        --
-                                                       ifu.io_invalid_latitude is_invalid_latitude, 
-                                                       ifu.io_invalid_longitude is_invalid_longitude, 
-                                                       ifu.io_invalid_us_city is_invalid_us_city, 
-                                                       ifu.io_invalid_us_city_zipcode is_invalid_us_city_zipcode, 
-                                                       ifu.io_invalid_us_state is_invalid_us_state, 
-                                                       ifu.io_invalid_us_zipcode is_invalid_us_zipcode, 
+                                                       ifu.io_invalid_latitude is_invalid_latitude,
+                                                       ifu.io_invalid_longitude is_invalid_longitude,
+                                                       ifu.io_invalid_us_city is_invalid_us_city,
+                                                       ifu.io_invalid_us_city_zipcode is_invalid_us_city_zipcode,
+                                                       ifu.io_invalid_us_state is_invalid_us_state,
+                                                       ifu.io_invalid_us_zipcode is_invalid_us_zipcode,
                                                        --
                                                        CASE WHEN ((SELECT COUNT(*)
                                                                      FROM events_sequence es
@@ -3175,23 +3191,23 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                     AND n.narr_accp  IS NOT NULL
                                                                     AND n.ev_id = ifu.ev_id
                                                                    LIMIT 1), FALSE) is_narrative_stall,
-                                                       --            
+                                                       --
                                                        CASE WHEN (SELECT COUNT(*)
                                                                     FROM findings f
                                                                    WHERE f.ev_id = ifu.ev_id
                                                                      AND (f.modifier_no = '44'   -- Pilot
                                                                       OR  f.modifier_no = '45'   -- Pilot of other aircraft
-                                                                      OR  f.modifier_no = '46')  -- Student/instructed pilot 
+                                                                      OR  f.modifier_no = '46')  -- Student/instructed pilot
                                                                     LIMIT 1) = 0 THEN FALSE
                                                                                   ELSE TRUE
                                                         END is_pilot_issue,
                                                        --
                                                        -- BOOLEAN VARIABLES - END --------------------------------------------------------------------------------
                                                        -- --------------------------------------------------------------------------------------------------------
-                                                       CASE WHEN ifu.io_latlong_acq                                 IS     NULL 
-                                                             AND ifu.latlong_acq                                    IS     NULL 
-                                                             AND (COALESCE(ifu.io_dec_latitude, ifu.dec_latitude)   IS NOT NULL  
-                                                              OR  COALESCE(ifu.io_dec_longitude, ifu.dec_longitude) IS NOT NULL) THEN 'NONE'  
+                                                       CASE WHEN ifu.io_latlong_acq                                 IS     NULL
+                                                             AND ifu.latlong_acq                                    IS     NULL
+                                                             AND (COALESCE(ifu.io_dec_latitude, ifu.dec_latitude)   IS NOT NULL
+                                                              OR  COALESCE(ifu.io_dec_longitude, ifu.dec_longitude) IS NOT NULL) THEN 'NONE'
                                                                                                                                  ELSE COALESCE(ifu.io_latlong_acq, ifu.latlong_acq, 'NREC')
                                                         END latlong_acq,
                                                        ifu.io_nearest_airport_distance  nearest_airport_distance,
@@ -3215,7 +3231,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                                  WHEN es.eventsoe_no = '420' THEN 'CAA'         -- Collision avoidance alert
                                                                                  WHEN es.eventsoe_no = '901' THEN 'BIRD'        -- Birdstrike
                                                                                                                                 ELSE es.occurrence_code
-                                                                             END 
+                                                                             END
                                                                        FROM events_sequence es
                                                                       WHERE (es.phase_no    IN ('350', '452', '502')
                                                                          OR  es.eventsoe_no IN ('120', '220', '240', '241', '250', '401', '420', '901'))
@@ -3254,7 +3270,7 @@ def _create_dll_view_io_app_ae1982() -> None:
                                                                       WHERE a.ev_id = ifu.ev_id
                                                                       ORDER BY 1)) regis_nos
                                                  FROM events ifu LEFT OUTER JOIN io_airports a
-                                                                 ON ifu.io_nearest_airport_global_id = a.global_id 
+                                                                 ON ifu.io_nearest_airport_global_id = a.global_id
                                                 WHERE ifu.ev_year >= 1982) level_1) level_2) level_3) level_4
         """
 
@@ -3332,7 +3348,7 @@ def _create_dll_view_io_lat_lng_issues() -> None:
 # ------------------------------------------------------------------
 # Decompose xxx into suitable tokens.
 # ------------------------------------------------------------------
-def _create_tokens_4_finding_description(finding_description):
+def _create_tokens_4_finding_description(finding_description: str) -> list[str]:
     return (
         finding_description.replace("Alternator-generator", "Alternator generator")
         .replace("Anti-skid", "Anti skid")
@@ -3362,7 +3378,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
     if not os.path.isfile(FILE_MAIN_PHASES_OF_FLIGHT):
         # ERROR.00.941 The Main Phases of Flight file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_941.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT)
+            glob_local.ERROR_00_941.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT),
         )
 
     io_utils.progress_msg("")
@@ -3370,7 +3386,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
     # INFO.00.084 Database table io_md_codes_phase: Load description_main_phase
     # from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_084.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT)
+        glob_local.INFO_00_084.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -3400,7 +3416,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             phase_code = str(extract_column_value(row, COLUMN_PHASE_CODE))
@@ -3422,37 +3438,39 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_update > 0:
-            io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+            io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
         logger.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_MAIN_PHASES_OF_FLIGHT)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_MAIN_PHASES_OF_FLIGHT),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_MAIN_PHASES_OF_FLIGHT
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_MAIN_PHASES_OF_FLIGHT,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_MAIN_PHASES_OF_FLIGHT
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_MAIN_PHASES_OF_FLIGHT,
+            ).replace("{error}", str(exc)),
         )
 
 
 # ------------------------------------------------------------------
 # Prepare the selected token.
 # ------------------------------------------------------------------
-def _prep_token_4_finding_description(token):
+def _prep_token_4_finding_description(token: str) -> str:
     return (
         token.replace("Alternator generator", "Alternator-generator")
         .replace("Anti skid", "Anti-skid")
@@ -3502,7 +3520,7 @@ def create_db_schema() -> None:
     try:
         cur_pg.execute(
             f"CREATE ROLE {io_config.settings.postgres_user} WITH CREATEDB LOGIN "
-            + f"PASSWORD '{io_config.settings.postgres_password}'"
+            f"PASSWORD '{io_config.settings.postgres_password}'",
         )
 
         # INFO.00.016 Database role is available: {user}
@@ -3518,20 +3536,22 @@ def create_db_schema() -> None:
     try:
         cur_pg.execute(
             f"CREATE DATABASE {io_config.settings.postgres_dbname} "
-            + f"WITH OWNER {io_config.settings.postgres_user}"
+            f"WITH OWNER {io_config.settings.postgres_user}",
         )
 
         # INFO.00.017 Database is available: {dbname}
         io_utils.progress_msg(
             glob_local.INFO_00_017.replace(
-                "{dbname}", io_config.settings.postgres_dbname
+                "{dbname}",
+                io_config.settings.postgres_dbname,
             ),
         )
     except DuplicateDatabase:
         # INFO.00.083 Database already existing: {dbname}
         io_utils.progress_msg(
             glob_local.INFO_00_083.replace(
-                "{dbname}", io_config.settings.postgres_dbname
+                "{dbname}",
+                io_config.settings.postgres_dbname,
             ),
         )
 
@@ -3616,7 +3636,7 @@ def update_db_schema() -> None:
     conn_pg.close()
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor_admin(
-        dbname=io_config.settings.postgres_dbname
+        dbname=io_config.settings.postgres_dbname,
     )
 
     _create_db_role_guest(conn_pg, cur_pg)

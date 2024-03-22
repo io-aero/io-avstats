@@ -7,8 +7,7 @@ from __future__ import annotations
 
 import os
 
-from iocommon import io_config
-from iocommon import io_glob
+from iocommon import io_config, io_glob
 
 
 # -----------------------------------------------------------------------------
@@ -18,7 +17,9 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
     """Generate SQL statements: INSERT.
 
     Args:
+    ----
         ref_lines (list[str]): DDL export of RazorSQL.
+
     """
     filename = os.path.join(
         io_config.settings.download_work_dir,
@@ -36,12 +37,12 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
         out.write("-- " + "-" * 80 + "\n")
 
         for ref_line in ref_lines:
-            ref_line = ref_line.rstrip()
+            ref_line_helper = ref_line.rstrip()
 
-            if not ref_line:
+            if not ref_line_helper:
                 continue
 
-            if ref_line == ");":
+            if ref_line_helper == ");":
                 out.write('cur_pg.execute("""\n')
                 out.write("INSERT INTO " + table_name.lower() + " (\n")
                 out.write("       " + ",".join(columns) + "\n")
@@ -51,7 +52,7 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
                 out.write("-- " + "-" * 80 + "\n")
                 continue
 
-            ref_tokens = ref_line.split()
+            ref_tokens = ref_line_helper.split()
 
             if ref_tokens[0] == "PRIMARY":
                 continue
@@ -79,7 +80,9 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
     """Generate SQL statements: UPDATE.
 
     Args:
+    ----
         ref_lines (list[str]): DDL export of RazorSQL.
+
     """
     table_name: str = ""
 
@@ -90,11 +93,11 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
 
     is_pk = False
 
-    for ref_line in ref_lines:
-        if not ref_line.rstrip():
+    for ref_line_helper in ref_lines:
+        if not ref_line_helper.rstrip():
             continue
 
-        ref_tokens = ref_line.split()
+        ref_tokens = ref_line_helper.split()
         if ref_tokens[0] == "CREATE":
             if not is_pk and table_name:
                 pks[table_name] = (["ev_id"], ["row_mdb.ev_id"], ["ev_id = %s"])
@@ -103,7 +106,7 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
             is_pk = False
             continue
 
-        if not ref_tokens[0] == "PRIMARY":
+        if ref_tokens[0] != "PRIMARY":
             continue
 
         pk_columns = []
@@ -139,12 +142,12 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
         out.write("-- " + "-" * 80 + "\n")
 
         for ref_line in ref_lines:
-            ref_line = ref_line.rstrip()
+            ref_line_helper = ref_line.rstrip()
 
-            if not ref_line:
+            if not ref_line_helper:
                 continue
 
-            if ref_line == ");":
+            if ref_line_helper == ");":
                 out.write('cur_pg.execute("""\n')
                 out.write("UPDATE " + table_name.lower() + " SET\n")
                 out.write("       " + ",".join(assignments) + "\n")
@@ -155,22 +158,19 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
                 out.write(
                     "("
                     + ",".join(assignment_values + pk_values + assignment_values)
-                    + "))\n"
+                    + "))\n",
                 )
                 out.write("-- " + "-" * 80 + "\n")
                 continue
 
-            ref_tokens = ref_line.split()
+            ref_tokens = ref_line_helper.split()
 
             if ref_tokens[0] in ["FOREIGN", "PRIMARY"]:
                 continue
 
             if ref_tokens[0] == "CREATE":
                 table_name = ref_tokens[2]
-                if table_name in pks:
-                    pk_columns, pk_values, pk_where = pks[table_name]
-                else:
-                    pk_columns, pk_values, pk_where = ([], [], [])
+                pk_columns, pk_values, pk_where = pks.get(table_name, ([], [], []))
                 assignments = []
                 assignment_values = []
                 out.write("-- UPDATE for TABLE " + table_name + "\n")
@@ -198,7 +198,7 @@ def generate_sql() -> None:
         io_config.settings.razorsql_reference_file,
     )
 
-    with open(reference_filename, "r", encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:
+    with open(reference_filename, encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:
         ref_lines = ref.readlines()
 
         _generate_sql_insert(ref_lines)

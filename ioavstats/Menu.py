@@ -1,3 +1,5 @@
+# noqa: N999
+
 # pylint: disable=invalid-name
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
@@ -38,5 +40,5 @@ st.markdown(
       using data profiling, maps, various chart types and more,
     - **Database Profiling**: allows exploratory data analysis of all tables and
       views in the database IO-AVSTATS-DB.
-"""
+""",
 )

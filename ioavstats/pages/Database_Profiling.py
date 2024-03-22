@@ -1,4 +1,6 @@
+# noqa: N999
 # pylint: disable=invalid-name
+
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
@@ -359,12 +361,12 @@ def _get_user_guide_app() -> None:
     text = f"""
 #### User guide: pd1982 Application
 
-On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a 
-table format for display and upload as **csv** file. 
-On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using 
+On the one hand, this application provides the data of the tables and views of the **IO-AVSTATS-DB** database in a
+table format for display and upload as **csv** file.
+On the other hand, it is also possible to perform an exploratory data analysis of individual tables or views using
 [Pandas Profiling](https://pandas-profiling.ydata.ai/docs/master/) and optionally upload the result as a **HTML** file.
 
-The **IO-AVSTATS-DB** database is based primarily on aviation accident data provided by the 
+The **IO-AVSTATS-DB** database is based primarily on aviation accident data provided by the
 [NTSB]( https://www.ntsb.gov/Pages/home.aspx) in the form of Microsoft Access databases [here]( https://data.ntsb.gov/avdata).
 
 Further information on the **`pd1982`** application can be found [here]({LINK_GITHUB_PAGES}).
@@ -380,17 +382,17 @@ def _get_user_guide_data_profile() -> None:
     text = """
 #### User guide: Show data profile
 
-This task performs a data analysis of the selected table or view. This is done with the help of 
-[**ydata-profiling**](https://pandas-profiling.ydata.ai/docs/master/). 
-Depending on the size of the selected table or view, there may be delayed response times, with the exploratory version 
+This task performs a data analysis of the selected table or view. This is done with the help of
+[**ydata-profiling**](https://pandas-profiling.ydata.ai/docs/master/).
+Depending on the size of the selected table or view, there may be delayed response times, with the exploratory version
 again requiring significantly more computational effort than the minimal version.
-For further explanations please consult the documentation of **Pandas Profiling**. 
+For further explanations please consult the documentation of **Pandas Profiling**.
 The result of the data analysis can also be downloaded as **HTML** file if desired.
 
 
-If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us 
-[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction. 
-Also suggestions for improvement or enhancements are welcome. 
+If you encounter any problem in the application, documentation or data, we would appreciate it if you would notify us
+[here](https://github.com/io-aero/io-avstats/issues) so that we can make any necessary correction.
+Also suggestions for improvement or enhancements are welcome.
     """
 
     st.warning(text)
@@ -403,10 +405,10 @@ def _get_user_guide_details() -> None:
     text = """
 #### User guide: Show details
 
-This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and 
-upload as **csv** file. 
-The rows to be displayed can be limited to an interval of event years in the filter options. 
-The order of data display is based on the respective primary key of the database table. 
+This task provides the data of the tables and views of the database **IO-AVSTATS-DB** in a table format for display and
+upload as **csv** file.
+The rows to be displayed can be limited to an interval of event years in the filter options.
+The order of data display is based on the respective primary key of the database table.
 The database columns of the selected rows are always displayed in full.
     """
 
@@ -416,7 +418,7 @@ The database columns of the selected rows are always displayed in full.
 # ------------------------------------------------------------------
 # Present the filtered data.
 # ------------------------------------------------------------------
-def _present_data():
+def _present_data() -> None:
     global CHOICE_UG_DETAILS  # pylint: disable=global-statement
     global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
     global DF_FILTERED_ROWS  # pylint: disable=global-statement
@@ -430,7 +432,7 @@ def _present_data():
             [
                 1,
                 2,
-            ]
+            ],
         )
         with col2:
             utils.present_about(PG_CONN, APP_ID)
@@ -453,21 +455,21 @@ def _present_data():
             [
                 2,
                 1,
-            ]
+            ],
         )
 
         with col1:
             st.markdown(
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Profiling Database '
-                + f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
+                'font-weight: normal;border-radius:2%;">Profiling Database '
+                f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
                 unsafe_allow_html=True,
             )
 
         with col2:
             CHOICE_UG_DATA_PROFILE = st.checkbox(
                 help="Explanations and operating instructions related to profiling "
-                + "of the database tables or views.",
+                "of the database tables or views.",
                 label="**User Guide: Show data profile**",
                 value=False,
             )
@@ -482,14 +484,14 @@ def _present_data():
             [
                 2,
                 1,
-            ]
+            ],
         )
 
         with col1:
             st.markdown(
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-                + 'font-weight: normal;border-radius:2%;">Detailed Database '
-                + f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
+                'font-weight: normal;border-radius:2%;">Detailed Database '
+                f"{CHOICE_DDL_OBJECT_SELECTED} {CHOICE_DDL_OBJECT_SELECTION}</p>",
                 unsafe_allow_html=True,
             )
 
@@ -504,7 +506,7 @@ def _present_data():
             _get_user_guide_details()
 
         st.write(
-            f"No rows unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}"
+            f"No rows unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}",
         )
 
         st.dataframe(DF_FILTERED)
@@ -513,7 +515,7 @@ def _present_data():
             data=_convert_df_2_csv(DF_FILTERED),
             file_name=APP_ID + "_" + CHOICE_DDL_OBJECT_SELECTION + ".csv",
             help="The upload includes all data of the selected "
-            + f"{CHOICE_DDL_OBJECT_SELECTED.lower()} after applying the filter options.",
+            f"{CHOICE_DDL_OBJECT_SELECTED.lower()} after applying the filter options.",
             label="Download all data as CSV file",
             mime="text/csv",
         )
@@ -522,7 +524,7 @@ def _present_data():
 # ------------------------------------------------------------------
 # Present the data profile.
 # ------------------------------------------------------------------
-def _present_data_data_profile():
+def _present_data_data_profile() -> None:
     # noinspection PyUnboundLocalVariable
     profile_report = ProfileReport(
         DF_FILTERED,
@@ -535,7 +537,7 @@ def _present_data_data_profile():
         data=profile_report.to_html(),
         file_name=APP_ID + ".html",
         help="The upload includes a profile report from the dataframe "
-        + "after applying the filter options.",
+        "after applying the filter options.",
         label="Download the profile report",
         mime="text/html",
     )
@@ -544,7 +546,7 @@ def _present_data_data_profile():
 # ------------------------------------------------------------------
 # Set up the filter controls.
 # ------------------------------------------------------------------
-def _setup_filter_controls():
+def _setup_filter_controls() -> None:
     global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
     global CHOICE_FILTER_DATA  # pylint: disable=global-statement
     global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
@@ -570,8 +572,8 @@ def _setup_filter_controls():
             """,
         label="**Event year(s):**",
         min_value=1982,
-        max_value=datetime.date.today().year,
-        value=(2008, datetime.date.today().year - 1),
+        max_value=datetime.datetime.now(datetime.timezone.utc).year,
+        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -587,7 +589,7 @@ def _setup_filter_controls():
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
-def _setup_page():
+def _setup_page() -> None:
     global CHOICE_ABOUT  # pylint: disable=global-statement
     global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
     global CHOICE_UG_APP  # pylint: disable=global-statement
@@ -596,13 +598,15 @@ def _setup_page():
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
     FILTER_EV_YEAR_TO = (
-        FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else datetime.date.today().year - 1
+        FILTER_EV_YEAR_TO
+        if FILTER_EV_YEAR_TO
+        else datetime.datetime.now(datetime.timezone.utc).year - 1
     )
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + 'font-weight: normal;border-radius:2%;">Database Profiling - Year '
-        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
+        'font-weight: normal;border-radius:2%;">Database Profiling - Year '
+        f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -611,7 +615,7 @@ def _setup_page():
             1,
             1,
             1,
-        ]
+        ],
     )
 
     if CHOICE_FILTER_DATA:
@@ -640,7 +644,7 @@ def _setup_page():
 # ------------------------------------------------------------------
 # Set up the sidebar.
 # ------------------------------------------------------------------
-def _setup_sidebar():
+def _setup_sidebar() -> None:
     _setup_task_controls()
     _setup_filter_controls()
 
@@ -648,7 +652,7 @@ def _setup_sidebar():
 # ------------------------------------------------------------------
 # Set up the task controls.
 # ------------------------------------------------------------------
-def _setup_task_controls():
+def _setup_task_controls() -> None:
     global CHOICE_DDL_OBJECT_SELECTED  # pylint: disable=global-statement
     global CHOICE_DDL_OBJECT_SELECTION  # pylint: disable=global-statement
     global CHOICE_DETAILS  # pylint: disable=global-statement
@@ -670,7 +674,7 @@ def _setup_task_controls():
 
     st.sidebar.divider()
 
-    CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(
+    CHOICE_DDL_OBJECT_SELECTION = st.sidebar.radio(  # type: ignore
         help="Available database tables and views for profiling.",
         label="**Database tables and views**",
         options=(QUERIES.keys()),
@@ -758,8 +762,8 @@ def _streamlit_flow() -> None:
     _present_data()
 
     # Stop time measurement.
-    print(
-        str(datetime.datetime.now())
+    print(  # noqa: T201
+        str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

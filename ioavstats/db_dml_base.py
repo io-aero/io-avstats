@@ -7,23 +7,19 @@ import json
 import logging
 import os
 import zipfile
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 
 import pandas as pd
 import requests
-from iocommon import db_utils
-from iocommon import io_config
-from iocommon import io_glob
-from iocommon import io_utils
+from iocommon import db_utils, io_config, io_glob, io_utils
 from iocommon.io_utils import extract_column_value
-from psycopg import connection
-from psycopg import cursor
-from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
-from psycopg.errors import UniqueViolation  # pylint: disable=no-name-in-module
+from psycopg import connection, cursor
+from psycopg.errors import (
+    ForeignKeyViolation,  # pylint: disable=no-name-in-module
+    UniqueViolation,  # pylint: disable=no-name-in-module
+)
 
-from ioavstats import glob_local
-from ioavstats import utils
+from ioavstats import glob_local, utils
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -121,7 +117,7 @@ def _load_airport_data() -> None:
         io_utils.progress_msg("-" * 80)
         # INFO.00.087 Database table io_airports: Delete the existing data
         io_utils.progress_msg(glob_local.INFO_00_087)
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
 
     # ------------------------------------------------------------------
     # Start processing airport data.
@@ -165,7 +161,7 @@ def _load_airport_data() -> None:
         # INFO.00.089 Database table io_airports: Load data from file '{filename}'
         io_utils.progress_msg("-" * 80)
         io_utils.progress_msg(
-            glob_local.INFO_00_089.replace("{filename}", FILE_FAA_AIRPORTS)
+            glob_local.INFO_00_089.replace("{filename}", FILE_FAA_AIRPORTS),
         )
 
         count_select = 0
@@ -197,7 +193,7 @@ def _load_airport_data() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             airanal = extract_column_value(row, COLUMN_AIRANAL)
@@ -296,7 +292,7 @@ def _load_airport_data() -> None:
                     servcity,
                     state,
                     type_code,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     airanal,
                     country,
                     dec_latitude,
@@ -316,7 +312,7 @@ def _load_airport_data() -> None:
                     servcity,
                     state,
                     type_code,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     global_id,
                 ),
             )
@@ -324,17 +320,18 @@ def _load_airport_data() -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         # ------------------------------------------------------------------
         # Finalize processing.
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events, cur_pg
+            io_config.settings.download_file_sequence_of_events,
+            cur_pg,
         )
 
         cur_pg.close()
@@ -344,26 +341,28 @@ def _load_airport_data() -> None:
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_AIRPORTS)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_AIRPORTS),
         )
 
     except pd.errors.EmptyDataError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_AIRPORTS)
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_AIRPORTS),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_AIRPORTS).replace(
-                "{error}", str(err)
-            )
+                "{error}",
+                str(err),
+            ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_AIRPORTS).replace(
-                "{error}", str(exc)
-            )
+                "{error}",
+                str(exc),
+            ),
         )
 
 
@@ -388,7 +387,7 @@ def _load_aviation_occurrence_categories() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.937 The aviation occurrence categories file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_937.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_937.replace("{filename}", filename_excel),
         )
 
     # INFO.00.074 Database table io_aviation_occurrence_categories: Load data from file '{filename}'
@@ -396,7 +395,7 @@ def _load_aviation_occurrence_categories() -> None:
         glob_local.INFO_00_074.replace(
             "{filename}",
             FILE_AVIATION_OCCURRENCE_CATEGORIES,
-        )
+        ),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -416,8 +415,9 @@ def _load_aviation_occurrence_categories() -> None:
         # INFO.00.074 Database table io_aviation_occurrence_categories: ...
         io_utils.progress_msg(
             glob_local.INFO_00_074.replace(
-                "{filename}", FILE_AVIATION_OCCURRENCE_CATEGORIES
-            )
+                "{filename}",
+                FILE_AVIATION_OCCURRENCE_CATEGORIES,
+            ),
         )
 
         count_delete = 0
@@ -436,7 +436,7 @@ def _load_aviation_occurrence_categories() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             cictt_code = extract_column_value(row, COLUMN_CICTT_CODE_SPACE)
@@ -466,11 +466,11 @@ def _load_aviation_occurrence_categories() -> None:
                     cictt_code,
                     identifier,
                     definition,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     IO_LAST_SEEN,
                     identifier,
                     definition,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     IO_LAST_SEEN,
                     cictt_code,
                 ),
@@ -479,10 +479,10 @@ def _load_aviation_occurrence_categories() -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         # ------------------------------------------------------------------
         # Delete the obsolete data.
@@ -506,7 +506,7 @@ def _load_aviation_occurrence_categories() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             cictt_code = row_pg[COLUMN_CICTT_CODE_LOWER]  # type: ignore
@@ -528,9 +528,9 @@ def _load_aviation_occurrence_categories() -> None:
         conn_pg.commit()
 
         if count_select > 0:
-            io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+            io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
         if count_delete > 0:
-            io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
+            io_utils.progress_msg(f"Number rows deleted  : {count_delete!s:>8}")
 
         # ------------------------------------------------------------------
         # Finalize processing.
@@ -546,22 +546,25 @@ def _load_aviation_occurrence_categories() -> None:
     except FileNotFoundError:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_931.replace(
-                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
-            )
+                "{file_name}",
+                FILE_AVIATION_OCCURRENCE_CATEGORIES,
+            ),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_AVIATION_OCCURRENCE_CATEGORIES,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_AVIATION_OCCURRENCE_CATEGORIES
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_AVIATION_OCCURRENCE_CATEGORIES,
+            ).replace("{error}", str(exc)),
         )
 
 
@@ -582,14 +585,14 @@ def _load_country_data(
     if not os.path.isfile(filename_json):
         # ERROR.00.934 The country and state data file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_934.replace("{filename}", filename_json)
+            glob_local.ERROR_00_934.replace("{filename}", filename_json),
         )
 
     count_insert = 0
     count_select = 0
     count_update = 0
 
-    with open(filename_json, "r", encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
+    with open(filename_json, encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
         input_data = json.load(input_file)
 
         for record in input_data:
@@ -609,7 +612,7 @@ def _load_country_data(
                             record["country_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                         ),
                     )
                     count_insert += 1
@@ -631,7 +634,7 @@ def _load_country_data(
                             record["country_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                             record["country"],
                             record["country_name"],
                             record["dec_latitude"],
@@ -641,18 +644,19 @@ def _load_country_data(
                     count_update += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json, cur_pg
+        io_config.settings.download_file_countries_states_json,
+        cur_pg,
     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -661,7 +665,7 @@ def _load_country_data(
 # Load NPIAS data from an MS Excel file.
 # ------------------------------------------------------------------
 # pylint: disable=inconsistent-return-statements
-def _load_npias_data(us_states) -> list[str]:
+def _load_npias_data(us_states: list[str]) -> list[str]:
     # ------------------------------------------------------------------
     # Start processing NPIAS data.
     # ------------------------------------------------------------------
@@ -674,7 +678,7 @@ def _load_npias_data(us_states) -> list[str]:
     if not os.path.isfile(filename_excel):
         # ERROR.00.945 The NPIAS file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_945.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_945.replace("{filename}", filename_excel),
         )
 
     # ------------------------------------------------------------------
@@ -702,35 +706,37 @@ def _load_npias_data(us_states) -> list[str]:
 
             count_select += 1
 
-            if not extract_column_value(row, COLUMN_STATE_CAMEL) in us_states:
+            if extract_column_value(row, COLUMN_STATE_CAMEL) not in us_states:
                 continue
 
             locids.append(extract_column_value(row, COLUMN_LOCID))
 
             count_usable += 1
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
-        io_utils.progress_msg(f"Number rows usable   : {str(count_usable):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
+        io_utils.progress_msg(f"Number rows usable   : {count_usable!s:>8}")
 
-        return locids
+        return locids  # noqa: TRY300
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_NPIAS_DATA)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_NPIAS_DATA),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
-                "{error}", str(err)
-            )
+                "{error}",
+                str(err),
+            ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_NPIAS_DATA).replace(
-                "{error}", str(exc)
-            )
+                "{error}",
+                str(exc),
+            ),
         )
 
 
@@ -768,7 +774,7 @@ def _load_runway_data() -> None:
         count_select += 1
         runway_data[row["global_id"]] = (None, None)
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
     io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -788,7 +794,7 @@ def _load_runway_data() -> None:
 
         # INFO.00.092 Database table io_runways: Load data from file '{filename}'
         io_utils.progress_msg(
-            glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS)
+            glob_local.INFO_00_092.replace("{filename}", FILE_FAA_RUNWAYS),
         )
 
         count_select = 0
@@ -823,7 +829,7 @@ def _load_runway_data() -> None:
                     new_length,
                 )
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
         io_utils.progress_msg("-" * 80)
 
         # ------------------------------------------------------------------
@@ -846,7 +852,7 @@ def _load_runway_data() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             cur_pg.execute(
@@ -860,7 +866,7 @@ def _load_runway_data() -> None:
                 (
                     comp_code,
                     length,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     airport_id,
                 ),
             )
@@ -868,17 +874,18 @@ def _load_runway_data() -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_update > 0:
-            io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+            io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
         # ------------------------------------------------------------------
         # Finalize processing.
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events, cur_pg
+            io_config.settings.download_file_sequence_of_events,
+            cur_pg,
         )
 
         cur_pg.close()
@@ -888,26 +895,28 @@ def _load_runway_data() -> None:
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_FAA_RUNWAYS),
         )
 
     except pd.errors.EmptyDataError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_RUNWAYS)
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_FAA_RUNWAYS),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
-                "{error}", str(err)
-            )
+                "{error}",
+                str(err),
+            ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", FILE_FAA_RUNWAYS).replace(
-                "{error}", str(exc)
-            )
+                "{error}",
+                str(exc),
+            ),
         )
 
 
@@ -926,8 +935,9 @@ def _load_sequence_of_events() -> None:
     # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_076.replace(
-            "{filename}", io_config.settings.download_file_sequence_of_events
-        )
+            "{filename}",
+            io_config.settings.download_file_sequence_of_events,
+        ),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -949,7 +959,7 @@ def _load_sequence_of_events() -> None:
 
         # INFO.00.076 Database table io_sequence_of_events: Load data from file '{filename}'
         io_utils.progress_msg(
-            glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS)
+            glob_local.INFO_00_076.replace("{filename}", FILE_SEQUENCE_OF_EVENTS),
         )
 
         count_delete = 0
@@ -970,13 +980,13 @@ def _load_sequence_of_events() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             soe_no = extract_column_value(row, COLUMN_EVENTSOE_NO).rjust(3, "0")
 
             cictt_code = str(
-                extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE)
+                extract_column_value(row, COLUMN_CICTT_CODE_UNDERSCORE),
             ).rstrip()
             if cictt_code is None or cictt_code not in cictt_codes:
                 continue
@@ -1006,11 +1016,11 @@ def _load_sequence_of_events() -> None:
                     soe_no,
                     meaning,
                     cictt_code if cictt_code else None,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     IO_LAST_SEEN,
                     meaning,
                     cictt_code,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     IO_LAST_SEEN,
                     soe_no,
                 ),
@@ -1019,10 +1029,10 @@ def _load_sequence_of_events() -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         # ------------------------------------------------------------------
         # Delete the obsolete data.
@@ -1046,7 +1056,7 @@ def _load_sequence_of_events() -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             soe_no = row_pg[COLUMN_SOE_NO]  # type: ignore
@@ -1068,16 +1078,17 @@ def _load_sequence_of_events() -> None:
         conn_pg.commit()
 
         if count_select > 0:
-            io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+            io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
         if count_delete > 0:
-            io_utils.progress_msg(f"Number rows deleted  : {str(count_delete):>8}")
+            io_utils.progress_msg(f"Number rows deleted  : {count_delete!s:>8}")
 
         # ------------------------------------------------------------------
         # Finalize processing.
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events, cur_pg
+            io_config.settings.download_file_sequence_of_events,
+            cur_pg,
         )
 
         cur_pg.close()
@@ -1087,26 +1098,28 @@ def _load_sequence_of_events() -> None:
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS),
         )
 
     except pd.errors.EmptyDataError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_932.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS)
+            glob_local.FATAL_00_932.replace("{file_name}", FILE_SEQUENCE_OF_EVENTS),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_SEQUENCE_OF_EVENTS
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_SEQUENCE_OF_EVENTS,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_SEQUENCE_OF_EVENTS
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_SEQUENCE_OF_EVENTS,
+            ).replace("{error}", str(exc)),
         )
 
 
@@ -1115,7 +1128,8 @@ def _load_sequence_of_events() -> None:
 # ------------------------------------------------------------------
 # pylint: disable=too-many-locals
 def _load_simplemaps_data_cities_from_us_cities(
-    conn_pg: connection, cur_pg: cursor
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -1127,12 +1141,12 @@ def _load_simplemaps_data_cities_from_us_cities(
     if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel),
         )
 
     # INFO.00.027 Database table io_lat_lng: Load city data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_027.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
+        glob_local.INFO_00_027.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -1162,7 +1176,7 @@ def _load_simplemaps_data_cities_from_us_cities(
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
@@ -1209,11 +1223,11 @@ def _load_simplemaps_data_cities_from_us_cities(
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_CITIES,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_CITIES,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     glob_local.IO_LAT_LNG_TYPE_CITY,
                     glob_local.COUNTRY_USA,
                     state_id,
@@ -1228,30 +1242,32 @@ def _load_simplemaps_data_cities_from_us_cities(
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         logger.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_CITIES,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_CITIES,
+            ).replace("{error}", str(exc)),
         )
 
 
@@ -1261,7 +1277,8 @@ def _load_simplemaps_data_cities_from_us_cities(
 # pylint: disable=R0801
 # pylint: disable=too-many-locals
 def _load_simplemaps_data_zips_from_us_cities(
-    conn_pg: connection, cur_pg: cursor
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -1273,12 +1290,12 @@ def _load_simplemaps_data_zips_from_us_cities(
     if not os.path.isfile(filename_excel):
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_914.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_914.replace("{filename}", filename_excel),
         )
 
     # INFO.00.039 Database table io_lat_lng: Load zipcode data from file '{filename}'
     io_utils.progress_msg(
-        glob_local.INFO_00_039.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES)
+        glob_local.INFO_00_039.replace("{filename}", FILE_SIMPLEMAPS_US_CITIES),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -1314,7 +1331,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                 if count_select % io_config.settings.database_commit_size == 0:
                     conn_pg.commit()
                     io_utils.progress_msg(
-                        f"Number of rows so far read : {str(count_select):>8}"
+                        f"Number of rows so far read : {count_select!s:>8}",
                     )
 
                 # pylint: disable=line-too-long
@@ -1345,7 +1362,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                         lat,
                         lng,
                         glob_local.SOURCE_SM_US_CITIES,
-                        datetime.now(),
+                        datetime.now(tz=timezone.utc),
                     ),
                 )
                 count_insert += cur_pg.rowcount
@@ -1354,30 +1371,32 @@ def _load_simplemaps_data_zips_from_us_cities(
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_insert > 0:
-            io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+            io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
         logger.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_CITIES),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_CITIES,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_CITIES
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_CITIES,
+            ).replace("{error}", str(exc)),
         )
 
 
@@ -1386,7 +1405,8 @@ def _load_simplemaps_data_zips_from_us_cities(
 # ------------------------------------------------------------------
 # pylint: disable=too-many-locals
 def _load_simplemaps_data_zips_from_us_zips(
-    conn_pg: connection, cur_pg: cursor
+    conn_pg: connection,
+    cur_pg: cursor,
 ) -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -1398,14 +1418,15 @@ def _load_simplemaps_data_zips_from_us_zips(
     if not os.path.isfile(filename_excel):
         # ERROR.00.913 The US zip code file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_913.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_913.replace("{filename}", filename_excel),
         )
 
     # INFO.00.025 Database table io_lat_lng: Load zipcode data rom file '{filename}'
     io_utils.progress_msg(
         glob_local.INFO_00_025.replace(
-            "{filename}", io_config.settings.download_file_simplemaps_us_zips
-        )
+            "{filename}",
+            io_config.settings.download_file_simplemaps_us_zips,
+        ),
     )
     io_utils.progress_msg("-" * 80)
 
@@ -1436,7 +1457,7 @@ def _load_simplemaps_data_zips_from_us_zips(
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             zip_code = f"{extract_column_value(row, COLUMN_ZIP):05}".rstrip()
@@ -1487,11 +1508,11 @@ def _load_simplemaps_data_zips_from_us_zips(
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_ZIP_CODES,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_ZIP_CODES,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                     glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                     glob_local.COUNTRY_USA,
                     state_id,
@@ -1504,38 +1525,41 @@ def _load_simplemaps_data_zips_from_us_zips(
             count_upsert += cur_pg.rowcount
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_simplemaps_us_zips, cur_pg
+            io_config.settings.download_file_simplemaps_us_zips,
+            cur_pg,
         )
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         if count_duplicates > 0:
-            io_utils.progress_msg(f"Number rows duplicate: {str(count_duplicates):>8}")
+            io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
         logger.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_ZIPS)
+            glob_local.FATAL_00_931.replace("{file_name}", FILE_SIMPLEMAPS_US_ZIPS),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
-            ).replace("{error}", str(err))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_ZIPS,
+            ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
-                "{file_name}", FILE_SIMPLEMAPS_US_ZIPS
-            ).replace("{error}", str(exc))
+                "{file_name}",
+                FILE_SIMPLEMAPS_US_ZIPS,
+            ).replace("{error}", str(exc)),
         )
 
 
@@ -1556,14 +1580,14 @@ def _load_state_data(
     if not os.path.isfile(filename_json):
         # ERROR.00.934 The country and state data file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_934.replace("{filename}", filename_json)
+            glob_local.ERROR_00_934.replace("{filename}", filename_json),
         )
 
     count_insert = 0
     count_select = 0
     count_update = 0
 
-    with open(filename_json, "r", encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
+    with open(filename_json, encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
         input_data = json.load(input_file)
 
         for record in input_data:
@@ -1583,7 +1607,7 @@ def _load_state_data(
                             record["state_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                         ),
                     )
                     count_insert += 1
@@ -1600,7 +1624,7 @@ def _load_state_data(
                             record["state_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                             record["country"],
                             record["state"],
                             record["state_name"],
@@ -1611,18 +1635,19 @@ def _load_state_data(
                     count_update += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json, cur_pg
+        io_config.settings.download_file_countries_states_json,
+        cur_pg,
     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1630,7 +1655,7 @@ def _load_state_data(
 # ------------------------------------------------------------------
 # Determine and load city averages.
 # ------------------------------------------------------------------
-def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
+def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     logger.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
@@ -1650,9 +1675,9 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE)
+            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE),
         )
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1688,7 +1713,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -1718,7 +1743,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
                     row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
                     row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                 ),
             )
             count_insert += 1
@@ -1730,13 +1755,13 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
     cur_pg_2.close()
     conn_pg_2.close()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     if count_duplicates > 0:
-        io_utils.progress_msg(f"Number rows duplicate: {str(count_duplicates):>8}")
+        io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1755,7 +1780,7 @@ def _load_zip_codes_org_data() -> None:
     if not os.path.isfile(filename_excel):
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_935.replace("{filename}", filename_excel)
+            glob_local.ERROR_00_935.replace("{filename}", filename_excel),
         )
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
@@ -1777,10 +1802,11 @@ def _load_zip_codes_org_data() -> None:
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
             glob_local.INFO_00_063.replace(
-                "{data_source}", glob_local.SOURCE_ZCO_ZIP_CODES
-            )
+                "{data_source}",
+                glob_local.SOURCE_ZCO_ZIP_CODES,
+            ),
         )
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -1809,7 +1835,11 @@ def _load_zip_codes_org_data() -> None:
 # Load the estimated zip code data from the ZIP Code Database
 # into the PostgreSQL database.
 # ------------------------------------------------------------------
-def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
+def _load_zip_codes_org_data_zips(
+    conn_pg: connection,
+    cur_pg: cursor,
+    filename: str,
+) -> None:
     logger.debug(io_glob.LOGGER_START)
 
     # INFO.00.061 Database table io_lat_lng: Load the estimated zip code data
@@ -1842,7 +1872,7 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
             if count_select % io_config.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
-                    f"Number of rows so far read : {str(count_select):>8}"
+                    f"Number of rows so far read : {count_select!s:>8}",
                 )
 
             if (
@@ -1851,9 +1881,9 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
             ):
                 continue
 
-            zipcode = f"{str(extract_column_value(row, COLUMN_ZIP)):05}".rstrip()
+            zipcode = f"{extract_column_value(row, COLUMN_ZIP)!s:05}".rstrip()
             primary_city = [
-                str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip()
+                str(extract_column_value(row, COLUMN_PRIMARY_CITY)).upper().rstrip(),
             ]
             acceptable_cities = (
                 str(extract_column_value(row, COLUMN_ACCEPTABLE_CITIES))
@@ -1866,8 +1896,7 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
             lat = extract_column_value(row, COLUMN_LATITUDE_LOWER, float)
             lng = extract_column_value(row, COLUMN_LONGITUDE_LOWER, float)
 
-            for city in acceptable_cities:
-                primary_city.append(city.rstrip())
+            primary_city.extend([city.rstrip() for city in acceptable_cities])
 
             for city in primary_city:
                 if city and city.rstrip():
@@ -1914,11 +1943,11 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
                             lat,
                             lng,
                             glob_local.SOURCE_ZCO_ZIP_CODES,
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                             lat,
                             lng,
                             glob_local.SOURCE_ZCO_ZIP_CODES,
-                            datetime.now(),
+                            datetime.now(tz=timezone.utc),
                             glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                             glob_local.COUNTRY_USA,
                             state.rstrip(),
@@ -1933,30 +1962,32 @@ def _load_zip_codes_org_data_zips(conn_pg, cur_pg, filename) -> None:
 
         conn_pg.commit()
 
-        io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+        io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
         if count_upsert > 0:
-            io_utils.progress_msg(f"Number rows upserted : {str(count_upsert):>8}")
+            io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
         logger.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", filename)
+            glob_local.FATAL_00_931.replace("{file_name}", filename),
         )
 
     except ValueError as err:
         io_utils.terminate_fatal(
             glob_local.FATAL_00_933.replace("{file_name}", filename).replace(
-                "{error}", str(err)
-            )
+                "{error}",
+                str(err),
+            ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", filename).replace(
-                "{error}", str(exc)
-            )
+                "{error}",
+                str(exc),
+            ),
         )
 
 
@@ -1969,13 +2000,10 @@ def _sql_query_cictt_codes(conn_pg: connection) -> list[str]:
             """
         SELECT cictt_code
           FROM io_aviation_occurrence_categories;
-        """
+        """,
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row["cictt_code"])
+        data = [row["cictt_code"] for row in cur]
 
         return sorted(data)
 
@@ -1990,13 +2018,10 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
         SELECT state
           FROM io_states
          WHERE country = 'USA';
-        """
+        """,
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row["state"])
+        data = [row["state"] for row in cur]
 
         return sorted(data)
 
@@ -2025,16 +2050,18 @@ def download_us_cities_file() -> None:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
                 glob_local.ERROR_00_906.replace(
-                    "{status_code}", str(file_resp.status_code)
-                )
+                    "{status_code}",
+                    str(file_resp.status_code),
+                ),
             )
 
         # INFO.00.030 The connection to the US city file '{filename}'
         # on the simplemaps download page was successfully established
         io_utils.progress_msg(
             glob_local.INFO_00_030.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
-            )
+                "{filename}",
+                io_config.settings.download_file_simplemaps_us_cities_zip,
+            ),
         )
 
         if not os.path.isdir(io_config.settings.download_work_dir):
@@ -2049,7 +2076,7 @@ def download_us_cities_file() -> None:
 
         with open(filename_zip, "wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size
+                chunk_size=io_config.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -2057,13 +2084,14 @@ def download_us_cities_file() -> None:
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
             glob_local.INFO_00_023.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
-            ).replace("{no_chunks}", str(no_chunks))
+                "{filename}",
+                io_config.settings.download_file_simplemaps_us_cities_zip,
+            ).replace("{no_chunks}", str(no_chunks)),
         )
 
         try:
             zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
-                filename_zip
+                filename_zip,
             )
 
             for zipped_file in zipped_files.namelist():
@@ -2073,15 +2101,16 @@ def download_us_cities_file() -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File '{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
+                glob_local.ERROR_00_907.replace("{filename}", filename_zip),
             )
 
         os.remove(filename_zip)
         # INFO.00.024 The file '{filename}'  was successfully unpacked
         io_utils.progress_msg(
             glob_local.INFO_00_024.replace(
-                "{filename}", io_config.settings.download_file_simplemaps_us_cities_zip
-            )
+                "{filename}",
+                io_config.settings.download_file_simplemaps_us_cities_zip,
+            ),
         )
     except ConnectionError:
         # ERROR.00.905 Connection problem with url='{url}'
@@ -2090,8 +2119,9 @@ def download_us_cities_file() -> None:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
-                "{timeout}", str(io_config.settings.download_timeout)
-            ).replace("{url}", url)
+                "{timeout}",
+                str(io_config.settings.download_timeout),
+            ).replace("{url}", url),
         )
 
     logger.debug(io_glob.LOGGER_END)
@@ -2121,14 +2151,15 @@ def download_zip_code_db_file() -> None:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
                 glob_local.ERROR_00_906.replace(
-                    "{status_code}", str(file_resp.status_code)
-                )
+                    "{status_code}",
+                    str(file_resp.status_code),
+                ),
             )
 
         # INFO.00.058 The connection to the Zip Code Database file '{filename}'
         # on the Zip Codes.org download page was successfully established
         io_utils.progress_msg(
-            glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG)
+            glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG),
         )
 
         if not os.path.isdir(io_config.settings.download_work_dir):
@@ -2143,7 +2174,7 @@ def download_zip_code_db_file() -> None:
 
         with open(filename_xls, "wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size
+                chunk_size=io_config.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -2151,8 +2182,9 @@ def download_zip_code_db_file() -> None:
         # INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
             glob_local.INFO_00_023.replace("{filename}", FILE_ZIP_CODES_ORG).replace(
-                "{no_chunks}", str(no_chunks)
-            )
+                "{no_chunks}",
+                str(no_chunks),
+            ),
         )
 
     except ConnectionError:
@@ -2162,8 +2194,9 @@ def download_zip_code_db_file() -> None:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
-                "{timeout}", str(io_config.settings.download_timeout)
-            ).replace("{url}", url)
+                "{timeout}",
+                str(io_config.settings.download_timeout),
+            ).replace("{url}", url),
         )
 
     logger.debug(io_glob.LOGGER_END)
@@ -2239,7 +2272,8 @@ def load_country_state_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json, cur_pg
+        io_config.settings.download_file_countries_states_json,
+        cur_pg,
     )
 
     cur_pg.close()
@@ -2293,15 +2327,17 @@ def load_simplemaps_data() -> None:
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
             glob_local.INFO_00_063.replace(
-                "{data_source}", glob_local.SOURCE_SM_US_CITIES
-            )
+                "{data_source}",
+                glob_local.SOURCE_SM_US_CITIES,
+            ),
         )
         io_utils.progress_msg(
             glob_local.INFO_00_063.replace(
-                "{data_source}", glob_local.SOURCE_SM_US_ZIP_CODES
-            )
+                "{data_source}",
+                glob_local.SOURCE_SM_US_ZIP_CODES,
+            ),
         )
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------

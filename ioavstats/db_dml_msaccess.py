@@ -2909,7 +2909,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
                     row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
                     row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
-                    datetime.now(),
+                    datetime.now(tz=timezone.utc),
                 ),
             )
             count_insert += 1

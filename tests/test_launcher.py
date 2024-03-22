@@ -1,4 +1,4 @@
-# Copyright (c) 2022 FAA-VAIL-Project. All rights reserved.
+# Copyright (c) 2022-2024 IO-Aero. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
 
@@ -6,8 +6,10 @@
 import logging
 import os
 import platform
+import subprocess
 import time
 
+import pytest
 from iocommon import io_glob
 from iocommon.io_config import settings
 
@@ -21,393 +23,337 @@ logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
-# Test case: version - Show the ioavstats version.
+# Run shell commands safely.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_version():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
+def _run_command(command: str) -> None:
+    """Run shell commands safely."""
+    try:
+        subprocess.run(
+            command,
+            check=True,
+            shell=False,
+            text=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError as e:
+        pytest.fail(f"Command failed with exit code {e.returncode}")
+
+
+# -----------------------------------------------------------------------------
+# Setup and teardown fixture for all tests.
+# -----------------------------------------------------------------------------
+@pytest.fixture(scope="session", autouse=True)
+def _setup_and_teardown() -> None:
+    """Setup and teardown fixture for all tests."""  # noqa: D401
     logger.debug(io_glob.LOGGER_START)
 
-    assert settings.check_value == "test"
+    os.environ["ENV_FOR_DYNACONF"] = "test"
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh version")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh version")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat version")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
+    yield  # This is where the testing happens
 
     logger.debug(io_glob.LOGGER_END)
+
+
+# -----------------------------------------------------------------------------
+# Test case: version - Show the IO-TEMPLATE-APP version.
+# -----------------------------------------------------------------------------
+def test_launcher_version() -> None:
+    """Test case: launcher() version."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "version"],
+        "Linux": ["./run_io_avstats_pytest.sh", "version"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: d_d_c   - Delete the PostgreSQL database container.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_d_d_c():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_d_d_c() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_c"],
+        "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh d_d_c")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh d_d_c")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat d_d_c")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: d_d_f   - Delete the PostgreSQL database files.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_d_d_f():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_d_d_f() -> None:
+    """Test case: Delete the PostgreSQL database files."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    if platform.system() == "Linux":
+        # Special handling for Linux or skip
+        pytest.skip("Skipping d_d_f on Linux due to custom handling.")
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh d_d_f")
-    elif platform.system() == "Linux":
-        exit_code = 0
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat d_d_f")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_f"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_f"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: s_d_c   - Set up the PostgreSQL database container.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_s_d_c():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_s_d_c() -> None:
+    """Test case: Set up the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "s_d_c"],
+        "Linux": ["./run_io_avstats_pytest.sh", "s_d_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "s_d_c"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh s_d_c")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh s_d_c")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat s_d_c")
-        time.sleep(10)
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
+    _run_command(command)
 
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    time.sleep(10)
 
 
 # -----------------------------------------------------------------------------
 # Test case: c_d_s   - Create the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_c_d_s():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_c_d_s() -> None:
+    """Test case: Create or update the PostgreSQL database schema."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "c_d_s"],
+        "Linux": ["./run_io_avstats_pytest.sh", "c_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "c_d_s"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh c_d_s")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh c_d_s")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat c_d_s")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: u_d_s   - Update the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_u_d_s():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_u_d_s() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "u_d_s"],
+        "Linux": ["./run_io_avstats_pytest.sh", "u_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "u_d_s"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh u_d_s")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh u_d_s")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat u_d_s")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: a_o_c   - Load aviation occurrence categories
 #                                    into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_a_o_c():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_a_o_c() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "a_o_c"],
+        "Linux": ["./run_io_avstats_pytest.sh", "a_o_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "a_o_c"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh a_o_c")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh a_o_c")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat a_o_c")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_a_p   - Load airport data into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_a_p():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_a_p() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "l_a_p"],
+        "Linux": ["./run_io_avstats_pytest.sh", "l_a_p"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_a_p"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_a_p")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_a_p")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_a_p")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_c_s   - Load country and state data into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_c_s():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_c_s() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "l_c_s"],
+        "Linux": ["./run_io_avstats_pytest.sh", "l_c_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_c_s"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_c_s")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_c_s")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_c_s")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_s_e   - Load sequence of events data into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_s_e():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_s_e() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "l_s_e"],
+        "Linux": ["./run_io_avstats_pytest.sh", "l_s_e"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_e"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_s_e")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_s_e")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_s_e")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_s_d   - Load simplemaps data into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_s_d():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_s_d() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "l_s_d"],
+        "Linux": ["./run_io_avstats_pytest.sh", "l_s_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_d"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_s_d")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_s_d")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_s_d")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_z_d   - Load ZIP Code Database data into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_z_d():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_z_d() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "l_z_d"],
+        "Linux": ["./run_io_avstats_pytest.sh", "l_z_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_z_d"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_z_d")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_z_d")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_z_d")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: r_d_s   - Refresh the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_r_d_s():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_r_d_s() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "r_d_s"],
+        "Linux": ["./run_io_avstats_pytest.sh", "r_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "r_d_s"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh r_d_s")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh r_d_s")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat r_d_s")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: l_c_d   - Load data from a correction file into PostgreSQL.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_l_c_d():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_l_c_d() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": [
+            "./run_io_avstats_pytest.zsh",
+            "l_c_d",
+            "test",
+        ],
+        "Linux": [
+            "./run_io_avstats_pytest.sh",
+            "l_c_d",
+            "test",
+        ],
+        "Windows": [
+            "cmd.exe",
+            "/c",
+            "run_io_avstats_pytest.bat",
+            "l_c_d",
+            "test",
+        ],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh l_c_d test")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh l_c_d test")
-    elif platform.system() == "Windows":
-        exit_code = os.system("run_io_avstats_pytest.bat l_c_d test")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)
 
 
 # -----------------------------------------------------------------------------
 # Test case: cleanup - Delete the PostgreSQL database container.
 # -----------------------------------------------------------------------------
-# pylint: disable=R0801
-def test_launcher_clean():
-    """Test case: launcher()."""
-    # -------------------------------------------------------------------------
-    logger.debug(io_glob.LOGGER_START)
+def test_launcher_clean() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    assert settings.check_value == "test"
+    commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_c"],
+        "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
 
-    if platform.system() == "Darwin":
-        exit_code = os.system("./run_io_avstats_pytest.zsh d_d_c")
-    elif platform.system() == "Linux":
-        exit_code = os.system("./run_io_avstats_pytest.sh d_d_c")
-    elif platform.system() == "Windows":
-        exit_code = 0
-        # wwe exit_code = os.system("run_io_avstats_pytest.bat d_d_c")
-    else:
-        # ERROR.00.908 The operating system '{os}' is not supported
-        assert False, glob_local.ERROR_00_908.replace("{os}", platform.system())
-
-    assert exit_code == 0, f"Command failed with exit code {exit_code}"
-
-    logger.debug(io_glob.LOGGER_END)
+    _run_command(command)

@@ -1,7 +1,6 @@
 from _typeshed import Incomplete
 from dynaconf import Dynaconf as Dynaconf
-from psycopg import Connection
-from psycopg import Cursor
+from psycopg import Connection, Cursor
 from sqlalchemy.engine import Engine
 
 logger: Incomplete

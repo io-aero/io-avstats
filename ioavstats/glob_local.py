@@ -47,7 +47,7 @@ ERROR_00_903 = (
 )
 ERROR_00_904 = (
     "ERROR.00.904 '{msaccess}': the MS Access database file name must not contain "
-    + "a file extension"
+    "a file extension"
 )
 ERROR_00_905 = "ERROR.00.905 Connection problem with url='{url}'"
 ERROR_00_906 = "ERROR.00.906 Unexpected response status code='{status_code}'"
@@ -56,11 +56,11 @@ ERROR_00_908 = "ERROR.00.908 The operating system '{os}' is not supported"
 ERROR_00_909 = "ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}'"
 ERROR_00_910 = (
     "ERROR.00.910 The schema definition in file '{filename}' "
-    + "does not match the reference definition in file '{reference}'"
+    "does not match the reference definition in file '{reference}'"
 )
 ERROR_00_911 = (
     "ERROR.00.911 Number of lines differs: file '{filename}' lines {filename_lines}"
-    + " versus file '{reference}' lines {reference_lines}"
+    " versus file '{reference}' lines {reference_lines}"
 )
 ERROR_00_912 = "ERROR.00.912 The MS Access database file '{filename}' is missing"
 ERROR_00_913 = "ERROR.00.913 The US zip code file '{filename}' is missing"
@@ -95,7 +95,7 @@ ERROR_00_937 = (
 ERROR_00_938 = "ERROR.00.938 The sequence of events file '{filename}' is missing"
 ERROR_00_939 = (
     "ERROR.00.939 Foreign key value CICTT code='{cictt_code}' "
-    + "is missing - soe_no='{soe_no}'"
+    "is missing - soe_no='{soe_no}'"
 )
 ERROR_00_940 = (
     "ERROR.00.940 The MS Access database {msaccess} is not allowed in this task"
@@ -113,6 +113,8 @@ ERROR_00_947 = (
 )
 
 # Fatal error messages.
+FATAL_00_908 = "FATAL.00.908 The operating system '{os}' is not supported"
+FATAL_00_926 = "FATAL.00.926 The task '{task}' is invalid"
 FATAL_00_931 = "FATAL.00.931 Fatal Error - The file '{file_name}' was not found"
 FATAL_00_932 = "FATAL.00.932 Fatal Error - The file '{file_name}' is empty"
 FATAL_00_933 = (
@@ -144,15 +146,15 @@ INFO_00_009 = "INFO.00.009 line no.: {line_no}"
 INFO_00_010 = "INFO.00.010 {status} '{line}'"
 INFO_00_011 = (
     "INFO.00.011 The DDL script for the MS Access database "
-    + "'{msaccess}.mdb' was created successfully"
+    "'{msaccess}.mdb' was created successfully"
 )
 INFO_00_012 = (
     "INFO.00.012 The DDL script for the MS Access database "
-    + "'{msaccess}.mdb' is identical to the reference script"
+    "'{msaccess}.mdb' is identical to the reference script"
 )
 INFO_00_013 = (
     "INFO.00.013 The connection to the MS Access database file "
-    + "'{msaccess}.zip' on the NTSB download page was successfully established"
+    "'{msaccess}.zip' on the NTSB download page was successfully established"
 )
 INFO_00_014 = (
     "INFO.00.014 From the file '{msaccess}.zip' {no_chunks} chunks were downloaded"
@@ -164,20 +166,19 @@ INFO_00_018 = "INFO.00.018 Database role    is dropped:   {role}"
 INFO_00_019 = "INFO.00.019 Database         is dropped:   {dbname}"
 INFO_00_020 = (
     "INFO.00.020 The DDL script for the MS Access database "
-    + "'{msaccess}.mdb' must be checked manually"
+    "'{msaccess}.mdb' must be checked manually"
 )
 INFO_00_021 = "INFO.00.021 The following database table is not processed: '{msaccess}'"
 INFO_00_022 = (
     "INFO.00.022 The connection to the US zip code file "
-    + "'{filename}' on the simplemaps download page was successfully established"
+    "'{filename}' on the simplemaps download page was successfully established"
 )
 INFO_00_023 = (
     "INFO.00.023 From the file '{filename}' {no_chunks} chunks were downloaded"
 )
 INFO_00_024 = "INFO.00.024 The file '{filename}' was successfully unpacked"
 INFO_00_025 = (
-    "INFO.00.025 Database table io_lat_lng: Load zipcode data "
-    + "from file '{filename}'"
+    "INFO.00.025 Database table io_lat_lng: Load zipcode data from file '{filename}'"
 )
 INFO_00_027 = (
     "INFO.00.027 Database table io_lat_lng: Load city data " + "from file '{filename}'"
@@ -186,11 +187,11 @@ INFO_00_028 = "INFO.00.028 Database table io_lat_lng: Load the state data"
 INFO_00_029 = "INFO.00.029 Database table io_lat_lng: Load the country data"
 INFO_00_030 = (
     "INFO.00.030 The connection to the US city file "
-    + "'{filename}' on the simplemaps download page was successfully established"
+    "'{filename}' on the simplemaps download page was successfully established"
 )
 INFO_00_031 = (
     "INFO.00.031 Database column added: table_schema '{schema}' "
-    + "table_name '{table}' column_name '{column}'"
+    "table_name '{table}' column_name '{column}'"
 )
 INFO_00_032 = "INFO.00.032 Database view    is created: {view}"
 INFO_00_033 = "INFO.00.033 Correction based on US zip code"
@@ -200,8 +201,7 @@ INFO_00_036 = "INFO.00.036 Correction based on US country"
 INFO_00_037 = "INFO.00.037 Correction based on latitude and longitude"
 INFO_00_038 = "INFO.00.038 Correction based on swapped latitude and longitude"
 INFO_00_039 = (
-    "INFO.00.039 Database table io_lat_lng: Load zipcode data "
-    + "from file '{filename}'"
+    "INFO.00.039 Database table io_lat_lng: Load zipcode data from file '{filename}'"
 )
 INFO_00_040 = "INFO.00.040 Correct decimal US latitudes and longitudes"
 INFO_00_041 = "INFO.00.041 Arguments {task}='{value_task}' {msexecel}='{value_msexcel}'"
@@ -223,7 +223,7 @@ INFO_00_056 = "INFO.00.056 Load ZIP Code Database data"
 INFO_00_057 = "INFO.00.057 Load country and state data"
 INFO_00_058 = (
     "INFO.00.058 The connection to the Zip Code Database file "
-    + "'{filename}' on the Zip Codes.org download page was successfully established"
+    "'{filename}' on the Zip Codes.org download page was successfully established"
 )
 INFO_00_059 = "INFO.00.059 Load country data"
 INFO_00_060 = "INFO.00.060 Load state data"
@@ -242,12 +242,12 @@ INFO_00_072 = ""
 INFO_00_073 = "INFO.00.073 Load aviation occurrence categories"
 INFO_00_074 = (
     "INFO.00.074 Database table io_aviation_occurrence_categories: "
-    + "Load data from file '{filename}'"
+    "Load data from file '{filename}'"
 )
 INFO_00_075 = "INFO.00.075 Load sequence of events data"
 INFO_00_076 = (
     "INFO.00.076 Database table io_sequence_of_events: "
-    + "Load data from file '{filename}'"
+    "Load data from file '{filename}'"
 )
 INFO_00_077 = "INFO.00.077 Database index  is available: {index}"
 INFO_00_078 = "INFO.00.078 Load NTSB MS Access database PKs from file '{msaccess}'"
@@ -256,7 +256,7 @@ INFO_00_082 = "INFO.00.082 Database role  already existing: {role}"
 INFO_00_083 = "INFO.00.083 Database       already existing: {dbname}"
 INFO_00_084 = (
     "INFO.00.084 Database table io_md_codes_phase: Load description_main_phase "
-    + "from file '{filename}'"
+    "from file '{filename}'"
 )
 INFO_00_085 = "INFO.00.085 Load airports"
 INFO_00_086 = "INFO.00.086 Find the nearest airports"

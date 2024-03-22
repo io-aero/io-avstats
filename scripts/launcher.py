@@ -12,23 +12,22 @@ import sys
 import time
 
 import tomli
-from iocommon import file
-from iocommon import io_glob
-from iocommon import io_utils
+from iocommon import file, io_glob, io_utils
 
-from ioavstats import avstats
-from ioavstats import glob_local
+from ioavstats import avstats, glob_local
 
 # -----------------------------------------------------------------------------
 # Global variables.
 # -----------------------------------------------------------------------------
 _LOCALE = "en_US.UTF-8"
 
+logger = logging.getLogger(__name__)
+
 
 # -----------------------------------------------------------------------------
 # Print the version number from pyproject.toml.
 # -----------------------------------------------------------------------------
-def _print_project_version():
+def _print_project_version() -> None:
     """Print the version number from pyproject.toml."""
     # Open the pyproject.toml file in read mode
     with open("pyproject.toml", "rb") as toml_file:
@@ -41,10 +40,10 @@ def _print_project_version():
 
     # Check if the version is found and print it
     if version:
-        print(f"IO-TEMPLATE-APP version: {version}")
+        logger.info("IO-AVSTATS version: %s", version)
     else:
         # If the version isn't found, print an appropriate message
-        print("IO-TEMPLATE-APP version not found in pyproject.toml")
+        logger.fatal("IO-AVSTATS version not found in pyproject.toml")
 
 
 # -----------------------------------------------------------------------------
@@ -58,6 +57,7 @@ def main(argv: list[str]) -> None:
     The processes to be carried out are selected via command line arguments.
 
     Args:
+    ----
         argv (list[str]): Command line arguments.
 
     """
@@ -72,14 +72,17 @@ def main(argv: list[str]) -> None:
     # Initialise the logging functionality.
     avstats.initialise_logger()
 
-    logger = logging.getLogger(__name__)
-
     logger.debug(io_glob.LOGGER_START)
-    logger.debug("param argv=%s", argv)
+    logger.info("param argv=%s", argv)
 
     logger.info("Start launcher.py")
 
-    locale.setlocale(locale.LC_ALL, glob_local.LOCALE)
+    try:
+        locale.setlocale(locale.LC_ALL, glob_local.LOCALE)
+    except locale.Error:
+        locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+
+    logger.info("locale=%s", locale.getlocale())
 
     # Load the command line arguments.
     avstats.get_args()
@@ -127,6 +130,11 @@ def main(argv: list[str]) -> None:
         _print_project_version()
     elif avstats.ARG_TASK == glob_local.ARG_TASK_V_N_D:
         avstats.verify_ntsb_data()
+    else:
+        io_utils.terminate_fatal(
+            # FATAL.00.926 The task '{task}' is invalid
+            glob_local.FATAL_00_926.replace("{task}", avstats.ARG_TASK),
+        )
 
     avstats.progress_msg("-" * 79)
 

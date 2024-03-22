@@ -4,14 +4,13 @@
 """Application Utilities."""
 import argparse
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 import psycopg
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
 from iocommon import io_glob
-from psycopg import connection
-from psycopg import cursor
+from psycopg import connection, cursor
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
@@ -30,9 +29,11 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
     """Determine the last processed update file.
 
     Args:
+    ----
         pg_conn (connection): Database connection.
 
     Returns:
+    -------
         tuple[str, str]: File name and processing date.
 
     """
@@ -45,7 +46,7 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
          WHERE file_name LIKE 'up%'
             OR file_name IN ('Pre2008', 'avall')
          ORDER BY COALESCE(last_processed, first_processed) DESC;
-        """
+        """,
         )
 
         return cur.fetchone()  # type: ignore
@@ -77,8 +78,8 @@ def get_args() -> str:
     parser.add_argument(
         "--mode",
         help="the execution mode: '"
-        + "ltd' (The limited demo version) or '"
-        + "std' (The full version)",
+        "ltd' (The limited demo version) or '"
+        "std' (The full version)",
         metavar="mode",
         required=False,
         type=str,
@@ -105,10 +106,10 @@ def get_engine(settings: Dynaconf) -> Engine:
     """Create a simple user PostgreSQL database engine."""
     return create_engine(
         f"postgresql://{settings.postgres_user_guest}:"
-        + f"{settings.postgres_password_guest}@"
-        + f"{settings.postgres_host}:"
-        + f"{settings.postgres_connection_port}/"
-        + f"{settings.postgres_dbname}",
+        f"{settings.postgres_password_guest}@"
+        f"{settings.postgres_host}:"
+        f"{settings.postgres_connection_port}/"
+        f"{settings.postgres_dbname}",
     )
 
 
@@ -129,9 +130,11 @@ def prepare_latitude(latitude_string: str) -> str:
     """Prepare a latitude structure.
 
     Args:
+    ----
         latitude_string (str): Latitude string.
 
     Returns:
+    -------
         str: Latitude structure.
 
     """
@@ -185,9 +188,11 @@ def prepare_longitude(longitude_string: str) -> str:
     """Prepare a longitude structure.
 
     Args:
+    ----
         longitude_string (str): longitude string.
 
     Returns:
+    -------
         str: longitude structure.
 
     """
@@ -213,6 +218,7 @@ def present_about(pg_conn: connection, app_id: str) -> None:
     """Present the 'about' information.
 
     Args:
+    ----
         pg_conn (connection): Database connection.
         app_id (str): Application name.
 
@@ -225,10 +231,10 @@ IO-AVSTATS Application: **{app_id}**
 
 Latest NTSB database: **{file_name} - {processed}**
 
-**:copyright: 2022-{datetime.now().year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
+**:copyright: 2022-{datetime.now(timezone.utc).year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
 
 [Disclaimer](https://www.io-aero.com/disclaimer)
-    """
+    """,
     )
 
 
@@ -256,9 +262,9 @@ def upd_io_processed_files(file_name: str, cur_pg: cursor) -> None:
     """,
         (
             file_name,
-            datetime.now(),
+            datetime.now(tz=timezone.utc),
             1,
-            datetime.now(),
+            datetime.now(tz=timezone.utc),
             file_name,
         ),
     )

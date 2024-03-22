@@ -1,4 +1,6 @@
+# noqa: N999
 # pylint: disable=invalid-name
+
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
@@ -6,16 +8,18 @@
 import datetime
 import time
 
-import numpy
+import numpy as np
 import pandas as pd
 import plotly.express as px  # type: ignore
 import streamlit as st
 import utils  # type: ignore  # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
-from mlxtend.frequent_patterns import apriori  # type: ignore
-from mlxtend.frequent_patterns import association_rules
-from mlxtend.frequent_patterns import fpgrowth  # type: ignore
-from mlxtend.frequent_patterns import fpmax  # type: ignore
+from mlxtend.frequent_patterns import (
+    apriori,  # type: ignore
+    association_rules,
+    fpgrowth,  # type: ignore
+    fpmax,  # type: ignore
+)
 from pandas import DataFrame
 from psycopg2.extensions import connection
 from pyECLAT import ECLAT  # type: ignore
@@ -180,7 +184,7 @@ ITEMS_FROM_F_SUBSECTION_CODES_FACTOR: bool | None = None
 ITEMS_FROM_F_SUBSECTION_CODES_NONE: bool | None = None
 
 LAST_READING: int = 0
-# LAYER_TYPE = "HexagonLayer"
+# LAYER_TYPE = "HexagonLayer" # noqa: ERA001
 LAYER_TYPE = "ScatterplotLayer"
 LEGEND_N_A = "n/a"
 LEGEND_N_A_DESC = "no data"
@@ -266,7 +270,7 @@ def _apply_algorithm() -> None:
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - _create_frequent_item_sets_apriori"
+                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - _create_frequent_item_sets_apriori",
                         )
                         DF_ASSOCIATION_RULES_APRIORI = association_rules(
                             DF_FREQUENT_ITEMSETS_APRIORI,
@@ -274,7 +278,7 @@ def _apply_algorithm() -> None:
                             CHOICE_ALG_MIN_THRESHOLD,
                         )
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - association_rules"
+                            "_apply_algorithm() - CHOICE_ALG_APRIORI  - association_rules",
                         )
                     if CHOICE_ALG_FPGROWTH:
                         DF_FREQUENT_ITEMSETS_FPGROWTH = (
@@ -285,7 +289,7 @@ def _apply_algorithm() -> None:
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - _create_frequent_item_sets_fpgrowth"
+                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - _create_frequent_item_sets_fpgrowth",
                         )
                         DF_ASSOCIATION_RULES_FPGROWTH = association_rules(
                             DF_FREQUENT_ITEMSETS_FPGROWTH,
@@ -293,7 +297,7 @@ def _apply_algorithm() -> None:
                             CHOICE_ALG_MIN_THRESHOLD,
                         )
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - association_rules"
+                            "_apply_algorithm() - CHOICE_ALG_FPGROWTH - association_rules",
                         )
                     if CHOICE_ALG_FPMAX:
                         DF_FREQUENT_ITEMSETS_FPMAX = _create_frequent_item_sets_fpmax(
@@ -302,7 +306,7 @@ def _apply_algorithm() -> None:
                         )
                         # pylint: disable=line-too-long
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - _create_frequent_item_sets_fpmax"
+                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - _create_frequent_item_sets_fpmax",
                         )
                         DF_ASSOCIATION_RULES_FPMAX = association_rules(
                             DF_FREQUENT_ITEMSETS_FPMAX,
@@ -311,7 +315,7 @@ def _apply_algorithm() -> None:
                             support_only=True,
                         )
                         _print_timestamp(
-                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - association_rules"
+                            "_apply_algorithm() - CHOICE_ALG_FPMAX    - association_rules",
                         )
 
         return
@@ -372,27 +376,30 @@ def _apply_algorithm_eclat() -> None:
                 {
                     "item": items_total.index,
                     "item_description": " ",
-                    "transactions": items_total.values,
-                }
+                    "transactions": items_total.to_numpy(),
+                },
             )
             DF_FREQUENT_ITEMSETS_ECLAT = items_transactions_gross.loc[
                 items_transactions_gross["item"] > " "
             ]
             df_item_distribution_eclat_ext = _get_description_items(
-                DF_FREQUENT_ITEMSETS_ECLAT
+                DF_FREQUENT_ITEMSETS_ECLAT,
             )
 
             DF_ITEM_DISTRIBUTION_ECLAT_EXT = df_item_distribution_eclat_ext.sort_values(
-                "transactions", ascending=False
+                "transactions",
+                ascending=False,
             )
 
         # ----------------------------------------------------------------------
         if CHOICE_SHOW_ASSOCIATION_RULES:
             CHOICE_ALG_COMBINATIONS_MIN = min(
-                CHOICE_ALG_COMBINATIONS_MIN, CHOICE_ALG_COMBINATIONS_CURRENT
+                CHOICE_ALG_COMBINATIONS_MIN,
+                CHOICE_ALG_COMBINATIONS_CURRENT,
             )
             CHOICE_ALG_COMBINATIONS_MAX = min(
-                CHOICE_ALG_COMBINATIONS_MAX, CHOICE_ALG_COMBINATIONS_CURRENT
+                CHOICE_ALG_COMBINATIONS_MAX,
+                CHOICE_ALG_COMBINATIONS_CURRENT,
             )
 
             _, rule_supports = eclat.fit(
@@ -404,7 +411,8 @@ def _apply_algorithm_eclat() -> None:
             )
 
             DF_ASSOCIATION_RULES_ECLAT = pd.DataFrame(
-                rule_supports.items(), columns=["Item", "Support"]
+                rule_supports.items(),
+                columns=["Item", "Support"],
             ).sort_values(by=["Support"], ascending=False)
 
     _print_timestamp("_apply_algorithm_eclat()")
@@ -427,11 +435,11 @@ def _apply_filter(
         # noinspection PyUnboundLocalVariable
         df_filtered = df_filtered.loc[
             df_filtered["acft_categories"].apply(
-                lambda x: bool(set(x) & set(FILTER_ACFT_CATEGORIES))  # type: ignore
+                lambda x: bool(set(x) & set(FILTER_ACFT_CATEGORIES)),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_ACFT_CATEGORIES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_ACFT_CATEGORIES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -447,7 +455,7 @@ def _apply_filter(
             (df_filtered["ev_highest_injury"].isin(filter_ev_highest_injury_key))
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_HIGHEST_INJURY"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_HIGHEST_INJURY",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -469,7 +477,7 @@ def _apply_filter(
             & (df_filtered["ev_year"] <= FILTER_EV_YEAR_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_YEAR_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EV_YEAR_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -478,11 +486,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_eventsoe_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_EVENTS_SEQUENCE_EVENTSOES, "ee")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_EVENTS_SEQUENCE_EVENTSOES, "ee"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EVENTS_SEQUENCE_EVENTSOES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EVENTS_SEQUENCE_EVENTSOES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -491,11 +499,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_phase_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_EVENTS_SEQUENCE_PHASES, "ep")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_EVENTS_SEQUENCE_PHASES, "ep"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EVENTS_SEQUENCE_PHASES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_EVENTS_SEQUENCE_PHASES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -504,11 +512,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_category_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_CATEGORIES, "fc")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_CATEGORIES, "fc"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_CATEGORIES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_CATEGORIES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -517,11 +525,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_modifier_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_MODIFIERS, "fm")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_MODIFIERS, "fm"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_MODIFIERS"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_MODIFIERS",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -530,11 +538,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_section_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SECTIONS, "fs")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SECTIONS, "fs"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SECTIONS"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SECTIONS",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -543,11 +551,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_subcategory_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SUBCATEGORIES, "fsc")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SUBCATEGORIES, "fsc"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SUBCATEGORIES"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SUBCATEGORIES",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -556,11 +564,11 @@ def _apply_filter(
         # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["all_subsection_codes"].apply(
-                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SUBSECTIONS, "fss")))  # type: ignore
+                lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_FINDINGS_SUBSECTIONS, "fss"))),  # type: ignore
             )
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SUBSECTIONS"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_FINDINGS_SUBSECTIONS",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -570,7 +578,7 @@ def _apply_filter(
             & (df_filtered["inj_f_grnd"] <= FILTER_INJ_F_GRND_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_F_GRND_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_F_GRND_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -580,7 +588,7 @@ def _apply_filter(
             & (df_filtered["inj_tot_f"] <= FILTER_INJ_TOT_F_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_TOT_F_FROM/TO"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_INJ_TOT_F_FROM/TO",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -590,14 +598,14 @@ def _apply_filter(
             & (df_filtered["no_aircraft"] <= FILTER_NO_AIRCRAFT_TO)
         ]
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - filter_no_aircraft_from/to"
+            f"_apply_filter() - {len(df_filtered):>6} - filter_no_aircraft_from/to",
         )
 
     # noinspection PyUnboundLocalVariable
     if FILTER_US_AVIATION:
         df_filtered = _apply_filter_us_aviation(df_filtered, FILTER_US_AVIATION)
         _print_timestamp(
-            f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION"
+            f"_apply_filter() - {len(df_filtered):>6} - FILTER_US_AVIATION",
         )
 
     # noinspection PyUnboundLocalVariable
@@ -607,30 +615,6 @@ def _apply_filter(
             (df_filtered["state"].isin(_get_prepared_us_states(FILTER_US_STATES)))
         ]
         _print_timestamp(f"_apply_filter() - {len(df_filtered):>6} - FILTER_STATE")
-
-    return df_filtered
-
-
-# ------------------------------------------------------------------
-# Filter the data frame - Incompatible data.
-# ------------------------------------------------------------------
-def _apply_filter_incompatible(df_filtered):
-    if FILTER_EV_YEAR_FROM < FILTER_EV_YEAR_INCOMPATIBLE:
-        year_from = FILTER_EV_YEAR_INCOMPATIBLE
-    else:
-        year_from = FILTER_EV_YEAR_FROM
-
-    if FILTER_EV_YEAR_TO < FILTER_EV_YEAR_INCOMPATIBLE:
-        year_to = FILTER_EV_YEAR_INCOMPATIBLE
-    else:
-        year_to = FILTER_EV_YEAR_TO
-
-    if year_from != FILTER_EV_YEAR_FROM or year_to != FILTER_EV_YEAR_TO:
-        df_filtered = df_filtered.loc[
-            (df_filtered["ev_year"] >= year_from) & (df_filtered["ev_year"] <= year_to)
-        ]
-
-    _print_timestamp("_apply_filter_incompatible()")
 
     return df_filtered
 
@@ -688,10 +672,10 @@ def _create_df_association_rules_ext(df_int: DataFrame) -> DataFrame:
 
     for idx in df_ext.index:
         df_ext["antecedents_description"][idx] = _get_items_description(
-            df_ext["antecedents"][idx]
+            df_ext["antecedents"][idx],
         )
         df_ext["consequents_description"][idx] = _get_items_description(
-            df_ext["consequents"][idx]
+            df_ext["consequents"][idx],
         )
 
     _print_timestamp("_create_df_association_rules_ext()")
@@ -721,7 +705,8 @@ def _create_df_association_rules_ext_eclat(df_int: DataFrame) -> DataFrame:
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
 def _create_frequent_item_sets_apriori(
-    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+    df_binary_data_one_hot_encoded: DataFrame,
+    min_support: float | None,
 ) -> DataFrame:
     df_frequent_item_sets = apriori(
         df_binary_data_one_hot_encoded,
@@ -732,7 +717,7 @@ def _create_frequent_item_sets_apriori(
     if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
-            "##### Error: The selected Apriori Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected Apriori Algorithm did not find any data with the given items and parameters.",
         )
         st.stop()
 
@@ -746,7 +731,8 @@ def _create_frequent_item_sets_apriori(
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
 def _create_frequent_item_sets_fpgrowth(
-    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+    df_binary_data_one_hot_encoded: DataFrame,
+    min_support: float | None,
 ) -> DataFrame:
     df_frequent_item_sets = fpgrowth(
         df_binary_data_one_hot_encoded,
@@ -757,7 +743,7 @@ def _create_frequent_item_sets_fpgrowth(
     if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
-            "##### Error: The selected FP-Growth Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected FP-Growth Algorithm did not find any data with the given items and parameters.",
         )
         st.stop()
 
@@ -771,7 +757,8 @@ def _create_frequent_item_sets_fpgrowth(
 # ------------------------------------------------------------------
 @st.cache_data(persist=True)
 def _create_frequent_item_sets_fpmax(
-    df_binary_data_one_hot_encoded: DataFrame, min_support: float | None
+    df_binary_data_one_hot_encoded: DataFrame,
+    min_support: float | None,
 ) -> DataFrame:
     df_frequent_item_sets = fpmax(
         df_binary_data_one_hot_encoded,
@@ -782,7 +769,7 @@ def _create_frequent_item_sets_fpmax(
     if df_frequent_item_sets.empty:
         # pylint: disable=line-too-long
         st.error(
-            "##### Error: The selected FP-Max Algorithm did not find any data with the given items and parameters."
+            "##### Error: The selected FP-Max Algorithm did not find any data with the given items and parameters.",
         )
         st.stop()
 
@@ -954,7 +941,9 @@ def _create_transaction_data() -> None:
         st.error("##### Error: No items selected - transaction data.")
         st.stop()
 
-    DF_TRANSACTION_DATA["items"] = eval(transaction_cmd)  # pylint: disable=eval-used
+    DF_TRANSACTION_DATA["items"] = eval(  # pylint: disable=eval-used
+        transaction_cmd,
+    )
 
     _print_timestamp("_create_transaction_data()")
 
@@ -973,7 +962,7 @@ def _create_transaction_data_eclat() -> None:
 
     (max_rows, _) = DF_RAW_DATA_FILTERED.shape
 
-    DF_TRANSACTION_DATA_ECLAT = DataFrame(numpy.empty([max_rows, max_cols], dtype=str))
+    DF_TRANSACTION_DATA_ECLAT = DataFrame(np.empty([max_rows, max_cols], dtype=str))
 
     # ------------------------------------------------------------------
     # Create the concat command.
@@ -1119,8 +1108,8 @@ def _create_transaction_data_eclat() -> None:
     for _idx_row_s in DF_RAW_DATA_FILTERED.index:
         column_list = eval(cmd_concat)  # pylint: disable=eval-used
         for idx_col, column in enumerate(column_list):
-            DF_TRANSACTION_DATA_ECLAT.iat[_idx_row_d, idx_col] = column
-        _idx_row_d += 1
+            DF_TRANSACTION_DATA_ECLAT.iat[_idx_row_d, idx_col] = column  # noqa: PD009
+        _idx_row_d += 1  # noqa: SIM113
 
     _print_timestamp("_create_transaction_data_eclat()")
 
@@ -1151,7 +1140,7 @@ def _get_description_item_sets(df_int: DataFrame) -> DataFrame:
 
     for idx in df_ext.index:
         df_ext["item sets_description"][idx] = _get_items_description(
-            df_ext["item sets"][idx]
+            df_ext["item sets"][idx],
         )
 
     _print_timestamp("_get_description_item_sets()")
@@ -1250,13 +1239,7 @@ def _get_item_description(item: str) -> str:
 # Determine the item set description.
 # ------------------------------------------------------------------
 def _get_items_description(item_set: list[str]) -> list[str]:
-    descriptions = []
-
-    for item in item_set:
-        if item != "":
-            descriptions.append(_get_item_description(item))
-
-    return descriptions
+    return [_get_item_description(item) for item in item_set if item != ""]
 
 
 # ------------------------------------------------------------------
@@ -1347,8 +1330,8 @@ def _get_raw_data() -> DataFrame:
                    ntsb_no,
                    state
              FROM io_app_ae1982
-            WHERE (ARRAY_LENGTH(all_finding_codes, 1)    > 0 
-               OR  ARRAY_LENGTH(all_occurrence_codes, 1) > 0) 
+            WHERE (ARRAY_LENGTH(all_finding_codes, 1)    > 0
+               OR  ARRAY_LENGTH(all_occurrence_codes, 1) > 0)
               AND  ev_year >= 2008
             ORDER BY ev_id;
     """,
@@ -1364,7 +1347,7 @@ def _get_user_guide_app() -> None:
 """
 
     text += """
-Association rule analysis is a data mining technique used to discover relationships between items or events in large datasets. 
+Association rule analysis is a data mining technique used to discover relationships between items or events in large datasets.
 It identifies patterns or co-occurrences that frequently appear together in a transactional database.
 
 ###### Basic Concepts and Terminology
@@ -1379,7 +1362,7 @@ The following terms are commonly used in association rule analysis:
 
 ###### Data Preprocessing
 
-Before performing association rule analysis, it is necessary to preprocess the data. 
+Before performing association rule analysis, it is necessary to preprocess the data.
 This involves data cleaning, transformation, and formatting to ensure that the data is in a suitable format for analysis.
 
 Data preprocessing steps may include:
@@ -1390,10 +1373,10 @@ Data preprocessing steps may include:
 - Discretizing continuous variables into categorical variables,
 - Scaling or normalizing data.
 
-###### Measures For Evaluating Association Rules 
+###### Measures For Evaluating Association Rules
 
 Association rule analysis generates a large number of potential rules, and it is important to evaluate and select the most relevant rules.
-The following measures are commonly used to evaluate association rules: 
+The following measures are commonly used to evaluate association rules:
 
 - **Support**: Rules with high support are more significant as they occur more frequently in the dataset.
 - **Confidence**: Rules with high confidence are more reliable, as they have a higher probability of being true.
@@ -1417,7 +1400,7 @@ Columns are possible categories that might appear in every transaction.
 Every cell contains one of two possible values:
 
 - 0 - the category was not included in the transaction,
-- 1 - the transaction contains the category.  
+- 1 - the transaction contains the category.
 
 To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
 The **csv** upload is not limited, but may not be processable with MS Excel.
@@ -1448,16 +1431,16 @@ def _get_user_guide_details_association_rules() -> None:
     text = """
 #### User guide: Association rules
 
-This task provides the detailed association rules in a table format for display and upload as **csv** file. 
+This task provides the detailed association rules in a table format for display and upload as **csv** file.
 
 The table comes with columns "antecedents" and "consequents" that store item sets, plus the scoring metric columns:
 
-- "antecedent support", 
+- "antecedent support",
 - "consequent support",
-- "support", 
-- "confidence", 
+- "support",
+- "confidence",
 - "lift",
-- "leverage", 
+- "leverage",
 - "conviction"
 
 of all rules for which metric(rule) >= `min_threshold`.
@@ -1476,7 +1459,7 @@ def _get_user_guide_details_binary_data_one_hot_encoded() -> None:
     text = """
 #### User guide: One-hot encoded data details
 
-This task provides the detailed one-hot encoded data in a table format for display and upload as **csv** file. 
+This task provides the detailed one-hot encoded data in a table format for display and upload as **csv** file.
 To avoid memory problems in the web browser, the display is limited to the first 100 rows and columns.
 The **csv** upload is not limited, but may not be processable with MS Excel.
     """
@@ -1492,7 +1475,7 @@ def _get_user_guide_details_frequent_item_sets() -> None:
     text = """
 #### User guide: Frequent item sets
 
-This task provides the detailed frequent item sets in a table format for display and upload as **csv** file. 
+This task provides the detailed frequent item sets in a table format for display and upload as **csv** file.
 
 The table comes with columns ['support', 'item sets'] of all item sets that are >= `min_support`.
 
@@ -1523,9 +1506,9 @@ def _get_user_guide_details_raw_data() -> None:
     text = """
 #### User guide: Raw data details
 
-This task provides the detailed raw data in a table format for display and upload as **csv** file. 
-The rows to be displayed are limited to the chosen filter options. 
-The order of data display is based on the ascending event identification. 
+This task provides the detailed raw data in a table format for display and upload as **csv** file.
+The rows to be displayed are limited to the chosen filter options.
+The order of data display is based on the ascending event identification.
 
 The database columns of the selected rows are always displayed in full.
     """
@@ -1557,7 +1540,7 @@ def _get_user_guide_details_transaction_data() -> None:
 #### User guide: Transaction data details
 
 This task provides the detailed transaction data in a table format for display and upload as **csv** file.
-The order of data display is based on the ascending event identification of the raw data. 
+The order of data display is based on the ascending event identification of the raw data.
     """
 
     st.warning(text + _get_user_guide_details_standard())
@@ -1619,20 +1602,21 @@ The application tries to prevent a redundant selection of items!
 # Present association rule details.
 # ------------------------------------------------------------------
 def _present_details_association_rules(
-    algorithm: str, df_association_rules: DataFrame
+    algorithm: str,
+    df_association_rules: DataFrame,
 ) -> None:
     col1, col2 = st.columns(
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed association rules '
+            'font-weight: normal;border-radius:2%;">Detailed association rules '
             + algorithm
             + " Algorithm</p>",
             unsafe_allow_html=True,
@@ -1684,14 +1668,14 @@ def _present_details_binary_data() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Binary data Eclat Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Binary data Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1732,14 +1716,14 @@ def _present_details_binary_data_one_hot_encoded() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed one-hot encoded data Non-Eclat Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Detailed one-hot encoded data Non-Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1780,14 +1764,14 @@ def _present_details_frequent_item_sets_apriori() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets Apriori Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Detailed frequent item sets Apriori Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1830,14 +1814,14 @@ def _present_details_frequent_item_sets_eclat() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets Eclat Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Detailed frequent item sets Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1858,7 +1842,7 @@ def _present_details_frequent_item_sets_eclat() -> None:
     (no_rows, _) = df_frequent_item_sets_ext.shape
 
     st.write(
-        f"No frequent item sets: {no_rows} - max. combinations: {CHOICE_ALG_COMBINATIONS_CURRENT}"
+        f"No frequent item sets: {no_rows} - max. combinations: {CHOICE_ALG_COMBINATIONS_CURRENT}",
     )
 
     st.dataframe(df_frequent_item_sets_ext.sort_values("transactions", ascending=False))
@@ -1882,14 +1866,14 @@ def _present_details_frequent_item_sets_fpgrowth() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Growth Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Growth Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1906,7 +1890,7 @@ def _present_details_frequent_item_sets_fpgrowth() -> None:
         _get_user_guide_details_frequent_item_sets()
 
     df_frequent_item_sets_ext = _get_description_item_sets(
-        DF_FREQUENT_ITEMSETS_FPGROWTH
+        DF_FREQUENT_ITEMSETS_FPGROWTH,
     )
 
     (no_rows, _) = df_frequent_item_sets_ext.shape
@@ -1934,14 +1918,14 @@ def _present_details_frequent_item_sets_fpmax() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Max Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Detailed frequent item sets FP-Max Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -1984,14 +1968,14 @@ def _present_details_frequent_item_sets_tree_map_eclat() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Frequent item sets tree map Eclat Algorithm</p>',
+            'font-weight: normal;border-radius:2%;">Frequent item sets tree map Eclat Algorithm</p>',
             unsafe_allow_html=True,
         )
 
@@ -2037,14 +2021,14 @@ def _present_details_raw_data() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Filtered detailed raw data</p>',
+            'font-weight: normal;border-radius:2%;">Filtered detailed raw data</p>',
             unsafe_allow_html=True,
         )
 
@@ -2062,7 +2046,7 @@ def _present_details_raw_data() -> None:
 
     # pylint: disable=line-too-long
     st.write(
-        f"No item sets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}"
+        f"No item sets unfiltered: {DF_RAW_DATA_UNFILTERED_ROWS} - filtered: {DF_RAW_DATA_FILTERED_ROWS}",
     )
 
     st.dataframe(DF_RAW_DATA_FILTERED)
@@ -2082,20 +2066,21 @@ def _present_details_raw_data() -> None:
 # Present transaction data details.
 # ------------------------------------------------------------------
 def _present_details_transaction_data(
-    algorithm: str, df_transaction_data: DataFrame
+    algorithm: str,
+    df_transaction_data: DataFrame,
 ) -> None:
     col1, col2 = st.columns(
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Detailed transaction data  '
+            'font-weight: normal;border-radius:2%;">Detailed transaction data  '
             + algorithm
             + " Algorithm</p>",
             unsafe_allow_html=True,
@@ -2138,21 +2123,21 @@ def _present_profile_raw_data() -> None:
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
+            'font-weight: normal;border-radius:2%;">Profile of the filtered raw data</p>',
             unsafe_allow_html=True,
         )
 
     with col2:
         choice_ug_raw_data_profile = st.checkbox(
             help="Explanations and operating instructions related to profiling "
-            + "of the database view **io_app_ae1982",
+            "of the database view **io_app_ae1982",
             key="CHOICE_UG_RAW_DATA_PROFILE",
             label="**User Guide: Raw data profile**",
             value=False,
@@ -2174,7 +2159,7 @@ def _present_profile_raw_data() -> None:
         data=profile_report.to_html(),
         file_name=APP_ID + "_raw_data_profile" + ".html",  # type: ignore
         help="The upload includes a profile report from the dataframe "
-        + "after applying the filter options.",
+        "after applying the filter options.",
         label="**Download the raw data profile report**",
         mime="text/html",
     )
@@ -2199,7 +2184,7 @@ def _present_results() -> None:
             [
                 1,
                 2,
-            ]
+            ],
         )
         with col2:
             utils.present_about(PG_CONN, APP_ID)
@@ -2285,13 +2270,15 @@ def _present_results() -> None:
         if CHOICE_SHOW_ASSOCIATION_RULES:
             if CHOICE_ALG_APRIORI:
                 _present_details_association_rules(
-                    "Apriori", DF_ASSOCIATION_RULES_APRIORI
+                    "Apriori",
+                    DF_ASSOCIATION_RULES_APRIORI,
                 )
             if CHOICE_ALG_ECLAT:
                 _present_details_association_rules("Eclat", DF_ASSOCIATION_RULES_ECLAT)
             if CHOICE_ALG_FPGROWTH:
                 _present_details_association_rules(
-                    "FP-Growth", DF_ASSOCIATION_RULES_FPGROWTH
+                    "FP-Growth",
+                    DF_ASSOCIATION_RULES_FPGROWTH,
                 )
             if CHOICE_ALG_FPMAX:
                 _present_details_association_rules("FP-Max", DF_ASSOCIATION_RULES_FPMAX)
@@ -2313,8 +2300,8 @@ def _print_timestamp(identifier: str) -> None:
     current_time = time.time_ns()
 
     # Stop time measurement.
-    print(
-        str(datetime.datetime.now())
+    print(  # noqa: T201
+        str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{current_time - LAST_READING:,}':>20} ns - "
         + f"{APP_ID} - {identifier}",
         flush=True,
@@ -2502,9 +2489,9 @@ def _setup_filter() -> None:
 
     if (
         FILTER_NO_AIRCRAFT_FROM
-        and FILTER_NO_AIRCRAFT_FROM != min_no_aircraft
+        and min_no_aircraft != FILTER_NO_AIRCRAFT_FROM
         or FILTER_NO_AIRCRAFT_TO
-        and FILTER_NO_AIRCRAFT_TO != max_no_aircraft
+        and max_no_aircraft != FILTER_NO_AIRCRAFT_TO
     ):
         # pylint: disable=line-too-long
         CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -2538,8 +2525,8 @@ def _setup_filter() -> None:
             """,
         label="**Event year(s):**",
         min_value=2008,
-        max_value=datetime.date.today().year,
-        value=(2008, datetime.date.today().year - 1),
+        max_value=datetime.datetime.now(datetime.timezone.utc).year,
+        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -2567,7 +2554,7 @@ def _setup_filter() -> None:
         FILTER_INJ_F_GRND_FROM
         and FILTER_INJ_F_GRND_FROM != 0
         or FILTER_INJ_F_GRND_TO
-        and FILTER_INJ_F_GRND_TO != max_inj_f_grnd
+        and max_inj_f_grnd != FILTER_INJ_F_GRND_TO
     ):
         # pylint: disable=line-too-long
         CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -2591,7 +2578,7 @@ def _setup_filter() -> None:
         FILTER_INJ_TOT_F_FROM
         and FILTER_INJ_TOT_F_FROM != 0
         or FILTER_INJ_TOT_F_TO
-        and FILTER_INJ_TOT_F_TO != max_inj_tot_f
+        and max_inj_tot_f != FILTER_INJ_TOT_F_TO
     ):
         # pylint: disable=line-too-long
         CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -2642,7 +2629,7 @@ def _setup_filter() -> None:
     FILTER_US_AVIATION = st.sidebar.multiselect(
         default=FILTER_US_AVIATION_DEFAULT,
         help="""
-        **US aviation** means that either the event occurred on US soil or 
+        **US aviation** means that either the event occurred on US soil or
         the departure, destination, owner, operator or registration is US.
         """,
         label="**US aviation criteria:**",
@@ -2670,7 +2657,7 @@ def _setup_filter() -> None:
 # ------------------------------------------------------------------
 # Set up the filter of table events_sequence.
 # ------------------------------------------------------------------
-def _setup_filter_events_sequence():
+def _setup_filter_events_sequence() -> None:
     global ITEMS_FROM_ES_EVENTSOE_CODES_ALL  # pylint: disable=global-statement
     global ITEMS_FROM_ES_EVENTSOE_CODES_FALSE  # pylint: disable=global-statement
     global ITEMS_FROM_ES_EVENTSOE_CODES_TRUE  # pylint: disable=global-statement
@@ -2685,14 +2672,14 @@ def _setup_filter_events_sequence():
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Items from database table events_sequence</p>',
+            'font-weight: normal;border-radius:2%;">Items from database table events_sequence</p>',
             unsafe_allow_html=True,
         )
 
@@ -2810,14 +2797,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_OCCURRENCE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Defining event**.",
             )
             st.stop()
 
         if ITEMS_FROM_ES_OCCURRENCE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Occurrence code** already contains the items of the selection **Not defining event**.",
             )
             st.stop()
 
@@ -2828,7 +2815,7 @@ def _setup_filter_events_sequence():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**."
+                "##### Error: The selection **Occurrence code** already contains the items of the selection **Eventsoe no**.",
             )
             st.stop()
 
@@ -2839,7 +2826,7 @@ def _setup_filter_events_sequence():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Occurrence code** already contains the items of the selection **Phase no**."
+                "##### Error: The selection **Occurrence code** already contains the items of the selection **Phase no**.",
             )
             st.stop()
 
@@ -2847,14 +2834,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_EVENTSOE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Defining event**.",
             )
             st.stop()
 
         if ITEMS_FROM_ES_EVENTSOE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Eventsoe no** already contains the items of the selection **Not defining event**.",
             )
             st.stop()
 
@@ -2862,14 +2849,14 @@ def _setup_filter_events_sequence():
         if ITEMS_FROM_ES_PHASE_CODES_TRUE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Defining event**."
+                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Defining event**.",
             )
             st.stop()
 
         if ITEMS_FROM_ES_PHASE_CODES_FALSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**."
+                "##### Error: The selection **All** of **Phase no** already contains the items of the selection **Not defining event**.",
             )
             st.stop()
 
@@ -2879,7 +2866,7 @@ def _setup_filter_events_sequence():
 # ------------------------------------------------------------------
 # Set up the filter of table findings.
 # ------------------------------------------------------------------
-def _setup_filter_findings():
+def _setup_filter_findings() -> None:
     global ITEMS_FROM_F_CATEGORY_CODES_ALL  # pylint: disable=global-statement
     global ITEMS_FROM_F_CATEGORY_CODES_CAUSE  # pylint: disable=global-statement
     global ITEMS_FROM_F_CATEGORY_CODES_FACTOR  # pylint: disable=global-statement
@@ -2913,14 +2900,14 @@ def _setup_filter_findings():
         [
             2,
             1,
-        ]
+        ],
     )
 
     with col1:
         # pylint: disable=line-too-long
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
-            + 'font-weight: normal;border-radius:2%;">Items from database table findings</p>',
+            'font-weight: normal;border-radius:2%;">Items from database table findings</p>',
             unsafe_allow_html=True,
         )
 
@@ -3162,21 +3149,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_FINDING_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_FINDING_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_FINDING_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Finding code** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3188,7 +3175,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Finding code** already contains the items of the selection **Category no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Category no**.",
             )
             st.stop()
 
@@ -3200,7 +3187,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Finding code** already contains the items of the selection **Subcategory no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Subcategory no**.",
             )
             st.stop()
 
@@ -3212,7 +3199,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Finding code** already contains the items of the selection **Section no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Section no**.",
             )
             st.stop()
 
@@ -3224,7 +3211,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Finding code** already contains the items of the selection **Subsection no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Subsection no**.",
             )
             st.stop()
 
@@ -3236,7 +3223,7 @@ def _setup_filter_findings():
         ):
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **Finding code** already contains the items of the selection **Modifier no**."
+                "##### Error: The selection **Finding code** already contains the items of the selection **Modifier no**.",
             )
             st.stop()
 
@@ -3244,21 +3231,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_CATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_CATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_CATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Category no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Category no** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3266,21 +3253,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SUBCATEGORY_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBCATEGORY_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBCATEGORY_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Subcategory no** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3288,21 +3275,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Section no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Section no** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3310,21 +3297,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_SUBSECTION_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBSECTION_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_SUBSECTION_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Subsection no** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3332,21 +3319,21 @@ def _setup_filter_findings():
         if ITEMS_FROM_F_MODIFIER_CODES_CAUSE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Cause**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Cause**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_MODIFIER_CODES_FACTOR:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Factor**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **Factor**.",
             )
             st.stop()
 
         if ITEMS_FROM_F_MODIFIER_CODES_NONE:
             # pylint: disable=line-too-long
             st.error(
-                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **None**."
+                "##### Error: The selection **All** of **Modifier no** already contains the items of the selection **None**.",
             )
             st.stop()
 
@@ -3365,13 +3352,15 @@ def _setup_page() -> None:
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 2008
     FILTER_EV_YEAR_TO = (
-        FILTER_EV_YEAR_TO if FILTER_EV_YEAR_TO else datetime.date.today().year - 1
+        FILTER_EV_YEAR_TO
+        if FILTER_EV_YEAR_TO
+        else datetime.datetime.now(datetime.timezone.utc).year - 1
     )
 
     st.markdown(
         f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_HEADER}px;'
-        + 'font-weight: normal;border-radius:2%;">Association Rule Analysis - Year '
-        + f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
+        'font-weight: normal;border-radius:2%;">Association Rule Analysis - Year '
+        f"{FILTER_EV_YEAR_FROM} until {FILTER_EV_YEAR_TO}</p>",
         unsafe_allow_html=True,
     )
 
@@ -3446,10 +3435,10 @@ For efficiency reasons, it is very useful to define the parameter settings and f
 
     CHOICE_ALG_APRIORI = st.sidebar.checkbox(
         help="""
-Apriori is a popular algorithm [1] for extracting frequent item sets with applications in association rule learning. 
-The Apriori Algorithm has been designed to operate on databases containing transactions. 
-An item set is considered as "frequent" if it meets a user-specified support threshold. 
-For instance, if the support threshold is set to 0.5 (50%), 
+Apriori is a popular algorithm [1] for extracting frequent item sets with applications in association rule learning.
+The Apriori Algorithm has been designed to operate on databases containing transactions.
+An item set is considered as "frequent" if it meets a user-specified support threshold.
+For instance, if the support threshold is set to 0.5 (50%),
 a frequent item set is defined as a set of items that occur together in at least 50% of all transactions in the database.
 
 **References**
@@ -3491,12 +3480,12 @@ In particular, and what makes it different from the Apriori frequent pattern min
 
     CHOICE_ALG_FPMAX = st.sidebar.checkbox(
         help="""
-The Apriori algorithm is among the first and most popular algorithms for frequent item set generation (frequent item sets are then used for association rule mining). 
+The Apriori algorithm is among the first and most popular algorithms for frequent item set generation (frequent item sets are then used for association rule mining).
 However, the runtime of Apriori can be quite large, especially for datasets with a large number of unique items, as the runtime grows exponentially depending on the number of unique items.
 
 In contrast to Apriori, FP-Growth is a frequent pattern generation algorithm that inserts items into a pattern search tree, which allows it to have a linear increase in runtime with respect to the number of unique items or entries.
 
-FP-Max is a variant of FP-Growth, which focuses on obtaining maximal item sets. 
+FP-Max is a variant of FP-Growth, which focuses on obtaining maximal item sets.
 An item set X is said to maximal if X is frequent and there exists no frequent super-pattern containing X. In other words, a frequent pattern X cannot be sub-pattern of larger frequent pattern to qualify for the definition maximal item set.
 
 **References**
@@ -3660,7 +3649,7 @@ def _sql_query_acft_categories() -> list[str]:
         SELECT string_agg(DISTINCT acft_category, ',' ORDER BY acft_category)
           FROM aircraft
          WHERE acft_category IS NOT NULL;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -3679,7 +3668,7 @@ def _sql_query_codes_category() -> dict[str, str]:
         SELECT category_code,
                description
           FROM io_md_codes_category;
-        """
+        """,
         )
 
         data = {}
@@ -3706,7 +3695,7 @@ def _sql_query_codes_eventsoe() -> dict[str, str]:
         SELECT eventsoe_code,
                description
           FROM io_md_codes_eventsoe;
-        """
+        """,
         )
 
         data = {}
@@ -3733,7 +3722,7 @@ def _sql_query_codes_modifier() -> dict[str, str]:
         SELECT modifier_code,
                description
           FROM io_md_codes_modifier;
-        """
+        """,
         )
 
         data = {}
@@ -3760,7 +3749,7 @@ def _sql_query_codes_phase() -> dict[str, str]:
         SELECT phase_code,
                description
           FROM io_md_codes_phase;
-        """
+        """,
         )
 
         data = {}
@@ -3785,11 +3774,11 @@ def _sql_query_codes_section() -> dict[str, str]:
         cur.execute(
             """
         SELECT category_code,
-               subcategory_code, 
+               subcategory_code,
                section_code,
                description
           FROM io_md_codes_section;
-        """
+        """,
         )
 
         data = {}
@@ -3817,7 +3806,7 @@ def _sql_query_codes_subcategory() -> dict[str, str]:
                subcategory_code,
                description
           FROM io_md_codes_subcategory;
-        """
+        """,
         )
 
         data = {}
@@ -3842,12 +3831,12 @@ def _sql_query_codes_subsection() -> dict[str, str]:
         cur.execute(
             """
         SELECT category_code,
-               subcategory_code, 
+               subcategory_code,
                section_code,
                subsection_code,
                description
           FROM io_md_codes_subsection;
-        """
+        """,
         )
 
         data = {}
@@ -3881,15 +3870,12 @@ def _sql_query_ev_highest_injury() -> list[str]:
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
-        data = []
-
-        for key in keys:
-            data.append(OPTIONS_EV_HIGHEST_INJURY[key])
+        data = [OPTIONS_EV_HIGHEST_INJURY[key] for key in keys]
 
         return sorted(data)
 
@@ -3906,15 +3892,12 @@ def _sql_query_ev_type() -> list[str]:
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END, ',' ORDER BY CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
-        data = []
-
-        for key in keys:
-            data.append(OPTIONS_EV_TYPE[key])
+        data = [OPTIONS_EV_TYPE[key] for key in keys]
 
         return sorted(data)
 
@@ -3928,9 +3911,9 @@ def _sql_query_max_array_length() -> int:
         cur.execute(
             """
         SELECT MAX(ARRAY_LENGTH(all_finding_codes, 1))
-             + MAX(ARRAY_LENGTH(all_occurrence_codes, 1)) 
+             + MAX(ARRAY_LENGTH(all_occurrence_codes, 1))
           FROM io_app_ae1982 iaa;
-        """
+        """,
         )
 
         return cur.fetchone()[0]  # type: ignore
@@ -3946,7 +3929,7 @@ def _sql_query_max_inj_f_grnd() -> int:
             """
         SELECT MAX(inj_f_grnd)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         return cur.fetchone()[0]  # type: ignore
@@ -3962,7 +3945,7 @@ def _sql_query_max_no_aircraft() -> int:
             """
         SELECT MAX(no_aircraft)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         return cur.fetchone()[0]  # type: ignore
@@ -3978,7 +3961,7 @@ def _sql_query_md_codes_category() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', category_code), ',' ORDER BY 1)
           FROM io_md_codes_category;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -3994,7 +3977,7 @@ def _sql_query_md_codes_eventsoe() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', eventsoe_code), ',' ORDER BY 1)
           FROM io_md_codes_eventsoe;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4010,7 +3993,7 @@ def _sql_query_md_codes_modifier() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', modifier_code), ',' ORDER BY 1)
           FROM io_md_codes_modifier;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4026,7 +4009,7 @@ def _sql_query_md_codes_phase() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', phase_code), ',' ORDER BY 1)
           FROM io_md_codes_phase;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4043,7 +4026,7 @@ def _sql_query_md_codes_section() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', category_code, subcategory_code, section_code), ',' ORDER BY 1)
           FROM io_md_codes_section;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4060,7 +4043,7 @@ def _sql_query_md_codes_subcategory() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', category_code, subcategory_code), ',' ORDER BY 1)
           FROM io_md_codes_subcategory;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4077,7 +4060,7 @@ def _sql_query_md_codes_subsection() -> list[str]:
             """
         SELECT string_agg(CONCAT(description, ' - ', category_code, subcategory_code, section_code, subsection_code), ',' ORDER BY 1)
           FROM io_md_codes_subsection;
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4093,7 +4076,7 @@ def _sql_query_min_no_aircraft() -> int:
             """
         SELECT MIN(no_aircraft)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         return cur.fetchone()[0]  # type: ignore
@@ -4109,7 +4092,7 @@ def _sql_query_max_inj_tot_f() -> int:
             """
         SELECT MAX(inj_tot_f)
           FROM io_app_ae1982;
-        """
+        """,
         )
 
         return cur.fetchone()[0]  # type: ignore
@@ -4127,7 +4110,7 @@ def _sql_query_us_states() -> list[str]:
         SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
-        """
+        """,
         )
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
@@ -4233,8 +4216,8 @@ def _streamlit_flow() -> None:
 
     # Stop time measurement.
     # flake8: noqa: E501
-    print(
-        str(datetime.datetime.now())
+    print(  # noqa: T201
+        str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

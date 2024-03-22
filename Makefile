@@ -68,8 +68,8 @@ everything: dev docs
 final: format lint docs tests
 ## format:             Format the code with isort, Black and docformatter.
 format: isort black docformatter
-## lint:               Lint the code with Bandit, Flake8, Pylint and Mypy.
-lint: bandit flake8 vulture pylint mypy
+## lint:               Lint the code with ruff, Bandit, Flake8, vulture, Pylint and Mypy.
+lint: ruff bandit flake8 vulture pylint mypy
 ## tests:              Run all tests with pytest.
 tests: pytest
 ## -----------------------------------------------------------------------------
@@ -202,7 +202,7 @@ mypy:               ## Find typing issues with Mypy.
 	pipenv run mypy ${PYTHONPATH}
 	@echo Info **********  End:   Mypy *****************************************
 
-mypy-stubgen:       ## Autogenerate stub files
+mypy-stubgen:       ## Autogenerate stub files.
 	@echo Info **********  Start: Mypy *****************************************
 	@echo COPY_MYPY_STUBGEN  =${COPY_MYPY_STUBGEN}
 	@echo DELETE_MYPY_STUBGEN=${DELETE_MYPY_STUBGEN}
@@ -355,6 +355,17 @@ pytest-module:      ## Run test of a specific module with pytest.
 	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/$(module)
 	@echo Info **********  End:   pytest ***************************************
+
+# https://github.com/astral-sh/ruff
+# Configuration file: pyproject.toml
+ruff:               ## An extremely fast Python linter and code formatter.
+	@echo Info **********  Start: ruff *****************************************
+	@echo PIPENV          =${PIPENV}
+	@echo ----------------------------------------------------------------------
+	pipenv run ruff --version
+	@echo ----------------------------------------------------------------------
+	pipenv run ruff check --fix
+	@echo Info **********  End:   ruff *****************************************
 
 sphinx:            ##  Create the user documentation with Sphinx.
 	@echo Info **********  Start: sphinx ***************************************

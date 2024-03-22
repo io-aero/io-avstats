@@ -10,19 +10,18 @@ import logging
 import os
 import zipfile
 
-from iocommon import io_config
-from iocommon import io_glob
-from iocommon import io_logger
-from iocommon import io_utils
+from iocommon import io_config, io_glob, io_logger, io_utils
 from openpyxl.reader.excel import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException  # type: ignore
 
-from ioavstats import code_generator
-from ioavstats import db_ddl_base
-from ioavstats import db_dml_base
-from ioavstats import db_dml_corr
-from ioavstats import db_dml_msaccess
-from ioavstats import glob_local
+from ioavstats import (
+    code_generator,
+    db_ddl_base,
+    db_dml_base,
+    db_dml_corr,
+    db_dml_msaccess,
+    glob_local,
+)
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -42,7 +41,9 @@ def check_arg_msaccess(args: argparse.Namespace) -> None:
     """Check the command line argument: -m / --msaccess.
 
     Args:
+    ----
         args (argparse.Namespace): Command line arguments.
+
     """
     global ARG_MSACCESS  # pylint: disable=global-statement
 
@@ -54,20 +55,19 @@ def check_arg_msaccess(args: argparse.Namespace) -> None:
             # ERROR.00.901 The task '{task}' requires valid
             # argument '-m' or '--msaccess'
             terminate_fatal(glob_local.ERROR_00_901.replace("{task}", ARG_TASK))
+    elif args.msaccess:
+        # ERROR.00.902 The task '{task}' does not require an
+        # argument '-m' or '--msaccess'
+        terminate_fatal(glob_local.ERROR_00_902.replace("{task}", ARG_TASK))
     else:
-        if args.msaccess:
-            # ERROR.00.902 The task '{task}' does not require an
-            # argument '-m' or '--msaccess'
-            terminate_fatal(glob_local.ERROR_00_902.replace("{task}", ARG_TASK))
-        else:
-            return
+        return
 
     ARG_MSACCESS = args.msaccess.lower()
 
     if ARG_MSACCESS == glob_local.ARG_MSACCESS_AVALL:
         return
 
-    if ARG_MSACCESS == glob_local.ARG_MSACCESS_PRE2008.lower():
+    if glob_local.ARG_MSACCESS_PRE2008.lower() == ARG_MSACCESS:
         ARG_MSACCESS = glob_local.ARG_MSACCESS_PRE2008
         return
 
@@ -109,7 +109,9 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     """Check the command line argument: -e / --msexcel.
 
     Args:
+    ----
         args (argparse.Namespace): Command line arguments.
+
     """
     global ARG_MSEXCEL  # pylint: disable=global-statement
 
@@ -118,13 +120,12 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
             # ERROR.00.923 The task '{task}' requires valid
             # argument '-e' or '--msexcel'
             terminate_fatal(glob_local.ERROR_00_923.replace("{task}", ARG_TASK))
+    elif args.msexcel:
+        # ERROR.00.924 The task '{task}' does not require an
+        # argument '-e' or '--msexcel'
+        terminate_fatal(glob_local.ERROR_00_924.replace("{task}", ARG_TASK))
     else:
-        if args.msexcel:
-            # ERROR.00.924 The task '{task}' does not require an
-            # argument '-e' or '--msexcel'
-            terminate_fatal(glob_local.ERROR_00_924.replace("{task}", ARG_TASK))
-        else:
-            return
+        return
 
     directory_name = ""
     if ARG_TASK == glob_local.ARG_TASK_L_C_D:
@@ -158,35 +159,34 @@ def check_arg_task(args: argparse.Namespace) -> None:
     """Check the command line argument: -t / --task.
 
     Args:
+    ----
         args (argparse.Namespace): Command line arguments.
+
     """
     global ARG_TASK  # pylint: disable=global-statement
 
     ARG_TASK = args.task.lower()
 
-    if not (
-        ARG_TASK
-        in [
-            glob_local.ARG_TASK_A_O_C,
-            glob_local.ARG_TASK_C_D_S,
-            glob_local.ARG_TASK_C_L_L,
-            glob_local.ARG_TASK_C_P_D,
-            glob_local.ARG_TASK_D_N_A,
-            glob_local.ARG_TASK_F_N_A,
-            glob_local.ARG_TASK_GENERATE,
-            glob_local.ARG_TASK_L_A_P,
-            glob_local.ARG_TASK_L_C_D,
-            glob_local.ARG_TASK_L_C_S,
-            glob_local.ARG_TASK_L_N_A,
-            glob_local.ARG_TASK_L_S_D,
-            glob_local.ARG_TASK_L_S_E,
-            glob_local.ARG_TASK_L_Z_D,
-            glob_local.ARG_TASK_R_D_S,
-            glob_local.ARG_TASK_U_D_S,
-            glob_local.ARG_TASK_VERSION,
-            glob_local.ARG_TASK_V_N_D,
-        ]
-    ):
+    if ARG_TASK not in [
+        glob_local.ARG_TASK_A_O_C,
+        glob_local.ARG_TASK_C_D_S,
+        glob_local.ARG_TASK_C_L_L,
+        glob_local.ARG_TASK_C_P_D,
+        glob_local.ARG_TASK_D_N_A,
+        glob_local.ARG_TASK_F_N_A,
+        glob_local.ARG_TASK_GENERATE,
+        glob_local.ARG_TASK_L_A_P,
+        glob_local.ARG_TASK_L_C_D,
+        glob_local.ARG_TASK_L_C_S,
+        glob_local.ARG_TASK_L_N_A,
+        glob_local.ARG_TASK_L_S_D,
+        glob_local.ARG_TASK_L_S_E,
+        glob_local.ARG_TASK_L_Z_D,
+        glob_local.ARG_TASK_R_D_S,
+        glob_local.ARG_TASK_U_D_S,
+        glob_local.ARG_TASK_VERSION,
+        glob_local.ARG_TASK_V_N_D,
+    ]:
         terminate_fatal(
             "The specified task is neither '"
             + glob_local.ARG_TASK_A_O_C
@@ -283,8 +283,10 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     """d_n_a: Download a NTSB MS Access database file.
 
     Args:
+    ----
         msaccess (str):
             The NTSB MS Access database file without file extension.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -453,7 +455,8 @@ def get_args() -> None:
         # INFO.00.005 Arguments {task}='{value_task}'
         progress_msg(
             glob_local.INFO_00_005.replace("{task}", glob_local.ARG_TASK).replace(
-                "{value_task}", parsed_args.task
+                "{value_task}",
+                parsed_args.task,
             ),
         )
 
@@ -499,8 +502,10 @@ def load_correction_data(filename: str) -> None:
     """l_c_d: Load data from a correction file into PostgreSQL.
 
     Args:
+    ----
         filename (str):
             The filename of the correction file.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -536,8 +541,10 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     """l_n_a: Load NTSB MS Access database data into PostgreSQL.
 
     Args:
+    ----
         msaccess (str):
             The NTSB MS Access database file without file extension.
+
     """
     logger.debug(io_glob.LOGGER_START)
 
@@ -605,6 +612,7 @@ def progress_msg(msg: str) -> None:
     """Create a progress message.
 
     Args:
+    ----
         msg (str): Progress message
 
     """
@@ -619,6 +627,7 @@ def progress_msg_time_elapsed(duration: int, event: str) -> None:
     """Create a time elapsed message.
 
     Args:
+    ----
         duration (int): Time elapsed in ns.
         event (str): Event description.
 
@@ -649,6 +658,7 @@ def terminate_fatal(error_msg: str) -> None:
     """Terminate the application immediately.
 
     Args:
+    ----
         error_msg (str): Error message
 
     """
@@ -693,7 +703,8 @@ def verify_ntsb_data() -> None:
 def version() -> str:
     """Return the version number of the IO-AVSTATS application.
 
-    Returns:
+    Returns
+    -------
         str:
             The version number of the IO-AVSTATS application
 

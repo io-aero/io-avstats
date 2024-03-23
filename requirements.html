@@ -260,7 +260,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
 <h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">#</a></h2>
-<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.</p>
+<p>Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.</p>
 <p>For the Windows operating systems, only additional the functionality of the <code class="docutils literal notranslate"><span class="pre">make</span></code> tool must be made available, e.g. via
 <a class="reference external" href="http://gnuwin32.sourceforge.net/packages/make.htm">Make for Windows</a></p>
 <p>The command-line shells supported are:</p>
@@ -276,17 +276,20 @@ Regarding the corresponding software versions, you will find the detailed inform
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Ubuntu</p></td>
+<tr class="row-even"><td><p>macOS</p></td>
+<td><p>zsh</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu</p></td>
 <td><p>bash</p></td>
 </tr>
-<tr class="row-odd"><td><p>Windows 10/11</p></td>
+<tr class="row-even"><td><p>Windows 10/11</p></td>
 <td><p>cmd and PowerShell</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the script <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
+<p>For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the scripts <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_zsh_scripts.zsh</span></code> (macOS) and <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
 </section>
 <section id="python">
 <h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">#</a></h2>

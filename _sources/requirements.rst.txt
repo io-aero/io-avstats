@@ -9,7 +9,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 Operating System
 ------------------
 
-Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.
+Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.
 
 For the Windows operating systems, only additional the functionality of the ``make`` tool must be made available, e.g. via
 `Make for Windows <http://gnuwin32.sourceforge.net/packages/make.htm>`__\
@@ -22,13 +22,15 @@ The command-line shells supported are:
 
    * - Operating system
      - Command-line shell(s)
+   * - macOS
+     - zsh
    * - Ubuntu
      - bash
    * - Windows 10/11
      - cmd and PowerShell
 
-For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the script ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
+For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the scripts ``./scripts/run_prep_zsh_scripts.zsh`` (macOS) and ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
 
 `Python <https://docs.python.org/3/whatsnew/3.11.html>`__\
 ----------------------------------------------------------

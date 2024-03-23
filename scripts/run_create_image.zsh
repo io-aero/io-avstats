@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_create_image.sh: Create a Docker image.
+# run_create_image.zsh: Create a Docker image.
 #
 # ------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ export DOCKER_HUB_PUSH_DEFAULT=yes
 export IO_AERO_STREAMLIT_SERVER_PORT=8501
 export MODE=n/a
 
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
     echo "========================================================="
     echo "all     - All Streamlit applications"
     echo "---------------------------------------------------------"
@@ -22,26 +22,22 @@ if [ -z "$1" ]; then
     echo "pd1982  - Profiling Data for the US since 1982"
     echo "slara   - Association Rule Analysis"
     echo "---------------------------------------------------------"
-    read -p "Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
-    export APPLICATION="${APPLICATION}"
-
-    if [ -z "${APPLICATION}" ]; then
-        export APPLICATION=${APPLICATION_DEFAULT}
-    fi
+    read "?Enter the desired application name [default: ${APPLICATION_DEFAULT}] " APPLICATION
+    export APPLICATION="${APPLICATION:-$APPLICATION_DEFAULT}"
 else
     export APPLICATION=$1
 fi
 
-if [ -z "$2" ]; then
-    read -p "Push image to Docker Hub (yes / no) [default: ${DOCKER_HUB_PUSH_DEFAULT}] " DOCKER_HUB_PUSH
-    export DOCKER_HUB_PUSH="${DOCKER_HUB_PUSH}"
+if [[ -z "$2" ]]; then
+    read "?Push image to Docker Hub (yes / no) [default: ${DOCKER_HUB_PUSH_DEFAULT}] " DOCKER_HUB_PUSH
+    export DOCKER_HUB_PUSH="${DOCKER_HUB_PUSH:-$DOCKER_HUB_PUSH_DEFAULT}"
 else
     export DOCKER_HUB_PUSH=$2
 fi
 
-if [ -z "$3" ]; then
-    read -p "Clear Docker cache (yes / no) [default: ${DOCKER_CLEAR_CACHE_DEFAULT}] " DOCKER_CLEAR_CACHE
-    export DOCKER_CLEAR_CACHE="${DOCKER_CLEAR_CACHE}"
+if [[ -z "$3" ]]; then
+    read "?Clear Docker cache (yes / no) [default: ${DOCKER_CLEAR_CACHE_DEFAULT}] " DOCKER_CLEAR_CACHE
+    export DOCKER_CLEAR_CACHE="${DOCKER_CLEAR_CACHE:-$DOCKER_CLEAR_CACHE_DEFAULT}"
 else
     export DOCKER_CLEAR_CACHE=$3
 fi
@@ -74,11 +70,10 @@ echo "--------------------------------------------------------------------------
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "================================================================================"
 
-if [ "${APPLICATION}" = "all" ]; then
+if [[ "${APPLICATION}" == "all" ]]; then
     ( ./scripts/run_create_image.sh ae1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     ( ./scripts/run_create_image.sh pd1982  "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
     ( ./scripts/run_create_image.sh slara   "${DOCKER_HUB_PUSH}" "${DOCKER_CLEAR_CACHE}" )
-    goto END_OF_SCRIPT
 fi
 
 rm -rf tmp/upload
@@ -87,23 +82,23 @@ mkdir -p tmp/upload
 rm -rf tmp/docs/img
 mkdir -p tmp/docs/img
 
-if [ "${DOCKER_CLEAR_CACHE}" = "yes" ]; then
+if [[ "${DOCKER_CLEAR_CACHE}" == "yes" ]]; then
     docker builder prune --all --force
 fi
 
 echo "Docker stop/rm ${APPLICATION} ................................ before containers:"
 docker ps -a
-docker ps    | find "${APPLICATION}" && docker stop       "${APPLICATION}"
-docker ps -a | find "${APPLICATION}" && docker rm --force "${APPLICATION}"
+docker ps    | grep "${APPLICATION}" && docker stop       "${APPLICATION}"
+docker ps -a | grep "${APPLICATION}" && docker rm --force "${APPLICATION}"
 echo "............................................................. after containers:"
 docker ps -a
 echo "............................................................. before images:"
 docker image ls
-docker image ls | find "${APPLICATION}" && docker rmi --force ioaero/"${APPLICATION}"
+docker image ls | grep "${APPLICATION}" && docker rmi --force ioaero/"${APPLICATION}"
 echo "............................................................. after images:"
 docker image ls
 
-if [ "${APPLICATION}" = "ae1982" ]; then
+if [[ "${APPLICATION}" == "ae1982" ]]; then
     export MODE=Std
 fi
 
@@ -114,13 +109,11 @@ docker build --build-arg APP="${APPLICATION}" \
 
 docker tag ioaero/"${APPLICATION}" ioaero/"${APPLICATION}"
 
-if [ "${DOCKER_HUB_PUSH}" = "yes" ]; then
+if [[ "${DOCKER_HUB_PUSH}" == "yes" ]]; then
     docker push ioaero/"${APPLICATION}"
 fi
 
-docker images -q -f "dangling=true" -f "label=autodelete=true"
-
-for IMAGE in $(docker images -q -f "dangling=true" -f "label=autodelete=true")
+docker images -q -f "dangling=true" -f "label=autodelete=true" | while read IMAGE
 do
     docker rmi -f "${IMAGE}"
 done
@@ -131,6 +124,4 @@ rm -rf tmp/docs/img
 echo ""
 echo "--------------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
-echo "--------------------------------------------------------------------------------"
-echo "End   $0"
-echo "================================================================================"
+echo

@@ -48,7 +48,6 @@ if ["%1"] EQU [""] (
     echo u_p_d   - Complete processing of a modifying MS Access file
     echo l_n_a   - Load NTSB MS Access database data into PostgreSQL
     echo -----------------------------------------------------------------------
-    echo -----------------------------------------------------------------------
     echo c_p_d   - Cleansing PostgreSQL data
     echo c_l_l   - Correct decimal US latitudes and longitudes
     echo f_n_a   - Find the nearest airports

@@ -1,10 +1,8 @@
-#!/bin/bash
-
-set -e
+#!/bin/zsh -e
 
 # ------------------------------------------------------------------------------
 #
-# run_IO_AERO_pytest.sh: Process IO-AVSTATS tasks.
+# run_io_avstats_pytest.zsh: Process IO-AVSTATS tasks.
 #
 # ------------------------------------------------------------------------------
 
@@ -27,18 +25,22 @@ export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
 export IO_AERO_POSTGRES_VERSION=16.2
 
+export IO_AERO_APPLICATION=
+export IO_AERO_COMPOSE_TASK=
+export IO_AERO_COMPOSE_TASK_DEFAULT=logs
+export IO_AERO_CONTAINER=
+export IO_AERO_CONTAINER_DEFAULT="*"
 export IO_AERO_MSEXCEL=
 export IO_AERO_TASK=
-export IO_AERO_TASK_DEFAULT=version
+export IO_AERO_TASK_DEFAULT=r_s_a
 
 export PYTHONPATH=.
 
-shopt -s nocasematch
+setopt nocasematch
 
 if [ -z "$1" ]; then
     echo "==================================================================="
-    echo "u_p_d   - Complete processing of a modifying MS Access file"
-    echo "l_n_a   - Load NTSB MS Access database data into PostgreSQL"
+    echo "r_s_a   - Run the IO-AVSTATS application"
     echo "-------------------------------------------------------------------"
     echo "c_p_d   - Cleansing PostgreSQL data"
     echo "c_l_l   - Correct decimal US latitudes and longitudes"
@@ -101,34 +103,6 @@ if [ "${IO_AERO_TASK}" = "l_c_d" ]; then
         export IO_AERO_MSEXCEL=${IO_AERO_MSEXCEL}
     else
         export IO_AERO_MSEXCEL=$2
-    fi
-fi
-
-if [ "${IO_AERO_TASK}" = "l_n_a" ]; then
-    if [ -z "$2" ]; then
-        echo "==================================================================="
-        ls -ll ${IO_AERO_NTSB_WORK_DIR}/*.mdb
-        echo "-------------------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
-        export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
-    else
-        export IO_AERO_MSACCESS=$2
-    fi
-fi
-
-if [ "${IO_AERO_TASK}" = "u_p_d" ]; then
-    if [ -z "$2" ]; then
-        echo "==================================================================="
-        echo "avall   - Data from January 1, 2008 to today"
-        echo "Pre2008 - Data from January 1, 1982 to December 31, 2007"
-        echo "upDDMON - New additions and updates until DD day in the month MON"
-        echo "-------------------------------------------------------------------"
-        # shellcheck disable=SC2162
-        read -p "Enter the stem name of the desired MS Access database file " IO_AERO_MSACCESS
-        export IO_AERO_MSACCESS=${IO_AERO_MSACCESS}
-    else
-        export IO_AERO_MSACCESS=$2
     fi
 fi
 
@@ -229,13 +203,10 @@ elif [ "${IO_AERO_TASK}" = "l_c_d" ]; then
     fi
 
 # ---------------------------------------------------------------------------
-# Load NTSB MS Access database data into PostgreSQL.
+# Running a Streamlit application.
 # ---------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
-    if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t "${IO_AERO_TASK}" -m "${IO_AERO_MSACCESS}" ); then
+elif [ "${IO_AERO_TASK}" = "r_s_a" ]; then
+    if ! ( pipenv run streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
         exit 255
     fi
 
@@ -243,38 +214,15 @@ elif [ "${IO_AERO_TASK}" = "l_n_a" ]; then
 # Setting up the PostgreSQL database container.
 # ---------------------------------------------------------------------------
 elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
+    if ! ( ./scripts/run_setup_postgresql.zsh ); then
         exit 255
     fi
 
 # ---------------------------------------------------------------------------
-# Complete processing of a modifying MS Access file.
-# ---------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "u_p_d" ]; then
-    if ! ( pipenv run python scripts/launcher.py -t d_n_a -m "${IO_AERO_MSACCESS}" ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t l_n_a -m "${IO_AERO_MSACCESS}" ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t c_l_L ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t f_n_a ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t v_n_d ); then
-        exit 255
-    fi
-    if ! ( pipenv run python scripts/launcher.py -t r_d_s ); then
-        exit 255
-    fi
-
-# ---------------------------------------------------------------------------
-# Program abort due to wrong input.
+# Program termination due to incorrect input.
 # ---------------------------------------------------------------------------
 else
-    echo "The processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
+    echo "The processing of the script run_io_avstats_pytest is aborted: unknown task='${IO_AERO_TASK}'"
     exit 255
 fi
 

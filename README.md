@@ -11,7 +11,7 @@ Currently, **`IO-AVSTATS`** includes the following applications:
 ## Operation
 
 The whole functionality of **IO-AVSTATS** can be used with the script `run_io_avstats`.
-The script is available in versions for Ubuntu and Windows 10/11 and provides the following functionality:
+The script is available in versions for macOS, Ubuntu and Windows 10/11 and provides the following functionality:
 
     r_s_a   - Run the IO-AVSTATS application
     ---------------------------------------------------------
@@ -66,18 +66,18 @@ Further IO-Aero software documentation can be found under the following links.
 
 ### 1. Directories
 
-| Directory         | Content                                     |
-|-------------------|---------------------------------------------|
-| .github/workflows | **GitHub Action** workflow.                 |
-| .streamlit        | Streamlit configuration files.              |
-| config            | Configuration files.                        |
-| data              | Application data related files.             |
-| docs              | Documentation files.                        |
-| ioavstats         | Python script files.                        |
-| resources         | Selected manuals and software.              |
-| scripts           | Supporting Ubuntu and Windows Scripts.      |
-| tests             | Scripts and data for **pytest**.            |
-| upload            | Cloud related upload directory.             |
+| Directory         | Content                                       |
+|-------------------|-----------------------------------------------|
+| .github/workflows | **GitHub Action** workflow.                   |
+| .streamlit        | Streamlit configuration files.                |
+| config            | Configuration files.                          |
+| data              | Application data related files.               |
+| docs              | Documentation files.                          |
+| ioavstats         | Python script files.                          |
+| resources         | Selected manuals and software.                |
+| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
+| tests             | Scripts and data for **pytest**.              |
+| upload            | Cloud related upload directory.               |
 
 ### 2. Files
 

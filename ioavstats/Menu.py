@@ -16,7 +16,10 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 credential_path = get_streamlit_file_path("credentials.toml")
 if not os.path.exists(credential_path):
     os.makedirs(os.path.dirname(credential_path), exist_ok=True)
-    shutil.copyfile(os.path.join(PROJECT_ROOT, ".streamlit\\credentials.toml"), credential_path)
+    shutil.copyfile(
+        os.path.join(PROJECT_ROOT, ".streamlit\\credentials.toml"),
+        credential_path,
+    )
 
 # flake8: noqa: E501
 st.set_page_config(

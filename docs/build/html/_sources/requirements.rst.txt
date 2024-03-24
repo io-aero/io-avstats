@@ -9,7 +9,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 Operating System
 ------------------
 
-Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.
+Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.
 
 For the Windows operating systems, only additional the functionality of the ``make`` tool must be made available, e.g. via
 `Make for Windows <http://gnuwin32.sourceforge.net/packages/make.htm>`__\
@@ -22,13 +22,15 @@ The command-line shells supported are:
 
    * - Operating system
      - Command-line shell(s)
+   * - macOS
+     - zsh
    * - Ubuntu
      - bash
    * - Windows 10/11
      - cmd and PowerShell
 
-For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the script ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
+For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the scripts ``./scripts/run_prep_zsh_scripts.zsh`` (macOS) and ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
 
 `Python <https://docs.python.org/3/whatsnew/3.11.html>`__\
 ----------------------------------------------------------
@@ -51,8 +53,8 @@ The project employs PostgreSQL for data storage and leverages Docker images prov
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
 
-`MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\
------------------------------------------------------------------------------------------------
+`MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\ - not for macOS
+---------------------------------------------------------------------------------------------------------------
 
 This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (\*.mdb and \*.accdb) files and Microsoft Office Excel (\*.xls, \*.xlsx, and \*.xlsb) files to other data sources.
 Connectivity to existing text files is also supported.

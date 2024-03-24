@@ -7,27 +7,33 @@ Python
 
 The project repository contains a ``scripts`` directory that includes operating system-specific installation scripts for Python, ensuring a smooth setup across various environments.
 
+- **macOS**: For users on macOS, the ``run_install_python.zsh`` script is provided. This zsh script is created to operate within the default shell environment of macOS, facilitating the Python installation process.
+
 - **Ubuntu**: For users on Ubuntu, the ``run_install_python.sh`` script is provided. This Bash script is created to operate within the default shell environment of Ubuntu, facilitating the Python installation process.
 
 - **Windows**: The ``run_install_python.bat`` script is tailored for users on Windows systems. It is designed to be run in the Command Prompt and automates the Python installation process on Windows.
 
-These scripts are named according to the convention ``run_install_python.<ext>``, where ``<ext>`` corresponds to the script extension appropriate for the target operating system and shell environment (e.g., `.bat` for Windows or `.sh` for Ubuntu Bash). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.
+These scripts are named according to the convention ``run_install_python.<ext>``, where ``<ext>`` corresponds to the script extension appropriate for the target operating system and shell environment (e.g. `.zsh` for macOS zsh, `.sh` for Ubuntu Bash or `.bat` for Windows). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.
 
 AWS Command Line Interface
 --------------------------
 
 Within the project's ``scripts`` directory, you will find a set of scripts specifically designed for the installation of the AWS Command Line Interface (AWS CLI). These scripts facilitate the installation process on different operating systems, ensuring a consistent and reliable setup.
 
+- **macOS**: macOS users should utilize the ``run_install_aws_cli.zsh`` script. This script is a zsh script that simplifies the AWS CLI installation on macOS systems by setting up the necessary repositories and installing the CLI via homebrew.
+
 - **Ubuntu**: Ubuntu users should utilize the ``run_install_aws_cli.sh`` script. This script is a Bash script that simplifies the AWS CLI installation on Ubuntu systems by setting up the necessary repositories and installing the CLI via apt-get.
 
 - **Windows**: The ``run_install_aws_cli.bat`` script is intended for Windows users. It automates the process of downloading and installing the latest version of the AWS CLI in the Windows Command Prompt environment.
 
-Each script is named following the pattern ``run_install_aws_cli.<ext>``, with ``<ext>`` being the respective script extension suitable for the target operating system and shell environment (e.g., `.bat` for Windows CMD or `.sh` for Ubuntu Bash). Users are advised to execute the corresponding script for their operating system to achieve an optimal AWS CLI installation experience.
+Each script is named following the pattern ``run_install_aws_cli.<ext>``, with ``<ext>`` being the respective script extension suitable for the target operating system and shell environment (e.g. `.zsh` for macOS zsh, `.sh` for Ubuntu Bash or `.bat` for Windows). Users are advised to execute the corresponding script for their operating system to achieve an optimal AWS CLI installation experience.
 
 Docker Desktop
 --------------
 
 The ``scripts`` directory contains scripts that assist with installing Docker Desktop on Ubuntu, facilitating an automated and streamlined setup.
+
+- **macOS**: The ``run_install_docker.zsh`` script is available for macOS users. This zsh script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system's package manager.
 
 - **Ubuntu**: The ``run_install_docker.sh`` script is available for Ubuntu users. This Bash script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system's package manager.
 

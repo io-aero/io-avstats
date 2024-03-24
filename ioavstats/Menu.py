@@ -5,7 +5,18 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 """IO-Aero Menu."""
+import os
+import shutil
+
 import streamlit as st
+from streamlit.file_util import get_streamlit_file_path
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+credential_path = get_streamlit_file_path("credentials.toml")
+if not os.path.exists(credential_path):
+    os.makedirs(os.path.dirname(credential_path), exist_ok=True)
+    shutil.copyfile(os.path.join(PROJECT_ROOT, ".streamlit\\credentials.toml"), credential_path)
 
 # flake8: noqa: E501
 st.set_page_config(

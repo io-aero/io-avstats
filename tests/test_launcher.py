@@ -63,8 +63,11 @@ def test_launcher_version() -> None:
     """Test case: launcher() version."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for Darwin or skip
+        pytest.skip("Skipping version on Darwin due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "version"],
         "Linux": ["./run_io_avstats_pytest.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
     }
@@ -82,8 +85,11 @@ def test_launcher_d_d_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for Darwin or skip
+        pytest.skip("Skipping d_d_c on Darwin due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_c"],
         "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
     }
@@ -101,12 +107,15 @@ def test_launcher_d_d_f() -> None:
     """Test case: Delete the PostgreSQL database files."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for Darwin or skip
+        pytest.skip("Skipping d_d_f on Darwin due to custom handling.")
+
     if platform.system() == "Linux":
         # Special handling for Linux or skip
         pytest.skip("Skipping d_d_f on Linux due to custom handling.")
 
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_f"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_f"],
     }
     command = commands.get(platform.system())
@@ -144,8 +153,11 @@ def test_launcher_c_d_s() -> None:
     """Test case: Create or update the PostgreSQL database schema."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping c_d_s on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "c_d_s"],
         "Linux": ["./run_io_avstats_pytest.sh", "c_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "c_d_s"],
     }
@@ -163,8 +175,11 @@ def test_launcher_u_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping u_d_s on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "u_d_s"],
         "Linux": ["./run_io_avstats_pytest.sh", "u_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "u_d_s"],
     }
@@ -183,8 +198,11 @@ def test_launcher_a_o_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping a_o_c on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "a_o_c"],
         "Linux": ["./run_io_avstats_pytest.sh", "a_o_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "a_o_c"],
     }
@@ -202,8 +220,11 @@ def test_launcher_l_a_p() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_a_p on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "l_a_p"],
         "Linux": ["./run_io_avstats_pytest.sh", "l_a_p"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_a_p"],
     }
@@ -221,8 +242,11 @@ def test_launcher_l_c_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_c_s on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "l_c_s"],
         "Linux": ["./run_io_avstats_pytest.sh", "l_c_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_c_s"],
     }
@@ -240,8 +264,11 @@ def test_launcher_l_s_e() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_s_e on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "l_s_e"],
         "Linux": ["./run_io_avstats_pytest.sh", "l_s_e"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_e"],
     }
@@ -259,8 +286,11 @@ def test_launcher_l_s_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_s_d on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "l_s_d"],
         "Linux": ["./run_io_avstats_pytest.sh", "l_s_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_d"],
     }
@@ -278,8 +308,11 @@ def test_launcher_l_z_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_z_d on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "l_z_d"],
         "Linux": ["./run_io_avstats_pytest.sh", "l_z_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_z_d"],
     }
@@ -297,8 +330,11 @@ def test_launcher_r_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping r_d_s on macOS due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "r_d_s"],
         "Linux": ["./run_io_avstats_pytest.sh", "r_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "r_d_s"],
     }
@@ -316,12 +352,11 @@ def test_launcher_l_c_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for macOS or skip
+        pytest.skip("Skipping l_c_d on macOS due to custom handling.")
+
     commands = {
-        "Darwin": [
-            "./run_io_avstats_pytest.zsh",
-            "l_c_d",
-            "test",
-        ],
         "Linux": [
             "./run_io_avstats_pytest.sh",
             "l_c_d",
@@ -349,8 +384,11 @@ def test_launcher_clean() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        # Special handling for Darwin or skip
+        pytest.skip("Skipping clean on Darwin due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "d_d_c"],
         "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
     }

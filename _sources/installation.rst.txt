@@ -33,6 +33,8 @@ Docker Desktop
 
 The ``scripts`` directory contains scripts that assist with installing Docker Desktop on Ubuntu, facilitating an automated and streamlined setup.
 
+- **macOS**: The ``run_install_docker.zsh`` script is available for macOS users. This zsh script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system's package manager.
+
 - **Ubuntu**: The ``run_install_docker.sh`` script is available for Ubuntu users. This Bash script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system's package manager.
 
 - **Windows**: For Windows users, it is recommended to download and install Docker Desktop using the traditional installer available at `Docker Desktop for Windows <https://www.docker.com/products/docker-desktop>`_. This approach guarantees the most stable version and is tailored to integrate seamlessly with Windows-specific features and configurations.

@@ -9,6 +9,7 @@
 /.settings.io_aero.toml
 /__docs/
 /__mkdocs.yml
+/act_secrets
 /build/
 /cloud.zip
 /data/*.backup.sql

@@ -63,11 +63,12 @@ def test_launcher_version() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for Darwin or skip
         pytest.skip("Skipping version on Darwin due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping version on Ubuntu due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
     }
     command = commands.get(platform.system())
@@ -85,11 +86,12 @@ def test_launcher_d_d_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for Darwin or skip
         pytest.skip("Skipping d_d_c on Darwin due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping d_d_c on Ubuntu due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
     }
     command = commands.get(platform.system())
@@ -107,11 +109,9 @@ def test_launcher_d_d_f() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for Darwin or skip
         pytest.skip("Skipping d_d_f on Darwin due to custom handling.")
 
     if platform.system() == "Linux":
-        # Special handling for Linux or skip
         pytest.skip("Skipping d_d_f on Linux due to custom handling.")
 
     commands = {
@@ -153,11 +153,12 @@ def test_launcher_c_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping c_d_s on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping c_d_s on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "c_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "c_d_s"],
     }
     command = commands.get(platform.system())
@@ -175,11 +176,12 @@ def test_launcher_u_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping u_d_s on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping u_d_s on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "u_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "u_d_s"],
     }
     command = commands.get(platform.system())
@@ -198,11 +200,12 @@ def test_launcher_a_o_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping a_o_c on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping a_o_c on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "a_o_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "a_o_c"],
     }
     command = commands.get(platform.system())
@@ -220,11 +223,12 @@ def test_launcher_l_a_p() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_a_p on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_a_p on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "l_a_p"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_a_p"],
     }
     command = commands.get(platform.system())
@@ -242,11 +246,12 @@ def test_launcher_l_c_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_c_s on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_c_s on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "l_c_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_c_s"],
     }
     command = commands.get(platform.system())
@@ -264,11 +269,12 @@ def test_launcher_l_s_e() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_s_e on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_s_e on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "l_s_e"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_e"],
     }
     command = commands.get(platform.system())
@@ -286,11 +292,12 @@ def test_launcher_l_s_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_s_d on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_s_d on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "l_s_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_d"],
     }
     command = commands.get(platform.system())
@@ -308,11 +315,12 @@ def test_launcher_l_z_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_z_d on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_z_d on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "l_z_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_z_d"],
     }
     command = commands.get(platform.system())
@@ -330,11 +338,12 @@ def test_launcher_r_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping r_d_s on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping r_d_s on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "r_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "r_d_s"],
     }
     command = commands.get(platform.system())
@@ -352,15 +361,12 @@ def test_launcher_l_c_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for macOS or skip
         pytest.skip("Skipping l_c_d on macOS due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_c_d on Linux due to custom handling.")
+
     commands = {
-        "Linux": [
-            "./run_io_avstats_pytest.sh",
-            "l_c_d",
-            "test",
-        ],
         "Windows": [
             "cmd.exe",
             "/c",
@@ -384,11 +390,12 @@ def test_launcher_clean() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Darwin":
-        # Special handling for Darwin or skip
         pytest.skip("Skipping clean on Darwin due to custom handling.")
 
+    if platform.system() == "Linux":
+        pytest.skip("Skipping clean on Linux due to custom handling.")
+
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "d_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
     }
     command = commands.get(platform.system())

@@ -79,7 +79,6 @@ echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "PYTHONPATH               : ${PYTHONPATH}"
 echo "-------------------------------------------------------------------"
 echo "TASK                     : ${IO_AERO_TASK}"
-echo "APPLICATION              : ${IO_AERO_APPLICATION}"
 echo "-------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
@@ -117,8 +116,7 @@ echo "-----------------------------------------------------------------------"
 echo "End   $0"
 echo "======================================================================="
 
-# Closing the log file
+# Closing the log files
 exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
 
-# Closing the log file
 log_message "Script finished."

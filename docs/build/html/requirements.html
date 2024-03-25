@@ -183,6 +183,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_03_22_log_up22MAR.html">2024.03.22 up22MAR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_03_15_log_up15MAR.html">2024.03.15 up15MAR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_03_08_log_up08MAR.html">2024.03.08 up08MAR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_03_01_log_up01MAR.html">2024.03.01 up01MAR</a></li>
@@ -259,7 +260,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
 <h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">#</a></h2>
-<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.</p>
+<p>Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.</p>
 <p>For the Windows operating systems, only additional the functionality of the <code class="docutils literal notranslate"><span class="pre">make</span></code> tool must be made available, e.g. via
 <a class="reference external" href="http://gnuwin32.sourceforge.net/packages/make.htm">Make for Windows</a></p>
 <p>The command-line shells supported are:</p>
@@ -275,17 +276,20 @@ Regarding the corresponding software versions, you will find the detailed inform
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Ubuntu</p></td>
+<tr class="row-even"><td><p>macOS</p></td>
+<td><p>zsh</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu</p></td>
 <td><p>bash</p></td>
 </tr>
-<tr class="row-odd"><td><p>Windows 10/11</p></td>
+<tr class="row-even"><td><p>Windows 10/11</p></td>
 <td><p>cmd and PowerShell</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the script <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
+<p>For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the scripts <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_zsh_scripts.zsh</span></code> (macOS) and <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
 </section>
 <section id="python">
 <h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">#</a></h2>
@@ -305,8 +309,8 @@ Utilizing the AWS CLI ensures efficient and reliable access to the necessary Pyt
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.</p>
 </section>
-<section id="ms-access-database-engine">
-<h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a><a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">#</a></h2>
+<section id="ms-access-database-engine-not-for-macos">
+<h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a>- not for macOS<a class="headerlink" href="#ms-access-database-engine-not-for-macos" title="Link to this heading">#</a></h2>
 <p>This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (*.mdb and *.accdb) files and Microsoft Office Excel (*.xls, *.xlsx, and *.xlsb) files to other data sources.
 Connectivity to existing text files is also supported.</p>
 </section>
@@ -378,7 +382,7 @@ Additionally, the project includes predefined connection configurations for DBea
 <li><a class="reference internal" href="#python">Python</a></li>
 <li><a class="reference internal" href="#aws-command-line-interface">AWS Command Line Interface</a></li>
 <li><a class="reference internal" href="#docker-desktop">Docker Desktop</a></li>
-<li><a class="reference internal" href="#ms-access-database-engine">MS Access Database Engine</a></li>
+<li><a class="reference internal" href="#ms-access-database-engine-not-for-macos">MS Access Database Engine- not for macOS</a></li>
 <li><a class="reference internal" href="#dbeaver-community-optional">DBeaver Community - optional</a></li>
 </ul>
 </li>

@@ -114,8 +114,7 @@ echo "-----------------------------------------------------------------------"
 echo "End   $0"
 echo "======================================================================="
 
-# Closing the log file
+# Closing the log files
 exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
 
-# Closing the log file
 log_message "Script finished."

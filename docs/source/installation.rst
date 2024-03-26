@@ -44,13 +44,6 @@ Please select and execute the appropriate script for your operating system from 
 MS Access Database Engine
 -------------------------
 
-- **Ubuntu Bash Shell**: The necessary software can be downloaded with the package manager ``apt`` as follows:
-
-.. code-block:: bash
-
-    sudo apt-get update -y
-    sudo apt-get install -y unixodbc-dev
-
 - **Windows**: The software can be downloaded from `here <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\  and then installed according to the instructions provided.
 
 DBeaver - optional

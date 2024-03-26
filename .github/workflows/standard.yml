@@ -146,7 +146,7 @@ jobs:
         run: make conda-dev
 
       - name: Run pytest - dev
-        run: make isort black lint docs tests
+        run: make black lint docs tests
 
       - name: Coveralls
         if: ${{ env.IO_COVERALLS == 'true' && runner.os == 'Linux' }}

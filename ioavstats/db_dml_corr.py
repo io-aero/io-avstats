@@ -379,7 +379,6 @@ def _upd_table_events_row(cur_pg: cursor) -> None:
 # ------------------------------------------------------------------
 # Update latitude and longitude.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _upd_table_events_row_io_lat_lng(  # pylint: disable=too-many-arguments
     ev_id: str,
     io_dec_lat_lng_actions: str,
@@ -413,7 +412,6 @@ def _upd_table_events_row_io_lat_lng(  # pylint: disable=too-many-arguments
 # ------------------------------------------------------------------
 # Update next airport data.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _upd_table_events_row_next_airport(  # pylint: disable=too-many-arguments
     ev_id: str,
     nearest_airport_distance: float,

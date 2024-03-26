@@ -4307,7 +4307,6 @@ def _sql_query_far_parts() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_finding_codes() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # flake8: noqa: E501
         # pylint: disable=line-too-long
         cur.execute(
             """
@@ -4428,7 +4427,6 @@ def _sql_query_md_codes_phase() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_occurrence_codes() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # flake8: noqa: E501
         # pylint: disable=line-too-long
         cur.execute(
             """

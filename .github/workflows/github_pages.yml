@@ -69,7 +69,7 @@ jobs:
         run: make conda-dev
 
       - name: Run docs - dev
-        run: make isort black docs
+        run: make black docs
 
       - name: Deploy to GitHub Pages
         if: ${{ vars.IO_LOCAL != 'true' }}

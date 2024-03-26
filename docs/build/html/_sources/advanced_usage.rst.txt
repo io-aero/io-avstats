@@ -3,7 +3,7 @@ Advanced Usage
 ==============
 
 The main tool for operating **IO-AVSTATS** is the **``run_io_avstats``** script.
-The script is available in a Windows command line version and in a Linux bash shell version.
+The script is fully available in the Windows version and in a greatly reduced version for macOS and Ubuntu.
 
 Overview
 ========
@@ -47,8 +47,7 @@ The following tasks can be executed with this script:
 +--------+-------------------------------------------------------+-------------------------------+
 | r_d_s  | Refresh the PostgreSQL database schema                |                               |
 +--------+-------------------------------------------------------+-------------------------------+
-| r_s_a  | Run a Streamlit application                           | single Streamlit app, e.g.    |
-|        |                                                       | ae1982                        |
+| r_s_a  | Run a Streamlit application                           |                               |
 +--------+-------------------------------------------------------+-------------------------------+
 | s_d_c  | Set up the IO-AVSTATS-DB PostgreSQL database container|                               |
 +--------+-------------------------------------------------------+-------------------------------+

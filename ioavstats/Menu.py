@@ -21,7 +21,6 @@ if not os.path.exists(credential_path):
         credential_path,
     )
 
-# flake8: noqa: E501
 st.set_page_config(
     layout="wide",
     # pylint: disable=line-too-long

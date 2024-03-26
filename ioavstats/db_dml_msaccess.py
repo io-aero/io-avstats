@@ -8,24 +8,19 @@ import platform
 import shutil
 import subprocess
 import zipfile
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pyodbc  # type: ignore
 import requests
-from iocommon import db_utils
-from iocommon import io_config
-from iocommon import io_glob
-from iocommon import io_utils
-from psycopg import connection
-from psycopg import cursor
-from psycopg.errors import ForeignKeyViolation  # pylint: disable=no-name-in-module
-from psycopg.errors import UniqueViolation  # pylint: disable=no-name-in-module
+from iocommon import db_utils, io_config, io_glob, io_utils
+from psycopg import connection, cursor
+from psycopg.errors import (
+    ForeignKeyViolation,  # pylint: disable=no-name-in-module
+    UniqueViolation,  # pylint: disable=no-name-in-module
+)
 
-from ioavstats import glob_local
-from ioavstats import utils
-from ioavstats import utils_msaccess
+from ioavstats import glob_local, utils, utils_msaccess
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -46,14 +41,14 @@ logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------
 # Check for DDL changes.
 # ------------------------------------------------------------------
-# flake8: noqa
 # pylint: disable=too-many-lines
 def _check_ddl_changes(msaccess: str) -> None:
     """Check for DDL changes."""
     logger.debug(io_glob.LOGGER_START)
 
     download_work_dir = os.path.join(
-        os.getcwd(), io_config.settings.download_work_dir.replace("/", os.sep)
+        os.getcwd(),
+        io_config.settings.download_work_dir.replace("/", os.sep),
     )
 
     shutil.copy(
@@ -74,13 +69,13 @@ def _check_ddl_changes(msaccess: str) -> None:
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
     io_utils.progress_msg(
-        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_mdb)
+        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_mdb),
     )
 
     if not os.path.exists(msaccess_mdb):
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb)
+            glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb),
         )
 
     msaccess_sql = os.path.join(
@@ -90,7 +85,7 @@ def _check_ddl_changes(msaccess: str) -> None:
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
     io_utils.progress_msg(
-        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_sql)
+        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_sql),
     )
 
     razorsql_jar_file = ""
@@ -105,23 +100,23 @@ def _check_ddl_changes(msaccess: str) -> None:
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_908.replace("{os}", platform.system())
+            glob_local.ERROR_00_908.replace("{os}", platform.system()),
         )
 
     # INFO.00.052 razorsql_jar_file='{razorsql_jar_file}'
     io_utils.progress_msg(
-        glob_local.INFO_00_052.replace("{razorsql_jar_file}", razorsql_jar_file)
+        glob_local.INFO_00_052.replace("{razorsql_jar_file}", razorsql_jar_file),
     )
 
     if not Path(razorsql_jar_file).is_file():
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_932.replace("{filename}", razorsql_jar_file)
+            glob_local.ERROR_00_932.replace("{filename}", razorsql_jar_file),
         )
 
     # INFO.00.053 razorsql_java_path='{razorsql_java_path}'"
     io_utils.progress_msg(
-        glob_local.INFO_00_053.replace("{razorsql_java_path}", razorsql_java_path)
+        glob_local.INFO_00_053.replace("{razorsql_java_path}", razorsql_java_path),
     )
 
     subprocess.run(
@@ -173,8 +168,9 @@ def _compare_ddl(msaccess: str) -> None:
     )
 
     # pylint: disable=consider-using-with
-    reference_file = open(
-        reference_filename, "r", encoding=io_glob.FILE_ENCODING_DEFAULT
+    reference_file = open(  # noqa: SIM115
+        reference_filename,
+        encoding=io_glob.FILE_ENCODING_DEFAULT,
     )
     reference_file_lines = reference_file.readlines()
     reference_file.close()
@@ -185,7 +181,10 @@ def _compare_ddl(msaccess: str) -> None:
     )
 
     # pylint: disable=consider-using-with
-    msaccess_file = open(msaccess_filename, "r", encoding=io_glob.FILE_ENCODING_DEFAULT)
+    msaccess_file = open(  # noqa: SIM115
+        msaccess_filename,
+        encoding=io_glob.FILE_ENCODING_DEFAULT,
+    )
     msaccess_file_lines = msaccess_file.readlines()
     msaccess_file.close()
 
@@ -196,7 +195,7 @@ def _compare_ddl(msaccess: str) -> None:
             glob_local.ERROR_00_911.replace("{filename}", msaccess_filename)
             .replace("{filename_lines}", str(len(msaccess_file_lines)))
             .replace("{reference}", reference_filename)
-            .replace("{reference_lines}", str(len(reference_file_lines)))
+            .replace("{reference_lines}", str(len(reference_file_lines))),
         )
 
     for line_no, line in enumerate(reference_file_lines):
@@ -204,24 +203,27 @@ def _compare_ddl(msaccess: str) -> None:
             # INFO.00.009 line no.: {line_no}
             # INFO.00.010 {status} '{line}'
             io_utils.progress_msg_core(
-                glob_local.INFO_00_009.replace("{line_no}", str(line_no))
+                glob_local.INFO_00_009.replace("{line_no}", str(line_no)),
             )
             io_utils.progress_msg_core(
                 glob_local.INFO_00_010.replace("{status}", "expected").replace(
-                    "{line}", line
-                )
+                    "{line}",
+                    line,
+                ),
             )
             io_utils.progress_msg_core(
                 glob_local.INFO_00_010.replace("{status}", "received").replace(
-                    "{line}", msaccess_file_lines[line_no]
-                )
+                    "{line}",
+                    msaccess_file_lines[line_no],
+                ),
             )
             # ERROR.00.910 The schema definition in file'{filename}'
             # does not match the reference definition in file'{reference}'
             io_utils.terminate_fatal(
                 glob_local.ERROR_00_910.replace(
-                    "{filename}", msaccess_filename
-                ).replace("{reference}", reference_filename)
+                    "{filename}",
+                    msaccess_filename,
+                ).replace("{reference}", reference_filename),
             )
 
     # INFO.00.012 The DDL script for the MS Access database '{msaccess}'
@@ -279,7 +281,7 @@ def _delete_ntsb_data(
             """,
             )
             io_utils.progress_msg(
-                f"Table {table:<15} - number rows deleted : {str(no_rows):>8}"
+                f"Table {table:<15} - number rows deleted : {no_rows!s:>8}",
             )
             conn_pg.commit()
 
@@ -290,7 +292,8 @@ def _delete_ntsb_data(
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events, cur_pg
+        io_config.settings.download_file_sequence_of_events,
+        cur_pg,
     )
 
     cur_pg.close()
@@ -309,6 +312,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     """Load data from MS Access to the PostgreSQL database.
 
     Args:
+    ----
         msaccess (str):
             The MS Access database file without file extension.
 
@@ -328,7 +332,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     if not os.path.isfile(filename):
         # ERROR.00.912 The MS Access database file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_912.replace("{filename}", filename)
+            glob_local.ERROR_00_912.replace("{filename}", filename),
         )
 
     conn_ma, cur_ma = utils_msaccess.get_msaccess_cursor(filename)
@@ -390,7 +394,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
         else:
             # INFO.00.021 The following database table is not processed: '{msaccess}'
             io_utils.progress_msg(
-                glob_local.INFO_00_021.replace("{msaccess}", table_info.table_name)
+                glob_local.INFO_00_021.replace("{msaccess}", table_info.table_name),
             )
 
     # ------------------------------------------------------------------
@@ -400,71 +404,131 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     # Level 1 - without FK
     if is_table_events:
         _load_table_events(
-            msaccess, glob_local.TABLE_NAME_EVENTS, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_EVENTS,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
 
     # Level 2 - FK: ev_id
     if is_table_aircraft:
         _load_table_aircraft(
-            msaccess, glob_local.TABLE_NAME_AIRCRAFT, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_AIRCRAFT,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_dt_events:
         _load_table_dt_events(
-            msaccess, glob_local.TABLE_NAME_DT_EVENTS, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_DT_EVENTS,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_ntsb_admin:
         _load_table_ntsb_admin(
-            msaccess, glob_local.TABLE_NAME_NTSB_ADMIN, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_NTSB_ADMIN,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
 
     # Level 3 - FK: ev_id & Aircraft_Key
     if is_table_dt_aircraft:
         _load_table_dt_aircraft(
-            msaccess, glob_local.TABLE_NAME_DT_AIRCRAFT, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_DT_AIRCRAFT,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_engines:
         _load_table_engines(
-            msaccess, glob_local.TABLE_NAME_ENGINES, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_ENGINES,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_events_sequence:
         _load_table_events_sequence(
-            msaccess, glob_local.TABLE_NAME_EVENTS_SEQUENCE, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_EVENTS_SEQUENCE,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_findings:
         _load_table_findings(
-            msaccess, glob_local.TABLE_NAME_FINDINGS, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_FINDINGS,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_flight_crew:
         _load_table_flight_crew(
-            msaccess, glob_local.TABLE_NAME_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_FLIGHT_CREW,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_injury:
         _load_table_injury(
-            msaccess, glob_local.TABLE_NAME_INJURY, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_INJURY,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_narratives:
         _load_table_narratives(
-            msaccess, glob_local.TABLE_NAME_NARRATIVES, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_NARRATIVES,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_occurrences:
         _load_table_occurrences(
-            msaccess, glob_local.TABLE_NAME_OCCURRENCES, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_OCCURRENCES,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
 
     # Level 4 - FK: ev_id & Aircraft_Key & crew_no
     if is_table_dt_flight_crew:
         _load_table_dt_flight_crew(
-            msaccess, glob_local.TABLE_NAME_DT_FLIGHT_CREW, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_DT_FLIGHT_CREW,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
     if is_table_flight_time:
         _load_table_flight_time(
-            msaccess, glob_local.TABLE_NAME_FLIGHT_TIME, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_FLIGHT_TIME,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
 
     # Level 4 - FK: ev_id & Aircraft_Key & Occurrence_No
     if is_table_seq_of_events:
         _load_table_seq_of_events(
-            msaccess, glob_local.TABLE_NAME_SEQ_OF_EVENTS, cur_ma, conn_pg, cur_pg
+            msaccess,
+            glob_local.TABLE_NAME_SEQ_OF_EVENTS,
+            cur_ma,
+            conn_pg,
+            cur_pg,
         )
 
     # ------------------------------------------------------------------
@@ -503,7 +567,7 @@ def _load_table_aircraft(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -517,7 +581,7 @@ def _load_table_aircraft(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -868,17 +932,17 @@ def _load_table_aircraft(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key}"
+                        f"aircraft_key={row_mdb.Aircraft_Key}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -902,7 +966,7 @@ def _load_table_dt_aircraft(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -915,7 +979,7 @@ def _load_table_dt_aircraft(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -952,11 +1016,11 @@ def _load_table_dt_aircraft(
                SET lchg_date = %s,
                    lchg_userid = %s,
                    io_last_seen_ntsb = %s
-             WHERE code = %s 
-               AND col_name = %s 
-               AND aircraft_key = %s 
+             WHERE code = %s
+               AND col_name = %s
+               AND aircraft_key = %s
                AND ev_id = %s
-               AND NOT (lchg_date = %s 
+               AND NOT (lchg_date = %s
                     AND lchg_userid = %s);
             """,
                 (
@@ -979,19 +1043,19 @@ def _load_table_dt_aircraft(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"col_name={row_mdb.col_name} "
-                        + f"code={row_mdb.code}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"col_name={row_mdb.col_name} "
+                        f"code={row_mdb.code}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1015,7 +1079,7 @@ def _load_table_dt_events(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -1028,7 +1092,7 @@ def _load_table_dt_events(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -1062,10 +1126,10 @@ def _load_table_dt_events(
                SET lchg_date = %s,
                    lchg_userid = %s,
                    io_last_seen_ntsb = %s
-             WHERE code = %s 
-               AND col_name = %s 
+             WHERE code = %s
+               AND col_name = %s
                AND ev_id = %s
-               AND NOT (lchg_date = %s 
+               AND NOT (lchg_date = %s
                     AND lchg_userid = %s);
             """,
                 (
@@ -1087,18 +1151,18 @@ def _load_table_dt_events(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"col_name={row_mdb.col_name} "
-                        + f"code={row_mdb.code}"
+                        f"col_name={row_mdb.col_name} "
+                        f"code={row_mdb.code}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1122,7 +1186,7 @@ def _load_table_dt_flight_crew(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -1135,7 +1199,7 @@ def _load_table_dt_flight_crew(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -1188,20 +1252,20 @@ def _load_table_dt_flight_crew(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"Aircraft_Key={row_mdb.Aircraft_Key} "
-                        + f"crew_no={row_mdb.crew_no} "
-                        + f"col_name={row_mdb.col_name} "
-                        + f"code={row_mdb.code}"
+                        f"Aircraft_Key={row_mdb.Aircraft_Key} "
+                        f"crew_no={row_mdb.crew_no} "
+                        f"col_name={row_mdb.col_name} "
+                        f"code={row_mdb.code}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1225,7 +1289,7 @@ def _load_table_engines(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -1238,7 +1302,7 @@ def _load_table_engines(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -1328,18 +1392,18 @@ def _load_table_engines(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"eng_no={row_mdb.eng_no}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"eng_no={row_mdb.eng_no}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -1364,7 +1428,7 @@ def _load_table_events(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -1377,7 +1441,7 @@ def _load_table_events(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -1632,7 +1696,7 @@ def _load_table_events(
             count_insert += 1
             if msaccess not in [glob_local.MSACCESS_AVALL, glob_local.MSACCESS_PRE2008]:
                 io_utils.progress_msg(
-                    f"Inserted ev_id={row_mdb.ev_id} ev_year={row_mdb.ev_year}"
+                    f"Inserted ev_id={row_mdb.ev_id} ev_year={row_mdb.ev_year}",
                 )
         except UniqueViolation:
             if msaccess == glob_local.MSACCESS_PRE2008:
@@ -2122,18 +2186,17 @@ def _load_table_events(
                     glob_local.MSACCESS_PRE2008,
                 ]:
                     io_utils.progress_msg(
-                        f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"ev_year={row_mdb.ev_year}"
+                        f"Updated  ev_id={row_mdb.ev_id} ev_year={row_mdb.ev_year}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2157,7 +2220,7 @@ def _load_table_events_sequence(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2170,7 +2233,7 @@ def _load_table_events_sequence(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2237,18 +2300,18 @@ def _load_table_events_sequence(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"Aircraft_Key={row_mdb.Aircraft_Key} "
-                        + f"Occurrence_No={row_mdb.Occurrence_No}"
+                        f"Aircraft_Key={row_mdb.Aircraft_Key} "
+                        f"Occurrence_No={row_mdb.Occurrence_No}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2272,7 +2335,7 @@ def _load_table_findings(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2285,7 +2348,7 @@ def _load_table_findings(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2348,19 +2411,19 @@ def _load_table_findings(
                    lchg_date = %s,
                    lchg_userid = %s,
                    io_last_seen_ntsb = %s
-             WHERE finding_no = %s 
-               AND aircraft_key = %s 
+             WHERE finding_no = %s
+               AND aircraft_key = %s
                AND ev_id = %s
-               AND NOT (finding_code = %s 
-                    AND finding_description = %s 
-                    AND category_no = %s 
-                    AND subcategory_no = %s 
-                    AND section_no = %s 
-                    AND subsection_no = %s 
-                    AND modifier_no = %s 
-                    AND cause_factor = %s 
-                    AND cm_inpc = %s 
-                    AND lchg_date = %s 
+               AND NOT (finding_code = %s
+                    AND finding_description = %s
+                    AND category_no = %s
+                    AND subcategory_no = %s
+                    AND section_no = %s
+                    AND subsection_no = %s
+                    AND modifier_no = %s
+                    AND cause_factor = %s
+                    AND cm_inpc = %s
+                    AND lchg_date = %s
                     AND lchg_userid = %s);
             """,
                 (
@@ -2400,18 +2463,18 @@ def _load_table_findings(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"finding_no={row_mdb.finding_no}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"finding_no={row_mdb.finding_no}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2435,7 +2498,7 @@ def _load_table_flight_crew(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2448,7 +2511,7 @@ def _load_table_flight_crew(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2593,18 +2656,18 @@ def _load_table_flight_crew(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"crew_no={row_mdb.crew_no}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"crew_no={row_mdb.crew_no}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2628,7 +2691,7 @@ def _load_table_flight_time(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2641,7 +2704,7 @@ def _load_table_flight_time(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2697,20 +2760,20 @@ def _load_table_flight_time(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"crew_no={row_mdb.crew_no} "
-                        + f"flight_type={row_mdb.flight_type} "
-                        + f"flight_craft={row_mdb.flight_craft}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"crew_no={row_mdb.crew_no} "
+                        f"flight_type={row_mdb.flight_type} "
+                        f"flight_craft={row_mdb.flight_craft}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2734,7 +2797,7 @@ def _load_table_injury(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2747,7 +2810,7 @@ def _load_table_injury(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2801,19 +2864,19 @@ def _load_table_injury(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"inj_person_category={row_mdb.inj_person_category} "
-                        + f"injury_level={row_mdb.injury_level}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"inj_person_category={row_mdb.inj_person_category} "
+                        f"injury_level={row_mdb.injury_level}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2821,7 +2884,7 @@ def _load_table_injury(
 # ------------------------------------------------------------------
 # Determine and load city averages.
 # ------------------------------------------------------------------
-def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
+def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     """Determine and load city averages."""
     logger.debug(io_glob.LOGGER_START)
 
@@ -2842,9 +2905,9 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
 
         # INFO.00.063 Processed data source '{data_source}'
         io_utils.progress_msg(
-            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE)
+            glob_local.INFO_00_063.replace("{data_source}", glob_local.SOURCE_AVERAGE),
         )
-        io_utils.progress_msg(f"Number rows deleted  : {str(cur_pg.rowcount):>8}")
+        io_utils.progress_msg(f"Number rows deleted  : {cur_pg.rowcount!s:>8}")
         io_utils.progress_msg("-" * 80)
 
     # ------------------------------------------------------------------
@@ -2878,7 +2941,7 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -2920,13 +2983,13 @@ def _load_table_io_lat_lng_average(conn_pg, cur_pg) -> None:
     cur_pg_2.close()
     conn_pg_2.close()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
     if count_duplicates > 0:
-        io_utils.progress_msg(f"Number rows duplicate: {str(count_duplicates):>8}")
+        io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -2950,7 +3013,7 @@ def _load_table_narratives(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -2963,7 +3026,7 @@ def _load_table_narratives(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         try:
@@ -3023,17 +3086,17 @@ def _load_table_narratives(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key}"
+                        f"aircraft_key={row_mdb.Aircraft_Key}",
                     )
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -3057,7 +3120,7 @@ def _load_table_ntsb_admin(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -3070,13 +3133,13 @@ def _load_table_ntsb_admin(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         if row_mdb.ev_id in ["20210527103155", "20220328104839"]:
-            # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.946 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id),
             )
             continue
 
@@ -3128,20 +3191,20 @@ def _load_table_ntsb_admin(
                 ]:
                     io_utils.progress_msg(f"Updated  ev_id={row_mdb.ev_id}")
         except ForeignKeyViolation:
-            # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.947 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id),
             )
             conn_pg.rollback()
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -3165,7 +3228,7 @@ def _load_table_occurrences(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -3178,7 +3241,7 @@ def _load_table_occurrences(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         if row_mdb.ev_id in [
@@ -3190,9 +3253,9 @@ def _load_table_occurrences(
             "20001218X45444",
             "20001218X45446",
         ]:
-            # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.946 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id),
             )
             continue
 
@@ -3251,24 +3314,24 @@ def _load_table_occurrences(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"Occurrence_No={row_mdb.Occurrence_No}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"Occurrence_No={row_mdb.Occurrence_No}",
                     )
         except ForeignKeyViolation:
-            # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.947 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id),
             )
             conn_pg.rollback()
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -3292,7 +3355,7 @@ def _load_table_seq_of_events(
 
     io_utils.progress_msg("")
     io_utils.progress_msg(
-        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35
+        f"Database table       : {table_name.lower():30}" + "<" + "-" * 35,
     )
 
     cur_mdb.execute(f"SELECT * FROM {table_name};")
@@ -3305,15 +3368,15 @@ def _load_table_seq_of_events(
         if count_select % io_config.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
-                f"Number of rows so far read : {str(count_select):>8}"
+                f"Number of rows so far read : {count_select!s:>8}",
             )
 
         if row_mdb.ev_id in [
             "20020917X03487",
         ]:
-            # ERROR_00_946 = "ERROR.00.946 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.946 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_946.replace("{ev_id}", row_mdb.ev_id),
             )
             continue
 
@@ -3385,26 +3448,26 @@ def _load_table_seq_of_events(
                 ]:
                     io_utils.progress_msg(
                         f"Updated  ev_id={row_mdb.ev_id} "
-                        + f"aircraft_key={row_mdb.Aircraft_Key} "
-                        + f"Occurrence_No={row_mdb.Occurrence_No} "
-                        + f"seq_event_no={row_mdb.seq_event_no} "
-                        + f"group_code={row_mdb.group_code}"
+                        f"aircraft_key={row_mdb.Aircraft_Key} "
+                        f"Occurrence_No={row_mdb.Occurrence_No} "
+                        f"seq_event_no={row_mdb.seq_event_no} "
+                        f"group_code={row_mdb.group_code}",
                     )
         except ForeignKeyViolation:
-            # ERROR_00_947 = "ERROR.00.947 The ev_id '{ev_id}' is missing in database table events"
+            # ERROR.00.947 The ev_id '{ev_id}' is missing in database table events
             io_utils.progress_msg(
-                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id)
+                glob_local.ERROR_00_947.replace("{ev_id}", row_mdb.ev_id),
             )
             conn_pg.rollback()
 
     conn_pg.commit()
 
-    io_utils.progress_msg(f"Number rows selected : {str(count_select):>8}")
+    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
 
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {str(count_insert):>8}")
+        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {str(count_update):>8}")
+        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
     logger.debug(io_glob.LOGGER_END)
 
@@ -3418,13 +3481,10 @@ def _sql_query_cictt_codes(conn_pg: connection) -> list[str]:
             """
         SELECT cictt_code
           FROM io_aviation_occurrence_categories;
-        """
+        """,
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row["cictt_code"])
+        data = [row["cictt_code"] for row in cur]
 
         return sorted(data)
 
@@ -3439,13 +3499,10 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
         SELECT state
           FROM io_states
          WHERE country = 'USA';
-        """
+        """,
         )
 
-        data = []
-
-        for row in cur:
-            data.append(row["state"])
+        data = [row["state"] for row in cur]
 
         return sorted(data)
 
@@ -3460,6 +3517,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     """Download an MS Access database file.
 
     Args:
+    ----
         msaccess (str):
             The MS Access database file without file extension.
 
@@ -3481,8 +3539,9 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             # ERROR.00.906 Unexpected response status code='{status_code}'
             io_utils.terminate_fatal(
                 glob_local.ERROR_00_906.replace(
-                    "{status_code}", str(file_resp.status_code)
-                )
+                    "{status_code}",
+                    str(file_resp.status_code),
+                ),
             )
 
         # INFO.00.013 The connection to the MS Access database file '{msaccess}.zip'
@@ -3493,14 +3552,15 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             os.makedirs(io_config.settings.download_work_dir)
 
         filename_zip = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep), filename_zip
+            io_config.settings.download_work_dir.replace("/", os.sep),
+            filename_zip,
         )
 
         no_chunks = 0
 
         with open(filename_zip, "wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size
+                chunk_size=io_config.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -3508,13 +3568,14 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         # INFO.00.014 From the file '{msaccess}' {no_chunks} chunks were downloaded
         io_utils.progress_msg(
             glob_local.INFO_00_014.replace("{msaccess}", msaccess).replace(
-                "{no_chunks}", str(no_chunks)
-            )
+                "{no_chunks}",
+                str(no_chunks),
+            ),
         )
 
         try:
             zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
-                filename_zip
+                filename_zip,
             )
 
             for zipped_file in zipped_files.namelist():
@@ -3524,7 +3585,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File'{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob_local.ERROR_00_907.replace("{filename}", filename_zip)
+                glob_local.ERROR_00_907.replace("{filename}", filename_zip),
             )
 
         os.remove(filename_zip)
@@ -3539,8 +3600,9 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         # ERROR.00.909 Timeout after'{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
-                "{timeout}", str(io_config.settings.download_timeout)
-            ).replace("{url}", url)
+                "{timeout}",
+                str(io_config.settings.download_timeout),
+            ).replace("{url}", url),
         )
 
     logger.debug(io_glob.LOGGER_END)

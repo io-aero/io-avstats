@@ -61,15 +61,15 @@ conda-prod: conda pipenv-prod-int
 ## dev:                Format, lint and test the code.
 dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
-docs: pydocstyle sphinx
+docs: sphinx
 ## everything:         Do everything precheckin
 everything: dev docs
 ## final:              Format, lint and test the code and create the documentation.
 final: format lint docs tests
-## format:             Format the code with isort, Black and docformatter.
-format: isort black docformatter
+## format:             Format the code with Black and docformatter.
+format: black docformatter
 ## lint:               Lint the code with ruff, Bandit, Flake8, vulture, Pylint and Mypy.
-lint: ruff bandit flake8 vulture pylint mypy
+lint: ruff bandit vulture pylint mypy
 ## tests:              Run all tests with pytest.
 tests: pytest
 ## -----------------------------------------------------------------------------
@@ -166,30 +166,6 @@ docformatter:       ## Format the docstrings with docformatter.
 #	pipenv run docformatter -r tests
 	@echo Info **********  End:   docformatter *********************************
 
-# Flake8: Your Tool For Style Guide Enforcement.
-# https://github.com/pycqa/flake8
-# Configuration file: cfg.cfg
-flake8:             ## Enforce the Python Style Guides with Flake8.
-	@echo Info **********  Start: Flake8 ***************************************
-	@echo PYTHONPATH=${PYTHONPATH}
-	@echo ----------------------------------------------------------------------
-	pipenv run flake8 --version
-	@echo ----------------------------------------------------------------------
-	pipenv run flake8 ${PYTHONPATH} tests
-	@echo Info **********  End:   Flake8 ***************************************
-
-# isort your imports, so you don't have to.
-# https://github.com/PyCQA/isort
-# Configuration file: pyproject.toml
-isort:              ## Edit and sort the imports with isort.
-	@echo Info **********  Start: isort ****************************************
-	@echo PYTHONPATH=${PYTHONPATH}
-	@echo ----------------------------------------------------------------------
-	pipenv run isort --version
-	@echo ----------------------------------------------------------------------
-	pipenv run isort ${PYTHONPATH} tests
-	@echo Info **********  End:   isort ****************************************
-
 # Mypy: Static Typing for Python
 # https://github.com/python/mypy
 # Configuration file: pyproject.toml
@@ -270,18 +246,6 @@ pipenv-prod:        ## Install the package dependencies for production.
 	pipenv --version
 	pipenv run python -m virtualenv --version
 	@echo Info **********  End:   Installation of Production Packages **********
-
-# pydocstyle - docstring style checker.
-# https://github.com/PyCQA/pydocstyle
-# Configuration file: pyproject.toml
-pydocstyle:         ## Check the API documentation with pydocstyle.
-	@echo Info **********  Start: pydocstyle ***********************************
-	@echo PYTHONPATH=${PYTHONPATH}
-	@echo ----------------------------------------------------------------------
-	pipenv run pydocstyle --version
-	@echo ----------------------------------------------------------------------
-	pipenv run pydocstyle --count ${MODULE} scripts
-	@echo Info **********  End:   pydocstyle ***********************************
 
 # Pylint is a tool that checks for errors in Python code.
 # https://github.com/PyCQA/pylint/

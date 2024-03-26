@@ -1383,7 +1383,6 @@ def _create_dll_create_tables_io() -> None:
 # ------------------------------------------------------------------
 # Adds the DDL instructions for setting up the database schema.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_tables_base() -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -1911,7 +1910,6 @@ def _create_dll_tables_base() -> None:
 # Adds the DDL statement for setting up database table
 # io_airports.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_airports() -> None:
     DLL_TABLE_STMNTS[
         "io_airports"
@@ -1954,7 +1952,6 @@ def _create_dll_table_io_airports() -> None:
 # Adds the DDL statement for setting up database table
 # io_aviation_occurrence_categories.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_aviation_occurrence_categories() -> None:
     DLL_TABLE_STMNTS[
         "io_aviation_occurrence_categories"
@@ -1976,7 +1973,6 @@ def _create_dll_table_io_aviation_occurrence_categories() -> None:
 # Adds the DDL statement for setting up database table
 # io_countries.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_countries() -> None:
     DLL_TABLE_STMNTS[
         "io_countries"
@@ -1998,7 +1994,6 @@ def _create_dll_table_io_countries() -> None:
 # Adds the DDL statement for setting up database table
 # io_lat_lng.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_lat_lng() -> None:
     DLL_TABLE_STMNTS[
         "io_lat_lng"
@@ -2026,7 +2021,6 @@ def _create_dll_table_io_lat_lng() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_category.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_category() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_category"
@@ -2044,7 +2038,6 @@ def _create_dll_table_io_md_codes_category() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_eventsoe.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_eventsoe() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_eventsoe"
@@ -2062,7 +2055,6 @@ def _create_dll_table_io_md_codes_eventsoe() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_modifier.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_modifier() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_modifier"
@@ -2080,7 +2072,6 @@ def _create_dll_table_io_md_codes_modifier() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_phase.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_phase() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_phase"
@@ -2099,7 +2090,6 @@ def _create_dll_table_io_md_codes_phase() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_section.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_section() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_section"
@@ -2120,7 +2110,6 @@ def _create_dll_table_io_md_codes_section() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_subcategory.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_subcategory() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_subcategory"
@@ -2140,7 +2129,6 @@ def _create_dll_table_io_md_codes_subcategory() -> None:
 # Adds the DDL statement for setting up database table
 # io_md_codes_subsection.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_md_codes_subsection() -> None:
     DLL_TABLE_STMNTS[
         "io_md_codes_subsection"
@@ -2161,7 +2149,6 @@ def _create_dll_table_io_md_codes_subsection() -> None:
 # ------------------------------------------------------------------
 # Adds the DDL statement for altering io_msaccess_file.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_msaccess_file_alter() -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -2178,7 +2165,6 @@ def _create_dll_table_io_msaccess_file_alter() -> None:
 # ------------------------------------------------------------------
 # Adds the DDL statement for setting up io_processed_files.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_processed_files() -> None:
     logger.debug(io_glob.LOGGER_START)
 
@@ -2202,7 +2188,6 @@ def _create_dll_table_io_processed_files() -> None:
 # Adds the DDL statement for setting up database table
 # io_sequence_of_events.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_sequence_of_events() -> None:
     DLL_TABLE_STMNTS[
         "io_sequence_of_events"
@@ -2225,7 +2210,6 @@ def _create_dll_table_io_sequence_of_events() -> None:
 # Adds the DDL statement for setting up database table
 # io_states.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_table_io_states() -> None:
     DLL_TABLE_STMNTS[
         "io_states"
@@ -2249,7 +2233,6 @@ def _create_dll_table_io_states() -> None:
 # Adds the DDL statement for setting up database view
 # io_app_ae1982.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_view_io_app_ae1982() -> None:
     # pylint: disable=line-too-long
     DLL_VIEW_STMNTS_REFRESH.append("io_app_ae1982")
@@ -3278,7 +3261,6 @@ def _create_dll_view_io_app_ae1982() -> None:
 # Adds the DDL statement for setting up database view
 # io_lat_lng_issues.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _create_dll_view_io_lat_lng_issues() -> None:
     # pylint: disable=line-too-long
     DLL_VIEW_STMNTS_DROP.append("io_lat_lng_issues")

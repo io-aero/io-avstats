@@ -4,7 +4,6 @@
 """Creation of the user guide."""
 import streamlit as st
 
-# flake8: noqa
 # pylint: disable=line-too-long
 # pylint: disable=pointless-string-statement
 
@@ -42,7 +41,7 @@ def get_ae1982_app() -> None:
     user_guide = (
         _generic_header_section("User Guide 'Application'")
         + """
-#### Coming soon ...     
+#### Coming soon ...
 """
         + _generic_footer_section()
     )
@@ -65,8 +64,7 @@ def get_ae1982_bar_chart(
         _generic_header_section(f"User Guide 'Bar chart {chart_id}'")
         + f"""
 {chart_title}
-        
-#### Coming soon ...     
+#### Coming soon ...
     """
         + _generic_footer_section()
     )

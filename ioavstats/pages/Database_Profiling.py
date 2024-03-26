@@ -714,7 +714,6 @@ def _streamlit_flow() -> None:
 
     st.set_page_config(
         layout="wide",
-        # flake8: noqa: E501
         # pylint: disable=line-too-long
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",

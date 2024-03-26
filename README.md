@@ -102,4 +102,4 @@ Further IO-Aero software documentation can be found under the following links.
 | run_io_avstats                  | Main script for using the functionality of **IO-AVSTATS**.      |
 | run_io_avstats_pytest           | Main script for using the test functionality of **IO-AVSTATS**. |
 | settings.io_aero.toml           | Configuration data.                                             |
-| setup.cfg                       | Optional configuration data for **flake8**.                     |
+| setup.cfg                       | Optional configuration data.                     |

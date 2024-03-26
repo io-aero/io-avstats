@@ -53,8 +53,8 @@ The project employs PostgreSQL for data storage and leverages Docker images prov
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
 
-`MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\ - not for macOS
----------------------------------------------------------------------------------------------------------------
+`MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\ - only for Windows
+------------------------------------------------------------------------------------------------------------------
 
 This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (\*.mdb and \*.accdb) files and Microsoft Office Excel (\*.xls, \*.xlsx, and \*.xlsb) files to other data sources.
 Connectivity to existing text files is also supported.

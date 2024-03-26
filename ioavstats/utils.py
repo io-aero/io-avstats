@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------
 # Determine the last processed update file.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
     """Determine the last processed update file.
 
@@ -213,7 +212,6 @@ def prepare_longitude(longitude_string: str) -> str:
 # ------------------------------------------------------------------
 # Present the 'about' information.
 # ------------------------------------------------------------------
-# flake8: noqa: E501
 def present_about(pg_conn: connection, app_id: str) -> None:
     """Present the 'about' information.
 

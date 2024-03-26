@@ -76,15 +76,6 @@ recursive = true
 wrap-descriptions = 100
 wrap-summaries = 100
 
-[tool.isort]
-float_to_top = true
-force_single_line = true
-overwrite_in_place = true
-profile = "black"
-
-[tool.pydocstyle]
-match = "((?!test_).*.py)"
-
 [tool.pytest.ini_options]
 console_output_style = "count"
 markers = [
@@ -124,6 +115,7 @@ ignore = [
     "C901",
     "D211",
     "D213",
+    "E501",
     "EM101",
     "PGH003",
     "PLR0911",

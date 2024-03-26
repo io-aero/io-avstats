@@ -3662,7 +3662,6 @@ def _sql_query_acft_categories() -> list[str]:
 def _sql_query_codes_category() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT category_code,
@@ -3689,7 +3688,6 @@ def _sql_query_codes_category() -> dict[str, str]:
 def _sql_query_codes_eventsoe() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT eventsoe_code,
@@ -3716,7 +3714,6 @@ def _sql_query_codes_eventsoe() -> dict[str, str]:
 def _sql_query_codes_modifier() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT modifier_code,
@@ -3743,7 +3740,6 @@ def _sql_query_codes_modifier() -> dict[str, str]:
 def _sql_query_codes_phase() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT phase_code,
@@ -3770,7 +3766,6 @@ def _sql_query_codes_phase() -> dict[str, str]:
 def _sql_query_codes_section() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT category_code,
@@ -3799,7 +3794,6 @@ def _sql_query_codes_section() -> dict[str, str]:
 def _sql_query_codes_subcategory() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT category_code,
@@ -3827,7 +3821,6 @@ def _sql_query_codes_subcategory() -> dict[str, str]:
 def _sql_query_codes_subsection() -> dict[str, str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT category_code,
@@ -3865,7 +3858,6 @@ def _sql_query_codes_subsection() -> dict[str, str]:
 def _sql_query_ev_highest_injury() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         # pylint: disable=line-too-long
-        # flake8: noqa: E501
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
@@ -3886,7 +3878,6 @@ def _sql_query_ev_highest_injury() -> list[str]:
 @st.cache_data(persist=True)
 def _sql_query_ev_type() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # flake8: noqa: E501
         # pylint: disable=line-too-long
         cur.execute(
             """
@@ -4145,7 +4136,6 @@ def _streamlit_flow() -> None:
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
-    # flake8: noqa: E501
     st.set_page_config(
         layout="wide",
         # pylint: disable=line-too-long
@@ -4215,7 +4205,6 @@ def _streamlit_flow() -> None:
     _present_results()
 
     # Stop time measurement.
-    # flake8: noqa: E501
     print(  # noqa: T201
         str(datetime.datetime.now(datetime.timezone.utc))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",

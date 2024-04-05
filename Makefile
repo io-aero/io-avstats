@@ -82,8 +82,6 @@ help:
 # Configuration files: .act_secrets & .act_vars
 action-std:         ## Run the GitHub Actions locally: standard.
 	@echo Info **********  Start: action ***************************************
-	@echo Copy your .aws/creedentials to .aws_secrets
-	@echo ----------------------------------------------------------------------
 	act --version
 	@echo ----------------------------------------------------------------------
 	act  --quiet --secret-file .act_secrets --var IO_LOCAL='true' --verbose
@@ -211,7 +209,6 @@ pipenv-dev:         ## Install the package dependencies for development.
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
 	pipenv install ${CONDA_ARG} --dev
 	@echo ----------------------------------------------------------------------
 	pipenv run pip freeze
@@ -236,7 +233,6 @@ pipenv-prod:        ## Install the package dependencies for production.
 	${DELETE_BUILD}
 	${DELETE_PIPFILE_LOCK}
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
 	pipenv install ${CONDA_ARG}
 	@echo ----------------------------------------------------------------------
 	pipenv run pip freeze
@@ -269,8 +265,6 @@ pytest:             ## Run all tests with pytest.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered --cov-report=lcov -v tests
 	@echo Info **********  End:   pytest ***************************************
@@ -283,8 +277,6 @@ pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests
 	@echo Info **********  End:   pytest ***************************************
@@ -295,8 +287,6 @@ pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
@@ -306,8 +296,6 @@ pytest-issue:       ## Run only the tests with pytest which are marked with 'iss
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run pytest --cache-clear --capture=no --cov=${MODULE} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-module:      ## Run test of a specific module with pytest.
@@ -315,8 +303,6 @@ pytest-module:      ## Run test of a specific module with pytest.
 	@echo PIP       =${PIP}
 	@echo TESTMODULE=tests/$(module)
 	@echo ----------------------------------------------------------------------
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/$(module)
 	@echo Info **********  End:   pytest ***************************************
 
@@ -339,8 +325,6 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX}
-	aws codeartifact login --tool pip --repository io-aero-pypi --domain io-aero --domain-owner 444046118275 --region us-east-1
-	$(PIP) install .
 	pipenv run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 	pipenv run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************

@@ -9,6 +9,7 @@ env:
   IO_COVERALLS: 'false'
   IO_DOCKER: 'true'
   IO_ODBC: 'true'
+  PYPI_PAT: ${{ secrets.PYPI_PAT }}
 
 jobs:
   standard:
@@ -69,29 +70,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Install AWS CLI - macOS
-        if: ${{ vars.IO_LOCAL == 'true' && runner.os == 'macOS' }}
-        run: |
-          brew update
-          brew upgrade unzip
-          curl "https://awscli.amazonaws.com/awscli-exe-macosx-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
-
-      - name: Install AWS CLI - Ubuntu
-        if: ${{ vars.IO_LOCAL == 'true' && runner.os == 'Linux' }}
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
 
       - name: Set up Miniconda
         if: ${{ env.IO_CONDA == 'true' }}

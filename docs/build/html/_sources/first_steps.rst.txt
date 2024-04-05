@@ -46,16 +46,7 @@ Run the script to install Python, pip, and pipenv:
 
     ./scripts/run_install_python.zsh
 
-c. Install AWS Command Line Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Execute the script to install the AWS CLI:
-
-.. code-block:: .zsh
-
-    ./scripts/run_install_aws_cli.zsh
-
-d. Install Docker Desktop
+c. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install Docker Desktop, run:
@@ -64,7 +55,7 @@ To install Docker Desktop, run:
 
     ./scripts/run_install_docker.zsh
 
-e. Optionally Install DBeaver
+d. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver using the following script:
@@ -73,7 +64,7 @@ If needed, install DBeaver using the following script:
 
     ./scripts/run_install_dbeaver.zsh
 
-f. Close the Terminal Window
+e. Close the Terminal Window
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the terminal window.
@@ -101,16 +92,7 @@ Run the script to install Python, pip, and pipenv:
 
     ./scripts/run_install_python.sh
 
-c. Install AWS Command Line Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Execute the script to install the AWS CLI:
-
-.. code-block:: bash
-
-    ./scripts/run_install_aws_cli.sh
-
-d. Install Docker Desktop
+c. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install Docker Desktop, run:
@@ -119,7 +101,7 @@ To install Docker Desktop, run:
 
     ./scripts/run_install_docker.sh
 
-e. Optionally Install DBeaver
+d. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver using the following script:
@@ -128,7 +110,7 @@ If needed, install DBeaver using the following script:
 
     ./scripts/run_install_dbeaver.sh
 
-f. Close the Terminal Window
+e. Close the Terminal Window
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the terminal window.
@@ -147,21 +129,12 @@ Run the script to install Python, pip, and pipenv:
 
     scripts/run_install_python.bat
 
-b. Install AWS Command Line Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Execute the script to install the AWS CLI:
-
-.. code-block:: bat
-
-    scripts/run_install_aws_cli.bat
-
-c. Close the Command Prompt
+b. Close the Command Prompt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the command prompt.
 
-d. Install Docker Desktop
+c. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install Docker Desktop, download the software from here:
@@ -170,7 +143,7 @@ To install Docker Desktop, download the software from here:
 
 and follow the installation instructions.
 
-e. Optionally Install DBeaver
+d. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver, download the software from here:

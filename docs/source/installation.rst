@@ -15,18 +15,6 @@ The project repository contains a ``scripts`` directory that includes operating 
 
 These scripts are named according to the convention ``run_install_python.<ext>``, where ``<ext>`` corresponds to the script extension appropriate for the target operating system and shell environment (e.g. `.zsh` for macOS zsh, `.sh` for Ubuntu Bash or `.bat` for Windows). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.
 
-AWS Command Line Interface
---------------------------
-
-Within the project's ``scripts`` directory, you will find a set of scripts specifically designed for the installation of the AWS Command Line Interface (AWS CLI). These scripts facilitate the installation process on different operating systems, ensuring a consistent and reliable setup.
-
-- **macOS**: macOS users should utilize the ``run_install_aws_cli.zsh`` script. This script is a zsh script that simplifies the AWS CLI installation on macOS systems by setting up the necessary repositories and installing the CLI via homebrew.
-
-- **Ubuntu**: Ubuntu users should utilize the ``run_install_aws_cli.sh`` script. This script is a Bash script that simplifies the AWS CLI installation on Ubuntu systems by setting up the necessary repositories and installing the CLI via apt-get.
-
-- **Windows**: The ``run_install_aws_cli.bat`` script is intended for Windows users. It automates the process of downloading and installing the latest version of the AWS CLI in the Windows Command Prompt environment.
-
-Each script is named following the pattern ``run_install_aws_cli.<ext>``, with ``<ext>`` being the respective script extension suitable for the target operating system and shell environment (e.g. `.zsh` for macOS zsh, `.sh` for Ubuntu Bash or `.bat` for Windows). Users are advised to execute the corresponding script for their operating system to achieve an optimal AWS CLI installation experience.
 
 Docker Desktop
 --------------

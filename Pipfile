@@ -1,6 +1,6 @@
 [packages]
 haversine = "*"
-iocommon = "*"
+iocommon = {ref = "main", git = "git+https://IoAeroMachineUser:${PYPI_PAT}@github.com/io-aero/io-common.git"}
 lat_lon_parser ="*"
 #matplotlib = "*"
 matplotlib = "<=3.7"

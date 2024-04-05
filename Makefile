@@ -265,7 +265,6 @@ pytest:             ## Run all tests with pytest.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered --cov-report=lcov -v tests
 	@echo Info **********  End:   pytest ***************************************
@@ -278,7 +277,6 @@ pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	$(PIP) install .
 	pipenv run pytest --dead-fixtures tests
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests
 	@echo Info **********  End:   pytest ***************************************
@@ -289,7 +287,6 @@ pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
@@ -299,7 +296,6 @@ pytest-issue:       ## Run only the tests with pytest which are marked with 'iss
 	@echo ----------------------------------------------------------------------
 	pipenv run pytest --version
 	@echo ----------------------------------------------------------------------
-	$(PIP) install .
 	pipenv run pytest --cache-clear --capture=no --cov=${MODULE} --cov-report term-missing:skip-covered -m issue -rP -v -x tests
 	@echo Info **********  End:   pytest ***************************************
 pytest-module:      ## Run test of a specific module with pytest.
@@ -307,7 +303,6 @@ pytest-module:      ## Run test of a specific module with pytest.
 	@echo PIP       =${PIP}
 	@echo TESTMODULE=tests/$(module)
 	@echo ----------------------------------------------------------------------
-	$(PIP) install .
 	pipenv run pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/$(module)
 	@echo Info **********  End:   pytest ***************************************
 
@@ -330,7 +325,6 @@ sphinx:            ##  Create the user documentation with Sphinx.
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX}
-	$(PIP) install .
 	pipenv run sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 	pipenv run sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************

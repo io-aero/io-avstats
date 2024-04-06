@@ -50,6 +50,7 @@ See that documentation for installation instructions
 
 Further IO-Aero software documentation can be found under the following links.
 
+- [IO-AIRPLANE-SIM - Airplane Simulator](https://io-aero.github.io/io-airplane-sim/)
 - [IO-COMMON - Common Elemments Libraries](https://io-aero.github.io/io-common/) 
 - [IO-LANDINGSPOT - Landing spot identification](https://io-aero.github.io/io-landingspot/) 
 - [IO-LIDAR - Lidar Map Processing](https://io-aero.github.io/io-lidar/) 
@@ -66,18 +67,19 @@ Further IO-Aero software documentation can be found under the following links.
 
 ### 1. Directories
 
-| Directory         | Content                                       |
-|-------------------|-----------------------------------------------|
-| .github/workflows | **GitHub Action** workflow.                   |
-| .streamlit        | Streamlit configuration files.                |
-| config            | Configuration files.                          |
-| data              | Application data related files.               |
-| docs              | Documentation files.                          |
-| ioavstats         | Python script files.                          |
-| resources         | Selected manuals and software.                |
-| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
-| tests             | Scripts and data for **pytest**.              |
-| upload            | Cloud related upload directory.               |
+| Directory         | Content                                          |
+|-------------------|--------------------------------------------------|
+| .github/workflows | **GitHub Action** workflow.                      |
+| .streamlit        | Streamlit configuration files.                   |
+| config            | Configuration files.                             |
+| data              | Application data related files.                  |
+| docs              | Documentation files.                             |
+| ioavstats         | Python script files.                             |
+| libs              | Contains libraries that are not used via pipenv. |
+| resources         | Selected manuals and software.                   |
+| scripts           | Supporting macOS, Ubuntu and Windows Scripts.    |
+| tests             | Scripts and data for **pytest**.                 |
+| upload            | Cloud related upload directory.                  |
 
 ### 2. Files
 

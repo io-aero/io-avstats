@@ -7,15 +7,16 @@
 """IO-Aero Menu."""
 import os
 import shutil
+from pathlib import Path
 
 import streamlit as st
 from streamlit.file_util import get_streamlit_file_path
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT = Path(Path(__file__).parent).resolve()
 
 credential_path = get_streamlit_file_path("credentials.toml")
-if not os.path.exists(credential_path):
-    os.makedirs(os.path.dirname(credential_path), exist_ok=True)
+if not Path(credential_path).exists():
+    Path(Path(credential_path).parent).mkdir(parents=True, exist_ok=True)
     shutil.copyfile(
         os.path.join(PROJECT_ROOT, ".streamlit\\credentials.toml"),
         credential_path,

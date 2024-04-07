@@ -5,6 +5,7 @@
 import logging
 import os
 from collections import OrderedDict
+from pathlib import Path
 
 import lat_lon_parser  # type: ignore
 import pandas as pd
@@ -928,7 +929,7 @@ def load_correction_data(filename: str) -> None:
 
     corr_file = os.path.join(io_config.settings.correction_work_dir, filename)
 
-    if not os.path.isfile(corr_file):
+    if not Path(corr_file).is_file():
         # ERROR.00.926 The correction file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_926.replace("{filename}", corr_file),

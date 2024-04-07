@@ -50,10 +50,8 @@ sqlalchemy2-stubs = "*"
 types-psycopg2 = "*"
 types-pyyaml = "*"
 types-requests = "*"
-types-setuptools = "*"
 types-toml = "*"
 vulture = "*"
-wheel = "*"
 
 [requires]
 python_version = "3.10"

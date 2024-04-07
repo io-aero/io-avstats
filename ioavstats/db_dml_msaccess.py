@@ -47,7 +47,7 @@ def _check_ddl_changes(msaccess: str) -> None:
     logger.debug(io_glob.LOGGER_START)
 
     download_work_dir = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         io_config.settings.download_work_dir.replace("/", os.sep),
     )
 
@@ -72,7 +72,7 @@ def _check_ddl_changes(msaccess: str) -> None:
         glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_mdb),
     )
 
-    if not os.path.exists(msaccess_mdb):
+    if not Path(msaccess_mdb).exists():
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb),
@@ -168,8 +168,7 @@ def _compare_ddl(msaccess: str) -> None:
     )
 
     # pylint: disable=consider-using-with
-    reference_file = open(  # noqa: SIM115
-        reference_filename,
+    reference_file = Path(reference_filename).open(  # noqa: SIM115
         encoding=io_glob.FILE_ENCODING_DEFAULT,
     )
     reference_file_lines = reference_file.readlines()
@@ -181,8 +180,7 @@ def _compare_ddl(msaccess: str) -> None:
     )
 
     # pylint: disable=consider-using-with
-    msaccess_file = open(  # noqa: SIM115
-        msaccess_filename,
+    msaccess_file = Path(msaccess_filename).open(  # noqa: SIM115
         encoding=io_glob.FILE_ENCODING_DEFAULT,
     )
     msaccess_file_lines = msaccess_file.readlines()
@@ -329,7 +327,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
         msaccess + "." + glob_local.FILE_EXTENSION_MDB,
     )
 
-    if not os.path.isfile(filename):
+    if not Path(filename).is_file():
         # ERROR.00.912 The MS Access database file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_912.replace("{filename}", filename),
@@ -3548,8 +3546,11 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         # on the NTSB download page was successfully established
         io_utils.progress_msg(glob_local.INFO_00_013.replace("{msaccess}", msaccess))
 
-        if not os.path.isdir(io_config.settings.download_work_dir):
-            os.makedirs(io_config.settings.download_work_dir)
+        if not Path(io_config.settings.download_work_dir).is_dir():
+            Path(io_config.settings.download_work_dir).mkdir(
+                parents=True,
+                exist_ok=True,
+            )
 
         filename_zip = os.path.join(
             io_config.settings.download_work_dir.replace("/", os.sep),
@@ -3558,7 +3559,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
 
         no_chunks = 0
 
-        with open(filename_zip, "wb") as file_zip:
+        with Path(filename_zip).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
                 chunk_size=io_config.settings.download_chunk_size,
             ):
@@ -3588,7 +3589,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
                 glob_local.ERROR_00_907.replace("{filename}", filename_zip),
             )
 
-        os.remove(filename_zip)
+        Path(filename_zip).unlink()
         # INFO.00.015 The file '{msaccess}.zip'  was successfully unpacked
         io_utils.progress_msg(glob_local.INFO_00_015.replace("{msaccess}", msaccess))
 

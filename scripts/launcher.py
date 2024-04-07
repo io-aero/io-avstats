@@ -9,9 +9,10 @@ import locale
 import logging
 import sys
 import time
+from pathlib import Path
 
 import tomli
-from iocommon import file, io_glob, io_utils
+from iocommon import file, io_glob, io_logger, io_utils
 
 from ioavstats import avstats, glob_local
 
@@ -29,7 +30,7 @@ logger = logging.getLogger(__name__)
 def _print_project_version() -> None:
     """Print the version number from pyproject.toml."""
     # Open the pyproject.toml file in read mode
-    with open("pyproject.toml", "rb") as toml_file:
+    with Path("pyproject.toml").open("rb") as toml_file:
         # Use toml.load() to parse the file and store the data in a dictionary
         pyproject = tomli.load(toml_file)
 
@@ -64,12 +65,12 @@ def main(argv: list[str]) -> None:
     start_time = time.time_ns()
 
     # Provide progress messages.
-    avstats.progress_msg("=" * 79)
+    io_utils.progress_msg("=" * 79)
     # INFO.00.004 Start Launcher.
-    avstats.progress_msg(glob_local.INFO_00_004)
+    io_utils.progress_msg(glob_local.INFO_00_004)
 
     # Initialise the logging functionality.
-    avstats.initialise_logger()
+    io_logger.initialise_logger()
 
     logger.debug(io_glob.LOGGER_START)
     logger.info("param argv=%s", argv)
@@ -135,17 +136,17 @@ def main(argv: list[str]) -> None:
             glob_local.FATAL_00_926.replace("{task}", avstats.ARG_TASK),
         )
 
-    avstats.progress_msg("-" * 79)
+    io_utils.progress_msg("-" * 79)
 
     # Stop time measurement.
-    avstats.progress_msg_time_elapsed(
+    io_utils.progress_msg_time_elapsed(
         time.time_ns() - start_time,
         "launcher",
     )
 
     # INFO.00.006 End   Launcher
-    avstats.progress_msg(glob_local.INFO_00_006)
-    avstats.progress_msg("=" * 79)
+    io_utils.progress_msg(glob_local.INFO_00_006)
+    io_utils.progress_msg("=" * 79)
 
     logger.debug(io_glob.LOGGER_END)
 

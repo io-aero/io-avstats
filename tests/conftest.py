@@ -78,9 +78,9 @@ def copy_files_4_pytest(
       destination directory for the copied files.
 
     """
-    assert os.path.isdir(
+    assert pathlib.Path(
         get_os_independent_name(get_test_files_source_directory_name()),
-    ), (
+    ).is_dir(), (
         "source directory '" + get_test_files_source_directory_name() + "' missing"
     )
 
@@ -95,11 +95,11 @@ def copy_files_4_pytest(
             get_test_files_source_directory_name(),
             source_file_name,
         )
-        assert os.path.isfile(source_file), (
+        assert pathlib.Path(source_file).is_file(), (
             "source file '" + str(source_file) + "' missing"
         )
 
-        assert os.path.isdir(get_os_independent_name(target_dir)), (
+        assert pathlib.Path(get_os_independent_name(target_dir)).is_dir(), (
             "target directory '" + str(target_dir.absolute()) + "' missing"
         )
         target_file_name = (
@@ -108,12 +108,12 @@ def copy_files_4_pytest(
             else "_".join(target_file_comp) + "." + target_ext
         )
         target_file = get_full_name_from_components(target_dir, target_file_name)
-        assert os.path.isfile(target_file) is False, (
+        assert pathlib.Path(target_file).is_file() is False, (
             "target file '" + str(target_file) + "' already existing"
         )
 
         shutil.copy(source_file, target_file)
-        assert os.path.isfile(target_file), (
+        assert pathlib.Path(target_file).is_file(), (
             "target file '" + str(target_file) + "' is missing"
         )
 
@@ -177,9 +177,7 @@ def get_full_name_from_components(
     else:
         directory_name_int = directory_name
 
-    return get_os_independent_name(
-        str(os.path.join(directory_name_int, file_name_int)),
-    )
+    return get_os_independent_name(str(os.path.join(directory_name_int, file_name_int)))
 
 
 # ------------------------------------------------------------------

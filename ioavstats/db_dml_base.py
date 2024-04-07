@@ -7,6 +7,7 @@ import logging
 import os
 import zipfile
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -379,11 +380,11 @@ def _load_aviation_occurrence_categories() -> None:
     # ------------------------------------------------------------------
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_AVIATION_OCCURRENCE_CATEGORIES.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.937 The aviation occurrence categories file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_937.replace("{filename}", filename_excel),
@@ -577,11 +578,11 @@ def _load_country_data(
     logger.debug(io_glob.LOGGER_START)
 
     filename_json = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         io_config.settings.download_file_countries_states_json.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_json):
+    if not Path(filename_json).is_file():
         # ERROR.00.934 The country and state data file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_934.replace("{filename}", filename_json),
@@ -591,7 +592,7 @@ def _load_country_data(
     count_select = 0
     count_update = 0
 
-    with open(filename_json, encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
+    with Path(filename_json).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
         input_data = json.load(input_file)
 
         for record in input_data:
@@ -670,11 +671,11 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
     # ------------------------------------------------------------------
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_FAA_NPIAS_DATA.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.945 The NPIAS file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_945.replace("{filename}", filename_excel),
@@ -1133,11 +1134,11 @@ def _load_simplemaps_data_cities_from_us_cities(
     logger.debug(io_glob.LOGGER_START)
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_914.replace("{filename}", filename_excel),
@@ -1282,11 +1283,11 @@ def _load_simplemaps_data_zips_from_us_cities(
     logger.debug(io_glob.LOGGER_START)
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.914 The US city file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_914.replace("{filename}", filename_excel),
@@ -1410,11 +1411,11 @@ def _load_simplemaps_data_zips_from_us_zips(
     logger.debug(io_glob.LOGGER_START)
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_SIMPLEMAPS_US_ZIPS.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.913 The US zip code file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_913.replace("{filename}", filename_excel),
@@ -1572,11 +1573,11 @@ def _load_state_data(
     logger.debug(io_glob.LOGGER_START)
 
     filename_json = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         io_config.settings.download_file_countries_states_json.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_json):
+    if not Path(filename_json).is_file():
         # ERROR.00.934 The country and state data file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_934.replace("{filename}", filename_json),
@@ -1586,7 +1587,7 @@ def _load_state_data(
     count_select = 0
     count_update = 0
 
-    with open(filename_json, encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
+    with Path(filename_json).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
         input_data = json.load(input_file)
 
         for record in input_data:
@@ -1772,11 +1773,11 @@ def _load_zip_codes_org_data() -> None:
     logger.debug(io_glob.LOGGER_START)
 
     filename_excel = os.path.join(
-        os.getcwd(),
+        Path.cwd(),
         FILE_ZIP_CODES_ORG.replace("/", os.sep),
     )
 
-    if not os.path.isfile(filename_excel):
+    if not Path(filename_excel).is_file():
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_935.replace("{filename}", filename_excel),
@@ -2063,8 +2064,11 @@ def download_us_cities_file() -> None:
             ),
         )
 
-        if not os.path.isdir(io_config.settings.download_work_dir):
-            os.makedirs(io_config.settings.download_work_dir)
+        if not Path(io_config.settings.download_work_dir).is_dir():
+            Path(io_config.settings.download_work_dir).mkdir(
+                parents=True,
+                exist_ok=True,
+            )
 
         filename_zip = os.path.join(
             io_config.settings.download_work_dir.replace("/", os.sep),
@@ -2073,7 +2077,7 @@ def download_us_cities_file() -> None:
 
         no_chunks = 0
 
-        with open(filename_zip, "wb") as file_zip:
+        with Path(filename_zip).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
                 chunk_size=io_config.settings.download_chunk_size,
             ):
@@ -2103,7 +2107,7 @@ def download_us_cities_file() -> None:
                 glob_local.ERROR_00_907.replace("{filename}", filename_zip),
             )
 
-        os.remove(filename_zip)
+        Path(filename_zip).unlink()
         # INFO.00.024 The file '{filename}'  was successfully unpacked
         io_utils.progress_msg(
             glob_local.INFO_00_024.replace(
@@ -2161,8 +2165,11 @@ def download_zip_code_db_file() -> None:
             glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG),
         )
 
-        if not os.path.isdir(io_config.settings.download_work_dir):
-            os.makedirs(io_config.settings.download_work_dir)
+        if not Path(io_config.settings.download_work_dir).is_dir():
+            Path(io_config.settings.download_work_dir).mkdir(
+                parents=True,
+                exist_ok=True,
+            )
 
         filename_xls = os.path.join(
             io_config.settings.download_work_dir.replace("/", os.sep),
@@ -2171,7 +2178,7 @@ def download_zip_code_db_file() -> None:
 
         no_chunks = 0
 
-        with open(filename_xls, "wb") as file_zip:
+        with Path(filename_xls).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
                 chunk_size=io_config.settings.download_chunk_size,
             ):

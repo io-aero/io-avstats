@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 from iocommon import io_config, io_glob
 
@@ -30,7 +31,7 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
     value_placeholders: list[str] = []
     values: list[str] = []
 
-    with open(filename, "w", encoding=io_glob.FILE_ENCODING_DEFAULT) as out:
+    with Path(filename).open("w", encoding=io_glob.FILE_ENCODING_DEFAULT) as out:
         out.write("-- " + "=" * 80 + "\n")
         out.write("-- INSERT\n")
         out.write("-- " + "-" * 80 + "\n")
@@ -135,7 +136,7 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
     assignments: list[str] = []
     assignment_values: list[str] = []
 
-    with open(filename, "w", encoding=io_glob.FILE_ENCODING_DEFAULT) as out:
+    with Path(filename).open("w", encoding=io_glob.FILE_ENCODING_DEFAULT) as out:
         out.write("-- " + "=" * 80 + "\n")
         out.write("-- UPDATE\n")
         out.write("-- " + "-" * 80 + "\n")
@@ -197,7 +198,7 @@ def generate_sql() -> None:
         io_config.settings.razorsql_reference_file,
     )
 
-    with open(reference_filename, encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:
+    with Path(reference_filename).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:
         ref_lines = ref.readlines()
 
         _generate_sql_insert(ref_lines)

@@ -4,6 +4,7 @@
 """Managing the database schema of the PostgreSQL database."""
 import logging
 import os.path
+from pathlib import Path
 
 import pandas as pd
 from iocommon import db_utils, io_config, io_glob, io_utils
@@ -3356,7 +3357,7 @@ def _create_tokens_4_finding_description(finding_description: str) -> list[str]:
 def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
     logger.debug(io_glob.LOGGER_START)
 
-    if not os.path.isfile(FILE_MAIN_PHASES_OF_FLIGHT):
+    if not Path(FILE_MAIN_PHASES_OF_FLIGHT).is_file():
         # ERROR.00.941 The Main Phases of Flight file '{filename}' is missing
         io_utils.terminate_fatal(
             glob_local.ERROR_00_941.replace("{filename}", FILE_MAIN_PHASES_OF_FLIGHT),

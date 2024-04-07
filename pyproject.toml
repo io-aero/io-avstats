@@ -1,9 +1,3 @@
-[build-system]
-requires = [
-    "setuptools>=61.0",
-]
-build-backend = "setuptools.build_meta"
-
 [project]
 authors = [
     { name = "Team IO-Aero", email = "info@io-aero.com" },
@@ -116,7 +110,6 @@ ignore = [
     "D211",
     "D213",
     "E501",
-    "EM101",
     "PGH003",
     "PLR0911",
     "PLR0912",
@@ -124,25 +117,12 @@ ignore = [
     "PLR0915",
     "PLR2004",
     "PLW0603",
-    "PTH100",
-    "PTH103",
-    "PTH107",
-    "PTH109",
-    "PTH107",
-    "PTH110",
-    "PTH112",
-    "PTH113",
     "PTH118",
-    "PTH120",
-    "PTH123",
     "S101",
     "S307",
     "S603",
     "S608",
     "SIM102",
-    "TCH002",
-    "TCH003",
-    "TRY003",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -178,17 +158,6 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
-
-[tool.setuptools]
-packages = [
-    "ioavstats",
-]
-
-[tool.setuptools.package-data]
-ioavstats = [
-    "*.pyi",
-    "py.typed",
-]
 
 [tool.vulture]
 make_whitelist = true

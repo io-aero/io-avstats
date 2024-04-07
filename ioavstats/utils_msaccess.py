@@ -26,7 +26,7 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
         tuple[pyodbc.Connection,pyodbc.Cursor]: ODBC database connection and cursor.
 
     """
-    filename_mdb = os.getcwd() + os.path.sep + filename
+    filename_mdb = Path.cwd() + os.path.sep + filename
 
     if not Path(filename_mdb).is_file():
         # ERROR.00.932 File '{filename}' is not existing

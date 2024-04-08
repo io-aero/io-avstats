@@ -18,31 +18,30 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
     """Create an MS Access cursor.
 
     Args:
-    ----
         filename (str): MS Access filename.
 
     Returns:
-    -------
         tuple[pyodbc.Connection,pyodbc.Cursor]: ODBC database connection and cursor.
-
     """
-    filename_mdb = Path.cwd() + os.path.sep + filename
+    # Corrected line: Use '/' to join paths when working with Path objects from pathlib
+    filename_mdb = Path.cwd() / filename
 
-    if not Path(filename_mdb).is_file():
+    if not filename_mdb.is_file():
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_932.replace("{filename}", filename_mdb),
+            glob_local.ERROR_00_932.replace("{filename}", str(filename_mdb)),
         )
 
-    # Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename}}
+    # Assuming your driver string needs to include the full path to the database file
+    # Ensure your io_config.settings.odbc_connection_string format is correct and includes 'Driver={...};DBQ={filename}'
     driver = io_config.settings.odbc_connection_string.replace(
         "{filename}",
-        filename_mdb,
+        str(filename_mdb),  # Ensure the path is converted to a string
     )
 
     # INFO.00.054 ODBC driver='{driver}'
     io_utils.progress_msg(glob_local.INFO_00_054.replace("{driver}", driver))
 
-    conn_ma = pyodbc.connect(driver)  # pylint: disable=c-extension-no-member
+    conn_ma = pyodbc.connect(driver)  # Connect using the constructed driver string
 
     return conn_ma, conn_ma.cursor()

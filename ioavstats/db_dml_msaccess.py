@@ -11,7 +11,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pyodbc  # type: ignore
+import pyodbc  # pylint: disable=import-error # type: ignore
 import requests
 from iocommon import db_utils, io_config, io_glob, io_utils
 from psycopg import connection, cursor

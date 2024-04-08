@@ -2,10 +2,9 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 """Miscellaneous helper functions."""
-import os
 from pathlib import Path
 
-import pyodbc  # type: ignore
+import pyodbc  # pylint: disable=import-error  # type: ignore
 from iocommon import io_config, io_utils
 
 from ioavstats import glob_local
@@ -18,10 +17,13 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
     """Create an MS Access cursor.
 
     Args:
+    ----
         filename (str): MS Access filename.
 
     Returns:
+    -------
         tuple[pyodbc.Connection,pyodbc.Cursor]: ODBC database connection and cursor.
+
     """
     # Corrected line: Use '/' to join paths when working with Path objects from pathlib
     filename_mdb = Path.cwd() / filename
@@ -32,8 +34,6 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
             glob_local.ERROR_00_932.replace("{filename}", str(filename_mdb)),
         )
 
-    # Assuming your driver string needs to include the full path to the database file
-    # Ensure your io_config.settings.odbc_connection_string format is correct and includes 'Driver={...};DBQ={filename}'
     driver = io_config.settings.odbc_connection_string.replace(
         "{filename}",
         str(filename_mdb),  # Ensure the path is converted to a string

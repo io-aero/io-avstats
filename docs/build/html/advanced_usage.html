@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Data Sources" href="data_sources.html" /><link rel="prev" title="First Steps" href="first_steps.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>Advanced Usage - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -183,6 +183,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_04_15_log_up15APR.html">2024.04.15 up15APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_08_log_up08APR.html">2024.04.08 up08APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_up01APR.html">2024.04.01 up01APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_avall.html">2024.04.01 avall</a></li>
@@ -257,11 +258,11 @@
         </div>
         <article role="main">
           <section id="advanced-usage">
-<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h1>
+<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">¶</a></h1>
 <p>The main tool for operating <strong>IO-AVSTATS</strong> is the <strong>``run_io_avstats``</strong> script.
 The script is fully available in the Windows version and in a greatly reduced version for macOS and Ubuntu.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
 <p>The following tasks can be executed with this script:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -367,9 +368,9 @@ app</p></td>
 </div>
 </section>
 <section id="detailed-task-list">
-<h2>Detailed task list<a class="headerlink" href="#detailed-task-list" title="Link to this heading">#</a></h2>
+<h2>Detailed task list<a class="headerlink" href="#detailed-task-list" title="Link to this heading">¶</a></h2>
 <section id="a-o-c-load-aviation-occurrence-categories-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">a_o_c</span></code> - Load aviation occurrence categories into PostgreSQL<a class="headerlink" href="#a-o-c-load-aviation-occurrence-categories-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">a_o_c</span></code> - Load aviation occurrence categories into PostgreSQL<a class="headerlink" href="#a-o-c-load-aviation-occurrence-categories-into-postgresql" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Load the definition of the valid CICTT codes.</p>
 <p><strong>Data Source</strong></p>
@@ -393,7 +394,7 @@ app</p></td>
 <p>…</p>
 </section>
 <section id="c-d-c-run-docker-compose-tasks-cloud">
-<h3><code class="docutils literal notranslate"><span class="pre">c_d_c</span></code> - Run Docker Compose tasks - Cloud<a class="headerlink" href="#c-d-c-run-docker-compose-tasks-cloud" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_c</span></code> - Run Docker Compose tasks - Cloud<a class="headerlink" href="#c-d-c-run-docker-compose-tasks-cloud" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Manage the Docker containers needed in the cloud:</p>
 <ul class="simple">
@@ -413,7 +414,7 @@ app</p></td>
 </div>
 </section>
 <section id="c-d-i-create-or-update-an-application-docker-image">
-<h3><code class="docutils literal notranslate"><span class="pre">c_d_i</span></code> - Create or update an application Docker image<a class="headerlink" href="#c-d-i-create-or-update-an-application-docker-image" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_i</span></code> - Create or update an application Docker image<a class="headerlink" href="#c-d-i-create-or-update-an-application-docker-image" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Create the application-specific Docker images and store them on DockerHub.</p>
 <p><strong>Processing Options</strong></p>
@@ -425,7 +426,7 @@ app</p></td>
 </div>
 </section>
 <section id="c-d-s-create-the-io-avstats-db-postgresql-database-schema">
-<h3><code class="docutils literal notranslate"><span class="pre">c_d_s</span></code> - Create the IO-AVSTATS-DB PostgreSQL database schema<a class="headerlink" href="#c-d-s-create-the-io-avstats-db-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_d_s</span></code> - Create the IO-AVSTATS-DB PostgreSQL database schema<a class="headerlink" href="#c-d-s-create-the-io-avstats-db-postgresql-database-schema" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Create the database schema including the following steps, among others:</p>
 <ol class="arabic simple">
@@ -442,13 +443,13 @@ app</p></td>
 <p>Subsequently, the task <code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> (Update the PostgreSQL database schema) is also executed.</p>
 </section>
 <section id="c-f-z-zip-the-files-for-the-cloud">
-<h3><code class="docutils literal notranslate"><span class="pre">c_f_z</span></code> - Zip the files for the cloud<a class="headerlink" href="#c-f-z-zip-the-files-for-the-cloud" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_f_z</span></code> - Zip the files for the cloud<a class="headerlink" href="#c-f-z-zip-the-files-for-the-cloud" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Collect and zip the elements needed for the cloud to run the <strong>IO-AVSTATS</strong> application there.
 The result is contained in the file <strong>cloud.zip</strong>.</p>
 </section>
 <section id="c-l-l-correct-decimal-us-latitudes-and-longitude">
-<h3><code class="docutils literal notranslate"><span class="pre">c_l_l</span></code> - Correct decimal US latitudes and longitude<a class="headerlink" href="#c-l-l-correct-decimal-us-latitudes-and-longitude" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_l_l</span></code> - Correct decimal US latitudes and longitude<a class="headerlink" href="#c-l-l-correct-decimal-us-latitudes-and-longitude" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>An attempt is made to calculate missing decimal longitudes and latitudes using the database tables <strong>`io_lat_lng`</strong> and <strong>`io_states`</strong>.</p>
 <p><strong>Implementation</strong></p>
@@ -469,7 +470,7 @@ The result is contained in the file <strong>cloud.zip</strong>.</p>
 </ol>
 </section>
 <section id="c-p-d-cleansing-postgresql-data">
-<h3><code class="docutils literal notranslate"><span class="pre">c_p_d</span></code> - Cleansing PostgreSQL data<a class="headerlink" href="#c-p-d-cleansing-postgresql-data" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">c_p_d</span></code> - Cleansing PostgreSQL data<a class="headerlink" href="#c-p-d-cleansing-postgresql-data" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>Clean up data the abnormalities in the database.
 This includes the following activities:</p>
@@ -481,14 +482,14 @@ This includes the following activities:</p>
 <p>On the one hand, the task can be executed explicitly with the <strong>``run_io_avstats_db``</strong> script (task <strong>``c_p_d``</strong>) and, on the other hand, it always runs after loading NTSB MS Access data into the PostgreSQL database (task <strong>``l_n_a``</strong> and <strong>``u_p_d``</strong>).</p>
 </section>
 <section id="f-n-a-find-the-nearest-airports">
-<h3><code class="docutils literal notranslate"><span class="pre">f_n_a</span></code> - Find the nearest airports<a class="headerlink" href="#f-n-a-find-the-nearest-airports" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">f_n_a</span></code> - Find the nearest airports<a class="headerlink" href="#f-n-a-find-the-nearest-airports" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
 <p><strong>Purpose</strong></p>
 </section>
 <section id="l-a-p-load-airport-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_a_p</span></code> - Load airport data into PostgreSQL<a class="headerlink" href="#l-a-p-load-airport-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_a_p</span></code> - Load airport data into PostgreSQL<a class="headerlink" href="#l-a-p-load-airport-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -497,7 +498,7 @@ This includes the following activities:</p>
 <p><strong>Implementation</strong></p>
 </section>
 <section id="l-c-d-load-data-from-a-correction-file-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_c_d</span></code> - Load data from a correction file into PostgreSQL<a class="headerlink" href="#l-c-d-load-data-from-a-correction-file-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_c_d</span></code> - Load data from a correction file into PostgreSQL<a class="headerlink" href="#l-c-d-load-data-from-a-correction-file-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -516,7 +517,7 @@ The following subtasks are executed:</p>
 </ol>
 </section>
 <section id="l-c-s-load-country-and-state-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_c_s</span></code> - Load country and state data into PostgreSQL<a class="headerlink" href="#l-c-s-load-country-and-state-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_c_s</span></code> - Load country and state data into PostgreSQL<a class="headerlink" href="#l-c-s-load-country-and-state-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -525,7 +526,7 @@ The following subtasks are executed:</p>
 <p><strong>Implementation</strong></p>
 </section>
 <section id="l-n-a-load-ntsb-ms-access-database-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_n_a</span></code> - Load NTSB MS Access database data into PostgreSQL<a class="headerlink" href="#l-n-a-load-ntsb-ms-access-database-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_n_a</span></code> - Load NTSB MS Access database data into PostgreSQL<a class="headerlink" href="#l-n-a-load-ntsb-ms-access-database-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>This task allows files containing aviation event data to be downloaded from the <strong>NTSB</strong> download site.
 These files are there as MS Access databases in a compressed format.
@@ -548,7 +549,7 @@ The following subtasks are executed:</p>
 <p>The PostgreSQL database <strong>IO-AVSTATS-DB</strong> completely maps the database schema of the <strong>NTSB</strong> MS Access database.</p>
 </section>
 <section id="l-s-d-load-simplemaps-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_s_d</span></code> - Load simplemaps data into PostgreSQL<a class="headerlink" href="#l-s-d-load-simplemaps-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_s_d</span></code> - Load simplemaps data into PostgreSQL<a class="headerlink" href="#l-s-d-load-simplemaps-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -561,7 +562,7 @@ The initial loading is done with both MS Access databases Pre2008 ubd avall.
 After that only the monthly updates are then transferred.</p>
 </section>
 <section id="l-s-e-load-sequence-of-events-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_s_e</span></code> - Load sequence of events data into PostgreSQL<a class="headerlink" href="#l-s-e-load-sequence-of-events-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_s_e</span></code> - Load sequence of events data into PostgreSQL<a class="headerlink" href="#l-s-e-load-sequence-of-events-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -570,7 +571,7 @@ After that only the monthly updates are then transferred.</p>
 <p><strong>Implementation</strong></p>
 </section>
 <section id="l-z-d-load-zip-code-database-data-into-postgresql">
-<h3><code class="docutils literal notranslate"><span class="pre">l_z_d</span></code> - Load ZIP Code Database data into PostgreSQL<a class="headerlink" href="#l-z-d-load-zip-code-database-data-into-postgresql" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">l_z_d</span></code> - Load ZIP Code Database data into PostgreSQL<a class="headerlink" href="#l-z-d-load-zip-code-database-data-into-postgresql" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -583,7 +584,7 @@ The initial loading is done with both MS Access databases Pre2008 ubd avall.
 After that only the monthly updates are then transferred.</p>
 </section>
 <section id="r-d-s-refresh-the-postgresql-database-schema">
-<h3><code class="docutils literal notranslate"><span class="pre">r_d_s</span></code> - Refresh the PostgreSQL database schema<a class="headerlink" href="#r-d-s-refresh-the-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">r_d_s</span></code> - Refresh the PostgreSQL database schema<a class="headerlink" href="#r-d-s-refresh-the-postgresql-database-schema" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -611,19 +612,19 @@ Progress update 2022-…:19.366370 : ===========================================
 </div></blockquote>
 </section>
 <section id="r-s-a-run-the-io-avstats-application">
-<h3><code class="docutils literal notranslate"><span class="pre">r_s_a</span></code> - Run the IO-AVSTATS application<a class="headerlink" href="#r-s-a-run-the-io-avstats-application" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">r_s_a</span></code> - Run the IO-AVSTATS application<a class="headerlink" href="#r-s-a-run-the-io-avstats-application" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
 </section>
 <section id="s-d-c-set-up-the-postgresql-database-container">
-<h3><code class="docutils literal notranslate"><span class="pre">s_d_c</span></code> - Set up the PostgreSQL database container<a class="headerlink" href="#s-d-c-set-up-the-postgresql-database-container" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">s_d_c</span></code> - Set up the PostgreSQL database container<a class="headerlink" href="#s-d-c-set-up-the-postgresql-database-container" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
 </section>
 <section id="u-d-s-update-the-postgresql-database-schema">
-<h3><code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> - Update the PostgreSQL database schema<a class="headerlink" href="#u-d-s-update-the-postgresql-database-schema" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">u_d_s</span></code> - Update the PostgreSQL database schema<a class="headerlink" href="#u-d-s-update-the-postgresql-database-schema" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
@@ -655,13 +656,13 @@ The task can be executed several times without problems, since before a change i
 </ul>
 </section>
 <section id="u-p-d-complete-processing-of-a-modifying-ms-access-file">
-<h3><code class="docutils literal notranslate"><span class="pre">u_p_d</span></code> - Complete processing of a modifying MS Access file<a class="headerlink" href="#u-p-d-complete-processing-of-a-modifying-ms-access-file" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">u_p_d</span></code> - Complete processing of a modifying MS Access file<a class="headerlink" href="#u-p-d-complete-processing-of-a-modifying-ms-access-file" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
 </section>
 <section id="v-n-d-verify-selected-ntsb-data">
-<h3><code class="docutils literal notranslate"><span class="pre">v_n_d</span></code> - Verify selected <strong>NTSB</strong> data<a class="headerlink" href="#v-n-d-verify-selected-ntsb-data" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">v_n_d</span></code> - Verify selected <strong>NTSB</strong> data<a class="headerlink" href="#v-n-d-verify-selected-ntsb-data" title="Link to this heading">¶</a></h3>
 <p><strong>Purpose</strong></p>
 <p>This task can be used to perform a plausibility check for the following columns in the database table <strong>`events`</strong>:</p>
 <ul class="simple">
@@ -701,14 +702,14 @@ The task can be executed several times without problems, since before a change i
 </ul>
 </section>
 <section id="version-show-the-io-avstats-version">
-<h3><code class="docutils literal notranslate"><span class="pre">version</span></code> - Show the <strong>``IO-AVSTATS``</strong> version<a class="headerlink" href="#version-show-the-io-avstats-version" title="Link to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">version</span></code> - Show the <strong>``IO-AVSTATS``</strong> version<a class="headerlink" href="#version-show-the-io-avstats-version" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>TODO</p></li>
 </ul>
 </section>
 </section>
 <section id="first-installation">
-<h2>First installation<a class="headerlink" href="#first-installation" title="Link to this heading">#</a></h2>
+<h2>First installation<a class="headerlink" href="#first-installation" title="Link to this heading">¶</a></h2>
 <p>The initial load in a fresh Windows environment requires the execution of the following tasks in the given order:</p>
 <ul class="simple">
 <li><p><strong>``c_d_s``</strong> - Create the IO-AVSTATS-DB PostgreSQL database schema</p></li>
@@ -722,7 +723,7 @@ The task can be executed several times without problems, since before a change i
 </ul>
 </section>
 <section id="regular-updates">
-<h2>Regular updates<a class="headerlink" href="#regular-updates" title="Link to this heading">#</a></h2>
+<h2>Regular updates<a class="headerlink" href="#regular-updates" title="Link to this heading">¶</a></h2>
 <p>### Every 1st of the month</p>
 <ol class="arabic simple">
 <li><p>Stop the Docker container <strong>``IO-AVSTATS-DB``</strong></p></li>
@@ -833,7 +834,7 @@ The task can be executed several times without problems, since before a change i
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

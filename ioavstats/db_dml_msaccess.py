@@ -8,7 +8,7 @@ import platform
 import shutil
 import subprocess
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pyodbc  # pylint: disable=import-error # type: ignore
@@ -33,9 +33,7 @@ COLUMN_DEC_LATITUDE = "dec_latitude"
 COLUMN_DEC_LONGITUDE = "dec_longitude"
 COLUMN_STATE = "state"
 
-IO_LAST_SEEN = datetime.now(timezone.utc)
-
-logger = logging.getLogger(__name__)
+IO_LAST_SEEN = datetime.now(UTC)
 
 
 # ------------------------------------------------------------------
@@ -44,28 +42,21 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-lines
 def _check_ddl_changes(msaccess: str) -> None:
     """Check for DDL changes."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    download_work_dir = os.path.join(
-        Path.cwd(),
-        io_config.settings.download_work_dir.replace("/", os.sep),
+    download_work_dir = Path.cwd() / io_config.settings.download_work_dir.replace(
+        "/",
+        os.sep,
     )
 
     shutil.copy(
-        os.path.join(
-            download_work_dir.replace("/", os.sep),
-            msaccess + "." + glob_local.FILE_EXTENSION_MDB,
-        ),
-        os.path.join(
-            download_work_dir.replace("/", os.sep),
-            io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB,
-        ),
+        download_work_dir.replace("/", os.sep)
+        / (msaccess + "." + glob_local.FILE_EXTENSION_MDB),
+        download_work_dir.replace("/", os.sep)
+        / (io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB),
     )
 
-    msaccess_mdb = os.path.join(
-        download_work_dir.replace("/", os.sep),
-        "IO-AVSTATS.mdb",
-    )
+    msaccess_mdb = download_work_dir.replace("/", os.sep) / "IO-AVSTATS.mdb"
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
     io_utils.progress_msg(
@@ -78,9 +69,8 @@ def _check_ddl_changes(msaccess: str) -> None:
             glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb),
         )
 
-    msaccess_sql = os.path.join(
-        download_work_dir.replace("/", os.sep),
-        msaccess + "." + glob_local.FILE_EXTENSION_SQL,
+    msaccess_sql = download_work_dir.replace("/", os.sep) / (
+        msaccess + "." + glob_local.FILE_EXTENSION_SQL
     )
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
@@ -120,7 +110,7 @@ def _check_ddl_changes(msaccess: str) -> None:
     )
 
     subprocess.run(
-        [
+        [  # noqa: S603
             razorsql_java_path,
             "-jar",
             razorsql_jar_file,
@@ -152,7 +142,7 @@ def _check_ddl_changes(msaccess: str) -> None:
     else:
         _compare_ddl(msaccess)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -160,11 +150,11 @@ def _check_ddl_changes(msaccess: str) -> None:
 # ------------------------------------------------------------------
 def _compare_ddl(msaccess: str) -> None:
     """Compare the schema definitions wirth the reference file."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    reference_filename = os.path.join(
-        io_config.settings.razorsql_reference_dir.replace("/", os.sep),
-        io_config.settings.razorsql_reference_file,
+    reference_filename = (
+        io_config.settings.razorsql_reference_dir.replace("/", os.sep)
+        / io_config.settings.razorsql_reference_file
     )
 
     # pylint: disable=consider-using-with
@@ -174,8 +164,7 @@ def _compare_ddl(msaccess: str) -> None:
     reference_file_lines = reference_file.readlines()
     reference_file.close()
 
-    msaccess_filename = os.path.join(
-        io_config.settings.download_work_dir.replace("/", os.sep),
+    msaccess_filename = io_config.settings.download_work_dir.replace("/", os.sep) / (
         msaccess + "." + glob_local.FILE_EXTENSION_SQL,
     )
 
@@ -228,7 +217,7 @@ def _compare_ddl(msaccess: str) -> None:
     # is identical to the reference script
     io_utils.progress_msg(glob_local.INFO_00_012.replace("{msaccess}", msaccess))
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -239,7 +228,7 @@ def _delete_ntsb_data(
     cur_pg: cursor,
 ) -> None:
     """Delete all the NTSB data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     for table in [
         # Level 4 - FK: ev_id & Aircraft_Key & crew_no
@@ -283,7 +272,7 @@ def _delete_ntsb_data(
             )
             conn_pg.commit()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
     # ------------------------------------------------------------------
     # Finalize processing.
@@ -297,7 +286,7 @@ def _delete_ntsb_data(
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -315,15 +304,14 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
             The MS Access database file without file extension.
 
     """
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Start processing.
     # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    filename = os.path.join(
-        io_config.settings.download_work_dir.replace("/", os.sep),
+    filename = io_config.settings.download_work_dir.replace("/", os.sep) / (
         msaccess + "." + glob_local.FILE_EXTENSION_MDB,
     )
 
@@ -543,7 +531,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     cur_ma.close()
     conn_ma.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -557,7 +545,7 @@ def _load_table_aircraft(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table aircraft."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -942,7 +930,7 @@ def _load_table_aircraft(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -956,7 +944,7 @@ def _load_table_dt_aircraft(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table dt_aircraft."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -1055,7 +1043,7 @@ def _load_table_dt_aircraft(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1069,7 +1057,7 @@ def _load_table_dt_events(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table dt_events."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -1162,7 +1150,7 @@ def _load_table_dt_events(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1176,7 +1164,7 @@ def _load_table_dt_flight_crew(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table dt_flight_crew."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -1265,7 +1253,7 @@ def _load_table_dt_flight_crew(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1279,7 +1267,7 @@ def _load_table_engines(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table engines."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -1403,7 +1391,7 @@ def _load_table_engines(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1418,7 +1406,7 @@ def _load_table_events(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table events."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2196,7 +2184,7 @@ def _load_table_events(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2210,7 +2198,7 @@ def _load_table_events_sequence(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table events_sequence."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2311,7 +2299,7 @@ def _load_table_events_sequence(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2325,7 +2313,7 @@ def _load_table_findings(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table findings."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2474,7 +2462,7 @@ def _load_table_findings(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2488,7 +2476,7 @@ def _load_table_flight_crew(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table flight_crew."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2667,7 +2655,7 @@ def _load_table_flight_crew(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2681,7 +2669,7 @@ def _load_table_flight_time(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table flight_time."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2773,7 +2761,7 @@ def _load_table_flight_time(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2787,7 +2775,7 @@ def _load_table_injury(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table injury."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -2876,7 +2864,7 @@ def _load_table_injury(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2884,7 +2872,7 @@ def _load_table_injury(
 # ------------------------------------------------------------------
 def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     """Determine and load city averages."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Delete averaged data.
@@ -2969,7 +2957,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
                     row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
                     row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                 ),
             )
             count_insert += 1
@@ -2989,7 +2977,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     if count_duplicates > 0:
         io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3003,7 +2991,7 @@ def _load_table_narratives(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table narratives."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -3096,7 +3084,7 @@ def _load_table_narratives(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3110,7 +3098,7 @@ def _load_table_ntsb_admin(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table ntsb_admin."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -3204,7 +3192,7 @@ def _load_table_ntsb_admin(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3218,7 +3206,7 @@ def _load_table_occurrences(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table occurrences."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -3331,7 +3319,7 @@ def _load_table_occurrences(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3345,7 +3333,7 @@ def _load_table_seq_of_events(
     cur_pg: cursor,
 ) -> None:
     """Load the data from database table seq_of_events."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -3467,7 +3455,7 @@ def _load_table_seq_of_events(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3520,7 +3508,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             The MS Access database file without file extension.
 
     """
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     filename_zip = msaccess + "." + glob_local.FILE_EXTENSION_ZIP
     url = io_config.settings.download_url_ntsb_prefix + filename_zip
@@ -3552,9 +3540,8 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
                 exist_ok=True,
             )
 
-        filename_zip = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep),
-            filename_zip,
+        filename_zip = (
+            io_config.settings.download_work_dir.replace("/", os.sep) / filename_zip
         )
 
         no_chunks = 0
@@ -3606,4 +3593,4 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             ).replace("{url}", url),
         )
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)

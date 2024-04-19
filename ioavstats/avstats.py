@@ -6,10 +6,10 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import zipfile
+from pathlib import Path
 
-from iocommon import io_config, io_glob, io_logger, io_utils
+from iocommon import io_config, io_glob, io_utils
 from openpyxl.reader.excel import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException  # type: ignore
 
@@ -29,8 +29,6 @@ from ioavstats import (
 ARG_MSACCESS = ""
 ARG_MSEXCEL = ""
 ARG_TASK = ""
-
-logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
@@ -133,9 +131,9 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     ARG_MSEXCEL = args.msexcel
 
     if ARG_TASK in [glob_local.ARG_TASK_L_C_D, glob_local.ARG_TASK_L_C_D]:
-        file_name = os.path.join(directory_name, ARG_MSEXCEL)
+        file_name = Path(directory_name) / ARG_MSEXCEL
     else:
-        file_name = os.path.join(directory_name, ARG_MSEXCEL + ".xlsx")
+        file_name = Path(directory_name) / ARG_MSEXCEL / ".xlsx"
 
     try:
         load_workbook(
@@ -232,7 +230,7 @@ def check_arg_task(args: argparse.Namespace) -> None:
 # ------------------------------------------------------------------
 def cleansing_postgres_data() -> None:
     """c_p_d: Cleansing PostgreSQL data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.065 Cleansing PostgreSQL data
     io_utils.progress_msg(glob_local.INFO_00_065)
@@ -240,7 +238,7 @@ def cleansing_postgres_data() -> None:
 
     db_dml_corr.cleansing_postgres_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -248,7 +246,7 @@ def cleansing_postgres_data() -> None:
 # ------------------------------------------------------------------
 def correct_dec_lat_lng() -> None:
     """c_l_l: Correct US decimal latitudes and longitudes."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.040 Correct decimal US latitudes and longitudes
     io_utils.progress_msg(glob_local.INFO_00_040)
@@ -256,7 +254,7 @@ def correct_dec_lat_lng() -> None:
 
     db_dml_corr.correct_dec_lat_lng()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -264,7 +262,7 @@ def correct_dec_lat_lng() -> None:
 # ------------------------------------------------------------------
 def create_db_schema() -> None:
     """c_d_s: Create the PostgreSQL database schema."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.044 Creating the database schema
     io_utils.progress_msg(glob_local.INFO_00_044)
@@ -272,7 +270,7 @@ def create_db_schema() -> None:
 
     db_ddl_base.create_db_schema()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -287,7 +285,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             The NTSB MS Access database file without file extension.
 
     """
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.047 Download NTSB MS Access database file '{msaccess}'
     io_utils.progress_msg(glob_local.INFO_00_047.replace("{msaccess}", msaccess))
@@ -295,7 +293,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
 
     db_dml_msaccess.download_ntsb_msaccess_file(msaccess)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -303,7 +301,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
 # ------------------------------------------------------------------
 def find_nearest_airports() -> None:
     """f_n_a: Find the nearest airports."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.086 Find the nearest airports
     io_utils.progress_msg(glob_local.INFO_00_086)
@@ -311,7 +309,7 @@ def find_nearest_airports() -> None:
 
     db_dml_corr.find_nearest_airports()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -319,19 +317,11 @@ def find_nearest_airports() -> None:
 # -----------------------------------------------------------------------------
 def generate_sql() -> None:
     """Generate SQL statements: INSERT & UPDATE."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     code_generator.generate_sql()
 
-    logger.debug(io_glob.LOGGER_END)
-
-
-# -----------------------------------------------------------------------------
-# Initialising the logging functionality.
-# -----------------------------------------------------------------------------
-def initialise_logger() -> None:
-    """Initialise the root logging functionality."""
-    io_logger.initialise_logger()
+    logging.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
@@ -339,7 +329,7 @@ def initialise_logger() -> None:
 # -----------------------------------------------------------------------------
 def get_args() -> None:
     """Load the command line arguments into the memory."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     parser = argparse.ArgumentParser(
         description="Perform a IO-AVSTATS task",
@@ -459,7 +449,7 @@ def get_args() -> None:
             ),
         )
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -467,7 +457,7 @@ def get_args() -> None:
 # ------------------------------------------------------------------
 def load_aviation_occurrence_categories() -> None:
     """a_o_c: Load aviation occurrence categories into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.073 Load aviation occurrence categories
     io_utils.progress_msg(glob_local.INFO_00_073)
@@ -475,7 +465,7 @@ def load_aviation_occurrence_categories() -> None:
 
     db_dml_base.load_aviation_occurrence_categories()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -483,7 +473,7 @@ def load_aviation_occurrence_categories() -> None:
 # ------------------------------------------------------------------
 def load_airport_data() -> None:
     """l_a_p: Load airport data into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.085 Load airports
     io_utils.progress_msg(glob_local.INFO_00_085)
@@ -491,7 +481,7 @@ def load_airport_data() -> None:
 
     db_dml_base.load_airport_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -506,7 +496,7 @@ def load_correction_data(filename: str) -> None:
             The filename of the correction file.
 
     """
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.042 Load corrections from file '{filename}'
     io_utils.progress_msg(glob_local.INFO_00_042.replace("{filename}", filename))
@@ -514,7 +504,7 @@ def load_correction_data(filename: str) -> None:
 
     db_dml_corr.load_correction_data(filename)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -522,7 +512,7 @@ def load_correction_data(filename: str) -> None:
 # ------------------------------------------------------------------
 def load_country_state_data() -> None:
     """l_c_s: Load country and state data into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.057 Load country and state data
     io_utils.progress_msg(glob_local.INFO_00_057)
@@ -530,7 +520,7 @@ def load_country_state_data() -> None:
 
     db_dml_base.load_country_state_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -545,7 +535,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
             The NTSB MS Access database file without file extension.
 
     """
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.049 Load NTSB MS Access database data from file '{msaccess}'
     io_utils.progress_msg(glob_local.INFO_00_049.replace("{msaccess}", msaccess))
@@ -553,7 +543,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
 
     db_dml_msaccess.load_ntsb_msaccess_data(msaccess)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -561,7 +551,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
 # ------------------------------------------------------------------
 def load_sequence_of_events() -> None:
     """l_s_e: Load sequence of events data into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.075 Load sequence of events data
     io_utils.progress_msg(glob_local.INFO_00_075)
@@ -569,7 +559,7 @@ def load_sequence_of_events() -> None:
 
     db_dml_base.load_sequence_of_events()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -577,7 +567,7 @@ def load_sequence_of_events() -> None:
 # ------------------------------------------------------------------
 def load_simplemaps_data() -> None:
     """l_s_d: Load simplemaps data into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.050 Load simplemaps data
     io_utils.progress_msg(glob_local.INFO_00_050)
@@ -585,7 +575,7 @@ def load_simplemaps_data() -> None:
 
     db_dml_base.load_simplemaps_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -593,7 +583,7 @@ def load_simplemaps_data() -> None:
 # ------------------------------------------------------------------
 def load_zip_code_db_data() -> None:
     """l_z_d: Load ZIP Code Database data into PostgreSQL."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.056 Load ZIP Code Database data
     io_utils.progress_msg(glob_local.INFO_00_056)
@@ -601,7 +591,7 @@ def load_zip_code_db_data() -> None:
 
     db_dml_base.load_zip_codes_org_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -639,7 +629,7 @@ def progress_msg_time_elapsed(duration: int, event: str) -> None:
 # ------------------------------------------------------------------
 def refresh_db_schema() -> None:
     """r_d_s: Refresh the PostgreSQL database schema."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.071 Refreshing the database schema
     io_utils.progress_msg(glob_local.INFO_00_071)
@@ -647,7 +637,7 @@ def refresh_db_schema() -> None:
 
     db_ddl_base.refresh_db_schema()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -669,7 +659,7 @@ def terminate_fatal(error_msg: str) -> None:
 # ------------------------------------------------------------------
 def update_db_schema() -> None:
     """u_d_s: Update the PostgreSQL database schema."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.045 Updating the database schema
     io_utils.progress_msg(glob_local.INFO_00_045)
@@ -677,7 +667,7 @@ def update_db_schema() -> None:
 
     db_ddl_base.update_db_schema()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -685,7 +675,7 @@ def update_db_schema() -> None:
 # ------------------------------------------------------------------
 def verify_ntsb_data() -> None:
     """v_n_d: Verify selected NTSB data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.043 Verify selected NTSB data
     io_utils.progress_msg(glob_local.INFO_00_043)
@@ -693,7 +683,7 @@ def verify_ntsb_data() -> None:
 
     db_dml_corr.verify_ntsb_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -708,7 +698,7 @@ def version() -> str:
             The version number of the IO-AVSTATS application
 
     """
-    logger.debug(io_glob.LOGGER_START)
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_END)
 
     return glob_local.IO_AERO_DB_VERSION

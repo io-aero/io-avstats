@@ -572,8 +572,8 @@ def _setup_filter_controls() -> None:
             """,
         label="**Event year(s):**",
         min_value=1982,
-        max_value=datetime.datetime.now(datetime.timezone.utc).year,
-        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
+        max_value=datetime.datetime.now(datetime.UTC).year,
+        value=(2008, datetime.datetime.now(datetime.UTC).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -600,7 +600,7 @@ def _setup_page() -> None:
     FILTER_EV_YEAR_TO = (
         FILTER_EV_YEAR_TO
         if FILTER_EV_YEAR_TO
-        else datetime.datetime.now(datetime.timezone.utc).year - 1
+        else datetime.datetime.now(datetime.UTC).year - 1
     )
 
     st.markdown(
@@ -737,32 +737,35 @@ def _streamlit_flow() -> None:
 
     DF_FILTERED = DF_UNFILTERED
 
-    if CHOICE_DDL_OBJECT_SELECTION not in [
-        "io_airports",
-        "io_aviation_occurrence_categories",
-        "io_countries",
-        "io_lat_lng",
-        "io_md_codes_category",
-        "io_md_codes_eventsoe",
-        "io_md_codes_modifier",
-        "io_md_codes_phase",
-        "io_md_codes_section",
-        "io_md_codes_subcategory",
-        "io_md_codes_subsection",
-        "io_processed_files",
-        "io_sequence_of_events",
-        "io_states",
-    ]:
-        if CHOICE_FILTER_DATA:
-            DF_FILTERED = _apply_filter_controls(
-                DF_UNFILTERED,
-            )
+    if (
+        CHOICE_DDL_OBJECT_SELECTION
+        not in [
+            "io_airports",
+            "io_aviation_occurrence_categories",
+            "io_countries",
+            "io_lat_lng",
+            "io_md_codes_category",
+            "io_md_codes_eventsoe",
+            "io_md_codes_modifier",
+            "io_md_codes_phase",
+            "io_md_codes_section",
+            "io_md_codes_subcategory",
+            "io_md_codes_subsection",
+            "io_processed_files",
+            "io_sequence_of_events",
+            "io_states",
+        ]
+        and CHOICE_FILTER_DATA
+    ):
+        DF_FILTERED = _apply_filter_controls(
+            DF_UNFILTERED,
+        )
 
     _present_data()
 
     # Stop time measurement.
     print(  # noqa: T201
-        str(datetime.datetime.now(datetime.timezone.utc))
+        str(datetime.datetime.now(datetime.UTC))
         + f" {f'{time.time_ns() - start_time:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

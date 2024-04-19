@@ -1,7 +1,7 @@
 """Configuration file for the Sphinx documentation builder.
 
 This file contains settings for the Sphinx documentation generation process,
-tailored for the IO-TEMPLATE-APP project. It defines project information, documentation
+tailored for the IO-AVSTATS project. It defines project information, documentation
 structure, and output formatting options. The configuration aligns with the Sphinx
 documentation guidelines and includes custom settings for HTML and PDF output,
 as well as internationalization options.
@@ -43,7 +43,7 @@ Usage:
 """
 import importlib.metadata
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from rinoh.frontend.rst import DocutilsInlineNode
@@ -64,7 +64,7 @@ except importlib.metadata.PackageNotFoundError:
 
 release = version.replace(".", "-")
 
-todays_date = datetime.now(tz=timezone.utc)
+todays_date = datetime.now(tz=UTC)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -118,7 +118,7 @@ master_doc = "index"
 
 # -- Options for PDF output --------------------------------------------------
 rinoh_documents = [
-    dict(
+    dict( # noqa: C408
         doc="index",
         logo="img/IO-Aero_1_Logo.png",
         subtitle="Manual",

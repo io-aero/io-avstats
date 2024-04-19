@@ -21,7 +21,7 @@ Progress update 2023-10-02 17:06:38.044011 : ===================================
 Progress update 2023-10-02 17:06:38.044011 : INFO.00.004 Start Launcher.
 2023-10-02 17:06:38,047 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:06:38,047 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:06:38,048 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:06:38,048 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:06:38,048 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:06:38.057613 : INFO.00.008 Arguments task='d_n_a' msaccess='up01OCT'.
 Progress update 2023-10-02 17:06:38.057613 : -------------------------------------------------------------------------------.
@@ -298,7 +298,7 @@ Progress update 2023-10-02 17:06:41.752323 : ===================================
 Progress update 2023-10-02 17:06:41.752323 : INFO.00.004 Start Launcher.
 2023-10-02 17:06:41,755 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:06:41,755 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:06:41,755 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:06:41,755 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:06:41,755 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:06:41.765344 : INFO.00.008 Arguments task='l_n_a' msaccess='up01OCT'.
 Progress update 2023-10-02 17:06:41.765344 : -------------------------------------------------------------------------------.
@@ -405,7 +405,7 @@ Progress update 2023-10-02 17:06:55.037644 : ===================================
 Progress update 2023-10-02 17:06:55.037644 : INFO.00.004 Start Launcher.
 2023-10-02 17:06:55,040 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:06:55,040 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:06:55,041 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:06:55,041 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:06:55,041 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:06:55.051288 : INFO.00.005 Argument task='c_l_l'.
 Progress update 2023-10-02 17:06:55.051288 : -------------------------------------------------------------------------------.
@@ -436,7 +436,7 @@ Progress update 2023-10-02 17:08:11.609999 : ===================================
 Progress update 2023-10-02 17:08:11.609999 : INFO.00.004 Start Launcher.
 2023-10-02 17:08:11,612 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:08:11,612 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:08:11,612 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:08:11,612 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:08:11,612 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:08:11.622921 : INFO.00.005 Argument task='f_n_a'.
 Progress update 2023-10-02 17:08:11.622921 : -------------------------------------------------------------------------------.
@@ -459,7 +459,7 @@ Progress update 2023-10-02 17:08:15.138091 : ===================================
 Progress update 2023-10-02 17:08:15.138091 : INFO.00.004 Start Launcher.
 2023-10-02 17:08:15,141 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:08:15,142 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:08:15,142 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:08:15,142 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:08:15,142 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:08:15.150497 : INFO.00.005 Argument task='v_n_d'.
 Progress update 2023-10-02 17:08:15.150497 : -------------------------------------------------------------------------------.
@@ -504,7 +504,7 @@ Progress update 2023-10-02 17:08:36.486388 : ===================================
 Progress update 2023-10-02 17:08:36.486388 : INFO.00.004 Start Launcher.
 2023-10-02 17:08:36,489 : INFO  : You are using io-aero's iocommon version 1.2.5 logger Copyright IO-Aero 2023
 2023-10-02 17:08:36,489 : INFO  : The logger is configured and ready to use:
-2023-10-02 17:08:36,489 : INFO  : use logger.(debug(),info(),warning(),error(),critical())
+2023-10-02 17:08:36,489 : INFO  : use logging.(debug(),info(),warning(),error(),critical())
 2023-10-02 17:08:36,489 : INFO  : Start launcher.py
 Progress update 2023-10-02 17:08:36.498898 : INFO.00.005 Argument task='r_d_s'.
 Progress update 2023-10-02 17:08:36.499902 : -------------------------------------------------------------------------------.

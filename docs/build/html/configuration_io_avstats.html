@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Configuration Logging" href="configuration_logging.html" /><link rel="prev" title="Installation" href="installation.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>Configuration IO-AVSTATS - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -183,6 +183,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_04_15_log_up15APR.html">2024.04.15 up15APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_08_log_up08APR.html">2024.04.08 up08APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_up01APR.html">2024.04.01 up01APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_avall.html">2024.04.01 avall</a></li>
@@ -257,14 +258,14 @@
         </div>
         <article role="main">
           <section id="configuration-io-avstats">
-<h1>Configuration IO-AVSTATS<a class="headerlink" href="#configuration-io-avstats" title="Link to this heading">#</a></h1>
+<h1>Configuration IO-AVSTATS<a class="headerlink" href="#configuration-io-avstats" title="Link to this heading">¶</a></h1>
 <p>For the administration of the configuration parameters of <strong>IO-AVSTATS</strong> the tool <a class="reference external" href="https://www.dynaconf.com">dynaconf</a> is used.
 The file <code class="docutils literal notranslate"><span class="pre">settings.io_aero.toml</span></code> is available as the configuration file.
 The names of <strong>IO-AVSTATS</strong> related environment variables must include the prefix <code class="docutils literal notranslate"><span class="pre">IO_AERO</span></code>.
 Layered environments are supported.
 The <code class="docutils literal notranslate"><span class="pre">test</span></code> layer is used for the automated tests.</p>
 <section id="available-parameters">
-<h2>Available Parameters<a class="headerlink" href="#available-parameters" title="Link to this heading">#</a></h2>
+<h2>Available Parameters<a class="headerlink" href="#available-parameters" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -402,7 +403,7 @@ The <code class="docutils literal notranslate"><span class="pre">test</span></co
 </div>
 </section>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default</span><span class="p">]</span>
 <span class="n">check_value</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 <span class="n">correction_work_dir</span> <span class="o">=</span> <span class="s2">&quot;data/correction&quot;</span>
@@ -423,7 +424,7 @@ The <code class="docutils literal notranslate"><span class="pre">test</span></co
 </div>
 </section>
 <section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
 <p>The configuration parameters in the configuration files can be overridden with corresponding environment variables, e.g. the environment variable <code class="docutils literal notranslate"><span class="pre">IO_AERO_IS_VERBOSE</span></code> overrides the configuration parameter <code class="docutils literal notranslate"><span class="pre">is_verbose</span></code>.</p>
 </section>
 </section>
@@ -499,7 +500,7 @@ The <code class="docutils literal notranslate"><span class="pre">test</span></co
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

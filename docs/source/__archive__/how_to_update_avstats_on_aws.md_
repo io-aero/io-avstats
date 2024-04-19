@@ -2,7 +2,7 @@
 
 The cloud version of **IO-AVSTATS** consists of a series of docker containers that are launched using Docker Compose.
 For the PostgreSQL database, the official DockerHub image from [here](https://hub.docker.com/_/postgres) is used.
-A separate Docker image is created for each of the Streamlit applications. 
+A separate Docker image is created for each of the Streamlit applications.
 
 ## 1. Docker images
 
@@ -189,7 +189,7 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago   285MB
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
  => [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.0s
  => [ 9/10] COPY src/streamlit_apps/ae1982.py ./ae1982.py                                                                                                                         0.0s
- => [10/10] RUN make pipenv-prod                                                                                                                                                    116.1s
+ => [10/10] RUN make conda-prod                                                                                                                                                    116.1s
  => exporting to image                                                                                                                                                                7.6s
  => => exporting layers                                                                                                                                                               7.6s
  => => writing image sha256:9c52d19f49cab5d423d3829c9bf9a275646a6c8102664798439d2f6a8a36ec70                                                                                          0.0s
@@ -322,7 +322,7 @@ portainer/portainer-ce   latest    500504ac663a   3 months ago     285MB
  => [ 7/10] COPY Pipfile ./                                                                                                                                                           0.0s
  => [ 8/10] COPY settings.IO_AERO_4_dockerfile.toml ./settings.io_aero.toml                                                                                                     0.1s
  => [ 9/10] COPY src/streamlit_apps/pd1982.py ./pd1982.py                                                                                                                         0.0s
- => [10/10] RUN make pipenv-prod                                                                                                                                                    116.0s
+ => [10/10] RUN make conda-prod                                                                                                                                                    116.0s
  => exporting to image                                                                                                                                                                7.6s
  => => exporting layers                                                                                                                                                               7.6s
  => => writing image sha256:352591832f346b0b30d89f33e01572eb1710024841c0d6fecd53a74b22ca5c09                                                                                          0.0s

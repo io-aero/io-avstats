@@ -3,7 +3,6 @@
 # be found in the LICENSE.md file.
 """Managing the database schema of the PostgreSQL database."""
 import logging
-import os
 from collections import OrderedDict
 from pathlib import Path
 
@@ -66,8 +65,6 @@ TABLE_NAME: str = ""
 TERMINAL_AREA_DISTANCE_NMI: float = io_config.settings.terminal_area_distance_nmi
 
 VALUE: str = ""
-
-logger = logging.getLogger(__name__)
 
 
 # ------------------------------------------------------------------
@@ -170,7 +167,7 @@ def _delete_missing_aircraft(
     cur_pg: cursor,
     cur_pg_2: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_delete = 0
     count_select = 0
@@ -232,7 +229,7 @@ def _delete_missing_aircraft(
     if count_delete > 0:
         io_utils.progress_msg(f"Number rows deleted  : {count_delete!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -285,12 +282,15 @@ def _process_events(
 
     if VALUE.lower() == "null":
         VALUE = "null"
-    elif COLUMN_NAME in [
-        "io_latitude",
-        "io_longitude",
-    ]:
-        if not _check_corrected_value():
-            return
+    elif (
+        COLUMN_NAME
+        in [
+            "io_latitude",
+            "io_longitude",
+        ]
+        and not _check_corrected_value()
+    ):
+        return
 
     EV_ID = str(extract_column_value(ROW, COLUMN_EV_ID))  # type: ignore
     if not EV_ID:
@@ -448,7 +448,7 @@ def _upd_table_events_row_next_airport(  # pylint: disable=too-many-arguments
 # pylint: disable=too-many-statements
 def cleansing_postgres_data() -> None:
     """Cleansing PostgreSQL data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -488,7 +488,7 @@ def cleansing_postgres_data() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -499,7 +499,7 @@ def cleansing_postgres_data() -> None:
 # pylint: disable=too-many-statements
 def correct_dec_lat_lng() -> None:
     """Correct decimal latitude and longitude."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_select = 0
     count_update = 0
@@ -739,7 +739,7 @@ def correct_dec_lat_lng() -> None:
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -747,7 +747,7 @@ def correct_dec_lat_lng() -> None:
 # ------------------------------------------------------------------
 def find_nearest_airports() -> None:
     """Find the nearest airports."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_select = 0
     count_update = 0
@@ -906,7 +906,7 @@ def find_nearest_airports() -> None:
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -925,9 +925,9 @@ def load_correction_data(filename: str) -> None:
     global ROW  # pylint: disable=global-statement
     global TABLE_NAME  # pylint: disable=global-statement
 
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    corr_file = os.path.join(io_config.settings.correction_work_dir, filename)
+    corr_file = Path(io_config.settings.correction_work_dir) / filename
 
     if not Path(corr_file).is_file():
         # ERROR.00.926 The correction file '{filename}' is missing
@@ -995,7 +995,7 @@ def load_correction_data(filename: str) -> None:
         cur_pg.close()
         conn_pg.close()
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -1027,7 +1027,7 @@ def load_correction_data(filename: str) -> None:
 # pylint: disable=too-many-statements
 def verify_ntsb_data() -> None:
     """Verify selected NTSB data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Resetting the error markers.
@@ -1340,4 +1340,4 @@ def verify_ntsb_data() -> None:
     if count_errors > 0:
         io_utils.progress_msg(f"Number rows errors   : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)

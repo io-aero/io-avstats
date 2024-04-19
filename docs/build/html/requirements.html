@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" /><link rel="prev" title="Introduction" href="introduction.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>Requirements - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -183,6 +183,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_04_15_log_up15APR.html">2024.04.15 up15APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_08_log_up08APR.html">2024.04.08 up08APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_up01APR.html">2024.04.01 up01APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_avall.html">2024.04.01 avall</a></li>
@@ -257,12 +258,12 @@
         </div>
         <article role="main">
           <section id="requirements">
-<h1>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h1>
+<h1>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h1>
 <p>The required software is listed below.
 Regarding the corresponding software versions, you will find the detailed information in the
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
-<h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">#</a></h2>
+<h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">¶</a></h2>
 <p>Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.</p>
 <p>For the Windows operating systems, only additional the functionality of the <code class="docutils literal notranslate"><span class="pre">make</span></code> tool must be made available, e.g. via
 <a class="reference external" href="http://gnuwin32.sourceforge.net/packages/make.htm">Make for Windows</a></p>
@@ -295,24 +296,24 @@ Regarding the corresponding software versions, you will find the detailed inform
 If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the scripts <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_zsh_scripts.zsh</span></code> (macOS) and <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
 </section>
 <section id="python">
-<h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
 <p>This project utilizes Python 3.10, which introduces significant enhancements in type hinting and type annotations.
 These improvements provide a more robust and clear definition of function parameters, return types, and variable types, contributing to improved code readability and maintainability.
 The use of Python 3.10 ensures compatibility with these advanced typing features, offering a more structured and error-resistant development environment.</p>
 </section>
 <section id="docker-desktop">
-<h2><a class="reference external" href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a><a class="headerlink" href="#docker-desktop" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a><a class="headerlink" href="#docker-desktop" title="Link to this heading">¶</a></h2>
 <p>The project employs PostgreSQL for data storage and leverages Docker images provided by PostgreSQL to simplify the installation process.
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.</p>
 </section>
 <section id="ms-access-database-engine-only-for-windows">
-<h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a>- only for Windows<a class="headerlink" href="#ms-access-database-engine-only-for-windows" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">MS Access Database Engine</a>- only for Windows<a class="headerlink" href="#ms-access-database-engine-only-for-windows" title="Link to this heading">¶</a></h2>
 <p>This Software consists of a set of components that facilitate the transfer of data between existing Microsoft Office files such as Microsoft Office Access (*.mdb and *.accdb) files and Microsoft Office Excel (*.xls, *.xlsx, and *.xlsb) files to other data sources.
 Connectivity to existing text files is also supported.</p>
 </section>
 <section id="dbeaver-community-optional">
-<h2><a class="reference external" href="https://dbeaver.io">DBeaver Community</a> - optional<a class="headerlink" href="#dbeaver-community-optional" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://dbeaver.io">DBeaver Community</a> - optional<a class="headerlink" href="#dbeaver-community-optional" title="Link to this heading">¶</a></h2>
 <p>DBeaver is recommended as the user interface for interacting with the PostgreSQL database due to its comprehensive and user-friendly features.
 It provides a flexible and intuitive platform for database management, supporting a wide range of database functionalities including SQL scripting, data visualization, and import/export capabilities.
 Additionally, the project includes predefined connection configurations for DBeaver, facilitating a hassle-free and streamlined setup process for users.</p>
@@ -392,7 +393,7 @@ Additionally, the project includes predefined connection configurations for DBea
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

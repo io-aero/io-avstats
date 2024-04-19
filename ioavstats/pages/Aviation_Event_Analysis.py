@@ -486,22 +486,25 @@ def _apply_filter(
         )
 
     # noinspection PyUnboundLocalVariable
-    if FILTER_DISTANCE_NEAREST_AIRPORT:
-        if FILTER_DISTANCE_NEAREST_AIRPORT_FROM or FILTER_DISTANCE_NEAREST_AIRPORT_TO:
-            df_filtered = df_filtered.loc[
-                (
-                    df_filtered["nearest_airport_distance"]
-                    >= FILTER_DISTANCE_NEAREST_AIRPORT_FROM
-                )
-                & (
-                    df_filtered["nearest_airport_distance"]
-                    <= FILTER_DISTANCE_NEAREST_AIRPORT_TO
-                )
-            ]
-            _print_timestamp(
-                f"_apply_filter() - {len(df_filtered):>6} - "
-                "FILTER_DISTANCE_NEAREST_AIRPORT_FROM/TO",
+    if (
+        FILTER_DISTANCE_NEAREST_AIRPORT
+        and FILTER_DISTANCE_NEAREST_AIRPORT_FROM
+        or FILTER_DISTANCE_NEAREST_AIRPORT_TO
+    ):
+        df_filtered = df_filtered.loc[
+            (
+                df_filtered["nearest_airport_distance"]
+                >= FILTER_DISTANCE_NEAREST_AIRPORT_FROM
             )
+            & (
+                df_filtered["nearest_airport_distance"]
+                <= FILTER_DISTANCE_NEAREST_AIRPORT_TO
+            )
+        ]
+        _print_timestamp(
+            f"_apply_filter() - {len(df_filtered):>6} - "
+            "FILTER_DISTANCE_NEAREST_AIRPORT_FROM/TO",
+        )
 
     # noinspection PyUnboundLocalVariable
     if FILTER_NO_AIRCRAFT_FROM or FILTER_NO_AIRCRAFT_TO:
@@ -623,7 +626,7 @@ def _apply_filter_us_aviation(
 
     filter_cmd += "]"
 
-    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
+    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used # noqa: S307
 
     _print_timestamp("_apply_filter_us_aviation() - End")
 
@@ -3129,7 +3132,7 @@ def _print_timestamp(identifier: str) -> None:
 
     # Stop time measurement.
     print(  # noqa: T201
-        str(datetime.datetime.now(datetime.timezone.utc))
+        str(datetime.datetime.now(datetime.UTC))
         + f" {f'{current_time - LAST_READING:,}':>20} ns - "
         + f"{APP_ID} - {identifier}",
         flush=True,
@@ -3315,8 +3318,8 @@ def _setup_filter() -> None:
 """,
         label="**Event year(s):**",
         min_value=1982,
-        max_value=datetime.datetime.now(datetime.timezone.utc).year,
-        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
+        max_value=datetime.datetime.now(datetime.UTC).year,
+        value=(2008, datetime.datetime.now(datetime.UTC).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -3566,7 +3569,7 @@ def _setup_page() -> None:
     FILTER_EV_YEAR_TO = (
         FILTER_EV_YEAR_TO
         if FILTER_EV_YEAR_TO
-        else datetime.datetime.now(datetime.timezone.utc).year - 1
+        else datetime.datetime.now(datetime.UTC).year - 1
     )
 
     if [CHOICE_CHARTS_LEGEND_T_ACC] == FILTER_EV_TYPE:
@@ -3958,22 +3961,21 @@ def _setup_task_controls() -> None:
             label="Show horizontal bar charts",
             value=False,
         )
-        if CHOICE_HORIZONTAL_BAR_CHARTS:
-            if CHOICE_EXTENDED_VERSION:
-                CHOICE_TOTALS_CHARTS_HEIGHT = st.sidebar.slider(
-                    key="CHOICE_TOTALS_CHARTS_HEIGHT",
-                    label="Chart height (px)",
-                    min_value=100,
-                    max_value=1000,
-                    value=CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT,
-                )
-                CHOICE_TOTALS_CHARTS_WIDTH = st.sidebar.slider(
-                    key="CHOICE_TOTALS_CHARTS_WIDTH",
-                    label="Chart width (px)",
-                    min_value=100,
-                    max_value=2000,
-                    value=CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT,
-                )
+        if CHOICE_HORIZONTAL_BAR_CHARTS and CHOICE_EXTENDED_VERSION:
+            CHOICE_TOTALS_CHARTS_HEIGHT = st.sidebar.slider(
+                key="CHOICE_TOTALS_CHARTS_HEIGHT",
+                label="Chart height (px)",
+                min_value=100,
+                max_value=1000,
+                value=CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT,
+            )
+            CHOICE_TOTALS_CHARTS_WIDTH = st.sidebar.slider(
+                key="CHOICE_TOTALS_CHARTS_WIDTH",
+                label="Chart width (px)",
+                min_value=100,
+                max_value=2000,
+                value=CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT,
+            )
         if CHOICE_EXTENDED_VERSION:
             CHOICE_TOTALS_CHARTS_DETAILS = st.sidebar.checkbox(
                 help="Tabular representation of the of the data underlying the charts.",
@@ -4594,7 +4596,7 @@ def _streamlit_flow() -> None:
     # Stop time measurement.
     # pylint: disable=line-too-long
     print(  # noqa: T201
-        str(datetime.datetime.now(datetime.timezone.utc))
+        str(datetime.datetime.now(datetime.UTC))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

@@ -1,6 +1,7 @@
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
+
 """Launcher: coverage testing."""
 import logging
 import os
@@ -12,13 +13,9 @@ import pytest
 from iocommon import io_glob
 from iocommon.io_config import settings
 
-from ioavstats import glob_local
-
 # -----------------------------------------------------------------------------
 # Constants & Globals.
 # -----------------------------------------------------------------------------
-
-logger = logging.getLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
@@ -30,13 +27,19 @@ def _run_command(command: list[str]) -> None:
         subprocess.run(
             command,
             check=True,
-            shell=False,
+            shell=False,  # noqa: S603
             text=True,
             capture_output=True,
         )
     except subprocess.CalledProcessError as e:
+        print(  # noqa: T201
+            f"test_launcher - stdout: '{e.stdout}'",
+        )  # Print stdout for additional context
+        print(  # noqa: T201
+            f"test_launcher - stderr: '{e.stderr}'",
+        )  # This will print the error output
         pytest.fail(
-            f"Command failed with error: {e.stderr} and exit code: {e.returncode}",
+            f"test_launcher - command failed with exit code: {e.returncode}",
         )
 
 
@@ -46,34 +49,30 @@ def _run_command(command: list[str]) -> None:
 @pytest.fixture(scope="session", autouse=True)
 def _setup_and_teardown() -> None:
     """Setup and teardown fixture for all tests."""  # noqa: D401
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     os.environ["ENV_FOR_DYNACONF"] = "test"
 
     yield  # This is where the testing happens
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
-# Test case: version - Show the IO-TEMPLATE-APP version.
+# Test case: version - Show the IO-AVSTATS version.
 # -----------------------------------------------------------------------------
 def test_launcher_version() -> None:
     """Test case: launcher() version."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping version on Darwin due to custom handling.")
-
-    if platform.system() == "Linux":
-        pytest.skip("Skipping version on Ubuntu due to custom handling.")
-
     commands = {
+        "Darwin": ["./run_io_avstats_pytest.zsh", "version"],
+        "Linux": ["./run_io_avstats_pytest.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -96,7 +95,7 @@ def test_launcher_d_d_c() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -119,7 +118,7 @@ def test_launcher_d_d_f() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -138,7 +137,7 @@ def test_launcher_s_d_c() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -163,7 +162,7 @@ def test_launcher_c_d_s() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -186,7 +185,7 @@ def test_launcher_u_d_s() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -210,7 +209,7 @@ def test_launcher_a_o_c() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -233,7 +232,7 @@ def test_launcher_l_a_p() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -256,7 +255,7 @@ def test_launcher_l_c_s() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -279,7 +278,7 @@ def test_launcher_l_s_e() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -302,7 +301,7 @@ def test_launcher_l_s_d() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -325,7 +324,7 @@ def test_launcher_l_z_d() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -348,7 +347,7 @@ def test_launcher_r_d_s() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -377,7 +376,7 @@ def test_launcher_l_c_d() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
 
@@ -400,6 +399,6 @@ def test_launcher_clean() -> None:
     }
     command = commands.get(platform.system())
     if not command:
-        pytest.fail(glob_local.FATAL_00_908.replace("{os}", platform.system()))
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)

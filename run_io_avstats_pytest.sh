@@ -94,7 +94,7 @@ echo "==================================================================="
 # Running a Streamlit application.
 # ---------------------------------------------------------------------------
 if [ "${IO_AERO_TASK}" = "r_s_a" ]; then
-    if ! ( pipenv run streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
+    if ! ( streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
         exit 255
     fi
 

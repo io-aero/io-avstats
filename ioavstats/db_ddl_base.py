@@ -46,8 +46,6 @@ DLL_VIEW_STMNTS_REFRESH: list[str] = []
 
 FILE_MAIN_PHASES_OF_FLIGHT = io_config.settings.download_file_main_phases_of_flight
 
-logger = logging.getLogger(__name__)
-
 
 # ------------------------------------------------------------------
 # Alter database tables.
@@ -279,7 +277,7 @@ def _create_db_io_md_codes_category(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -367,7 +365,7 @@ def _create_db_io_md_codes_category(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -378,7 +376,7 @@ def _create_db_io_md_codes_eventsoe(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -464,7 +462,7 @@ def _create_db_io_md_codes_eventsoe(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -475,7 +473,7 @@ def _create_db_io_md_codes_modifier(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -563,7 +561,7 @@ def _create_db_io_md_codes_modifier(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -574,7 +572,7 @@ def _create_db_io_md_codes_phase(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -666,7 +664,7 @@ def _create_db_io_md_codes_phase(
 
     _load_description_main_phase(conn_pg, cur_pg)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -678,7 +676,7 @@ def _create_db_io_md_codes_section(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -781,7 +779,7 @@ def _create_db_io_md_codes_section(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -792,7 +790,7 @@ def _create_db_io_md_codes_subcategory(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -888,7 +886,7 @@ def _create_db_io_md_codes_subcategory(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -900,7 +898,7 @@ def _create_db_io_md_codes_subsection(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     count_insert = 0
     count_select = 0
@@ -1019,7 +1017,7 @@ def _create_db_io_md_codes_subsection(
 
     io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1385,7 +1383,7 @@ def _create_dll_create_tables_io() -> None:
 # Adds the DDL instructions for setting up the database schema.
 # ------------------------------------------------------------------
 def _create_dll_tables_base() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Level 1 - without FK
@@ -1904,7 +1902,7 @@ def _create_dll_tables_base() -> None:
         );
     """
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2151,7 +2149,7 @@ def _create_dll_table_io_md_codes_subsection() -> None:
 # Adds the DDL statement for altering io_msaccess_file.
 # ------------------------------------------------------------------
 def _create_dll_table_io_msaccess_file_alter() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     DLL_TABLE_STMNTS[
         "io_msaccess_file"
@@ -2160,14 +2158,14 @@ def _create_dll_table_io_msaccess_file_alter() -> None:
               RENAME TO io_processed_files;
     """
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
 # Adds the DDL statement for setting up io_processed_files.
 # ------------------------------------------------------------------
 def _create_dll_table_io_processed_files() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     DLL_TABLE_STMNTS[
         "io_processed_files"
@@ -2182,7 +2180,7 @@ def _create_dll_table_io_processed_files() -> None:
         );
     """
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3355,7 +3353,7 @@ def _create_tokens_4_finding_description(finding_description: str) -> list[str]:
 # ------------------------------------------------------------------
 # pylint: disable=R0801
 def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     if not Path(FILE_MAIN_PHASES_OF_FLIGHT).is_file():
         # ERROR.00.941 The Main Phases of Flight file '{filename}' is missing
@@ -3425,7 +3423,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
         if count_update > 0:
             io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -3495,7 +3493,7 @@ def create_db_schema() -> None:
     """Create the database schema."""
     global DLL_TABLE_STMNTS  # pylint: disable=global-statement
 
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor_admin()
 
@@ -3554,7 +3552,7 @@ def create_db_schema() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3564,7 +3562,7 @@ def refresh_db_schema() -> None:
     """Refresh the database schema."""
     global DLL_VIEW_STMNTS_REFRESH  # pylint: disable=global-statement
 
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -3577,7 +3575,7 @@ def refresh_db_schema() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -3590,7 +3588,7 @@ def update_db_schema() -> None:
     global DLL_VIEW_STMNTS_DROP  # pylint: disable=global-statement
     global DLL_VIEW_STMNTS_REFRESH  # pylint: disable=global-statement
 
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -3626,4 +3624,4 @@ def update_db_schema() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)

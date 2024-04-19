@@ -179,7 +179,7 @@ rem Run a Streamlit application.
 rem ----------------------------------------------------------------------------
 
 if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
-    pipenv run streamlit run ioavstats\Menu.py --server.port 8501
+    streamlit run ioavstats\Menu.py --server.port 8501
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -192,7 +192,7 @@ rem ----------------------------------------------------------------------------
 rem Show the IO-AVSTATS version.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["version"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats_db_pytest was aborted
         exit 1
@@ -231,7 +231,7 @@ rem ----------------------------------------------------------------------------
 rem Load aviation occurrence categories into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["a_o_c"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -284,13 +284,13 @@ rem ----------------------------------------------------------------------------
 rem Create the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_d_s"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t "u_d_s"
+    python scripts\launcher.py -t "u_d_s"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -316,7 +316,7 @@ rem ----------------------------------------------------------------------------
 rem Correct decimal US latitudes and longitudes.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_l_l"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -329,7 +329,7 @@ rem ----------------------------------------------------------------------------
 rem Cleansing PostgreSQL data.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_p_d"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -342,7 +342,7 @@ rem ----------------------------------------------------------------------------
 rem Find the nearest airports.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["f_n_a"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -355,7 +355,7 @@ rem ----------------------------------------------------------------------------
 rem Load airport data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_a_p"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -368,7 +368,7 @@ rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
+    python scripts\launcher.py -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -381,7 +381,7 @@ rem ----------------------------------------------------------------------------
 rem Load country and state data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_c_s"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -394,13 +394,13 @@ rem ----------------------------------------------------------------------------
 rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
-    pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
+    python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -413,7 +413,7 @@ rem ----------------------------------------------------------------------------
 rem Load simplemaps data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_s_d"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -426,7 +426,7 @@ rem ----------------------------------------------------------------------------
 rem Load sequence of events data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_s_e"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -439,7 +439,7 @@ rem ----------------------------------------------------------------------------
 rem Load ZIP Code Database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_z_d"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -452,7 +452,7 @@ rem ----------------------------------------------------------------------------
 rem Refresh the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["r_d_s"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -478,7 +478,7 @@ rem ----------------------------------------------------------------------------
 rem Update the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["u_d_s"] (
-    pipenv run python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
@@ -491,37 +491,37 @@ rem ----------------------------------------------------------------------------
 rem Complete processing of a modifying MS Access file.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
-    pipenv run python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
+    python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t l_n_a -m "%IO_AERO_MSACCESS%"
+    python scripts\launcher.py -t l_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t c_l_l
+    python scripts\launcher.py -t c_l_l
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t f_n_a
+    python scripts\launcher.py -t f_n_a
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t v_n_d
+    python scripts\launcher.py -t v_n_d
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1
     )
 
-    pipenv run python scripts\launcher.py -t r_d_s
+    python scripts\launcher.py -t r_d_s
     if ERRORLEVEL 1 (
         echo Processing of the script run_io_avstats was aborted
         exit 1

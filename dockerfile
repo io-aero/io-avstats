@@ -1,4 +1,4 @@
-FROM python:3.10.11 as base
+FROM python:3.12.3 as base
 
 LABEL maintainer="IO-Aero"
 
@@ -31,6 +31,6 @@ COPY docs/img/StockSnap_SLQQYN6CRR.jpg             ./docs/img
 COPY ioavstats/${APP}.py                           ./${APP}.py
 COPY ioavstats/utils.py                            ./utils.py
 
-RUN make pipenv-prod
+RUN make conda-prod
 
-ENTRYPOINT pipenv run streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --host Cloud --mode ${MODE}
+ENTRYPOINT streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --host Cloud --mode ${MODE}

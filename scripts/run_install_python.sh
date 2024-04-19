@@ -9,7 +9,7 @@ set -e
 # ------------------------------------------------------------------------------
 
 # Set the Python version
-PYTHON_VERSION="3.10"
+PYTHON_VERSION="3.12"
 
 echo "=========================================================================="
 echo "Adding PPA for Python and updating package lists."
@@ -31,12 +31,6 @@ echo "--------------------------------------------------------------------------
 sudo apt install python3-pip
 pip3 install --user --upgrade pip
 pip3 --version
-
-echo "=========================================================================="
-echo "Install pipenv with pip."
-echo "--------------------------------------------------------------------------"
-pip3 install --user pipenv
-pipenv --version
 
 echo "--------------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

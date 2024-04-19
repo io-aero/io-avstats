@@ -19,9 +19,10 @@ from ioavstats import avstats, glob_local
 # -----------------------------------------------------------------------------
 # Global variables.
 # -----------------------------------------------------------------------------
-_LOCALE = "en_US.UTF-8"
 
-logger = logging.getLogger(__name__)
+io_logger.initialise_logger()
+
+_LOCALE = "en_US.UTF-8"
 
 
 # -----------------------------------------------------------------------------
@@ -40,10 +41,10 @@ def _print_project_version() -> None:
 
     # Check if the version is found and print it
     if version:
-        logger.info("IO-AVSTATS version: %s", version)
+        logging.info("IO-AVSTATS version: %s", version)
     else:
         # If the version isn't found, print an appropriate message
-        logger.fatal("IO-AVSTATS version not found in pyproject.toml")
+        logging.fatal("IO-AVSTATS version not found in pyproject.toml")
 
 
 # -----------------------------------------------------------------------------
@@ -69,20 +70,17 @@ def main(argv: list[str]) -> None:
     # INFO.00.004 Start Launcher.
     io_utils.progress_msg(glob_local.INFO_00_004)
 
-    # Initialise the logging functionality.
-    io_logger.initialise_logger()
+    logging.debug(io_glob.LOGGER_START)
+    logging.info("param argv=%s", argv)
 
-    logger.debug(io_glob.LOGGER_START)
-    logger.info("param argv=%s", argv)
-
-    logger.info("Start launcher.py")
+    logging.info("Start launcher.py")
 
     try:
         locale.setlocale(locale.LC_ALL, glob_local.LOCALE)
     except locale.Error:
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
 
-    logger.info("locale=%s", locale.getlocale())
+    logging.info("locale=%s", locale.getlocale())
 
     # Load the command line arguments.
     avstats.get_args()
@@ -148,7 +146,7 @@ def main(argv: list[str]) -> None:
     io_utils.progress_msg(glob_local.INFO_00_006)
     io_utils.progress_msg("=" * 79)
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------

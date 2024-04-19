@@ -5,7 +5,6 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 """IO-Aero Menu."""
-import os
 import shutil
 from pathlib import Path
 
@@ -18,7 +17,7 @@ credential_path = get_streamlit_file_path("credentials.toml")
 if not Path(credential_path).exists():
     Path(Path(credential_path).parent).mkdir(parents=True, exist_ok=True)
     shutil.copyfile(
-        os.path.join(PROJECT_ROOT, ".streamlit\\credentials.toml"),
+        PROJECT_ROOT / ".streamlit" / "credentials.toml",
         credential_path,
     )
 

@@ -1,0 +1,56 @@
+name: ioavstats
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - haversine
+  - lat_lon_parser
+  - mlxtend
+  - numpy
+  - openpyxl
+  - pandas
+  - plotly
+  - psycopg2-binary
+  - pyodbc
+  - requests
+  - sqlalchemy
+  - streamlit
+  - streamlit-pandas-profiling
+  - tomli
+  - tomli-w
+  - virtualenv
+  - xlrd
+  - ydata-profiling
+  - pip
+  - pip:
+    - git+https://IoAeroMachineUser:${PYPI_PAT}@github.com/io-aero/io-common.git
+    - "matplotlib<=3.7"
+    - pyeclat
+    # Development dependencies
+    - bandit
+    - black
+    - coverage
+    - coveralls
+    - docformatter
+    - furo
+    - ipython
+    - mypy
+    - myst-parser
+    - nuitka
+    - ordered-set
+    - pandas-stubs
+    - pylint
+    - pytest
+    - pytest-cov
+    - pytest-deadfixtures
+    - pytest-helpers-namespace
+    - pytest-random-order
+    - rinohtype
+    - ruff
+    - sphinx
+    - sphinx-autodoc-typehints
+    - types-psycopg2
+    - types-toml
+    - vulture
+

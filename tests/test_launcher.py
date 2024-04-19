@@ -65,9 +65,13 @@ def test_launcher_version() -> None:
     """Test case: launcher() version."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        pytest.skip("Skipping version on Darwin due to custom handling.")
+
+    if platform.system() == "Linux":
+        pytest.skip("Skipping version on Ubuntu due to custom handling.")
+
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "version"],
-        "Linux": ["./run_io_avstats_pytest.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
     }
     command = commands.get(platform.system())

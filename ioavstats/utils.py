@@ -4,7 +4,7 @@
 """Application Utilities."""
 import argparse
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import psycopg
 import streamlit as st
@@ -17,8 +17,6 @@ from sqlalchemy.engine import Engine
 # -----------------------------------------------------------------------------
 # Global variables.
 # -----------------------------------------------------------------------------
-
-logger = logging.getLogger(__name__)
 
 
 # ------------------------------------------------------------------
@@ -90,9 +88,8 @@ def get_args() -> str:
     parsed_args = parser.parse_args()
 
     host = "Local"
-    if parsed_args.host is not None:
-        if parsed_args.host == "Cloud":
-            host = parsed_args.host
+    if parsed_args.host is not None and parsed_args.host == "Cloud":
+        host = parsed_args.host
 
     return host
 
@@ -229,7 +226,7 @@ IO-AVSTATS Application: **{app_id}**
 
 Latest NTSB database: **{file_name} - {processed}**
 
-**:copyright: 2022-{datetime.now(timezone.utc).year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
+**:copyright: 2022-{datetime.now(UTC).year} - IO AERONAUTICAL AUTONOMY LABS, LLC**
 
 [Disclaimer](https://www.io-aero.com/disclaimer)
     """,
@@ -241,7 +238,7 @@ Latest NTSB database: **{file_name} - {processed}**
 # ------------------------------------------------------------------
 def upd_io_processed_files(file_name: str, cur_pg: cursor) -> None:
     """Update the database table io_processed_files."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     cur_pg.execute(
         """
@@ -260,11 +257,11 @@ def upd_io_processed_files(file_name: str, cur_pg: cursor) -> None:
     """,
         (
             file_name,
-            datetime.now(tz=timezone.utc),
+            datetime.now(tz=UTC),
             1,
-            datetime.now(tz=timezone.utc),
+            datetime.now(tz=UTC),
             file_name,
         ),
     )
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)

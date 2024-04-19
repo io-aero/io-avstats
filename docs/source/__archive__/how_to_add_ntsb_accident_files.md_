@@ -7,7 +7,7 @@ Aviation accident data provided by **NTSB** can be found at the following [link]
 **NTSB** provides the following files:
 
 - **`Pre2008.zip`**: data set for 1982 through 2007
-- **`avall.zip`**: data set from 2008 to the present 
+- **`avall.zip`**: data set from 2008 to the present
 - **`upDDMON.zip`**: monthly supplements on the 1st, 8th, 15th and 22nd
 
 In the database table **`io_processed_files`** you can find the files already processed by **IO-AVSTATS**:
@@ -28,7 +28,7 @@ For a more detailed description of these tasks, see under **Operation**.
 - Unzip the latest file **`data/yy.mm.dd_postgres_Pre2008_20.09.30.zip`**
 - Start the Docker container **`io_avstats_db`** with **`s_d_c - Set up the IO-AVSTATS-DB PostgreSQL database container`**
 
-### 1.2 Processing modified non-**NTSB** data sources 
+### 1.2 Processing modified non-**NTSB** data sources
 
 The following steps are performed only if the source files have changed:
 
@@ -45,7 +45,7 @@ The following steps are performed only if the source files have changed:
 | [ZIP Code Database](https://www.unitedstateszipcodes.org/zip-code-database/){:target="_blank"}                                           | 42'735 active      | l_z_d | Load ZIP Code Database data into PostgreSQL         |
 
 
-#### 1.2.1 Backup the file directory **`data/postgres`** 
+#### 1.2.1 Backup the file directory **`data/postgres`**
 
 - Stop the Docker container **`io_avstats_db`**.
 - Zip the file directory **`postgres`** in the file directory **`data`** - result is the file **`postgres.zip`**.
@@ -83,12 +83,12 @@ The following tasks must be performed every month on the 1st, 8th, 15th and 22nd
 - Modify the word document `upload/IO-AVSTATS-DB.docx`
 - Create the pdf file `upload/IO-AVSTATS-DB.pdf`
 - Modify the configuration file `mkdocs.yml`
-- Run `make pipenv-dev`
+    - Run `make conda-dev`
 - Run `make final`
 - Create a pull request
 - Create the new release yy.mm.dd
 
-## 4. Backup 
+## 4. Backup
 
 The following steps are used to back up the database **IO-AVSTATS-DB**:
 
@@ -211,9 +211,9 @@ SELECT count(*) ,
 ```sql92
 SELECT count(*) "Count",
        io_dec_lat_lng_actions
-  FROM events 
- WHERE io_dec_lat_lng_actions IS NOT NULL 
- GROUP BY io_dec_lat_lng_actions 
+  FROM events
+ WHERE io_dec_lat_lng_actions IS NOT NULL
+ GROUP BY io_dec_lat_lng_actions
  ORDER BY io_dec_lat_lng_actions
 ```
 
@@ -222,10 +222,10 @@ SELECT count(*) "Count",
 ```sql92
 SELECT count(*) "Count",
        io_dec_lat_lng_actions
-  FROM events 
+  FROM events
  WHERE ev_year >= 1982
-   AND io_dec_lat_lng_actions IS NOT NULL 
- GROUP BY io_dec_lat_lng_actions 
+   AND io_dec_lat_lng_actions IS NOT NULL
+ GROUP BY io_dec_lat_lng_actions
  ORDER BY io_dec_lat_lng_actions
 ```
 
@@ -234,10 +234,10 @@ SELECT count(*) "Count",
 ```sql92
 SELECT count(*) "Count",
        io_dec_lat_lng_actions
-  FROM events 
+  FROM events
  WHERE ev_year >= 2008
-   AND io_dec_lat_lng_actions IS NOT NULL 
- GROUP BY io_dec_lat_lng_actions 
+   AND io_dec_lat_lng_actions IS NOT NULL
+ GROUP BY io_dec_lat_lng_actions
  ORDER BY io_dec_lat_lng_actions
 ```
 
@@ -249,42 +249,42 @@ SELECT count(*) "Count",
 SELECT count(*) "Count",
        'Latitude deviation' "Description"
   FROM events e
- WHERE io_dec_latitude_deviating IS NOT NULL 
+ WHERE io_dec_latitude_deviating IS NOT NULL
  UNION
 SELECT count(*),
        'Longitude deviation'
   FROM events e
- WHERE io_dec_longitude_deviating IS NOT NULL 
+ WHERE io_dec_longitude_deviating IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Latitude'
   FROM events e
- WHERE io_invalid_latitude IS NOT NULL 
+ WHERE io_invalid_latitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Longitude'
   FROM events e
- WHERE io_invalid_longitude IS NOT NULL 
+ WHERE io_invalid_longitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City'
   FROM events e
- WHERE io_invalid_us_city IS NOT NULL 
+ WHERE io_invalid_us_city IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City & Zipcode'
   FROM events e
- WHERE io_invalid_us_city_zipcode IS NOT NULL 
+ WHERE io_invalid_us_city_zipcode IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US State'
   FROM events e
- WHERE io_invalid_us_state IS NOT NULL 
+ WHERE io_invalid_us_state IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US Zipcode'
   FROM events e
- WHERE io_invalid_us_zipcode IS NOT NULL 
+ WHERE io_invalid_us_zipcode IS NOT NULL
  ORDER BY 2
 ```
 
@@ -294,50 +294,50 @@ SELECT count(*) ,
 SELECT count(*) "Count",
        'Latitude deviation' "Description"
   FROM events e
- WHERE ev_year < 2008 
-   AND io_dec_latitude_deviating IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_dec_latitude_deviating IS NOT NULL
  UNION
 SELECT count(*),
        'Longitude deviation'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_dec_longitude_deviating IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_dec_longitude_deviating IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Latitude'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_latitude IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_latitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Longitude'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_longitude IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_longitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_us_city IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_us_city IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City & Zipcode'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_us_city_zipcode IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_us_city_zipcode IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US State'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_us_state IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_us_state IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US Zipcode'
   FROM events e
- WHERE ev_year < 2008 
-   AND io_invalid_us_zipcode IS NOT NULL 
+ WHERE ev_year < 2008
+   AND io_invalid_us_zipcode IS NOT NULL
  ORDER BY 2
 ```
 
@@ -347,49 +347,49 @@ SELECT count(*) ,
 SELECT count(*) "Count",
        'Latitude deviation' "Description"
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_dec_latitude_deviating IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_dec_latitude_deviating IS NOT NULL
  UNION
 SELECT count(*),
        'Longitude deviation'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_dec_longitude_deviating IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_dec_longitude_deviating IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Latitude'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_latitude IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_latitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid Longitude'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_longitude IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_longitude IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_us_city IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_us_city IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US City & Zipcode'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_us_city_zipcode IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_us_city_zipcode IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US State'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_us_state IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_us_state IS NOT NULL
  UNION
 SELECT count(*) ,
        'Invalid US Zipcode'
   FROM events e
- WHERE ev_year >= 2008 
-   AND io_invalid_us_zipcode IS NOT NULL 
+ WHERE ev_year >= 2008
+   AND io_invalid_us_zipcode IS NOT NULL
  ORDER BY 2
 ```

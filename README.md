@@ -75,7 +75,7 @@ Further IO-Aero software documentation can be found under the following links.
 | data              | Application data related files.                  |
 | docs              | Documentation files.                             |
 | ioavstats         | Python script files.                             |
-| libs              | Contains libraries that are not used via pipenv. |
+| libs              | Contains libraries that are not used via pip. |
 | resources         | Selected manuals and software.                   |
 | scripts           | Supporting macOS, Ubuntu and Windows Scripts.    |
 | tests             | Scripts and data for **pytest**.                 |

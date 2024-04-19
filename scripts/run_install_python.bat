@@ -1,7 +1,7 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-set PYTHON_VERSION=3.10
+set PYTHON_VERSION=3.12
 
 echo ==========================================================================
 echo Install Python 3 on Windows.
@@ -19,12 +19,6 @@ echo ==========================================================================
 echo Install pip for Python 3
 echo -------------------------------------------------------------------------
 echo Python 3 and pip3 are installed with Python %PYTHON_VERSION%
-
-echo ==========================================================================
-echo Install pipenv with pip
-echo -------------------------------------------------------------------------
-pip3 install --user pipenv
-pipenv --version
 
 echo -------------------------------------------------------------------------
 echo DATE TIME : %date% %time%

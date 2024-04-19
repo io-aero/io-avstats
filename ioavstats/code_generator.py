@@ -4,7 +4,6 @@
 """IO-AVSTATS interface."""
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from iocommon import io_config, io_glob
@@ -21,10 +20,7 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
         ref_lines (list[str]): DDL export of RazorSQL.
 
     """
-    filename = os.path.join(
-        io_config.settings.download_work_dir,
-        "generated_insert.sql",
-    )
+    filename = io_config.settings.download_work_dir / "generated_insert.sql"
 
     columns: list[str] = []
     table_name: str = ""
@@ -128,10 +124,7 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
     # -----------------------------------------------------------------------------
     # Create the UPDATE statements.
     # -----------------------------------------------------------------------------
-    filename = os.path.join(
-        io_config.settings.download_work_dir,
-        "generated_update.sql",
-    )
+    filename = io_config.settings.download_work_dir / "generated_update.sql"
 
     assignments: list[str] = []
     assignment_values: list[str] = []
@@ -193,9 +186,9 @@ def generate_sql() -> None:
     The underlying database structures originate from a DDL export of
     RazorSQL.
     """
-    reference_filename = os.path.join(
-        io_config.settings.razorsql_reference_dir,
-        io_config.settings.razorsql_reference_file,
+    reference_filename = (
+        io_config.settings.razorsql_reference_dir
+        / io_config.settings.razorsql_reference_file
     )
 
     with Path(reference_filename).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:

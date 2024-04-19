@@ -20,7 +20,7 @@ Enter the new time:
 ===========================================================================
 Progress update 2024-04-01 10:13:12.551529+00:00 : ===============================================================================.
 Progress update 2024-04-01 10:13:12.551529+00:00 : INFO.00.004 Start Launcher.
-2024-04-01 12:13:12,559 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:54 You are using io-aero's iocommon version 1.2.43 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-04-01 12:13:12,559 [iocommon.io_logger] [io_logging.py  ] INFO  initialise_logger:54 You are using io-aero's iocommon version 1.2.43 logger (Copyright (c) 2022-2024 IO-Aero)
 2024-04-01 12:13:12,559 [__main__] [launcher.py  ] INFO  main:75 param argv=['scripts\\launcher.py', '-t', 'd_n_a', '-m', 'avall']
 2024-04-01 12:13:12,559 [__main__] [launcher.py  ] INFO  main:77 Start launcher.py
 2024-04-01 12:13:12,569 [__main__] [launcher.py  ] INFO  main:84 locale=('en_US', 'UTF-8')
@@ -297,7 +297,7 @@ Progress update 2024-04-01 10:13:43.692452+00:00 : INFO.00.006 End   Launcher.
 Progress update 2024-04-01 10:13:43.692452+00:00 : ===============================================================================.
 Progress update 2024-04-01 10:13:46.490210+00:00 : ===============================================================================.
 Progress update 2024-04-01 10:13:46.490210+00:00 : INFO.00.004 Start Launcher.
-2024-04-01 12:13:46,493 [iocommon.io_logger] [io_logger.py  ] INFO  initialise_logger:54 You are using io-aero's iocommon version 1.2.43 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-04-01 12:13:46,493 [iocommon.io_logger] [io_logging.py  ] INFO  initialise_logger:54 You are using io-aero's iocommon version 1.2.43 logger (Copyright (c) 2022-2024 IO-Aero)
 2024-04-01 12:13:46,493 [__main__] [launcher.py  ] INFO  main:75 param argv=['scripts\\launcher.py', '-t', 'l_n_a', '-m', 'avall']
 2024-04-01 12:13:46,494 [__main__] [launcher.py  ] INFO  main:77 Start launcher.py
 2024-04-01 12:13:46,504 [__main__] [launcher.py  ] INFO  main:84 locale=('en_US', 'UTF-8')

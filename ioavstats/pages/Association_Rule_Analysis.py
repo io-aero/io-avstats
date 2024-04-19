@@ -320,22 +320,21 @@ def _apply_algorithm() -> None:
 
         return
 
-    if CHOICE_ALG_ECLAT:
+    if CHOICE_ALG_ECLAT and (  # pylint: disable=too-many-boolean-expressions
+        CHOICE_SHOW_ASSOCIATION_RULES
+        or CHOICE_SHOW_BINARY_DATA_ECLAT
+        or CHOICE_SHOW_FREQUENT_ITEMSETS
+        or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
+        or CHOICE_SHOW_TRANSACTION_DATA
+    ):
+        _create_transaction_data_eclat()
         if (
             CHOICE_SHOW_ASSOCIATION_RULES
             or CHOICE_SHOW_BINARY_DATA_ECLAT
             or CHOICE_SHOW_FREQUENT_ITEMSETS
             or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
-            or CHOICE_SHOW_TRANSACTION_DATA
         ):
-            _create_transaction_data_eclat()
-            if (
-                CHOICE_SHOW_ASSOCIATION_RULES
-                or CHOICE_SHOW_BINARY_DATA_ECLAT
-                or CHOICE_SHOW_FREQUENT_ITEMSETS
-                or CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT
-            ):
-                _apply_algorithm_eclat()
+            _apply_algorithm_eclat()
 
     _print_timestamp("_apply_algorithm()")
 
@@ -654,7 +653,7 @@ def _apply_filter_us_aviation(
 
     filter_cmd += "]"
 
-    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used
+    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used # noqa: S307
 
     _print_timestamp("_apply_filter_us_aviation()")
 
@@ -941,7 +940,7 @@ def _create_transaction_data() -> None:
         st.error("##### Error: No items selected - transaction data.")
         st.stop()
 
-    DF_TRANSACTION_DATA["items"] = eval(  # pylint: disable=eval-used
+    DF_TRANSACTION_DATA["items"] = eval(  # pylint: disable=eval-used # noqa: S307
         transaction_cmd,
     )
 
@@ -1106,7 +1105,7 @@ def _create_transaction_data_eclat() -> None:
     _idx_row_d = 0
 
     for _idx_row_s in DF_RAW_DATA_FILTERED.index:
-        column_list = eval(cmd_concat)  # pylint: disable=eval-used
+        column_list = eval(cmd_concat)  # pylint: disable=eval-used # noqa: S307
         for idx_col, column in enumerate(column_list):
             DF_TRANSACTION_DATA_ECLAT.iat[_idx_row_d, idx_col] = column  # noqa: PD009
         _idx_row_d += 1  # noqa: SIM113
@@ -1412,6 +1411,7 @@ The **csv** upload is not limited, but may not be processable with MS Excel.
 # ------------------------------------------------------------------
 # Creates the user guide for the 'Show data profile' task.
 # ------------------------------------------------------------------
+# pylint: disable=line-too-long
 def _get_user_guide_data_profile(data_type: str) -> None:
     text = f"""
 #### User guide: {data_type} profile
@@ -1421,6 +1421,9 @@ For further explanations please consult the documentation of **Pandas Profiling*
     """
 
     st.warning(text)
+
+
+# pylint: enable=line-too-long
 
 
 # ------------------------------------------------------------------
@@ -2237,13 +2240,13 @@ def _present_results() -> None:
         # One-hot encoded data / binary data .
         # ------------------------------------------------------------------
 
-        if CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX:
-            if CHOICE_SHOW_ONE_HOT_ENCODED_DATA:
-                _present_details_binary_data_one_hot_encoded()
+        if (
+            CHOICE_ALG_APRIORI or CHOICE_ALG_FPGROWTH or CHOICE_ALG_FPMAX
+        ) and CHOICE_SHOW_ONE_HOT_ENCODED_DATA:
+            _present_details_binary_data_one_hot_encoded()
 
-        if CHOICE_ALG_ECLAT:
-            if CHOICE_SHOW_BINARY_DATA_ECLAT:
-                _present_details_binary_data()
+        if CHOICE_ALG_ECLAT and CHOICE_SHOW_BINARY_DATA_ECLAT:
+            _present_details_binary_data()
 
         # ------------------------------------------------------------------
         # Frequent item sets.
@@ -2259,9 +2262,8 @@ def _present_results() -> None:
             if CHOICE_ALG_FPMAX:
                 _present_details_frequent_item_sets_fpmax()
 
-        if CHOICE_ALG_ECLAT:
-            if CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT:
-                _present_details_frequent_item_sets_tree_map_eclat()
+        if CHOICE_ALG_ECLAT and CHOICE_SHOW_FREQUENT_ITEMSETS_TREE_MAP_ECLAT:
+            _present_details_frequent_item_sets_tree_map_eclat()
 
         # ------------------------------------------------------------------
         # Association rules.
@@ -2301,7 +2303,7 @@ def _print_timestamp(identifier: str) -> None:
 
     # Stop time measurement.
     print(  # noqa: T201
-        str(datetime.datetime.now(datetime.timezone.utc))
+        str(datetime.datetime.now(datetime.UTC))
         + f" {f'{current_time - LAST_READING:,}':>20} ns - "
         + f"{APP_ID} - {identifier}",
         flush=True,
@@ -2525,8 +2527,8 @@ def _setup_filter() -> None:
             """,
         label="**Event year(s):**",
         min_value=2008,
-        max_value=datetime.datetime.now(datetime.timezone.utc).year,
-        value=(2008, datetime.datetime.now(datetime.timezone.utc).year - 1),
+        max_value=datetime.datetime.now(datetime.UTC).year,
+        value=(2008, datetime.datetime.now(datetime.UTC).year - 1),
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
@@ -3354,7 +3356,7 @@ def _setup_page() -> None:
     FILTER_EV_YEAR_TO = (
         FILTER_EV_YEAR_TO
         if FILTER_EV_YEAR_TO
-        else datetime.datetime.now(datetime.timezone.utc).year - 1
+        else datetime.datetime.now(datetime.UTC).year - 1
     )
 
     st.markdown(
@@ -4206,7 +4208,7 @@ def _streamlit_flow() -> None:
 
     # Stop time measurement.
     print(  # noqa: T201
-        str(datetime.datetime.now(datetime.timezone.utc))
+        str(datetime.datetime.now(datetime.UTC))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )

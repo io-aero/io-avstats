@@ -5,8 +5,7 @@ on:
     branches: [ 'main' ]
 
 env:
-  IO_CONDA: 'false'
-  IO_PAGES: 'true'
+  MODULE: 'ioavstats'
   PYPI_PAT: ${{ secrets.PYPI_PAT }}
 
 jobs:
@@ -17,14 +16,13 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.10"]
+        python-version: ["3.12"]
 
     steps:
       - name: Show the environment variables
         run: |
-          echo "IO_CONDA    = ${{ env.IO_CONDA }}"
-          echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
-          echo "IO_PAGES    = ${{ env.IO_PAGES }}"
+          echo "MODULE      = $MODULE"
+          echo "PYPI_PAT    = ${{ secrets.PYPI_PAT }}"
 
       - name: Set Timezone
         run: echo "TZ=UTC" >> $GITHUB_ENV
@@ -40,26 +38,23 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up Miniconda
-        if: ${{ env.IO_CONDA == 'true' }}
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies - pipenv - dev
-        if: ${{ env.IO_CONDA != 'true' }}
-        run: make pipenv-dev
-
-      - name: Install dependencies - Conda & pipenv - dev
-        if: ${{ env.IO_CONDA == 'true' }}
+      - name: Install dependencies - Conda - dev
         run: make conda-dev
 
       - name: Run docs - dev
-        run: make black docs
+        run: |
+          conda init --all
+          source ~/.bashrc
+          conda activate $MODULE
+          make black docs
 
       - name: Deploy to GitHub Pages
-        if: ${{ vars.IO_LOCAL != 'true' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

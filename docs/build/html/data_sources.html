@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="PostgreSQL Administration" href="db_administration.html" /><link rel="prev" title="Advanced Usage" href="advanced_usage.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Data Sources - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -183,6 +183,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_04_15_log_up15APR.html">2024.04.15 up15APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_08_log_up08APR.html">2024.04.08 up08APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_up01APR.html">2024.04.01 up01APR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_01_log_avall.html">2024.04.01 avall</a></li>
@@ -257,42 +258,42 @@
         </div>
         <article role="main">
           <section id="data-sources">
-<h1>Data Sources<a class="headerlink" href="#data-sources" title="Link to this heading">#</a></h1>
+<h1>Data Sources<a class="headerlink" href="#data-sources" title="Link to this heading">¶</a></h1>
 <section id="id1">
-<h2><a class="reference external" href="https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf">AVIATION OCCURRENCE CATEGORIES</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf">AVIATION OCCURRENCE CATEGORIES</a><a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>The CICTT codes used in the <strong>`Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx`</strong> file is taken from <a class="reference external" href="https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf">this document</a>.</p>
 <img alt="_images/aviation_occurrence_categories_pdf.png" src="_images/aviation_occurrence_categories_pdf.png" />
 </section>
 <section id="cictt-soe-map-csv">
-<h2>CICTT_SOE_MAP.csv<a class="headerlink" href="#cictt-soe-map-csv" title="Link to this heading">#</a></h2>
+<h2>CICTT_SOE_MAP.csv<a class="headerlink" href="#cictt-soe-map-csv" title="Link to this heading">¶</a></h2>
 <p>The content of the database table <cite>io_sequence_of_events</cite> is created based on this csv file.</p>
 <img alt="_images/CICTT_SOE_MAP.png" src="_images/CICTT_SOE_MAP.png" />
 </section>
 <section id="id2">
-<h2><a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00">FAA Airports</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.158824%2C-1.633886%2C2.00">FAA Airports</a><a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>The FAA provides data on airports in the United States in the form of a csv file.
 This data is updated by the FAA at irregular intervals.</p>
 <img alt="_images/FAA_Airports.png" src="_images/FAA_Airports.png" />
 </section>
 <section id="id3">
-<h2><a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.059024%2C-1.628764%2C2.00">FAA Runways</a><a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.059024%2C-1.628764%2C2.00">FAA Runways</a><a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>The FAA provides data on runways in the United States in the form of a csv file.
 This data is updated by the FAA at irregular intervals.</p>
 <img alt="_images/FAA_Runways.png" src="_images/FAA_Runways.png" />
 </section>
 <section id="id4">
-<h2><a class="reference external" href="https://www.geodatos.net/en">geodatos</a><a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.geodatos.net/en">geodatos</a><a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>The decimal latitude and longitude for the USA used in the <strong>`Countries_States/countries_states.json`</strong> file is taken from the <a class="reference external" href="https://www.geodatos.net/en/coordinates/united-states">geodatos website</a>.</p>
 <img alt="_images/geodatos.png" src="_images/geodatos.png" />
 </section>
 <section id="id5">
-<h2><a class="reference external" href="https://www.faa.gov/airports/planning_capacity/npias/current">National Plan of Integrated Airport Systems (NPIAS)</a><a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.faa.gov/airports/planning_capacity/npias/current">National Plan of Integrated Airport Systems (NPIAS)</a><a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>The FAA provides data on preferred airports in the United States in the form of an MS Excel file.
 This data is updated by the FAA at irregular intervals.</p>
 <img alt="_images/FAA_NPIAS.png" src="_images/FAA_NPIAS.png" />
 </section>
 <section id="id6">
-<h2><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB</a><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB</a><a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
 <p>The main data used in <strong>IO-AVSTATS</strong> is provided by the National Transportation Safety Board.
 On the accident data page is the link <a class="reference external" href="https://www.ntsb.gov/safety/data/Pages/Data_Stats.aspx">Downloadable data sets</a>, which contains the aviation accident data in MS Access format for free download.</p>
 <div class="table-wrapper docutils container">
@@ -325,7 +326,7 @@ On the accident data page is the link <a class="reference external" href="https:
 </div>
 <p>The schemas of the two databases <cite>avall</cite> and <cite>Pre2008</cite> are identical except for the two new optional columns <cite>dec_latitude</cite> and <cite>dec_longitude</cite> in the database table <cite>events</cite> of the database <cite>avall</cite>.</p>
 <section id="database-schema-comparison">
-<h3>Database Schema Comparison<a class="headerlink" href="#database-schema-comparison" title="Link to this heading">#</a></h3>
+<h3>Database Schema Comparison<a class="headerlink" href="#database-schema-comparison" title="Link to this heading">¶</a></h3>
 <p>Before any new <strong>NTSB</strong> data set can be processed, the database schema of the new data set must first be compared with the database schema of the previous version of the <strong>NTSB</strong> data set <cite>avall.mdb</cite>.</p>
 <p>Procedure:</p>
 <ul class="simple">
@@ -349,7 +350,7 @@ On the accident data page is the link <a class="reference external" href="https:
 <p>In case of any discrepancy, these must be implemented into the existing PostgreSQL database.</p>
 </section>
 <section id="table-processing-order">
-<h3>Table Processing Order<a class="headerlink" href="#table-processing-order" title="Link to this heading">#</a></h3>
+<h3>Table Processing Order<a class="headerlink" href="#table-processing-order" title="Link to this heading">¶</a></h3>
 <p>Based on the foreign keys (FK) present in the database schema, the following processing sequence results when creating the database schema and loading or updating the database tables:</p>
 <p>Level 1 - without FK
 - events</p>
@@ -373,16 +374,16 @@ On the accident data page is the link <a class="reference external" href="https:
 - seq_of_events</p>
 </section>
 <section id="issues">
-<h3>Issues<a class="headerlink" href="#issues" title="Link to this heading">#</a></h3>
+<h3>Issues<a class="headerlink" href="#issues" title="Link to this heading">¶</a></h3>
 <p>The problem database tables listed below are not included in the PostgreSQL database schema.</p>
 <section id="empty-database-tables">
-<h4>Empty database tables<a class="headerlink" href="#empty-database-tables" title="Link to this heading">#</a></h4>
+<h4>Empty database tables<a class="headerlink" href="#empty-database-tables" title="Link to this heading">¶</a></h4>
 <p>The following database tables are included in the Entity Relationship Diagram (ERD), but they do not contain any data in the database:
 - Occurrences
 - seq_of_events</p>
 </section>
 <section id="legacy-database-tables">
-<h4>Legacy database tables<a class="headerlink" href="#legacy-database-tables" title="Link to this heading">#</a></h4>
+<h4>Legacy database tables<a class="headerlink" href="#legacy-database-tables" title="Link to this heading">¶</a></h4>
 <p>The following database tables are included in the database but are missing from the ERD:
 - Country
 - ct_iaids
@@ -391,13 +392,13 @@ On the accident data page is the link <a class="reference external" href="https:
 - states</p>
 </section>
 <section id="inconsistent-database-data-foreign-key">
-<h4>Inconsistent database data - foreign key<a class="headerlink" href="#inconsistent-database-data-foreign-key" title="Link to this heading">#</a></h4>
+<h4>Inconsistent database data - foreign key<a class="headerlink" href="#inconsistent-database-data-foreign-key" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>database table <cite>ntsb_admin</cite>: database table <cite>event</cite> has no row with <cite>ev_id</cite> = <cite>20210527103155</cite> (data source: <cite>avall.zip</cite>) - as a consequence, the foreign key to the events table had to be removed</p></li>
 </ul>
 </section>
 <section id="inconsistent-database-data-country-usa-and-state">
-<h4>Inconsistent database data - country USA and state<a class="headerlink" href="#inconsistent-database-data-country-usa-and-state" title="Link to this heading">#</a></h4>
+<h4>Inconsistent database data - country USA and state<a class="headerlink" href="#inconsistent-database-data-country-usa-and-state" title="Link to this heading">¶</a></h4>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ev_state</span><span class="p">,</span>
 <span class="w">       </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">events</span>
@@ -448,7 +449,7 @@ On the accident data page is the link <a class="reference external" href="https:
 </div>
 </section>
 <section id="inconsistent-database-data-invalid-usa-latitude">
-<h4>Inconsistent database data - invalid USA latitude<a class="headerlink" href="#inconsistent-database-data-invalid-usa-latitude" title="Link to this heading">#</a></h4>
+<h4>Inconsistent database data - invalid USA latitude<a class="headerlink" href="#inconsistent-database-data-invalid-usa-latitude" title="Link to this heading">¶</a></h4>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_lat_lng_issues</span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">io_dec_lat_lng_actions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%ERROR.00.920%&#39;</span>
@@ -468,7 +469,7 @@ On the accident data page is the link <a class="reference external" href="https:
 </div>
 </section>
 <section id="inconsistent-database-data-invalid-usa-longitude">
-<h4>Inconsistent database data - invalid USA longitude<a class="headerlink" href="#inconsistent-database-data-invalid-usa-longitude" title="Link to this heading">#</a></h4>
+<h4>Inconsistent database data - invalid USA longitude<a class="headerlink" href="#inconsistent-database-data-invalid-usa-longitude" title="Link to this heading">¶</a></h4>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">io_lat_lng_issues</span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">io_dec_lat_lng_actions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%ERROR.00.921%&#39;</span>
@@ -490,12 +491,12 @@ On the accident data page is the link <a class="reference external" href="https:
 </section>
 </section>
 <section id="id7">
-<h2><a class="reference external" href="https://www.opendatasoft.com/?hsLang=en">opendatasoft</a><a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.opendatasoft.com/?hsLang=en">opendatasoft</a><a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
 <p>The decimal latitudes and longitudes for the US states used in the <strong>`Countries_States/countries_states.json`</strong> file are taken from the <a class="reference external" href="https://public.opendatasoft.com/explore/dataset/us-state-boundaries/export/">opendatasoft website</a>.</p>
 <img alt="_images/opendatasoft.png" src="_images/opendatasoft.png" />
 </section>
 <section id="id8">
-<h2><a class="reference external" href="https://simplemaps.com/">simplemaps</a><a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://simplemaps.com/">simplemaps</a><a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
 <p>In order to fill in the missing decimal latitudes and longitudes, free available data from <strong>simplemaps</strong> is used.
 simplemaps offers postal codes and cities with their latitude and longitude.</p>
 <p>The <a class="reference external" href="https://simplemaps.com/data/us-zips">US Zip Codes Database</a> link provides latitude and longitude for selected US zip codes:</p>
@@ -504,7 +505,7 @@ simplemaps offers postal codes and cities with their latitude and longitude.</p>
 <img alt="_images/uscities.png" src="_images/uscities.png" />
 </section>
 <section id="id9">
-<h2><a class="reference external" href="https://www.unitedstateszipcodes.org/">United States Zip Codes.org</a><a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://www.unitedstateszipcodes.org/">United States Zip Codes.org</a><a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
 <p>In order to fill in the missing decimal latitudes and longitudes, free available data from <strong>United States Zip Codes.org</strong> is used.
 <strong>United States Zip Codes.org</strong> offers more complete postal codes but only with estimated latitudes and longitudes.</p>
 <img alt="_images/zip_code_database.png" src="_images/zip_code_database.png" />
@@ -602,7 +603,7 @@ simplemaps offers postal codes and cities with their latitude and longitude.</p>
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

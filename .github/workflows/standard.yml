@@ -5,10 +5,11 @@ on:
     branches: ['main']
 
 env:
-  IO_CONDA: 'false'
+  IO_AWS_CLI: 'false'
   IO_COVERALLS: 'false'
   IO_DOCKER: 'true'
   IO_ODBC: 'true'
+  MODULE: 'ioavstats'
   PYPI_PAT: ${{ secrets.PYPI_PAT }}
 
 jobs:
@@ -19,16 +20,18 @@ jobs:
       fail-fast: true
       matrix:
         os: [macos-latest, ubuntu-latest]
-        python-version: ["3.10"]
+        python-version: ["3.12"]
 
     steps:
       - name: Show the environment variables
         run: |
-          echo "IO_CONDA    = ${{ env.IO_CONDA }}"
+          echo "IO_AWS_CLI  = ${{ env.IO_AWS_CLI }}"
           echo "IO_COVERALLS= ${{ env.IO_COVERALLS }}"
           echo "IO_DOCKER   = ${{ env.IO_DOCKER }}"
           echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
           echo "IO_ODBC     = ${{ env.IO_ODBC }}"
+          echo "MODULE      = ${{ env.MODULE }}"
+          echo "PYPI_PAT    = ${{ secrets.PYPI_PAT }}"
 
       - name: Set Timezone
         run: echo "TZ=UTC" >> $GITHUB_ENV
@@ -41,12 +44,14 @@ jobs:
       - name: Set Locale - macOS
         if: runner.os == 'macOS'
         run: |
+          echo "SHELL_CONFIG=.zshrc" >> $GITHUB_ENV
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 
       - name: Set Locale - Ubuntu
         if: runner.os == 'Linux'
         run: |
+          echo "SHELL_CONFIG=.bashrc" >> $GITHUB_ENV
           sudo apt-get update
           sudo apt-get install -y locales
           sudo locale-gen en_US.UTF-8
@@ -72,7 +77,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up Miniconda
-        if: ${{ env.IO_CONDA == 'true' }}
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
@@ -101,30 +105,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unixodbc-dev
 
-      - name: Install dependencies - pipenv - prod
-        if: ${{ env.IO_CONDA != 'true' }}
-        run: make pipenv-prod
-
-      - name: Install dependencies - Conda & pipenv - prod
-        if: ${{ env.IO_CONDA == 'true' }}
+      - name: Install dependencies - Conda - prod
         run: make conda-prod
 
       - name: Compile the Python code - prod
-        run: make compileall
+        run: |
+          conda init --all
+          source ~/$SHELL_CONFIG
+          conda activate $MODULE
+          make compileall
 
       - name: Run pytest - prod
-        run: make pytest-ci
+        run: |
+          conda init --all
+          source ~/$SHELL_CONFIG
+          conda activate $MODULE
+          make pytest-ci
 
-      - name: Install dependencies - pipenv - dev
-        if: ${{ env.IO_CONDA != 'true' }}
-        run: make pipenv-dev
-
-      - name: Install dependencies - Conda & pipenv - dev
-        if: ${{ env.IO_CONDA == 'true' }}
+      - name: Install dependencies - Conda - dev
         run: make conda-dev
 
       - name: Run pytest - dev
-        run: make black lint docs tests
+        run: |
+          conda init --all
+          source ~/$SHELL_CONFIG
+          conda activate $MODULE
+          make black lint docs tests
 
       - name: Coveralls
         if: ${{ env.IO_COVERALLS == 'true' && runner.os == 'Linux' }}

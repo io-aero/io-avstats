@@ -6,7 +6,7 @@ import json
 import logging
 import os
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -86,9 +86,7 @@ FILE_SIMPLEMAPS_US_CITIES = io_config.settings.download_file_simplemaps_us_citie
 FILE_SIMPLEMAPS_US_ZIPS = io_config.settings.download_file_simplemaps_us_zips
 FILE_ZIP_CODES_ORG = io_config.settings.download_file_zip_codes_org
 
-IO_LAST_SEEN = datetime.now(timezone.utc)
-
-logger = logging.getLogger(__name__)
+IO_LAST_SEEN = datetime.now(UTC)
 
 
 # ------------------------------------------------------------------
@@ -99,7 +97,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-lines
 # pylint: disable=too-many-statements
 def _load_airport_data() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -292,7 +290,7 @@ def _load_airport_data() -> None:
                     servcity,
                     state,
                     type_code,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     airanal,
                     country,
                     dec_latitude,
@@ -312,7 +310,7 @@ def _load_airport_data() -> None:
                     servcity,
                     state,
                     type_code,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     global_id,
                 ),
             )
@@ -337,7 +335,7 @@ def _load_airport_data() -> None:
         cur_pg.close()
         conn_pg.close()
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -373,15 +371,15 @@ def _load_airport_data() -> None:
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
 def _load_aviation_occurrence_categories() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Start processing.
     # ------------------------------------------------------------------
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_AVIATION_OCCURRENCE_CATEGORIES.replace("/", os.sep),
+    filename_excel = Path.cwd() / FILE_AVIATION_OCCURRENCE_CATEGORIES.replace(
+        "/",
+        os.sep,
     )
 
     if not Path(filename_excel).is_file():
@@ -466,11 +464,11 @@ def _load_aviation_occurrence_categories() -> None:
                     cictt_code,
                     identifier,
                     definition,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     IO_LAST_SEEN,
                     identifier,
                     definition,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     IO_LAST_SEEN,
                     cictt_code,
                 ),
@@ -541,7 +539,7 @@ def _load_aviation_occurrence_categories() -> None:
         cur_pg.close()
         conn_pg.close()
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -575,11 +573,11 @@ def _load_country_data(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_json = os.path.join(
-        Path.cwd(),
-        io_config.settings.download_file_countries_states_json.replace("/", os.sep),
+    filename_json = (
+        Path.cwd()
+        / io_config.settings.download_file_countries_states_json.replace("/", os.sep)
     )
 
     if not Path(filename_json).is_file():
@@ -612,7 +610,7 @@ def _load_country_data(
                             record["country_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                         ),
                     )
                     count_insert += 1
@@ -634,7 +632,7 @@ def _load_country_data(
                             record["country_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                             record["country"],
                             record["country_name"],
                             record["dec_latitude"],
@@ -658,7 +656,7 @@ def _load_country_data(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -670,10 +668,7 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
     # Start processing NPIAS data.
     # ------------------------------------------------------------------
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_FAA_NPIAS_DATA.replace("/", os.sep),
-    )
+    filename_excel = Path.cwd() / FILE_FAA_NPIAS_DATA.replace("/", os.sep)
 
     if not Path(filename_excel).is_file():
         # ERROR.00.945 The NPIAS file '{filename}' is missing
@@ -747,7 +742,7 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
 def _load_runway_data() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -866,7 +861,7 @@ def _load_runway_data() -> None:
                 (
                     comp_code,
                     length,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     airport_id,
                 ),
             )
@@ -891,7 +886,7 @@ def _load_runway_data() -> None:
         cur_pg.close()
         conn_pg.close()
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -926,7 +921,7 @@ def _load_runway_data() -> None:
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-statements
 def _load_sequence_of_events() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Start processing.
@@ -1016,11 +1011,11 @@ def _load_sequence_of_events() -> None:
                     soe_no,
                     meaning,
                     cictt_code if cictt_code else None,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     IO_LAST_SEEN,
                     meaning,
                     cictt_code,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     IO_LAST_SEEN,
                     soe_no,
                 ),
@@ -1094,7 +1089,7 @@ def _load_sequence_of_events() -> None:
         cur_pg.close()
         conn_pg.close()
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -1131,12 +1126,9 @@ def _load_simplemaps_data_cities_from_us_cities(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
-    )
+    filename_excel = Path.cwd() / FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep)
 
     if not Path(filename_excel).is_file():
         # ERROR.00.914 The US city file '{filename}' is missing
@@ -1223,11 +1215,11 @@ def _load_simplemaps_data_cities_from_us_cities(
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_CITIES,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_CITIES,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     glob_local.IO_LAT_LNG_TYPE_CITY,
                     glob_local.COUNTRY_USA,
                     state_id,
@@ -1247,7 +1239,7 @@ def _load_simplemaps_data_cities_from_us_cities(
         if count_upsert > 0:
             io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -1280,12 +1272,9 @@ def _load_simplemaps_data_zips_from_us_cities(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep),
-    )
+    filename_excel = Path.cwd() / FILE_SIMPLEMAPS_US_CITIES.replace("/", os.sep)
 
     if not Path(filename_excel).is_file():
         # ERROR.00.914 The US city file '{filename}' is missing
@@ -1362,7 +1351,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                         lat,
                         lng,
                         glob_local.SOURCE_SM_US_CITIES,
-                        datetime.now(tz=timezone.utc),
+                        datetime.now(tz=UTC),
                     ),
                 )
                 count_insert += cur_pg.rowcount
@@ -1376,7 +1365,7 @@ def _load_simplemaps_data_zips_from_us_cities(
         if count_insert > 0:
             io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -1408,12 +1397,9 @@ def _load_simplemaps_data_zips_from_us_zips(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_SIMPLEMAPS_US_ZIPS.replace("/", os.sep),
-    )
+    filename_excel = Path.cwd() / FILE_SIMPLEMAPS_US_ZIPS.replace("/", os.sep)
 
     if not Path(filename_excel).is_file():
         # ERROR.00.913 The US zip code file '{filename}' is missing
@@ -1508,11 +1494,11 @@ def _load_simplemaps_data_zips_from_us_zips(
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_ZIP_CODES,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     lat,
                     lng,
                     glob_local.SOURCE_SM_US_ZIP_CODES,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                     glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                     glob_local.COUNTRY_USA,
                     state_id,
@@ -1539,7 +1525,7 @@ def _load_simplemaps_data_zips_from_us_zips(
         if count_duplicates > 0:
             io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -1570,11 +1556,11 @@ def _load_state_data(
     conn_pg: connection,
     cur_pg: cursor,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_json = os.path.join(
-        Path.cwd(),
-        io_config.settings.download_file_countries_states_json.replace("/", os.sep),
+    filename_json = (
+        Path.cwd()
+        / io_config.settings.download_file_countries_states_json.replace("/", os.sep)
     )
 
     if not Path(filename_json).is_file():
@@ -1607,7 +1593,7 @@ def _load_state_data(
                             record["state_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                         ),
                     )
                     count_insert += 1
@@ -1624,7 +1610,7 @@ def _load_state_data(
                             record["state_name"],
                             record["dec_latitude"],
                             record["dec_longitude"],
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                             record["country"],
                             record["state"],
                             record["state_name"],
@@ -1649,14 +1635,14 @@ def _load_state_data(
     if count_update > 0:
         io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
 # Determine and load city averages.
 # ------------------------------------------------------------------
 def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Delete averaged data.
@@ -1743,7 +1729,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
                     row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
                     row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
-                    datetime.now(tz=timezone.utc),
+                    datetime.now(tz=UTC),
                 ),
             )
             count_insert += 1
@@ -1763,19 +1749,16 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     if count_duplicates > 0:
         io_utils.progress_msg(f"Number rows duplicate: {count_duplicates!s:>8}")
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
 # Load ZIP Code Database data.
 # ------------------------------------------------------------------
 def _load_zip_codes_org_data() -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
-    filename_excel = os.path.join(
-        Path.cwd(),
-        FILE_ZIP_CODES_ORG.replace("/", os.sep),
-    )
+    filename_excel = Path.cwd() / FILE_ZIP_CODES_ORG.replace("/", os.sep)
 
     if not Path(filename_excel).is_file():
         # ERROR.00.935 The Zip Code Database file '{filename}' is missing
@@ -1828,7 +1811,7 @@ def _load_zip_codes_org_data() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -1840,7 +1823,7 @@ def _load_zip_codes_org_data_zips(
     cur_pg: cursor,
     filename: str,
 ) -> None:
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.061 Database table io_lat_lng: Load the estimated zip code data
     io_utils.progress_msg(glob_local.INFO_00_061)
@@ -1943,11 +1926,11 @@ def _load_zip_codes_org_data_zips(
                             lat,
                             lng,
                             glob_local.SOURCE_ZCO_ZIP_CODES,
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                             lat,
                             lng,
                             glob_local.SOURCE_ZCO_ZIP_CODES,
-                            datetime.now(tz=timezone.utc),
+                            datetime.now(tz=UTC),
                             glob_local.IO_LAT_LNG_TYPE_ZIPCODE,
                             glob_local.COUNTRY_USA,
                             state.rstrip(),
@@ -1967,7 +1950,7 @@ def _load_zip_codes_org_data_zips(
         if count_upsert > 0:
             io_utils.progress_msg(f"Number rows upserted : {count_upsert!s:>8}")
 
-        logger.debug(io_glob.LOGGER_END)
+        logging.debug(io_glob.LOGGER_END)
 
     except FileNotFoundError:
         io_utils.terminate_fatal(
@@ -2034,7 +2017,7 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
 # pylint: disable=too-many-statements
 def download_us_cities_file() -> None:
     """Download a US zip code file."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     url = io_config.settings.download_url_simplemaps_us_cities
 
@@ -2070,9 +2053,9 @@ def download_us_cities_file() -> None:
                 exist_ok=True,
             )
 
-        filename_zip = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep),
-            io_config.settings.download_file_simplemaps_us_cities_zip,
+        filename_zip = (
+            io_config.settings.download_work_dir.replace("/", os.sep)
+            / io_config.settings.download_file_simplemaps_us_cities_zip
         )
 
         no_chunks = 0
@@ -2127,7 +2110,7 @@ def download_us_cities_file() -> None:
             ).replace("{url}", url),
         )
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2138,7 +2121,7 @@ def download_us_cities_file() -> None:
 # pylint: disable=too-many-statements
 def download_zip_code_db_file() -> None:
     """Download the ZIP Code Database file."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     url = io_config.settings.download_url_zip_codes_org
 
@@ -2171,9 +2154,9 @@ def download_zip_code_db_file() -> None:
                 exist_ok=True,
             )
 
-        filename_xls = os.path.join(
-            io_config.settings.download_work_dir.replace("/", os.sep),
-            FILE_ZIP_CODES_ORG,
+        filename_xls = (
+            io_config.settings.download_work_dir.replace("/", os.sep)
+            / FILE_ZIP_CODES_ORG
         )
 
         no_chunks = 0
@@ -2205,7 +2188,7 @@ def download_zip_code_db_file() -> None:
             ).replace("{url}", url),
         )
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2213,13 +2196,13 @@ def download_zip_code_db_file() -> None:
 # ------------------------------------------------------------------
 def load_airport_data() -> None:
     """Load airports."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     _load_airport_data()
 
     _load_runway_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2227,11 +2210,11 @@ def load_airport_data() -> None:
 # ------------------------------------------------------------------
 def load_aviation_occurrence_categories() -> None:
     """Load aviation occurrence categories."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     _load_aviation_occurrence_categories()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2239,7 +2222,7 @@ def load_aviation_occurrence_categories() -> None:
 # ------------------------------------------------------------------
 def load_country_state_data() -> None:
     """Load country and state data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Start processing.
@@ -2285,7 +2268,7 @@ def load_country_state_data() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2293,12 +2276,12 @@ def load_country_state_data() -> None:
 # ------------------------------------------------------------------
 def load_sequence_of_events() -> None:
     """Load sequence of events sequence data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     _load_sequence_of_events()
 
     # pylint: disable=R0801
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2306,7 +2289,7 @@ def load_sequence_of_events() -> None:
 # ------------------------------------------------------------------
 def load_simplemaps_data() -> None:
     """Load simplemaps data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     # ------------------------------------------------------------------
     # Start processing.
@@ -2378,7 +2361,7 @@ def load_simplemaps_data() -> None:
     cur_pg.close()
     conn_pg.close()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
@@ -2386,8 +2369,8 @@ def load_simplemaps_data() -> None:
 # ------------------------------------------------------------------
 def load_zip_codes_org_data() -> None:
     """Load ZIP Code Database data."""
-    logger.debug(io_glob.LOGGER_START)
+    logging.debug(io_glob.LOGGER_START)
 
     _load_zip_codes_org_data()
 
-    logger.debug(io_glob.LOGGER_END)
+    logging.debug(io_glob.LOGGER_END)

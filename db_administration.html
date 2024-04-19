@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Master Data Logs" href="data_master_logs.html" /><link rel="prev" title="Data Sources" href="data_sources.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>PostgreSQL Administration - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -258,18 +258,18 @@
         </div>
         <article role="main">
           <section id="postgresql-administration">
-<h1>PostgreSQL Administration<a class="headerlink" href="#postgresql-administration" title="Link to this heading">#</a></h1>
+<h1>PostgreSQL Administration<a class="headerlink" href="#postgresql-administration" title="Link to this heading">¶</a></h1>
 <p><strong>IO-AVSTATS</strong> uses the <a class="reference external" href="https://www.postgresql.org">PostgreSQL DBMS</a> for data management.
 PostgreSQL is a very powerful relational database system where the SQL language can be extended by procedural add-ons like <a class="reference external" href="https://www.postgresql.org/docs/current/plpgsql.html">PL/pgSQL</a> or <a class="reference external" href="https://www.postgresql.org/docs/current/plpython.html">PL/Python</a>.</p>
 <p><strong>IO-AVSTATS</strong> provides all the tools to import the data from the MS Access databases available on the <a class="reference external" href="https://data.ntsb.gov/avdata">**NTSB**</a> website and the data from the basic flat files available on <strong>simplemaps</strong> <a class="reference external" href="https://simplemaps.com/data/us-cities">United States Cities Database</a> and <a class="reference external" href="https://simplemaps.com/data/us-zips">US Zip Codes Database</a> websites.</p>
 <section id="docker">
-<h2>Docker<a class="headerlink" href="#docker" title="Link to this heading">#</a></h2>
+<h2>Docker<a class="headerlink" href="#docker" title="Link to this heading">¶</a></h2>
 <p>The PostgreSQL Docker community provides PostgreSQL images suitable for <strong>IO-AVSTATS</strong> on <a class="reference external" href="https://hub.docker.com">DockerHub</a>.
 The official image can be found <a class="reference external" href="https://hub.docker.com/_/postgres">here</a>.
 The <cite>c_d_l</cite> task available in the <cite>run_io_avstats_db</cite> script downloads a selected PostgreSQL DBMS image from DockerHub and creates, configures and starts a Docker container.</p>
 </section>
 <section id="parameterization">
-<h2>Parameterization<a class="headerlink" href="#parameterization" title="Link to this heading">#</a></h2>
+<h2>Parameterization<a class="headerlink" href="#parameterization" title="Link to this heading">¶</a></h2>
 <p>The parameters can be defined either via environment variables or in the <cite>settings.io_aero.toml</cite> file.
 Details can be found under <cite>Configuration</cite> and <cite>IO-AVSTATS</cite>.</p>
 <p>The following parameters are used when downloading the Docker image and creating the Docker container:</p>
@@ -285,7 +285,7 @@ Details can be found under <cite>Configuration</cite> and <cite>IO-AVSTATS</cite
 <p>When using environment variables, they must contain the prefix <code class="docutils literal notranslate"><span class="pre">IO_AERO_</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">IO_AERO_POSTGRES_USER</span></code>.</p>
 </section>
 <section id="backup-restore">
-<h2>Backup &amp; Restore<a class="headerlink" href="#backup-restore" title="Link to this heading">#</a></h2>
+<h2>Backup &amp; Restore<a class="headerlink" href="#backup-restore" title="Link to this heading">¶</a></h2>
 <p>Since the <strong>IO-AVSTATS</strong> database contains only statistical data, it is subject to a relatively low frequency of change.
 The following three events can lead to a change in the <strong>IO-AVSTATS</strong> database:</p>
 <ol class="arabic simple">
@@ -371,7 +371,7 @@ This copy can then replace the corrupted <strong>IO-AVSTATS</strong> database in
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

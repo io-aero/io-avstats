@@ -1,4 +1,3 @@
-===========
 First Steps
 ===========
 
@@ -26,51 +25,60 @@ Proceed with the subsection that corresponds to your operating system for furthe
 macOS
 .....
 
-To set up the project on an macOS system, the following steps should be performed in a terminal window within the repository directory:
+To set up the project on a macOS system, the following steps should be performed in a terminal window within the repository directory:
 
 a. Grant Execute Permission to Installation Scripts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Provide execute permissions to the installation scripts:
 
-.. code-block:: .zsh
+.. code-block:: zsh
 
     chmod +x scripts/*.zsh
 
-b. Install Python, pip, and pipenv
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+b. Install Python and pip
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the script to install Python, pip, and pipenv:
+Run the script to install Python and pip:
 
-.. code-block:: .zsh
+.. code-block:: zsh
 
     ./scripts/run_install_python.zsh
 
-c. Install Docker Desktop
+c. Install Miniconda and the Correct Python Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the following script to install Miniconda and set the right Python version:
+
+.. code-block:: zsh
+
+    ./scripts/run_install_miniconda.zsh
+
+d. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install Docker Desktop, run:
 
-.. code-block:: .zsh
+.. code-block:: zsh
 
     ./scripts/run_install_docker.zsh
 
-d. Optionally Install DBeaver
+e. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver using the following script:
 
-.. code-block:: .zsh
+.. code-block:: zsh
 
     ./scripts/run_install_dbeaver.zsh
 
-e. Close the Terminal Window
+f. Close the Terminal Window
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the terminal window.
 
 Ubuntu
-......
+.........
 
 To set up the project on an Ubuntu system, the following steps should be performed in a terminal window within the repository directory:
 
@@ -83,17 +91,28 @@ Provide execute permissions to the installation scripts:
 
     chmod +x scripts/*.sh
 
-b. Install Python, pip, and pipenv
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+b. Install Python and pip
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the script to install Python, pip, and pipenv:
+Run the script to install Python and pip:
 
 .. code-block:: bash
 
     ./scripts/run_install_python.sh
 
-c. Install Docker Desktop
+c. Install Miniconda and the Correct Python Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the following script to install Miniconda and set the right Python version:
+
+.. code-block:: bash
+
+    ./scripts/run_install_miniconda.sh
+
+d. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This step is not required for WSL (Windows Subsystem for Linux) if Decker Desktop is installed in Windows and this is configured for WSL 2 based engine.
 
 To install Docker Desktop, run:
 
@@ -101,7 +120,7 @@ To install Docker Desktop, run:
 
     ./scripts/run_install_docker.sh
 
-d. Optionally Install DBeaver
+e. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver using the following script:
@@ -110,7 +129,7 @@ If needed, install DBeaver using the following script:
 
     ./scripts/run_install_dbeaver.sh
 
-e. Close the Terminal Window
+f. Close the Terminal Window
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the terminal window.
@@ -120,21 +139,30 @@ Windows 10/11
 
 To set up the project on a Windows 10/11 system, the following steps should be performed in a command prompt (cmd) within the repository directory:
 
-a. Install Python, pip, and pipenv
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a. Install Python and pip
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the script to install Python, pip, and pipenv:
+Run the script to install Python and pip:
 
 .. code-block:: bat
 
     scripts/run_install_python.bat
 
-b. Close the Command Prompt
+b. Install Miniconda and the Correct Python Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the following script to install Miniconda and set the right Python version:
+
+.. code-block:: bat
+
+    scripts/run_install_miniconda.bat
+
+c. Close the Command Prompt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once all installations are complete, close the command prompt.
 
-c. Install Docker Desktop
+d. Install Docker Desktop
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install Docker Desktop, download the software from here:
@@ -143,7 +171,7 @@ To install Docker Desktop, download the software from here:
 
 and follow the installation instructions.
 
-d. Optionally Install DBeaver
+e. Optionally Install DBeaver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If needed, install DBeaver, download the software from here:
@@ -162,7 +190,7 @@ To perform the repository-specific installation, the following steps should be p
 Setting Up the Python Environment
 .................................
 
-To begin, you'll need to set up the Python environment using Miniconda and Pipenv, both of which are already pre-installed.
+To begin, you'll need to set up the Python environment using Miniconda, which is already pre-installed.
 You can use the provided Makefile for managing the environment.
 
 a. For **production** use, run the following command:
@@ -170,14 +198,14 @@ a. For **production** use, run the following command:
 
 .. code-block:: bash
 
-   make pipenv-prod
+   make conda-prod
 
 b. For **software development**, use the following command:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   make pipenv-dev
+   make conda-dev
 
 These commands will create and configure a virtual environment for your Python project, ensuring a clean and reproducible development or production environment.
 The virtual environment is automatically activated by the Makefile, so you don't need to activate it manually.
@@ -213,7 +241,7 @@ Downloading Database Files (Optional)
 .....................................
 
 Database files can be downloaded from the IO-Aero Google Drive directory
-`io_aero_data/io-xpa/database/io_xpa_db` to your local repository directory `data`.
+`io_aero_data/io-avstats/database/io_avstats_db` to your local repository directory `data`.
 Before extracting, if a `postgres` directory exists within the `data` directory, it should be deleted.
 
 Follow these steps to manage the database files:
@@ -221,7 +249,7 @@ Follow these steps to manage the database files:
 a. Access the IO-Aero Google Drive Directory:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Navigate to the IO-Aero Google Drive and locate the directory `io_aero_data/io-xpa/database/io_xpa_db`.
+Navigate to the IO-Aero Google Drive and locate the directory `io_aero_data/TO DO/database/TO DO`.
 
 b. Download Database Files:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -267,4 +295,3 @@ c. Windows 10/11 (cmd):
    scripts\run_io_avstats.cmd s_d_c
 
 These commands will initiate the process of creating the Docker container with PostgreSQL database software.
-

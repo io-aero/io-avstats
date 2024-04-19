@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Configuration IO-AVSTATS" href="configuration_io_avstats.html" /><link rel="prev" title="Requirements" href="requirements.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>Installation - IO-AVSTATS unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -258,50 +258,73 @@
         </div>
         <article role="main">
           <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <section id="python">
-<h2>Python<a class="headerlink" href="#python" title="Link to this heading">#</a></h2>
+<h2>Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
 <p>The project repository contains a <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory that includes operating system-specific installation scripts for Python, ensuring a smooth setup across various environments.</p>
 <ul class="simple">
-<li><p><strong>macOS</strong>: For users on macOS, the <code class="docutils literal notranslate"><span class="pre">run_install_python.zsh</span></code> script is provided. This zsh script is created to operate within the default shell environment of macOS, facilitating the Python installation process.</p></li>
+<li><p><strong>macOS</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_python.zsh</span></code> script is available for macOS users. This script is adapted for the Zsh shell, which is the standard shell on recent versions of macOS, and it streamlines the Python installation.</p></li>
 <li><p><strong>Ubuntu</strong>: For users on Ubuntu, the <code class="docutils literal notranslate"><span class="pre">run_install_python.sh</span></code> script is provided. This Bash script is created to operate within the default shell environment of Ubuntu, facilitating the Python installation process.</p></li>
 <li><p><strong>Windows</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_python.bat</span></code> script is tailored for users on Windows systems. It is designed to be run in the Command Prompt and automates the Python installation process on Windows.</p></li>
 </ul>
-<p>These scripts are named according to the convention <code class="docutils literal notranslate"><span class="pre">run_install_python.&lt;ext&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;ext&gt;</span></code> corresponds to the script extension appropriate for the target operating system and shell environment (e.g. <cite>.zsh</cite> for macOS zsh, <cite>.sh</cite> for Ubuntu Bash or <cite>.bat</cite> for Windows). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.</p>
+<p>These scripts are named according to the convention <code class="docutils literal notranslate"><span class="pre">run_install_python.&lt;ext&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;ext&gt;</span></code> corresponds to the script extension appropriate for the target operating system and shell environment (e.g., <cite>.bat</cite> for Windows, <cite>.sh</cite> for Ubuntu Bash, <cite>.zsh</cite> for macOS). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.</p>
+</section>
+<section id="miniconda">
+<h2>Miniconda<a class="headerlink" href="#miniconda" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory includes a collection of operating system-specific scripts named <code class="docutils literal notranslate"><span class="pre">run_install_miniconda</span></code> to streamline the installation of Miniconda. These scripts are designed to cater to the needs of different environments, making the setup process efficient and user-friendly.</p>
+<ul class="simple">
+<li><p><strong>Windows CMD Shell</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.bat</span></code> script is tailored for the Windows CMD shell. It automates the Miniconda installation process on Windows, providing a hassle-free setup with a simple double-click or command line execution.</p></li>
+<li><p><strong>Ubuntu Bash Shell</strong>: Ubuntu users can take advantage of the <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.sh</span></code> script. This Bash script is intended for use within the Ubuntu terminal, encapsulating the necessary commands to install Miniconda seamlessly on Ubuntu systems.</p></li>
+<li><p><strong>macOS Zsh Shell</strong>: For macOS, the <code class="docutils literal notranslate"><span class="pre">run_install_miniconda.zsh</span></code> script is available. It is optimized for the Zsh shell, which is the default on recent versions of macOS. This script simplifies the installation and configuration of Miniconda, ensuring a smooth integration with macOS.</p></li>
+</ul>
+<p>Each script in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory is named to reflect its compatibility with the corresponding operating system and shell environment. Users are encouraged to execute the script that matches their OS for a smooth and error-free Miniconda installation experience.</p>
 </section>
 <section id="docker-desktop">
-<h2>Docker Desktop<a class="headerlink" href="#docker-desktop" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory contains scripts that assist with installing Docker Desktop on Ubuntu, facilitating an automated and streamlined setup.</p>
+<h2>Docker Desktop<a class="headerlink" href="#docker-desktop" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory contains scripts that assist with installing Docker Desktop on macOS and Ubuntu, facilitating an automated and streamlined setup.</p>
 <ul class="simple">
-<li><p><strong>macOS</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_docker.zsh</span></code> script is available for macOS users. This zsh script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system’s package manager.</p></li>
+<li><p><strong>macOS</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_docker.zsh</span></code> script is designed for macOS users. By utilizing this Zsh script, the installation of Docker Desktop on macOS is executed through a series of automated steps, which are managed by the script to ensure a smooth installation process.</p></li>
 <li><p><strong>Ubuntu</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_docker.sh</span></code> script is available for Ubuntu users. This Bash script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system’s package manager.</p></li>
 <li><p><strong>Windows</strong>: For Windows users, it is recommended to download and install Docker Desktop using the traditional installer available at <a class="reference external" href="https://www.docker.com/products/docker-desktop">Docker Desktop for Windows</a>. This approach guarantees the most stable version and is tailored to integrate seamlessly with Windows-specific features and configurations.</p></li>
 </ul>
 <p>Please select and execute the appropriate script for your operating system from the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory. Windows users should follow the provided link to obtain the official installer for a guided installation experience.</p>
 </section>
 <section id="ms-access-database-engine">
-<h2>MS Access Database Engine<a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">#</a></h2>
+<h2>MS Access Database Engine<a class="headerlink" href="#ms-access-database-engine" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Windows</strong>: The software can be downloaded from <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54920">here</a> and then installed according to the instructions provided.</p></li>
+<li><p><strong>Ubuntu Bash Shell</strong>: The necessary software can be downloaded with the package manager <code class="docutils literal notranslate"><span class="pre">apt</span></code> as follows:</p></li>
 </ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>unixodbc-dev
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>macOS Zsh Shell</strong>: The necessary software can be downloaded with the package manager <code class="docutils literal notranslate"><span class="pre">Homebrew</span></code> as follows:</p></li>
+</ul>
+<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>update
+brew<span class="w"> </span>install<span class="w"> </span>unixodbc
+</pre></div>
+</div>
 </section>
 <section id="dbeaver-optional">
-<h2>DBeaver - optional<a class="headerlink" href="#dbeaver-optional" title="Link to this heading">#</a></h2>
-<p>DBeaver is an optional but highly recommended tool for this software as it offers a user-friendly interface to gain insights into the database internals. The project provides convenient scripts for installing DBeaver on Ubuntu.</p>
+<h2>DBeaver - optional<a class="headerlink" href="#dbeaver-optional" title="Link to this heading">¶</a></h2>
+<p>DBeaver is an optional but highly recommended tool for this software as it offers a user-friendly interface to gain insights into the database internals. The project provides convenient scripts for installing DBeaver on macOS and Ubuntu.</p>
 <ul class="simple">
+<li><p><strong>macOS</strong>: The <code class="docutils literal notranslate"><span class="pre">run_install_dbeaver.zsh</span></code> script is crafted for macOS systems. By running this Zsh script, users can easily install DBeaver and quickly connect to the database for management and querying tasks.</p></li>
 <li><p><strong>Ubuntu</strong>: For Ubuntu users, the <code class="docutils literal notranslate"><span class="pre">run_install_dbeaver.sh</span></code> script facilitates the installation of DBeaver. This Bash script automates the setup process, adding necessary repositories and handling the installation seamlessly.</p></li>
 <li><p><strong>Windows</strong>: Windows users are advised to download and install DBeaver using the official installer from the DBeaver website at <a class="reference external" href="https://dbeaver.io/download/">DBeaver Download</a>. The installer ensures that DBeaver is properly configured and optimized for Windows environments.</p></li>
 </ul>
-<p>To install DBeaver, locate the appropriate script in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory for Ubuntu. If you’re a Windows user, please use the provided link to access the official installer for an intuitive installation experience.</p>
+<p>To install DBeaver, locate the appropriate script in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory for macOS or Ubuntu. If you’re a Windows user, please use the provided link to access the official installer for an intuitive installation experience.</p>
 </section>
 <section id="python-libraries">
-<h2>Python Libraries<a class="headerlink" href="#python-libraries" title="Link to this heading">#</a></h2>
-<p>The project’s Python dependencies are managed partly through Conda and partly through pip/pipenv. To facilitate a straightforward installation process, a Makefile is provided at the root of the project.</p>
+<h2>Python Libraries<a class="headerlink" href="#python-libraries" title="Link to this heading">¶</a></h2>
+<p>The project’s Python dependencies are managed partly through Conda and partly through pip. To facilitate a straightforward installation process, a Makefile is provided at the root of the project.</p>
 <ul class="simple">
-<li><p><strong>Development Environment</strong>: Run the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">conda-dev</span></code> from the terminal to set up a development environment. This will install the necessary Python libraries using Conda and pip/pipenv as specified for development purposes.</p></li>
+<li><p><strong>Development Environment</strong>: Run the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">conda-dev</span></code> from the terminal to set up a development environment. This will install the necessary Python libraries using Conda and pip as specified for development purposes.</p></li>
 <li><p><strong>Production Environment</strong>: Execute the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">conda-prod</span></code> for preparing a production environment. It ensures that all the required dependencies are installed following the configurations optimized for production deployment.</p></li>
 </ul>
-<p>The Makefile targets abstract away the complexity of managing multiple package managers and streamline the environment setup. It is crucial to have both Conda and the appropriate pip tools available in your system’s PATH to utilize the Makefile commands successfully.</p>
+<p>The Makefile targets abstract away the complexity of managing multiple package managers and streamline the environment setup. It is crucial to have both Conda and the appropriate pip tool available in your system’s PATH to utilize the Makefile commands successfully.</p>
 </section>
 </section>
 
@@ -362,6 +385,7 @@
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#miniconda">Miniconda</a></li>
 <li><a class="reference internal" href="#docker-desktop">Docker Desktop</a></li>
 <li><a class="reference internal" href="#ms-access-database-engine">MS Access Database Engine</a></li>
 <li><a class="reference internal" href="#dbeaver-optional">DBeaver - optional</a></li>
@@ -378,7 +402,7 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=3f1b9271"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>

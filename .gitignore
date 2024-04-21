@@ -29,6 +29,7 @@
 /docs/build/pdf/.doctrees
 /docs/build/pdf/manual.rtc
 /docs/build/pdf/manual.stylelog
+/temp/
 /tmp/
 Pipfile.lock
 __pycache__

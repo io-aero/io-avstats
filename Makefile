@@ -29,13 +29,11 @@ export LANG=en_US.UTF-8
 
 ##                                                                            .
 ## =============================================================================
-## IO-AVSTATS - Aviation Event Statistics - make Documentation.
-##              ----------------------------------------------------------------
-##              The purpose of this Makefile is to support the whole software
-##              development process for io-avstats. It contains also the
-##              necessary tools for the CI activities.
-##              ----------------------------------------------------------------
-##                The available make commands are:
+## make Script       The purpose of this Makefile is to support the whole
+##                   software development process for an application. It
+##                   contains also the necessary tools for the CI activities.
+##                   -----------------------------------------------------------
+##                   The available make commands are:
 ## -----------------------------------------------------------------------------
 ## help:               Show this help.
 ## -----------------------------------------------------------------------------
@@ -69,7 +67,7 @@ action-std:         ## Run the GitHub Actions locally: standard.
 	@echo ----------------------------------------------------------------------
 	act --version
 	@echo ----------------------------------------------------------------------
-	act  --quiet --secret-file .act_secrets --var IO_LOCAL='true' --verbose
+	act --quiet --secret-file .act_secrets --var IO_LOCAL='true' --verbose -P ubuntu-latest=catthehacker/ubuntu:act-latest -W .github/workflows/standard.yml
 	@echo Info **********  End:   action ***************************************
 
 # Bandit is a tool designed to find common security issues in Python code.

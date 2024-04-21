@@ -62,6 +62,7 @@ jobs:
         run: |
           brew install dos2unix
           chmod +x scripts/run_prep_*.zsh
+          dos2unix scripts/run_prep_*.zsh
           ./scripts/run_prep_zsh_scripts.zsh
 
       - name: Preparing scripts - Ubuntu
@@ -69,12 +70,37 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y dos2unix
           chmod +x scripts/run_prep_*.sh
+          dos2unix scripts/run_prep_*.sh
           ./scripts/run_prep_bash_scripts.sh
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Set up AWS credentials
+        if: ${{ env.IO_AWS_CLI == 'true' }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install AWS CLI - macOS
+        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'macOS' }}
+        run: |
+          brew update
+          brew upgrade unzip
+          curl "https://awscli.amazonaws.com/awscli-exe-macosx-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Install AWS CLI - Ubuntu
+        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'Linux' }}
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3

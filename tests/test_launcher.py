@@ -385,6 +385,35 @@ def test_launcher_l_c_d() -> None:
 
 
 # -----------------------------------------------------------------------------
+# Test case: u_p_d   - Complete processing of a modifying MS Access file.
+# -----------------------------------------------------------------------------
+def test_launcher_u_p_d() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    if platform.system() == "Darwin":
+        pytest.skip("Skipping u_p_d on macOS due to custom handling.")
+
+    if platform.system() == "Linux":
+        pytest.skip("Skipping u_p_d on Linux due to custom handling.")
+
+    commands = {
+        "Windows": [
+            "cmd.exe",
+            "/c",
+            "run_io_avstats_pytest.bat",
+            "u_p_d",
+            "up22APR",
+        ],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
 # Test case: cleanup - Delete the PostgreSQL database container.
 # -----------------------------------------------------------------------------
 def test_launcher_clean() -> None:

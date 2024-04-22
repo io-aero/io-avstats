@@ -3,7 +3,6 @@
 # be found in the LICENSE.md file.
 """Managing the database schema of the PostgreSQL database."""
 import logging
-import os
 import platform
 import shutil
 import subprocess
@@ -44,38 +43,40 @@ def _check_ddl_changes(msaccess: str) -> None:
     """Check for DDL changes."""
     logging.debug(io_glob.LOGGER_START)
 
-    download_work_dir = Path.cwd() / io_config.settings.download_work_dir.replace(
-        "/",
-        os.sep,
+    download_work_dir = Path(
+        Path.cwd(),
+        io_config.settings.download_work_dir,
     )
 
     shutil.copy(
-        download_work_dir.replace("/", os.sep)
-        / (msaccess + "." + glob_local.FILE_EXTENSION_MDB),
-        download_work_dir.replace("/", os.sep)
-        / (io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB),
+        Path(download_work_dir, (msaccess + "." + glob_local.FILE_EXTENSION_MDB)),
+        Path(
+            download_work_dir,
+            (io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB),
+        ),
     )
 
-    msaccess_mdb = download_work_dir.replace("/", os.sep) / "IO-AVSTATS.mdb"
+    msaccess_mdb = Path(download_work_dir, "IO-AVSTATS.mdb")
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
     io_utils.progress_msg(
-        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_mdb),
+        glob_local.INFO_00_051.replace("{msaccess_file}", str(msaccess_mdb)),
     )
 
-    if not Path(msaccess_mdb).exists():
+    if not msaccess_mdb.exists():
         # ERROR.00.932 File '{filename}' is not existing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_932.replace("{filename}", msaccess_mdb),
+            glob_local.ERROR_00_932.replace("{filename}", str(msaccess_mdb)),
         )
 
-    msaccess_sql = download_work_dir.replace("/", os.sep) / (
-        msaccess + "." + glob_local.FILE_EXTENSION_SQL
+    msaccess_sql = Path(
+        download_work_dir,
+        (msaccess + "." + glob_local.FILE_EXTENSION_SQL),
     )
 
     # INFO.00.051 msaccess_file='{msaccess_file}'
     io_utils.progress_msg(
-        glob_local.INFO_00_051.replace("{msaccess_file}", msaccess_sql),
+        glob_local.INFO_00_051.replace("{msaccess_file}", str(msaccess_sql)),
     )
 
     razorsql_jar_file = ""
@@ -152,9 +153,9 @@ def _compare_ddl(msaccess: str) -> None:
     """Compare the schema definitions wirth the reference file."""
     logging.debug(io_glob.LOGGER_START)
 
-    reference_filename = (
-        io_config.settings.razorsql_reference_dir.replace("/", os.sep)
-        / io_config.settings.razorsql_reference_file
+    reference_filename = Path(
+        io_config.settings.razorsql_reference_dir,
+        io_config.settings.razorsql_reference_file,
     )
 
     # pylint: disable=consider-using-with
@@ -164,8 +165,9 @@ def _compare_ddl(msaccess: str) -> None:
     reference_file_lines = reference_file.readlines()
     reference_file.close()
 
-    msaccess_filename = io_config.settings.download_work_dir.replace("/", os.sep) / (
-        msaccess + "." + glob_local.FILE_EXTENSION_SQL,
+    msaccess_filename = Path(
+        io_config.settings.download_work_dir,
+        (msaccess + "." + glob_local.FILE_EXTENSION_SQL),
     )
 
     # pylint: disable=consider-using-with
@@ -210,7 +212,7 @@ def _compare_ddl(msaccess: str) -> None:
                 glob_local.ERROR_00_910.replace(
                     "{filename}",
                     msaccess_filename,
-                ).replace("{reference}", reference_filename),
+                ).replace("{reference}", str(reference_filename)),
             )
 
     # INFO.00.012 The DDL script for the MS Access database '{msaccess}'
@@ -311,14 +313,15 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     # ------------------------------------------------------------------
 
     # pylint: disable=R0801
-    filename = io_config.settings.download_work_dir.replace("/", os.sep) / (
-        msaccess + "." + glob_local.FILE_EXTENSION_MDB,
+    filename = Path(
+        io_config.settings.download_work_dir,
+        (msaccess + "." + glob_local.FILE_EXTENSION_MDB),
     )
 
     if not Path(filename).is_file():
         # ERROR.00.912 The MS Access database file '{filename}' is missing
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_912.replace("{filename}", filename),
+            glob_local.ERROR_00_912.replace("{filename}", str(filename)),
         )
 
     conn_ma, cur_ma = utils_msaccess.get_msaccess_cursor(filename)
@@ -3540,9 +3543,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
                 exist_ok=True,
             )
 
-        filename_zip = (
-            io_config.settings.download_work_dir.replace("/", os.sep) / filename_zip
-        )
+        filename_zip = Path(io_config.settings.download_work_dir, filename_zip)
 
         no_chunks = 0
 
@@ -3573,7 +3574,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         except zipfile.BadZipFile:
             # ERROR.00.907 File'{filename}' is not a zip file
             io_utils.terminate_fatal(
-                glob_local.ERROR_00_907.replace("{filename}", filename_zip),
+                glob_local.ERROR_00_907.replace("{filename}", str(filename_zip)),
             )
 
         Path(filename_zip).unlink()

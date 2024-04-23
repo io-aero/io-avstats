@@ -1,0 +1,1085 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <link rel="shortcut icon" href="../../_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
+        <title>ioavstats.avstats - IO-AVSTATS 24-3-22 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">IO-AVSTATS 24-3-22 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/IO-Aero_1_Logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration_io_avstats.html">Configuration IO-AVSTATS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration_logging.html">Configuration Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../first_steps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_usage.html">Advanced Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_sources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../db_administration.html">PostgreSQL Administration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_master_logs.html">Master Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Master Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_01_s_d_c_23_08_21.html">1. Set up the database container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_02_c_d_s_23_08_21.html">2. Create the database schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_03_u_d_s_23_08_21.html">3. Update the database schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_11_a_o_c_23_08_21.html">4. Load aviation occurrence categories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_12_l_a_p.html">5. Load airport data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_13_l_c_s_23_08_21.html">6. Load country and state data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_14_l_s_e_23_08_21.html">7. Load sequence of events data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_21_l_s_d_23_08_21.html">8. Load simplemaps data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pre2008_22_l_z_d.html">9. Load ZIP Code Database data into PostgreSQL</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_04_22_log_up22APR.html">2024.04.22 up22APR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_04_15_log_up15APR.html">2024.04.15 up15APR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_04_08_log_up08APR.html">2024.04.08 up08APR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_04_01_log_up01APR.html">2024.04.01 up01APR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_04_01_log_avall.html">2024.04.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_03_22_log_up22MAR.html">2024.03.22 up22MAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_03_15_log_up15MAR.html">2024.03.15 up15MAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_03_08_log_up08MAR.html">2024.03.08 up08MAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_03_01_log_up01MAR.html">2024.03.01 up01MAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_03_01_log_avall.html">2024.03.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_02_22_log_up22FEB.html">2024.02.22 up22FEB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_02_15_log_up15FEB.html">2024.02.15 up15FEB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_02_08_log_up08FEB.html">2024.02.08 up08FEB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_02_01_log_up01FEB.html">2024.02.01 up01FEB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_02_01_log_avall.html">2024.02.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_01_22_log_up22JAN.html">2024.01.22 up22JAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_01_15_log_up15JAN.html">2024.01.15 up15JAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_01_08_log_up08JAN.html">2024.01.08 up08JAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_01_01_log_up01JAN.html">2024.01.01 up01JAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2024_01_01_log_avall.html">2024.01.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_12_22_log_up22DEC.html">2023.12.22 up22DEC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_12_15_log_up15DEC.html">2023.12.15 up15DEC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_12_08_log_up08DEC.html">2023.12.08 up08DEC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_12_04_log_up01DEC.html">2023.12.04 up01DEC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_12_04_log_avall.html">2023.12.04 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_11_22_log_up22NOV.html">2023.11.22 up22NOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_11_15_log_up15NOV.html">2023.11.15 up15NOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_11_08_log_up08NOV.html">2023.11.08 up08NOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_11_01_log_up01NOV.html">2023.11.01 up01NOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_11_01_log_avall.html">2023.11.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_10_22_log_up22OCT.html">2023.10.22 up22OCT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_10_15_log_up15OCT.html">2023.10.15 up15OCT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_10_08_log_up08OCT.html">2023.10.08 up08OCT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_10_01_log_up01OCT.html">2023.10.01 up01OCT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2023_10_01_log_avall.html">2023.10.01 avall</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">ioavstats</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ioavstats</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ioavstats.html">ioavstats package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of ioavstats package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ioavstats.pages.html">ioavstats.pages package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LICENSE.html">End-User License Agreement</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for ioavstats.avstats</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this</span>
+<span class="c1"># source code is governed by the IO-Aero License, that can</span>
+<span class="c1"># be found in the LICENSE.md file.</span>
+<span class="sd">&quot;&quot;&quot;IO-AVSTATS interface.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">iocommon</span> <span class="kn">import</span> <span class="n">io_config</span><span class="p">,</span> <span class="n">io_glob</span><span class="p">,</span> <span class="n">io_utils</span>
+<span class="kn">from</span> <span class="nn">openpyxl.reader.excel</span> <span class="kn">import</span> <span class="n">load_workbook</span>
+<span class="kn">from</span> <span class="nn">openpyxl.utils.exceptions</span> <span class="kn">import</span> <span class="n">InvalidFileException</span>  <span class="c1"># type: ignore</span>
+
+<span class="kn">from</span> <span class="nn">ioavstats</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">code_generator</span><span class="p">,</span>
+    <span class="n">db_ddl_base</span><span class="p">,</span>
+    <span class="n">db_dml_base</span><span class="p">,</span>
+    <span class="n">db_dml_corr</span><span class="p">,</span>
+    <span class="n">db_dml_msaccess</span><span class="p">,</span>
+    <span class="n">glob_local</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Global variables.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+
+<span class="n">ARG_MSACCESS</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">ARG_MSEXCEL</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">ARG_TASK</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Check the command line argument: -m / --msaccess.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="check_arg_msaccess">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.check_arg_msaccess">[docs]</a>
+<span class="k">def</span> <span class="nf">check_arg_msaccess</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the command line argument: -m / --msaccess.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        args (argparse.Namespace): Command line arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ARG_MSACCESS</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="k">if</span> <span class="n">ARG_TASK</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_D_N_A</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_N_A</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">:</span>
+            <span class="c1"># ERROR.00.901 The task &#39;{task}&#39; requires valid</span>
+            <span class="c1"># argument &#39;-m&#39; or &#39;--msaccess&#39;</span>
+            <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_901</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ARG_TASK</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">:</span>
+        <span class="c1"># ERROR.00.902 The task &#39;{task}&#39; does not require an</span>
+        <span class="c1"># argument &#39;-m&#39; or &#39;--msaccess&#39;</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_902</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ARG_TASK</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">ARG_MSACCESS</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">msaccess</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ARG_MSACCESS</span> <span class="o">==</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_AVALL</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_PRE2008</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">ARG_MSACCESS</span><span class="p">:</span>
+        <span class="n">ARG_MSACCESS</span> <span class="o">=</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_PRE2008</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">ARG_MSACCESS</span><span class="p">:</span>
+        <span class="c1"># ERROR.00.904 &#39;{msaccess}&#39;: the MS Access database file name must not</span>
+        <span class="c1"># contain a file extension</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_904</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="n">ARG_MSACCESS</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;up&quot;</span>
+        <span class="ow">and</span> <span class="s2">&quot;00&quot;</span> <span class="o">&lt;</span> <span class="n">ARG_MSACCESS</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s2">&quot;31&quot;</span>
+        <span class="ow">and</span> <span class="n">ARG_MSACCESS</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+        <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;jan&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;feb&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;apr&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;may&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;jun&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;jul&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;aug&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sep&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;oct&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nov&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dec&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">):</span>
+        <span class="c1"># ERROR.00.903 &#39;{msaccess}&#39; is not a valid NTSB compliant</span>
+        <span class="c1"># MS Access database name</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_903</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">))</span>
+
+    <span class="n">ARG_MSACCESS</span> <span class="o">=</span> <span class="n">ARG_MSACCESS</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">ARG_MSACCESS</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Check the command line argument: -e / --msexcel.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="check_arg_msexcel">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.check_arg_msexcel">[docs]</a>
+<span class="k">def</span> <span class="nf">check_arg_msexcel</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the command line argument: -e / --msexcel.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        args (argparse.Namespace): Command line arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ARG_MSEXCEL</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="k">if</span> <span class="n">ARG_TASK</span> <span class="ow">in</span> <span class="p">[</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">msexcel</span><span class="p">:</span>
+            <span class="c1"># ERROR.00.923 The task &#39;{task}&#39; requires valid</span>
+            <span class="c1"># argument &#39;-e&#39; or &#39;--msexcel&#39;</span>
+            <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_923</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ARG_TASK</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">msexcel</span><span class="p">:</span>
+        <span class="c1"># ERROR.00.924 The task &#39;{task}&#39; does not require an</span>
+        <span class="c1"># argument &#39;-e&#39; or &#39;--msexcel&#39;</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_924</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ARG_TASK</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">directory_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ARG_TASK</span> <span class="o">==</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span><span class="p">:</span>
+        <span class="n">directory_name</span> <span class="o">=</span> <span class="n">io_config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">correction_work_dir</span>
+
+    <span class="n">ARG_MSEXCEL</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">msexcel</span>
+
+    <span class="k">if</span> <span class="n">ARG_TASK</span> <span class="ow">in</span> <span class="p">[</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span><span class="p">]:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory_name</span><span class="p">)</span> <span class="o">/</span> <span class="n">ARG_MSEXCEL</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory_name</span><span class="p">)</span> <span class="o">/</span> <span class="n">ARG_MSEXCEL</span> <span class="o">/</span> <span class="s2">&quot;.xlsx&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">load_workbook</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+            <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">data_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="c1"># ERROR.00.932 File &#39;{filename}&#39; is not existing</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_932</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">))</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">InvalidFileException</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">BadZipFile</span><span class="p">):</span>
+        <span class="c1"># ERROR.00.925 &#39;{msexcel}&#39; is not a valid Microsoft Excel file</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">ERROR_00_925</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msexcel}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Check the command line argument: -t / --task.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="check_arg_task">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.check_arg_task">[docs]</a>
+<span class="k">def</span> <span class="nf">check_arg_task</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the command line argument: -t / --task.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        args (argparse.Namespace): Command line arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ARG_TASK</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="n">ARG_TASK</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ARG_TASK</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_A_O_C</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_D_S</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_L_L</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_P_D</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_D_N_A</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_F_N_A</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_GENERATE</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_A_P</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_S</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_N_A</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_D</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_E</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_Z_D</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_R_D_S</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_U_D_S</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_VERSION</span><span class="p">,</span>
+        <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_V_N_D</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">terminate_fatal</span><span class="p">(</span>
+            <span class="s2">&quot;The specified task is neither &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_A_O_C</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_D_S</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_L_L</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_P_D</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_D_N_A</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_F_N_A</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_GENERATE</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_A_P</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_S</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_N_A</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_D</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_E</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_Z_D</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_R_D_S</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_U_D_S</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_VERSION</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39; nor &#39;&quot;</span>
+            <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_V_N_D</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># c_p_d: Cleansing PostgreSQL data.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="cleansing_postgres_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.cleansing_postgres_data">[docs]</a>
+<span class="k">def</span> <span class="nf">cleansing_postgres_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;c_p_d: Cleansing PostgreSQL data.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.065 Cleansing PostgreSQL data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_065</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_corr</span><span class="o">.</span><span class="n">cleansing_postgres_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># c_l_l: Correct US decimal latitudes and longitudes.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="correct_dec_lat_lng">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.correct_dec_lat_lng">[docs]</a>
+<span class="k">def</span> <span class="nf">correct_dec_lat_lng</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;c_l_l: Correct US decimal latitudes and longitudes.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.040 Correct decimal US latitudes and longitudes</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_040</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_corr</span><span class="o">.</span><span class="n">correct_dec_lat_lng</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># c_d_s: Create the PostgreSQL database schema.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="create_db_schema">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.create_db_schema">[docs]</a>
+<span class="k">def</span> <span class="nf">create_db_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;c_d_s: Create the PostgreSQL database schema.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.044 Creating the database schema</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_044</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_ddl_base</span><span class="o">.</span><span class="n">create_db_schema</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># d_n_a: Download a NTSB MS Access database file.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="download_ntsb_msaccess_file">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.download_ntsb_msaccess_file">[docs]</a>
+<span class="k">def</span> <span class="nf">download_ntsb_msaccess_file</span><span class="p">(</span><span class="n">msaccess</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;d_n_a: Download a NTSB MS Access database file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        msaccess (str):</span>
+<span class="sd">            The NTSB MS Access database file without file extension.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.047 Download NTSB MS Access database file &#39;{msaccess}&#39;</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_047</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">msaccess</span><span class="p">))</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_msaccess</span><span class="o">.</span><span class="n">download_ntsb_msaccess_file</span><span class="p">(</span><span class="n">msaccess</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># f_n_a: Find the nearest airports.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="find_nearest_airports">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.find_nearest_airports">[docs]</a>
+<span class="k">def</span> <span class="nf">find_nearest_airports</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;f_n_a: Find the nearest airports.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.086 Find the nearest airports</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_086</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_corr</span><span class="o">.</span><span class="n">find_nearest_airports</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Generate SQL statements: INSERT &amp; UPDATE.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="generate_sql">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.generate_sql">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_sql</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate SQL statements: INSERT &amp; UPDATE.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="n">code_generator</span><span class="o">.</span><span class="n">generate_sql</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Load the command line arguments into the memory.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="get_args">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.get_args">[docs]</a>
+<span class="k">def</span> <span class="nf">get_args</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the command line arguments into the memory.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Perform a IO-AVSTATS task&quot;</span><span class="p">,</span>
+        <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;launcher&quot;</span><span class="p">,</span>
+        <span class="n">prefix_chars</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+        <span class="n">usage</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(prog)s</span><span class="s2"> options&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Definition of the command line arguments.</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-e&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--msexcel&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the MS Excel file: &#39;&quot;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;msexcel&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--msaccess&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the microsoft access database file: &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_AVALL</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Data from January 1, 2008 to today) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_PRE2008</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Data from January 1, 1982 to December 31, 2007) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS_UPDDMON</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (New additions and updates until DD day in the month MON)&quot;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;msaccess&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--task&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the task to execute: &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_A_O_C</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load aviation occurrence categories into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_D_S</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Create the PostgreSQL database schema) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_L_L</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Correct decimal US latitudes and longitudes) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_C_P_D</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Cleansing PostgreSQL data) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_D_N_A</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Download a NTSB MS Access database file) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_F_N_A</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Find the nearest airports) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_GENERATE</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Generate SQL statements) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_A_P</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load airport data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_D</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load data from a correction file into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_C_S</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load country and state data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_N_A</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load NTSB MS Access database data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_D</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load simplemaps data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_S_E</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load sequence of events data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_L_Z_D</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Load ZIP Code Database data into PostgreSQL) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_R_D_S</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Update the PostgreSQL database schema) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_U_D_S</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Refresh the PostgreSQL database schema) or &#39;&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_VERSION</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Show the current version of IO-AVSTATS)&quot;</span>
+        <span class="o">+</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK_V_N_D</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39; (Verify selected **NTSB** data) or &#39;&quot;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;task&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Load and check the command line arguments.</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="n">parsed_args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">check_arg_task</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
+
+    <span class="n">check_arg_msaccess</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
+
+    <span class="n">check_arg_msexcel</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Display the command line arguments.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">msexcel</span><span class="p">:</span>
+        <span class="c1"># INFO.00.041 Arguments {task}=&#39;{value_task}&#39; {msexcel}=&#39;{value_msexcel}&#39;</span>
+        <span class="n">progress_msg</span><span class="p">(</span>
+            <span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_041</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{value_task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">task</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msexcel}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSEXCEL</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{value_msexcel}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">msexcel</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">:</span>
+        <span class="c1"># INFO.00.008 Arguments {task}=&#39;{value_task}&#39; {msaccess}=&#39;{value_msaccess}&#39;</span>
+        <span class="n">progress_msg</span><span class="p">(</span>
+            <span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_008</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{value_task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">task</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_MSACCESS</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{value_msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">msaccess</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># INFO.00.005 Arguments {task}=&#39;{value_task}&#39;</span>
+        <span class="n">progress_msg</span><span class="p">(</span>
+            <span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_005</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">ARG_TASK</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{value_task}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">parsed_args</span><span class="o">.</span><span class="n">task</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># a_o_c: Load aviation occurrence categories into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_aviation_occurrence_categories">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_aviation_occurrence_categories">[docs]</a>
+<span class="k">def</span> <span class="nf">load_aviation_occurrence_categories</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;a_o_c: Load aviation occurrence categories into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.073 Load aviation occurrence categories</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_073</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_aviation_occurrence_categories</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_a_p: Load airport data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_airport_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_airport_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_airport_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_a_p: Load airport data into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.085 Load airports</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_085</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_airport_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_c_d: Load data from a correction file into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_correction_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_correction_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_correction_data</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_c_d: Load data from a correction file into PostgreSQL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        filename (str):</span>
+<span class="sd">            The filename of the correction file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.042 Load corrections from file &#39;{filename}&#39;</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_042</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_corr</span><span class="o">.</span><span class="n">load_correction_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_c_s: Load country and state data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_country_state_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_country_state_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_country_state_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_c_s: Load country and state data into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.057 Load country and state data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_057</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_country_state_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_n_a: Load NTSB MS Access database data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_ntsb_msaccess_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_ntsb_msaccess_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_ntsb_msaccess_data</span><span class="p">(</span><span class="n">msaccess</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_n_a: Load NTSB MS Access database data into PostgreSQL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        msaccess (str):</span>
+<span class="sd">            The NTSB MS Access database file without file extension.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.049 Load NTSB MS Access database data from file &#39;{msaccess}&#39;</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_049</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{msaccess}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">msaccess</span><span class="p">))</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_msaccess</span><span class="o">.</span><span class="n">load_ntsb_msaccess_data</span><span class="p">(</span><span class="n">msaccess</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_s_e: Load sequence of events data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_sequence_of_events">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_sequence_of_events">[docs]</a>
+<span class="k">def</span> <span class="nf">load_sequence_of_events</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_s_e: Load sequence of events data into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.075 Load sequence of events data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_075</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_sequence_of_events</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_s_d: Load simplemaps data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_simplemaps_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_simplemaps_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_simplemaps_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_s_d: Load simplemaps data into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.050 Load simplemaps data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_050</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_simplemaps_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># l_z_d: Load ZIP Code Database data into PostgreSQL.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="load_zip_code_db_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.load_zip_code_db_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_zip_code_db_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;l_z_d: Load ZIP Code Database data into PostgreSQL.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.056 Load ZIP Code Database data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_056</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_base</span><span class="o">.</span><span class="n">load_zip_codes_org_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># Create a progress message.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="progress_msg">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.progress_msg">[docs]</a>
+<span class="k">def</span> <span class="nf">progress_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a progress message.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        msg (str): Progress message</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">io_config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">is_verbose</span><span class="p">:</span>
+        <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg_core</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># Create a progress message.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="progress_msg_time_elapsed">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.progress_msg_time_elapsed">[docs]</a>
+<span class="k">def</span> <span class="nf">progress_msg_time_elapsed</span><span class="p">(</span><span class="n">duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a time elapsed message.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        duration (int): Time elapsed in ns.</span>
+<span class="sd">        event (str): Event description.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg_time_elapsed</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># r_d_s: Refresh the PostgreSQL database schema.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="refresh_db_schema">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.refresh_db_schema">[docs]</a>
+<span class="k">def</span> <span class="nf">refresh_db_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;r_d_s: Refresh the PostgreSQL database schema.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.071 Refreshing the database schema</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_071</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_ddl_base</span><span class="o">.</span><span class="n">refresh_db_schema</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># Terminate the application immediately.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="terminate_fatal">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.terminate_fatal">[docs]</a>
+<span class="k">def</span> <span class="nf">terminate_fatal</span><span class="p">(</span><span class="n">error_msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Terminate the application immediately.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    ----</span>
+<span class="sd">        error_msg (str): Error message</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">terminate_fatal</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># u_d_s: Update the PostgreSQL database schema.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="update_db_schema">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.update_db_schema">[docs]</a>
+<span class="k">def</span> <span class="nf">update_db_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;u_d_s: Update the PostgreSQL database schema.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.045 Updating the database schema</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_045</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_ddl_base</span><span class="o">.</span><span class="n">update_db_schema</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># v_n_d: Verify selected NTSB data.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="verify_ntsb_data">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.verify_ntsb_data">[docs]</a>
+<span class="k">def</span> <span class="nf">verify_ntsb_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;v_n_d: Verify selected NTSB data.&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+
+    <span class="c1"># INFO.00.043 Verify selected NTSB data</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="n">glob_local</span><span class="o">.</span><span class="n">INFO_00_043</span><span class="p">)</span>
+    <span class="n">io_utils</span><span class="o">.</span><span class="n">progress_msg</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">db_dml_corr</span><span class="o">.</span><span class="n">verify_ntsb_data</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># Returns the version number of the IO-AVSTATS application.</span>
+<span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="version">
+<a class="viewcode-back" href="../../ioavstats.html#ioavstats.avstats.version">[docs]</a>
+<span class="k">def</span> <span class="nf">version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the version number of the IO-AVSTATS application.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        str:</span>
+<span class="sd">            The version number of the IO-AVSTATS application</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_START</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">io_glob</span><span class="o">.</span><span class="n">LOGGER_END</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">glob_local</span><span class="o">.</span><span class="n">IO_AERO_DB_VERSION</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022 - 2024, IO-Aero
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=dff755f8"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

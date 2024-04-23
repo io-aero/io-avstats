@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.12
+  - python=3.11
   - haversine
   - lat_lon_parser
   - mlxtend
@@ -25,7 +25,6 @@ dependencies:
   - pip
   - pip:
     - git+https://IoAeroMachineUser:${PYPI_PAT}@github.com/io-aero/io-common.git
-    - "matplotlib<=3.7"
     - pyeclat
     # Development dependencies
     - bandit
@@ -53,4 +52,3 @@ dependencies:
     - types-psycopg2
     - types-toml
     - vulture
-

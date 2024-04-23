@@ -56,7 +56,7 @@ Release Date: 22.04.2024
 Modified Features
 -----------------
 
-- Migration to Python 3.12.
+- Migration to Python 3.11.
 - pipenv replaced by conda.
 
 Applied Software
@@ -75,7 +75,7 @@ Applied Software
      -
      - upgrade
    * - Python
-     - 3.12.3
+     - 3.11.wwe
      -
      - upgrade
    * - RazorSQL

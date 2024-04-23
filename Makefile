@@ -22,7 +22,7 @@ endif
 
 COVERALLS_REPO_TOKEN=<see coveralls.io>
 PYTHONPATH=${MODULE} scripts
-VERSION_PYTHON=3.12
+VERSION_PYTHON=3.11
 
 export ENV_FOR_DYNACONF=test
 export LANG=en_US.UTF-8
@@ -119,7 +119,6 @@ conda-dev:          ## Create a new environment for development.
 	conda env create -f environment_dev.yml
 	@echo ----------------------------------------------------------------------
 	conda info --envs
-	conda install -c conda-forge gdal
 	conda list
 	@echo Info **********  End:   Miniconda create development environment *****
 conda-prod:         ## Create a new environment for production.
@@ -272,7 +271,10 @@ sphinx:             ##  Create the user documentation with Sphinx.
 	@echo SPHINX_BUILDDIR =${SPHINX_BUILDDIR}
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
+	pip install -e .
+	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX}
+	sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${MODULE}
 	sphinx-build -M html ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}
 	sphinx-build -b rinoh ${SPHINX_SOURCEDIR} ${SPHINX_BUILDDIR}/pdf
 	@echo Info **********  End:   sphinx ***************************************

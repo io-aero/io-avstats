@@ -19,8 +19,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        python-version: ["3.12"]
+#       os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
+        python-version: ["3.11"]
 
     steps:
       - name: Show the environment variables

@@ -4,6 +4,8 @@ Welcome to IO-AVSTATS
 General Documentation
 ---------------------
 
+This section contains the core documentation for setting up and starting with IO-AVSTATS. It covers everything from installation to basic and advanced configurations.
+
 .. toctree::
    :maxdepth: 1
 
@@ -33,8 +35,20 @@ Transaction Data Logs
 
    data_transaction_logs
 
+API Documentation
+-----------------
+
+Here, you will find detailed API documentation, which includes information about all modules within the IO-AVSTATS, allowing developers to understand the functionalities available.
+
+.. toctree::
+   :maxdepth: 1
+
+   modules
+
 About
 -----
+
+This section provides additional context and legal information about IO-AVSTATS, including release notes and licensing details.
 
 .. toctree::
    :maxdepth: 1
@@ -42,12 +56,20 @@ About
    release_notes
    LICENSE
 
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+
 Repository
 ..........
 
-:repo:`Link to the repository <>`
+Link to the repository for accessing the source code and contributing to the project:
+
+`IO-AVSTATS GitHub Repository <https://github.com/io-aero/io-avstats>`_
 
 Version
 .......
 
-|version|
+This documentation is for IO-AVSTATS version |version|.

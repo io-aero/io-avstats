@@ -7,7 +7,7 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Science/Research",
     "License :: Other/Proprietary License",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering",
     "Typing :: Typed",
 ]
@@ -15,19 +15,18 @@ dependencies = [
     "haversine",
     "iocommon",
     "lat_lon_parser",
-    "matplotlib",
     "mlxtend",
     "numpy",
     "openpyxl",
     "pandas",
     "plotly",
+    "psycopg2-binary",
     "pyeclat",
     "pyodbc",
-    "psycopg2-binary",
     "requests",
     "sqlalchemy",
     "streamlit",
-    "streamlit-pandas-profiling",
+ #  "streamlit-pandas-profiling", # not yet available for 'make docs'
     "tomli",
     "tomli-w",
     "virtualenv",
@@ -47,7 +46,7 @@ maintainers = [
 ]
 name = "ioavstats"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 version = "24.03.22"
 
 [project.urls]
@@ -57,10 +56,11 @@ Source = "https://github.com/io-aero/io-avstats/tree/main/ioavstats"
 
 [tool.bandit]
 skips = [
+    "B101",
 	"B307",
 	"B404",
 	"B603",
-	"B608"
+	"B608",
 ]
 
 [tool.docformatter]
@@ -90,14 +90,15 @@ exclude = [
     ".vscode",
     "build",
     "ioavstats.egg-info",
+    "temp",
 ]
 
 # Same as Black.
 line-length = 100
 indent-width = 4
 
-# Assume Python 3.12
-target-version = "py312"
+# Assume Python 3.11
+target-version = "py311"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

@@ -1,36 +1,39 @@
 """Configuration file for the Sphinx documentation builder."""
+
 import importlib.metadata
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from rinoh.frontend.rst import DocutilsInlineNode
+from rinoh.frontend.rst import DocutilsInlineNode  # type: ignore
 
 # Debug: Print the current working directory and sys.path
-print("==========>") # noqa: T201
-print("==========> Current working directory:", Path.cwd()) # noqa: T201
-print("==========>") # noqa: T201
-sys.path.insert(0, Path("../../ioavstats").resolve())
-print("==========>") # noqa: T201
-print("==========> Updated sys.path:", sys.path) # noqa: T201
-print("==========>") # noqa: T201
+print("==========>")  # noqa: T201
+print("==========> Current working directory:", Path.cwd())  # noqa: T201
+print("==========>")  # noqa: T201
+sys.path.insert(0, str(Path("../../ioavstats").resolve()))
+print("==========>")  # noqa: T201
+print("==========> Updated sys.path:", sys.path)  # noqa: T201
+print("==========>")  # noqa: T201
 
 # -- Project information -----------------------------------------------------
 
-author = "IO-Aero Team"
-copyright: str = "2022 - 2024, IO-Aero" # noqa: A001
-github_url = "https://github.com/io-aero/io-avstats"
-project = "IO-AVSTATS"
+AUTHOR = "IO-Aero Team"
+COPYRIGHT: str = "2022 - 2024, IO-Aero"  # pylint: disable=redefined-builtin
+GITHUB_URL = "https://github.com/io-aero/io-avstats"
+PROJECT = "IO-AVSTATS"
 
 try:
-    version = importlib.metadata.version("ioavstats")
+    VERSION = importlib.metadata.version("ioavstats")
 except importlib.metadata.PackageNotFoundError:
-    version = "unknown"
+    VERSION = "unknown"
     print("==========>")  # noqa: T201
-    print("==========> Warning: Version not found, defaulting to 'unknown'.") # noqa: T201
-    print("==========>") # noqa: T201
+    print(  # noqa: T201
+        "==========> Warning: Version not found, defaulting to 'unknown'.",
+    )
+    print("==========>")  # noqa: T201
 
-release = version.replace(".", "-")
+release = VERSION.replace(".", "-")
 
 todays_date = datetime.now(tz=UTC)
 
@@ -48,22 +51,25 @@ exclude_patterns = [
 # Check if building with RinohType for PDF
 if "rinoh" in sys.argv:
     # Add the files you want to exclude specifically from PDF
-    exclude_patterns.extend([
-        "2023_*.md",
-        "2024_*.md",
-        "data_master_logs.rst",
-        "data_transaction_logs.rst",
-        "pre2008_*.md",
-    ])
+    exclude_patterns.extend(
+        [
+            "2023_*.md",
+            "2024_*.md",
+            "data_master_logs.rst",
+            "data_transaction_logs.rst",
+            "pre2008_*.md",
+        ],
+    )
 
+# pylint: disable=line-too-long
 extensions = [
     "sphinx.ext.autodoc",  # Automatically generates documentation from docstrings in the source code.
     "sphinx.ext.extlinks",  # Simplifies linking to external sites with short aliases instead of full URLs.
     "sphinx.ext.githubpages",  # Creates .nojekyll file to publish the doc as GitHub Pages correctly.
     "sphinx.ext.napoleon",  # Allows for support of NumPy and Google style docstrings, improving docstring readability.
-    "sphinx.ext.viewcode",  # Adds links to the source code for classes, methods, and functions.
     "myst_parser",  # Adds support for Markdown sources, allowing Sphinx to read and parse Markdown files.
 ]
+# pylint: enable=line-too-long
 
 # Configuration for autodoc extension
 autodoc_default_options = {
@@ -80,25 +86,27 @@ extlinks = {
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_favicon = "img/IO-Aero_1_Favicon.ico"
-html_logo = "img/IO-Aero_1_Logo.png"
-html_show_sourcelink = False
-html_theme = "furo"  # Chosen for its clean and modern design that improves navigation and readability.
-html_theme_options = {
+HTML_FAVICON = "img/IO-Aero_1_Favicon.ico"
+HTML_LOGO = "img/IO-Aero_1_Logo.png"
+HTML_SHOW_SOURCELINK = False
+# pylint: disable=line-too-long
+HTML_THEME = "furo"  # Chosen for its clean and modern design that improves navigation and readability.
+# pylint: enable=line-too-long
+HTML_THEME_OPTIONS = {
     "sidebar_hide_name": True,
 }
 
 # The master toctree document.
-master_doc = "index"
+MASTER_DOC = "index"
 
 # -- Options for PDF output --------------------------------------------------
 rinoh_documents = [
-    dict( # noqa: C408
+    dict(  # pylint: disable=use-dict-literal # noqa: C408
         doc="index",
         logo="img/IO-Aero_1_Logo.png",
         subtitle="Manual",
         target="manual",
-        title="IO-AVSTATS - Aviation Event Statistics",
+        title="Aviation Event Statistics",
         toctree_only=False,
     ),
 ]
@@ -115,7 +123,8 @@ source_suffix = {
     ".md": "markdown",
 }
 
-class Desc_Sig_Space(DocutilsInlineNode):  # noqa: N801
+
+class Desc_Sig_Space(DocutilsInlineNode):  # noqa: N801 # pylint: disable=invalid-name
 
     """A custom inline node for managing space in document signatures.
 

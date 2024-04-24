@@ -177,7 +177,9 @@ def get_full_name_from_components(
         else directory_name
     )
 
-    return get_os_independent_name(str(directory_name_int / file_name_int))
+    return get_os_independent_name(
+        str(directory_name_int / file_name_int),  # type: ignore
+    )
 
 
 # ------------------------------------------------------------------

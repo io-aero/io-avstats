@@ -21,7 +21,7 @@ else
 endif
 
 COVERALLS_REPO_TOKEN=<see coveralls.io>
-PYTHONPATH=${MODULE} scripts
+PYTHONPATH=${MODULE} docs scripts tests
 VERSION_PYTHON=3.11
 
 export ENV_FOR_DYNACONF=test

@@ -111,7 +111,7 @@ def _check_ddl_changes(msaccess: str) -> None:
     )
 
     subprocess.run(
-        [  # noqa: S603
+        [
             razorsql_java_path,
             "-jar",
             razorsql_jar_file,

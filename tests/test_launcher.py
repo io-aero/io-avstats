@@ -1,6 +1,7 @@
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
+
 """Launcher: coverage testing."""
 import logging
 import os
@@ -26,7 +27,7 @@ def _run_command(command: list[str]) -> None:
         subprocess.run(
             command,
             check=True,
-            shell=False,  # noqa: S603
+            shell=False,
             text=True,
             capture_output=True,
         )
@@ -46,7 +47,7 @@ def _run_command(command: list[str]) -> None:
 # Setup and teardown fixture for all tests.
 # -----------------------------------------------------------------------------
 @pytest.fixture(scope="session", autouse=True)
-def _setup_and_teardown() -> None:
+def _setup_and_teardown() -> None:  # type: ignore
     """Setup and teardown fixture for all tests."""  # noqa: D401
     logging.debug(io_glob.LOGGER_START)
 

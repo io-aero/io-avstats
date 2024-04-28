@@ -154,9 +154,7 @@ docformatter:       ## Format the docstrings with docformatter.
 	docformatter --version
 	@echo ----------------------------------------------------------------------
 	docformatter --in-place -r ${PYTHONPATH}
-	docformatter --in-place -r tests
 #	docformatter -r ${PYTHONPATH}
-#	docformatter -r tests
 	@echo Info **********  End:   docformatter *********************************
 
 # Mypy: Static Typing for Python

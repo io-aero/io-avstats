@@ -100,35 +100,6 @@ indent-width = 4
 # Assume Python 3.11
 target-version = "py311"
 
-[tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["ALL"]
-ignore = [
-    "C901",
-    "D211",
-    "D213",
-    "E501",
-    "PGH003",
-    "PLR0911",
-    "PLR0912",
-    "PLR0913",
-    "PLR0915",
-    "PLR2004",
-    "PLW0603",
-    "S101",
-    "S603",
-    "S608",
-]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
 quote-style = "double"
@@ -155,6 +126,43 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["ALL"]
+ignore = [
+    "C901",
+    "D211",
+    "D213",
+    "PGH003",
+    "PLR0911",
+    "PLR0912",
+    "PLR0913",
+    "PLR0915",
+    "PLR2004",
+    "PLW0603",
+    "S101",
+    "S603",
+    "S608",
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"ioavstats/db_ddl_base.py" = ["E501"]
+"ioavstats/db_dml_corr.py" = ["E501"]
+"ioavstats/db_dml_msaccess.py" = ["E501"]
+"ioavstats/pages/Association_Rule_Analysis.py" = ["E501"]
+"ioavstats/pages/Aviation_Event_Analysis.py" = ["E501"]
+"ioavstats/pages/Database_Profiling.py" = ["E501"]
+"ioavstats/user_guide.py" = ["E501"]
 
 [tool.vulture]
 make_whitelist = true

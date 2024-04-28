@@ -7,35 +7,52 @@ from pathlib import Path
 
 from rinoh.frontend.rst import DocutilsInlineNode  # type: ignore
 
+EXCLUDE_FROM_PDF: list[str] = [
+    "2023_*.md",
+    "2024_*.md",
+    "data_master_logs.rst",
+    "data_transaction_logs.rst",
+    "pre2008_*.md",
+]
+MODULE_NAME = "ioavstats"
+REPOSITORY_NAME = "io-avstats"
+REPOSITORY_TITLE = "Aviation Event Statistics"
+
 # Debug: Print the current working directory and sys.path
 print("==========>")  # noqa: T201
 print("==========> Current working directory:", Path.cwd())  # noqa: T201
 print("==========>")  # noqa: T201
-sys.path.insert(0, str(Path("../../ioavstats").resolve()))
+sys.path.insert(0, str(Path(f"../../{MODULE_NAME}").resolve()))
 print("==========>")  # noqa: T201
 print("==========> Updated sys.path:", sys.path)  # noqa: T201
 print("==========>")  # noqa: T201
 
 # -- Project information -----------------------------------------------------
 
-AUTHOR = "IO-Aero Team"
-COPYRIGHT: str = "2022 - 2024, IO-Aero"  # pylint: disable=redefined-builtin
-GITHUB_URL = "https://github.com/io-aero/io-avstats"
-PROJECT = "IO-AVSTATS"
+author = "IO-Aero Team"  # pylint: disable=invalid-name
+copyright: str = (  # pylint: disable=redefined-builtin # noqa: A001
+    "2022 - 2024, IO-Aero"  # pylint: disable=redefined-builtin
+)
+github_url = (  # pylint: disable=invalid-name
+    f"https://github.com/io-aero/{REPOSITORY_NAME}"
+)
+project = REPOSITORY_NAME.upper()  # pylint: disable=invalid-name
 
 try:
-    VERSION = importlib.metadata.version("ioavstats")
+    version = importlib.metadata.version(MODULE_NAME)
 except importlib.metadata.PackageNotFoundError:
-    VERSION = "unknown"
+    version = "unknown"  # pylint: disable=invalid-name
     print("==========>")  # noqa: T201
     print(  # noqa: T201
         "==========> Warning: Version not found, defaulting to 'unknown'.",
     )
     print("==========>")  # noqa: T201
 
-release = VERSION.replace(".", "-")
+release = version.replace(".", "-")
 
-todays_date = datetime.now(tz=UTC)
+todays_date = datetime.now(tz=UTC).strftime(
+    "%Y-%m-%d",
+)  # pylint: disable=invalid-name
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -51,23 +68,15 @@ exclude_patterns = [
 # Check if building with RinohType for PDF
 if "rinoh" in sys.argv:
     # Add the files you want to exclude specifically from PDF
-    exclude_patterns.extend(
-        [
-            "2023_*.md",
-            "2024_*.md",
-            "data_master_logs.rst",
-            "data_transaction_logs.rst",
-            "pre2008_*.md",
-        ],
-    )
+    exclude_patterns.extend(EXCLUDE_FROM_PDF)
 
 # pylint: disable=line-too-long
 extensions = [
-    "sphinx.ext.autodoc",  # Automatically generates documentation from docstrings in the source code.
-    "sphinx.ext.extlinks",  # Simplifies linking to external sites with short aliases instead of full URLs.
-    "sphinx.ext.githubpages",  # Creates .nojekyll file to publish the doc as GitHub Pages correctly.
-    "sphinx.ext.napoleon",  # Allows for support of NumPy and Google style docstrings, improving docstring readability.
-    "myst_parser",  # Adds support for Markdown sources, allowing Sphinx to read and parse Markdown files.
+    "sphinx.ext.autodoc",  # Automatically generates documentation from docstrings in the source code. # noqa: E501
+    "sphinx.ext.extlinks",  # Simplifies linking to external sites with short aliases instead of full URLs. # noqa: E501
+    "sphinx.ext.githubpages",  # Creates .nojekyll file to publish the doc as GitHub Pages correctly. # noqa: E501
+    "sphinx.ext.napoleon",  # Allows for support of NumPy and Google style docstrings, improving docstring readability. # noqa: E501
+    "myst_parser",  # Adds support for Markdown sources, allowing Sphinx to read and parse Markdown files. # noqa: E501
 ]
 # pylint: enable=line-too-long
 
@@ -80,24 +89,24 @@ autodoc_default_options = {
 }
 
 extlinks = {
-    "repo": ("https://github.com/io-aero/io-avstats%s", "GitHub Repository"),
+    "repo": (f"https://github.com/io-aero/{MODULE_NAME}%s", "GitHub Repository"),
 }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-HTML_FAVICON = "img/IO-Aero_1_Favicon.ico"
-HTML_LOGO = "img/IO-Aero_1_Logo.png"
-HTML_SHOW_SOURCELINK = False
+html_favicon = "img/IO-Aero_1_Favicon.ico"  # pylint: disable=invalid-name
+html_logo = "img/IO-Aero_1_Logo.png"  # pylint: disable=invalid-name
+html_show_sourcelink = False  # pylint: disable=invalid-name
 # pylint: disable=line-too-long
-HTML_THEME = "furo"  # Chosen for its clean and modern design that improves navigation and readability.
+html_theme = "furo"  # Chosen for its clean and modern design that improves navigation and readability.  # pylint: disable=invalid-name # noqa: E501
 # pylint: enable=line-too-long
-HTML_THEME_OPTIONS = {
+html_theme_options = {
     "sidebar_hide_name": True,
 }
 
 # The master toctree document.
-MASTER_DOC = "index"
+master_doc = "index"  # pylint: disable=invalid-name
 
 # -- Options for PDF output --------------------------------------------------
 rinoh_documents = [
@@ -106,7 +115,7 @@ rinoh_documents = [
         logo="img/IO-Aero_1_Logo.png",
         subtitle="Manual",
         target="manual",
-        title="Aviation Event Statistics",
+        title=REPOSITORY_TITLE,
         toctree_only=False,
     ),
 ]

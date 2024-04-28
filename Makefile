@@ -91,7 +91,7 @@ black:              ## Format the code with Black.
 	@echo ----------------------------------------------------------------------
 	black --version
 	@echo ----------------------------------------------------------------------
-	black ${PYTHONPATH} tests
+	black ${PYTHONPATH}
 	@echo Info **********  End:   black ****************************************
 
 # Byte-compile Python libraries
@@ -192,7 +192,7 @@ pylint:             ## Lint the code with Pylint.
 	@echo ----------------------------------------------------------------------
 	pylint --version
 	@echo ----------------------------------------------------------------------
-	pylint ${PYTHONPATH} tests
+	pylint ${PYTHONPATH}
 	@echo Info **********  End:   Pylint ***************************************
 
 # pytest: helps you write better programs.
@@ -271,7 +271,7 @@ sphinx:             ##  Create the user documentation with Sphinx.
 	@echo SPHINX_BUILDDIR =${SPHINX_BUILDDIR}
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
-	pip install -e .
+	pip install --no-deps -e .
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX}
 	sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${MODULE}
@@ -296,7 +296,7 @@ vulture:            ##  Find dead Python code.
 	@echo ----------------------------------------------------------------------
 	vulture --version
 	@echo ----------------------------------------------------------------------
-	vulture ${PYTHONPATH} tests
+	vulture ${PYTHONPATH}
 	@echo Info **********  End:   vulture **************************************
 
 ## =============================================================================

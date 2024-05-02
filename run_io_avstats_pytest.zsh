@@ -6,7 +6,7 @@
 #
 # ------------------------------------------------------------------------------
 
-if [ -z "${ENV_FOR_DYNACONF}" ]; then
+if [[ -z "${ENV_FOR_DYNACONF}" ]]; then
     export ENV_FOR_DYNACONF=test
 fi
 
@@ -14,7 +14,7 @@ export IO_AERO_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AERO_CORRECTION_WORK_DIR=data/correction
 export IO_AERO_NTSB_WORK_DIR=data/download
 
-if [ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]; then
+if [[ -z "${IO_AERO_POSTGRES_CONNECTION_PORT}" ]]; then
     export IO_AERO_POSTGRES_CONNECTION_PORT=5433
 fi
 
@@ -65,9 +65,6 @@ fi
 if [[ -f "${log_file}" ]]; then
     rm -f "${log_file}"
 fi
-
-# Redirection of the standard output and the standard error output to the log file
-exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
 
 echo "==================================================================="
 echo "Start $0"

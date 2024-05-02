@@ -48,6 +48,98 @@ Release Notes
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    - Download link: `Version: 11/12/2023 <https://simplemaps.com/data/us-zips>`__\
 
+Version 24.05.01
+================
+
+Release Date: 01.05.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.29.0
+     -
+     -
+   * - PostgreSQL
+     - 16.2
+     -
+     -
+   * - Python
+     - 3.11.9
+     -
+     -
+   * - RazorSQL
+     - 10.5.4
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 23.01
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 2022
+     -
+     -
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`simplemaps - Interactive Maps & Data <https://simplemaps.com/>`__\
+..................................................................................
+
+Data source `US Zip Codes Database`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 1.85 <https://simplemaps.com/data/us-zips>`__\
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `avall.zip`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `05/01/2024 06:16:00 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
+
+Data source `up01MAY.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `05/01/2024 3:00:20 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01MAY.zip>`__\
+
+
 Version 24.04.22
 ================
 
@@ -75,7 +167,7 @@ Applied Software
      -
      - upgrade
    * - Python
-     - 3.11.wwe
+     - 3.11.9
      -
      - upgrade
    * - RazorSQL

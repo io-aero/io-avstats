@@ -108,6 +108,12 @@ jobs:
           brew update
           brew install --cask docker
           open /Applications/Docker.app
+          # Wait for Docker to finish setting up
+          until docker info; do
+            echo "Waiting for Docker to launch..."
+            sleep 10
+          done
+      
 
       - name: Set up Docker - Ubuntu
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}

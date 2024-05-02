@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         python-version: ["3.11"]
 
     steps:
@@ -102,11 +102,6 @@ jobs:
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Docker - Install Colima - macOS
-        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
-        run: |
-          brew install colima
-
       - name: Install Docker - macOS
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
         run: |
@@ -114,11 +109,6 @@ jobs:
           echo "Docker Desktop for Mac is currently not supported."
           echo "=================================================="
           exit 1
-
-      - name: Install Docker - Start Colima - macOS
-        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
-        run: |
-          colima start --cpu 2 --memory 4
 
       - name: Install Docker - Ubuntu
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}

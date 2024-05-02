@@ -107,17 +107,17 @@ jobs:
         run: |
           brew install colima
 
-      - name: Install Docker - Start Colima - macOS
-        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
-        run: |
-          colima start --cpu 2 --memory 4
-
       - name: Install Docker - Install Docker CLI - macOS
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
         run: |
           brew install docker
 
-      - name: Set up Docker - Ubuntu
+      - name: Install Docker - Start Colima - macOS
+        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
+        run: |
+          colima start --cpu 2 --memory 4
+
+      - name: Install Docker - Ubuntu
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}
         uses: docker/setup-buildx-action@v3
 

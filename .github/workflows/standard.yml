@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
         python-version: ["3.11"]
 
     steps:
@@ -60,7 +60,7 @@ jobs:
       - name: Preparing scripts - macOS
         if: runner.os == 'macOS'
         run: |
-          brew install dos2unix
+          brew install dos2unix || brew upgrade dos2unix
           chmod +x scripts/run_prep_*.zsh
           dos2unix scripts/run_prep_*.zsh
           ./scripts/run_prep_zsh_scripts.zsh
@@ -86,12 +86,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
-      - name: Install AWS CLI - macOS
-        if: ${{ env.IO_AWS_CLI == 'true' && env.IO_LOCAL == 'true' && runner.os == 'macOS' }}
-        run: |
-          brew update
-          brew install awscli
-
       - name: Install AWS CLI - Ubuntu
         if: ${{ env.IO_AWS_CLI == 'true' && env.IO_LOCAL == 'true' && runner.os == 'Linux' }}
         run: |
@@ -111,6 +105,7 @@ jobs:
       - name: Install Docker - macOS
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
         run: |
+          brew update
           brew install --cask docker
           open /Applications/Docker.app
 
@@ -121,8 +116,7 @@ jobs:
       - name: Install ODBC - macOS
         if: ${{ env.IO_ODBC == 'true' && runner.os == 'macOS' }}
         run: |
-          brew update
-          brew upgrade unixodbc
+          brew install unixodbc || brew upgrade unixodbc
 
       - name: Install ODBC - Ubuntu
         if: ${{ env.IO_ODBC == 'true' && runner.os == 'Linux' }}

@@ -19,8 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-#       os: [macos-latest, ubuntu-latest]
-        os: [ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
         python-version: ["3.11"]
 
     steps:
@@ -85,20 +84,19 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-east-2
 
       - name: Install AWS CLI - macOS
-        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'macOS' }}
+        if: ${{ env.IO_AWS_CLI == 'true' && env.IO_LOCAL == 'true' && runner.os == 'macOS' }}
         run: |
           brew update
-          brew upgrade unzip
-          curl "https://awscli.amazonaws.com/awscli-exe-macosx-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+          brew install awscli
 
       - name: Install AWS CLI - Ubuntu
-        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'Linux' }}
+        if: ${{ env.IO_AWS_CLI == 'true' && env.IO_LOCAL == 'true' && runner.os == 'Linux' }}
         run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install
@@ -114,7 +112,7 @@ jobs:
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
         run: |
           brew install --cask docker
-          open /Applications/Docker.app   
+          open /Applications/Docker.app
 
       - name: Set up Docker - Ubuntu
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}

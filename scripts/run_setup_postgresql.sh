@@ -13,22 +13,13 @@ echo "Start $0"
 echo "--------------------------------------------------------------------------------"
 echo "IO-AVSTATS - Set up a PostgreSQL Docker container."
 echo "--------------------------------------------------------------------------------"
-# export IO_AERO_POSTGRES_CONNECTION_PORT=5432
-# export IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
-# export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
-# export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
-# export IO_AERO_POSTGRES_USER_ADMIN=postgres
-# export IO_AERO_POSTGRES_VERSION=16.2
-# echo "--------------------------------------------------------------------------------"
-# export IO_AERO_POSTGRES_PGDATA=data/postgres
-# echo "--------------------------------------------------------------------------------"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_DBNAME_ADMIN    : ${IO_AERO_POSTGRES_DBNAME_ADMIN}"
 echo "POSTGRES_PGDATA          : ${IO_AERO_POSTGRES_PGDATA}"
 echo "POSTGRES_USER_ADMIN      : ${IO_AERO_POSTGRES_USER}"
 echo "POSTGRES_VERSION         : ${IO_AERO_POSTGRES_VERSION}"
-echo --------------------------------------------------------------------------------
+echo "--------------------------------------------------------------------------------"
 
 echo "Docker stop/rm ${IO_AERO_POSTGRES_CONTAINER_NAME} ...................................... before:"
 docker ps -a
@@ -64,7 +55,12 @@ if ! docker start ${IO_AERO_POSTGRES_CONTAINER_NAME}; then
     exit 255
 fi
 
-sleep 30
+echo "Waiting for PostgreSQL to be ready..."
+until docker exec ${IO_AERO_POSTGRES_CONTAINER_NAME} pg_isready -q -d ${IO_AERO_POSTGRES_DBNAME_ADMIN}; do
+  echo "Waiting for PostgreSQL..."
+  sleep 1
+done
+echo "PostgreSQL is ready."
 
 end=$(date +%s)
 echo "DOCKER PostgreSQL was ready in $((end - start)) seconds"

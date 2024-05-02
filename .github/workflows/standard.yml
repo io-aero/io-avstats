@@ -105,6 +105,7 @@ jobs:
       - name: Install Docker - macOS
         if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
         run: |
+          brew update
           brew install colima || brew upgrade colima
           brew install docker || brew upgrade docker
           colima start

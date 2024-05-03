@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pyodbc  # pylint: disable=import-error # type: ignore
 import requests
-from iocommon import db_utils, io_config, io_glob, io_utils
+from iocommon import db_utils, io_glob, io_settings, io_utils
 from psycopg import connection, cursor
 from psycopg.errors import (
     ForeignKeyViolation,  # pylint: disable=no-name-in-module
@@ -45,14 +45,18 @@ def _check_ddl_changes(msaccess: str) -> None:
 
     download_work_dir = Path(
         Path.cwd(),
-        io_config.settings.download_work_dir,
+        io_settings.settings.download_work_dir,
     )
 
     shutil.copy(
         Path(download_work_dir, (msaccess + "." + glob_local.FILE_EXTENSION_MDB)),
         Path(
             download_work_dir,
-            (io_config.settings.razorsql_profile + "." + glob_local.FILE_EXTENSION_MDB),
+            (
+                io_settings.settings.razorsql_profile
+                + "."
+                + glob_local.FILE_EXTENSION_MDB
+            ),
         ),
     )
 
@@ -83,11 +87,11 @@ def _check_ddl_changes(msaccess: str) -> None:
     razorsql_java_path = ""
 
     if platform.system() == "Windows":
-        razorsql_jar_file = io_config.settings.razorsql_jar_file_windows
-        razorsql_java_path = io_config.settings.razorsql_java_path_windows
+        razorsql_jar_file = io_settings.settings.razorsql_jar_file_windows
+        razorsql_java_path = io_settings.settings.razorsql_java_path_windows
     elif platform.system() == "Linux":
-        razorsql_jar_file = io_config.settings.razorsql_jar_file_linux
-        razorsql_java_path = io_config.settings.razorsql_java_path_linux
+        razorsql_jar_file = io_settings.settings.razorsql_jar_file_linux
+        razorsql_java_path = io_settings.settings.razorsql_java_path_linux
     else:
         # ERROR.00.908 The operating system '{os}' is not supported
         io_utils.terminate_fatal(
@@ -116,7 +120,7 @@ def _check_ddl_changes(msaccess: str) -> None:
             "-jar",
             razorsql_jar_file,
             "-backup",
-            io_config.settings.razorsql_profile,
+            io_settings.settings.razorsql_profile,
             "null",
             "null",
             ";",
@@ -154,8 +158,8 @@ def _compare_ddl(msaccess: str) -> None:
     logging.debug(io_glob.LOGGER_START)
 
     reference_filename = Path(
-        io_config.settings.razorsql_reference_dir,
-        io_config.settings.razorsql_reference_file,
+        io_settings.settings.razorsql_reference_dir,
+        io_settings.settings.razorsql_reference_file,
     )
 
     # pylint: disable=consider-using-with
@@ -166,7 +170,7 @@ def _compare_ddl(msaccess: str) -> None:
     reference_file.close()
 
     msaccess_filename = Path(
-        io_config.settings.download_work_dir,
+        io_settings.settings.download_work_dir,
         (msaccess + "." + glob_local.FILE_EXTENSION_SQL),
     )
 
@@ -281,7 +285,7 @@ def _delete_ntsb_data(
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_sequence_of_events,
+        io_settings.settings.download_file_sequence_of_events,
         cur_pg,
     )
 
@@ -314,7 +318,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
 
     # pylint: disable=R0801
     filename = Path(
-        io_config.settings.download_work_dir,
+        io_settings.settings.download_work_dir,
         (msaccess + "." + glob_local.FILE_EXTENSION_MDB),
     )
 
@@ -567,7 +571,7 @@ def _load_table_aircraft(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -965,7 +969,7 @@ def _load_table_dt_aircraft(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1078,7 +1082,7 @@ def _load_table_dt_events(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1185,7 +1189,7 @@ def _load_table_dt_flight_crew(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1288,7 +1292,7 @@ def _load_table_engines(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1427,7 +1431,7 @@ def _load_table_events(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2219,7 +2223,7 @@ def _load_table_events_sequence(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2334,7 +2338,7 @@ def _load_table_findings(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2497,7 +2501,7 @@ def _load_table_flight_crew(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2690,7 +2694,7 @@ def _load_table_flight_time(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2796,7 +2800,7 @@ def _load_table_injury(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -2927,7 +2931,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -3012,7 +3016,7 @@ def _load_table_narratives(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -3119,7 +3123,7 @@ def _load_table_ntsb_admin(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -3227,7 +3231,7 @@ def _load_table_occurrences(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -3354,7 +3358,7 @@ def _load_table_seq_of_events(
     for row_mdb in rows_mdb:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -3514,14 +3518,14 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     logging.debug(io_glob.LOGGER_START)
 
     filename_zip = msaccess + "." + glob_local.FILE_EXTENSION_ZIP
-    url = io_config.settings.download_url_ntsb_prefix + filename_zip
+    url = io_settings.settings.download_url_ntsb_prefix + filename_zip
 
     try:
         file_resp = requests.get(
             url=url,
             allow_redirects=True,
             stream=True,
-            timeout=io_config.settings.download_timeout,
+            timeout=io_settings.settings.download_timeout,
         )
 
         if file_resp.status_code != 200:
@@ -3537,19 +3541,19 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         # on the NTSB download page was successfully established
         io_utils.progress_msg(glob_local.INFO_00_013.replace("{msaccess}", msaccess))
 
-        if not Path(io_config.settings.download_work_dir).is_dir():
-            Path(io_config.settings.download_work_dir).mkdir(
+        if not Path(io_settings.settings.download_work_dir).is_dir():
+            Path(io_settings.settings.download_work_dir).mkdir(
                 parents=True,
                 exist_ok=True,
             )
 
-        filename_zip = Path(io_config.settings.download_work_dir, filename_zip)
+        filename_zip = Path(io_settings.settings.download_work_dir, filename_zip)
 
         no_chunks = 0
 
         with Path(filename_zip).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size,
+                chunk_size=io_settings.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -3568,7 +3572,10 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
             )
 
             for zipped_file in zipped_files.namelist():
-                zipped_files.extract(zipped_file, io_config.settings.download_work_dir)
+                zipped_files.extract(
+                    zipped_file,
+                    io_settings.settings.download_work_dir,
+                )
 
             zipped_files.close()
         except zipfile.BadZipFile:
@@ -3590,7 +3597,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
                 "{timeout}",
-                str(io_config.settings.download_timeout),
+                str(io_settings.settings.download_timeout),
             ).replace("{url}", url),
         )
 

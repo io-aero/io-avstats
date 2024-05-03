@@ -12,7 +12,7 @@ from haversine import (
     Unit,  # type: ignore
     haversine,
 )
-from iocommon import db_utils, io_config, io_glob, io_utils
+from iocommon import db_utils, io_glob, io_settings, io_utils
 from iocommon.io_utils import extract_column_value
 from psycopg import connection, cursor
 
@@ -62,7 +62,7 @@ EV_ID: str = ""
 ROW: list[OrderedDict]
 
 TABLE_NAME: str = ""
-TERMINAL_AREA_DISTANCE_NMI: float = io_config.settings.terminal_area_distance_nmi
+TERMINAL_AREA_DISTANCE_NMI: float = io_settings.settings.terminal_area_distance_nmi
 
 VALUE: str = ""
 
@@ -196,7 +196,7 @@ def _delete_missing_aircraft(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -551,7 +551,7 @@ def correct_dec_lat_lng() -> None:
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -814,7 +814,7 @@ def find_nearest_airports() -> None:
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -927,7 +927,7 @@ def load_correction_data(filename: str) -> None:
 
     logging.debug(io_glob.LOGGER_START)
 
-    corr_file = Path(io_config.settings.correction_work_dir) / filename
+    corr_file = Path(io_settings.settings.correction_work_dir) / filename
 
     if not Path(corr_file).is_file():
         # ERROR.00.926 The correction file '{filename}' is missing
@@ -959,7 +959,7 @@ def load_correction_data(filename: str) -> None:
 
             COUNT_SELECT += 1
 
-            if COUNT_SELECT % io_config.settings.database_commit_size == 0:
+            if COUNT_SELECT % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {COUNT_SELECT!s:>8}",
@@ -1109,7 +1109,7 @@ def verify_ntsb_data() -> None:
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1132,7 +1132,7 @@ def verify_ntsb_data() -> None:
                 dec_latitude = row_pg[COLUMN_DEC_LATITUDE]  # type: ignore
                 if dec_latitude:
                     deviation = abs(dec_latitude - dec_latitude_comp)
-                    if deviation > io_config.settings.max_deviation_latitude:
+                    if deviation > io_settings.settings.max_deviation_latitude:
                         io_dec_latitude_deviating = deviation
                         count_errors += 1
             except ValueError:
@@ -1151,7 +1151,7 @@ def verify_ntsb_data() -> None:
                 dec_longitude = row_pg[COLUMN_DEC_LONGITUDE]  # type: ignore
                 if dec_longitude:
                     deviation = abs(dec_longitude - dec_longitude_comp)
-                    if deviation > io_config.settings.max_deviation_longitude:
+                    if deviation > io_settings.settings.max_deviation_longitude:
                         io_dec_longitude_deviating = deviation
                         count_errors += 1
             except ValueError:

@@ -16,7 +16,7 @@ import plotly.graph_objects as go  # type: ignore
 import streamlit as st
 import utils  # type: ignore # pylint: disable=import-error
 from dynaconf import Dynaconf  # type: ignore
-from iocommon import io_config
+from iocommon import io_settings
 from pandas import DataFrame
 from psycopg2.extensions import connection
 from streamlit_pandas_profiling import st_profile_report  # type: ignore
@@ -317,7 +317,7 @@ SETTINGS = Dynaconf(
 )
 START_TIME: int = 0
 
-TERMINAL_AREA_DISTANCE_NMI = float(io_config.settings.terminal_area_distance_nmi)
+TERMINAL_AREA_DISTANCE_NMI = float(io_settings.settings.terminal_area_distance_nmi)
 
 # Magnification level of the map, usually between
 # 0 (representing the whole world) and

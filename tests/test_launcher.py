@@ -11,7 +11,7 @@ import time
 
 import pytest
 from iocommon import io_glob
-from iocommon.io_config import settings
+from iocommon.io_settings import settings
 
 # -----------------------------------------------------------------------------
 # Constants & Globals.

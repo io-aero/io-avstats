@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-from iocommon import db_utils, io_config, io_glob, io_utils
+from iocommon import db_utils, io_glob, io_settings, io_utils
 from iocommon.io_utils import extract_column_value
 from psycopg import connection, cursor
 from psycopg.errors import (
@@ -76,15 +76,15 @@ COLUMN_ZIP = "zip"
 COLUMN_ZIPS = "zips"
 
 FILE_AVIATION_OCCURRENCE_CATEGORIES = (
-    io_config.settings.download_file_aviation_occurrence_categories
+    io_settings.settings.download_file_aviation_occurrence_categories
 )
-FILE_FAA_AIRPORTS = io_config.settings.download_file_faa_airports
-FILE_FAA_NPIAS_DATA = io_config.settings.download_file_faa_npias
-FILE_FAA_RUNWAYS = io_config.settings.download_file_faa_runways
-FILE_SEQUENCE_OF_EVENTS = io_config.settings.download_file_sequence_of_events
-FILE_SIMPLEMAPS_US_CITIES = io_config.settings.download_file_simplemaps_us_cities
-FILE_SIMPLEMAPS_US_ZIPS = io_config.settings.download_file_simplemaps_us_zips
-FILE_ZIP_CODES_ORG = io_config.settings.download_file_zip_codes_org
+FILE_FAA_AIRPORTS = io_settings.settings.download_file_faa_airports
+FILE_FAA_NPIAS_DATA = io_settings.settings.download_file_faa_npias
+FILE_FAA_RUNWAYS = io_settings.settings.download_file_faa_runways
+FILE_SEQUENCE_OF_EVENTS = io_settings.settings.download_file_sequence_of_events
+FILE_SIMPLEMAPS_US_CITIES = io_settings.settings.download_file_simplemaps_us_cities
+FILE_SIMPLEMAPS_US_ZIPS = io_settings.settings.download_file_simplemaps_us_zips
+FILE_ZIP_CODES_ORG = io_settings.settings.download_file_zip_codes_org
 
 IO_LAST_SEEN = datetime.now(UTC)
 
@@ -188,7 +188,7 @@ def _load_airport_data() -> None:
 
             count_usable += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -328,7 +328,7 @@ def _load_airport_data() -> None:
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events,
+            io_settings.settings.download_file_sequence_of_events,
             cur_pg,
         )
 
@@ -431,7 +431,7 @@ def _load_aviation_occurrence_categories() -> None:
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -501,7 +501,7 @@ def _load_aviation_occurrence_categories() -> None:
         for row_pg in cur_pg.fetchall():
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -577,7 +577,7 @@ def _load_country_data(
 
     filename_json = (
         Path.cwd()
-        / io_config.settings.download_file_countries_states_json.replace("/", os.sep)
+        / io_settings.settings.download_file_countries_states_json.replace("/", os.sep)
     )
 
     if not Path(filename_json).is_file():
@@ -642,7 +642,7 @@ def _load_country_data(
                     count_update += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json,
+        io_settings.settings.download_file_countries_states_json,
         cur_pg,
     )
 
@@ -844,7 +844,7 @@ def _load_runway_data() -> None:
             if comp_code is None:
                 continue
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -879,7 +879,7 @@ def _load_runway_data() -> None:
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events,
+            io_settings.settings.download_file_sequence_of_events,
             cur_pg,
         )
 
@@ -931,7 +931,7 @@ def _load_sequence_of_events() -> None:
     io_utils.progress_msg(
         glob_local.INFO_00_076.replace(
             "{filename}",
-            io_config.settings.download_file_sequence_of_events,
+            io_settings.settings.download_file_sequence_of_events,
         ),
     )
     io_utils.progress_msg("-" * 80)
@@ -972,7 +972,7 @@ def _load_sequence_of_events() -> None:
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -1048,7 +1048,7 @@ def _load_sequence_of_events() -> None:
         for row_pg in cur_pg.fetchall():
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -1082,7 +1082,7 @@ def _load_sequence_of_events() -> None:
         # ------------------------------------------------------------------
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_sequence_of_events,
+            io_settings.settings.download_file_sequence_of_events,
             cur_pg,
         )
 
@@ -1165,7 +1165,7 @@ def _load_simplemaps_data_cities_from_us_cities(
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -1317,7 +1317,7 @@ def _load_simplemaps_data_zips_from_us_cities(
 
             for zipcode in zips:
                 count_select += 1
-                if count_select % io_config.settings.database_commit_size == 0:
+                if count_select % io_settings.settings.database_commit_size == 0:
                     conn_pg.commit()
                     io_utils.progress_msg(
                         f"Number of rows so far read : {count_select!s:>8}",
@@ -1411,7 +1411,7 @@ def _load_simplemaps_data_zips_from_us_zips(
     io_utils.progress_msg(
         glob_local.INFO_00_025.replace(
             "{filename}",
-            io_config.settings.download_file_simplemaps_us_zips,
+            io_settings.settings.download_file_simplemaps_us_zips,
         ),
     )
     io_utils.progress_msg("-" * 80)
@@ -1440,7 +1440,7 @@ def _load_simplemaps_data_zips_from_us_zips(
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -1511,7 +1511,7 @@ def _load_simplemaps_data_zips_from_us_zips(
             count_upsert += cur_pg.rowcount
 
         utils.upd_io_processed_files(
-            io_config.settings.download_file_simplemaps_us_zips,
+            io_settings.settings.download_file_simplemaps_us_zips,
             cur_pg,
         )
 
@@ -1560,7 +1560,7 @@ def _load_state_data(
 
     filename_json = (
         Path.cwd()
-        / io_config.settings.download_file_countries_states_json.replace("/", os.sep)
+        / io_settings.settings.download_file_countries_states_json.replace("/", os.sep)
     )
 
     if not Path(filename_json).is_file():
@@ -1621,7 +1621,7 @@ def _load_state_data(
                     count_update += cur_pg.rowcount
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json,
+        io_settings.settings.download_file_countries_states_json,
         cur_pg,
     )
 
@@ -1696,7 +1696,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1852,7 +1852,7 @@ def _load_zip_codes_org_data_zips(
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -2019,14 +2019,14 @@ def download_us_cities_file() -> None:
     """Download a US zip code file."""
     logging.debug(io_glob.LOGGER_START)
 
-    url = io_config.settings.download_url_simplemaps_us_cities
+    url = io_settings.settings.download_url_simplemaps_us_cities
 
     try:
         file_resp = requests.get(
             url=url,
             allow_redirects=True,
             stream=True,
-            timeout=io_config.settings.download_timeout,
+            timeout=io_settings.settings.download_timeout,
         )
 
         if file_resp.status_code != 200:
@@ -2043,26 +2043,26 @@ def download_us_cities_file() -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_030.replace(
                 "{filename}",
-                io_config.settings.download_file_simplemaps_us_cities_zip,
+                io_settings.settings.download_file_simplemaps_us_cities_zip,
             ),
         )
 
-        if not Path(io_config.settings.download_work_dir).is_dir():
-            Path(io_config.settings.download_work_dir).mkdir(
+        if not Path(io_settings.settings.download_work_dir).is_dir():
+            Path(io_settings.settings.download_work_dir).mkdir(
                 parents=True,
                 exist_ok=True,
             )
 
         filename_zip = (
-            io_config.settings.download_work_dir.replace("/", os.sep)
-            / io_config.settings.download_file_simplemaps_us_cities_zip
+            io_settings.settings.download_work_dir.replace("/", os.sep)
+            / io_settings.settings.download_file_simplemaps_us_cities_zip
         )
 
         no_chunks = 0
 
         with Path(filename_zip).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size,
+                chunk_size=io_settings.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -2071,7 +2071,7 @@ def download_us_cities_file() -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_023.replace(
                 "{filename}",
-                io_config.settings.download_file_simplemaps_us_cities_zip,
+                io_settings.settings.download_file_simplemaps_us_cities_zip,
             ).replace("{no_chunks}", str(no_chunks)),
         )
 
@@ -2081,7 +2081,10 @@ def download_us_cities_file() -> None:
             )
 
             for zipped_file in zipped_files.namelist():
-                zipped_files.extract(zipped_file, io_config.settings.download_work_dir)
+                zipped_files.extract(
+                    zipped_file,
+                    io_settings.settings.download_work_dir,
+                )
 
             zipped_files.close()
         except zipfile.BadZipFile:
@@ -2095,7 +2098,7 @@ def download_us_cities_file() -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_024.replace(
                 "{filename}",
-                io_config.settings.download_file_simplemaps_us_cities_zip,
+                io_settings.settings.download_file_simplemaps_us_cities_zip,
             ),
         )
     except ConnectionError:
@@ -2106,7 +2109,7 @@ def download_us_cities_file() -> None:
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
                 "{timeout}",
-                str(io_config.settings.download_timeout),
+                str(io_settings.settings.download_timeout),
             ).replace("{url}", url),
         )
 
@@ -2123,14 +2126,14 @@ def download_zip_code_db_file() -> None:
     """Download the ZIP Code Database file."""
     logging.debug(io_glob.LOGGER_START)
 
-    url = io_config.settings.download_url_zip_codes_org
+    url = io_settings.settings.download_url_zip_codes_org
 
     try:
         file_resp = requests.get(
             url=url,
             allow_redirects=True,
             stream=True,
-            timeout=io_config.settings.download_timeout,
+            timeout=io_settings.settings.download_timeout,
         )
 
         if file_resp.status_code != 200:
@@ -2148,14 +2151,14 @@ def download_zip_code_db_file() -> None:
             glob_local.INFO_00_058.replace("{filename}", FILE_ZIP_CODES_ORG),
         )
 
-        if not Path(io_config.settings.download_work_dir).is_dir():
-            Path(io_config.settings.download_work_dir).mkdir(
+        if not Path(io_settings.settings.download_work_dir).is_dir():
+            Path(io_settings.settings.download_work_dir).mkdir(
                 parents=True,
                 exist_ok=True,
             )
 
         filename_xls = (
-            io_config.settings.download_work_dir.replace("/", os.sep)
+            io_settings.settings.download_work_dir.replace("/", os.sep)
             / FILE_ZIP_CODES_ORG
         )
 
@@ -2163,7 +2166,7 @@ def download_zip_code_db_file() -> None:
 
         with Path(filename_xls).open("wb") as file_zip:
             for chunk in file_resp.iter_content(
-                chunk_size=io_config.settings.download_chunk_size,
+                chunk_size=io_settings.settings.download_chunk_size,
             ):
                 file_zip.write(chunk)
                 no_chunks += 1
@@ -2184,7 +2187,7 @@ def download_zip_code_db_file() -> None:
         io_utils.terminate_fatal(
             glob_local.ERROR_00_909.replace(
                 "{timeout}",
-                str(io_config.settings.download_timeout),
+                str(io_settings.settings.download_timeout),
             ).replace("{url}", url),
         )
 
@@ -2261,7 +2264,7 @@ def load_country_state_data() -> None:
     # ------------------------------------------------------------------
 
     utils.upd_io_processed_files(
-        io_config.settings.download_file_countries_states_json,
+        io_settings.settings.download_file_countries_states_json,
         cur_pg,
     )
 

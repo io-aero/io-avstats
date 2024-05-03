@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from iocommon import io_config, io_glob
+from iocommon import io_glob, io_settings
 
 
 # -----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
         ref_lines (list[str]): DDL export of RazorSQL.
 
     """
-    filename = io_config.settings.download_work_dir / "generated_insert.sql"
+    filename = io_settings.settings.download_work_dir / "generated_insert.sql"
 
     columns: list[str] = []
     table_name: str = ""
@@ -124,7 +124,7 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
     # -----------------------------------------------------------------------------
     # Create the UPDATE statements.
     # -----------------------------------------------------------------------------
-    filename = io_config.settings.download_work_dir / "generated_update.sql"
+    filename = io_settings.settings.download_work_dir / "generated_update.sql"
 
     assignments: list[str] = []
     assignment_values: list[str] = []
@@ -187,8 +187,8 @@ def generate_sql() -> None:
     RazorSQL.
     """
     reference_filename = (
-        io_config.settings.razorsql_reference_dir
-        / io_config.settings.razorsql_reference_file
+        io_settings.settings.razorsql_reference_dir
+        / io_settings.settings.razorsql_reference_file
     )
 
     with Path(reference_filename).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as ref:

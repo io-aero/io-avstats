@@ -9,7 +9,7 @@ import logging
 import zipfile
 from pathlib import Path
 
-from iocommon import io_config, io_glob, io_utils
+from iocommon import io_glob, io_settings, io_utils
 from openpyxl.reader.excel import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException  # type: ignore
 
@@ -126,7 +126,7 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
 
     directory_name = ""
     if ARG_TASK == glob_local.ARG_TASK_L_C_D:
-        directory_name = io_config.settings.correction_work_dir
+        directory_name = io_settings.settings.correction_work_dir
 
     ARG_MSEXCEL = args.msexcel
 
@@ -605,7 +605,7 @@ def progress_msg(msg: str) -> None:
         msg (str): Progress message
 
     """
-    if io_config.settings.is_verbose:
+    if io_settings.settings.is_verbose:
         io_utils.progress_msg_core(msg)
 
 

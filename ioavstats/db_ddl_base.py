@@ -7,7 +7,7 @@ import os.path
 from pathlib import Path
 
 import pandas as pd
-from iocommon import db_utils, io_config, io_glob, io_utils
+from iocommon import db_utils, io_glob, io_settings, io_utils
 from iocommon.io_utils import extract_column_value
 from psycopg import DatabaseError, connection, cursor
 from psycopg.errors import (
@@ -44,7 +44,7 @@ DLL_VIEW_STMNTS_CREATE_MAT: dict[str, str] = {}
 DLL_VIEW_STMNTS_DROP: list[str] = []
 DLL_VIEW_STMNTS_REFRESH: list[str] = []
 
-FILE_MAIN_PHASES_OF_FLIGHT = io_config.settings.download_file_main_phases_of_flight
+FILE_MAIN_PHASES_OF_FLIGHT = io_settings.settings.download_file_main_phases_of_flight
 
 
 # ------------------------------------------------------------------
@@ -72,7 +72,7 @@ def _check_exists_index(
         f"""
     SELECT count(*)
       FROM pg_indexes
-     WHERE schemaname = '{io_config.settings.postgres_database_schema}'
+     WHERE schemaname = '{io_settings.settings.postgres_database_schema}'
        AND indexname = '{index_name.lower()}'
         """,
     )
@@ -97,7 +97,7 @@ def _check_exists_table(
         f"""
     SELECT count(*)
       FROM information_schema.tables
-     WHERE table_schema = '{io_config.settings.postgres_database_schema}'
+     WHERE table_schema = '{io_settings.settings.postgres_database_schema}'
        AND table_name = '{table_name.lower()}'
         """,
     )
@@ -122,7 +122,7 @@ def _check_exists_table_column(
         f"""
     SELECT count(*)
       FROM information_schema.columns
-     WHERE table_schema = '{io_config.settings.postgres_database_schema}'
+     WHERE table_schema = '{io_settings.settings.postgres_database_schema}'
        AND table_name = '{table_name.lower()}'
        AND column_name = '{column_name.lower()}'
         """,
@@ -319,7 +319,7 @@ def _create_db_io_md_codes_category(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -418,7 +418,7 @@ def _create_db_io_md_codes_eventsoe(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -515,7 +515,7 @@ def _create_db_io_md_codes_modifier(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -614,7 +614,7 @@ def _create_db_io_md_codes_phase(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -721,7 +721,7 @@ def _create_db_io_md_codes_section(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -833,7 +833,7 @@ def _create_db_io_md_codes_subcategory(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -943,7 +943,7 @@ def _create_db_io_md_codes_subsection(
     for row_tbd in rows_tbd:
         count_select += 1
 
-        if count_select % io_config.settings.database_commit_size == 0:
+        if count_select % io_settings.settings.database_commit_size == 0:
             conn_pg.commit()
             io_utils.progress_msg(
                 f"Number of rows so far read : {count_select!s:>8}",
@@ -1029,7 +1029,7 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
             f"""
         SELECT count(*)
           FROM pg_roles
-         WHERE rolname = '{io_config.settings.postgres_user_guest}'
+         WHERE rolname = '{io_settings.settings.postgres_user_guest}'
             """,
         )
 
@@ -1037,12 +1037,14 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
 
         if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
             cur_pg.execute(
-                f"DROP OWNED BY {io_config.settings.postgres_user_guest} CASCADE",
+                f"DROP OWNED BY {io_settings.settings.postgres_user_guest} CASCADE",
             )
 
             conn_pg.commit()
 
-        cur_pg.execute(f"DROP ROLE IF EXISTS {io_config.settings.postgres_user_guest}")
+        cur_pg.execute(
+            f"DROP ROLE IF EXISTS {io_settings.settings.postgres_user_guest}",
+        )
 
         conn_pg.commit()
 
@@ -1050,7 +1052,7 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_018.replace(
                 "{role}",
-                io_config.settings.postgres_user_guest,
+                io_settings.settings.postgres_user_guest,
             ),
         )
     except DatabaseError:
@@ -1058,13 +1060,13 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_082.replace(
                 "{role}",
-                io_config.settings.postgres_user_guest,
+                io_settings.settings.postgres_user_guest,
             ),
         )
 
     cur_pg.execute(
-        f"CREATE ROLE {io_config.settings.postgres_user_guest} WITH LOGIN "
-        f"PASSWORD '{io_config.settings.postgres_password_guest}'",
+        f"CREATE ROLE {io_settings.settings.postgres_user_guest} WITH LOGIN "
+        f"PASSWORD '{io_settings.settings.postgres_password_guest}'",
     )
 
     conn_pg.commit()
@@ -1073,21 +1075,21 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
     io_utils.progress_msg(
         glob_local.INFO_00_016.replace(
             "{role}",
-            io_config.settings.postgres_user_guest,
+            io_settings.settings.postgres_user_guest,
         ),
     )
 
     cur_pg.execute(
-        f"GRANT CONNECT ON DATABASE {io_config.settings.postgres_dbname} "
-        f"TO {io_config.settings.postgres_user_guest}",
+        f"GRANT CONNECT ON DATABASE {io_settings.settings.postgres_dbname} "
+        f"TO {io_settings.settings.postgres_user_guest}",
     )
 
     cur_pg.execute(
-        f"GRANT USAGE ON SCHEMA public TO {io_config.settings.postgres_user_guest}",
+        f"GRANT USAGE ON SCHEMA public TO {io_settings.settings.postgres_user_guest}",
     )
 
     cur_pg.execute(
-        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_config.settings.postgres_user_guest}",
+        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_settings.settings.postgres_user_guest}",  # pylint: disable=line-too-long
     )
 
     conn_pg.commit()
@@ -1225,7 +1227,7 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             io_utils.progress_msg(
                 glob_local.INFO_00_031.replace(
                     "{schema}",
-                    io_config.settings.postgres_database_schema,
+                    io_settings.settings.postgres_database_schema,
                 )
                 .replace("{table}", table_name)
                 .replace("{column}", column_name),
@@ -1267,7 +1269,7 @@ def _create_db_table_columns(conn_pg: connection, cur_pg: cursor) -> None:
             io_utils.progress_msg(
                 glob_local.INFO_00_031.replace(
                     "{schema}",
-                    io_config.settings.postgres_database_schema,
+                    io_settings.settings.postgres_database_schema,
                 )
                 .replace("{table}", table_name)
                 .replace("{column}", column_name),
@@ -3393,7 +3395,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
 
             count_select += 1
 
-            if count_select % io_config.settings.database_commit_size == 0:
+            if count_select % io_settings.settings.database_commit_size == 0:
                 conn_pg.commit()
                 io_utils.progress_msg(
                     f"Number of rows so far read : {count_select!s:>8}",
@@ -3499,31 +3501,37 @@ def create_db_schema() -> None:
 
     try:
         cur_pg.execute(
-            f"CREATE ROLE {io_config.settings.postgres_user} WITH CREATEDB LOGIN "
-            f"PASSWORD '{io_config.settings.postgres_password}'",
+            f"CREATE ROLE {io_settings.settings.postgres_user} WITH CREATEDB LOGIN "
+            f"PASSWORD '{io_settings.settings.postgres_password}'",
         )
 
         # INFO.00.016 Database role is available: {user}
         io_utils.progress_msg(
-            glob_local.INFO_00_016.replace("{role}", io_config.settings.postgres_user),
+            glob_local.INFO_00_016.replace(
+                "{role}",
+                io_settings.settings.postgres_user,
+            ),
         )
     except DuplicateObject:
         # INFO.00.082 Database role already existing: {role}
         io_utils.progress_msg(
-            glob_local.INFO_00_082.replace("{role}", io_config.settings.postgres_user),
+            glob_local.INFO_00_082.replace(
+                "{role}",
+                io_settings.settings.postgres_user,
+            ),
         )
 
     try:
         cur_pg.execute(
-            f"CREATE DATABASE {io_config.settings.postgres_dbname} "
-            f"WITH OWNER {io_config.settings.postgres_user}",
+            f"CREATE DATABASE {io_settings.settings.postgres_dbname} "
+            f"WITH OWNER {io_settings.settings.postgres_user}",
         )
 
         # INFO.00.017 Database is available: {dbname}
         io_utils.progress_msg(
             glob_local.INFO_00_017.replace(
                 "{dbname}",
-                io_config.settings.postgres_dbname,
+                io_settings.settings.postgres_dbname,
             ),
         )
     except DuplicateDatabase:
@@ -3531,7 +3539,7 @@ def create_db_schema() -> None:
         io_utils.progress_msg(
             glob_local.INFO_00_083.replace(
                 "{dbname}",
-                io_config.settings.postgres_dbname,
+                io_settings.settings.postgres_dbname,
             ),
         )
 
@@ -3616,7 +3624,7 @@ def update_db_schema() -> None:
     conn_pg.close()
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor_admin(
-        dbname=io_config.settings.postgres_dbname,
+        dbname=io_settings.settings.postgres_dbname,
     )
 
     _create_db_role_guest(conn_pg, cur_pg)

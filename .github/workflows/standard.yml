@@ -87,7 +87,7 @@ jobs:
           aws-region: us-east-2
 
       - name: Install AWS CLI - Ubuntu
-        if: ${{ env.IO_AWS_CLI == 'true' && env.IO_LOCAL == 'true' && runner.os == 'Linux' }}
+        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'Linux' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip

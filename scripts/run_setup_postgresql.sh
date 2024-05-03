@@ -17,14 +17,14 @@ echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "POSTGRES_CONTAINER_NAME  : ${IO_AERO_POSTGRES_CONTAINER_NAME}"
 echo "POSTGRES_DBNAME_ADMIN    : ${IO_AERO_POSTGRES_DBNAME_ADMIN}"
 echo "POSTGRES_PGDATA          : ${IO_AERO_POSTGRES_PGDATA}"
-echo "POSTGRES_USER_ADMIN      : ${IO_AERO_POSTGRES_USER}"
+echo "POSTGRES_USER_ADMIN      : ${IO_AERO_POSTGRES_USER_ADMIN}"
 echo "POSTGRES_VERSION         : ${IO_AERO_POSTGRES_VERSION}"
 echo "--------------------------------------------------------------------------------"
 
 echo "Docker stop/rm ${IO_AERO_POSTGRES_CONTAINER_NAME} ...................................... before:"
 docker ps -a
-docker ps | grep "${IO_AERO_POSTGRES_CONTAINER_NAME}" && docker stop ${IO_AERO_POSTGRES_CONTAINER_NAME}
-docker ps -a | grep "${IO_AERO_POSTGRES_CONTAINER_NAME}" && docker rm --force ${IO_AERO_POSTGRES_CONTAINER_NAME}
+docker ps    | grep ${IO_AERO_POSTGRES_CONTAINER_NAME} && docker stop       ${IO_AERO_POSTGRES_CONTAINER_NAME}
+docker ps -a | grep ${IO_AERO_POSTGRES_CONTAINER_NAME} && docker rm --force ${IO_AERO_POSTGRES_CONTAINER_NAME}
 echo "............................................................. after:"
 docker ps -a
 

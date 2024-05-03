@@ -5,7 +5,7 @@
 from pathlib import Path
 
 import pyodbc  # pylint: disable=import-error  # type: ignore
-from iocommon import io_config, io_utils
+from iocommon import io_settings, io_utils
 
 from ioavstats import glob_local
 
@@ -34,7 +34,7 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
             glob_local.ERROR_00_932.replace("{filename}", str(filename_mdb)),
         )
 
-    driver = io_config.settings.odbc_connection_string.replace(
+    driver = io_settings.settings.odbc_connection_string.replace(
         "{filename}",
         str(filename_mdb),  # Ensure the path is converted to a string
     )

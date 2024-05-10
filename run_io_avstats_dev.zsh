@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 #
-# run_io_avstats.zsh: Process IO-AVSTATS tasks.
+# run_io_avstats_dev.zsh: Process IO-AVSTATS tasks.
 #
 # ------------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN="V3s8m4x*MYbHrX*UuU6X"
 export IO_AERO_POSTGRES_PGDATA=data/postgres
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
-export IO_AERO_POSTGRES_VERSION=16.2
+export IO_AERO_POSTGRES_VERSION=16.3
 
 export IO_AERO_TASK=
 export IO_AERO_TASK_DEFAULT=r_s_a
@@ -38,6 +38,8 @@ if [[ -z "$1" ]]; then
     echo "-------------------------------------------------------------------"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "-------------------------------------------------------------------"
+    echo "version - Show the IO-AVSTSATS version"
+    echo "-------------------------------------------------------------------"
     vared -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " -c IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
@@ -45,7 +47,7 @@ else
 fi
 
 # Path to the log file
-log_file="run_io_avstats_${IO_AERO_TASK}.log"
+log_file="run_io_avstats_dev_${IO_AERO_TASK}.log"
 
 # Function for logging messages
 log_message() {
@@ -100,10 +102,19 @@ case "${IO_AERO_TASK}" in "r_s_a")
         ;;
 
     # ---------------------------------------------------------------------------
+    # Show the IO-AVSTATS version
+    # ---------------------------------------------------------------------------
+    "version")
+          if ! ( python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
+                exit 255
+            fi
+            ;;
+
+    # ---------------------------------------------------------------------------
     # Program termination due to incorrect input.
     # ---------------------------------------------------------------------------
     *)
-        echo "The processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
+        echo "The processing of the script run_io_avstats_dev is aborted: unknown task='${IO_AERO_TASK}'"
         exit 255
         ;;
 esac

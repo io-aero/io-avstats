@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="End-User License Agreement" href="LICENSE.html" /><link rel="prev" title="ioavstats.pages package" href="ioavstats.pages.html" />
 
-    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.7 and Furo 2024.04.27 -->
+    <link rel="shortcut icon" href="_static/IO-Aero_1_Favicon.ico"/><!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
         <title>Release Notes - IO-AVSTATS 24-3-22 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=437aa6ec" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -68,7 +68,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -83,7 +83,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -91,7 +91,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -99,6 +99,60 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -131,7 +185,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -185,6 +240,7 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2024_05_08_log_up08MAY.html">2024.05.08 up08MAY</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_05_01_log_up01MAY.html">2024.05.01 up01MAY</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_05_01_log_avall.html">2024.05.01 avall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2024_04_22_log_up22APR.html">2024.04.22 up22APR</a></li>
@@ -257,10 +313,12 @@
         </a>
         <div class="content-icon-container">
           
+
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -273,11 +331,113 @@
         <article role="main" id="furo-main-content">
           <section id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">¶</a></h1>
+<section id="version-24-05-08">
+<h2>Version 24.05.08<a class="headerlink" href="#version-24-05-08" title="Link to this heading">¶</a></h2>
+<p>Release Date: 10.04.2024</p>
+<section id="modified-features">
+<h3>Modified Features<a class="headerlink" href="#modified-features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Binary version with Nuitka.</p></li>
+</ul>
+</section>
+<section id="applied-software">
+<h3>Applied Software<a class="headerlink" href="#applied-software" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Docker Desktop</p></td>
+<td><p>4.30.0</p></td>
+<td></td>
+<td><p>upgrade</p></td>
+</tr>
+<tr class="row-odd"><td><p>PostgreSQL</p></td>
+<td><p>16.3</p></td>
+<td></td>
+<td><p>upgrade</p></td>
+</tr>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>3.11.9</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RazorSQL</p></td>
+<td><p>10.5.5</p></td>
+<td></td>
+<td><p>upgrade</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="windows-specific-software">
+<h4>Windows-specific Software<a class="headerlink" href="#windows-specific-software" title="Link to this heading">¶</a></h4>
+<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7-Zip</p></td>
+<td><p>23.01</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Make for Windows</p></td>
+<td><p>3.81</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
+<td><p>8/11/2020</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="processed-files">
+<h3>Processed files<a class="headerlink" href="#processed-files" title="Link to this heading">¶</a></h3>
+<section id="ntsb-national-transport-safety-board">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#ntsb-national-transport-safety-board" title="Link to this heading">¶</a></h4>
+<section id="data-source-up08apr-zip">
+<h5>Data source <cite>up08APR.zip</cite><a class="headerlink" href="#data-source-up08apr-zip" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08MAY.zip">05/08/2024 3:00:19 AM</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
 <section id="version-24-05-01">
 <h2>Version 24.05.01<a class="headerlink" href="#version-24-05-01" title="Link to this heading">¶</a></h2>
 <p>Release Date: 01.05.2024</p>
-<section id="applied-software">
-<h3>Applied Software<a class="headerlink" href="#applied-software" title="Link to this heading">¶</a></h3>
+<section id="id1">
+<h3>Applied Software<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -317,8 +477,8 @@
 </tbody>
 </table>
 </div>
-<section id="windows-specific-software">
-<h4>Windows-specific Software<a class="headerlink" href="#windows-specific-software" title="Link to this heading">¶</a></h4>
+<section id="id2">
+<h4>Windows-specific Software<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -365,8 +525,8 @@
 </section>
 </section>
 </section>
-<section id="processed-files">
-<h3>Processed files<a class="headerlink" href="#processed-files" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h3>Processed files<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <section id="simplemaps-interactive-maps-data">
 <h4><a class="reference external" href="https://simplemaps.com/">simplemaps - Interactive Maps &amp; Data</a><a class="headerlink" href="#simplemaps-interactive-maps-data" title="Link to this heading">¶</a></h4>
 <section id="data-source-us-zip-codes-database">
@@ -376,8 +536,8 @@
 </ul>
 </section>
 </section>
-<section id="ntsb-national-transport-safety-board">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#ntsb-national-transport-safety-board" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <section id="data-source-avall-zip">
 <h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#data-source-avall-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -396,15 +556,15 @@
 <section id="version-24-04-22">
 <h2>Version 24.04.22<a class="headerlink" href="#version-24-04-22" title="Link to this heading">¶</a></h2>
 <p>Release Date: 22.04.2024</p>
-<section id="modified-features">
-<h3>Modified Features<a class="headerlink" href="#modified-features" title="Link to this heading">¶</a></h3>
+<section id="id5">
+<h3>Modified Features<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Migration to Python 3.11.</p></li>
 <li><p>pipenv replaced by conda.</p></li>
 </ul>
 </section>
-<section id="id1">
-<h3>Applied Software<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<section id="id6">
+<h3>Applied Software<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -435,103 +595,6 @@
 <td><p>10.5.4</p></td>
 <td></td>
 <td><p>upgrade</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<section id="id2">
-<h4>Windows-specific Software<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
-<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>7-Zip</p></td>
-<td><p>23.01</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Make for Windows</p></td>
-<td><p>3.81</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
-<td><p>8/11/2020</p></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</section>
-<section id="id3">
-<h3>Processed files<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
-<section id="id4">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
-<section id="data-source-up22apr-zip">
-<h5>Data source <cite>up22APR.zip</cite><a class="headerlink" href="#data-source-up22apr-zip" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22APR.zip">04/22/2024 3:00:19 AM</a></p></li>
-</ul>
-</section>
-</section>
-</section>
-</section>
-<section id="version-24-04-15">
-<h2>Version 24.04.15<a class="headerlink" href="#version-24-04-15" title="Link to this heading">¶</a></h2>
-<p>Release Date: 15.04.2024</p>
-<section id="id5">
-<h3>Modified Features<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>Removing CodeArtifact.</p></li>
-</ul>
-</section>
-<section id="id6">
-<h3>Applied Software<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Docker Desktop</p></td>
-<td><p>4.28.0</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Python</p></td>
-<td><p>3.10.11</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>RazorSQL</p></td>
-<td><p>10.5.3</p></td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -579,18 +642,18 @@
 <h3>Processed files<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
 <section id="id9">
 <h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
-<section id="data-source-up15apr-zip">
-<h5>Data source <cite>up15APR.zip</cite><a class="headerlink" href="#data-source-up15apr-zip" title="Link to this heading">¶</a></h5>
+<section id="data-source-up22apr-zip">
+<h5>Data source <cite>up22APR.zip</cite><a class="headerlink" href="#data-source-up22apr-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15APR.zip">04/15/2024 3:00:27 AM</a></p></li>
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22APR.zip">04/22/2024 3:00:19 AM</a></p></li>
 </ul>
 </section>
 </section>
 </section>
 </section>
-<section id="version-24-04-08">
-<h2>Version 24.04.08<a class="headerlink" href="#version-24-04-08" title="Link to this heading">¶</a></h2>
-<p>Release Date: 08.04.2024</p>
+<section id="version-24-04-15">
+<h2>Version 24.04.15<a class="headerlink" href="#version-24-04-15" title="Link to this heading">¶</a></h2>
+<p>Release Date: 15.04.2024</p>
 <section id="id10">
 <h3>Modified Features<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <ul class="simple">
@@ -676,20 +739,26 @@
 <h3>Processed files<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <section id="id14">
 <h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
-<section id="data-source-up08apr-zip">
-<h5>Data source <cite>up08APR.zip</cite><a class="headerlink" href="#data-source-up08apr-zip" title="Link to this heading">¶</a></h5>
+<section id="data-source-up15apr-zip">
+<h5>Data source <cite>up15APR.zip</cite><a class="headerlink" href="#data-source-up15apr-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08APR.zip">04/08/2024 3:00:20 AM</a></p></li>
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15APR.zip">04/15/2024 3:00:27 AM</a></p></li>
 </ul>
 </section>
 </section>
 </section>
 </section>
-<section id="version-24-04-01">
-<h2>Version 24.04.01<a class="headerlink" href="#version-24-04-01" title="Link to this heading">¶</a></h2>
-<p>Release Date: 01.04.2024</p>
+<section id="version-24-04-08">
+<h2>Version 24.04.08<a class="headerlink" href="#version-24-04-08" title="Link to this heading">¶</a></h2>
+<p>Release Date: 08.04.2024</p>
 <section id="id15">
-<h3>Applied Software<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<h3>Modified Features<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Removing CodeArtifact.</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Applied Software<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -706,22 +775,17 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>AWS CLI</p></td>
-<td><p>2.15.34</p></td>
-<td></td>
-<td><p>upgrade</p></td>
-</tr>
-<tr class="row-odd"><td><p>Docker Desktop</p></td>
+<tr class="row-even"><td><p>Docker Desktop</p></td>
 <td><p>4.28.0</p></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>Python</p></td>
+<tr class="row-odd"><td><p>Python</p></td>
 <td><p>3.10.11</p></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>RazorSQL</p></td>
+<tr class="row-even"><td><p>RazorSQL</p></td>
 <td><p>10.5.3</p></td>
 <td></td>
 <td></td>
@@ -729,8 +793,8 @@
 </tbody>
 </table>
 </div>
-<section id="id16">
-<h4>Windows-specific Software<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Windows-specific Software<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -768,49 +832,22 @@
 </div>
 </section>
 </section>
-<section id="id17">
-<h3>Processed files<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
-<section id="faa-aeronautical-data-delivery-service">
-<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#faa-aeronautical-data-delivery-service" title="Link to this heading">¶</a></h4>
-<section id="data-source-airports">
-<h5>Data source <cite>Airports</cite><a class="headerlink" href="#data-source-airports" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007405%2C-1.633886%2C2.00">Version: 03/21/2024</a></p></li>
-</ul>
-</section>
-<section id="data-source-runways">
-<h5>Data source <cite>Runways</cite><a class="headerlink" href="#data-source-runways" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002752%2C-1.628764%2C2.00">Version: 03/21/2024</a></p></li>
-</ul>
-</section>
-</section>
 <section id="id18">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<h3>Processed files<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
 <section id="id19">
-<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id19" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">04/01/2024 06:09:05 AM</a></p></li>
-</ul>
-</section>
-<section id="data-source-up01apr-zip">
-<h5>Data source <cite>up01APR.zip</cite><a class="headerlink" href="#data-source-up01apr-zip" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01APR.zip">04/01/2024 3:00:22 AM</a></p></li>
-</ul>
-</section>
-</section>
-</section>
-</section>
-<section id="version-24-03-22">
-<h2>Version 24.03.22<a class="headerlink" href="#version-24-03-22" title="Link to this heading">¶</a></h2>
-<p>Release Date: 22.03.2024</p>
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <section id="id20">
-<h3>Modified Features<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<h5>Data source <cite>up08APR.zip</cite><a class="headerlink" href="#id20" title="Link to this heading">¶</a></h5>
 <ul class="simple">
-<li><p>Applying ruff to the code.</p></li>
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08APR.zip">04/08/2024 3:00:20 AM</a></p></li>
 </ul>
 </section>
+</section>
+</section>
+</section>
+<section id="version-24-04-01">
+<h2>Version 24.04.01<a class="headerlink" href="#version-24-04-01" title="Link to this heading">¶</a></h2>
+<p>Release Date: 01.04.2024</p>
 <section id="id21">
 <h3>Applied Software<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
@@ -830,7 +867,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>AWS CLI</p></td>
-<td><p>2.15.31</p></td>
+<td><p>2.15.34</p></td>
 <td></td>
 <td><p>upgrade</p></td>
 </tr>
@@ -893,8 +930,131 @@
 </section>
 <section id="id23">
 <h3>Processed files<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<section id="faa-aeronautical-data-delivery-service">
+<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#faa-aeronautical-data-delivery-service" title="Link to this heading">¶</a></h4>
+<section id="data-source-airports">
+<h5>Data source <cite>Airports</cite><a class="headerlink" href="#data-source-airports" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007405%2C-1.633886%2C2.00">Version: 03/21/2024</a></p></li>
+</ul>
+</section>
+<section id="data-source-runways">
+<h5>Data source <cite>Runways</cite><a class="headerlink" href="#data-source-runways" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002752%2C-1.628764%2C2.00">Version: 03/21/2024</a></p></li>
+</ul>
+</section>
+</section>
 <section id="id24">
 <h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<section id="id25">
+<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id25" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">04/01/2024 06:09:05 AM</a></p></li>
+</ul>
+</section>
+<section id="data-source-up01apr-zip">
+<h5>Data source <cite>up01APR.zip</cite><a class="headerlink" href="#data-source-up01apr-zip" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01APR.zip">04/01/2024 3:00:22 AM</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="version-24-03-22">
+<h2>Version 24.03.22<a class="headerlink" href="#version-24-03-22" title="Link to this heading">¶</a></h2>
+<p>Release Date: 22.03.2024</p>
+<section id="id26">
+<h3>Modified Features<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Applying ruff to the code.</p></li>
+</ul>
+</section>
+<section id="id27">
+<h3>Applied Software<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AWS CLI</p></td>
+<td><p>2.15.31</p></td>
+<td></td>
+<td><p>upgrade</p></td>
+</tr>
+<tr class="row-odd"><td><p>Docker Desktop</p></td>
+<td><p>4.28.0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>3.10.11</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RazorSQL</p></td>
+<td><p>10.5.3</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id28">
+<h4>Windows-specific Software<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7-Zip</p></td>
+<td><p>23.01</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Make for Windows</p></td>
+<td><p>3.81</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
+<td><p>8/11/2020</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id29">
+<h3>Processed files<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h3>
+<section id="id30">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <section id="data-source-up15mar-zip">
 <h5>Data source <cite>up15MAR.zip</cite><a class="headerlink" href="#data-source-up15mar-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -907,14 +1067,14 @@
 <section id="version-24-03-15">
 <h2>Version 24.03.15<a class="headerlink" href="#version-24-03-15" title="Link to this heading">¶</a></h2>
 <p>Release Date: 15.03.2024</p>
-<section id="id25">
-<h3>Modified Features<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h3>
+<section id="id31">
+<h3>Modified Features<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Using Pandas to load csv, xls and xlsx data.</p></li>
 </ul>
 </section>
-<section id="id26">
-<h3>Applied Software<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<section id="id32">
+<h3>Applied Software<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -954,8 +1114,8 @@
 </tbody>
 </table>
 </div>
-<section id="id27">
-<h4>Windows-specific Software<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h4>Windows-specific Software<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -993,12 +1153,12 @@
 </div>
 </section>
 </section>
-<section id="id28">
-<h3>Processed files<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h3>
-<section id="id29">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
-<section id="id30">
-<h5>Data source <cite>up15MAR.zip</cite><a class="headerlink" href="#id30" title="Link to this heading">¶</a></h5>
+<section id="id34">
+<h3>Processed files<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h3>
+<section id="id35">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h5>Data source <cite>up15MAR.zip</cite><a class="headerlink" href="#id36" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15MAR.zip">03/15/2024 8:28:07 AM</a></p></li>
 </ul>
@@ -1009,8 +1169,8 @@
 <section id="version-24-03-08">
 <h2>Version 24.03.08<a class="headerlink" href="#version-24-03-08" title="Link to this heading">¶</a></h2>
 <p>Release Date: 08.03.2024</p>
-<section id="id31">
-<h3>Applied Software<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
+<section id="id37">
+<h3>Applied Software<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1050,8 +1210,8 @@
 </tbody>
 </table>
 </div>
-<section id="id32">
-<h4>Windows-specific Software<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<section id="id38">
+<h4>Windows-specific Software<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -1089,25 +1249,25 @@
 </div>
 </section>
 </section>
-<section id="id33">
-<h3>Processed files<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h3>
-<section id="id34">
-<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
-<section id="id35">
-<h5>Data source <cite>Airports</cite><a class="headerlink" href="#id35" title="Link to this heading">¶</a></h5>
+<section id="id39">
+<h3>Processed files<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<section id="id40">
+<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<section id="id41">
+<h5>Data source <cite>Airports</cite><a class="headerlink" href="#id41" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007405%2C-1.633886%2C2.00">Version: 02/21/2024</a></p></li>
 </ul>
 </section>
-<section id="id36">
-<h5>Data source <cite>Runways</cite><a class="headerlink" href="#id36" title="Link to this heading">¶</a></h5>
+<section id="id42">
+<h5>Data source <cite>Runways</cite><a class="headerlink" href="#id42" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002752%2C-1.628764%2C2.00">Version: 02/20/2024</a></p></li>
 </ul>
 </section>
 </section>
-<section id="id37">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <section id="data-source-up08mar-zip">
 <h5>Data source <cite>up08MAR.zip</cite><a class="headerlink" href="#data-source-up08mar-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -1120,8 +1280,8 @@
 <section id="version-24-03-01">
 <h2>Version 24.03.01<a class="headerlink" href="#version-24-03-01" title="Link to this heading">¶</a></h2>
 <p>Release Date: 01.03.2024</p>
-<section id="id38">
-<h3>Applied Software<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
+<section id="id44">
+<h3>Applied Software<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1147,112 +1307,6 @@
 <td><p>4.27.2</p></td>
 <td></td>
 <td><p>upgrade</p></td>
-</tr>
-<tr class="row-even"><td><p>Python</p></td>
-<td><p>3.10.11</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>RazorSQL</p></td>
-<td><p>10.5.3</p></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<section id="id39">
-<h4>Windows-specific Software<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
-<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>7-Zip</p></td>
-<td><p>23.01</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Make for Windows</p></td>
-<td><p>3.81</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
-<td><p>8/11/2020</p></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<section id="id40">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h5>
-<img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
-</section>
-</section>
-</section>
-<section id="id41">
-<h3>Processed files<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h3>
-<section id="id42">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
-<section id="id43">
-<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id43" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">03/01/2024 06:03:06 AM</a></p></li>
-</ul>
-</section>
-<section id="data-source-up01mar-zip">
-<h5>Data source <cite>up01MAR.zip</cite><a class="headerlink" href="#data-source-up01mar-zip" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01MAR.zip">03/01/2024 3:00:23 AM</a></p></li>
-</ul>
-</section>
-</section>
-</section>
-</section>
-<section id="version-24-02-22">
-<h2>Version 24.02.22<a class="headerlink" href="#version-24-02-22" title="Link to this heading">¶</a></h2>
-<p>Release Date: 22.02.2024</p>
-<section id="id44">
-<h3>Applied Software<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AWS CLI</p></td>
-<td><p>2.15.20</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Docker Desktop</p></td>
-<td><p>4.27.1</p></td>
-<td></td>
-<td></td>
 </tr>
 <tr class="row-even"><td><p>Python</p></td>
 <td><p>3.10.11</p></td>
@@ -1304,12 +1358,118 @@
 </tbody>
 </table>
 </div>
-</section>
-</section>
 <section id="id46">
-<h3>Processed files<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h3>
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h5>
+<img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
+</section>
+</section>
+</section>
 <section id="id47">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<h3>Processed files<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h3>
+<section id="id48">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<section id="id49">
+<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id49" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">03/01/2024 06:03:06 AM</a></p></li>
+</ul>
+</section>
+<section id="data-source-up01mar-zip">
+<h5>Data source <cite>up01MAR.zip</cite><a class="headerlink" href="#data-source-up01mar-zip" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01MAR.zip">03/01/2024 3:00:23 AM</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="version-24-02-22">
+<h2>Version 24.02.22<a class="headerlink" href="#version-24-02-22" title="Link to this heading">¶</a></h2>
+<p>Release Date: 22.02.2024</p>
+<section id="id50">
+<h3>Applied Software<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AWS CLI</p></td>
+<td><p>2.15.20</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Docker Desktop</p></td>
+<td><p>4.27.1</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>3.10.11</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RazorSQL</p></td>
+<td><p>10.5.3</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id51">
+<h4>Windows-specific Software<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7-Zip</p></td>
+<td><p>23.01</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Make for Windows</p></td>
+<td><p>3.81</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
+<td><p>8/11/2020</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id52">
+<h3>Processed files<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<section id="id53">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <section id="data-source-up22feb-zip">
 <h5>Data source <cite>up22FEB.zip</cite><a class="headerlink" href="#data-source-up22feb-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -1322,8 +1482,8 @@
 <section id="version-24-02-15">
 <h2>Version 24.02.15<a class="headerlink" href="#version-24-02-15" title="Link to this heading">¶</a></h2>
 <p>Release Date: 15.02.2024</p>
-<section id="id48">
-<h3>Applied Software<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h3>
+<section id="id54">
+<h3>Applied Software<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1363,8 +1523,8 @@
 </tbody>
 </table>
 </div>
-<section id="id49">
-<h4>Windows-specific Software<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id55">
+<h4>Windows-specific Software<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -1402,10 +1562,10 @@
 </div>
 </section>
 </section>
-<section id="id50">
-<h3>Processed files<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h3>
-<section id="id51">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<section id="id56">
+<h3>Processed files<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<section id="id57">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <section id="data-source-up15feb-zip">
 <h5>Data source <cite>up15FEB.zip</cite><a class="headerlink" href="#data-source-up15feb-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -1418,8 +1578,8 @@
 <section id="version-24-02-08">
 <h2>Version 24.02.08<a class="headerlink" href="#version-24-02-08" title="Link to this heading">¶</a></h2>
 <p>Release Date: 08.02.2024</p>
-<section id="id52">
-<h3>Applied Software<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<section id="id58">
+<h3>Applied Software<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1464,8 +1624,8 @@
 </tbody>
 </table>
 </div>
-<section id="id53">
-<h4>Windows-specific Software<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<section id="id59">
+<h4>Windows-specific Software<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -1511,16 +1671,16 @@
 </tbody>
 </table>
 </div>
-<section id="id54">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h5>
+<section id="id60">
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h5>
 <img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
 </section>
 </section>
 </section>
-<section id="id55">
-<h3>Processed files<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
-<section id="id56">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<section id="id61">
+<h3>Processed files<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<section id="id62">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
 <section id="data-source-up08feb-zip">
 <h5>Data source <cite>up08FEB.zip</cite><a class="headerlink" href="#data-source-up08feb-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -1533,8 +1693,8 @@
 <section id="version-24-02-01">
 <h2>Version 24.02.01<a class="headerlink" href="#version-24-02-01" title="Link to this heading">¶</a></h2>
 <p>Release Date: 01.02.2024</p>
-<section id="id57">
-<h3>Applied Software<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<section id="id63">
+<h3>Applied Software<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1579,8 +1739,8 @@
 </tbody>
 </table>
 </div>
-<section id="id58">
-<h4>Windows-specific Software<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<section id="id64">
+<h4>Windows-specific Software<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -1626,48 +1786,48 @@
 </tbody>
 </table>
 </div>
-<section id="id59">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h5>
+<section id="id65">
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h5>
 <img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
 </section>
 </section>
 </section>
-<section id="id60">
-<h3>Processed files<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
-<section id="id61">
-<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
-<section id="id62">
-<h5>Data source <cite>Airports</cite><a class="headerlink" href="#id62" title="Link to this heading">¶</a></h5>
+<section id="id66">
+<h3>Processed files<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<section id="id67">
+<h4><a class="reference external" href="https://adds-faa.opendata.arcgis.com">FAA - Aeronautical data Delivery Service</a><a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
+<section id="id68">
+<h5>Data source <cite>Airports</cite><a class="headerlink" href="#id68" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007405%2C-1.633886%2C2.00">Version: 01/25/2024</a></p></li>
 </ul>
 </section>
-<section id="id63">
-<h5>Data source <cite>Runways</cite><a class="headerlink" href="#id63" title="Link to this heading">¶</a></h5>
+<section id="id69">
+<h5>Data source <cite>Runways</cite><a class="headerlink" href="#id69" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002752%2C-1.628764%2C2.00">Version: 01/25/2024</a></p></li>
 </ul>
 </section>
 </section>
-<section id="id64">
-<h4><a class="reference external" href="https://simplemaps.com/">simplemaps - Interactive Maps &amp; Data</a><a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
+<section id="id70">
+<h4><a class="reference external" href="https://simplemaps.com/">simplemaps - Interactive Maps &amp; Data</a><a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
 <section id="data-source-united-states-cities-database">
 <h5>Data source <cite>United States Cities Database</cite><a class="headerlink" href="#data-source-united-states-cities-database" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://simplemaps.com/data/us-cities">Version: 1.78</a></p></li>
 </ul>
 </section>
-<section id="id65">
-<h5>Data source <cite>US Zip Codes Database</cite><a class="headerlink" href="#id65" title="Link to this heading">¶</a></h5>
+<section id="id71">
+<h5>Data source <cite>US Zip Codes Database</cite><a class="headerlink" href="#id71" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://simplemaps.com/data/us-zips">Version: 1.84</a></p></li>
 </ul>
 </section>
 </section>
-<section id="id66">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
-<section id="id67">
-<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id67" title="Link to this heading">¶</a></h5>
+<section id="id72">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<section id="id73">
+<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id73" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">02/01/2024 06:15:30 AM</a></p></li>
 </ul>
@@ -1684,137 +1844,10 @@
 <section id="version-24-01-22">
 <h2>Version 24.01.22<a class="headerlink" href="#version-24-01-22" title="Link to this heading">¶</a></h2>
 <p>Release Date: 22.01.2024</p>
-<section id="id68">
-<h3>Modified Features<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>new column ‘cm_inPc’ in database table ‘findings’</p></li>
-</ul>
-</section>
-<section id="id69">
-<h3>Applied Software<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AWS CLI</p></td>
-<td><p>2.15.3</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Docker Desktop</p></td>
-<td><p>4.26.1</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>PostgreSQL</p></td>
-<td><p>16.1</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Python</p></td>
-<td><p>3.10.11</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>RazorSQL</p></td>
-<td><p>10.5.2</p></td>
-<td></td>
-<td><p>update</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<section id="id70">
-<h4>Windows-specific Software<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
-<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 42.9%" />
-<col style="width: 14.3%" />
-<col style="width: 28.6%" />
-<col style="width: 14.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Software</p></th>
-<th class="head"><p>Version</p></th>
-<th class="head"><p>Remark</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>7-Zip</p></td>
-<td><p>23.01</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>The LLVM Compiler Infrastructure</p></td>
-<td><p>17.0.6</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Make for Windows</p></td>
-<td><p>3.81</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
-<td><p>8/11/2020</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Visual Studio Community 2022</p></td>
-<td><p>2022</p></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<section id="id71">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h5>
-<img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
-</section>
-</section>
-</section>
-<section id="id72">
-<h3>Processed files<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
-<section id="id73">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
-<section id="data-source-up22jan-zip">
-<h5>Data source <cite>up22JAN.zip</cite><a class="headerlink" href="#data-source-up22jan-zip" title="Link to this heading">¶</a></h5>
-<ul class="simple">
-<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22JAN.zip">01/22/2024 3:00:11 AM</a></p></li>
-</ul>
-</section>
-</section>
-</section>
-</section>
-<section id="version-24-01-15">
-<h2>Version 24.01.15<a class="headerlink" href="#version-24-01-15" title="Link to this heading">¶</a></h2>
-<p>Release Date: 15.01.2024</p>
-<section id="new-features">
-<h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>IO-AVSTATS includes IO-AVSTATS-DB</p></li>
-</ul>
-</section>
 <section id="id74">
 <h3>Modified Features<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>new IO-TEMPLATE-APP version</p></li>
+<li><p>new column ‘cm_inPc’ in database table ‘findings’</p></li>
 </ul>
 </section>
 <section id="id75">
@@ -1856,9 +1889,9 @@
 <td></td>
 </tr>
 <tr class="row-even"><td><p>RazorSQL</p></td>
-<td><p>10.5.1</p></td>
+<td><p>10.5.2</p></td>
 <td></td>
-<td></td>
+<td><p>update</p></td>
 </tr>
 </tbody>
 </table>
@@ -1920,6 +1953,133 @@
 <h3>Processed files<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h3>
 <section id="id79">
 <h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<section id="data-source-up22jan-zip">
+<h5>Data source <cite>up22JAN.zip</cite><a class="headerlink" href="#data-source-up22jan-zip" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22JAN.zip">01/22/2024 3:00:11 AM</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="version-24-01-15">
+<h2>Version 24.01.15<a class="headerlink" href="#version-24-01-15" title="Link to this heading">¶</a></h2>
+<p>Release Date: 15.01.2024</p>
+<section id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>IO-AVSTATS includes IO-AVSTATS-DB</p></li>
+</ul>
+</section>
+<section id="id80">
+<h3>Modified Features<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>new IO-TEMPLATE-APP version</p></li>
+</ul>
+</section>
+<section id="id81">
+<h3>Applied Software<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AWS CLI</p></td>
+<td><p>2.15.3</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Docker Desktop</p></td>
+<td><p>4.26.1</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>PostgreSQL</p></td>
+<td><p>16.1</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Python</p></td>
+<td><p>3.10.11</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>RazorSQL</p></td>
+<td><p>10.5.1</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id82">
+<h4>Windows-specific Software<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42.9%" />
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 14.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Remark</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7-Zip</p></td>
+<td><p>23.01</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>The LLVM Compiler Infrastructure</p></td>
+<td><p>17.0.6</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Make for Windows</p></td>
+<td><p>3.81</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>MS Access Database Engine 2016 Redistributable</p></td>
+<td><p>8/11/2020</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Visual Studio Community 2022</p></td>
+<td><p>2022</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id83">
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h5>
+<img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
+</section>
+</section>
+</section>
+<section id="id84">
+<h3>Processed files<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h3>
+<section id="id85">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
 <section id="data-source-up15jan-zip">
 <h5>Data source <cite>up15JAN.zip</cite><a class="headerlink" href="#data-source-up15jan-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -1932,8 +2092,8 @@
 <section id="version-24-01-08">
 <h2>Version 24.01.08<a class="headerlink" href="#version-24-01-08" title="Link to this heading">¶</a></h2>
 <p>Release Date: 08.01.2024</p>
-<section id="id80">
-<h3>Applied Software<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
+<section id="id86">
+<h3>Applied Software<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -1978,8 +2138,8 @@
 </tbody>
 </table>
 </div>
-<section id="id81">
-<h4>Windows-specific Software<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<section id="id87">
+<h4>Windows-specific Software<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -2025,16 +2185,16 @@
 </tbody>
 </table>
 </div>
-<section id="id82">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h5>
+<section id="id88">
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h5>
 <img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
 </section>
 </section>
 </section>
-<section id="id83">
-<h3>Processed files<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h3>
-<section id="id84">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
+<section id="id89">
+<h3>Processed files<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h3>
+<section id="id90">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
 <section id="data-source-up08jan-zip">
 <h5>Data source <cite>up08JAN.zip</cite><a class="headerlink" href="#data-source-up08jan-zip" title="Link to this heading">¶</a></h5>
 <ul class="simple">
@@ -2047,8 +2207,8 @@
 <section id="version-24-01-01">
 <h2>Version 24.01.01<a class="headerlink" href="#version-24-01-01" title="Link to this heading">¶</a></h2>
 <p>Release Date: 01.01.2024</p>
-<section id="id85">
-<h3>Applied Software<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
+<section id="id91">
+<h3>Applied Software<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -2093,8 +2253,8 @@
 </tbody>
 </table>
 </div>
-<section id="id86">
-<h4>Windows-specific Software<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
+<section id="id92">
+<h4>Windows-specific Software<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
 <p><strong>Important</strong>: All software components should be installed in the 64 bit version!</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -2140,18 +2300,18 @@
 </tbody>
 </table>
 </div>
-<section id="id87">
-<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h5>
+<section id="id93">
+<h5>Minimal Requirements Visual Studio Community 2022<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h5>
 <img alt="_images/Visual_Studio_Requirements.png" src="_images/Visual_Studio_Requirements.png" />
 </section>
 </section>
 </section>
-<section id="id88">
-<h3>Processed files<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h3>
-<section id="id89">
-<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
-<section id="id90">
-<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id90" title="Link to this heading">¶</a></h5>
+<section id="id94">
+<h3>Processed files<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h3>
+<section id="id95">
+<h4><a class="reference external" href="https://www.ntsb.gov/Pages/home.aspx">NTSB - National Transport Safety Board</a><a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
+<section id="id96">
+<h5>Data source <cite>avall.zip</cite><a class="headerlink" href="#id96" title="Link to this heading">¶</a></h5>
 <ul class="simple">
 <li><p>Download link: <a class="reference external" href="https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip">01/01/2024 06:23:50 AM</a></p></li>
 </ul>
@@ -2223,20 +2383,35 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Release Notes</a><ul>
-<li><a class="reference internal" href="#version-24-05-01">Version 24.05.01</a><ul>
+<li><a class="reference internal" href="#version-24-05-08">Version 24.05.08</a><ul>
+<li><a class="reference internal" href="#modified-features">Modified Features</a></li>
 <li><a class="reference internal" href="#applied-software">Applied Software</a><ul>
-<li><a class="reference internal" href="#windows-specific-software">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#windows-specific-software">Windows-specific Software</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#processed-files">Processed files</a><ul>
+<li><a class="reference internal" href="#ntsb-national-transport-safety-board">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#data-source-up08apr-zip">Data source <cite>up08APR.zip</cite></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-24-05-01">Version 24.05.01</a><ul>
+<li><a class="reference internal" href="#id1">Applied Software</a><ul>
+<li><a class="reference internal" href="#id2">Windows-specific Software</a><ul>
 <li><a class="reference internal" href="#minimal-requirements-visual-studio-community-2022">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#processed-files">Processed files</a><ul>
+<li><a class="reference internal" href="#id3">Processed files</a><ul>
 <li><a class="reference internal" href="#simplemaps-interactive-maps-data">simplemaps - Interactive Maps &amp; Data</a><ul>
 <li><a class="reference internal" href="#data-source-us-zip-codes-database">Data source <cite>US Zip Codes Database</cite></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ntsb-national-transport-safety-board">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id4">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-avall-zip">Data source <cite>avall.zip</cite></a></li>
 <li><a class="reference internal" href="#data-source-up01may-zip">Data source <cite>up01MAY.zip</cite></a></li>
 </ul>
@@ -2246,13 +2421,13 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-04-22">Version 24.04.22</a><ul>
-<li><a class="reference internal" href="#modified-features">Modified Features</a></li>
-<li><a class="reference internal" href="#id1">Applied Software</a><ul>
-<li><a class="reference internal" href="#id2">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id5">Modified Features</a></li>
+<li><a class="reference internal" href="#id6">Applied Software</a><ul>
+<li><a class="reference internal" href="#id7">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id3">Processed files</a><ul>
-<li><a class="reference internal" href="#id4">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id8">Processed files</a><ul>
+<li><a class="reference internal" href="#id9">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up22apr-zip">Data source <cite>up22APR.zip</cite></a></li>
 </ul>
 </li>
@@ -2261,13 +2436,13 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-04-15">Version 24.04.15</a><ul>
-<li><a class="reference internal" href="#id5">Modified Features</a></li>
-<li><a class="reference internal" href="#id6">Applied Software</a><ul>
-<li><a class="reference internal" href="#id7">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id10">Modified Features</a></li>
+<li><a class="reference internal" href="#id11">Applied Software</a><ul>
+<li><a class="reference internal" href="#id12">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id8">Processed files</a><ul>
-<li><a class="reference internal" href="#id9">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id13">Processed files</a><ul>
+<li><a class="reference internal" href="#id14">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up15apr-zip">Data source <cite>up15APR.zip</cite></a></li>
 </ul>
 </li>
@@ -2276,14 +2451,14 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-04-08">Version 24.04.08</a><ul>
-<li><a class="reference internal" href="#id10">Modified Features</a></li>
-<li><a class="reference internal" href="#id11">Applied Software</a><ul>
-<li><a class="reference internal" href="#id12">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id15">Modified Features</a></li>
+<li><a class="reference internal" href="#id16">Applied Software</a><ul>
+<li><a class="reference internal" href="#id17">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id13">Processed files</a><ul>
-<li><a class="reference internal" href="#id14">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#data-source-up08apr-zip">Data source <cite>up08APR.zip</cite></a></li>
+<li><a class="reference internal" href="#id18">Processed files</a><ul>
+<li><a class="reference internal" href="#id19">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id20">Data source <cite>up08APR.zip</cite></a></li>
 </ul>
 </li>
 </ul>
@@ -2291,18 +2466,18 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-04-01">Version 24.04.01</a><ul>
-<li><a class="reference internal" href="#id15">Applied Software</a><ul>
-<li><a class="reference internal" href="#id16">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id21">Applied Software</a><ul>
+<li><a class="reference internal" href="#id22">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id17">Processed files</a><ul>
+<li><a class="reference internal" href="#id23">Processed files</a><ul>
 <li><a class="reference internal" href="#faa-aeronautical-data-delivery-service">FAA - Aeronautical data Delivery Service</a><ul>
 <li><a class="reference internal" href="#data-source-airports">Data source <cite>Airports</cite></a></li>
 <li><a class="reference internal" href="#data-source-runways">Data source <cite>Runways</cite></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id18">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#id19">Data source <cite>avall.zip</cite></a></li>
+<li><a class="reference internal" href="#id24">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id25">Data source <cite>avall.zip</cite></a></li>
 <li><a class="reference internal" href="#data-source-up01apr-zip">Data source <cite>up01APR.zip</cite></a></li>
 </ul>
 </li>
@@ -2311,13 +2486,13 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-03-22">Version 24.03.22</a><ul>
-<li><a class="reference internal" href="#id20">Modified Features</a></li>
-<li><a class="reference internal" href="#id21">Applied Software</a><ul>
-<li><a class="reference internal" href="#id22">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id26">Modified Features</a></li>
+<li><a class="reference internal" href="#id27">Applied Software</a><ul>
+<li><a class="reference internal" href="#id28">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id23">Processed files</a><ul>
-<li><a class="reference internal" href="#id24">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id29">Processed files</a><ul>
+<li><a class="reference internal" href="#id30">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up15mar-zip">Data source <cite>up15MAR.zip</cite></a></li>
 </ul>
 </li>
@@ -2326,14 +2501,14 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-03-15">Version 24.03.15</a><ul>
-<li><a class="reference internal" href="#id25">Modified Features</a></li>
-<li><a class="reference internal" href="#id26">Applied Software</a><ul>
-<li><a class="reference internal" href="#id27">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id31">Modified Features</a></li>
+<li><a class="reference internal" href="#id32">Applied Software</a><ul>
+<li><a class="reference internal" href="#id33">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id28">Processed files</a><ul>
-<li><a class="reference internal" href="#id29">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#id30">Data source <cite>up15MAR.zip</cite></a></li>
+<li><a class="reference internal" href="#id34">Processed files</a><ul>
+<li><a class="reference internal" href="#id35">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id36">Data source <cite>up15MAR.zip</cite></a></li>
 </ul>
 </li>
 </ul>
@@ -2341,17 +2516,17 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-03-08">Version 24.03.08</a><ul>
-<li><a class="reference internal" href="#id31">Applied Software</a><ul>
-<li><a class="reference internal" href="#id32">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id37">Applied Software</a><ul>
+<li><a class="reference internal" href="#id38">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id33">Processed files</a><ul>
-<li><a class="reference internal" href="#id34">FAA - Aeronautical data Delivery Service</a><ul>
-<li><a class="reference internal" href="#id35">Data source <cite>Airports</cite></a></li>
-<li><a class="reference internal" href="#id36">Data source <cite>Runways</cite></a></li>
+<li><a class="reference internal" href="#id39">Processed files</a><ul>
+<li><a class="reference internal" href="#id40">FAA - Aeronautical data Delivery Service</a><ul>
+<li><a class="reference internal" href="#id41">Data source <cite>Airports</cite></a></li>
+<li><a class="reference internal" href="#id42">Data source <cite>Runways</cite></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id37">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id43">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up08mar-zip">Data source <cite>up08MAR.zip</cite></a></li>
 </ul>
 </li>
@@ -2360,16 +2535,16 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-03-01">Version 24.03.01</a><ul>
-<li><a class="reference internal" href="#id38">Applied Software</a><ul>
-<li><a class="reference internal" href="#id39">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id40">Minimal Requirements Visual Studio Community 2022</a></li>
+<li><a class="reference internal" href="#id44">Applied Software</a><ul>
+<li><a class="reference internal" href="#id45">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id46">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id41">Processed files</a><ul>
-<li><a class="reference internal" href="#id42">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#id43">Data source <cite>avall.zip</cite></a></li>
+<li><a class="reference internal" href="#id47">Processed files</a><ul>
+<li><a class="reference internal" href="#id48">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id49">Data source <cite>avall.zip</cite></a></li>
 <li><a class="reference internal" href="#data-source-up01mar-zip">Data source <cite>up01MAR.zip</cite></a></li>
 </ul>
 </li>
@@ -2378,12 +2553,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-02-22">Version 24.02.22</a><ul>
-<li><a class="reference internal" href="#id44">Applied Software</a><ul>
-<li><a class="reference internal" href="#id45">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id50">Applied Software</a><ul>
+<li><a class="reference internal" href="#id51">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id46">Processed files</a><ul>
-<li><a class="reference internal" href="#id47">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id52">Processed files</a><ul>
+<li><a class="reference internal" href="#id53">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up22feb-zip">Data source <cite>up22FEB.zip</cite></a></li>
 </ul>
 </li>
@@ -2392,12 +2567,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-02-15">Version 24.02.15</a><ul>
-<li><a class="reference internal" href="#id48">Applied Software</a><ul>
-<li><a class="reference internal" href="#id49">Windows-specific Software</a></li>
+<li><a class="reference internal" href="#id54">Applied Software</a><ul>
+<li><a class="reference internal" href="#id55">Windows-specific Software</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id50">Processed files</a><ul>
-<li><a class="reference internal" href="#id51">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id56">Processed files</a><ul>
+<li><a class="reference internal" href="#id57">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up15feb-zip">Data source <cite>up15FEB.zip</cite></a></li>
 </ul>
 </li>
@@ -2406,15 +2581,15 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-02-08">Version 24.02.08</a><ul>
-<li><a class="reference internal" href="#id52">Applied Software</a><ul>
-<li><a class="reference internal" href="#id53">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id54">Minimal Requirements Visual Studio Community 2022</a></li>
+<li><a class="reference internal" href="#id58">Applied Software</a><ul>
+<li><a class="reference internal" href="#id59">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id60">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id55">Processed files</a><ul>
-<li><a class="reference internal" href="#id56">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id61">Processed files</a><ul>
+<li><a class="reference internal" href="#id62">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up08feb-zip">Data source <cite>up08FEB.zip</cite></a></li>
 </ul>
 </li>
@@ -2423,26 +2598,26 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-02-01">Version 24.02.01</a><ul>
-<li><a class="reference internal" href="#id57">Applied Software</a><ul>
-<li><a class="reference internal" href="#id58">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id59">Minimal Requirements Visual Studio Community 2022</a></li>
+<li><a class="reference internal" href="#id63">Applied Software</a><ul>
+<li><a class="reference internal" href="#id64">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id65">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id60">Processed files</a><ul>
-<li><a class="reference internal" href="#id61">FAA - Aeronautical data Delivery Service</a><ul>
-<li><a class="reference internal" href="#id62">Data source <cite>Airports</cite></a></li>
-<li><a class="reference internal" href="#id63">Data source <cite>Runways</cite></a></li>
+<li><a class="reference internal" href="#id66">Processed files</a><ul>
+<li><a class="reference internal" href="#id67">FAA - Aeronautical data Delivery Service</a><ul>
+<li><a class="reference internal" href="#id68">Data source <cite>Airports</cite></a></li>
+<li><a class="reference internal" href="#id69">Data source <cite>Runways</cite></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id64">simplemaps - Interactive Maps &amp; Data</a><ul>
+<li><a class="reference internal" href="#id70">simplemaps - Interactive Maps &amp; Data</a><ul>
 <li><a class="reference internal" href="#data-source-united-states-cities-database">Data source <cite>United States Cities Database</cite></a></li>
-<li><a class="reference internal" href="#id65">Data source <cite>US Zip Codes Database</cite></a></li>
+<li><a class="reference internal" href="#id71">Data source <cite>US Zip Codes Database</cite></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id66">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#id67">Data source <cite>avall.zip</cite></a></li>
+<li><a class="reference internal" href="#id72">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id73">Data source <cite>avall.zip</cite></a></li>
 <li><a class="reference internal" href="#data-source-up01feb-zip">Data source <cite>up01FEB.zip</cite></a></li>
 </ul>
 </li>
@@ -2451,25 +2626,6 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-01-22">Version 24.01.22</a><ul>
-<li><a class="reference internal" href="#id68">Modified Features</a></li>
-<li><a class="reference internal" href="#id69">Applied Software</a><ul>
-<li><a class="reference internal" href="#id70">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id71">Minimal Requirements Visual Studio Community 2022</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id72">Processed files</a><ul>
-<li><a class="reference internal" href="#id73">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#data-source-up22jan-zip">Data source <cite>up22JAN.zip</cite></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#version-24-01-15">Version 24.01.15</a><ul>
-<li><a class="reference internal" href="#new-features">New Features</a></li>
 <li><a class="reference internal" href="#id74">Modified Features</a></li>
 <li><a class="reference internal" href="#id75">Applied Software</a><ul>
 <li><a class="reference internal" href="#id76">Windows-specific Software</a><ul>
@@ -2480,6 +2636,25 @@
 </li>
 <li><a class="reference internal" href="#id78">Processed files</a><ul>
 <li><a class="reference internal" href="#id79">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#data-source-up22jan-zip">Data source <cite>up22JAN.zip</cite></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-24-01-15">Version 24.01.15</a><ul>
+<li><a class="reference internal" href="#new-features">New Features</a></li>
+<li><a class="reference internal" href="#id80">Modified Features</a></li>
+<li><a class="reference internal" href="#id81">Applied Software</a><ul>
+<li><a class="reference internal" href="#id82">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id83">Minimal Requirements Visual Studio Community 2022</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id84">Processed files</a><ul>
+<li><a class="reference internal" href="#id85">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up15jan-zip">Data source <cite>up15JAN.zip</cite></a></li>
 </ul>
 </li>
@@ -2488,15 +2663,15 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-01-08">Version 24.01.08</a><ul>
-<li><a class="reference internal" href="#id80">Applied Software</a><ul>
-<li><a class="reference internal" href="#id81">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id82">Minimal Requirements Visual Studio Community 2022</a></li>
+<li><a class="reference internal" href="#id86">Applied Software</a><ul>
+<li><a class="reference internal" href="#id87">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id88">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id83">Processed files</a><ul>
-<li><a class="reference internal" href="#id84">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id89">Processed files</a><ul>
+<li><a class="reference internal" href="#id90">NTSB - National Transport Safety Board</a><ul>
 <li><a class="reference internal" href="#data-source-up08jan-zip">Data source <cite>up08JAN.zip</cite></a></li>
 </ul>
 </li>
@@ -2505,16 +2680,16 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-24-01-01">Version 24.01.01</a><ul>
-<li><a class="reference internal" href="#id85">Applied Software</a><ul>
-<li><a class="reference internal" href="#id86">Windows-specific Software</a><ul>
-<li><a class="reference internal" href="#id87">Minimal Requirements Visual Studio Community 2022</a></li>
+<li><a class="reference internal" href="#id91">Applied Software</a><ul>
+<li><a class="reference internal" href="#id92">Windows-specific Software</a><ul>
+<li><a class="reference internal" href="#id93">Minimal Requirements Visual Studio Community 2022</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id88">Processed files</a><ul>
-<li><a class="reference internal" href="#id89">NTSB - National Transport Safety Board</a><ul>
-<li><a class="reference internal" href="#id90">Data source <cite>avall.zip</cite></a></li>
+<li><a class="reference internal" href="#id94">Processed files</a><ul>
+<li><a class="reference internal" href="#id95">NTSB - National Transport Safety Board</a><ul>
+<li><a class="reference internal" href="#id96">Data source <cite>avall.zip</cite></a></li>
 <li><a class="reference internal" href="#data-source-up01jan-zip">Data source <cite>up01JAN.zip</cite></a></li>
 </ul>
 </li>

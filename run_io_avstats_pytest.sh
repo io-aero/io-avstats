@@ -25,7 +25,7 @@ export IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 export IO_AERO_POSTGRES_PASSWORD_ADMIN=postgres_password_admin
 export IO_AERO_POSTGRES_PGDATA=data/postgres_test
 export IO_AERO_POSTGRES_USER_ADMIN=postgres
-export IO_AERO_POSTGRES_VERSION=16.2
+export IO_AERO_POSTGRES_VERSION=16.3
 
 export IO_AERO_TASK=
 export IO_AERO_TASK_DEFAULT=r_s_a
@@ -39,6 +39,8 @@ if [ -z "$1" ]; then
     echo "r_s_a   - Run the IO-AVSTATS application"
     echo "-------------------------------------------------------------------"
     echo "s_d_c   - Set up the PostgreSQL database container"
+    echo "-------------------------------------------------------------------"
+    echo "version - Show the IO-AVSTATS version"
     echo "-------------------------------------------------------------------"
     # shellcheck disable=SC2162
     read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
@@ -89,6 +91,16 @@ echo "TASK                     : ${IO_AERO_TASK}"
 echo "-------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
+
+# ---------------------------------------------------------------------------
+# version: Show the IO-AVSTATS version
+# ---------------------------------------------------------------------------
+# Task handling
+# ---------------------------------------------------------------------------
+if [ "${IO_AERO_TASK}" = "version" ]; then
+    if ! ( python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
+        exit 255
+    fi
 
 # ---------------------------------------------------------------------------
 # Running a Streamlit application.

@@ -2,27 +2,35 @@
 
 MODULE=ioavstats
 
-ifeq ($(OS),Windows_NT)
-	COPY_MYPY_STUBGEN=xcopy /y out\\$(MODULE)\\*.* .\\$(MODULE)\\
+ifeq (${OS},Windows_NT)
+	COPY_MYPY_STUBGEN=xcopy /y out\\${MODULE}\\*.* .\\${MODULE}\\
 	DELETE_MYPY_STUBGEN=if exist out rd /s /q out
+	NUITKA_OPTION=--msvc=latest
+	NUITKA_OS=windows
 	PIP=pip
-	PYTHON=py
+	PYTHON=python
 	SPHINX_BUILDDIR=docs\\build
 	SPHINX_SOURCEDIR=docs\\source
-	DELETE_SPHINX=del /f /q $(SPHINX_BUILDDIR)\\*
+	DELETE_SPHINX=del /f /q ${SPHINX_BUILDDIR}\\*
 else
-	COPY_MYPY_STUBGEN=cp -f out/$(MODULE)/* ./$(MODULE)/
+	OS := $(shell uname -s)
+	COPY_MYPY_STUBGEN=cp -f out/${MODULE}/* ./${MODULE}/
 	DELETE_MYPY_STUBGEN=rm -rf out
+	NUITKA_OPTION=--disable-ccache
+	ifeq (${OS},Linux)
+		NUITKA_OS=linux
+	else
+		NUITKA_OS=macos
+	endif
 	PIP=pip3
 	PYTHON=python3
 	SPHINX_BUILDDIR=docs/build
 	SPHINX_SOURCEDIR=docs/source
-	DELETE_SPHINX=rm -rf $(SPHINX_BUILDDIR)/*
+	DELETE_SPHINX=rm -rf ${SPHINX_BUILDDIR}/*
 endif
 
 COVERALLS_REPO_TOKEN=<see coveralls.io>
 PYTHONPATH=${MODULE} docs scripts tests
-VERSION_PYTHON=3.11
 
 export ENV_FOR_DYNACONF=test
 export LANG=en_US.UTF-8
@@ -44,19 +52,21 @@ dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: sphinx
 ## everything:         Do everything precheckin
-everything: dev docs
+everything: dev docs nuitka
 ## final:              Format, lint and test the code and create the documentation.
 final: format lint docs tests
 ## format:             Format the code with Black and docformatter.
 format: black docformatter
 ## lint:               Lint the code with ruff, Bandit, vulture, Pylint and Mypy.
 lint: ruff bandit vulture pylint mypy
+## pre-push:           Preparatory work for the pushing process.
+pre-push: format lint tests next-version docs
 ## tests:              Run all tests with pytest.
 tests: pytest
 ## -----------------------------------------------------------------------------
 
 help:
-	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
+	@sed -ne '/@sed/!s/## //p' ${MAKEFILE_LIST}
 
 # Run the GitHub Actions locally.
 # https://github.com/nektos/act
@@ -67,7 +77,12 @@ action-std:         ## Run the GitHub Actions locally: standard.
 	@echo ----------------------------------------------------------------------
 	act --version
 	@echo ----------------------------------------------------------------------
-	act --quiet --secret-file .act_secrets --var IO_LOCAL='true' --verbose -P ubuntu-latest=catthehacker/ubuntu:act-latest -W .github/workflows/standard.yml
+	act --quiet \
+        --secret-file .act_secrets \
+        --var IO_LOCAL='true' \
+        --verbose \
+        -P ubuntu-latest=catthehacker/ubuntu:act-latest \
+        -W .github/workflows/standard.yml
 	@echo Info **********  End:   action ***************************************
 
 # Bandit is a tool designed to find common security issues in Python code.
@@ -181,6 +196,34 @@ mypy-stubgen:       ## Autogenerate stub files.
 	${DELETE_MYPY_STUBGEN}
 	@echo Info **********  End:   Mypy *****************************************
 
+next-version:       ## Increment the version number.
+	@echo Info **********  Start: next_version *********************************
+	@echo PYTHON    =${PYTHON}
+	@echo PYTHONPATH=${PYTHONPATH}
+	@echo ----------------------------------------------------------------------
+	${PYTHON} scripts/next_version.py
+	@echo Info **********  End:   next version *********************************
+
+# Nuitka: Python compiler written in Python
+# https://github.com/Nuitka/Nuitka
+nuitka:             ## Create a dynamic link library.
+	@echo Info **********  Start: nuitka ***************************************
+	@echo MODULE       =${MODULE}
+	@echo NUITKA_OPTION=${NUITKA_OPTION}
+	@echo PIP          =${PIP}
+	@echo PYTHON       =${PYTHON}
+	@echo ----------------------------------------------------------------------
+	${PYTHON} -m nuitka ${NUITKA_OPTION} \
+			  --main=scripts/launcher.py \
+			  --onefile \
+			  --onefile-tempdir-spec=.temp \
+			  --output-dir=dist/${NUITKA_OS} \
+			  --output-filename=${MODULE} \
+			  --show-modules \
+			  --standalone \
+			  --static-libpython=no
+	@echo Info **********  End:   nuitka ***************************************
+
 # Pylint is a tool that checks for errors in Python code.
 # https://github.com/PyCQA/pylint/
 # Configuration file: .pylintrc
@@ -198,8 +241,7 @@ pylint:             ## Lint the code with Pylint.
 # Configuration file: pyproject.toml
 pytest:             ## Run all tests with pytest.
 	@echo Info **********  Start: pytest ***************************************
-	@echo CONDA     =$(CONDA_PREFIX)
-	@echo PIP       =${PIP}
+	@echo CONDA     =${CONDA_PREFIX}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pytest --version
@@ -209,11 +251,11 @@ pytest:             ## Run all tests with pytest.
 	@echo Info **********  End:   pytest ***************************************
 pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo Info **********  Start: pytest ***************************************
-	@echo CONDA     =$(CONDA_PREFIX)
+	@echo CONDA     =${CONDA_PREFIX}
 	@echo PIP       =${PIP}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
-	pip install pytest pytest-cov pytest-deadfixtures pytest-helpers-namespace pytest-random-order
+	${PIP} install pytest pytest-cov pytest-deadfixtures pytest-helpers-namespace pytest-random-order
 	@echo ----------------------------------------------------------------------
 	pytest --version
 	@echo ----------------------------------------------------------------------
@@ -222,8 +264,7 @@ pytest-ci:          ## Run all tests with pytest after test tool installation.
 	@echo Info **********  End:   pytest ***************************************
 pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo Info **********  Start: pytest ***************************************
-	@echo CONDA     =$(CONDA_PREFIX)
-	@echo PIP       =${PIP}
+	@echo CONDA     =${CONDA_PREFIX}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pytest --version
@@ -232,8 +273,7 @@ pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo Info **********  End:   pytest ***************************************
 pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
 	@echo Info **********  Start: pytest ***************************************
-	@echo CONDA     =$(CONDA_PREFIX)
-	@echo PIP       =${PIP}
+	@echo CONDA     =${CONDA_PREFIX}
 	@echo PYTHONPATH=${PYTHONPATH}
 	@echo ----------------------------------------------------------------------
 	pytest --version
@@ -243,14 +283,13 @@ pytest-issue:       ## Run only the tests with pytest which are marked with 'iss
 	@echo Info **********  End:   pytest ***************************************
 pytest-module:      ## Run test of a specific module with pytest.
 	@echo Info **********  Start: pytest ***************************************
-	@echo CONDA     =$(CONDA_PREFIX)
-	@echo PIP       =${PIP}
+	@echo CONDA     =${CONDA_PREFIX}
 	@echo PYTHONPATH=${PYTHONPATH}
-	@echo TESTMODULE=tests/$(TEST-MODULE).py
+	@echo TESTMODULE=tests/${TEST-MODULE}.py
 	@echo ----------------------------------------------------------------------
 	pytest --version
 	@echo ----------------------------------------------------------------------
-	pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/$(TEST-MODULE).py
+	pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -v tests/${TEST-MODULE}.py
 	@echo Info **********  End:   pytest ***************************************
 
 # https://github.com/astral-sh/ruff
@@ -269,7 +308,7 @@ sphinx:             ##  Create the user documentation with Sphinx.
 	@echo SPHINX_BUILDDIR =${SPHINX_BUILDDIR}
 	@echo SPHINX_SOURCEDIR=${SPHINX_SOURCEDIR}
 	@echo ----------------------------------------------------------------------
-	pip install --no-deps -e .
+	${PIP} install --no-deps -e .
 	@echo ----------------------------------------------------------------------
 	${DELETE_SPHINX}
 	sphinx-apidoc -o ${SPHINX_SOURCEDIR} ${MODULE}
@@ -282,7 +321,7 @@ version:            ## Show the installed software versions.
 	@echo PIP   =${PIP}
 	@echo PYTHON=${PYTHON}
 	@echo ----------------------------------------------------------------------
-	$(PIP) --version
+	${PIP} --version
 	@echo Info **********  End:   version **************************************
 
 # Find dead Python code

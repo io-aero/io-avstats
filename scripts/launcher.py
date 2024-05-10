@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 
 import tomli
-from iocommon import file, io_glob, io_logger, io_utils
+from iocommon import io_glob, io_logger, io_utils
 
 from ioavstats import avstats, glob_local
 
@@ -124,7 +124,6 @@ def main(argv: list[str]) -> None:
     elif avstats.ARG_TASK == glob_local.ARG_TASK_U_D_S:
         avstats.update_db_schema()
     elif avstats.ARG_TASK == glob_local.ARG_TASK_VERSION:
-        file.print_pkg_structs(["iocommon"])
         _print_project_version()
     elif avstats.ARG_TASK == glob_local.ARG_TASK_V_N_D:
         avstats.verify_ntsb_data()

@@ -2,7 +2,7 @@
 
 rem ----------------------------------------------------------------------------
 rem
-rem run_io_avstats.bat: Process IO-AVSTATS tasks.
+rem run_io_avstats_prod.bat: Process IO-AVSTATS tasks.
 rem
 rem ----------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
 set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
 set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
-set IO_AERO_POSTGRES_VERSION=16.2
+set IO_AERO_POSTGRES_VERSION=16.3
 
 set IO_AERO_APPLICATION=
 set IO_AERO_COMPOSE_TASK=
@@ -181,7 +181,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["r_s_a"] (
     streamlit run ioavstats\Menu.py --server.port 8501
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -192,9 +192,9 @@ rem ----------------------------------------------------------------------------
 rem Show the IO-AVSTATS version.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["version"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_db_pytest was aborted
+        echo Processing of the script run_io_avstats_prod_db_pytest was aborted
         exit 1
     )
 
@@ -231,9 +231,9 @@ rem ----------------------------------------------------------------------------
 rem Load aviation occurrence categories into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["a_o_c"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -246,7 +246,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_d_c"] (
     call scripts\run_docker_compose_cloud %IO_AERO_COMPOSE_TASK%
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -259,7 +259,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_d_i"] (
     call scripts\run_create_image %IO_AERO_APPLICATION% yes yes
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -273,7 +273,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_d_l"] (
     call scripts\run_docker_compose_local %IO_AERO_COMPOSE_TASK%
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_db was aborted
+        echo Processing of the script run_io_avstats_prod_db was aborted
         exit 1
     )
 
@@ -284,15 +284,15 @@ rem ----------------------------------------------------------------------------
 rem Create the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_d_s"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t "u_d_s"
+    python dist\windows\ioavstats.exe -t "u_d_s"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -305,7 +305,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_f_z"] (
     call scripts\run_cloud_files_zip
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -316,9 +316,9 @@ rem ----------------------------------------------------------------------------
 rem Correct decimal US latitudes and longitudes.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_l_l"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -329,9 +329,9 @@ rem ----------------------------------------------------------------------------
 rem Cleansing PostgreSQL data.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["c_p_d"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -342,9 +342,9 @@ rem ----------------------------------------------------------------------------
 rem Find the nearest airports.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["f_n_a"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -355,9 +355,9 @@ rem ----------------------------------------------------------------------------
 rem Load airport data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_a_p"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -368,9 +368,9 @@ rem ----------------------------------------------------------------------------
 rem Load data from a correction file into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_c_d"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -381,9 +381,9 @@ rem ----------------------------------------------------------------------------
 rem Load country and state data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_c_s"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -394,15 +394,15 @@ rem ----------------------------------------------------------------------------
 rem Load NTSB MS Access database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_n_a"] (
-    python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
+    python dist\windows\ioavstats.exe -t d_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -413,9 +413,9 @@ rem ----------------------------------------------------------------------------
 rem Load simplemaps data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_s_d"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -426,9 +426,9 @@ rem ----------------------------------------------------------------------------
 rem Load sequence of events data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_s_e"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -439,9 +439,9 @@ rem ----------------------------------------------------------------------------
 rem Load ZIP Code Database data into PostgreSQL.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["l_z_d"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -452,9 +452,9 @@ rem ----------------------------------------------------------------------------
 rem Refresh the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["r_d_s"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -467,7 +467,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["s_d_c"] (
     call scripts\run_setup_postgresql
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -478,9 +478,9 @@ rem ----------------------------------------------------------------------------
 rem Update the PostgreSQL database schema.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["u_d_s"] (
-    python scripts\launcher.py -t "%IO_AERO_TASK%"
+    python dist\windows\ioavstats.exe -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -491,39 +491,39 @@ rem ----------------------------------------------------------------------------
 rem Complete processing of a modifying MS Access file.
 rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["u_p_d"] (
-    python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
+    python dist\windows\ioavstats.exe -t d_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t l_n_a -m "%IO_AERO_MSACCESS%"
+    python dist\windows\ioavstats.exe -t l_n_a -m "%IO_AERO_MSACCESS%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t c_l_l
+    python dist\windows\ioavstats.exe -t c_l_l
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t f_n_a
+    python dist\windows\ioavstats.exe -t f_n_a
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t v_n_d
+    python dist\windows\ioavstats.exe -t v_n_d
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
-    python scripts\launcher.py -t r_d_s
+    python dist\windows\ioavstats.exe -t r_d_s
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats was aborted
+        echo Processing of the script run_io_avstats_prod was aborted
         exit 1
     )
 
@@ -534,7 +534,7 @@ rem ----------------------------------------------------------------------------
 rem Program abort due to wrong input.
 rem ----------------------------------------------------------------------------
 
-echo Processing of the script run_io_avstats is aborted: unknown task='%IO_AERO_TASK%'
+echo Processing of the script run_io_avstats_prod is aborted: unknown task='%IO_AERO_TASK%'
 exit 1
 
 :END_OF_SCRIPT

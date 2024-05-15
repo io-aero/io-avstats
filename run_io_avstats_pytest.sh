@@ -42,13 +42,8 @@ if [ -z "$1" ]; then
     echo "-------------------------------------------------------------------"
     echo "version - Show the IO-AVSTATS version"
     echo "-------------------------------------------------------------------"
-    # shellcheck disable=SC2162
     read -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " IO_AERO_TASK
-    export IO_AERO_TASK=${IO_AERO_TASK}
-
-    if [ -z "${IO_AERO_TASK}" ]; then
-        export IO_AERO_TASK=${IO_AERO_TASK_DEFAULT}
-    fi
+    export IO_AERO_TASK=${IO_AERO_TASK:-$IO_AERO_TASK_DEFAULT}
 else
     export IO_AERO_TASK=$1
 fi
@@ -59,23 +54,20 @@ log_file="run_io_avstats_pytest_${IO_AERO_TASK}.log"
 # Function for logging messages
 log_message() {
   local message="$1"
-  # Format current date and time with timestamp
   timestamp=$(date +"%d.%m.%Y %H:%M:%S")
-  # Write message with timestamp in the log file
   echo "$timestamp: $message" >> "$log_file"
 }
 
-# Check if logging_io_aero.log exists and delete it
+# Check and delete existing log files
 if [ -f logging_io_aero.log ]; then
     rm -f logging_io_aero.log
 fi
 
-# Check if the file specified in logfile exists and delete it
 if [ -f "${log_file}" ]; then
     rm -f "${log_file}"
 fi
 
-# Redirection of the standard output and the standard error output to the log file
+# Redirect output to log file
 exec > >(while read -r line; do log_message "$line"; done) 2> >(while read -r line; do log_message "ERROR: $line"; done)
 
 echo "==================================================================="
@@ -93,46 +85,52 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
 
 # ---------------------------------------------------------------------------
-# version: Show the IO-AVSTATS version
-# ---------------------------------------------------------------------------
 # Task handling
 # ---------------------------------------------------------------------------
-if [ "${IO_AERO_TASK}" = "version" ]; then
-    if ! ( python scripts/launcher.py -t "${IO_AERO_TASK}" ); then
-        exit 255
-    fi
+case "${IO_AERO_TASK}" in
+    # ---------------------------------------------------------------------------
+    # Running a Streamlit application.
+    # ---------------------------------------------------------------------------
+    r_s_a)
+        if ! streamlit run "ioavstats/Menu.py" --server.port 8501; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Running a Streamlit application.
-# ---------------------------------------------------------------------------
-if [ "${IO_AERO_TASK}" = "r_s_a" ]; then
-    if ! ( streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
-        exit 255
-    fi
+    # ---------------------------------------------------------------------------
+    # Setting up the PostgreSQL database container.
+    # ---------------------------------------------------------------------------
+    s_d_c)
+        if ! ./scripts/run_setup_postgresql.sh; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Setting up the PostgreSQL database container.
-# ---------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
-        exit 255
-    fi
+    # ---------------------------------------------------------------------------
+    # Show the IO-AVSTATS version.
+    # ---------------------------------------------------------------------------
+    version)
+        if ! python scripts/launcher.py -t "${IO_AERO_TASK}"; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Program abort due to wrong input.
-# ---------------------------------------------------------------------------
-else
-    echo "The processing of the script run_io_avstats is aborted: unknown task='${IO_AERO_TASK}'"
-    exit 255
-fi
+    # ---------------------------------------------------------------------------
+    # Program termination due to incorrect input.
+    # ---------------------------------------------------------------------------
+    *)
+        echo "The processing of the script run_io_avstats_pytest is aborted: unknown task='${IO_AERO_TASK}'"
+        exit 255
+        ;;
+esac
 
 echo "-----------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "-----------------------------------------------------------------------"
-echo "End   $0"
+echo "End $0"
 echo "======================================================================="
 
-# Closing the log file
+# Close the log redirection
 exec > >(while read -r line; do echo "$line"; done) 2> >(while read -r line; do echo "ERROR: $line"; done)
 
 log_message "Script finished."

@@ -38,6 +38,8 @@ if [[ -z "$1" ]]; then
     echo "-------------------------------------------------------------------"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "-------------------------------------------------------------------"
+    echo "version - Show the IO-AVSTATS version"
+    echo "-------------------------------------------------------------------"
     vared -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " -c IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
 else
@@ -81,9 +83,13 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
 
 # ---------------------------------------------------------------------------
-# Running a Streamlit application.
+# Task handling
 # ---------------------------------------------------------------------------
-case "${IO_AERO_TASK}" in "r_s_a")
+case "${IO_AERO_TASK}" in
+    # ---------------------------------------------------------------------------
+    # Running a Streamlit application.
+    # ---------------------------------------------------------------------------
+    "r_s_a")
         if ! ( streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
             exit 255
         fi
@@ -94,6 +100,15 @@ case "${IO_AERO_TASK}" in "r_s_a")
     # ---------------------------------------------------------------------------
     "s_d_c")
         if ! ( ./scripts/run_setup_postgresql.zsh ); then
+            exit 255
+        fi
+        ;;
+
+    # ---------------------------------------------------------------------------
+    # Show the IO-AVSTATS version.
+    # ---------------------------------------------------------------------------
+    "version")
+        if ! ( python scripts/launcher.py -t "${IO_AERO_TASK}"); then
             exit 255
         fi
         ;;

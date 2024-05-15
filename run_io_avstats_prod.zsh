@@ -38,7 +38,7 @@ if [[ -z "$1" ]]; then
     echo "-------------------------------------------------------------------"
     echo "s_d_c   - Set up the PostgreSQL database container"
     echo "-------------------------------------------------------------------"
-    echo "version - Show the IO-AVSTSATS version"
+    echo "version - Show the IO-AVSTATS version"
     echo "-------------------------------------------------------------------"
     vared -p "Enter the desired task [default: ${IO_AERO_TASK_DEFAULT}] " -c IO_AERO_TASK
     export IO_AERO_TASK=${IO_AERO_TASK:-${IO_AERO_TASK_DEFAULT}}
@@ -77,16 +77,18 @@ echo "ENV_FOR_DYNACONF         : ${ENV_FOR_DYNACONF}"
 echo "POSTGRES_CONNECTION_PORT : ${IO_AERO_POSTGRES_CONNECTION_PORT}"
 echo "PYTHONPATH               : ${PYTHONPATH}"
 echo "-------------------------------------------------------------------"
-echo "TASK                     : ${IO_AERO_TASK}"
-echo "APPLICATION              : ${IO_AERO_APPLICATION}"
 echo "-------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
 
 # ---------------------------------------------------------------------------
-# Running a Streamlit application.
+# Task handling
 # ---------------------------------------------------------------------------
-case "${IO_AERO_TASK}" in "r_s_a")
+case "${IO_AERO_TASK}" in
+    # ---------------------------------------------------------------------------
+    # Running a Streamlit application.
+    # ---------------------------------------------------------------------------
+    "r_s_a")
         if ! ( streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
             exit 255
         fi

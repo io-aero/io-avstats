@@ -1,3 +1,5 @@
+"""Configuration file for the Sphinx documentation builder."""
+
 import importlib.metadata
 import sys
 from datetime import UTC, datetime
@@ -17,29 +19,31 @@ REPOSITORY_NAME = "io-avstats"
 REPOSITORY_TITLE = "Aviation Event Statistics"
 
 # Debug: Print the current working directory and sys.path
-print("==========>")
-print("==========> Current working directory:", Path.cwd())
-print("==========>")
+print("==========>")  # noqa: T201
+print("==========> Current working directory:", Path.cwd())  # noqa: T201
+print("==========>")  # noqa: T201
 sys.path.insert(0, str(Path(f"../../{MODULE_NAME}").resolve()))
 sys.path.insert(0, str(Path("../../scripts").resolve()))
-print("==========>")
-print("==========> Updated sys.path:", sys.path)
-print("==========>")
+print("==========>")  # noqa: T201
+print("==========> Updated sys.path:", sys.path)  # noqa: T201
+print("==========>")  # noqa: T201
 
 # -- Project information -----------------------------------------------------
 
-author = "IO-Aero Team"
-copyright = "2022 - 2024, IO-Aero"
+author = "IO-Aero Team"  # pylint: disable=invalid-name
+copyright = "2022 - 2024, IO-Aero"  # pylint: disable=invalid-name, redefined-builtin  # noqa: A001
 github_url = f"https://github.com/io-aero/{REPOSITORY_NAME}"
-project = REPOSITORY_NAME.upper()
+project = REPOSITORY_NAME.upper()  # pylint: disable=invalid-name
 
 try:
     version = importlib.metadata.version(MODULE_NAME)
 except importlib.metadata.PackageNotFoundError:
-    version = "unknown"
-    print("==========>")
-    print("==========> Warning: Version not found, defaulting to 'unknown'.")
-    print("==========>")
+    version = "unknown"  # pylint: disable=invalid-name
+    print("==========>")  # noqa: T201
+    print(  # noqa: T201
+        "==========> Warning: Version not found, defaulting to 'unknown'.",
+    )
+    print("==========>")  # noqa: T201
 
 release = version.replace(".", "-")
 todays_date = datetime.now(tz=UTC).strftime("%Y-%m-%d")
@@ -79,19 +83,19 @@ extlinks = {
 
 # -- Options for HTML output -------------------------------------------------
 
-html_favicon = "img/IO-Aero_1_Favicon.ico"
-html_logo = "img/IO-Aero_1_Logo.png"
-html_show_sourcelink = False
-html_theme = "furo"
+html_favicon = "img/IO-Aero_1_Favicon.ico"  # pylint: disable=invalid-name
+html_logo = "img/IO-Aero_1_Logo.png"  # pylint: disable=invalid-name
+html_show_sourcelink = False  # pylint: disable=invalid-name
+html_theme = "furo"  # pylint: disable=invalid-name
 html_theme_options = {
     "sidebar_hide_name": True,
 }
 
-master_doc = "index"
+master_doc = "index"  # pylint: disable=invalid-name
 
 # -- Options for PDF output --------------------------------------------------
 rinoh_documents = [
-    dict(
+    dict(  # pylint: disable=use-dict-literal  # noqa: C408
         doc="index",
         logo="img/IO-Aero_1_Logo.png",
         subtitle="Manual",
@@ -107,7 +111,9 @@ source_suffix = {
     ".md": "markdown",
 }
 
-class Desc_Sig_Space(DocutilsInlineNode):
+
+class Desc_Sig_Space(DocutilsInlineNode):  # pylint: disable=invalid-name  # noqa: N801
+
     """A custom inline node for managing space in document signatures."""
 
     # Usage example and details...

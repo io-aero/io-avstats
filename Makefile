@@ -82,6 +82,12 @@ action-std:         ## Run the GitHub Actions locally: standard.
         --var IO_LOCAL='true' \
         --verbose \
         -P ubuntu-latest=catthehacker/ubuntu:act-latest \
+        -W .github/workflows/github_pages.yml
+	act --quiet \
+        --secret-file .act_secrets \
+        --var IO_LOCAL='true' \
+        --verbose \
+        -P ubuntu-latest=catthehacker/ubuntu:act-latest \
         -W .github/workflows/standard.yml
 	@echo Info **********  End:   action ***************************************
 

@@ -93,36 +93,44 @@ date +"DATE TIME : %d.%m.%Y %H:%M:%S"
 echo "==================================================================="
 
 # ---------------------------------------------------------------------------
-# Running a Streamlit application.
+# Task handling
 # ---------------------------------------------------------------------------
-if [ "${IO_AERO_TASK}" = "r_s_a" ]; then
-    if ! ( streamlit run "ioavstats/Menu.py" --server.port 8501 ); then
-        exit 255
-    fi
+case "${IO_AERO_TASK}" in
+    # ---------------------------------------------------------------------------
+    # Running a Streamlit application.
+    # ---------------------------------------------------------------------------
+    r_s_a)
+        if ! streamlit run "ioavstats/Menu.py" --server.port 8501; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Setting up the PostgreSQL database container.
-# ---------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "s_d_c" ]; then
-    if ! ( ./scripts/run_setup_postgresql.sh ); then
-        exit 255
-    fi
+    # ---------------------------------------------------------------------------
+    # Setting up the PostgreSQL database container.
+    # ---------------------------------------------------------------------------
+    s_d_c)
+        if ! ./scripts/run_setup_postgresql.sh; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Show the IO-AVSTATS version
-# ---------------------------------------------------------------------------
-elif [ "${IO_AERO_TASK}" = "version" ]; then
-    if ! ( ./dist/linux/ioavstats -t "${IO_AERO_TASK}" ); then
-        exit 255
-    fi
+    # ---------------------------------------------------------------------------
+    # Show the IO-AVSTATS version.
+    # ---------------------------------------------------------------------------
+    version)
+        if ! ./dist/linux/ioavstats -t "${IO_AERO_TASK}"; then
+            exit 255
+        fi
+        ;;
 
-# ---------------------------------------------------------------------------
-# Program abort due to wrong input.
-# ---------------------------------------------------------------------------
-else
-    echo "The processing of the script run_io_avstats_prod is aborted: unknown task='${IO_AERO_TASK}'"
-    exit 255
-fi
+    # ---------------------------------------------------------------------------
+    # Program termination due to incorrect input.
+    # ---------------------------------------------------------------------------
+    *)
+        echo "The processing of the script run_io_avstats_prod is aborted: unknown task='${IO_AERO_TASK}'"
+        exit 255
+        ;;
+esac
 
 echo "-----------------------------------------------------------------------"
 date +"DATE TIME : %d.%m.%Y %H:%M:%S"

@@ -58,7 +58,6 @@ def main(argv: list[str]) -> None:
     The processes to be carried out are selected via command line arguments.
 
     Args:
-    ----
         argv (list[str]): Command line arguments.
 
     """
@@ -146,6 +145,10 @@ def main(argv: list[str]) -> None:
     io_utils.progress_msg("=" * 79)
 
     logging.debug(io_glob.LOGGER_END)
+
+
+# pylint: enable=too-many-branches
+# pylint: enable=too-many-statements
 
 
 # -----------------------------------------------------------------------------

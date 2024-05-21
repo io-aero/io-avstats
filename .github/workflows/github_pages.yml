@@ -2,7 +2,7 @@ name: GitHub Pages
 
 on:
   pull_request:
-    branches: ['main']
+    branches: [ 'main' ]
 
 env:
   MODULE: 'ioavstats'
@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Show the environment variables
         run: |
-          echo "MODULE      = ${{ env.MODULE }}"
+          echo "MODULE      = $MODULE"
           echo "PYPI_PAT    = ${{ secrets.PYPI_PAT }}"
 
       - name: Set Timezone
@@ -50,8 +50,8 @@ jobs:
       - name: Run docs - dev
         run: |
           conda init --all
-          source ~/$SHELL_CONFIG
-          conda activate ${MODULE}
+          source ~/.bashrc
+          conda activate $MODULE
           make black docs
 
       - name: Deploy to GitHub Pages

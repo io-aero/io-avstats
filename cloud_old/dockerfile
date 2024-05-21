@@ -1,0 +1,36 @@
+FROM python:3.12.3 as base
+
+LABEL maintainer="IO-Aero"
+
+ARG APP
+ARG MODE
+ARG SERVER_ADDRESS
+ARG SERVER_PORT
+
+ENV APP=${APP}
+ENV MODE=${MODE}
+ENV SERVER_PORT=${SERVER_PORT}
+ENV SQLALCHEMY_SILENCE_UBER_WARNING=1
+
+SHELL ["/bin/bash", "-c"]
+
+EXPOSE ${SERVER_PORT}
+
+WORKDIR /home
+
+ADD ../tmp/docs/img/ ./docs/img/
+ADD ../tmp/upload/ ./upload/
+
+COPY ../Makefile                                      ./
+COPY config/Pipfile.${APP}                         ./Pipfile
+COPY config/config.toml.${APP}                     ./.streamlit/config.toml
+COPY ../config/secrets_4_dockerfile.toml              ./.streamlit/secrets.toml
+COPY ../config/settings.io_aero_4_dockerfile.toml     ./settings.io_aero.toml
+COPY data/latest_postgres.zip                      ./upload/IO-AERO-DB.zip
+COPY docs/img/StockSnap_SLQQYN6CRR.jpg             ./docs/img
+COPY ioavstats/${APP}.py                           ./${APP}.py
+COPY ../ioavstats/utils.py                            ./utils.py
+
+RUN make conda-prod
+
+ENTRYPOINT streamlit run ${APP}.py --server.port=${SERVER_PORT} -- --host Cloud --mode ${MODE}

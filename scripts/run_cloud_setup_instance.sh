@@ -4,7 +4,7 @@ set -e
 
 # ------------------------------------------------------------------------------
 #
-# run_cloud_setup_instance.sh: Set up the cloud environment.
+# run_cloud_setup_instance.sh: Set up the cloud_old environment.
 #
 # ------------------------------------------------------------------------------
 

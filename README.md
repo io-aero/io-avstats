@@ -67,41 +67,85 @@ Further IO-Aero software documentation can be found under the following links.
 
 ### 1. Directories
 
-| Directory         | Content                                          |
-|-------------------|--------------------------------------------------|
-| .github/workflows | **GitHub Action** workflow.                      |
-| .streamlit        | Streamlit configuration files.                   |
-| config            | Configuration files.                             |
-| data              | Application data related files.                  |
-| docs              | Documentation files.                             |
-| ioavstats         | Python script files.                             |
+| Directory         | Content                                       |
+|-------------------|-----------------------------------------------|
+| .github/workflows | **GitHub Action** workflow.                   |
+| .streamlit        | Streamlit configuration files.                |
+| .vscode           | Visual Studio Code configuration files.       |
+| cloud_old         | Legacy cloud related files.                   |
+| config            | Configuration files.                          |
+| data              | Application data related files.               |
+| dist              | **docker2ex** application files.              |
+| docs              | Documentation files.                          |
+| ioavstats         | Python script files.                          |
 | libs              | Contains libraries that are not used via pip. |
-| resources         | Selected manuals and software.                   |
-| scripts           | Supporting macOS, Ubuntu and Windows Scripts.    |
-| tests             | Scripts and data for **pytest**.                 |
-| upload            | Cloud related upload directory.                  |
+| resources         | Selected manuals and software.                |
+| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
+| tests             | Scripts and data for **pytest**.              |
 
 ### 2. Files
 
-| File                            | Functionality                                                   |
-|---------------------------------|-----------------------------------------------------------------|
-| .act_secrets_template           | Template file for the configuration of ``make action``.         |
-| .gitattributes                  | Handling of the os-specific file properties.                    |
-| .gitignore                      | Configuration of files and folders to be ignored.               |
-| .pylintrc                       | Pylint configuration file.                                      |
-| .settings.io_aero_template.toml | Template file for the secret configuration data.                |
-| docker-compose_cloud.yml        | Cloud related Docker Compose configuration file.                |
-| docker-compose_local.yml        | Local Docker Compose configuration file.                        |
-| dockerfile                      | Build instructions for the Streamlit application images.        |
-| LICENSE.md                      | Text of the licence terms.                                      |
-| logging_cfg.yaml                | Configuration of the Logger functionality.                      |
-| Makefile                        | Tasks to be executed with the **`make`** command.               |
-| mypy.ini                        | Mypy configuration file.                                        |
-| nginx.conf                      | Configuration file for **Nginx**.                               |
-| Pipfile                         | Definition of the Python package requirements.                  |
-| pyproject.toml                  | Optional configuration data for the software quality tools.     |
-| README.md                       | This file.                                                      |
-| run_io_avstats                  | Main script for using the functionality of **IO-AVSTATS**.      |
-| run_io_avstats_pytest           | Main script for using the test functionality of **IO-AVSTATS**. |
-| settings.io_aero.toml           | Configuration data.                                             |
-| setup.cfg                       | Optional configuration data.                     |
+| File                            | Functionality                                                         |
+|---------------------------------|-----------------------------------------------------------------------|
+| .act_secrets_template           | Template file for the configuration of ``make action``.               |
+| .dockerignore                   | Configuration of files and folders to be ignored with Docker.         |
+| .gitattributes                  | Handling of the os-specific file properties.                          |
+| .gitignore                      | Configuration of files and folders to be ignored with Git.            |
+| .pylintrc                       | Pylint configuration file.                                            |
+| .settings.io_aero_template.toml | Template file for the secret configuration data.                      |
+| Dockerfile                      | Build instructions for the docker2exe application images.             |
+| environment.yml                 | Conda environment parameter file - production version.                |
+| environment_dev.yml             | Conda environment parameter file - development version.               |
+| LICENSE.md                      | Text of the licence terms.                                            |
+| logging_cfg.yaml                | Configuration of the Logger functionality.                            |
+| Makefile                        | Tasks to be executed with the **`make`** command.                     |
+| mypy.ini                        | Mypy configuration file.                                              |
+| pyproject.toml                  | Optional configuration data for the software quality tools.           |
+| README.md                       | This file.                                                            |
+| run_io_avstats                  | Main script for using the functionality in a productive environment.  |
+| run_io_avstats_dev              | Main script for using the functionality in a development environment. |
+| run_io_avstats_pytest           | Main script for using the functionality in a test environment.        |
+| run_ioavstats                   | Main script for using the functionality based on a Docker executable. |
+| settings.io_aero.toml           | Configuration data.                                                   |
+| setup.cfg                       | Optional configuration data.                                          |
+
+## Converting the application into an executable file with docker2exe
+
+**Target Platforms**
+
+The tools support creating executables specifically for macOS, Ubuntu, or Windows. This allows for precise targeting based on deployment needs.
+
+**Platform-Specific Build**
+
+The process of creating an executable is required to be conducted on the operating system for which the executable is intended. This means building a Windows executable on a Windows machine, a macOS executable on a macOS machine, and so on.
+
+**Use of Makefile**
+
+Both `docker2exe` utilizes the Makefile of `io-avstats` to facilitate the construction of executables. 
+
+**Prerequisites**
+- Go Programming Language: `docker2exe` is developed in Go, so Go must be installed on the system to either compile from source or run the pre-compiled binaries.
+- Docker: Docker is required as `docker2exe` converts Docker images into executable files.
+
+The executable files for `docker2exe` are downloaded from the [GitHub Releases page](https://github.com/rzane/docker2exe). Note that the executable for Windows has been renamed to `docker2exe-windows-amd64.exe` and is located in the `dist` directory of the application. Visit the [docker2exe tool page](https://github.com/rzane/docker2exe) for more details and to access the source code.
+
+**Creating the Executable File**
+
+- Run `make docker`
+
+- The Docker image named `ioavstats` is first created.
+ 
+- `docker2exe` is then used to convert the Docker image into an executable file.
+
+- A directory is finally created containing all the files necessary for running the application. The name of this directory varies depending on the operating system and architecture:
+    - **macOS**: `app-darwin-amd64` or `app-darwin-arm64`
+    - **Ubuntu**: `app-linux-amd64`
+    - **Windows**: `app-windows-amd64`
+
+- The directory, in addition to the executable file (`ioavstats` or `ioavstats.exe`), includes the following components:
+    - **data**: A directory for the application data.
+    - **logging_cfg.yaml**: A configuration file for logging.
+    - **run_ioavstats.[bat|sh|zsh]**: A shell script to run the application.
+    - **settings.io-aero.toml**: Configuration data for the `io-avstats` application.
+
+- The converted application requires Docker to be installed in order to run, ensuring that the application's environment is appropriately replicated.

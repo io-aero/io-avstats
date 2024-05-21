@@ -26,11 +26,9 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
     """Determine the last processed update file.
 
     Args:
-    ----
         pg_conn (connection): Database connection.
 
     Returns:
-    -------
         tuple[str, str]: File name and processing date.
 
     """
@@ -66,7 +64,7 @@ def get_args() -> str:
     # ------------------------------------------------------------------------
     parser.add_argument(
         "--host",
-        help="the host mode: '" + "cloud' (Cloud host) or '" + "local' (Local host)",
+        help="the host mode: 'cloud_old' (Cloud host) or 'local' (Local host)",
         metavar="host",
         required=False,
         type=str,
@@ -126,11 +124,9 @@ def prepare_latitude(latitude_string: str) -> str:
     """Prepare a latitude structure.
 
     Args:
-    ----
         latitude_string (str): Latitude string.
 
     Returns:
-    -------
         str: Latitude structure.
 
     """
@@ -184,11 +180,9 @@ def prepare_longitude(longitude_string: str) -> str:
     """Prepare a longitude structure.
 
     Args:
-    ----
         longitude_string (str): longitude string.
 
     Returns:
-    -------
         str: longitude structure.
 
     """
@@ -213,7 +207,6 @@ def present_about(pg_conn: connection, app_id: str) -> None:
     """Present the 'about' information.
 
     Args:
-    ----
         pg_conn (connection): Database connection.
         app_id (str): Application name.
 

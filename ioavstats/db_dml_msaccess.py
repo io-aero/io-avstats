@@ -305,7 +305,6 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     """Load data from MS Access to the PostgreSQL database.
 
     Args:
-    ----
         msaccess (str):
             The MS Access database file without file extension.
 
@@ -3510,7 +3509,6 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     """Download an MS Access database file.
 
     Args:
-    ----
         msaccess (str):
             The MS Access database file without file extension.
 

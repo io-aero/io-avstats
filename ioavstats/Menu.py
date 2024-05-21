@@ -13,14 +13,19 @@ from streamlit.file_util import get_streamlit_file_path
 
 PROJECT_ROOT = Path(Path(__file__).parent).resolve()
 
-credential_path = get_streamlit_file_path("credentials.toml")
-if not Path(credential_path).exists():
-    Path(Path(credential_path).parent).mkdir(parents=True, exist_ok=True)
+# Ensure the output of get_streamlit_file_path is a string
+credential_path_str = str(get_streamlit_file_path("credentials.toml"))
+credential_path = Path(credential_path_str)
+
+# Check if the credential file exists, and create necessary directories if it doesn't
+if not credential_path.exists():
+    credential_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(
-        PROJECT_ROOT / ".streamlit" / "credentials.toml",
+        PROJECT_ROOT / ".." / ".streamlit" / "credentials.toml",
         credential_path,
     )
 
+# pylint: disable=line-too-long
 st.set_page_config(
     layout="wide",
     # pylint: disable=line-too-long
@@ -30,13 +35,20 @@ st.set_page_config(
 
 st.write("# Welcome to IO-AVSTATS!")
 
-col1, col2 = st.sidebar.columns(2)
-# pylint: disable=line-too-long
-col1.image(
-    "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
-    width=150,
+st.sidebar.markdown(
+    """
+        <div style="display: flex; align-items: center;">
+            <img src="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true" width="150">
+            <div style="margin-left: 10px;">
+                <a href="https://www.io-aero.com" style="text-decoration: none;">
+                    <h2 style="color: #00f;">IO-Aero Website</h2>
+                </a>
+            </div>
+        </div>
+        """,
+    unsafe_allow_html=True,
 )
-col2.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+# pylint: enable=line-too-long
 
 st.sidebar.success("Select an application above.")
 

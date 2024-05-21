@@ -10,9 +10,7 @@ setlocal EnableDelayedExpansion
 
 set ERRORLEVEL=
 
-if ["!ENV_FOR_DYNACONF!"] EQU [""] (
-    set ENV_FOR_DYNACONF=prod
-)
+set ENV_FOR_DYNACONF=prod
 
 set IO_AERO_AVIATION_EVENT_STATISTICS=data\AviationAccidentStatistics
 set IO_AERO_CORRECTION_WORK_DIR=data\correction

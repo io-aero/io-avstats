@@ -23,6 +23,10 @@ jobs:
         python-version: ["3.11"]
 
     steps:
+      - name: Log the Operating System
+        run: |
+          echo "Running on OS: ${{ runner.os }}"
+
       - name: Show the environment variables
         run: |
           echo "IO_AWS_CLI  = ${{ env.IO_AWS_CLI }}"

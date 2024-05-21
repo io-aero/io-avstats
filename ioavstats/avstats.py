@@ -38,7 +38,6 @@ def check_arg_msaccess(args: argparse.Namespace) -> None:
     """Check the command line argument: -m / --msaccess.
 
     Args:
-    ----
         args (argparse.Namespace): Command line arguments.
 
     """
@@ -106,7 +105,6 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     """Check the command line argument: -e / --msexcel.
 
     Args:
-    ----
         args (argparse.Namespace): Command line arguments.
 
     """
@@ -156,7 +154,6 @@ def check_arg_task(args: argparse.Namespace) -> None:
     """Check the command line argument: -t / --task.
 
     Args:
-    ----
         args (argparse.Namespace): Command line arguments.
 
     """
@@ -280,7 +277,6 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     """d_n_a: Download a NTSB MS Access database file.
 
     Args:
-    ----
         msaccess (str):
             The NTSB MS Access database file without file extension.
 
@@ -316,7 +312,10 @@ def find_nearest_airports() -> None:
 # Generate SQL statements: INSERT & UPDATE.
 # -----------------------------------------------------------------------------
 def generate_sql() -> None:
-    """Generate SQL statements: INSERT & UPDATE."""
+    """Generate SQL statements: INSERT & UPDATE.
+
+    .. :noindex:
+    """
     logging.debug(io_glob.LOGGER_START)
 
     code_generator.generate_sql()
@@ -344,7 +343,7 @@ def get_args() -> None:
     parser.add_argument(
         "-e",
         "--msexcel",
-        help="the MS Excel file: '",
+        help="the MS Excel file",
         metavar="msexcel",
         required=False,
         type=str,
@@ -353,7 +352,7 @@ def get_args() -> None:
     parser.add_argument(
         "-m",
         "--msaccess",
-        help="the microsoft access database file: '"
+        help="the Microsoft Access database file: '"
         + glob_local.ARG_MSACCESS_AVALL
         + "' (Data from January 1, 2008 to today) or '"
         + glob_local.ARG_MSACCESS_PRE2008
@@ -404,7 +403,7 @@ def get_args() -> None:
         + glob_local.ARG_TASK_VERSION
         + "' (Show the current version of IO-AVSTATS)"
         + glob_local.ARG_TASK_V_N_D
-        + "' (Verify selected **NTSB** data) or '",
+        + "' (Verify selected NTSB data)",
         metavar="task",
         required=True,
         type=str,
@@ -491,7 +490,6 @@ def load_correction_data(filename: str) -> None:
     """l_c_d: Load data from a correction file into PostgreSQL.
 
     Args:
-    ----
         filename (str):
             The filename of the correction file.
 
@@ -530,7 +528,6 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     """l_n_a: Load NTSB MS Access database data into PostgreSQL.
 
     Args:
-    ----
         msaccess (str):
             The NTSB MS Access database file without file extension.
 
@@ -601,7 +598,6 @@ def progress_msg(msg: str) -> None:
     """Create a progress message.
 
     Args:
-    ----
         msg (str): Progress message
 
     """
@@ -616,7 +612,6 @@ def progress_msg_time_elapsed(duration: int, event: str) -> None:
     """Create a time elapsed message.
 
     Args:
-    ----
         duration (int): Time elapsed in ns.
         event (str): Event description.
 
@@ -647,7 +642,6 @@ def terminate_fatal(error_msg: str) -> None:
     """Terminate the application immediately.
 
     Args:
-    ----
         error_msg (str): Error message
 
     """

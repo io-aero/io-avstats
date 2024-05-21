@@ -1,0 +1,35 @@
+.github
+.vscode
+cloud_old
+data
+dist
+docs
+libs
+resources/Association Rule Analysis
+resources/Design
+resources/Development
+resources/FAA
+resources/Microsoft Access Database Engine 2016 Redistributable
+resources/NTSB
+resources/Papers
+resources/Peacock - Image Colors
+resources/RazorSQL
+resources/README.md
+tests
+
+.act_secrets_template
+.dockerignore
+.gitattributes
+.gitignore
+.pylintrc
+.settings.io_aero_template.toml
+Dockerfile
+environment_dev.yml
+LICENSE.md
+Makefile
+mypy.ini
+README.md
+run_io_avstats_dev.*
+run_io_avstats_prod.*
+run_io_avstats_pytest.*
+setup.cfg

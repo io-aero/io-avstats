@@ -56,7 +56,7 @@ RUN /opt/conda/bin/conda env create -f environment.yml
 # Copy the application code to the container
 COPY ${REPO_MODULE}/ ./${REPO_MODULE}/
 COPY scripts/ ./scripts/
-COPY scripts/entrypoint.sh .
+COPY .settings.io_aero.toml .
 COPY logging_cfg.yaml .
 COPY pyproject.toml .
 COPY run_${REPO_UNDERS}.sh .

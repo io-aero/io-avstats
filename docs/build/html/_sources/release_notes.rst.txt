@@ -5,7 +5,7 @@ Release Notes
 Version 24.05.22
 ================
 
-Release Date: 22.04.2024
+Release Date: 22.05.2024
 
 Applied Software
 ----------------
@@ -74,7 +74,7 @@ Processed files
 Data source `up22MAY`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Download link: `05/22/2024 3:00:30 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15MAY.zip>`__\
+- Download link: `05/22/2024 3:00:22 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22MAY.zip>`__\
 
 Version 24.05.15
 ================

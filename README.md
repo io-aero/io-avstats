@@ -8,6 +8,83 @@ Currently, **`IO-AVSTATS`** includes the following applications:
 - **`pd1982`** - IO-AVSTATS-DB Database Profiling
 - **`slara`** - Association Rule Analysis
 
+## Quickstart
+
+This is a quick start guide.
+Detailed instructions can be found in the [documentation](https://io-aero.github.io/io-avstats/) under Requirements, Installation and First Steps.
+
+1. Install Python 3.11
+2. Install Conda or Miniconda
+3. Install Docker Desktop
+4. Install the MS Access Database Engine - only necessary for database updates
+5. Install RazorSQL - only necessary for database updates
+6. Clone this repository:
+
+    `git clone https://github.com/io-aero/io-avstats`
+
+7. Create the virtual environment:
+
+    `make conda-dev`
+
+8. Switch to the created virtual environment:
+
+    `conda activate ioavstats`
+
+9. Create a file named `.settings.io_aero.toml` which contains the database access data
+
+10. Test the whole functionality:
+
+    `make final`
+
+10. All Makefile commands can be found by running:
+
+    `make` or `make help`
+
+```
+=============================================================================
+make Script       The purpose of this Makefile is to support the whole
+                  software development process for an application. It
+                  contains also the necessary tools for the CI activities.
+                  -----------------------------------------------------------
+                  The available make commands are:
+-----------------------------------------------------------------------------
+help:               Show this help.
+-----------------------------------------------------------------------------
+action:             Run the GitHub Actions locally.
+dev:                Format, lint and test the code.
+docs:               Check the API documentation, create and upload the user documentation.
+everything:         Do everything precheckin
+final:              Format, lint and test the code and create the documentation.
+format:             Format the code with Black and docformatter.
+lint:               Lint the code with ruff, Bandit, vulture, Pylint and Mypy.
+pre-push:           Preparatory work for the pushing process.
+tests:              Run all tests with pytest.
+-----------------------------------------------------------------------------
+action-std:         Run the GitHub Actions locally: standard.
+bandit:             Find common security issues with Bandit.
+black:              Format the code with Black.
+compileall:         Byte-compile the Python libraries.
+conda-dev:          Create a new environment for development.
+conda-prod:         Create a new environment for production.
+coveralls:          Run all the tests and upload the coverage data to coveralls.
+docformatter:       Format the docstrings with docformatter.
+docker:             Create a docker image.
+mypy:               Find typing issues with Mypy.
+mypy-stubgen:       Autogenerate stub files.
+next-version:       Increment the version number.
+pylint:             Lint the code with Pylint.
+pytest:             Run all tests with pytest.
+pytest-ci:          Run all tests with pytest after test tool installation.
+pytest-first-issue: Run all tests with pytest until the first issue occurs.
+pytest-issue:       Run only the tests with pytest which are marked with 'issue'.
+pytest-module:      Run test of a specific module with pytest.
+ruff:               An extremely fast Python linter and code formatter.
+sphinx:             Create the user documentation with Sphinx.
+version:            Show the installed software versions.
+vulture:            Find dead Python code.
+=============================================================================
+```
+
 ## Operation
 
 The whole functionality of **IO-AVSTATS** can be used with the script `run_io_avstats`.

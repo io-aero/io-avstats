@@ -40,6 +40,10 @@ razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2024.01.22_avall.sql"
 terminal_area_distance_nmi = 5
 
+[dev]
+
+[prod]
+
 [test]
 check_value = "test"
 correction_work_dir = "data/correction_test"

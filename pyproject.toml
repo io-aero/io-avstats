@@ -101,31 +101,10 @@ indent-width = 4
 target-version = "py311"
 
 [tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
 indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
-docstring-code-format = false
-
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
-docstring-code-line-length = "dynamic"
+quote-style = "double"
+skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
@@ -136,6 +115,7 @@ ignore = [
     "C901",
     "D211",
     "D213",
+    "D407",
     "PGH003",
     "PLR0911",
     "PLR0912",
@@ -156,9 +136,11 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
+"docs/source/conf.py" = ["D203"]
 "ioavstats/db_ddl_base.py" = ["E501"]
 "ioavstats/db_dml_corr.py" = ["E501"]
 "ioavstats/db_dml_msaccess.py" = ["E501"]
+"ioavstats/Menu.py" = ["E501"]
 "ioavstats/pages/Association_Rule_Analysis.py" = ["E501"]
 "ioavstats/pages/Aviation_Event_Analysis.py" = ["E501"]
 "ioavstats/pages/Database_Profiling.py" = ["E501"]

@@ -6,9 +6,7 @@
 #
 # ------------------------------------------------------------------------------
 
-if [[ -z "${ENV_FOR_DYNACONF}" ]]; then
-    export ENV_FOR_DYNACONF=prod
-fi
+export ENV_FOR_DYNACONF=prod
 
 export IO_AERO_AVIATION_EVENT_STATISTICS=data/AviationAccidentStatistics
 export IO_AERO_CORRECTION_WORK_DIR=data/correction

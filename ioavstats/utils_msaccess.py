@@ -17,11 +17,9 @@ def get_msaccess_cursor(filename: str) -> tuple[pyodbc.Connection, pyodbc.Cursor
     """Create an MS Access cursor.
 
     Args:
-    ----
         filename (str): MS Access filename.
 
     Returns:
-    -------
         tuple[pyodbc.Connection,pyodbc.Cursor]: ODBC database connection and cursor.
 
     """

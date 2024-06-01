@@ -16,7 +16,6 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
     """Generate SQL statements: INSERT.
 
     Args:
-    ----
         ref_lines (list[str]): DDL export of RazorSQL.
 
     """
@@ -76,7 +75,6 @@ def _generate_sql_update(ref_lines: list[str]) -> None:
     """Generate SQL statements: UPDATE.
 
     Args:
-    ----
         ref_lines (list[str]): DDL export of RazorSQL.
 
     """

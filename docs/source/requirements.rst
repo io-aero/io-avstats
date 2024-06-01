@@ -9,7 +9,13 @@ Regarding the corresponding software versions, you will find the detailed inform
 Operating System
 ------------------
 
-Continuous delivery / integration (CD/CI) runs on macOS and Ubuntu and development is also done with Windows 10/11.
+Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.
+
+The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:
+
+.. code-block::
+
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 For the Windows operating systems, only additional the functionality of the ``make`` tool must be made available, e.g. via
 `Make for Windows <http://gnuwin32.sourceforge.net/packages/make.htm>`__\
@@ -30,14 +36,14 @@ The command-line shells supported are:
      - cmd and PowerShell
 
 For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the scripts ``./scripts/run_prep_zsh_scripts.zsh`` (macOS) and ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
+If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the scripts ``./scripts/run_prep_zsh_scripts.zsh`` (macOS) or ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
 
 `Python <https://docs.python.org/3/whatsnew/3.11.html>`__\
 ----------------------------------------------------------
 
-This project utilizes Python 3.10, which introduces significant enhancements in type hinting and type annotations.
+This project utilizes Python from version 3.10, which introduced significant enhancements in type hinting and type annotations.
 These improvements provide a more robust and clear definition of function parameters, return types, and variable types, contributing to improved code readability and maintainability.
-The use of Python 3.10 ensures compatibility with these advanced typing features, offering a more structured and error-resistant development environment.
+The use of Python 3.11 ensures compatibility with these advanced typing features, offering a more structured and error-resistant development environment.
 
 `Docker Desktop <https://www.docker.com/products/docker-desktop/>`__\
 ---------------------------------------------------------------------
@@ -45,6 +51,15 @@ The use of Python 3.10 ensures compatibility with these advanced typing features
 The project employs PostgreSQL for data storage and leverages Docker images provided by PostgreSQL to simplify the installation process.
 Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
 This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
+
+`Miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`__\
+--------------------------------------------------------------------
+
+Some of the Python libraries required by the project are exclusively available through Conda. To maintain a minimal installation footprint, it is recommended to install Miniconda, a smaller, more lightweight version of Anaconda that includes only Conda, its dependencies, and Python.
+
+By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the ``scripts`` directory of the project, where operating system-specific installation scripts named ``run_install_miniconda`` are available for Windows (CMD shell), Ubuntu (Bash shell), and macOS (Zsh shell).
+
+Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.
 
 `MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\ - only for Windows
 ------------------------------------------------------------------------------------------------------------------

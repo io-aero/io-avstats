@@ -2,6 +2,10 @@
 postgres_password = "<tbd>>"
 postgres_password_admin = "<tbd>>"
 
+[dev]
+
+[prod]
+
 [test]
 postgres_password = "postgres_password"
 postgres_password_admin = "postgres_password_admin"

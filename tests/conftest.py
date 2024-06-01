@@ -60,7 +60,6 @@ def copy_files_4_pytest(
     filters and modifications for the copy operation.
 
     Args:
-    ----
         file_list: A list of tuples, where each tuple contains:
             - A tuple specifying the source directory and an optional subdirectory.
             - A tuple specifying the destination directory (as a pathlib.Path object),
@@ -129,7 +128,6 @@ def copy_files_4_pytest_2_dir(
     """Copy files from the sample test file directory.
 
     Args:
-    ----
         source_files: list[tuple[str, str | None]]: Source file names.
         target_path: Path: Target directory.
 
@@ -152,7 +150,6 @@ def get_full_name_from_components(
     The possible components are directory name, stem name and file extension.
 
     Args:
-    ----
         directory_name (pathlib.Path or str): Directory name or directory path.
         stem_name (str, optional): Stem name or file name including file extension.
             Defaults to "".
@@ -160,7 +157,6 @@ def get_full_name_from_components(
             Defaults to "".
 
     Returns:
-    -------
         str: Full file name.
 
     """
@@ -189,11 +185,9 @@ def get_os_independent_name(file_name: pathlib.Path | str) -> str:
     """Get the platform-independent name.
 
     Args:
-    ----
         file_name (pathlib.Path | str): File name or file path.
 
     Returns:
-    -------
         str: Platform-independent name.
 
     """

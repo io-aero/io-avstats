@@ -916,7 +916,6 @@ def load_correction_data(filename: str) -> None:
     """Load data from a correction file into the PostgreSQL database.
 
     Args:
-    ----
         filename (str):
             The MS Excel file.
 

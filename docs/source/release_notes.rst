@@ -2,51 +2,179 @@
 Release Notes
 =============
 
-.. Templates
-   ===
-   New Features
-   ------------
-   Modified Features
-   -----------------
-   Deleted Features
-   ----------------
-   Applied Software
-   ----------------
-   Windows-specific Software
-   .........................
-   Open Issues
-   -----------
-   Detailed Open Issues
-   --------------------
-   Processed files
-   ---------------
-   ===
-   `FAA - Aeronautical data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
-   ....................................................................................
-   Data source `Airports`
-   ^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `Version: 10/05/2023 <https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007428%2C-1.633886%2C2.00>`__\
-   Data source `Runways`
-   ^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `Version: 10/05/2023 <https://https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002760%2C-1.628764%2C2.00>`__\
-   ===
-   `NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
-   ..................................................................................
-   Data source `avall.zip`
-   ^^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `01/01/2024 06:23:50 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
-   Data source `up15JAN.zip`
-   ^^^^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `01/08/2024 3:00:17 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08JAN.zip>`__\
-   ===
-   `simplemaps - Interactive Maps & Data <https://simplemaps.com/>`__\
-   ..................................................................................
-   Data source `United States Cities Database`
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `Version: 11/12/2023 <https://simplemaps.com/data/us-cities>`__\
-   Data source `US Zip Codes Database`
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   - Download link: `Version: 11/12/2023 <https://simplemaps.com/data/us-zips>`__\
+Release Date: 01.06.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.30.0
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.11.9
+     -
+     -
+   * - RazorSQL
+     - 10.5.5
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.06
+     -
+     - upgrade
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.10.1
+     -
+     - upgrade
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`FAA - Aeronautical data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+....................................................................................
+
+Data source `Airports`
+^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 05/16/2024 <https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.007315%2C-1.633886%2C2.00>`__\
+
+Data source `Runways`
+^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 05/16/2024 <https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.002718%2C-1.628764%2C2.00>`__\
+
+`simplemaps - Interactive Maps & Data <https://simplemaps.com/>`__\
+..................................................................................
+
+Data source `US Cities Database`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 1.79 <https://simplemaps.com/data/us-cities>`__\
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `avall.zip`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `06/01/2024 06:11:06 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
+
+Data source `up01JUN.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `06/01/2024 3:00:21 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01JUN.zip>`__\
+
+
+Version 24.05.22
+================
+
+Release Date: 22.05.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.30.0
+     -
+     -
+   * - Go
+     - go1.22.3
+     -
+     - new
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.11.9
+     -
+     -
+   * - RazorSQL
+     - 10.5.5
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 23.01
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+
+Processed files
+---------------
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `up22MAY`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `05/22/2024 3:00:22 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22MAY.zip>`__\
 
 Version 24.05.15
 ================

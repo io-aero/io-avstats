@@ -4138,20 +4138,27 @@ def _streamlit_flow() -> None:
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
+    # pylint: disable=line-too-long
     st.set_page_config(
         layout="wide",
-        # pylint: disable=line-too-long
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title=f"{APP_ID} by IO-Aero",
     )
 
-    col1, col2 = st.sidebar.columns(2)
-    # pylint: disable=line-too-long
-    col1.image(
-        "https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true",
-        width=150,
+    st.sidebar.markdown(
+        """
+            <div style="display: flex; align-items: center;">
+                <img src="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true" width="150">
+                <div style="margin-left: 10px;">
+                    <a href="https://www.io-aero.com" style="text-decoration: none;">
+                        <h2 style="color: #00f;">IO-Aero Website</h2>
+                    </a>
+                </div>
+            </div>
+            """,
+        unsafe_allow_html=True,
     )
-    col2.markdown("##  [IO-Aero Website](https://www.io-aero.com)")
+    # pylint: enable=line-too-long
 
     # ------------------------------------------------------------------
     # Get data.

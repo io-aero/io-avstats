@@ -2,6 +2,86 @@
 Release Notes
 =============
 
+Release Date: 15.06.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.30.0
+     -
+     -
+   * - Miniconda
+     - 24.5.0
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.11.9
+     -
+     -
+   * - RazorSQL
+     - 10.5.5
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.06
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.10.1
+     -
+     -
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `up15JUN.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `06/15/2024 3:00:14 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15JUN.zip>`__\
+
 Release Date: 09.06.2024
 
 Applied Software
@@ -186,7 +266,6 @@ Data source `up01JUN.zip`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Download link: `06/01/2024 3:00:21 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01JUN.zip>`__\
-
 
 Version 24.05.22
 ================
@@ -497,7 +576,6 @@ Data source `up01MAY.zip`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Download link: `05/01/2024 3:00:20 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01MAY.zip>`__\
-
 
 Version 24.04.22
 ================

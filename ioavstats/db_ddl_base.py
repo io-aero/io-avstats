@@ -79,10 +79,7 @@ def _check_exists_index(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
-        return True
-
-    return False
+    return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -104,10 +101,7 @@ def _check_exists_table(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
-        return True
-
-    return False
+    return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -130,10 +124,7 @@ def _check_exists_table_column(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
-        return True
-
-    return False
+    return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
 # ------------------------------------------------------------------
@@ -153,10 +144,7 @@ def _check_exists_type(
 
     row_pg = cur_pg.fetchone()
 
-    if row_pg and row_pg[COLUMN_COUNT] > 0:  # type: ignore
-        return True
-
-    return False
+    return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
 # ------------------------------------------------------------------

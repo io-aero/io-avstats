@@ -35,6 +35,7 @@
 /docs/build/pdf/.doctrees
 /docs/build/pdf/manual.rtc
 /docs/build/pdf/manual.stylelog
+/streamlit.file_util.get_streamlit_file_path
 /temp/
 /tmp/
 Pipfile.lock

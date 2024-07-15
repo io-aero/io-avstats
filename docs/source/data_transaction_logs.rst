@@ -5,6 +5,7 @@ Transaction Data Logs
 .. toctree::
    :maxdepth: 1
 
+   ./transaction_logs/2024_07_15_log_up15JUL
    ./transaction_logs/2024_07_08_log_up08JUL
    ./transaction_logs/2024_07_01_log_up01JUL
    ./transaction_logs/2024_07_01_log_avall

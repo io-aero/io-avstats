@@ -264,6 +264,15 @@ FILTER_US_STATES: list[str] = []
 FONT_SIZE_HEADER = 48
 FONT_SIZE_SUBHEADER = 36
 
+GRAPH_FONT_SIZE_LEGEND: int | None = None
+GRAPH_FONT_SIZE_LEGEND_PIE: int | None = None
+GRAPH_FONT_SIZE_LEGEND_TITLE: int | None = None
+GRAPH_FONT_SIZE_TITLE: int | None = None
+GRAPH_FONT_SIZE_XAXES: int | None = None
+GRAPH_FONT_SIZE_XAXES_TITLE: int | None = None
+GRAPH_FONT_SIZE_YAXES: int | None = None
+GRAPH_FONT_SIZE_YAXES_TITLE: int | None = None
+
 HOST_CLOUD: bool | None = None
 
 IS_TIMEKEEPING = False
@@ -316,6 +325,15 @@ SETTINGS = Dynaconf(
     settings_files=["settings.io_aero.toml"],
 )
 START_TIME: int = 0
+
+GRAPH_FONT_SIZE_LEGEND = int(io_settings.settings.graph_font_size_legend)
+GRAPH_FONT_SIZE_LEGEND_PIE = int(io_settings.settings.graph_font_size_legend_pie)
+GRAPH_FONT_SIZE_LEGEND_TITLE = int(io_settings.settings.graph_font_size_legend_title)
+GRAPH_FONT_SIZE_TITLE = int(io_settings.settings.graph_font_size_title)
+GRAPH_FONT_SIZE_XAXES = int(io_settings.settings.graph_font_size_xaxes)
+GRAPH_FONT_SIZE_XAXES_TITLE = int(io_settings.settings.graph_font_size_xaxes_title)
+GRAPH_FONT_SIZE_YAXES = int(io_settings.settings.graph_font_size_yaxes)
+GRAPH_FONT_SIZE_YAXES_TITLE = int(io_settings.settings.graph_font_size_yaxes_title)
 
 TERMINAL_AREA_DISTANCE_NMI = float(io_settings.settings.terminal_area_distance_nmi)
 
@@ -2045,6 +2063,15 @@ def _present_bar_chart(
         data,
     )
 
+    fig.update_xaxes(
+        title_font={"size": GRAPH_FONT_SIZE_XAXES_TITLE},
+        tickfont={"size": GRAPH_FONT_SIZE_XAXES},
+    )
+    fig.update_yaxes(
+        title_font={"size": GRAPH_FONT_SIZE_XAXES_TITLE},
+        tickfont={"size": GRAPH_FONT_SIZE_YAXES},
+    )
+
     fig.update_layout(
         bargap=0.05,
         barmode="stack",
@@ -2053,12 +2080,18 @@ def _present_bar_chart(
             if CHOICE_YEARS_CHARTS_HEIGHT
             else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT
         ),
+        legend={"font": {"size": GRAPH_FONT_SIZE_LEGEND}},
+        title={
+            "text": chart_title,
+            "font": {
+                "size": GRAPH_FONT_SIZE_TITLE,
+            },
+        },
         width=(
             CHOICE_YEARS_CHARTS_WIDTH
             if CHOICE_YEARS_CHARTS_WIDTH
             else CHOICE_YEARS_CHARTS_WIDTH_DEFAULT
         ),
-        title=chart_title,
         xaxis={"title": {"text": "Year"}},
         yaxis={
             "title": {
@@ -2801,7 +2834,12 @@ def _present_distance_chart(
             y="nearest_airport_distance",
         )
         fig.update_layout(
+            legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
+            legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            title_font={"size": GRAPH_FONT_SIZE_TITLE},
+            yaxis_tickfont={"size": GRAPH_FONT_SIZE_XAXES},
             yaxis_title="Distance (nmi)",
+            yaxis_title_font={"size": GRAPH_FONT_SIZE_YAXES_TITLE},
         )
         st.plotly_chart(
             fig,
@@ -2816,7 +2854,12 @@ def _present_distance_chart(
             y="nearest_airport_distance",
         )
         fig.update_layout(
+            legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
+            legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            title_font={"size": GRAPH_FONT_SIZE_TITLE},
+            yaxis_tickfont={"size": GRAPH_FONT_SIZE_XAXES},
             yaxis_title="Distance (nmi)",
+            yaxis_title_font={"size": GRAPH_FONT_SIZE_YAXES_TITLE},
         )
         st.plotly_chart(
             fig,
@@ -2964,13 +3007,16 @@ def _present_totals_chart(
                 if CHOICE_TOTALS_CHARTS_HEIGHT
                 else CHOICE_TOTALS_CHARTS_HEIGHT_DEFAULT
             ),
+            legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
+            legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            showlegend=False,
+            title=chart_title,
+            title_font={"size": GRAPH_FONT_SIZE_TITLE},
             width=(
                 CHOICE_TOTALS_CHARTS_WIDTH
                 if CHOICE_TOTALS_CHARTS_WIDTH
                 else CHOICE_TOTALS_CHARTS_WIDTH_DEFAULT
             ),
-            showlegend=False,
-            title=chart_title,
             xaxis={
                 "title": {
                     "text": (
@@ -2980,7 +3026,11 @@ def _present_totals_chart(
                     ),
                 },
             },
+            xaxis_tickfont={"size": GRAPH_FONT_SIZE_XAXES},
+            xaxis_title_font={"size": GRAPH_FONT_SIZE_XAXES_TITLE},
             yaxis={"title": {"text": " "}},
+            yaxis_tickfont={"size": GRAPH_FONT_SIZE_YAXES},
+            yaxis_title_font={"size": GRAPH_FONT_SIZE_YAXES},
         )
         st.plotly_chart(
             fig,
@@ -2995,6 +3045,14 @@ def _present_totals_chart(
             names=names,
             title=chart_title,
             values=values,
+        )
+        fig.update_layout(
+            legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
+            legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            title_font={"size": GRAPH_FONT_SIZE_TITLE},
+        )
+        fig.update_traces(
+            textfont_size=GRAPH_FONT_SIZE_LEGEND_PIE,
         )
         st.plotly_chart(
             fig,

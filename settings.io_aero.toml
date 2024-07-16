@@ -16,6 +16,14 @@ download_file_zip_codes_org = "data/United States Zip Codes.org/zip_code_databas
 download_timeout = 10
 download_url_ntsb_prefix = "https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C"
 download_work_dir = "data/download"
+graph_font_size_legend = 12
+graph_font_size_legend_pie = 12
+graph_font_size_legend_title = 12
+graph_font_size_title = 17
+graph_font_size_xaxes = 12
+graph_font_size_xaxes_title = 14
+graph_font_size_yaxes = 12
+graph_font_size_yaxes_title = 14
 is_runtime_environment_local = true
 is_verbose = true
 max_deviation_latitude = 0.01

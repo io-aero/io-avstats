@@ -32,23 +32,16 @@ st.set_page_config(
     page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
     page_title="Aviation Events Statistics by IO-Aero",
 )
+# pylint: enable=line-too-long
 
 st.write("# Welcome to IO-AVSTATS!")
 
-st.sidebar.markdown(
-    """
-        <div style="display: flex; align-items: center;">
-            <img src="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true" width="150">
-            <div style="margin-left: 10px;">
-                <a href="https://www.io-aero.com" style="text-decoration: none;">
-                    <h2 style="color: #00f;">IO-Aero Website</h2>
-                </a>
-            </div>
-        </div>
-        """,
-    unsafe_allow_html=True,
+st.logo(
+    image="resources/Images/Logo_IO-Blank_JW_32x32.png",
+    link="https://www.io-aero.com",
+    icon_image="resources/Images/Logo_IO-Aero_JW_32x32.png",
 )
-# pylint: enable=line-too-long
+
 
 st.sidebar.success("Select an application above.")
 

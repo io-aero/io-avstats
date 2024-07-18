@@ -15,8 +15,6 @@ ifeq (${OS},Windows_NT)
     DOCKER2EXE_RMDIR=if exist app-${DOCKER2EXE_DIR} rmdir /s /q app-${DOCKER2EXE_DIR}
     DOCKER2EXE_SCRIPT=bat
     DOCKER2EXE_TARGET=windows/amd64
-	NUITKA_OPTION=--msvc=latest
-	NUITKA_OS=windows
     PATH_SEP=\\
 	PIP=pip
 	PYTHON=python
@@ -49,12 +47,6 @@ else
     DOCKER2EXE_EXT=
     DOCKER2EXE_MOVE=mv
     DOCKER2EXE_RMDIR=rm -rf app-${DOCKER2EXE_DIR}
-	NUITKA_OPTION=--disable-ccache
-	ifeq (${OS},Linux)
-		NUITKA_OS=linux
-	else
-		NUITKA_OS=macos
-	endif
 	PATH_SEP=/
 	PIP=pip3
 	PYTHON=python3

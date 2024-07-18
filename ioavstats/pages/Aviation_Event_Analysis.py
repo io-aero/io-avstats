@@ -3045,11 +3045,28 @@ def _present_totals_chart(
             names=names,
             title=chart_title,
             values=values,
+
         )
+        legend_x = 0.68
+        title_x = 0.35
+        if chart_id in ["te_tlp"]:
+            legend_x = 0.81
+            title_x = 0.15
         fig.update_layout(
+            height=400,  # Adjust the height of the figure
+            legend=dict(
+                x=legend_x,  # Adjust the x position of the legend to bring it closer to the pie
+                y=0.5,
+                xanchor='left',  # Anchor the legend from the left
+                orientation='v'
+            ),
             legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
             legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            margin=dict(t=50, l=0, r=0, b=20),  # Adjust margins to make room for the title and legend
             title_font={"size": GRAPH_FONT_SIZE_TITLE},
+            title_x = title_x,  # Center the title
+            title_y=0.95,  # Position the title at the top of the figure
+            width=600,  # Adjust the width of the figure
         )
         fig.update_traces(
             textfont_size=GRAPH_FONT_SIZE_LEGEND_PIE,
@@ -4617,21 +4634,13 @@ def _streamlit_flow() -> None:
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
-
-    st.sidebar.markdown(
-        """
-            <div style="display: flex; align-items: center;">
-                <img src="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Logo.png?raw=true" width="150">
-                <div style="margin-left: 10px;">
-                    <a href="https://www.io-aero.com" style="text-decoration: none;">
-                        <h2 style="color: #00f;">IO-Aero Website</h2>
-                    </a>
-                </div>
-            </div>
-            """,
-        unsafe_allow_html=True,
-    )
     # pylint: enable=line-too-long
+
+    st.logo(
+        image="resources/Images/Logo_IO-Blank_JW_32x32.png",
+        link="https://www.io-aero.com",
+        icon_image="resources/Images/Logo_IO-Aero_JW_32x32.png",
+    )
 
     PG_CONN = utils.get_postgres_connection()
     _print_timestamp("_setup_filter - got DB connection")

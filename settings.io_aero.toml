@@ -48,9 +48,15 @@ razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2024.01.22_avall.sql"
 terminal_area_distance_nmi = 5
 
-[dev]
-
 [prod]
+graph_font_size_legend = 24
+graph_font_size_legend_pie = 24
+graph_font_size_legend_title = 30
+graph_font_size_title = 36
+graph_font_size_xaxes = 30
+graph_font_size_xaxes_title = 30
+graph_font_size_yaxes = 30
+graph_font_size_yaxes_title = 30
 
 [test]
 check_value = "test"

@@ -151,6 +151,7 @@ CHOICE_EXTENDED_VERSION: bool | None = None
 
 CHOICE_FILTER_DATA: bool | None = None
 
+CHOICE_HISTOGRAMS: bool | None = None
 CHOICE_HORIZONTAL_BAR_CHARTS: bool | None = None
 
 CHOICE_MAP: bool | None = None
@@ -2681,7 +2682,7 @@ def _present_data() -> None:
             _present_totals_charts()
             _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_TOTALS")
 
-        if CHOICE_DATA_GRAPHS_DISTANCES and (CHOICE_BOX_PLOTS or CHOICE_VIOLIN_PLOTS):
+        if CHOICE_DATA_GRAPHS_DISTANCES and (CHOICE_BOX_PLOTS or CHOICE_HISTOGRAMS or CHOICE_VIOLIN_PLOTS):
             _present_distance_charts()
             _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_DISTANCE")
 
@@ -2882,6 +2883,28 @@ def _present_distance_chart(
             use_container_width=True,
         )
 
+    if CHOICE_HISTOGRAMS:
+        fig = px.histogram(
+            chart_data,
+            title=chart_title_int,
+            x="nearest_airport_distance",
+        )
+        fig.update_layout(
+            legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
+            legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+            title_font={"size": GRAPH_FONT_SIZE_TITLE},
+            xaxis_tickfont={"size": GRAPH_FONT_SIZE_XAXES},
+            xaxis_title="Distance (nmi)",
+            xaxis_title_font={"size": GRAPH_FONT_SIZE_XAXES_TITLE},
+            yaxis_tickfont={"size": GRAPH_FONT_SIZE_YAXES},
+            yaxis_title=EVENT_TYPE_DESC + "s",
+            yaxis_title_font={"size": GRAPH_FONT_SIZE_YAXES_TITLE},
+        )
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+        )
+
 
 # ------------------------------------------------------------------
 # Present the distance charts.
@@ -2956,9 +2979,6 @@ def _present_map() -> None:
         title=f"Map of {EVENT_TYPE_DESC}s",
         zoom=ZOOM,
     )
-
-    print(f"wwe GRAPH_FONT_SIZE_LEGEND_TITLE : {GRAPH_FONT_SIZE_LEGEND_TITLE}")
-    print(f"wwe GRAPH_FONT_SIZE_LEGEND       : {GRAPH_FONT_SIZE_LEGEND}")
 
     fig.update_layout(
         legend=dict(
@@ -3800,6 +3820,7 @@ def _setup_task_controls() -> None:
     global CHOICE_DATA_PROFILE_TYPE
     global CHOICE_DETAILS
     global CHOICE_EXTENDED_VERSION
+    global CHOICE_HISTOGRAMS
     global CHOICE_HORIZONTAL_BAR_CHARTS
     global CHOICE_MAP
     global CHOICE_MAP_MAP_STYLE
@@ -4271,6 +4292,12 @@ def _setup_task_controls() -> None:
             help="Presenting distances with box plots.",
             key="CHOICE_BOX_PLOTS",
             label="Show box plots",
+            value=False,
+        )
+        CHOICE_HISTOGRAMS = st.sidebar.checkbox(
+            help="Presenting distances with histogramss.",
+            key="CHOICE_ISTOGRAMS",
+            label="Show histograms",
             value=False,
         )
         CHOICE_VIOLIN_PLOTS = st.sidebar.checkbox(

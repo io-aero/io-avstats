@@ -2074,13 +2074,17 @@ def _present_bar_chart(
     )
 
     if chart_id == "ey_aoc":
-        height = 600
+        height = 600.0
     elif chart_id == "ey_pf":
-        height = 700
+        height = 700.0
     elif chart_id == "ey_tlp":
-        height = 1000
+        height = 1000.0
     else:
-        height = CHOICE_YEARS_CHARTS_HEIGHT if CHOICE_YEARS_CHARTS_HEIGHT else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT
+        height = (
+            CHOICE_YEARS_CHARTS_HEIGHT
+            if CHOICE_YEARS_CHARTS_HEIGHT
+            else CHOICE_YEARS_CHARTS_HEIGHT_DEFAULT
+        )
 
     fig.update_layout(
         bargap=0.05,
@@ -2113,12 +2117,7 @@ def _present_bar_chart(
 
     if chart_id == "ey_tlp":
         fig.update_layout(
-            legend=dict(
-                orientation="h",
-                y=-0.2,
-                x=0.5,
-                xanchor="center"
-            )
+            legend={"orientation": "h", "x": 0.5, "xanchor": "center", "y": -0.2},
         )
 
     st.plotly_chart(
@@ -2682,7 +2681,9 @@ def _present_data() -> None:
             _present_totals_charts()
             _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_TOTALS")
 
-        if CHOICE_DATA_GRAPHS_DISTANCES and (CHOICE_BOX_PLOTS or CHOICE_HISTOGRAMS or CHOICE_VIOLIN_PLOTS):
+        if CHOICE_DATA_GRAPHS_DISTANCES and (
+            CHOICE_BOX_PLOTS or CHOICE_HISTOGRAMS or CHOICE_VIOLIN_PLOTS
+        ):
             _present_distance_charts()
             _print_timestamp("_present_data() - CHOICE_DATA_GRAPHS_DISTANCE")
 
@@ -2981,19 +2982,15 @@ def _present_map() -> None:
     )
 
     fig.update_layout(
-        legend=dict(
-            title=dict(
-                text='dot color:',
-                font=dict(
-                    size=GRAPH_FONT_SIZE_LEGEND_TITLE
-                )
-            ),
-            font=dict(
-                size=GRAPH_FONT_SIZE_LEGEND
-            )
-        ),
+        legend={
+            "font": {"size": GRAPH_FONT_SIZE_LEGEND},
+            "title": {
+                "font": {"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
+                "text": "dot color:",
+            },
+        },
         mapbox_style=CHOICE_MAP_MAP_STYLE,
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
     )
 
     st.plotly_chart(
@@ -3104,40 +3101,35 @@ def _present_totals_chart(
             height = 1500
             title_y = 0.85
             fig.update_layout(
-                legend=dict(
-                x=0.5,  # Adjust the x position of the legend to bring it closer to the pie
-                y=0.15,
-                xanchor='center',  # Anchor the legend from the left
-                yanchor="top",
-                orientation="h"
-            ),
+                legend_dict={
+                    "orientation": "h",
+                    "x": 0.5,
+                    "xanchor": "center",
+                    "y": 0.15,
+                    "yanchor": "top",
+                },
             )
         else:
             height = 750
             title_y = 0.95
             fig.update_layout(
-                legend=dict(
-                x=0.55,  # Adjust the x position of the legend to bring it closer to the pie
-                y=0.3,
-                xanchor='left',  # Anchor the legend from the left
-                orientation="v"
-            ),
+                legend={"orientation": "v", "x": 0.55, "xanchor": "left", "y": 0.3},
             )
 
         fig.update_layout(
             height=height,  # Adjust the height of the figure
             legend_font={"size": GRAPH_FONT_SIZE_LEGEND},
             legend_title_font={"size": GRAPH_FONT_SIZE_LEGEND_TITLE},
-            margin=dict(t=100, l=0, r=0, b=80),  # Adjust margins to make room for the title and legend
+            margin={"b": 80, "l": 0, "r": 0, "t": 0},
             title_font={"size": GRAPH_FONT_SIZE_TITLE},
-            title_x = 0.0,  # Center the title
+            title_x=0.0,  # Center the title
             title_y=title_y,  # Position the title at the top of the figure
             width=600,  # Adjust the width of the figure
         )
 
         fig.update_traces(
             textfont_size=GRAPH_FONT_SIZE_LEGEND_PIE,
-            domain=dict(x=[0, 0.5])
+            domain={"x": [0, 0.5]},
         )
 
         st.plotly_chart(

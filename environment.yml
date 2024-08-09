@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
+  - pip
   - haversine
   - lat_lon_parser
   - mlxtend
@@ -23,7 +24,6 @@ dependencies:
   - virtualenv
   - xlrd
   - ydata-profiling
-  - pip
   - pip:
     - git+https://IoAeroMachineUser:${PYPI_PAT}@github.com/io-aero/io-common.git
     - pyeclat

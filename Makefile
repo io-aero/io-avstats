@@ -3,8 +3,8 @@
 MODULE=ioavstats
 
 ifeq (${OS},Windows_NT)
-	COPY_MYPY_STUBGEN=xcopy /y out\\${MODULE}\\*.* .\\${MODULE}\\
-	DELETE_MYPY_STUBGEN=if exist out rd /s /q out
+    COPY_MYPY_STUBGEN=xcopy /y out\\${MODULE}\\*.* .\\${MODULE}\\
+    DELETE_MYPY_STUBGEN=if exist out rd /s /q out
     DOCKER2EXE_CHMOD=echo no operation with
     DOCKER2EXE_COPY=copy
     DOCKER2EXE_CURR=%%CD%%
@@ -15,10 +15,12 @@ ifeq (${OS},Windows_NT)
     DOCKER2EXE_RMDIR=if exist app-${DOCKER2EXE_DIR} rmdir /s /q app-${DOCKER2EXE_DIR}
     DOCKER2EXE_SCRIPT=bat
     DOCKER2EXE_TARGET=windows/amd64
+    NUITKA_OPTION=--msvc=latest
+    NUITKA_OS=windows
     PATH_SEP=\\
-	PIP=pip
-	PYTHON=python
-	DELETE_SPHINX=del /f /q ${SPHINX_BUILDDIR}\\*
+    PIP=pip
+    PYTHON=python
+    DELETE_SPHINX=del /f /q ${SPHINX_BUILDDIR}\\*
     REMOVE_DOCKER_CONTAINER=@docker ps -a | findstr /r /c:"${MODULE}" && docker rm --force ${MODULE}         || echo "No existing container to remove."
     REMOVE_DOCKER_IMAGE=@docker image ls  | findstr /r /c:"${MODULE}" && docker rmi --force ${MODULE}:latest || echo "No existing image to remove."
 else
@@ -47,12 +49,18 @@ else
     DOCKER2EXE_EXT=
     DOCKER2EXE_MOVE=mv
     DOCKER2EXE_RMDIR=rm -rf app-${DOCKER2EXE_DIR}
-	PATH_SEP=/
-	PIP=pip3
-	PYTHON=python3
-	DELETE_SPHINX=rm -rf ${SPHINX_BUILDDIR}/*
-	REMOVE_DOCKER_CONTAINER=@sh -c 'docker ps -a | grep -q "${MODULE}" && docker rm --force ${MODULE} || echo "No existing container to remove."'
-	REMOVE_DOCKER_IMAGE=@sh -c 'docker image ls | grep -q "${MODULE}" && docker rmi --force ${MODULE}:latest || echo "No existing image to remove."'
+    NUITKA_OPTION=--disable-ccache
+    ifeq (${OS},Linux)
+        NUITKA_OS=linux
+    else
+        NUITKA_OS=macos
+    endif
+    PATH_SEP=/
+    PIP=pip3
+    PYTHON=python3
+    DELETE_SPHINX=rm -rf ${SPHINX_BUILDDIR}/*
+    REMOVE_DOCKER_CONTAINER=@sh -c 'docker ps -a | grep -q "${MODULE}" && docker rm --force ${MODULE} || echo "No existing container to remove."'
+    REMOVE_DOCKER_IMAGE=@sh -c 'docker image ls | grep -q "${MODULE}" && docker rmi --force ${MODULE}:latest || echo "No existing image to remove."'
 endif
 
 COVERALLS_REPO_TOKEN=<see coveralls.io>
@@ -81,11 +89,11 @@ dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: sphinx
 ## everything:         Do everything precheckin
-everything: dev docs
+everything: dev docs nuitka
 ## final:              Format, lint and test the code and create the documentation.
 final: format lint docs tests
 ## format:             Format the code with Black and docformatter.
-format: black docformatter
+format: isort black docformatter
 ## lint:               Lint the code with ruff, Bandit, vulture, Pylint and Mypy.
 lint: ruff bandit vulture pylint mypy
 ## pre-push:           Preparatory work for the pushing process.
@@ -163,7 +171,7 @@ conda-dev:          ## Create a new environment for development.
 	@echo "Info **********  Start: Miniconda create development environment *****"
 	conda config --set always_yes true
 	conda --version
-	@echo "PYPI_PAT=${PYPI_PAT}"
+	echo "PYPI_PAT=${PYPI_PAT}"
 	@echo "----------------------------------------------------------------------"
 	conda env remove -n ${MODULE}
 	conda env create -f environment_dev.yml
@@ -203,7 +211,7 @@ docformatter:       ## Format the docstrings with docformatter.
 	@echo "----------------------------------------------------------------------"
 	docformatter --version
 	@echo "----------------------------------------------------------------------"
-	docformatter --black --in-place -r ${PYTHONPATH} --style google
+	docformatter --in-place -r ${PYTHONPATH}
 #	docformatter -r ${PYTHONPATH}
 	@echo "Info **********  End:   docformatter *********************************"
 
@@ -251,6 +259,18 @@ docker:             ## Create a docker image.
 	${DOCKER2EXE_COPY} settings.io_aero.toml                      app-${DOCKER2EXE_DIR}${PATH_SEP}
 	@echo "Info **********  End:   Docker ***************************************"
 
+# isort your imports, so you don't have to.
+# https://github.com/PyCQA/isort
+# Configuration file: pyproject.toml
+isort:              ## Edit and sort the imports with isort.
+	@echo "Info **********  Start: isort ****************************************"
+	@echo "PYTHONPATH=${PYTHONPATH}"
+	@echo "----------------------------------------------------------------------"
+	isort --version
+	@echo "----------------------------------------------------------------------"
+	isort ${PYTHONPATH}
+	@echo "Info **********  End:   isort ****************************************"
+
 # Mypy: Static Typing for Python
 # https://github.com/python/mypy
 # Configuration file: pyproject.toml
@@ -282,6 +302,26 @@ next-version:       ## Increment the version number.
 	@echo "----------------------------------------------------------------------"
 	${PYTHON} scripts/next_version.py
 	@echo "Info **********  End:   next version *********************************"
+
+# Nuitka: Python compiler written in Python
+# https://github.com/Nuitka/Nuitka
+nuitka:             ## Create a dynamic link library.
+	@echo "Info **********  Start: nuitka ***************************************"
+	@echo "MODULE       =${MODULE}"
+	@echo "NUITKA_OPTION=${NUITKA_OPTION}"
+	@echo "PIP          =${PIP}"
+	@echo "PYTHON       =${PYTHON}"
+	@echo "----------------------------------------------------------------------"
+	${PYTHON} -m nuitka ${NUITKA_OPTION} \
+			  --main=scripts/launcher.py \
+			  --onefile \
+			  --onefile-tempdir-spec=.temp \
+			  --output-dir=dist/${NUITKA_OS} \
+			  --output-filename=${MODULE} \
+			  --show-modules \
+			  --standalone \
+			  --static-libpython=no
+	@echo "Info **********  End:   nuitka ***************************************"
 
 # Pylint is a tool that checks for errors in Python code.
 # https://github.com/PyCQA/pylint/
@@ -330,10 +370,20 @@ pytest-first-issue: ## Run all tests with pytest until the first issue occurs.
 	@echo "----------------------------------------------------------------------"
 	pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered -rP -v -x tests
 	@echo "Info **********  End:   pytest ***************************************"
-pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
+pytest-ignore-mark: ## Run all tests without marker with pytest."
 	@echo "Info **********  Start: pytest ***************************************"
 	@echo "CONDA     =${CONDA_PREFIX}"
 	@echo "PYTHONPATH=${PYTHONPATH}"
+	@echo "----------------------------------------------------------------------"
+	pytest --version
+	@echo "----------------------------------------------------------------------"
+	pytest --dead-fixtures -m "not no_ci" tests
+	pytest --cache-clear --cov=${MODULE} --cov-report term-missing:skip-covered --cov-report=lcov -m "not no_ci" -v tests
+	@echo Info **********  End:   pytest ***************************************
+pytest-issue:       ## Run only the tests with pytest which are marked with 'issue'.
+	@echo Info **********  Start: pytest ***************************************
+	@echo CONDA     =${CONDA_PREFIX}
+	@echo PYTHONPATH=${PYTHONPATH}
 	@echo "----------------------------------------------------------------------"
 	pytest --version
 	@echo "----------------------------------------------------------------------"
@@ -357,7 +407,7 @@ ruff:               ## An extremely fast Python linter and code formatter.
 	@echo "Info **********  Start: ruff *****************************************"
 	ruff --version
 	@echo "----------------------------------------------------------------------"
-	ruff check
+	ruff check --fix
 	@echo "Info **********  End:   ruff *****************************************"
 
 sphinx:             ## Create the user documentation with Sphinx.

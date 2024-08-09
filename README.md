@@ -128,16 +128,18 @@ See that documentation for installation instructions
 Further IO-Aero software documentation can be found under the following links.
 
 - [IO-AIRPLANE-SIM - Airplane Simulator](https://io-aero.github.io/io-airplane-sim/)
-- [IO-COMMON - Common Elemments Libraries](https://io-aero.github.io/io-common/) 
+- [IO-COMMON - Common Elements](https://io-aero.github.io/io-common/) 
+- [IO-DATA-SOURCES - Data Source Documentation](https://io-aero.github.io/io-data-sources/) 
+- [IO-EVAA-MAP-CREATOR - A tool to create EVAA elevation maps](https://io-aero.github.io/io-evaa-map-creator/) 
 - [IO-LANDINGSPOT - Landing spot identification](https://io-aero.github.io/io-landingspot/) 
 - [IO-LIDAR - Lidar Map Processing](https://io-aero.github.io/io-lidar/) 
 - [IO-LIDAR-DATA - Lidar Data Management](https://io-aero.github.io/io-lidar-data/)
 - [IO-MAP-APPS - IO Map Applications](https://io-aero.github.io/io-map-apps/) 
 - [IO-RASTER - Raster Map Processing](https://io-aero.github.io/io-raster/) 
+- [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/)
+- [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/)
 - [IO-VECTOR - Vector Map Processing](https://io-aero.github.io/io-vector/) 
-- [IO-XPA-CORE - IO-XPA Data Processing](https://io-swiss.github.io/io-xpa-core/)
-<!-- - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/) -->
-<!-- - [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/) -->
+- [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
 <!-- - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) -->
 
 ## Directory and File Structure of this Repository

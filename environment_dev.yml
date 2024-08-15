@@ -7,7 +7,6 @@ dependencies:
   - haversine
   - lat_lon_parser
   - mlxtend
-  - nuitka
   - numpy
   - openpyxl
   - pandas

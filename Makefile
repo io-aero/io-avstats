@@ -15,8 +15,6 @@ ifeq (${OS},Windows_NT)
     DOCKER2EXE_RMDIR=if exist app-${DOCKER2EXE_DIR} rmdir /s /q app-${DOCKER2EXE_DIR}
     DOCKER2EXE_SCRIPT=bat
     DOCKER2EXE_TARGET=windows/amd64
-    NUITKA_OPTION=--msvc=latest
-    NUITKA_OS=windows
     PATH_SEP=\\
     PIP=pip
     PYTHON=python
@@ -49,12 +47,6 @@ else
     DOCKER2EXE_EXT=
     DOCKER2EXE_MOVE=mv
     DOCKER2EXE_RMDIR=rm -rf app-${DOCKER2EXE_DIR}
-    NUITKA_OPTION=--disable-ccache
-    ifeq (${OS},Linux)
-        NUITKA_OS=linux
-    else
-        NUITKA_OS=macos
-    endif
     PATH_SEP=/
     PIP=pip3
     PYTHON=python3
@@ -89,7 +81,7 @@ dev: format lint tests
 ## docs:               Check the API documentation, create and upload the user documentation.
 docs: sphinx
 ## everything:         Do everything precheckin
-everything: dev docs nuitka
+everything: dev docs
 ## final:              Format, lint and test the code and create the documentation.
 final: format lint docs tests
 ## format:             Format the code with Black and docformatter.
@@ -302,26 +294,6 @@ next-version:       ## Increment the version number.
 	@echo "----------------------------------------------------------------------"
 	${PYTHON} scripts/next_version.py
 	@echo "Info **********  End:   next version *********************************"
-
-# Nuitka: Python compiler written in Python
-# https://github.com/Nuitka/Nuitka
-nuitka:             ## Create a dynamic link library.
-	@echo "Info **********  Start: nuitka ***************************************"
-	@echo "MODULE       =${MODULE}"
-	@echo "NUITKA_OPTION=${NUITKA_OPTION}"
-	@echo "PIP          =${PIP}"
-	@echo "PYTHON       =${PYTHON}"
-	@echo "----------------------------------------------------------------------"
-	${PYTHON} -m nuitka ${NUITKA_OPTION} \
-			  --main=scripts/launcher.py \
-			  --onefile \
-			  --onefile-tempdir-spec=.temp \
-			  --output-dir=dist/${NUITKA_OS} \
-			  --output-filename=${MODULE} \
-			  --show-modules \
-			  --standalone \
-			  --static-libpython=no
-	@echo "Info **********  End:   nuitka ***************************************"
 
 # Pylint is a tool that checks for errors in Python code.
 # https://github.com/PyCQA/pylint/

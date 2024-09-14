@@ -1,7 +1,9 @@
 [default]
 check_value = "default"
+
 correction_work_dir = "data/correction"
 database_commit_size = 10000
+
 download_chunk_size = 524288
 download_file_aviation_occurrence_categories = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 download_file_countries_states_json = "data/Countries_States/countries_states.json"

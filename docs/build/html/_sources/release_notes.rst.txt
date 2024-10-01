@@ -2,6 +2,94 @@
 Release Notes
 =============
 
+Version 24.10.01
+================
+
+Release Date: 01.10.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.34.2
+     -
+     - upgrade
+   * - Miniconda
+     - 24.5.0
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.11.10
+     -
+     - upgrade
+   * - RazorSQL
+     - 10.6.1
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.07
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.11.3
+     -
+     - upgrade
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `avall.zip`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `10/01/2024 05:46:50 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
+
+Data source `up01OCT.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `10/01/2024 3:00:18 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01OCT.zip>`__\
+
 Version 24.09.22
 ================
 
@@ -254,8 +342,7 @@ Data source `up08SEP.zip`
 Version 24.09.01
 ================
 
-Release Date: 15conda activate ioavstats
-.09.2024
+Release Date: 15.09.2024
 
 Applied Software
 ----------------

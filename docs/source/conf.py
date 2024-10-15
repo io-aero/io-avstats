@@ -2,10 +2,14 @@
 
 import importlib.metadata
 import sys
+import warnings
 from datetime import UTC, datetime
 from pathlib import Path
 
 from docutils.nodes import inline  # type: ignore
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="imghdr")
+
 
 EXCLUDE_FROM_PDF = [
     "2023_*.md",

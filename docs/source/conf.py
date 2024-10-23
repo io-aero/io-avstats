@@ -1,6 +1,7 @@
 """Configuration file for the Sphinx documentation builder."""
 
 import importlib.metadata
+import logging
 import sys
 import warnings
 from datetime import UTC, datetime
@@ -8,8 +9,17 @@ from pathlib import Path
 
 from docutils.nodes import inline  # type: ignore
 
-warnings.filterwarnings("ignore", category=DeprecationWarning, module="imghdr")
+logging.getLogger("specific_logger_name").setLevel(logging.ERROR)
 
+warnings.filterwarnings(
+    "ignore",
+    message="'imghdr' is deprecated and slated for removal in Python 3.13",
+    category=DeprecationWarning,
+)
+
+warnings.filterwarnings(
+    "ignore", message="missing ScriptRunContext!.*", category=UserWarning,
+)
 
 EXCLUDE_FROM_PDF = [
     "2023_*.md",

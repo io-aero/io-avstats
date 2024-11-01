@@ -1,5 +1,190 @@
 # 2. Create the database schema
 
+## 2024-11-01
+
+```
+===========================================================================
+Start run_io_avstats_dev
+---------------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+---------------------------------------------------------------------------
+ENV_FOR_DYNACONF : prod
+PYTHONPATH       : .
+---------------------------------------------------------------------------
+TASK             : c_d_s
+APPLICATION      :
+COMPOSE_TASK     :
+MSACCESS         :
+MSEXCEL          :
+---------------------------------------------------------------------------
+The current time is:  5:37:51.65
+Enter the new time:
+===========================================================================
+2024-11-01 05:37:52,624 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.60 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-11-01 05:37:52,624 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-11-01 05:37:52,624 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-11-01 05:37:52,625 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-11-01 04:37:53.722175+00:00 : ===============================================================================.
+Progress update 2024-11-01 04:37:53.722175+00:00 : INFO.00.004 Start Launcher.
+2024-11-01 05:37:53,722 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'c_d_s']
+2024-11-01 05:37:53,722 [root] [launcher.py  ] INFO  Start launcher.py
+2024-11-01 05:37:53,732 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-11-01 04:37:53.734175+00:00 : INFO.00.005 Argument task='c_d_s'.
+Progress update 2024-11-01 04:37:53.734175+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-11-01 04:37:53.734175+00:00 : INFO.00.044 Creating the database schema.
+Progress update 2024-11-01 04:37:53.734175+00:00 : --------------------------------------------------------------------------------
+2024-11-01 05:37:53,735 [root] [db_utils.py  ] INFO  INFO.00.081 User  connect request host=localhost port=5432 dbname=postgres user=postgres
+Progress update 2024-11-01 04:37:53.814978+00:00 : INFO.00.082 Database role  already existing: io_aero.
+Progress update 2024-11-01 04:37:53.816977+00:00 : INFO.00.083 Database       already existing: io_aero_db.
+2024-11-01 05:37:53,816 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-11-01 04:37:54.069387+00:00 : INFO.00.007 Database table   is available: io_processed_data.
+Progress update 2024-11-01 04:37:54.073387+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-11-01 04:37:54.073387+00:00 : INFO.00.045 Updating the database schema.
+Progress update 2024-11-01 04:37:54.073387+00:00 : --------------------------------------------------------------------------------
+2024-11-01 05:37:54,073 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-11-01 04:37:54.233666+00:00 :
+Progress update 2024-11-01 04:37:54.233666+00:00 : Database table       : io_md_codes_eventsoe          <-----------------------------------.
+Progress update 2024-11-01 04:37:54.267818+00:00 : Number rows deleted  :       13.
+Progress update 2024-11-01 04:37:54.274749+00:00 : Number rows selected :       20.
+Progress update 2024-11-01 04:37:54.494444+00:00 : Number rows inserted :       13.
+Progress update 2024-11-01 04:37:54.494444+00:00 :
+Progress update 2024-11-01 04:37:54.494444+00:00 : Database table       : io_md_codes_phase             <-----------------------------------.
+Progress update 2024-11-01 04:37:54.519454+00:00 : Number rows deleted  :       12.
+Progress update 2024-11-01 04:37:54.520455+00:00 : Number rows selected :       20.
+Progress update 2024-11-01 04:37:54.736150+00:00 : Number rows inserted :       12.
+Progress update 2024-11-01 04:37:54.736150+00:00 :
+Progress update 2024-11-01 04:37:54.736150+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-11-01 04:37:54.737161+00:00 : INFO.00.084 Database table io_md_codes_phase: Load description_main_phase from file 'data/Main_Phases_of_Flight/main_phases_of_flight.xlsx'.
+Progress update 2024-11-01 04:37:54.737161+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-11-01 04:37:55.019404+00:00 : Number rows selected :       48.
+Progress update 2024-11-01 04:37:55.019404+00:00 : Number rows updated  :       12.
+Progress update 2024-11-01 04:37:55.019404+00:00 :
+Progress update 2024-11-01 04:37:55.019404+00:00 : Database table       : io_md_codes_category          <-----------------------------------.
+Progress update 2024-11-01 04:37:55.044444+00:00 : Number rows deleted  :        4.
+Progress update 2024-11-01 04:37:55.047445+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:37:55.135845+00:00 : Number rows inserted :        4.
+Progress update 2024-11-01 04:37:55.135845+00:00 :
+Progress update 2024-11-01 04:37:55.136845+00:00 : Database table       : io_md_codes_subcategory       <-----------------------------------.
+Progress update 2024-11-01 04:37:55.137845+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:37:55.302476+00:00 : Number rows inserted :        7.
+Progress update 2024-11-01 04:37:55.302476+00:00 :
+Progress update 2024-11-01 04:37:55.302476+00:00 : Database table       : io_md_codes_section           <-----------------------------------.
+Progress update 2024-11-01 04:37:55.304477+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:37:55.485204+00:00 : Number rows inserted :       10.
+Progress update 2024-11-01 04:37:55.486204+00:00 :
+Progress update 2024-11-01 04:37:55.486204+00:00 : Database table       : io_md_codes_subsection        <-----------------------------------.
+Progress update 2024-11-01 04:37:55.488205+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:37:55.760635+00:00 : Number rows inserted :       11.
+Progress update 2024-11-01 04:37:55.760635+00:00 :
+Progress update 2024-11-01 04:37:55.761636+00:00 : Database table       : io_md_codes_modifier          <-----------------------------------.
+Progress update 2024-11-01 04:37:55.785743+00:00 : Number rows deleted  :        8.
+Progress update 2024-11-01 04:37:55.786753+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:37:55.927630+00:00 : Number rows inserted :        8.
+Progress update 2024-11-01 04:37:56.004472+00:00 : INFO.00.070 Materialized database view is dropped: io_app_ae1982.
+Progress update 2024-11-01 04:37:56.027473+00:00 : INFO.00.067 Database view    is dropped:   io_lat_lng_issues.
+Progress update 2024-11-01 04:37:56.061039+00:00 : INFO.00.032 Database view    is created: io_lat_lng_issues.
+Progress update 2024-11-01 04:39:16.972523+00:00 : INFO.00.068 Materialized database view is created: io_app_ae1982.
+Progress update 2024-11-01 04:39:17.904614+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_cictt_codes.
+Progress update 2024-11-01 04:39:18.412907+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_ev_highest_injury.
+Progress update 2024-11-01 04:39:18.904969+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_ev_type.
+Progress update 2024-11-01 04:39:19.388096+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_far_parts.
+Progress update 2024-11-01 04:39:19.887883+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_inj_f_grnd.
+Progress update 2024-11-01 04:39:20.370739+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_inj_tot_f.
+Progress update 2024-11-01 04:39:20.845935+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_latlong_acq.
+Progress update 2024-11-01 04:39:21.337042+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_no_aircraft.
+Progress update 2024-11-01 04:39:21.811799+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_preventable_events.
+Progress update 2024-11-01 04:39:22.345967+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_tll_parameters.
+2024-11-01 05:39:22,346 [root] [db_utils.py  ] INFO  INFO.00.081 User  connect request host=localhost port=5432 dbname=io_aero_db user=postgres
+Progress update 2024-11-01 04:39:22.503748+00:00 : INFO.00.018 Database role    is dropped:   guest.
+Progress update 2024-11-01 04:39:22.537262+00:00 : INFO.00.016 Database role    is available: guest.
+Progress update 2024-11-01 04:39:22.611969+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-11-01 04:39:22.611969+00:00 :                   88 s - Total time launcher.
+Progress update 2024-11-01 04:39:22.611969+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-11-01 04:39:22.612969+00:00 : ===============================================================================.
+2024-11-01 05:39:23,714 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.60 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-11-01 05:39:23,715 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-11-01 05:39:23,715 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-11-01 05:39:23,715 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-11-01 04:39:24.664609+00:00 : ===============================================================================.
+Progress update 2024-11-01 04:39:24.664609+00:00 : INFO.00.004 Start Launcher.
+2024-11-01 05:39:24,664 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'u_d_s']
+2024-11-01 05:39:24,664 [root] [launcher.py  ] INFO  Start launcher.py
+2024-11-01 05:39:24,674 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-11-01 04:39:24.675116+00:00 : INFO.00.005 Argument task='u_d_s'.
+Progress update 2024-11-01 04:39:24.675116+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-11-01 04:39:24.675116+00:00 : INFO.00.045 Updating the database schema.
+Progress update 2024-11-01 04:39:24.675116+00:00 : --------------------------------------------------------------------------------
+2024-11-01 05:39:24,676 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-11-01 04:39:24.822964+00:00 :
+Progress update 2024-11-01 04:39:24.822964+00:00 : Database table       : io_md_codes_eventsoe          <-----------------------------------.
+Progress update 2024-11-01 04:39:24.852817+00:00 : Number rows deleted  :       13.
+Progress update 2024-11-01 04:39:24.859832+00:00 : Number rows selected :       20.
+Progress update 2024-11-01 04:39:25.185663+00:00 : Number rows inserted :       13.
+Progress update 2024-11-01 04:39:25.185663+00:00 :
+Progress update 2024-11-01 04:39:25.185663+00:00 : Database table       : io_md_codes_phase             <-----------------------------------.
+Progress update 2024-11-01 04:39:25.211312+00:00 : Number rows deleted  :       12.
+Progress update 2024-11-01 04:39:25.213317+00:00 : Number rows selected :       20.
+Progress update 2024-11-01 04:39:25.510738+00:00 : Number rows inserted :       12.
+Progress update 2024-11-01 04:39:25.511738+00:00 :
+Progress update 2024-11-01 04:39:25.511738+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-11-01 04:39:25.511738+00:00 : INFO.00.084 Database table io_md_codes_phase: Load description_main_phase from file 'data/Main_Phases_of_Flight/main_phases_of_flight.xlsx'.
+Progress update 2024-11-01 04:39:25.511738+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-11-01 04:39:25.893904+00:00 : Number rows selected :       48.
+Progress update 2024-11-01 04:39:25.894903+00:00 : Number rows updated  :       12.
+Progress update 2024-11-01 04:39:25.894903+00:00 :
+Progress update 2024-11-01 04:39:25.894903+00:00 : Database table       : io_md_codes_category          <-----------------------------------.
+Progress update 2024-11-01 04:39:25.927507+00:00 : Number rows deleted  :        4.
+Progress update 2024-11-01 04:39:25.931507+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:39:26.035700+00:00 : Number rows inserted :        4.
+Progress update 2024-11-01 04:39:26.035700+00:00 :
+Progress update 2024-11-01 04:39:26.035700+00:00 : Database table       : io_md_codes_subcategory       <-----------------------------------.
+Progress update 2024-11-01 04:39:26.037711+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:39:26.211044+00:00 : Number rows inserted :        7.
+Progress update 2024-11-01 04:39:26.211044+00:00 :
+Progress update 2024-11-01 04:39:26.211044+00:00 : Database table       : io_md_codes_section           <-----------------------------------.
+Progress update 2024-11-01 04:39:26.213045+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:39:26.460682+00:00 : Number rows inserted :       10.
+Progress update 2024-11-01 04:39:26.460682+00:00 :
+Progress update 2024-11-01 04:39:26.460682+00:00 : Database table       : io_md_codes_subsection        <-----------------------------------.
+Progress update 2024-11-01 04:39:26.462682+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:39:26.735397+00:00 : Number rows inserted :       11.
+Progress update 2024-11-01 04:39:26.735397+00:00 :
+Progress update 2024-11-01 04:39:26.736392+00:00 : Database table       : io_md_codes_modifier          <-----------------------------------.
+Progress update 2024-11-01 04:39:26.761069+00:00 : Number rows deleted  :        8.
+Progress update 2024-11-01 04:39:26.762069+00:00 : Number rows selected :       13.
+Progress update 2024-11-01 04:39:27.002549+00:00 : Number rows inserted :        8.
+Progress update 2024-11-01 04:39:27.075190+00:00 : INFO.00.070 Materialized database view is dropped: io_app_ae1982.
+Progress update 2024-11-01 04:39:27.102194+00:00 : INFO.00.067 Database view    is dropped:   io_lat_lng_issues.
+Progress update 2024-11-01 04:39:27.143387+00:00 : INFO.00.032 Database view    is created: io_lat_lng_issues.
+Progress update 2024-11-01 04:40:46.905414+00:00 : INFO.00.068 Materialized database view is created: io_app_ae1982.
+Progress update 2024-11-01 04:40:47.863428+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_cictt_codes.
+Progress update 2024-11-01 04:40:48.355405+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_ev_highest_injury.
+Progress update 2024-11-01 04:40:48.838476+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_ev_type.
+Progress update 2024-11-01 04:40:49.329706+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_far_parts.
+Progress update 2024-11-01 04:40:49.821155+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_inj_f_grnd.
+Progress update 2024-11-01 04:40:50.296129+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_inj_tot_f.
+Progress update 2024-11-01 04:40:50.795694+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_latlong_acq.
+Progress update 2024-11-01 04:40:51.304154+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_no_aircraft.
+Progress update 2024-11-01 04:40:51.787273+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_preventable_events.
+Progress update 2024-11-01 04:40:52.328502+00:00 : INFO.00.077 Database index  is available: io_app_ae1982_tll_parameters.
+2024-11-01 05:40:52,329 [root] [db_utils.py  ] INFO  INFO.00.081 User  connect request host=localhost port=5432 dbname=io_aero_db user=postgres
+Progress update 2024-11-01 04:40:52.470087+00:00 : INFO.00.018 Database role    is dropped:   guest.
+Progress update 2024-11-01 04:40:52.495101+00:00 : INFO.00.016 Database role    is available: guest.
+Progress update 2024-11-01 04:40:52.562150+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-11-01 04:40:52.562150+00:00 :                   87 s - Total time launcher.
+Progress update 2024-11-01 04:40:52.563151+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-11-01 04:40:52.563151+00:00 : ===============================================================================.
+
+---------------------------------------------------------------------------
+The current time is:  5:40:52.78
+Enter the new time:
+---------------------------------------------------------------------------
+End   run_io_avstats_dev
+===========================================================================
+```
+
+## 2023-08-22
+
 ```
 =======================================================================
 Start run_io_avstats

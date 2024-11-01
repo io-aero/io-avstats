@@ -18,7 +18,9 @@ warnings.filterwarnings(
 )
 
 warnings.filterwarnings(
-    "ignore", message="missing ScriptRunContext!.*", category=UserWarning,
+    "ignore",
+    message="missing ScriptRunContext!.*",
+    category=UserWarning,
 )
 
 EXCLUDE_FROM_PDF = [

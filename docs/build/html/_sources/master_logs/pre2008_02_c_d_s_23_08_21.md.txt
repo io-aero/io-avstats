@@ -52,7 +52,7 @@ Progress update 2023-08-22 01:28:46.832774 : INFO.00.007 Database table is avail
 Progress update 2023-08-22 01:28:46.882033 : INFO.00.007 Database table is available: io_md_codes_modifier.
 Progress update 2023-08-22 01:28:47.043370 : INFO.00.007 Database table is available: io_md_codes_eventsoe.
 Progress update 2023-08-22 01:28:47.116037 : INFO.00.007 Database table is available: io_md_codes_phase.
-Progress update 2023-08-22 01:28:47.165920 : INFO.00.007 Database table is available: io_processed_files.
+Progress update 2023-08-22 01:28:47.165920 : INFO.00.007 Database table is available: io_processed_table.
 Progress update 2023-08-22 01:28:47.249276 : INFO.00.007 Database table is available: io_lat_lng.
 Progress update 2023-08-22 01:28:47.299611 : INFO.00.007 Database table is available: io_sequence_of_events.
 Progress update 2023-08-22 01:28:47.357551 : INFO.00.007 Database table is available: io_states.

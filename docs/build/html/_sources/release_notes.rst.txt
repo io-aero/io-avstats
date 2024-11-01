@@ -2,6 +2,125 @@
 Release Notes
 =============
 
+Version 24.11.01
+================
+
+Release Date: 01.11.2024
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker Desktop
+     - 4.35.0
+     -
+     - upgrade
+   * - Miniconda
+     - 24.7.1
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.11.10
+     -
+     -
+   * - RazorSQL
+     - 10.6.3
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.08
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.11.5
+     -
+     -
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`FAA - Aeronautical Data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+....................................................................................
+
+Data source `Airports`
+^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 10/31/2024 <https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.000338%2C-1.633886%2C2.00>`__\
+
+Data source `2025-2029 NPIAS`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 2025-2029 <https://www.faa.gov/airports/planning_capacity/npias/current>`__\
+
+Data source `Runways`
+^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 10/31/2024 <https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.000126%2C-1.628764%2C2.00>`__\
+
+`simplemaps - Interactive Maps & Data <https://simplemaps.com/>`__\
+..................................................................................
+
+Data source `US Zip Codes Database`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 1.86 <https://simplemaps.com/data/us-zips>`__\
+
+`United States Zip Codes.org <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `ZIP Code Database`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `42,735 ZIP codes <https://www.unitedstateszipcodes.org/zip-code-database/>`__\
+
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `avall.zip`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `11/01/2024 05:51:56 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
+
+Data source `up01NOV.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `11/01/2024 3:00:36 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01OCT.zip>`__\
+
 Version 24.10.22
 ================
 
@@ -1674,7 +1793,7 @@ Minimal Requirements Visual Studio Community 2022
 Processed files
 ---------------
 
-`FAA - Aeronautical data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+`FAA - Aeronautical Data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
 ....................................................................................
 
 Data source `Airports`
@@ -1858,7 +1977,7 @@ Windows-specific Software
 Processed files
 ---------------
 
-`FAA - Aeronautical data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+`FAA - Aeronautical Data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
 ....................................................................................
 
 Data source `Airports`
@@ -2041,7 +2160,7 @@ Minimal Requirements Visual Studio Community 2022
 Processed files
 ---------------
 
-`FAA - Aeronautical data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+`FAA - Aeronautical Data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
 ....................................................................................
 
 Data source `Airports`

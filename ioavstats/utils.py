@@ -34,9 +34,14 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
         # pylint: disable=line-too-long
         cur.execute(
             """
-        SELECT table_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
-          FROM io_processed_table
-         WHERE table_name = 'events';
+            SELECT data_source,
+                   MAX(TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY'))
+              FROM io_processed_data
+             WHERE table_name = 'events'
+             GROUP BY data_source,
+                      COALESCE(last_processed, first_processed)
+             ORDER BY COALESCE(last_processed, first_processed) DESC
+             LIMIT 1;
         """,
         )
 

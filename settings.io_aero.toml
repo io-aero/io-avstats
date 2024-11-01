@@ -1,23 +1,31 @@
 [default]
 check_value = "default"
-
 correction_work_dir = "data/correction"
-database_commit_size = 10000
 
+database_commit_size = 10000
 download_chunk_size = 524288
 download_file_aviation_occurrence_categories = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
+download_file_aviation_occurrence_categories_url = "https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf"
 download_file_countries_states_json = "data/Countries_States/countries_states.json"
 download_file_faa_airports = "data/FAA_Airports/Airports.csv"
-download_file_faa_npias = "data/FAA_Airports/NPIAS-2023-2027-Appendix-A.xlsx"
+download_file_faa_airports_url = "https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.000338%2C-1.633886%2C2.00"
+download_file_faa_npias = "data/FAA_Airports/ARP-NPIAS-2025-2029-AppendixA.xlsx"
+download_file_faa_npias_url = "https://www.faa.gov/airports/planning_capacity/npias/current"
 download_file_faa_runways = "data/FAA_Airports/Runways.csv"
+download_file_faa_runways_url = "https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.000126%2C-1.628764%2C2.00"
 download_file_main_phases_of_flight = "data/Main_Phases_of_Flight/main_phases_of_flight.xlsx"
 download_file_sequence_of_events = "data/Sequence_of_Events/CICTT_SOE_MAP.csv"
+download_file_sequence_of_events_remarks = "File from NTSB via Loyd"
 download_file_simplemaps_us_cities = "data/simplemaps/uscities.xlsx"
+download_file_simplemaps_us_cities_url = "https://simplemaps.com/data/us-cities"
 download_file_simplemaps_us_zips = "data/simplemaps/uszips.xlsx"
+download_file_simplemaps_us_zips_url = "https://simplemaps.com/data/us-zips"
 download_file_zip_codes_org = "data/United States Zip Codes.org/zip_code_database.xls"
+download_file_zip_codes_org_url = "https://www.unitedstateszipcodes.org/zip-code-database/"
 download_timeout = 10
 download_url_ntsb_prefix = "https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5C"
 download_work_dir = "data/download"
+
 graph_font_size_legend = 12
 graph_font_size_legend_pie = 12
 graph_font_size_legend_title = 12
@@ -26,11 +34,21 @@ graph_font_size_xaxes = 12
 graph_font_size_xaxes_title = 14
 graph_font_size_yaxes = 12
 graph_font_size_yaxes_title = 14
+
 is_runtime_environment_local = true
 is_verbose = true
+
 max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
+
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
+opendatasoft_us_state_boundaries_file = "us-state-boundaries.csv"
+opendatasoft_us_state_boundaries_file_url = "https://public.opendatasoft.com/explore/dataset/us-state-boundaries/export/"
+opendatasoft_us_state_boundaries_url = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/us-state-boundaries/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+opendatasoft_timeout = 10
+opendatasoft_transaction_size = 500
+opendatasoft_workdir = "data/opendatasoft"
+
 postgres_connection_port = 5432
 postgres_container_name = "io_avstats_db"
 postgres_database_schema = "public"
@@ -43,11 +61,15 @@ postgres_user = "io_aero"
 postgres_user_admin = "postgres"
 postgres_user_guest = "guest"
 postgres_version = "16.3"
+
 razorsql_jar_file_windows = "C:\\Program Files\\RazorSQL\\razorsql.jar"
 razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2024.01.22_avall.sql"
+
+rest_countries_url = "https://restcountries.com/v3.1/all"
+
 terminal_area_distance_nmi = 5
 
 [prod]
@@ -63,6 +85,7 @@ graph_font_size_yaxes_title = 30
 [test]
 check_value = "test"
 correction_work_dir = "data/correction_test"
+
 download_work_dir = "data/download_test"
 download_file_faa_airports = "data/FAA_Airports/Airports_pytest.csv"
 download_file_faa_npias = "data/FAA_Airports/NPIAS-2023-2027-Appendix-A_pytest.xlsx"
@@ -70,6 +93,7 @@ download_file_faa_runways = "data/FAA_Airports/Runways_pytest.csv"
 download_file_simplemaps_us_cities = "data/simplemaps/uscities_pytest.xlsx"
 download_file_simplemaps_us_zips = "data/simplemaps/uszips_pytest.xlsx"
 download_file_zip_codes_org = "data/United States Zip Codes.org/zip_code_database_pytest.xls"
+
 postgres_connection_port = 5433
 postgres_container_name = "io_avstats_db_test"
 postgres_pgdata ="data/postgres_test"

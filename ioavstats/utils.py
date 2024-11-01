@@ -3,14 +3,12 @@
 # be found in the LICENSE.md file.
 """Application Utilities."""
 import argparse
-import logging
 from datetime import UTC, datetime
 
 import psycopg
 import streamlit as st
 from dynaconf import Dynaconf  # type: ignore
-from iocommon import io_glob
-from psycopg import connection, cursor
+from psycopg import connection
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
@@ -36,11 +34,9 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
         # pylint: disable=line-too-long
         cur.execute(
             """
-        SELECT file_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
-          FROM io_processed_files
-         WHERE file_name LIKE 'up%'
-            OR file_name IN ('Pre2008', 'avall')
-         ORDER BY COALESCE(last_processed, first_processed) DESC;
+        SELECT table_name, TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY')
+          FROM io_processed_table
+         WHERE table_name = 'events';
         """,
         )
 
@@ -224,37 +220,3 @@ Latest NTSB database: **{file_name} - {processed}**
 [Disclaimer](https://www.io-aero.com/disclaimer)
     """,
     )
-
-
-# ------------------------------------------------------------------
-# Update the database table io_processed_files.
-# ------------------------------------------------------------------
-def upd_io_processed_files(file_name: str, cur_pg: cursor) -> None:
-    """Update the database table io_processed_files."""
-    logging.debug(io_glob.LOGGER_START)
-
-    cur_pg.execute(
-        """
-    INSERT INTO io_processed_files AS ipf (
-           file_name,
-           first_processed,
-           counter
-           ) VALUES (
-           %s,%s,%s
-           )
-    ON CONFLICT ON CONSTRAINT io_processed_files_pkey
-    DO UPDATE
-       SET last_processed = %s,
-           counter = ipf.counter + 1
-     WHERE ipf.file_name = %s;
-    """,
-        (
-            file_name,
-            datetime.now(tz=UTC),
-            1,
-            datetime.now(tz=UTC),
-            file_name,
-        ),
-    )
-
-    logging.debug(io_glob.LOGGER_END)

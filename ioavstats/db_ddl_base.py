@@ -1354,7 +1354,7 @@ def _create_dll_create_tables_io() -> None:
     _create_dll_table_io_md_codes_modifier()
     _create_dll_table_io_md_codes_eventsoe()
     _create_dll_table_io_md_codes_phase()
-    _create_dll_table_io_processed_files()
+    _create_dll_table_io_processed_data()
 
     # ------------------------------------------------------------------
     # Level 2 - FK io_countries.country
@@ -2145,28 +2145,35 @@ def _create_dll_table_io_msaccess_file_alter() -> None:
         "io_msaccess_file"
     ] = """
         ALTER TABLE IF EXISTS io_msaccess_file
-              RENAME TO io_processed_files;
+              RENAME TO io_processed_data;
     """
 
     logging.debug(io_glob.LOGGER_END)
 
 
 # ------------------------------------------------------------------
-# Adds the DDL statement for setting up io_processed_files.
+# Adds the DDL statement for setting up io_processed_data.
 # ------------------------------------------------------------------
-def _create_dll_table_io_processed_files() -> None:
+def _create_dll_table_io_processed_data() -> None:
     logging.debug(io_glob.LOGGER_START)
 
     DLL_TABLE_STMNTS[
-        "io_processed_files"
+        "io_processed_data"
     ] = """
-        CREATE TABLE IF NOT EXISTS io_processed_files
+        CREATE TABLE IF NOT EXISTS io_processed_data
         (
-            file_name       VARCHAR(100),
-            first_processed TIMESTAMP NOT NULL,
-            last_processed  TIMESTAMP,
-            counter         INT NOT NULL,
-            PRIMARY KEY (file_name)
+            table_name        VARCHAR(63) NOT NULL,
+            data_source       TEXT        NOT NULL,
+            counter_processed INT         NOT NULL DEFAULT 0,
+            first_processed   TIMESTAMP   NOT NULL,
+            last_processed    TIMESTAMP,
+            remarks           TEXT,
+            rows_deleted      INT         NOT NULL DEFAULT 0,
+            rows_modified     INT         NOT NULL DEFAULT 0,
+            rows_new          INT         NOT NULL DEFAULT 0,
+            rows_total        INT         NOT NULL DEFAULT 0,
+            url               TEXT,
+            PRIMARY KEY (table_name, data_source)
         );
     """
 
@@ -2183,10 +2190,10 @@ def _create_dll_table_io_sequence_of_events() -> None:
     ] = """
         CREATE TABLE IF NOT EXISTS io_sequence_of_events
         (
-            soe_no          VARCHAR(3) NOT NULL,
+            soe_no          VARCHAR(3)   NOT NULL,
             cictt_code      VARCHAR(10),
             meaning         VARCHAR(100) NOT NULL,
-            first_processed TIMESTAMP NOT NULL,
+            first_processed TIMESTAMP    NOT NULL,
             last_processed  TIMESTAMP,
             last_seen       TIMESTAMP,
             PRIMARY KEY (soe_no),

@@ -19,7 +19,7 @@ from psycopg.errors import (
     UniqueViolation,  # pylint: disable=no-name-in-module
 )
 
-from ioavstats import glob_local, utils, utils_msaccess
+from ioavstats import glob_local, utils_msaccess
 
 # -----------------------------------------------------------------------------
 # Global variables.
@@ -284,11 +284,6 @@ def _delete_ntsb_data(
     # Finalize processing.
     # ------------------------------------------------------------------
 
-    utils.upd_io_processed_files(
-        io_settings.settings.download_file_sequence_of_events,
-        cur_pg,
-    )
-
     cur_pg.close()
     conn_pg.close()
 
@@ -530,7 +525,12 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     conn_pg.autocommit = True
 
     # pylint: disable=R0801
-    utils.upd_io_processed_files(msaccess, cur_pg)
+    db_utils.upd_io_processed_data(
+        cur_pg=cur_pg,
+        table_name="events",
+        data_source=msaccess,
+        task_timestamp=IO_LAST_SEEN,
+    )
 
     cur_pg.close()
     conn_pg.close()

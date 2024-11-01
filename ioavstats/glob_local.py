@@ -122,6 +122,7 @@ FATAL_00_933 = (
 FATAL_00_934 = (
     "FATAL.00.934 Fatal Error - The file '{file_name}' causes the error '{error}'"
 )
+FATAL_00_971 = "FATAL.00.971 Fatal Error - Request failed '{exception}'"
 
 FILE_EXTENSION_MDB = "mdb"
 FILE_EXTENSION_SQL = "sql"
@@ -232,7 +233,7 @@ INFO_00_063 = "INFO.00.063 Processed data source '{data_source}'"
 INFO_00_064 = "INFO.00.064 Verification of table '{table}' column(s) '{column}'"
 INFO_00_065 = "INFO.00.065 Cleansing PostgreSQL data"
 INFO_00_066 = "INFO.00.066 Cleansing table '{table}' column '{column}'"
-INFO_00_067 = "INFO.00.067 Database view    is dropped:   {view}"
+INFO_00_067 = "INFO.00.067 Database view    is dropped: {view}"
 INFO_00_068 = "INFO.00.068 Materialized database view is created: {view}"
 INFO_00_069 = "INFO.00.069 Materialized database view is refreshed: {view}"
 INFO_00_070 = "INFO.00.070 Materialized database view is dropped: {view}"
@@ -269,6 +270,7 @@ INFO_00_091 = "INFO.00.091 Database type    is available: {type}"
 INFO_00_092 = (
     "INFO.00.092 Database table io_runways: " + "Load data from file '{filename}'"
 )
+INFO_00_132 = "INFO.00.132 Processing file '{file_name}'"
 
 INFORMATION_NOT_YET_AVAILABLE = "n/a"
 

@@ -123,6 +123,7 @@ FATAL_00_934 = (
     "FATAL.00.934 Fatal Error - The file '{file_name}' causes the error '{error}'"
 )
 FATAL_00_971 = "FATAL.00.971 Fatal Error - Request failed '{exception}'"
+FATAL_00_972 = "FATAL.00.972 Fatal Error fetching data: {error}"
 
 FILE_EXTENSION_MDB = "mdb"
 FILE_EXTENSION_SQL = "sql"
@@ -271,6 +272,7 @@ INFO_00_092 = (
     "INFO.00.092 Database table io_runways: " + "Load data from file '{filename}'"
 )
 INFO_00_132 = "INFO.00.132 Processing file '{file_name}'"
+INFO_00_133 = "INFO.00.133 Data successfully saved to '{file_name}'"
 
 INFORMATION_NOT_YET_AVAILABLE = "n/a"
 

@@ -2,7 +2,6 @@
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 """Managing the database schema of the PostgreSQL database."""
-import json
 import logging
 import os
 import shutil
@@ -13,7 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-from iocommon import db_utils, io_glob, io_settings, io_utils
+from iocommon import db_utils, io_settings, io_utils
 from iocommon.io_utils import extract_column_value, setup_retry_session
 from psycopg import connection, cursor, sql
 from psycopg.errors import (
@@ -38,6 +37,7 @@ COLUMN_CICTT_CODE_UNDERSCORE = "CICTT_Code"
 COLUMN_CITY = "city"
 COLUMN_COMP_CODE = "COMP_CODE"
 COLUMN_COUNTRY_LOWER = "country"
+COLUMN_COUNTRY_NAME = "country_name"
 COLUMN_COUNTRY_UPPER = "COUNTRY"
 COLUMN_DEC_LATITUDE = "dec_latitude"
 COLUMN_DEC_LONGITUDE = "dec_longitude"
@@ -129,7 +129,16 @@ OPENDATASOFT_TRANSACTION_SIZE = int(
 )
 OPENDATASOFT_WORKDIR = io_settings.settings.opendatasoft_workdir
 
+REST_COUNTRIES_FILE = io_settings.settings.rest_countries_file
+REST_COUNTRIES_TIMEOUT = int(
+    io_settings.settings.rest_countries_timeout,
+)
+REST_COUNTRIES_TRANSACTION_SIZE = int(
+    io_settings.settings.rest_countries_transaction_size,
+)
 REST_COUNTRIES_URL = io_settings.settings.rest_countries_url
+REST_COUNTRIES_URL_URL = io_settings.settings.rest_countries_url_url
+REST_COUNTRIES_WORKDIR = io_settings.settings.rest_countries_workdir
 
 
 # ------------------------------------------------------------------
@@ -152,9 +161,8 @@ def _download_file(
 
     """
     # Log the URL of the file to be downloaded
-    logging.info("")
+    logging.info("=" * 80)
     logging.info(glob_local.INFO_00_132.replace("{file_name}", url))
-    logging.info("")
 
     # Step 1: Download the ZIP file with retries
     session = setup_retry_session(
@@ -663,96 +671,258 @@ def _load_aviation_occurrence_categories() -> None:
 
 
 # ------------------------------------------------------------------
-# Load country data from a JSON file.
+# Load country data.
 # ------------------------------------------------------------------
-def _load_country_data(
-    conn_pg: connection,
-    cur_pg: cursor,
-) -> None:
-    filename_json = (
-        Path.cwd()
-        / io_settings.settings.download_file_countries_states_json.replace("/", os.sep)
+def _load_country_data(file_path: Path) -> None:
+    logging.info("=" * 80)
+    logging.info(glob_local.INFO_00_132.replace("{file_name}", str(file_path)))
+    logging.info("-" * 80)
+
+    if not file_path.exists():
+        logging.fatal(glob_local.FATAL_00_931.replace("{file_name}", str(file_path)))
+        sys.exit(1)
+
+    insert_query = sql.SQL(
+        """
+        INSERT INTO io_countries AS ic (
+               country,
+               country_name,
+               dec_latitude,
+               dec_longitude,
+               first_processed
+               ) VALUES (
+               %s,%s,%s,%s,%s
+               );
+    """,
     )
 
-    if not Path(filename_json).is_file():
-        # ERROR.00.934 The country and state data file '{filename}' is missing
+    update_query = sql.SQL(
+        """
+        UPDATE io_countries ic
+           SET country_name = %s,
+               dec_latitude = %s,
+               dec_longitude = %s,
+               last_processed = %s
+         WHERE ic.country = %s
+           AND (ic.country_name IS DISTINCT FROM %s
+             OR ic.dec_latitude IS DISTINCT FROM %s
+             OR ic.dec_longitude IS DISTINCT FROM %s);
+    """,
+    )
+
+    # --------------------------------------------------------------
+    # Load the airport base data in a Pandas dataframe.
+    # --------------------------------------------------------------
+
+    dataframe: pd.DataFrame = pd.DataFrame()
+
+    try:
+        columns = [
+            COLUMN_COUNTRY_LOWER,
+            COLUMN_COUNTRY_NAME,
+            COLUMN_DEC_LATITUDE,
+            COLUMN_DEC_LONGITUDE,
+        ]
+
+        # Attempt to read the csv file
+        dataframe = pd.read_csv(str(file_path), sep=",", usecols=columns)
+
+    except FileNotFoundError:
         io_utils.terminate_fatal(
-            glob_local.ERROR_00_934.replace("{filename}", filename_json),
+            glob_local.FATAL_00_931.replace("{file_name}", str(file_path)),
         )
 
+    except pd.errors.EmptyDataError:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_932.replace("{file_name}", str(file_path)),
+        )
+
+    except ValueError as err:
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_933.replace("{file_name}", str(file_path)).replace(
+                "{error}",
+                str(err),
+            ),
+        )
+
+    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+        io_utils.terminate_fatal(
+            glob_local.FATAL_00_934.replace("{file_name}", str(file_path)).replace(
+                "{error}",
+                str(exc),
+            ),
+        )
+
+    # --------------------------------------------------------------
+    # Create database connection.
+    # --------------------------------------------------------------
+
+    logging.info("")
+    conn_pg, cur_pg = db_utils.get_postgres_cursor(autocommit=False)
+    logging.info("")
+
+    # --------------------------------------------------------------
+    # Start processing airport base data.
+    # --------------------------------------------------------------
+
     count_insert = 0
-    count_select = 0
+    count_relevant = 0
     count_update = 0
 
-    with Path(filename_json).open(encoding=io_glob.FILE_ENCODING_DEFAULT) as input_file:
-        input_data = json.load(input_file)
+    primary_keys = _load_io_countries_primary_keys(cur_pg)
 
-        for record in input_data:
-            count_select += 1
+    count_select = len(primary_keys)
 
-            if record["type"] == "country":
-                try:
-                    cur_pg.execute(
-                        """
-                    INSERT INTO io_countries (
-                           country,country_name,dec_latitude,dec_longitude,first_processed
-                           ) VALUES (
-                           %s,%s,%s,%s,%s);
-                    """,
-                        (
-                            record["country"],
-                            record["country_name"],
-                            record["dec_latitude"],
-                            record["dec_longitude"],
-                            IO_LAST_SEEN,
-                        ),
-                    )
-                    count_insert += 1
-                except UniqueViolation:
-                    # pylint: disable=line-too-long
-                    cur_pg.execute(
-                        """
-                    UPDATE io_countries SET
-                           country_name = %s,
-                           dec_latitude = %s,
-                           dec_longitude = %s,
-                           last_processed = %s
-                     WHERE country = %s
-                       AND NOT (country_name = %s
-                            AND dec_latitude = %s
-                            AND dec_longitude = %s);
-                    """,
-                        (
-                            record["country_name"],
-                            record["dec_latitude"],
-                            record["dec_longitude"],
-                            IO_LAST_SEEN,
-                            record["country"],
-                            record["country_name"],
-                            record["dec_latitude"],
-                            record["dec_longitude"],
-                        ),
-                    )
-                    count_update += cur_pg.rowcount
+    if count_select > 0:
+        info_msg = f"Number rows existing : {count_select!s:>8}"
+        logging.info(info_msg)
+        count_select = 0
 
-    # wwe tbd db_utils.upd_io_processed_data?
+    insert_data = []
+    update_data = []
 
-    conn_pg.commit()
+    # ------------------------------------------------------------------
+    # Load the country data.
+    # ------------------------------------------------------------------
 
-    io_utils.progress_msg(f"Number rows selected : {count_select!s:>8}")
+    for _index, row in dataframe.iterrows():
+        count_select += 1
 
+        country = extract_column_value(row, COLUMN_COUNTRY_LOWER, is_required=True)
+        if country == COLUMN_COUNTRY_LOWER:
+            continue
+
+        count_relevant += 1
+
+        country_name = extract_column_value(row, COLUMN_COUNTRY_NAME, is_required=True)
+        dec_latitude = extract_column_value(
+            row,
+            COLUMN_DEC_LATITUDE,
+            float,
+            is_required=True,
+        )
+        dec_longitude = extract_column_value(
+            row,
+            COLUMN_DEC_LONGITUDE,
+            float,
+            is_required=True,
+        )
+
+        if country in primary_keys:
+            update_data.append(
+                (
+                    country_name,
+                    dec_latitude,
+                    dec_longitude,
+                    IO_LAST_SEEN,
+                    country,
+                    country_name,
+                    dec_latitude,
+                    dec_longitude,
+                ),
+            )
+        else:
+            insert_data.append(
+                (
+                    country,
+                    country_name,
+                    dec_latitude,
+                    dec_longitude,
+                    IO_LAST_SEEN,
+                ),
+            )
+
+        if count_relevant % REST_COUNTRIES_TRANSACTION_SIZE == 0:
+            cur_pg.executemany(insert_query, insert_data)
+            count_insert += cur_pg.rowcount
+            cur_pg.executemany(update_query, update_data)
+            count_update += cur_pg.rowcount
+            conn_pg.commit()
+            info_msg = (
+                f"Processed rows       : {count_relevant!s:>8} - "
+                f"inserted: {count_insert!s:>8} - updated: {count_update!s:>8}"
+            )
+            logging.info(info_msg)
+            insert_data = []
+            update_data = []
+
+    cur_pg.executemany(insert_query, insert_data)
+    count_insert += cur_pg.rowcount
+    cur_pg.executemany(update_query, update_data)
+    count_update += cur_pg.rowcount
+
+    # ------------------------------------------------------------------
+    # Finalize processing.
+    # ------------------------------------------------------------------
+
+    logging.info("")
+    info_msg = f"Number rows selected : {count_select!s:>8}"
+    logging.info(info_msg)
+
+    if count_relevant > 0:
+        info_msg = f"Number rows relevant : {count_relevant!s:>8}"
+        logging.info(info_msg)
     if count_insert > 0:
-        io_utils.progress_msg(f"Number rows inserted : {count_insert!s:>8}")
-
+        info_msg = f"Number rows inserted : {count_insert!s:>8}"
+        logging.info(info_msg)
     if count_update > 0:
-        io_utils.progress_msg(f"Number rows updated  : {count_update!s:>8}")
+        info_msg = f"Number rows updated  : {count_update!s:>8}"
+        logging.info(info_msg)
+
+    # ------------------------------------------------------------------
+    # Finalize airport processing.
+    # ------------------------------------------------------------------
+
+    db_utils.upd_io_processed_data(
+        cur_pg=cur_pg,
+        table_name="io_countries",
+        data_source=REST_COUNTRIES_URL,
+        task_timestamp=IO_LAST_SEEN,
+        url=REST_COUNTRIES_URL_URL,
+    )
+
+    cur_pg.close()
+    conn_pg.commit()
+    conn_pg.close()
+
+
+# ------------------------------------------------------------------
+# Get the primary keys for the io_countries table.
+# ------------------------------------------------------------------
+def _load_io_countries_primary_keys(cur_pg: cursor) -> set[tuple[str, str]]:
+    """Get the primary keys for the io_countries table.
+
+    Args:
+    ----
+        cur_pg (cursor): A database cursor.
+
+    Returns:
+    -------
+        set: A set of tuples representing the primary key columns.
+
+    """
+    primary_keys = set()
+
+    cur_pg.execute(
+        """
+        SELECT country
+          FROM io_countries;
+       """,
+    )
+
+    for row in cur_pg.fetchall():
+        primary_keys.add(
+            (row[COLUMN_COUNTRY_LOWER]),
+        )
+
+    return primary_keys
 
 
 # ------------------------------------------------------------------
 # Get the primary keys for the io_states table.
 # ------------------------------------------------------------------
 def _load_io_states_primary_keys(cur_pg: cursor) -> set[tuple[str, str]]:
-    """Get the primary keys for the io_apt_rwy table.
+    """Get the primary keys for the io_states table.
 
     Args:
     ----
@@ -1825,7 +1995,6 @@ def _load_state_data(file_path: Path) -> None:
     if count_select > 0:
         info_msg = f"Number rows existing : {count_select!s:>8}"
         logging.info(info_msg)
-        logging.info("")
         count_select = 0
 
     insert_data = []
@@ -2520,12 +2689,42 @@ def load_country_state_data() -> None:
     # Load the country data.
     # ------------------------------------------------------------------
 
-    conn_pg, cur_pg = db_utils.get_postgres_cursor()
+    # Reference to the working directory as a Path object
+    workdir_path = Path(REST_COUNTRIES_WORKDIR)
 
-    _load_country_data(conn_pg, cur_pg)
+    # Delete and recreate the working directory
+    if workdir_path.exists() and workdir_path.is_dir():
+        shutil.rmtree(workdir_path)
 
-    cur_pg.close()
-    conn_pg.close()
+    workdir_path.mkdir(parents=True, exist_ok=True)
+
+    file_path = Path(REST_COUNTRIES_WORKDIR) / REST_COUNTRIES_FILE
+
+    try:
+        response = requests.get(REST_COUNTRIES_URL, timeout=REST_COUNTRIES_TIMEOUT)
+        response.raise_for_status()
+        data = response.json()
+
+        countries = [
+            {
+                "country": country.get("cca3", ""),
+                "country_name": country.get("name", {}).get("common", ""),
+                "dec_latitude": country.get("latlng", [None, None])[0],
+                "dec_longitude": country.get("latlng", [None, None])[1],
+            }
+            for country in data
+        ]
+
+        pd.DataFrame(countries).to_csv(file_path, index=False)
+        logging.info(
+            glob_local.INFO_00_133.replace("{file_name}", str(file_path)),
+        )
+
+    except requests.RequestException as e:
+        logging.fatal(glob_local.FATAL_00_972.replace("{error}", str(e)))
+        sys.exit(1)
+
+    _load_country_data(file_path)
 
     # ------------------------------------------------------------------
     # Load the state data.

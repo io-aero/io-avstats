@@ -42,6 +42,7 @@ max_deviation_latitude = 0.01
 max_deviation_longitude = 0.01
 
 odbc_connection_string = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ={filename};"
+
 opendatasoft_us_state_boundaries_file = "us-state-boundaries.csv"
 opendatasoft_us_state_boundaries_file_url = "https://public.opendatasoft.com/explore/dataset/us-state-boundaries/export/"
 opendatasoft_us_state_boundaries_url = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/us-state-boundaries/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
@@ -68,7 +69,12 @@ razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2024.01.22_avall.sql"
 
+rest_countries_file = "rest_countries.csv"
+rest_countries_timeout = 10
+rest_countries_transaction_size = 500
 rest_countries_url = "https://restcountries.com/v3.1/all"
+rest_countries_url_url = "https://restcountries.com"
+rest_countries_workdir = "data/Rest Countries"
 
 terminal_area_distance_nmi = 5
 
@@ -86,14 +92,18 @@ graph_font_size_yaxes_title = 30
 check_value = "test"
 correction_work_dir = "data/correction_test"
 
-download_work_dir = "data/download_test"
 download_file_faa_airports = "data/FAA_Airports/Airports_pytest.csv"
 download_file_faa_npias = "data/FAA_Airports/NPIAS-2023-2027-Appendix-A_pytest.xlsx"
 download_file_faa_runways = "data/FAA_Airports/Runways_pytest.csv"
 download_file_simplemaps_us_cities = "data/simplemaps/uscities_pytest.xlsx"
 download_file_simplemaps_us_zips = "data/simplemaps/uszips_pytest.xlsx"
 download_file_zip_codes_org = "data/United States Zip Codes.org/zip_code_database_pytest.xls"
+download_work_dir = "data/download_test"
+
+opendatasoft_workdir = "data/test/opendatasoft"
 
 postgres_connection_port = 5433
 postgres_container_name = "io_avstats_db_test"
 postgres_pgdata ="data/postgres_test"
+
+rest_countries_workdir = "data/test/Rest Countries"

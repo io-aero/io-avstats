@@ -24,7 +24,7 @@
 /data/download/
 /data/download_test/
 /data/pandas_profiles/*_explorative.html
-/data/pandas_profiles/io_processed_files_*.html
+/data/pandas_profiles/io_processed_data_*.html
 /data/postgres/
 /data/postgres_test/
 /dist/ioavstats.exe

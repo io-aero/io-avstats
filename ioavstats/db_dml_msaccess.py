@@ -528,7 +528,7 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     db_utils.upd_io_processed_data(
         cur_pg=cur_pg,
         table_name="events",
-        data_source=msaccess,
+        data_source=msaccess if msaccess == "avall" else "upd",
         task_timestamp=IO_LAST_SEEN,
     )
 
@@ -2963,7 +2963,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
                     row_pg[COLUMN_DEC_LATITUDE],  # type: ignore
                     row_pg[COLUMN_DEC_LONGITUDE],  # type: ignore
                     glob_local.SOURCE_AVERAGE,
-                    datetime.now(tz=UTC),
+                    IO_LAST_SEEN,
                 ),
             )
             count_insert += 1

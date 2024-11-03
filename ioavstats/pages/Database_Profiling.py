@@ -253,9 +253,9 @@ QUERIES = {
                  section_code,
                  subsection_code;
     """,
-    "io_processed_table": """
+    "io_processed_data": """
         SELECT *
-          FROM io_processed_table
+          FROM io_processed_data
         ORDER BY COALESCE(last_processed, first_processed) DESC;
     """,
     "io_sequence_of_events": """
@@ -750,7 +750,7 @@ def _streamlit_flow() -> None:
             "io_md_codes_section",
             "io_md_codes_subcategory",
             "io_md_codes_subsection",
-            "io_processed_table",
+            "io_processed_data",
             "io_sequence_of_events",
             "io_states",
         ]

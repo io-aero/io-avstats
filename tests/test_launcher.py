@@ -405,26 +405,3 @@ def test_launcher_u_p_d() -> None:
         pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
-
-
-# -----------------------------------------------------------------------------
-# Test case: cleanup - Delete the PostgreSQL database container.
-# -----------------------------------------------------------------------------
-def test_launcher_clean() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping clean on Darwin due to custom handling.")
-
-    if platform.system() == "Linux":
-        pytest.skip("Skipping clean on Linux due to custom handling.")
-
-    commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)

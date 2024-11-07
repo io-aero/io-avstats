@@ -6,13 +6,11 @@ Python
 
 The project repository contains a ``scripts`` directory that includes operating system-specific installation scripts for Python, ensuring a smooth setup across various environments.
 
-- **macOS**: The ``run_install_python.zsh`` script is available for macOS users. This script is adapted for the Zsh shell, which is the standard shell on recent versions of macOS, and it streamlines the Python installation.
-
 - **Ubuntu**: For users on Ubuntu, the ``run_install_python.sh`` script is provided. This Bash script is created to operate within the default shell environment of Ubuntu, facilitating the Python installation process.
 
 - **Windows**: The ``run_install_python.bat`` script is tailored for users on Windows systems. It is designed to be run in the Command Prompt and automates the Python installation process on Windows.
 
-These scripts are named according to the convention ``run_install_python.<ext>``, where ``<ext>`` corresponds to the script extension appropriate for the target operating system and shell environment (e.g., `.bat` for Windows, `.sh` for Ubuntu Bash, `.zsh` for macOS). Users are recommended to execute the script matching their OS to ensure an efficient Python setup.
+These scripts are named according to the convention ``run_install_python.<ext>``, where ``<ext>`` corresponds to the script extension appropriate for the target operating system and shell environment (e.g., `.bat` for Windows, `.sh` for Ubuntu Bash. Users are recommended to execute the script matching their OS to ensure an efficient Python setup.
 
 Miniconda
 ---------
@@ -23,16 +21,12 @@ The ``scripts`` directory includes a collection of operating system-specific scr
 
 - **Ubuntu Bash Shell**: Ubuntu users can take advantage of the ``run_install_miniconda.sh`` script. This Bash script is intended for use within the Ubuntu terminal, encapsulating the necessary commands to install Miniconda seamlessly on Ubuntu systems.
 
-- **macOS Zsh Shell**: For macOS, the ``run_install_miniconda.zsh`` script is available. It is optimized for the Zsh shell, which is the default on recent versions of macOS. This script simplifies the installation and configuration of Miniconda, ensuring a smooth integration with macOS.
-
 Each script in the ``scripts`` directory is named to reflect its compatibility with the corresponding operating system and shell environment. Users are encouraged to execute the script that matches their OS for a smooth and error-free Miniconda installation experience.
 
 Docker Desktop
 --------------
 
-The ``scripts`` directory contains scripts that assist with installing Docker Desktop on macOS and Ubuntu, facilitating an automated and streamlined setup.
-
-- **macOS**: The ``run_install_docker.zsh`` script is designed for macOS users. By utilizing this Zsh script, the installation of Docker Desktop on macOS is executed through a series of automated steps, which are managed by the script to ensure a smooth installation process.
+The ``scripts`` directory contains scripts that assist with installing Docker Desktop on Ubuntu, facilitating an automated and streamlined setup.
 
 - **Ubuntu**: The ``run_install_docker.sh`` script is available for Ubuntu users. This Bash script sets up Docker Desktop on Ubuntu systems by configuring the necessary repositories and managing the installation steps through the system's package manager.
 
@@ -52,25 +46,16 @@ MS Access Database Engine
     sudo apt-get update -y
     sudo apt-get install -y unixodbc-dev
 
-- **macOS Zsh Shell**: The necessary software can be downloaded with the package manager ``Homebrew`` as follows:
-
-.. code-block:: zsh
-
-    brew update
-    brew install unixodbc
-
 DBeaver - optional
 ------------------
 
-DBeaver is an optional but highly recommended tool for this software as it offers a user-friendly interface to gain insights into the database internals. The project provides convenient scripts for installing DBeaver on macOS and Ubuntu.
-
-- **macOS**: The ``run_install_dbeaver.zsh`` script is crafted for macOS systems. By running this Zsh script, users can easily install DBeaver and quickly connect to the database for management and querying tasks.
+DBeaver is an optional but highly recommended tool for this software as it offers a user-friendly interface to gain insights into the database internals. The project provides convenient scripts for installing DBeaver on Ubuntu.
 
 - **Ubuntu**: For Ubuntu users, the ``run_install_dbeaver.sh`` script facilitates the installation of DBeaver. This Bash script automates the setup process, adding necessary repositories and handling the installation seamlessly.
 
 - **Windows**: Windows users are advised to download and install DBeaver using the official installer from the DBeaver website at `DBeaver Download <https://dbeaver.io/download/>`_. The installer ensures that DBeaver is properly configured and optimized for Windows environments.
 
-To install DBeaver, locate the appropriate script in the ``scripts`` directory for macOS or Ubuntu. If you're a Windows user, please use the provided link to access the official installer for an intuitive installation experience.
+To install DBeaver, locate the appropriate script in the ``scripts`` directory for Ubuntu. If you're a Windows user, please use the provided link to access the official installer for an intuitive installation experience.
 
 Python Libraries
 ----------------

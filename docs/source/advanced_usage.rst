@@ -3,7 +3,7 @@ Advanced Usage
 ==============
 
 The main tool for operating **IO-AVSTATS** is the **``run_io_avstats``** script.
-The script is fully available in the Windows version and in a greatly reduced version for macOS and Ubuntu.
+The script is fully available in the Windows version and in a greatly reduced version for Ubuntu.
 
 Overview
 ========

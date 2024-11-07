@@ -88,7 +88,7 @@ vulture:            Find dead Python code.
 ## Operation
 
 The whole functionality of **IO-AVSTATS** can be used with the script `run_io_avstats`.
-The script is available in versions for macOS, Ubuntu and Windows 10/11 and provides the following functionality:
+The script is available in versions for Ubuntu and Windows 10/11 and provides the following functionality:
 
     r_s_a   - Run the IO-AVSTATS application
     ---------------------------------------------------------
@@ -159,7 +159,7 @@ Further IO-Aero software documentation can be found under the following links.
 | ioavstats         | Python script files.                          |
 | libs              | Contains libraries that are not used via pip. |
 | resources         | Selected manuals and software.                |
-| scripts           | Supporting macOS, Ubuntu and Windows Scripts. |
+| scripts           | Supporting Ubuntu and Windows Scripts. |
 | tests             | Scripts and data for **pytest**.              |
 
 ### 2. Files
@@ -192,11 +192,11 @@ Further IO-Aero software documentation can be found under the following links.
 
 **Target Platforms**
 
-The tools support creating executables specifically for macOS, Ubuntu, or Windows. This allows for precise targeting based on deployment needs.
+The tools support creating executables specifically for Ubuntu, or Windows. This allows for precise targeting based on deployment needs.
 
 **Platform-Specific Build**
 
-The process of creating an executable is required to be conducted on the operating system for which the executable is intended. This means building a Windows executable on a Windows machine, a macOS executable on a macOS machine, and so on.
+The process of creating an executable is required to be conducted on the operating system for which the executable is intended. This means building a Windows executable on a Windows machine and a linux executable on a Ubuntu machine.
 
 **Use of Makefile**
 
@@ -217,7 +217,6 @@ The executable files for `docker2exe` are downloaded from the [GitHub Releases p
 - `docker2exe` is then used to convert the Docker image into an executable file.
 
 - A directory is finally created containing all the files necessary for running the application. The name of this directory varies depending on the operating system and architecture:
-    - **macOS**: `app-darwin-amd64` or `app-darwin-arm64`
     - **Ubuntu**: `app-linux-amd64`
     - **Windows**: `app-windows-amd64`
 

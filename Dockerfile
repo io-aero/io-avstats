@@ -43,7 +43,7 @@ RUN echo "**** install Miniconda ****" && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete
 
 # Copy the environment file to the container
-COPY environment.yml .
+COPY config/environment.yml .
 
 # Replace placeholder with actual value and debug output
 RUN echo "PYPI_PAT: $PYPI_PAT" && \

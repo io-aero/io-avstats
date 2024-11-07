@@ -45,15 +45,7 @@ jobs:
         with:
           fetch-depth: 1  # no history, just HEAD
 
-      - name: Set Locale - macOS
-        if: runner.os == 'macOS'
-        run: |
-          echo "SHELL_CONFIG=.zshrc" >> $GITHUB_ENV
-          echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
-          echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
-
-      - name: Set Locale - Ubuntu
-        if: runner.os == 'Linux'
+      - name: Set Locale
         run: |
           echo "SHELL_CONFIG=.bashrc" >> $GITHUB_ENV
           sudo apt-get update
@@ -61,16 +53,7 @@ jobs:
           sudo locale-gen en_US.UTF-8
           sudo update-locale LANG=en_US.UTF-8
 
-      - name: Preparing scripts - macOS
-        if: runner.os == 'macOS'
-        run: |
-          brew install dos2unix || brew upgrade dos2unix
-          chmod +x scripts/run_prep_*.zsh
-          dos2unix scripts/run_prep_*.zsh
-          ./scripts/run_prep_zsh_scripts.zsh
-
-      - name: Preparing scripts - Ubuntu
-        if: runner.os == 'Linux'
+      - name: Preparing scripts
         run: |
           sudo apt-get update && sudo apt-get install -y dos2unix
           chmod +x scripts/run_prep_*.sh
@@ -106,25 +89,12 @@ jobs:
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Docker - macOS
-        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'macOS' }}
-        run: |
-          echo "=================================================="
-          echo "Docker Desktop for Mac is currently not supported."
-          echo "=================================================="
-          exit 1
-
-      - name: Install Docker - Ubuntu
-        if: ${{ env.IO_DOCKER == 'true' && runner.os == 'Linux' }}
+      - name: Install Docker
+        if: ${{ env.IO_DOCKER == 'true' }}
         uses: docker/setup-buildx-action@v3
 
-      - name: Install ODBC - macOS
-        if: ${{ env.IO_ODBC == 'true' && runner.os == 'macOS' }}
-        run: |
-          brew install unixodbc || brew upgrade unixodbc
-
-      - name: Install ODBC - Ubuntu
-        if: ${{ env.IO_ODBC == 'true' && runner.os == 'Linux' }}
+      - name: Install ODBC
+        if: ${{ env.IO_ODBC == 'true' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y unixodbc-dev

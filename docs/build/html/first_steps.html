@@ -214,19 +214,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_master_logs.html">Master Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Master Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_01_s_d_c_23_08_21.html">1. Set up the database container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_02_c_d_s_23_08_21.html">2. Create the database schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_02_c_d_s.html">2. Create the database schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_03_u_d_s_23_08_21.html">3. Update the database schema</a></li>
-<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_11_a_o_c_23_08_21.html">4. Load aviation occurrence categories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_11_a_o_c.html">4. Load aviation occurrence categories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_12_l_a_p.html">5. Load airport data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_13_l_c_s_23_08_21.html">6. Load country and state data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_14_l_s_e_23_08_21.html">7. Load sequence of events data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_21_l_s_d_23_08_21.html">8. Load simplemaps data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_13_l_c_s.html">6. Load country and state data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_14_l_s_e.html">7. Load sequence of events data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_21_l_s_d.html">8. Load simplemaps data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="master_logs/pre2008_22_l_z_d.html">9. Load ZIP Code Database data into PostgreSQL</a></li>
 </ul>
 </li>
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_11_01_log_up01NOV.html">2024.11.01 up01NOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_11_01_log_avall.html">2024.11.01 avall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_22_log_up22OCT.html">2024.10.22 up22OCT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_15_log_up15OCT.html">2024.10.15 up15OCT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_08_log_up08OCT.html">2024.10.08 up08OCT</a></li>
@@ -237,9 +239,6 @@
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_09_08_log_up08SEP.html">2024.09.08 up08SEP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_09_01_log_up01SEP.html">2024.09.01 up01SEP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_09_01_log_avall.html">2024.09.01 avall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_08_22_log_up22AUG.html">2024.08.22 up22AUG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_08_15_log_up15AUG.html">2024.08.15 up15AUG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_08_08_log_up08AUG.html">2024.08.08 up08AUG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_08_01_log_up01AUG.html">2024.08.01 up01AUG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_08_01_log_avall.html">2024.08.01 avall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_07_01_log_up01JUL.html">2024.07.01 up01JUL</a></li>
@@ -331,90 +330,47 @@ Detailed instructions for each of these steps are provided below.</p>
 <p>Once you have successfully cloned the repository, navigate to the cloned directory.
 Within the <cite>scripts</cite> folder, you will find scripts tailored for various operating systems.
 Proceed with the subsection that corresponds to your operating system for further instructions.</p>
-<section id="macos">
-<h3>macOS<a class="headerlink" href="#macos" title="Link to this heading">¶</a></h3>
-<p>To set up the project on a macOS system, the following steps should be performed in a terminal window within the repository directory:</p>
+<section id="ubuntu">
+<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Link to this heading">¶</a></h3>
+<p>To set up the project on an Ubuntu system, the following steps should be performed in a terminal window within the repository directory:</p>
 <section id="a-grant-execute-permission-to-installation-scripts">
 <h4>a. Grant Execute Permission to Installation Scripts<a class="headerlink" href="#a-grant-execute-permission-to-installation-scripts" title="Link to this heading">¶</a></h4>
 <p>Provide execute permissions to the installation scripts:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>scripts/*.zsh
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>scripts/*.sh
 </pre></div>
 </div>
 </section>
 <section id="b-install-python-and-pip">
 <h4>b. Install Python and pip<a class="headerlink" href="#b-install-python-and-pip" title="Link to this heading">¶</a></h4>
 <p>Run the script to install Python and pip:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_python.zsh
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_python.sh
 </pre></div>
 </div>
 </section>
 <section id="c-install-miniconda-and-the-correct-python-version">
 <h4>c. Install Miniconda and the Correct Python Version<a class="headerlink" href="#c-install-miniconda-and-the-correct-python-version" title="Link to this heading">¶</a></h4>
 <p>Use the following script to install Miniconda and set the right Python version:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_miniconda.zsh
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_miniconda.sh
 </pre></div>
 </div>
 </section>
 <section id="d-install-docker-desktop">
 <h4>d. Install Docker Desktop<a class="headerlink" href="#d-install-docker-desktop" title="Link to this heading">¶</a></h4>
-<p>To install Docker Desktop, run:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_docker.zsh
-</pre></div>
-</div>
-</section>
-<section id="e-optionally-install-dbeaver">
-<h4>e. Optionally Install DBeaver<a class="headerlink" href="#e-optionally-install-dbeaver" title="Link to this heading">¶</a></h4>
-<p>If needed, install DBeaver using the following script:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_dbeaver.zsh
-</pre></div>
-</div>
-</section>
-<section id="f-close-the-terminal-window">
-<h4>f. Close the Terminal Window<a class="headerlink" href="#f-close-the-terminal-window" title="Link to this heading">¶</a></h4>
-<p>Once all installations are complete, close the terminal window.</p>
-</section>
-</section>
-<section id="ubuntu">
-<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Link to this heading">¶</a></h3>
-<p>To set up the project on an Ubuntu system, the following steps should be performed in a terminal window within the repository directory:</p>
-<section id="id1">
-<h4>a. Grant Execute Permission to Installation Scripts<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
-<p>Provide execute permissions to the installation scripts:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>scripts/*.sh
-</pre></div>
-</div>
-</section>
-<section id="id2">
-<h4>b. Install Python and pip<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
-<p>Run the script to install Python and pip:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_python.sh
-</pre></div>
-</div>
-</section>
-<section id="id3">
-<h4>c. Install Miniconda and the Correct Python Version<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
-<p>Use the following script to install Miniconda and set the right Python version:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_miniconda.sh
-</pre></div>
-</div>
-</section>
-<section id="id4">
-<h4>d. Install Docker Desktop<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>This step is not required for WSL (Windows Subsystem for Linux) if Decker Desktop is installed in Windows and this is configured for WSL 2 based engine.</p>
 <p>To install Docker Desktop, run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_docker.sh
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h4>e. Optionally Install DBeaver<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<section id="e-optionally-install-dbeaver">
+<h4>e. Optionally Install DBeaver<a class="headerlink" href="#e-optionally-install-dbeaver" title="Link to this heading">¶</a></h4>
 <p>If needed, install DBeaver using the following script:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_install_dbeaver.sh
 </pre></div>
 </div>
 </section>
-<section id="id6">
-<h4>f. Close the Terminal Window<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<section id="f-close-the-terminal-window">
+<h4>f. Close the Terminal Window<a class="headerlink" href="#f-close-the-terminal-window" title="Link to this heading">¶</a></h4>
 <p>Once all installations are complete, close the terminal window.</p>
 </section>
 </section>
@@ -439,16 +395,16 @@ Proceed with the subsection that corresponds to your operating system for furthe
 <h4>c. Close the Command Prompt<a class="headerlink" href="#c-close-the-command-prompt" title="Link to this heading">¶</a></h4>
 <p>Once all installations are complete, close the command prompt.</p>
 </section>
-<section id="id7">
-<h4>d. Install Docker Desktop<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<section id="id1">
+<h4>d. Install Docker Desktop<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
 <p>To install Docker Desktop, download the software from here:</p>
 <blockquote>
 <div><p><a class="reference external" href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a></p>
 </div></blockquote>
 <p>and follow the installation instructions.</p>
 </section>
-<section id="id8">
-<h4>e. Optionally Install DBeaver<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id2">
+<h4>e. Optionally Install DBeaver<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>If needed, install DBeaver, download the software from here:</p>
 <blockquote>
 <div><p><a class="reference external" href="https://dbeaver.io/">https://dbeaver.io/</a></p>
@@ -533,20 +489,14 @@ After completing these steps, the database files should reside in the <cite>data
 <h3>Creating the Docker Container with PostgreSQL DB<a class="headerlink" href="#creating-the-docker-container-with-postgresql-db" title="Link to this heading">¶</a></h3>
 <p>To create the Docker container with PostgreSQL database software, you can use the provided <cite>run_io_avstats</cite> script.
 Depending on your operating system, follow the relevant instructions below:</p>
-<section id="a-macos-zsh">
-<h4>a. macOS (zsh):<a class="headerlink" href="#a-macos-zsh" title="Link to this heading">¶</a></h4>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>./scripts/run_io_avstats.zsh<span class="w"> </span>s_d_c
-</pre></div>
-</div>
-</section>
-<section id="b-ubuntu-sh">
-<h4>b. Ubuntu (sh):<a class="headerlink" href="#b-ubuntu-sh" title="Link to this heading">¶</a></h4>
+<section id="a-ubuntu-sh">
+<h4>a. Ubuntu (sh):<a class="headerlink" href="#a-ubuntu-sh" title="Link to this heading">¶</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/run_io_avstats.sh<span class="w"> </span>s_d_c
 </pre></div>
 </div>
 </section>
-<section id="c-windows-10-11-cmd">
-<h4>c. Windows 10/11 (cmd):<a class="headerlink" href="#c-windows-10-11-cmd" title="Link to this heading">¶</a></h4>
+<section id="b-windows-10-11-cmd">
+<h4>b. Windows 10/11 (cmd):<a class="headerlink" href="#b-windows-10-11-cmd" title="Link to this heading">¶</a></h4>
 <div class="highlight-batch notranslate"><div class="highlight"><pre><span></span>scripts\run_io_avstats.cmd s_d_c
 </pre></div>
 </div>
@@ -614,7 +564,7 @@ Depending on your operating system, follow the relevant instructions below:</p>
 <li><a class="reference internal" href="#">First Steps</a><ul>
 <li><a class="reference internal" href="#cloning-the-repository">Cloning the Repository</a></li>
 <li><a class="reference internal" href="#install-foundational-software">Install Foundational Software</a><ul>
-<li><a class="reference internal" href="#macos">macOS</a><ul>
+<li><a class="reference internal" href="#ubuntu">Ubuntu</a><ul>
 <li><a class="reference internal" href="#a-grant-execute-permission-to-installation-scripts">a. Grant Execute Permission to Installation Scripts</a></li>
 <li><a class="reference internal" href="#b-install-python-and-pip">b. Install Python and pip</a></li>
 <li><a class="reference internal" href="#c-install-miniconda-and-the-correct-python-version">c. Install Miniconda and the Correct Python Version</a></li>
@@ -623,21 +573,12 @@ Depending on your operating system, follow the relevant instructions below:</p>
 <li><a class="reference internal" href="#f-close-the-terminal-window">f. Close the Terminal Window</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ubuntu">Ubuntu</a><ul>
-<li><a class="reference internal" href="#id1">a. Grant Execute Permission to Installation Scripts</a></li>
-<li><a class="reference internal" href="#id2">b. Install Python and pip</a></li>
-<li><a class="reference internal" href="#id3">c. Install Miniconda and the Correct Python Version</a></li>
-<li><a class="reference internal" href="#id4">d. Install Docker Desktop</a></li>
-<li><a class="reference internal" href="#id5">e. Optionally Install DBeaver</a></li>
-<li><a class="reference internal" href="#id6">f. Close the Terminal Window</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#windows-10-11">Windows 10/11</a><ul>
 <li><a class="reference internal" href="#a-install-python-and-pip">a. Install Python and pip</a></li>
 <li><a class="reference internal" href="#b-install-miniconda-and-the-correct-python-version">b. Install Miniconda and the Correct Python Version</a></li>
 <li><a class="reference internal" href="#c-close-the-command-prompt">c. Close the Command Prompt</a></li>
-<li><a class="reference internal" href="#id7">d. Install Docker Desktop</a></li>
-<li><a class="reference internal" href="#id8">e. Optionally Install DBeaver</a></li>
+<li><a class="reference internal" href="#id1">d. Install Docker Desktop</a></li>
+<li><a class="reference internal" href="#id2">e. Optionally Install DBeaver</a></li>
 </ul>
 </li>
 </ul>
@@ -661,9 +602,8 @@ Depending on your operating system, follow the relevant instructions below:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#creating-the-docker-container-with-postgresql-db">Creating the Docker Container with PostgreSQL DB</a><ul>
-<li><a class="reference internal" href="#a-macos-zsh">a. macOS (zsh):</a></li>
-<li><a class="reference internal" href="#b-ubuntu-sh">b. Ubuntu (sh):</a></li>
-<li><a class="reference internal" href="#c-windows-10-11-cmd">c. Windows 10/11 (cmd):</a></li>
+<li><a class="reference internal" href="#a-ubuntu-sh">a. Ubuntu (sh):</a></li>
+<li><a class="reference internal" href="#b-windows-10-11-cmd">b. Windows 10/11 (cmd):</a></li>
 </ul>
 </li>
 </ul>

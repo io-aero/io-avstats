@@ -9,13 +9,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 Operating System
 ------------------
 
-Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.
-
-The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:
-
-.. code-block::
-
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.
 
 For the Windows operating systems, only additional the functionality of the ``make`` tool must be made available, e.g. via
 `Make for Windows <http://gnuwin32.sourceforge.net/packages/make.htm>`__\
@@ -28,15 +22,13 @@ The command-line shells supported are:
 
    * - Operating system
      - Command-line shell(s)
-   * - macOS
-     - zsh
    * - Ubuntu
      - bash
    * - Windows 10/11
      - cmd and PowerShell
 
-For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the scripts ``./scripts/run_prep_zsh_scripts.zsh`` (macOS) or ``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
+For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the ``dos2Unix`` program is installed, the necessary adjustments can be made using the script``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).
 
 `Python <https://docs.python.org/3/whatsnew/3.11.html>`__\
 ----------------------------------------------------------
@@ -57,7 +49,7 @@ This approach streamlines the setup, ensuring that the database environment is q
 
 Some of the Python libraries required by the project are exclusively available through Conda. To maintain a minimal installation footprint, it is recommended to install Miniconda, a smaller, more lightweight version of Anaconda that includes only Conda, its dependencies, and Python.
 
-By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the ``scripts`` directory of the project, where operating system-specific installation scripts named ``run_install_miniconda`` are available for Windows (CMD shell), Ubuntu (Bash shell), and macOS (Zsh shell).
+By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the ``scripts`` directory of the project, where operating system-specific installation scripts named ``run_install_miniconda`` are available for Windows (CMD shell) and, Ubuntu (Bash shell).
 
 Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.
 

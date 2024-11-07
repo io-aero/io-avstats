@@ -65,7 +65,6 @@ def test_launcher_version() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "version"],
         "Linux": ["./run_io_avstats_pytest.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
     }
@@ -82,9 +81,6 @@ def test_launcher_version() -> None:
 def test_launcher_d_d_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping d_d_c on Darwin due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping d_d_c on Ubuntu due to custom handling.")
@@ -105,9 +101,6 @@ def test_launcher_d_d_c() -> None:
 def test_launcher_d_d_f() -> None:
     """Test case: Delete the PostgreSQL database files."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping d_d_f on Darwin due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping d_d_f on Linux due to custom handling.")
@@ -130,7 +123,6 @@ def test_launcher_s_d_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
-        "Darwin": ["./run_io_avstats_pytest.zsh", "s_d_c"],
         "Linux": ["./run_io_avstats_pytest.sh", "s_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "s_d_c"],
     }
@@ -147,9 +139,6 @@ def test_launcher_s_d_c() -> None:
 def test_launcher_c_d_s() -> None:
     """Test case: Create or update the PostgreSQL database schema."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping c_d_s on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping c_d_s on Linux due to custom handling.")
@@ -170,9 +159,6 @@ def test_launcher_c_d_s() -> None:
 def test_launcher_u_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping u_d_s on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping u_d_s on Linux due to custom handling.")
@@ -195,9 +181,6 @@ def test_launcher_a_o_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping a_o_c on macOS due to custom handling.")
-
     if platform.system() == "Linux":
         pytest.skip("Skipping a_o_c on Linux due to custom handling.")
 
@@ -217,9 +200,6 @@ def test_launcher_a_o_c() -> None:
 def test_launcher_l_a_p() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_a_p on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping l_a_p on Linux due to custom handling.")
@@ -241,9 +221,6 @@ def test_launcher_l_c_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_c_s on macOS due to custom handling.")
-
     if platform.system() == "Linux":
         pytest.skip("Skipping l_c_s on Linux due to custom handling.")
 
@@ -263,9 +240,6 @@ def test_launcher_l_c_s() -> None:
 def test_launcher_l_s_e() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_s_e on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping l_s_e on Linux due to custom handling.")
@@ -287,9 +261,6 @@ def test_launcher_l_s_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_s_d on macOS due to custom handling.")
-
     if platform.system() == "Linux":
         pytest.skip("Skipping l_s_d on Linux due to custom handling.")
 
@@ -309,9 +280,6 @@ def test_launcher_l_s_d() -> None:
 def test_launcher_l_z_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_z_d on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping l_z_d on Linux due to custom handling.")
@@ -333,9 +301,6 @@ def test_launcher_r_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping r_d_s on macOS due to custom handling.")
-
     if platform.system() == "Linux":
         pytest.skip("Skipping r_d_s on Linux due to custom handling.")
 
@@ -355,9 +320,6 @@ def test_launcher_r_d_s() -> None:
 def test_launcher_l_c_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping l_c_d on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping l_c_d on Linux due to custom handling.")
@@ -384,9 +346,6 @@ def test_launcher_l_c_d() -> None:
 def test_launcher_u_p_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    if platform.system() == "Darwin":
-        pytest.skip("Skipping u_p_d on macOS due to custom handling.")
 
     if platform.system() == "Linux":
         pytest.skip("Skipping u_p_d on Linux due to custom handling.")

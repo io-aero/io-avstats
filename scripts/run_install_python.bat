@@ -1,7 +1,7 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-set PYTHON_VERSION=3.11
+set PYTHON_VERSION=3.12
 
 echo ==========================================================================
 echo Install Python 3 on Windows.

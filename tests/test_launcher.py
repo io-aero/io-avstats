@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved.
 # Use of this source code is governed by the GNU LESSER GENERAL
 # PUBLIC LICENSE, that can be found in the LICENSE.md file.
-
 """Launcher: coverage testing."""
 import logging
 import os
@@ -65,8 +64,8 @@ def test_launcher_version() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "version"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "version"],
+        "Linux": ["./run_io_avstats_test.sh", "version"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "version"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -82,11 +81,9 @@ def test_launcher_d_d_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping d_d_c on Ubuntu due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_c"],
+        "Linux": ["./run_io_avstats_test.sh", "d_d_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "d_d_c"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -102,11 +99,9 @@ def test_launcher_d_d_f() -> None:
     """Test case: Delete the PostgreSQL database files."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping d_d_f on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "d_d_f"],
+        "Linux": ["./run_io_avstats_test.sh", "d_d_f"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "d_d_f"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -123,8 +118,8 @@ def test_launcher_s_d_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
-        "Linux": ["./run_io_avstats_pytest.sh", "s_d_c"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "s_d_c"],
+        "Linux": ["./run_io_avstats_test.sh", "s_d_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "s_d_c"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -140,11 +135,9 @@ def test_launcher_c_d_s() -> None:
     """Test case: Create or update the PostgreSQL database schema."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping c_d_s on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "c_d_s"],
+        "Linux": ["./run_io_avstats_test.sh", "c_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_d_s"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -160,11 +153,9 @@ def test_launcher_u_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping u_d_s on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "u_d_s"],
+        "Linux": ["./run_io_avstats_test.sh", "u_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "u_d_s"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -181,11 +172,9 @@ def test_launcher_a_o_c() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping a_o_c on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "a_o_c"],
+        "Linux": ["./run_io_avstats_test.sh", "a_o_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "a_o_c"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -201,11 +190,9 @@ def test_launcher_l_a_p() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_a_p on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_a_p"],
+        "Linux": ["./run_io_avstats_test.sh", "l_a_p"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_a_p"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -221,11 +208,9 @@ def test_launcher_l_c_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_c_s on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_c_s"],
+        "Linux": ["./run_io_avstats_test.sh", "l_c_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_c_s"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -241,11 +226,9 @@ def test_launcher_l_s_e() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_s_e on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_e"],
+        "Linux": ["./run_io_avstats_test.sh", "l_s_e"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_e"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -261,11 +244,9 @@ def test_launcher_l_s_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_s_d on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_s_d"],
+        "Linux": ["./run_io_avstats_test.sh", "l_s_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_d"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -281,11 +262,9 @@ def test_launcher_l_z_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_z_d on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "l_z_d"],
+        "Linux": ["./run_io_avstats_test.sh", "l_z_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_z_d"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -301,11 +280,9 @@ def test_launcher_r_d_s() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping r_d_s on Linux due to custom handling.")
-
     commands = {
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_pytest.bat", "r_d_s"],
+        "Linux": ["./run_io_avstats_test.sh", "r_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "r_d_s"],
     }
     command = commands.get(platform.system())
     if not command:
@@ -321,14 +298,12 @@ def test_launcher_l_c_d() -> None:
     """Test case: Delete the PostgreSQL database container."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
-    if platform.system() == "Linux":
-        pytest.skip("Skipping l_c_d on Linux due to custom handling.")
-
     commands = {
+        "Linux": ["./run_io_avstats_test.sh", "l_c_d", "test"],
         "Windows": [
             "cmd.exe",
             "/c",
-            "run_io_avstats_pytest.bat",
+            "run_io_avstats_test.bat",
             "l_c_d",
             "test",
         ],
@@ -354,7 +329,7 @@ def test_launcher_u_p_d() -> None:
         "Windows": [
             "cmd.exe",
             "/c",
-            "run_io_avstats_pytest.bat",
+            "run_io_avstats_test.bat",
             "u_p_d",
             "up22APR",
         ],

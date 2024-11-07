@@ -1,7 +1,7 @@
 name: GitHub Pages
 
 on:
-  pull_request:
+  push:
     branches: [ 'main' ]
 
 env:
@@ -16,13 +16,16 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.11"]
+        python-version: ["3.12"]
 
     steps:
+      - name: Log the Operating System
+        run: |
+          echo "Running on OS: ${{ runner.os }}"
+
       - name: Show the environment variables
         run: |
-          echo "MODULE      = $MODULE"
-          echo "PYPI_PAT    = ${{ secrets.PYPI_PAT }}"
+          echo "MODULE      = ${{ env.MODULE }}"
 
       - name: Set Timezone
         run: echo "TZ=UTC" >> $GITHUB_ENV
@@ -31,6 +34,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1  # no history, just HEAD
+
+      - name: Set Locale
+        run: |
+          echo "SHELL_CONFIG=.bashrc" >> $GITHUB_ENV
+          sudo apt-get update
+          sudo apt-get install -y locales
+          sudo locale-gen en_US.UTF-8
+          sudo update-locale LANG=en_US.UTF-8
+
+      - name: Preparing scripts
+        run: |
+          sudo apt-get update && sudo apt-get install -y dos2unix
+          chmod +x scripts/run_prep_*.sh
+          dos2unix scripts/run_prep_*.sh
+          ./scripts/run_prep_bash_scripts.sh
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -44,7 +62,7 @@ jobs:
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies - Conda - dev
+      - name: Install dependencies - dev
         run: make conda-dev
 
       - name: Run docs - dev

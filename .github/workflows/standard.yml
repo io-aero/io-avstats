@@ -20,7 +20,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.11"]
+        python-version: ["3.12"]
 
     steps:
       - name: Log the Operating System
@@ -35,7 +35,15 @@ jobs:
           echo "IO_LOCAL    = ${{ vars.IO_LOCAL }}"
           echo "IO_ODBC     = ${{ env.IO_ODBC }}"
           echo "MODULE      = ${{ env.MODULE }}"
-          echo "PYPI_PAT    = ${{ secrets.PYPI_PAT }}"
+
+      - name: Verify PYPI_PAT is set
+        run: |
+          if [ -z "${{ secrets.PYPI_PAT }}" ]; then
+            echo "PYPI_PAT is not set."
+            exit 1
+          else
+            echo "PYPI_PAT is set."
+          fi
 
       - name: Set Timezone
         run: echo "TZ=UTC" >> $GITHUB_ENV
@@ -73,8 +81,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
-      - name: Install AWS CLI - Ubuntu
-        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' && runner.os == 'Linux' }}
+      - name: Install AWS CLI
+        if: ${{ env.IO_AWS_CLI == 'true' && vars.IO_LOCAL == 'true' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip
@@ -99,35 +107,35 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unixodbc-dev
 
-      - name: Install dependencies - Conda - prod
+      - name: Install dependencies - prod
         run: make conda-prod
 
       - name: Compile the Python code - prod
         run: |
           conda init --all
-          source ~/$SHELL_CONFIG
-          conda activate ${MODULE}
+          source ~/.bashrc
+          conda activate $MODULE
           make compileall
 
       - name: Run pytest - prod
         run: |
           conda init --all
-          source ~/$SHELL_CONFIG
-          conda activate ${MODULE}
+          source ~/.bashrc
+          conda activate $MODULE
           make pytest-ci
 
-      - name: Install dependencies - Conda - dev
+      - name: Install dependencies - dev
         run: make conda-dev
 
       - name: Run pytest - dev
         run: |
           conda init --all
-          source ~/$SHELL_CONFIG
-          conda activate ${MODULE}
+          source ~/.bashrc
+          conda activate $MODULE
           make black lint docs tests
 
       - name: Coveralls
-        if: ${{ env.IO_COVERALLS == 'true' && runner.os == 'Linux' }}
+        if: ${{ env.IO_COVERALLS == 'true' }}
         uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

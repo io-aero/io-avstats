@@ -1,15 +1,24 @@
 """Configuration file for the Sphinx documentation builder."""
 
 import importlib.metadata
-import logging
 import sys
 import warnings
 from datetime import UTC, datetime
 from pathlib import Path
 
+import tomli
 from docutils.nodes import inline  # type: ignore
 
-logging.getLogger("specific_logger_name").setLevel(logging.ERROR)
+EXCLUDE_FROM_PDF = [
+    "2023_*.md",
+    "2024_*.md",
+    "data_master_logs.rst",
+    "data_transaction_logs.rst",
+    "pre2008_*.md",
+]
+MODULE_NAME = "ioavstats"
+REPOSITORY_NAME = "io-avstats"
+REPOSITORY_TITLE = "Aviation Event Statistics"
 
 warnings.filterwarnings(
     "ignore",
@@ -23,21 +32,40 @@ warnings.filterwarnings(
     category=UserWarning,
 )
 
-EXCLUDE_FROM_PDF = [
-    "2023_*.md",
-    "2024_*.md",
-    "data_master_logs.rst",
-    "data_transaction_logs.rst",
-    "pre2008_*.md",
-]
-MODULE_NAME = "ioavstats"
-REPOSITORY_NAME = "io-avstats"
-REPOSITORY_TITLE = "Aviation Event Statistics"
+
+def get_version_from_pyproject() -> str:
+    """Retrieve the version from pyproject.toml if available.
+
+    This function looks for the pyproject.toml file in the expected project root directory,
+    parses it using the `tomli` library, and retrieves the version specified under the
+    `[project]` section.
+
+    Returns:
+        str: The version string from pyproject.toml, or "unknown" if the file is not found,
+        if the file is not structured as expected, or if no version is specified.
+
+    """
+    pyproject_path = Path(__file__).resolve().parent.parent.parent / "pyproject.toml"
+
+    if not pyproject_path.exists():
+        return "unknown"
+
+    try:
+        with pyproject_path.open("rb") as f:
+            pyproject_data = tomli.load(f)
+        # Retrieve the version if available, otherwise return "unknown"
+        version_local: str | None = pyproject_data.get("project", {}).get("version")
+        return version_local if version_local is not None else "unknown"  # noqa: TRY300
+    except (tomli.TOMLDecodeError, OSError) as e:
+        print(f"==========> Error reading pyproject.toml: {e}")  # noqa: T201
+        return "unknown"
+
 
 # Debug: Print the current working directory and sys.path
 print("==========>")  # noqa: T201
 print("==========> Current working directory:", Path.cwd())  # noqa: T201
 print("==========>")  # noqa: T201
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 sys.path.insert(0, str(Path(f"../../{MODULE_NAME}").resolve()))
 print("==========>")  # noqa: T201
 print("==========> Updated sys.path:", sys.path)  # noqa: T201
@@ -54,12 +82,13 @@ project = REPOSITORY_NAME.upper()
 try:
     version = importlib.metadata.version(MODULE_NAME)
 except importlib.metadata.PackageNotFoundError:
-    version = "unknown"
-    print("==========>")  # noqa: T201
-    print(  # noqa: T201
-        "==========> Warning: Version not found, defaulting to 'unknown'.",
-    )
-    print("==========>")  # noqa: T201
+    version = get_version_from_pyproject()
+    if version == "unknown":
+        print("==========>")  # noqa: T201
+        print(  # noqa: T201
+            "==========> Warning: Version not found, defaulting to 'unknown'.",
+        )
+        print("==========>")  # noqa: T201
 
 release = version.replace(".", "-")
 todays_date = datetime.now(tz=UTC)

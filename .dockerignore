@@ -31,5 +31,5 @@ mypy.ini
 README.md
 run_io_avstats_dev.*
 run_io_avstats_prod.*
-run_io_avstats_pytest.*
+run_io_avstats_test.bat
 setup.cfg

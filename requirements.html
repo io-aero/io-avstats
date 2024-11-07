@@ -319,11 +319,7 @@ Regarding the corresponding software versions, you will find the detailed inform
 <a class="reference external" href="https://github.com/io-aero/io-avstats/blob/main/docs/release_notes.md">Release Notes</a>.</p>
 <section id="operating-system">
 <h2>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading">¶</a></h2>
-<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with macOS and Windows 10/11.</p>
-<p>The installation of Homebrew is required for macOS. If necessary, Homebrew can be installed with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span>
-</pre></div>
-</div>
+<p>Continuous delivery / integration (CD/CI) runs on Ubuntu and development is also done with Windows 10/11.</p>
 <p>For the Windows operating systems, only additional the functionality of the <code class="docutils literal notranslate"><span class="pre">make</span></code> tool must be made available, e.g. via
 <a class="reference external" href="http://gnuwin32.sourceforge.net/packages/make.htm">Make for Windows</a></p>
 <p>The command-line shells supported are:</p>
@@ -339,20 +335,17 @@ Regarding the corresponding software versions, you will find the detailed inform
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>macOS</p></td>
-<td><p>zsh</p></td>
-</tr>
-<tr class="row-odd"><td><p>Ubuntu</p></td>
+<tr class="row-even"><td><p>Ubuntu</p></td>
 <td><p>bash</p></td>
 </tr>
-<tr class="row-even"><td><p>Windows 10/11</p></td>
+<tr class="row-odd"><td><p>Windows 10/11</p></td>
 <td><p>cmd and PowerShell</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>For macOS and Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
-If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the scripts <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_zsh_scripts.zsh</span></code> (macOS) or <code class="docutils literal notranslate"><span class="pre">./scripts/run_prep_bash_scripts.sh</span></code> (Ubuntu).</p>
+<p>For Ubuntu, the end-of-line character and the execution authorization may need to be adjusted for the shell scripts.
+If the <code class="docutils literal notranslate"><span class="pre">dos2Unix</span></code> program is installed, the necessary adjustments can be made using the script``./scripts/run_prep_bash_scripts.sh`` (Ubuntu).</p>
 </section>
 <section id="python">
 <h2><a class="reference external" href="https://docs.python.org/3/whatsnew/3.11.html">Python</a><a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
@@ -369,7 +362,7 @@ This approach streamlines the setup, ensuring that the database environment is q
 <section id="miniconda">
 <h2><a class="reference external" href="https://docs.conda.io/projects/miniconda/en/latest/">Miniconda</a><a class="headerlink" href="#miniconda" title="Link to this heading">¶</a></h2>
 <p>Some of the Python libraries required by the project are exclusively available through Conda. To maintain a minimal installation footprint, it is recommended to install Miniconda, a smaller, more lightweight version of Anaconda that includes only Conda, its dependencies, and Python.</p>
-<p>By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory of the project, where operating system-specific installation scripts named <code class="docutils literal notranslate"><span class="pre">run_install_miniconda</span></code> are available for Windows (CMD shell), Ubuntu (Bash shell), and macOS (Zsh shell).</p>
+<p>By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory of the project, where operating system-specific installation scripts named <code class="docutils literal notranslate"><span class="pre">run_install_miniconda</span></code> are available for Windows (CMD shell) and, Ubuntu (Bash shell).</p>
 <p>Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.</p>
 </section>
 <section id="ms-access-database-engine-only-for-windows">

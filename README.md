@@ -25,6 +25,7 @@ Detailed instructions can be found in the [documentation](https://io-aero.github
 ```
     export LANG=C.UTF-8
     export LC_ALL=C.UTF-8
+    export POSTGRES_PASSWORD_ADMIN_IO_AVSTATS_DB=<tbd>
     export PYPI_PAT=<tbd>
 ```
 

@@ -15,9 +15,9 @@ handlers:
     formatter: simple
   file_handler:
     class: logging.FileHandler
-    level: INFO
+    level: DEBUG
     filename: logging_io_aero.log
-    formatter: simple
+    formatter: extended
 
 root:
   level: DEBUG

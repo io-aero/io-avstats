@@ -1,5 +1,4 @@
 *.bak
-.DS_Store
 .coverage
 .coverage.*
 .history/
@@ -13,6 +12,7 @@
 /__mkdocs.yml
 /act_secrets
 /app-*
+/bin/razorsql/
 /build/
 /cloud.zip
 /data/*.backup.sql

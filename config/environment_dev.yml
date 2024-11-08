@@ -2,7 +2,7 @@ name: ioavstats
 channels:
   - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.12
   - pip
   - haversine
   - lat_lon_parser
@@ -47,7 +47,7 @@ dependencies:
     - rinohtype
     - ruff
     - sphinx
-    - sphinx-autodoc-typehints
+    - sphinx-autoapi
     - types-psycopg2
     - types-toml
     - vulture

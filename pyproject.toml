@@ -7,7 +7,7 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Science/Research",
     "License :: Other/Proprietary License",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
     "Typing :: Typed",
 ]
@@ -46,8 +46,8 @@ maintainers = [
 ]
 name = "ioavstats"
 readme = "README.md"
-requires-python = ">=3.11"
-version = "24.03.22"
+requires-python = ">=3.10"
+version = "24.11.08"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/io-aero/io-avstats/issues"
@@ -80,7 +80,6 @@ pythonpath = "./ioavstats/"
 testpaths = "./tests/"
 
 [tool.ruff]
-# Exclude a variety of commonly ignored directories.
 exclude = [
     ".git",
     ".history",
@@ -92,25 +91,22 @@ exclude = [
     "ioavstats.egg-info",
     "temp",
 ]
-
-# Same as Black.
 line-length = 100
 indent-width = 4
-
-# Assume Python 3.11
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.format]
-indent-style = "space"
-line-ending = "auto"
 quote-style = "double"
+indent-style = "space"
 skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["ALL"]
+select = [
+    "ALL",
+]
 ignore = [
     "C901",
     "D211",
@@ -127,12 +123,10 @@ ignore = [
     "S603",
     "S608",
 ]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
+fixable = [
+    "ALL",
+]
 unfixable = []
-
-# Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]

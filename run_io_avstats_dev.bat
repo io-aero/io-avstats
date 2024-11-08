@@ -10,19 +10,30 @@ setlocal EnableDelayedExpansion
 
 set ERRORLEVEL=
 
+rem ------------------------------------------------------------------------
+rem Set environment name
+rem ------------------------------------------------------------------------
+export MODULE=ioavstats
+
+rem ------------------------------------------------------------------------
+rem Set environment for Dynaconf
+rem ------------------------------------------------------------------------
 set ENV_FOR_DYNACONF=prod
 
+rem ------------------------------------------------------------------------
+rem Set data directories
+rem ------------------------------------------------------------------------
 set IO_AERO_AVIATION_EVENT_STATISTICS=data\AviationAccidentStatistics
 set IO_AERO_CORRECTION_WORK_DIR=data\correction
 set IO_AERO_NTSB_WORK_DIR=data\download
 
-if ["!IO_AERO_POSTGRES_CONNECTION_PORT!"] EQU [""] (
-    set IO_AERO_POSTGRES_CONNECTION_PORT=5432
-)
-
+rem ------------------------------------------------------------------------
+rem Set PostgreSQL related environment variables
+rem ------------------------------------------------------------------------
+set IO_AERO_POSTGRES_CONNECTION_PORT=5432
 set IO_AERO_POSTGRES_CONTAINER_NAME=io_avstats_db
 set IO_AERO_POSTGRES_DBNAME_ADMIN=postgres
-set IO_AERO_POSTGRES_PASSWORD_ADMIN=V3s8m4x*MYbHrX*UuU6X
+set IO_AERO_POSTGRES_PASSWORD_ADMIN=%POSTGRES_PASSWORD_ADMIN_IO_AVSTATS_DB%
 set IO_AERO_POSTGRES_PGDATA=data\postgres
 set IO_AERO_POSTGRES_USER_ADMIN=postgres
 set IO_AERO_POSTGRES_VERSION=16.3
@@ -34,9 +45,16 @@ set IO_AERO_CONTAINER=
 set IO_AERO_CONTAINER_DEFAULT=*
 set IO_AERO_MSACCESS=
 set IO_AERO_MSEXCEL=
+
+rem ------------------------------------------------------------------------
+rem Initialize task variables
+rem ------------------------------------------------------------------------
 set IO_AERO_TASK=
 set IO_AERO_TASK_DEFAULT=r_s_a
 
+rem ------------------------------------------------------------------------
+rem Set Python path
+rem ------------------------------------------------------------------------
 set PYTHONPATH=.
 
 if ["%1"] EQU [""] (

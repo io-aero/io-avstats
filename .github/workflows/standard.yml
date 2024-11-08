@@ -10,6 +10,7 @@ env:
   IO_DOCKER: 'true'
   IO_ODBC: 'true'
   MODULE: 'ioavstats'
+  POSTGRES_PASSWORD_ADMIN_IO_AVSTATS_DB: ${{ secrets.POSTGRES_PASSWORD_ADMIN_IO_AVSTATS_DB }}
   PYPI_PAT: ${{ secrets.PYPI_PAT }}
 
 jobs:

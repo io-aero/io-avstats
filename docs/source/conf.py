@@ -1,6 +1,5 @@
 """Configuration file for the Sphinx documentation builder."""
 
-import importlib.metadata
 import sys
 import warnings
 from datetime import UTC, datetime
@@ -79,18 +78,15 @@ copyright = "2022 - 2024, IO-Aero"  # pylint: disable=redefined-builtin # noqa: 
 github_url = f"https://github.com/io-aero/{REPOSITORY_NAME}"
 project = REPOSITORY_NAME.upper()
 
-try:
-    version = importlib.metadata.version(MODULE_NAME)
-except importlib.metadata.PackageNotFoundError:
-    version = get_version_from_pyproject()
-    if version == "unknown":
-        print("==========>")  # noqa: T201
-        print(  # noqa: T201
-            "==========> Warning: Version not found, defaulting to 'unknown'.",
-        )
-        print("==========>")  # noqa: T201
+version = get_version_from_pyproject()
+if version == "unknown":
+    release = version
+    print("==========>")  # noqa: T201
+    print("==========> Warning: Version not found, defaulting to 'unknown'.")  # noqa: T201
+    print("==========>")  # noqa: T201
+else:
+    release = version.replace(".", "-")
 
-release = version.replace(".", "-")
 todays_date = datetime.now(tz=UTC)
 # pylint: enable=invalid-name
 
@@ -167,6 +163,7 @@ source_suffix = {
 
 
 class Desc_Sig_Space(inline):  # pylint: disable=invalid-name # noqa: N801
+
     """A custom inline node for managing space in document signatures.
 
     This class extends `docutils.nodes.inline` to provide specific handling

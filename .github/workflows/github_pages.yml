@@ -70,7 +70,7 @@ jobs:
           conda init --all
           source ~/.bashrc
           conda activate $MODULE
-          make black docs
+          make docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

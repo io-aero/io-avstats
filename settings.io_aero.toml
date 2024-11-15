@@ -88,6 +88,8 @@ graph_font_size_xaxes_title = 30
 graph_font_size_yaxes = 30
 graph_font_size_yaxes_title = 30
 
+postgres_host = "host.docker.internal"
+
 [test]
 check_value = "test"
 correction_work_dir = "data/correction_test"

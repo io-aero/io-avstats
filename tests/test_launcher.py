@@ -60,7 +60,7 @@ def _setup_and_teardown() -> None:  # type: ignore
 # Test case: version - Show the IO-AVSTATS version.
 # -----------------------------------------------------------------------------
 def test_launcher_version() -> None:
-    """Test case: launcher() version."""
+    """Test case: Show the IO-AVSTATS version."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -132,7 +132,7 @@ def test_launcher_s_d_c() -> None:
 # Test case: c_d_s   - Create the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 def test_launcher_c_d_s() -> None:
-    """Test case: Create or update the PostgreSQL database schema."""
+    """Test case: Create the PostgreSQL database schema."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -150,7 +150,7 @@ def test_launcher_c_d_s() -> None:
 # Test case: u_d_s   - Update the PostgreSQL database schema.
 # -----------------------------------------------------------------------------
 def test_launcher_u_d_s() -> None:
-    """Test case: Delete the PostgreSQL database container."""
+    """Test case: Update the PostgreSQL database schema."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -165,29 +165,10 @@ def test_launcher_u_d_s() -> None:
 
 
 # -----------------------------------------------------------------------------
-# Test case: a_o_c   - Load aviation occurrence categories
-#                                    into PostgreSQL.
-# -----------------------------------------------------------------------------
-def test_launcher_a_o_c() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    commands = {
-        "Linux": ["./run_io_avstats_test.sh", "a_o_c"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "a_o_c"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)
-
-
-# -----------------------------------------------------------------------------
 # Test case: l_a_p   - Load airport data into PostgreSQL.
 # -----------------------------------------------------------------------------
 def test_launcher_l_a_p() -> None:
-    """Test case: Delete the PostgreSQL database container."""
+    """Test case: Load airport data into PostgreSQL."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -202,10 +183,28 @@ def test_launcher_l_a_p() -> None:
 
 
 # -----------------------------------------------------------------------------
+# Test case: a_o_c   - Load aviation occurrence categories into PostgreSQL.
+# -----------------------------------------------------------------------------
+def test_launcher_a_o_c() -> None:
+    """Test case: Load aviation occurrence categories into PostgreSQL."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "a_o_c"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "a_o_c"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
 # Test case: l_c_s   - Load country and state data into PostgreSQL.
 # -----------------------------------------------------------------------------
 def test_launcher_l_c_s() -> None:
-    """Test case: Delete the PostgreSQL database container."""
+    """Test case: Load country and state data into PostgreSQL."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -220,82 +219,10 @@ def test_launcher_l_c_s() -> None:
 
 
 # -----------------------------------------------------------------------------
-# Test case: l_s_e   - Load sequence of events data into PostgreSQL.
-# -----------------------------------------------------------------------------
-def test_launcher_l_s_e() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    commands = {
-        "Linux": ["./run_io_avstats_test.sh", "l_s_e"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_e"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)
-
-
-# -----------------------------------------------------------------------------
-# Test case: l_s_d   - Load simplemaps data into PostgreSQL.
-# -----------------------------------------------------------------------------
-def test_launcher_l_s_d() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    commands = {
-        "Linux": ["./run_io_avstats_test.sh", "l_s_d"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_d"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)
-
-
-# -----------------------------------------------------------------------------
-# Test case: l_z_d   - Load ZIP Code Database data into PostgreSQL.
-# -----------------------------------------------------------------------------
-def test_launcher_l_z_d() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    commands = {
-        "Linux": ["./run_io_avstats_test.sh", "l_z_d"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_z_d"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)
-
-
-# -----------------------------------------------------------------------------
-# Test case: r_d_s   - Refresh the PostgreSQL database schema.
-# -----------------------------------------------------------------------------
-def test_launcher_r_d_s() -> None:
-    """Test case: Delete the PostgreSQL database container."""
-    assert settings.check_value == "test", "Settings check_value is not 'test'"
-
-    commands = {
-        "Linux": ["./run_io_avstats_test.sh", "r_d_s"],
-        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "r_d_s"],
-    }
-    command = commands.get(platform.system())
-    if not command:
-        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
-
-    _run_command(command)
-
-
-# -----------------------------------------------------------------------------
 # Test case: l_c_d   - Load data from a correction file into PostgreSQL.
 # -----------------------------------------------------------------------------
 def test_launcher_l_c_d() -> None:
-    """Test case: Delete the PostgreSQL database container."""
+    """Test case: Load data from a correction file into PostgreSQL."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
@@ -316,10 +243,64 @@ def test_launcher_l_c_d() -> None:
 
 
 # -----------------------------------------------------------------------------
+# Test case: l_s_e   - Load sequence of events data into PostgreSQL.
+# -----------------------------------------------------------------------------
+def test_launcher_l_s_e() -> None:
+    """Test case: Load sequence of events data into PostgreSQL."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "l_s_e"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_e"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: l_s_d   - Load simplemaps data into PostgreSQL.
+# -----------------------------------------------------------------------------
+def test_launcher_l_s_d() -> None:
+    """Test case: Load simplemaps data into PostgreSQL."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "l_s_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_d"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: l_z_d   - Load ZIP Code Database data into PostgreSQL.
+# -----------------------------------------------------------------------------
+def test_launcher_l_z_d() -> None:
+    """Test case: Load ZIP Code Database data into PostgreSQL."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "l_z_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_z_d"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
 # Test case: u_p_d   - Complete processing of a modifying MS Access file.
 # -----------------------------------------------------------------------------
 def test_launcher_u_p_d() -> None:
-    """Test case: Delete the PostgreSQL database container."""
+    """Test case: Complete processing of a modifying MS Access file."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     if platform.system() == "Linux":
@@ -339,3 +320,110 @@ def test_launcher_u_p_d() -> None:
         pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
 
     _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: l_n_a   - Load NTSB MS Access database data into PostgreSQL.
+# -----------------------------------------------------------------------------
+def test_launcher_l_n_a() -> None:
+    """Test case: Load NTSB MS Access database data into PostgreSQL."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    if platform.system() == "Linux":
+        pytest.skip("Skipping l_n_a on Linux due to custom handling.")
+
+    commands = {
+        "Windows": [
+            "cmd.exe",
+            "/c",
+            "run_io_avstats_test.bat",
+            "l_n_a",
+            "up22APR",
+        ],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: c_l_l   - Correct decimal US latitudes and longitudes.
+# -----------------------------------------------------------------------------
+def test_launcher_c_l_l() -> None:
+    """Test case: Correct decimal US latitudes and longitudes."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "c_l_l"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_l_l"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: f_n_a   - Find the nearest airport.
+# -----------------------------------------------------------------------------
+def test_launcher_f_n_a() -> None:
+    """Test case: Find the nearest airport."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "f_n_a"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "f_n_a"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: r_d_s   - Refresh the PostgreSQL database schema.
+# -----------------------------------------------------------------------------
+def test_launcher_r_d_s() -> None:
+    """Test case: Refresh the PostgreSQL database schema."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "r_d_s"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "r_d_s"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: c_p_d   - Cleansing PostgreSQL data.
+# -----------------------------------------------------------------------------
+def test_launcher_c_p_d() -> None:
+    """Test case: Cleansing PostgreSQL data."""
+    assert settings.check_value == "test", "Settings check_value is not 'test'"
+
+    commands = {
+        "Linux": ["./run_io_avstats_test.sh", "c_p_d"],
+        "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_p_d"],
+    }
+    command = commands.get(platform.system())
+    if not command:
+        pytest.fail(io_glob.FATAL_00_908.replace("{os}", platform.system()))
+
+    _run_command(command)
+
+
+# -----------------------------------------------------------------------------
+# Test case: cleanup - Delete the PostgreSQL database container.
+# -----------------------------------------------------------------------------
+def test_launcher_clean() -> None:
+    """Test case: Delete the PostgreSQL database container."""
+    test_launcher_d_d_c()
+    test_launcher_d_d_f()

@@ -242,10 +242,6 @@ elif [[ "${IO_AERO_TASK}" = "u_p_d" ]]; then
         exit 255
     fi
 
-    if ! python scripts/launcher.py -t "v_n_d"; then
-        exit 255
-    fi
-
     if ! python scripts/launcher.py -t "r_d_s"; then
         exit 255
     fi

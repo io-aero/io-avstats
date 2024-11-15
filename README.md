@@ -95,7 +95,6 @@ The script is available in versions for Ubuntu and Windows 10/11 and provides th
     c_p_d   - Cleansing PostgreSQL data
     c_l_l   - Correct decimal US latitudes and longitudes
     f_n_a   - Find the nearest airports
-    v_n_d   - Verify selected NTSB data
     ---------------------------------------------------------
     l_a_p   - Load airport data into PostgreSQL
     a_o_c   - Load aviation occurrence categories into PostgreSQL
@@ -127,6 +126,7 @@ Further IO-Aero software documentation can be found under the following links.
 - [IO-AIRPLANE-SIM - Airplane Simulator](https://io-aero.github.io/io-airplane-sim/)
 - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) 
 - [IO-AX4-DI - Flight Data Interface](https://github.com/IO-Aero-Projects-2024/io-ax4-di/) 
+- [IO-AX4-DOCS - AX4 Documentation Repository](https://github.com/IO-Aero-Projects-2024/io-ax4-docs/) 
 - [IO-AX4-UI - Pilot Data Interface](https://github.com/io-swiss/io-ax4-ui/) 
 - [IO-COMMON - Common Elements](https://io-aero.github.io/io-common/) 
 - [IO-DATA-SOURCES - Data Source Documentation](https://io-aero.github.io/io-data-sources/) 
@@ -170,7 +170,6 @@ Further IO-Aero software documentation can be found under the following links.
 | .dockerignore          | Configuration of files and folders to be ignored with Docker.         |
 | .gitattributes         | Handling of the os-specific file properties.                          |
 | .gitignore             | Configuration of files and folders to be ignored with Git.            |
-| .pylintrc              | Pylint configuration file.                                            |
 | Dockerfile             | Build instructions for the docker2exe application images.             |
 | LICENSE.md             | Text of the licence terms.                                            |
 | logging_cfg.yaml       | Configuration of the Logger functionality.                            |

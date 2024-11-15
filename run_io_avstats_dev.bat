@@ -67,7 +67,6 @@ if ["%1"] EQU [""] (
     echo c_p_d   - Cleansing PostgreSQL data
     echo c_l_l   - Correct decimal US latitudes and longitudes
     echo f_n_a   - Find the nearest airports
-    echo v_n_d   - Verify selected NTSB data
     echo -----------------------------------------------------------------------
     echo l_a_p   - Load airport data into PostgreSQL
     echo a_o_c   - Load aviation occurrence categories into PostgreSQL

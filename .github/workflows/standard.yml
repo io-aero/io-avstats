@@ -133,7 +133,7 @@ jobs:
           conda init --all
           source ~/.bashrc
           conda activate $MODULE
-          make black lint docs tests
+          make lint docs tests
 
       - name: Coveralls
         if: ${{ env.IO_COVERALLS == 'true' }}

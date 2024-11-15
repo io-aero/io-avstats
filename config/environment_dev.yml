@@ -28,7 +28,6 @@ dependencies:
     - pyeclat
     # Development dependencies
     - bandit
-    - black
     - coverage
     - coveralls
     - docformatter

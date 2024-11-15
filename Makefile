@@ -37,8 +37,9 @@ ifeq (${OS},Windows_NT)
     PIP=pip
     PYTHON=python
     DELETE_SPHINX=del /f /q ${SPHINX_BUILDDIR}\\*
+    REMOVE_DOCKER_CONTAINER=@docker ps -a | findstr /r /c:"${MODULE}" && docker rm --force ${MODULE}         || echo "No existing container to remove."
+    REMOVE_DOCKER_IMAGE=@docker image ls  | findstr /r /c:"${MODULE}" && docker rmi --force ${MODULE}:latest || echo "No existing image to remove."
 else
-	ARCH:=$(shell uname -m)
 	OS:=$(shell uname -s)
     COPY_MYPY_STUBGEN=cp -f out/${MODULE}/* ./${MODULE}/
     DELETE_MYPY_STUBGEN=rm -rf out
@@ -46,13 +47,14 @@ else
     PIP=pip3
     PYTHON=python3
     DELETE_SPHINX=rm -rf ${SPHINX_BUILDDIR}/*
+    REMOVE_DOCKER_CONTAINER=@sh -c 'docker ps -a | grep -q "${MODULE}" && docker rm --force ${MODULE} || echo "No existing container to remove."'
+    REMOVE_DOCKER_IMAGE=@sh -c 'docker image ls | grep -q "${MODULE}" && docker rmi --force ${MODULE}:latest || echo "No existing image to remove."'
 endif
 
 PYTHONPATH=${MODULE} docs scripts tests
 
 export ENV_FOR_DYNACONF=test
 export LANG=en_US.UTF-8
-
 
 # =============================================================================
 # Helper Functions
@@ -87,7 +89,6 @@ help:
 ## Ensure all required tools are installed.
 #check-tools:
 #	$(call CHECK_TOOL,bandit)
-#	$(call CHECK_TOOL,black)
 #	$(call CHECK_TOOL,coveralls)
 #	$(call CHECK_TOOL,docformatter)
 #	$(call CHECK_TOOL,mypy)
@@ -123,12 +124,12 @@ action-std:
 	bin/act.exe --version
 	@echo "----------------------------------------------------------------------"
 	bin/act --quiet \
-			--secret-file .act_secrets \
+			--secret-file config/.act_secrets \
 			--var IO_LOCAL='true' \
 			-P ubuntu-latest=catthehacker/ubuntu:act-latest \
 			-W .github/workflows/github_pages.yml
 	bin/act --quiet \
-			--secret-file .act_secrets \
+			--secret-file config/.act_secrets \
 			--var IO_LOCAL='true' \
 			-P ubuntu-latest=catthehacker/ubuntu:act-latest \
 			-W .github/workflows/standard.yml
@@ -142,14 +143,6 @@ bandit:
 	bandit -c pyproject.toml -r ${PYTHONPATH} --severity-level high --severity-level medium
 	@echo "Info **********  End:   Bandit ***************************************"
 
-## Format the code with Black.
-black:
-	@echo "Info **********  Start: black ****************************************"
-	black --version
-	@echo "----------------------------------------------------------------------"
-	black ${PYTHONPATH}
-	@echo "Info **********  End:   black ****************************************"
-
 ## Byte-compile the Python libraries.
 compileall:
 	@echo "Info **********  Start: Compile All Python Scripts *******************"
@@ -160,11 +153,11 @@ compileall:
 
 conda-dev: ## Create a new environment for development.
 	@echo "Info **********  Start: Miniconda create development environment *****"
-	conda config --set always_yes true
 	conda --version
 	@echo "----------------------------------------------------------------------"
-	conda env remove -n ${MODULE} >/dev/null 2>&1 || echo "Environment '${MODULE}' does not exist."
-	conda env create -f config/environment_dev.yml
+	conda config --set always_yes true
+	conda config --set channel_priority flexible
+	conda env create -f config/environment_dev.yml || conda env update --prune -f config/environment_dev.yml
 	@echo "----------------------------------------------------------------------"
 	conda info --envs
 	conda list
@@ -172,11 +165,11 @@ conda-dev: ## Create a new environment for development.
 
 conda-prod: ## Create a new environment for production.
 	@echo "Info **********  Start: Miniconda create production environment ******"
-	conda config --set always_yes true
 	conda --version
 	@echo "----------------------------------------------------------------------"
-	conda env remove -n ${MODULE} >/dev/null 2>&1 || echo "Environment '${MODULE}' does not exist."
-	conda env create -f config/environment.yml
+	conda config --set always_yes true
+	conda config --set channel_priority flexible
+	conda env create -f config/environment.yml || conda env update --prune -f config/environment.yml
 	@echo "----------------------------------------------------------------------"
 	conda info --envs
 	conda list
@@ -203,6 +196,21 @@ docformatter:
 #	docformatter -r ${PYTHONPATH}
 	@echo "Info **********  End:   docformatter *********************************"
 
+# Creates Docker executables
+# https://github.com/rzane/docker2exe
+# Configuration files: .dockerignore & Dockerfile
+docker:             ## Create a docker image.
+	@echo "Info **********  Start: Docker ***************************************"
+	docker --version
+	@echo "----------------------------------------------------------------------"
+	docker ps -a
+	@echo "----------------------------------------------------------------------"
+	${REMOVE_DOCKER_CONTAINER}
+	${REMOVE_DOCKER_IMAGE}
+	docker system prune -a -f
+	docker build --build-arg PYPI_PAT=${PYPI_PAT} -t ${MODULE} .
+	@echo "Info **********  End:   Docker ***************************************"
+
 docs: ## docs: Create the user documentation.
 docs: sphinx
 
@@ -214,8 +222,8 @@ final: ## final: Format, lint and test the code and create the documentation.
 #final: check-tools format lint docs tests
 final: format lint docs tests
 
-format: ## format: Format the code with Black and docformatter.
-format: black docformatter
+format: ## format: Format the code with docformatter.
+format: docformatter
 
 lint: ## lint: Lint the code with ruff, Bandit, Vulture, Pylint and Mypy.
 lint: ruff bandit vulture pylint mypy
@@ -255,7 +263,7 @@ pylint:
 	@echo "Info **********  Start: Pylint ***************************************"
 	pylint --version
 	@echo "----------------------------------------------------------------------"
-	pylint --rcfile=.pylintrc ${PYTHONPATH}
+	pylint --rcfile=config/.pylintrc ${PYTHONPATH}
 	@echo "Info **********  End:   Pylint ***************************************"
 
 ## Run all tests with pytest.

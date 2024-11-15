@@ -4021,7 +4021,7 @@ def _setup_task_controls() -> None:
                         min_value=0.0,
                         value=5.0,
                     )
-                if CHOICE_CHARTS_TYPE_EY_NA_I_2_OG <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG:
+                if CHOICE_CHARTS_TYPE_EY_NA_I_2_OG <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG: # type: ignore
                     # pylint: disable=line-too-long
                     st.error(
                         "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",
@@ -4215,7 +4215,7 @@ def _setup_task_controls() -> None:
                         min_value=0.0,
                         value=5.0,
                     )
-                if CHOICE_CHARTS_TYPE_TE_NA_I_2_OG <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG:
+                if CHOICE_CHARTS_TYPE_TE_NA_I_2_OG <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG: # type: ignore
                     # pylint: disable=line-too-long
                     st.error(
                         "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",

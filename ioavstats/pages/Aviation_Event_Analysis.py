@@ -506,8 +506,8 @@ def _apply_filter(
 
     # noinspection PyUnboundLocalVariable
     if (
-        FILTER_DISTANCE_NEAREST_AIRPORT
-        and FILTER_DISTANCE_NEAREST_AIRPORT_FROM
+        (FILTER_DISTANCE_NEAREST_AIRPORT
+        and FILTER_DISTANCE_NEAREST_AIRPORT_FROM)
         or FILTER_DISTANCE_NEAREST_AIRPORT_TO
     ):
         df_filtered = df_filtered.loc[
@@ -3359,10 +3359,10 @@ def _setup_filter() -> None:
         )
 
         if (
-            FILTER_NO_AIRCRAFT_FROM
-            and min_no_aircraft != FILTER_NO_AIRCRAFT_FROM
-            or FILTER_NO_AIRCRAFT_TO
-            and max_no_aircraft != FILTER_NO_AIRCRAFT_TO
+            (FILTER_NO_AIRCRAFT_FROM
+            and min_no_aircraft != FILTER_NO_AIRCRAFT_FROM)
+            or (FILTER_NO_AIRCRAFT_TO
+            and max_no_aircraft != FILTER_NO_AIRCRAFT_TO)
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3495,10 +3495,10 @@ def _setup_filter() -> None:
         )
 
         if (
-            FILTER_INJ_F_GRND_FROM
-            and FILTER_INJ_F_GRND_FROM != 0
-            or FILTER_INJ_F_GRND_TO
-            and max_inj_f_grnd != FILTER_INJ_F_GRND_TO
+            (FILTER_INJ_F_GRND_FROM
+            and FILTER_INJ_F_GRND_FROM != 0)
+            or (FILTER_INJ_F_GRND_TO
+            and max_inj_f_grnd != FILTER_INJ_F_GRND_TO)
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (
@@ -3521,10 +3521,10 @@ def _setup_filter() -> None:
         )
 
         if (
-            FILTER_INJ_TOT_F_FROM
-            and FILTER_INJ_TOT_F_FROM != 0
-            or FILTER_INJ_TOT_F_TO
-            and max_inj_tot_f != FILTER_INJ_TOT_F_TO
+            (FILTER_INJ_TOT_F_FROM
+            and FILTER_INJ_TOT_F_FROM != 0)
+            or (FILTER_INJ_TOT_F_TO
+            and max_inj_tot_f != FILTER_INJ_TOT_F_TO)
         ):
             # pylint: disable=line-too-long
             CHOICE_ACTIVE_FILTERS_TEXT = (

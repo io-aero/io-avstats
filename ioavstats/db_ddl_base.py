@@ -321,7 +321,7 @@ def _create_db_io_md_codes_category(
 
         tokens = _create_tokens_4_finding_description(finding_description)
 
-        if len(tokens) == 5 or len(tokens) == 6 and tokens[5].strip() in ["C", "F"]:
+        if len(tokens) == 5 or (len(tokens) == 6 and tokens[5].strip() in ["C", "F"]):
             curr_desc = unstructured_desc[category_no]
             curr_desc.append(_prep_token_4_finding_description(tokens[0]))
             unstructured_desc[category_no] = curr_desc
@@ -517,7 +517,7 @@ def _create_db_io_md_codes_modifier(
 
         tokens = _create_tokens_4_finding_description(finding_description)
 
-        if len(tokens) == 5 or len(tokens) == 6 and tokens[5].strip() in ["C", "F"]:
+        if len(tokens) == 5 or (len(tokens) == 6 and tokens[5].strip() in ["C", "F"]):
             curr_desc = unstructured_desc[modifier_no]
             curr_desc.append(_prep_token_4_finding_description(tokens[4]))
             unstructured_desc[modifier_no] = curr_desc
@@ -725,7 +725,7 @@ def _create_db_io_md_codes_section(
 
         tokens = _create_tokens_4_finding_description(finding_description)
 
-        if len(tokens) == 5 or len(tokens) == 6 and tokens[5].strip() in ["C", "F"]:
+        if len(tokens) == 5 or (len(tokens) == 6 and tokens[5].strip() in ["C", "F"]):
             curr_desc = unstructured_desc[(category_no, subcategory_no, section_no)]
             curr_desc.append(_prep_token_4_finding_description(tokens[2]))
             unstructured_desc[(category_no, subcategory_no, section_no)] = curr_desc
@@ -836,7 +836,7 @@ def _create_db_io_md_codes_subcategory(
 
         tokens = _create_tokens_4_finding_description(finding_description)
 
-        if len(tokens) == 5 or len(tokens) == 6 and tokens[5].strip() in ["C", "F"]:
+        if len(tokens) == 5 or (len(tokens) == 6 and tokens[5].strip() in ["C", "F"]):
             curr_desc = unstructured_desc[(category_no, subcategory_no)]
             curr_desc.append(_prep_token_4_finding_description(tokens[1]))
             unstructured_desc[(category_no, subcategory_no)] = curr_desc
@@ -955,7 +955,7 @@ def _create_db_io_md_codes_subsection(
 
         tokens = _create_tokens_4_finding_description(finding_description)
 
-        if len(tokens) == 5 or len(tokens) == 6 and tokens[5].strip() in ["C", "F"]:
+        if len(tokens) == 5 or (len(tokens) == 6 and tokens[5].strip() in ["C", "F"]):
             curr_desc = unstructured_desc[
                 (category_no, subcategory_no, section_no, subsection_no)
             ]

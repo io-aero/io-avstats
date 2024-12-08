@@ -1,0 +1,596 @@
+# 2024.12.01 up01DEC
+
+```
+===========================================================================
+Start run_io_avstats_dev
+---------------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+---------------------------------------------------------------------------
+ENV_FOR_DYNACONF : prod
+PYTHONPATH       : .
+---------------------------------------------------------------------------
+TASK             : u_p_d
+APPLICATION      :
+COMPOSE_TASK     :
+MSACCESS         : up01DEC
+MSEXCEL          :
+---------------------------------------------------------------------------
+The current time is:  3:23:33.06
+Enter the new time:
+===========================================================================
+2024-12-08 03:23:34,110 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:23:34,110 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:23:34,110 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:23:34,111 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:23:35.173755+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:23:35.173755+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:23:35,173 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'd_n_a', '-m', 'up01DEC']
+2024-12-08 03:23:35,173 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:23:35,183 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:23:35.184755+00:00 : INFO.00.008 Arguments task='d_n_a' msaccess='up01DEC'.
+Progress update 2024-12-08 02:23:35.184755+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:23:35.184755+00:00 : INFO.00.047 Download NTSB MS Access database file 'up01DEC'.
+Progress update 2024-12-08 02:23:35.184755+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:35.579700+00:00 : INFO.00.013 The connection to the MS Access database file 'up01DEC.zip' on the NTSB download page was successfully established.
+Progress update 2024-12-08 02:23:35.917881+00:00 : INFO.00.014 From the file 'up01DEC.zip' 2 chunks were downloaded.
+Progress update 2024-12-08 02:23:35.928877+00:00 : INFO.00.015 The file 'up01DEC.zip' was successfully unpacked.
+Progress update 2024-12-08 02:23:35.956881+00:00 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\IO-AVSTATS.mdb'.
+Progress update 2024-12-08 02:23:35.957886+00:00 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up01DEC.sql'.
+Progress update 2024-12-08 02:23:35.957886+00:00 : INFO.00.052 razorsql_jar_file='C:\Program Files\RazorSQL\razorsql.jar'.
+Progress update 2024-12-08 02:23:35.957886+00:00 : INFO.00.053 razorsql_java_path='C:\Program Files\RazorSQL\jre11\bin\java'.
+1733624616039: launching RazorSQL . . .
+1733624616039: args . . .
+-backup
+IO-AVSTATS
+null
+null
+;
+null
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up01DEC.sql
+NO
+tables
+YES
+null
+NO
+NO
+1733624616071: userName: walte
+1733624616071: libraryPath: C:\Program Files\RazorSQL\jre11\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\ProgramData\miniconda3\envs\ioavstats;C:\ProgramData\miniconda3\envs\ioavstats\Library\mingw-w64\bin;C:\ProgramData\miniconda3\envs\ioavstats\Library\usr\bin;C:\ProgramData\miniconda3\envs\ioavstats\Library\bin;C:\ProgramData\miniconda3\envs\ioavstats\Scripts;C:\ProgramData\miniconda3\envs\ioavstats\bin;C:\ProgramData\miniconda3\condabin;C:\Program Files\Python313\Scripts;C:\Program Files\Python313;C:\Program Files (x86)\infogridpacific\AZARDI;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet;C:\Program Files\Git LFS;C:\Program Files\Microsoft SQL Server\110\Tools\Binn;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Software\GnuWin32\bin;C:\WINDOWS;C:\WINDOWS\System32;C:\WINDOWS\System32\OpenSSH;C:\WINDOWS\System32\wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Users\walte\.nimble\bin;\bin;\bin;\bin;C:\ProgramData\miniconda3\condabin;C:\Program Files\PostgreSQL\16\bin;C:\Software\jdk-20.0.1\bin;C:\Program Files\PuTTY;C:\Software\LAStools\bin;C:\Software\GnuPG\bin;C:\Program Files\nodejs;C:\Program Files\Calibre2;C:\Program Files\TortoiseGit\bin;C:\Program Files\Go\bin;C:\Program Files\Git\cmd;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files\Zero Install;C:\Program Files\GitHub CLI;C:\Program Files\Docker\Docker\resources\bin;C:\Users\walte\.cargo\bin;C:\Users\walte\AppData\Local\Microsoft\WindowsApps;C:\Software\Microsoft VS Code\bin;c:\users\walte\.local\bin;C:\Users\walte\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\walte\AppData\Local\Pandoc;C:\Users\walte\AppData\Local\GitHubDesktop\bin;C:\Users\walte\AppData\Roaming\npm;C:\Users\walte\AppData\Local\Microsoft\WinGet\Links;D:\Batch;C:\Program Files\Redis;C:\ProgramData\miniconda3\condabin;C:\Program Files\JetBrains\JetBrains Gateway 2024.3\bin;.;.
+1733624616071: javaVersion: 17.0.7
+1733624616071:
+1733624616071: Verifying RazorSQL resources location.
+1733624616071:
+1733624616072: testing base url: / = file:/C:/Program%20Files/RazorSQL/
+1733624616072:
+1733624616072: testString1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1733624616072: testString2: file:/C:/Program%20Files/RazorSQL/data/base.ssql
+1733624616072: testFile1: C:\Program Files\RazorSQL\razorsql.jar
+1733624616072: testFile2: C:\Program Files\RazorSQL\data\base.ssql
+1733624616072: both test file exists.  Base URL found.
+1733624616073: resource directory: file:/C:/Program%20Files/RazorSQL/
+1733624616073: user home: C:\Users\walte
+1733624616074: user profile: C:\Users\walte
+1733624616074: app data: C:\Users\walte\AppData\Roaming
+1733624616074: checking write access to: C:\Users\walte\AppData\Roaming
+1733624616074: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1733624616074: can write to C:\Users\walte\AppData\Roaming
+1733624616074: user.home: C:\Users\walte\AppData\Roaming
+1733624616074: RazorSQL Scratch Directory: C:\Users\walte\AppData\Roaming\RazorSQL
+1733624616074: RazorSQL Scratch Directory exists
+1733624616074: checking for sub directories
+1733624616075: razorsql launch log: C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1733624616075: launch log file = C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1733624616075: Checking for graphics properties
+1733624616075: graphics properties file: C:\Users\walte\AppData\Roaming\RazorSQL\data\graphics_properties.txt
+1733624616075: gOverride: null
+1733624616075: not disabling advanced graphics
+1733624616075: path0: file:/C:/Program%20Files/RazorSQL/data/run.ssql
+1733624616076: path1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1733624616076: runArgs: true
+1733624616076: showScreen: false
+1733624616076: args[0]: -backup
+1733624616076: args[1]: IO-AVSTATS
+1733624616076: args[2]: null
+1733624616076: args[3]: null
+1733624616076: args[4]: ;
+1733624616076: args[5]: null
+1733624616076: args[6]: D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up01DEC.sql
+1733624616076: args[7]: NO
+1733624616076: args[8]: tables
+1733624616076: args[9]: YES
+1733624616076: args[10]: null
+1733624616076: args[11]: NO
+1733624616076: args[12]: NO
+1733624616077: Command: -backup
+1733624616077: Running -backup
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+h: name = C:\Program Files\RazorSQL\razorsql.jar
+1733624616085: Attempting to load . . .
+command found
+uOne: file:/C:/Program%20Files/RazorSQL/
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+1733624616094reading file . . .C:\Program Files\RazorSQL\data\base.ssql
+1733624616122done reading . . .
+1733624616131done converting
+1733624616131starting lib load.
+1733624616143lib load complete.
+In command line processor
+Max Memory: 30688.0
+Current Total Memory: 2048.0
+Free Memory: 1918.0710830688477
+1733624616203: r init
+1733624616203: d init
+1733624616203: get default file encoding
+1733624616203: end d init
+custom home directory: null
+Checking for user data from old versions
+1733624616205: user home: C:\Users\walte
+1733624616205: user profile: C:\Users\walte
+1733624616205: app data: C:\Users\walte\AppData\Roaming
+1733624616205: checking write access to: C:\Users\walte\AppData\Roaming
+1733624616205: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1733624616205: can write to C:\Users\walte\AppData\Roaming
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1733624616214: loading icons
+1733624616366: done r init
+Getting connection data from: IO-AVSTATS
+1733624616367: r init
+1733624616367: d init
+1733624616367: get default file encoding
+1733624616367: end d init
+custom home directory: null
+Checking for user data from old versions
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1733624616367: loading icons
+1733624616375: done r init
+getting connection . . .
+Not using SSH Tunnel
+driver: sun.jdbc.odbc.JdbcOdbcDriver
+classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+loadedCommonJars: false
+commonURL: file:/C:/Program%20Files/RazorSQL/drivers/common/
+commonDir: C:\Program Files\RazorSQL\drivers\common
+commonFiles[0]: file:/C:/Program%20Files/RazorSQL/drivers/common/activation.jar
+commonFiles[1]: file:/C:/Program%20Files/RazorSQL/drivers/common/common.jar
+commonFiles[2]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-api.jar
+commonFiles[3]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-core.jar
+commonFiles[4]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-impl.jar
+commonFiles[6]: file:/C:/Program%20Files/RazorSQL/drivers/common/odbc.jar
+connection type: ODBC
+final classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+classLocation file: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+building sql manager
+Loading driver
+Done loading driver
+Getting connection with no login info
+JdbcOdbcDriver: in initialize
+OdbcApi == null
+Creating new OdbcApi, nativePrefix:
+JdbcOdbc constructor
+Attempting to load JdbcOdbc library
+Got OdbcApi: sun.jdbc.odbc.JdbcOdbc@77846d2c
+Getting charset
+JdbcOdbcDriver.OdbcApi.charSet: Cp1252
+Connection obtained
+obtained connection
+database major version = 2
+database product name: ACCESS
+multiValueInsert: false
+includeIdentifyColumns: false
+Calling backup . . .
+Retrieving Tables . . .
+Generating Table DDL . . .
+1 of 20
+number of columns 93
+column map size: 93
+foundNull: false
+2 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+3 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+4 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+5 of 20
+number of columns 6
+column map size: 6
+foundNull: false
+6 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+7 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+8 of 20
+number of columns 13
+column map size: 13
+foundNull: false
+9 of 20
+number of columns 17
+column map size: 17
+foundNull: false
+10 of 20
+number of columns 73
+column map size: 73
+foundNull: false
+11 of 20
+number of columns 10
+column map size: 10
+foundNull: false
+12 of 20
+number of columns 14
+column map size: 14
+foundNull: false
+13 of 20
+number of columns 33
+column map size: 33
+foundNull: false
+14 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+15 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+16 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+17 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+18 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+19 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+20 of 20
+number of columns 3
+column map size: 3
+foundNull: false
+Generating Alter Table DDL . . .
+1 of 20
+2 of 20
+3 of 20
+4 of 20
+5 of 20
+6 of 20
+7 of 20
+8 of 20
+9 of 20
+10 of 20
+11 of 20
+12 of 20
+13 of 20
+14 of 20
+15 of 20
+16 of 20
+17 of 20
+18 of 20
+19 of 20
+20 of 20
+backup finished
+closing connection . . .
+connection closed.
+Shutting down logging streams
+Done shutting down logging streams
+Exiting . . .
+Progress update 2024-12-08 02:23:37.018705+00:00 : INFO.00.011 The DDL script for the MS Access database 'up01DEC.mdb' was created successfully.
+Progress update 2024-12-08 02:23:37.019704+00:00 : INFO.00.012 The DDL script for the MS Access database 'up01DEC.mdb' is identical to the reference script.
+Progress update 2024-12-08 02:23:37.020705+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:23:37.020705+00:00 :                    1 s - Total time launcher.
+Progress update 2024-12-08 02:23:37.020705+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:23:37.020705+00:00 : ===============================================================================.
+2024-12-08 03:23:38,137 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:23:38,138 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:23:38,138 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:23:38,138 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:23:39.111401+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:23:39.111401+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:23:39,111 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'l_n_a', '-m', 'up01DEC']
+2024-12-08 03:23:39,112 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:23:39,121 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:23:39.122466+00:00 : INFO.00.008 Arguments task='l_n_a' msaccess='up01DEC'.
+Progress update 2024-12-08 02:23:39.122466+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:23:39.122466+00:00 : INFO.00.049 Load NTSB MS Access database data from file 'up01DEC'.
+Progress update 2024-12-08 02:23:39.122466+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:39.123466+00:00 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\up01DEC.mdb;'.
+2024-12-08 03:23:39,277 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysIMEXSpecs'.
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysModules2'.
+Progress update 2024-12-08 02:23:39.339625+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupCategories'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroups'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupToObjects'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneObjectIDs'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysObjects'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysQueries'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'MSysRelationships'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'Country'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'ct_iaids'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'ct_seqevt'.
+Progress update 2024-12-08 02:23:39.340626+00:00 : INFO.00.021 The following database table is not processed: 'eADMSPUB_DataDictionary'.
+Progress update 2024-12-08 02:23:39.341625+00:00 : INFO.00.021 The following database table is not processed: 'states'.
+Progress update 2024-12-08 02:23:39.341625+00:00 :
+Progress update 2024-12-08 02:23:39.341625+00:00 : Database table       : events                        <-----------------------------------.
+Progress update 2024-12-08 02:23:39.456649+00:00 : Updated  ev_id=20241125195545 ev_year=2024.
+Progress update 2024-12-08 02:23:39.498813+00:00 : Updated  ev_id=20240529194344 ev_year=2024.
+Progress update 2024-12-08 02:23:39.587123+00:00 : Number rows selected :       77.
+Progress update 2024-12-08 02:23:39.587123+00:00 : Number rows updated  :        2.
+Progress update 2024-12-08 02:23:39.587123+00:00 :
+Progress update 2024-12-08 02:23:39.587123+00:00 : Database table       : aircraft                      <-----------------------------------.
+Progress update 2024-12-08 02:23:39.624123+00:00 : Updated  ev_id=20240515194263 aircraft_key=1.
+Progress update 2024-12-08 02:23:39.791285+00:00 : Number rows selected :       79.
+Progress update 2024-12-08 02:23:39.791285+00:00 : Number rows updated  :        1.
+Progress update 2024-12-08 02:23:39.792287+00:00 :
+Progress update 2024-12-08 02:23:39.792287+00:00 : Database table       : dt_events                     <-----------------------------------.
+Progress update 2024-12-08 02:23:40.142376+00:00 : Number rows selected :      347.
+Progress update 2024-12-08 02:23:40.142376+00:00 :
+Progress update 2024-12-08 02:23:40.142376+00:00 : Database table       : ntsb_admin                    <-----------------------------------.
+Progress update 2024-12-08 02:23:40.229888+00:00 : Number rows selected :       77.
+Progress update 2024-12-08 02:23:40.230890+00:00 :
+Progress update 2024-12-08 02:23:40.230890+00:00 : Database table       : dt_aircraft                   <-----------------------------------.
+Progress update 2024-12-08 02:23:40.770955+00:00 : Number rows selected :      518.
+Progress update 2024-12-08 02:23:40.770955+00:00 :
+Progress update 2024-12-08 02:23:40.770955+00:00 : Database table       : engines                       <-----------------------------------.
+Progress update 2024-12-08 02:23:40.807960+00:00 : Number rows selected :       27.
+Progress update 2024-12-08 02:23:40.808961+00:00 :
+Progress update 2024-12-08 02:23:40.808961+00:00 : Database table       : events_sequence               <-----------------------------------.
+Progress update 2024-12-08 02:23:40.941686+00:00 : Number rows selected :      120.
+Progress update 2024-12-08 02:23:40.941686+00:00 :
+Progress update 2024-12-08 02:23:40.941686+00:00 : Database table       : findings                      <-----------------------------------.
+Progress update 2024-12-08 02:23:41.025203+00:00 : Number rows selected :       68.
+Progress update 2024-12-08 02:23:41.025203+00:00 :
+Progress update 2024-12-08 02:23:41.025203+00:00 : Database table       : flight_crew                   <-----------------------------------.
+Progress update 2024-12-08 02:23:41.083604+00:00 : Number rows selected :       36.
+Progress update 2024-12-08 02:23:41.083604+00:00 :
+Progress update 2024-12-08 02:23:41.083604+00:00 : Database table       : injury                        <-----------------------------------.
+Progress update 2024-12-08 02:23:41.555219+00:00 : Number rows selected :      467.
+Progress update 2024-12-08 02:23:41.556217+00:00 :
+Progress update 2024-12-08 02:23:41.556217+00:00 : Database table       : narratives                    <-----------------------------------.
+Progress update 2024-12-08 02:23:42.240820+00:00 : Number rows selected :       34.
+Progress update 2024-12-08 02:23:42.241337+00:00 :
+Progress update 2024-12-08 02:23:42.241337+00:00 : Database table       : occurrences                   <-----------------------------------.
+Progress update 2024-12-08 02:23:42.241849+00:00 : Number rows selected :        0.
+Progress update 2024-12-08 02:23:42.241849+00:00 :
+Progress update 2024-12-08 02:23:42.241849+00:00 : Database table       : dt_flight_crew                <-----------------------------------.
+Progress update 2024-12-08 02:23:42.450611+00:00 : Number rows selected :      213.
+Progress update 2024-12-08 02:23:42.450611+00:00 :
+Progress update 2024-12-08 02:23:42.450611+00:00 : Database table       : flight_time                   <-----------------------------------.
+Progress update 2024-12-08 02:23:42.994665+00:00 : Number rows selected :      536.
+Progress update 2024-12-08 02:23:42.995665+00:00 :
+Progress update 2024-12-08 02:23:42.995665+00:00 : Database table       : seq_of_events                 <-----------------------------------.
+Progress update 2024-12-08 02:23:42.995665+00:00 : Number rows selected :        0.
+Progress update 2024-12-08 02:23:43.175311+00:00 : INFO.00.065 Cleansing PostgreSQL data.
+Progress update 2024-12-08 02:23:43.175311+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:23:43,176 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:23:43.226703+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'acft_category'.
+Progress update 2024-12-08 02:23:44.032994+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:44.032994+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'dest_country'.
+Progress update 2024-12-08 02:23:44.783285+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:44.783285+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'dprt_country'.
+Progress update 2024-12-08 02:23:45.532941+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:45.533942+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'far_part'.
+Progress update 2024-12-08 02:23:46.286943+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:46.286943+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'oper_country'.
+Progress update 2024-12-08 02:23:47.041961+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:47.041961+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'owner_country'.
+Progress update 2024-12-08 02:23:47.823885+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:47.823885+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'regis_no'.
+Progress update 2024-12-08 02:23:48.213210+00:00 : Number cols trimmed  :        1.
+Progress update 2024-12-08 02:23:48.549436+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:48.549436+00:00 : INFO.00.066 Cleansing table 'events' column 'ev_city'.
+Progress update 2024-12-08 02:23:48.595915+00:00 : Number cols trimmed  :        2.
+Progress update 2024-12-08 02:23:48.610275+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:48.610275+00:00 : INFO.00.066 Cleansing table 'events' column 'ev_site_zipcode'.
+Progress update 2024-12-08 02:23:48.645683+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:48.645683+00:00 : INFO.00.066 Cleansing table 'events' column 'latitude'.
+Progress update 2024-12-08 02:23:48.682340+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:48.682340+00:00 : INFO.00.066 Cleansing table 'events' column 'longitude'.
+Progress update 2024-12-08 02:23:48.719958+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:23:48.719958+00:00 : INFO.00.066 Cleansing table 'events_sequence' column 'occurrence_code'.
+Progress update 2024-12-08 02:23:48.740107+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:23:48.741112+00:00 :                    9 s - Total time launcher.
+Progress update 2024-12-08 02:23:48.741112+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:23:48.741112+00:00 : ===============================================================================.
+2024-12-08 03:23:49,935 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:23:49,935 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:23:49,936 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:23:49,936 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:23:51.037454+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:23:51.037454+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:23:51,037 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'c_l_l']
+2024-12-08 03:23:51,038 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:23:51,047 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:23:51.049461+00:00 : INFO.00.005 Argument task='c_l_l'.
+Progress update 2024-12-08 02:23:51.049461+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:23:51.049461+00:00 : INFO.00.040 Correct decimal US latitudes and longitudes.
+Progress update 2024-12-08 02:23:51.049461+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:23:51,049 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+2024-12-08 03:23:51,140 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:23:57.927466+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:24:02.792617+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:24:07.598789+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:24:12.455753+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:24:17.238158+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:24:21.961282+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:24:26.735010+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:24:31.492130+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:24:36.332595+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:24:41.022263+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:24:45.846251+00:00 : Number of rows so far read :   110000.
+Progress update 2024-12-08 02:24:50.636799+00:00 : Number of rows so far read :   120000.
+Progress update 2024-12-08 02:24:55.580642+00:00 : Number of rows so far read :   130000.
+Progress update 2024-12-08 02:25:00.308742+00:00 : Number of rows so far read :   140000.
+Progress update 2024-12-08 02:25:01.718962+00:00 : Number rows selected :   142610.
+Progress update 2024-12-08 02:25:01.718962+00:00 : Number rows updated  :   142610.
+Progress update 2024-12-08 02:25:01.739964+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:25:01.739964+00:00 :                   70 s - Total time launcher.
+Progress update 2024-12-08 02:25:01.739964+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:25:01.739964+00:00 : ===============================================================================.
+2024-12-08 03:25:02,973 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:25:02,973 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:25:02,973 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:25:02,973 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:25:04.004221+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:25:04.004221+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:25:04,004 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'f_n_a']
+2024-12-08 03:25:04,004 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:25:04,013 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:25:04.014257+00:00 : INFO.00.005 Argument task='f_n_a'.
+Progress update 2024-12-08 02:25:04.014257+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:25:04.015257+00:00 : INFO.00.086 Find the nearest airports.
+Progress update 2024-12-08 02:25:04.015257+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:25:04,015 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+2024-12-08 03:25:04,111 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:25:29.042611+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:25:52.494383+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:26:16.029084+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:26:40.155283+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:27:02.882705+00:00 : ERROR.00.942 Event '20220711105442': issue with the Haversine algorithm: 'Longitude -894627.0 is out of range [-180, 180]'.
+Progress update 2024-12-08 02:27:03.048822+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:27:25.859464+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:27:49.343994+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:27:51.180719+00:00 : ERROR.00.942 Event '20210419102938': issue with the Haversine algorithm: 'Latitude 4603.0 is out of range [-90, 90]'.
+Progress update 2024-12-08 02:27:51.180719+00:00 : ERROR.00.942 Event '20221027106211': issue with the Haversine algorithm: 'Latitude 36940.21 is out of range [-90, 90]'.
+Progress update 2024-12-08 02:27:51.180719+00:00 : ERROR.00.942 Event '20221108106263': issue with the Haversine algorithm: 'Latitude 390408.0 is out of range [-90, 90]'.
+Progress update 2024-12-08 02:27:51.180719+00:00 : ERROR.00.942 Event '20220803105651': issue with the Haversine algorithm: 'Latitude 41370104.0 is out of range [-90, 90]'.
+Progress update 2024-12-08 02:27:51.180719+00:00 : ERROR.00.942 Event '20221108106264': issue with the Haversine algorithm: 'Latitude 43511185.0 is out of range [-90, 90]'.
+Progress update 2024-12-08 02:27:51.218734+00:00 : Number rows selected :    70812.
+Progress update 2024-12-08 02:27:51.218734+00:00 : Number rows updated  :    70806.
+Progress update 2024-12-08 02:27:51.220309+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:27:51.221314+00:00 :                  167 s - Total time launcher.
+Progress update 2024-12-08 02:27:51.221314+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:27:51.221314+00:00 : ===============================================================================.
+2024-12-08 03:27:52,401 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:27:52,401 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:27:52,401 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:27:52,402 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:27:53.402211+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:27:53.402211+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:27:53,402 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'v_n_d']
+2024-12-08 03:27:53,402 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:27:53,412 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:27:53.412212+00:00 : INFO.00.005 Argument task='v_n_d'.
+Progress update 2024-12-08 02:27:53.412212+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:27:53.412212+00:00 : INFO.00.043 Verify selected NTSB data.
+Progress update 2024-12-08 02:27:53.412212+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:27:53,413 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:27:55.091507+00:00 : INFO.00.063 Processed data source 'events'.
+Progress update 2024-12-08 02:27:55.091507+00:00 : Number cols deleted  :    91236.
+Progress update 2024-12-08 02:27:55.092520+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:27:55,092 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:27:55.142519+00:00 : INFO.00.064 Verification of table 'events' column(s) 'latitude & longitude'.
+Progress update 2024-12-08 02:27:55.142519+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:27:57.050133+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:27:58.524532+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:27:59.973872+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:28:01.582595+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:28:03.406994+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:28:06.473445+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:28:09.546386+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:28:11.589934+00:00 : Number rows errors   :    27885.
+Progress update 2024-12-08 02:28:11.589934+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:11.590934+00:00 : INFO.00.064 Verification of table 'events' column(s) 'ev_city'.
+Progress update 2024-12-08 02:28:11.949616+00:00 : Number rows errors   :     6256.
+Progress update 2024-12-08 02:28:11.949616+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:11.949616+00:00 : INFO.00.064 Verification of table 'events' column(s) 'ev_city & ev_site_zipcode'.
+Progress update 2024-12-08 02:28:12.475272+00:00 : Number rows errors   :    16946.
+Progress update 2024-12-08 02:28:12.475272+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:12.475272+00:00 : INFO.00.064 Verification of table 'events' column(s) 'ev_state'.
+Progress update 2024-12-08 02:28:12.508292+00:00 : Number rows errors   :      175.
+Progress update 2024-12-08 02:28:12.508292+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:12.508292+00:00 : INFO.00.064 Verification of table 'events' column(s) 'ev_site_zipcode'.
+Progress update 2024-12-08 02:28:12.694221+00:00 : Number rows errors   :     5136.
+Progress update 2024-12-08 02:28:12.694221+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:12.694221+00:00 : Number rows selected :    76627.
+Progress update 2024-12-08 02:28:12.695223+00:00 : Number rows updated  :    56398.
+Progress update 2024-12-08 02:28:12.695223+00:00 : Number rows errors   :    56398.
+Progress update 2024-12-08 02:28:12.697222+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:28:12.698222+00:00 :                   19 s - Total time launcher.
+Progress update 2024-12-08 02:28:12.698222+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:28:12.698222+00:00 : ===============================================================================.
+2024-12-08 03:28:13,823 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:28:13,824 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:28:13,824 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:28:13,824 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:28:14.804300+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:28:14.805300+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:28:14,805 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'r_d_s']
+2024-12-08 03:28:14,805 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:28:14,814 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:28:14.815299+00:00 : INFO.00.005 Argument task='r_d_s'.
+Progress update 2024-12-08 02:28:14.815299+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:28:14.815299+00:00 : INFO.00.071 Refreshing the database schema.
+Progress update 2024-12-08 02:28:14.815299+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:28:14,816 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:28:14.863335+00:00 :
+Progress update 2024-12-08 02:28:14.863335+00:00 : Database table       : io_md_codes_eventsoe          <-----------------------------------.
+Progress update 2024-12-08 02:28:14.886999+00:00 : Number rows deleted  :       13.
+Progress update 2024-12-08 02:28:14.943505+00:00 : Number rows selected :     1557.
+Progress update 2024-12-08 02:28:16.553161+00:00 : Number rows inserted :       96.
+Progress update 2024-12-08 02:28:16.553161+00:00 :
+Progress update 2024-12-08 02:28:16.553161+00:00 : Database table       : io_md_codes_phase             <-----------------------------------.
+Progress update 2024-12-08 02:28:16.570317+00:00 : Number rows deleted  :       12.
+Progress update 2024-12-08 02:28:16.622952+00:00 : Number rows selected :     1557.
+Progress update 2024-12-08 02:28:17.852430+00:00 : Number rows inserted :       48.
+Progress update 2024-12-08 02:28:17.853431+00:00 :
+Progress update 2024-12-08 02:28:17.853431+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:17.853431+00:00 : INFO.00.084 Database table io_md_codes_phase: Load description_main_phase from file 'data/Main_Phases_of_Flight/main_phases_of_flight.xlsx'.
+Progress update 2024-12-08 02:28:17.853431+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:28:19.119530+00:00 : Number rows selected :       48.
+Progress update 2024-12-08 02:28:19.119530+00:00 : Number rows updated  :       48.
+Progress update 2024-12-08 02:28:19.119530+00:00 :
+Progress update 2024-12-08 02:28:19.119530+00:00 : Database table       : io_md_codes_category          <-----------------------------------.
+Progress update 2024-12-08 02:28:19.144365+00:00 : Number rows deleted  :        4.
+Progress update 2024-12-08 02:28:19.540045+00:00 : Number rows selected :     7592.
+Progress update 2024-12-08 02:28:19.627967+00:00 : Number rows inserted :        5.
+Progress update 2024-12-08 02:28:19.627967+00:00 :
+Progress update 2024-12-08 02:28:19.627967+00:00 : Database table       : io_md_codes_subcategory       <-----------------------------------.
+Progress update 2024-12-08 02:28:19.999770+00:00 : Number rows selected :     7592.
+Progress update 2024-12-08 02:28:20.385723+00:00 : Number rows inserted :       21.
+Progress update 2024-12-08 02:28:20.385723+00:00 :
+Progress update 2024-12-08 02:28:20.385723+00:00 : Database table       : io_md_codes_section           <-----------------------------------.
+Progress update 2024-12-08 02:28:20.638088+00:00 : Number rows selected :     7592.
+Progress update 2024-12-08 02:28:23.784545+00:00 : Number rows inserted :      129.
+Progress update 2024-12-08 02:28:23.785546+00:00 :
+Progress update 2024-12-08 02:28:23.785546+00:00 : Database table       : io_md_codes_subsection        <-----------------------------------.
+Progress update 2024-12-08 02:28:24.036867+00:00 : Number rows selected :     7592.
+Progress update 2024-12-08 02:28:44.036939+00:00 : Number rows inserted :      771.
+Progress update 2024-12-08 02:28:44.038944+00:00 :
+Progress update 2024-12-08 02:28:44.038944+00:00 : Database table       : io_md_codes_modifier          <-----------------------------------.
+Progress update 2024-12-08 02:28:44.062384+00:00 : Number rows deleted  :        8.
+Progress update 2024-12-08 02:28:44.299167+00:00 : Number rows selected :     7592.
+Progress update 2024-12-08 02:28:46.169844+00:00 : Number rows inserted :       74.
+Progress update 2024-12-08 02:31:02.337827+00:00 : INFO.00.069 Materialized database view is refreshed: io_app_ae1982.
+Progress update 2024-12-08 02:31:02.338829+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:31:02.338829+00:00 :                  167 s - Total time launcher.
+Progress update 2024-12-08 02:31:02.338829+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:31:02.338829+00:00 : ===============================================================================.
+
+---------------------------------------------------------------------------
+The current time is:  3:31:02.56
+Enter the new time:
+---------------------------------------------------------------------------
+End   run_io_avstats_dev
+===========================================================================
+```

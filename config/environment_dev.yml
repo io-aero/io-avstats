@@ -4,6 +4,7 @@ channels:
 dependencies:
   - python=3.12
   - pip
+  - altair<5
   - haversine
   - lat_lon_parser
   - mlxtend

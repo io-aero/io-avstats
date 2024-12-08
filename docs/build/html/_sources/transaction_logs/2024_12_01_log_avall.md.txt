@@ -1,0 +1,563 @@
+# 2024.12.01 avall
+
+```
+===========================================================================
+Start run_io_avstats_dev
+---------------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+---------------------------------------------------------------------------
+ENV_FOR_DYNACONF : prod
+PYTHONPATH       : .
+---------------------------------------------------------------------------
+TASK             : l_n_a
+APPLICATION      :
+COMPOSE_TASK     :
+MSACCESS         : avall
+MSEXCEL          :
+---------------------------------------------------------------------------
+The current time is:  3:06:01.65
+Enter the new time:
+===========================================================================
+2024-12-08 03:06:02,642 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:06:02,642 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:06:02,642 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:06:02,644 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:06:03.747558+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:06:03.747558+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:06:03,747 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'd_n_a', '-m', 'avall']
+2024-12-08 03:06:03,747 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:06:03,757 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:06:03.758556+00:00 : INFO.00.008 Arguments task='d_n_a' msaccess='avall'.
+Progress update 2024-12-08 02:06:03.758556+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:06:03.758556+00:00 : INFO.00.047 Download NTSB MS Access database file 'avall'.
+Progress update 2024-12-08 02:06:03.758556+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:06:04.215500+00:00 : INFO.00.013 The connection to the MS Access database file 'avall.zip' on the NTSB download page was successfully established.
+Progress update 2024-12-08 02:06:07.542359+00:00 : INFO.00.014 From the file 'avall.zip' 168 chunks were downloaded.
+Progress update 2024-12-08 02:06:08.558015+00:00 : INFO.00.015 The file 'avall.zip' was successfully unpacked.
+Progress update 2024-12-08 02:06:09.309391+00:00 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\IO-AVSTATS.mdb'.
+Progress update 2024-12-08 02:06:09.419336+00:00 : INFO.00.051 msaccess_file='D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\avall.sql'.
+Progress update 2024-12-08 02:06:09.420338+00:00 : INFO.00.052 razorsql_jar_file='C:\Program Files\RazorSQL\razorsql.jar'.
+Progress update 2024-12-08 02:06:09.420338+00:00 : INFO.00.053 razorsql_java_path='C:\Program Files\RazorSQL\jre11\bin\java'.
+1733623569583: launching RazorSQL . . .
+1733623569583: args . . .
+-backup
+IO-AVSTATS
+null
+null
+;
+null
+D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\avall.sql
+NO
+tables
+YES
+null
+NO
+NO
+1733623569733: userName: walte
+1733623569733: libraryPath: C:\Program Files\RazorSQL\jre11\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\ProgramData\miniconda3\envs\ioavstats;C:\ProgramData\miniconda3\envs\ioavstats\Library\mingw-w64\bin;C:\ProgramData\miniconda3\envs\ioavstats\Library\usr\bin;C:\ProgramData\miniconda3\envs\ioavstats\Library\bin;C:\ProgramData\miniconda3\envs\ioavstats\Scripts;C:\ProgramData\miniconda3\envs\ioavstats\bin;C:\ProgramData\miniconda3\condabin;C:\Program Files\Python313\Scripts;C:\Program Files\Python313;C:\Program Files (x86)\infogridpacific\AZARDI;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet;C:\Program Files\Git LFS;C:\Program Files\Microsoft SQL Server\110\Tools\Binn;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Software\GnuWin32\bin;C:\WINDOWS;C:\WINDOWS\System32;C:\WINDOWS\System32\OpenSSH;C:\WINDOWS\System32\wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Users\walte\.nimble\bin;\bin;\bin;\bin;C:\ProgramData\miniconda3\condabin;C:\Program Files\PostgreSQL\16\bin;C:\Software\jdk-20.0.1\bin;C:\Program Files\PuTTY;C:\Software\LAStools\bin;C:\Software\GnuPG\bin;C:\Program Files\nodejs;C:\Program Files\Calibre2;C:\Program Files\TortoiseGit\bin;C:\Program Files\Go\bin;C:\Program Files\Git\cmd;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files\Zero Install;C:\Program Files\GitHub CLI;C:\Program Files\Docker\Docker\resources\bin;C:\Users\walte\.cargo\bin;C:\Users\walte\AppData\Local\Microsoft\WindowsApps;C:\Software\Microsoft VS Code\bin;c:\users\walte\.local\bin;C:\Users\walte\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\walte\AppData\Local\Pandoc;C:\Users\walte\AppData\Local\GitHubDesktop\bin;C:\Users\walte\AppData\Roaming\npm;C:\Users\walte\AppData\Local\Microsoft\WinGet\Links;D:\Batch;C:\Program Files\Redis;C:\ProgramData\miniconda3\condabin;C:\Program Files\JetBrains\JetBrains Gateway 2024.3\bin;.;.
+1733623569733: javaVersion: 17.0.7
+1733623569733:
+1733623569733: Verifying RazorSQL resources location.
+1733623569733:
+1733623569734: testing base url: / = file:/C:/Program%20Files/RazorSQL/
+1733623569734:
+1733623569734: testString1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1733623569734: testString2: file:/C:/Program%20Files/RazorSQL/data/base.ssql
+1733623569734: testFile1: C:\Program Files\RazorSQL\razorsql.jar
+1733623569734: testFile2: C:\Program Files\RazorSQL\data\base.ssql
+1733623569734: both test file exists.  Base URL found.
+1733623569734: resource directory: file:/C:/Program%20Files/RazorSQL/
+1733623569734: user home: C:\Users\walte
+1733623569736: user profile: C:\Users\walte
+1733623569736: app data: C:\Users\walte\AppData\Roaming
+1733623569736: checking write access to: C:\Users\walte\AppData\Roaming
+1733623569736: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1733623569737: can write to C:\Users\walte\AppData\Roaming
+1733623569737: user.home: C:\Users\walte\AppData\Roaming
+1733623569737: RazorSQL Scratch Directory: C:\Users\walte\AppData\Roaming\RazorSQL
+1733623569737: RazorSQL Scratch Directory exists
+1733623569737: checking for sub directories
+1733623569737: razorsql launch log: C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1733623569737: launch log file = C:\Users\walte\AppData\Roaming\RazorSQL\razorsql_launch_log.txt
+1733623569738: Checking for graphics properties
+1733623569738: graphics properties file: C:\Users\walte\AppData\Roaming\RazorSQL\data\graphics_properties.txt
+1733623569738: gOverride: null
+1733623569738: not disabling advanced graphics
+1733623569738: path0: file:/C:/Program%20Files/RazorSQL/data/run.ssql
+1733623569738: path1: file:/C:/Program%20Files/RazorSQL/razorsql.jar
+1733623569739: runArgs: true
+1733623569739: showScreen: false
+1733623569739: args[0]: -backup
+1733623569739: args[1]: IO-AVSTATS
+1733623569740: args[2]: null
+1733623569740: args[3]: null
+1733623569740: args[4]: ;
+1733623569740: args[5]: null
+1733623569740: args[6]: D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\avall.sql
+1733623569740: args[7]: NO
+1733623569740: args[8]: tables
+1733623569740: args[9]: YES
+1733623569740: args[10]: null
+1733623569740: args[11]: NO
+1733623569740: args[12]: NO
+1733623569740: Command: -backup
+1733623569740: Running -backup
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+h: name = C:\Program Files\RazorSQL\razorsql.jar
+1733623569748: Attempting to load . . .
+command found
+uOne: file:/C:/Program%20Files/RazorSQL/
+h: name = C:\Program Files\RazorSQL\data\run.ssql
+1733623569757reading file . . .C:\Program Files\RazorSQL\data\base.ssql
+1733623569789done reading . . .
+1733623569798done converting
+1733623569798starting lib load.
+1733623569809lib load complete.
+In command line processor
+Max Memory: 30688.0
+Current Total Memory: 2048.0
+Free Memory: 1918.0710830688477
+1733623569919: r init
+1733623569919: d init
+1733623569919: get default file encoding
+1733623569919: end d init
+custom home directory: null
+Checking for user data from old versions
+1733623569921: user home: C:\Users\walte
+1733623569921: user profile: C:\Users\walte
+1733623569921: app data: C:\Users\walte\AppData\Roaming
+1733623569921: checking write access to: C:\Users\walte\AppData\Roaming
+1733623569921: write dir: C:\Users\walte\AppData\Roaming\RichardsonSoftware
+1733623569921: can write to C:\Users\walte\AppData\Roaming
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1733623569933: loading icons
+1733623570131: done r init
+Getting connection data from: IO-AVSTATS
+1733623570132: r init
+1733623570132: d init
+1733623570132: get default file encoding
+1733623570132: end d init
+custom home directory: null
+Checking for user data from old versions
+newHome: C:\Users\walte\AppData\Roaming\RazorSQL
+dataHome: C:\Users\walte\AppData\Roaming/RazorSQL/data/
+preferences file: C:\Users\walte\AppData\Roaming\RazorSQL\data\preferences.txt
+Profiles Exist
+1733623570133: loading icons
+1733623570140: done r init
+getting connection . . .
+Not using SSH Tunnel
+driver: sun.jdbc.odbc.JdbcOdbcDriver
+classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+loadedCommonJars: false
+commonURL: file:/C:/Program%20Files/RazorSQL/drivers/common/
+commonDir: C:\Program Files\RazorSQL\drivers\common
+commonFiles[0]: file:/C:/Program%20Files/RazorSQL/drivers/common/activation.jar
+commonFiles[1]: file:/C:/Program%20Files/RazorSQL/drivers/common/common.jar
+commonFiles[2]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-api.jar
+commonFiles[3]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-core.jar
+commonFiles[4]: file:/C:/Program%20Files/RazorSQL/drivers/common/jaxb-impl.jar
+commonFiles[6]: file:/C:/Program%20Files/RazorSQL/drivers/common/odbc.jar
+connection type: ODBC
+final classLocation: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+classLocation file: C:\Program Files\RazorSQL\drivers\common\odbc.jar
+building sql manager
+Loading driver
+Done loading driver
+Getting connection with no login info
+JdbcOdbcDriver: in initialize
+OdbcApi == null
+Creating new OdbcApi, nativePrefix:
+JdbcOdbc constructor
+Attempting to load JdbcOdbc library
+Got OdbcApi: sun.jdbc.odbc.JdbcOdbc@77846d2c
+Getting charset
+JdbcOdbcDriver.OdbcApi.charSet: Cp1252
+Connection obtained
+obtained connection
+database major version = 2
+database product name: ACCESS
+multiValueInsert: false
+includeIdentifyColumns: false
+Calling backup . . .
+Retrieving Tables . . .
+Generating Table DDL . . .
+1 of 20
+number of columns 93
+column map size: 93
+foundNull: false
+2 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+3 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+4 of 20
+number of columns 2
+column map size: 2
+foundNull: false
+5 of 20
+number of columns 6
+column map size: 6
+foundNull: false
+6 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+7 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+8 of 20
+number of columns 13
+column map size: 13
+foundNull: false
+9 of 20
+number of columns 17
+column map size: 17
+foundNull: false
+10 of 20
+number of columns 73
+column map size: 73
+foundNull: false
+11 of 20
+number of columns 10
+column map size: 10
+foundNull: false
+12 of 20
+number of columns 14
+column map size: 14
+foundNull: false
+13 of 20
+number of columns 33
+column map size: 33
+foundNull: false
+14 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+15 of 20
+number of columns 7
+column map size: 7
+foundNull: false
+16 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+17 of 20
+number of columns 5
+column map size: 5
+foundNull: false
+18 of 20
+number of columns 8
+column map size: 8
+foundNull: false
+19 of 20
+number of columns 11
+column map size: 11
+foundNull: false
+20 of 20
+number of columns 3
+column map size: 3
+foundNull: false
+Generating Alter Table DDL . . .
+1 of 20
+2 of 20
+3 of 20
+4 of 20
+5 of 20
+6 of 20
+7 of 20
+8 of 20
+9 of 20
+10 of 20
+11 of 20
+12 of 20
+13 of 20
+14 of 20
+15 of 20
+16 of 20
+17 of 20
+18 of 20
+19 of 20
+20 of 20
+backup finished
+closing connection . . .
+connection closed.
+Shutting down logging streams
+Done shutting down logging streams
+Exiting . . .
+Progress update 2024-12-08 02:06:11.298878+00:00 : INFO.00.011 The DDL script for the MS Access database 'avall.mdb' was created successfully.
+Progress update 2024-12-08 02:06:11.299924+00:00 : INFO.00.012 The DDL script for the MS Access database 'avall.mdb' is identical to the reference script.
+Progress update 2024-12-08 02:06:11.300450+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:06:11.300450+00:00 :                    7 s - Total time launcher.
+Progress update 2024-12-08 02:06:11.300970+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:06:11.300970+00:00 : ===============================================================================.
+2024-12-08 03:06:12,389 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2024-12-08 03:06:12,389 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2024-12-08 03:06:12,389 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2024-12-08 03:06:12,389 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2024-12-08 02:06:13.354623+00:00 : ===============================================================================.
+Progress update 2024-12-08 02:06:13.354623+00:00 : INFO.00.004 Start Launcher.
+2024-12-08 03:06:13,354 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'l_n_a', '-m', 'avall']
+2024-12-08 03:06:13,354 [root] [launcher.py  ] INFO  Start launcher.py
+2024-12-08 03:06:13,363 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2024-12-08 02:06:13.364623+00:00 : INFO.00.008 Arguments task='l_n_a' msaccess='avall'.
+Progress update 2024-12-08 02:06:13.365627+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:06:13.365627+00:00 : INFO.00.049 Load NTSB MS Access database data from file 'avall'.
+Progress update 2024-12-08 02:06:13.365627+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:06:13.365627+00:00 : INFO.00.054 ODBC driver='DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\SoftDevelopment\Projects\IO-Aero\io-avstats\data\download\avall.mdb;'.
+2024-12-08 03:06:13,557 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:06:13.616659+00:00 : INFO.00.021 The following database table is not processed: 'MSysAccessObjects'.
+Progress update 2024-12-08 02:06:13.616659+00:00 : INFO.00.021 The following database table is not processed: 'MSysACEs'.
+Progress update 2024-12-08 02:06:13.616659+00:00 : INFO.00.021 The following database table is not processed: 'MSysIMEXColumns'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysIMEXSpecs'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysModules2'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupCategories'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroups'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneGroupToObjects'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysNavPaneObjectIDs'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysObjects'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysQueries'.
+Progress update 2024-12-08 02:06:13.617658+00:00 : INFO.00.021 The following database table is not processed: 'MSysRelationships'.
+Progress update 2024-12-08 02:06:13.618658+00:00 : INFO.00.021 The following database table is not processed: 'Country'.
+Progress update 2024-12-08 02:06:13.618658+00:00 : INFO.00.021 The following database table is not processed: 'ct_iaids'.
+Progress update 2024-12-08 02:06:13.618658+00:00 : INFO.00.021 The following database table is not processed: 'ct_seqevt'.
+Progress update 2024-12-08 02:06:13.618658+00:00 : INFO.00.021 The following database table is not processed: 'eADMSPUB_DataDictionary'.
+Progress update 2024-12-08 02:06:13.618658+00:00 : INFO.00.021 The following database table is not processed: 'states'.
+Progress update 2024-12-08 02:06:13.618658+00:00 :
+Progress update 2024-12-08 02:06:13.618658+00:00 : Database table       : events                        <-----------------------------------.
+Progress update 2024-12-08 02:06:21.244508+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:06:27.633519+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:06:32.841437+00:00 : Number rows selected :    28234.
+Progress update 2024-12-08 02:06:32.841437+00:00 : Number rows inserted :    28234.
+Progress update 2024-12-08 02:06:32.867059+00:00 :
+Progress update 2024-12-08 02:06:32.867059+00:00 : Database table       : aircraft                      <-----------------------------------.
+Progress update 2024-12-08 02:06:42.062974+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:06:49.502483+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:06:55.767802+00:00 : Number rows selected :    28695.
+Progress update 2024-12-08 02:06:55.767802+00:00 : Number rows inserted :    28695.
+Progress update 2024-12-08 02:06:55.796800+00:00 :
+Progress update 2024-12-08 02:06:55.796800+00:00 : Database table       : dt_events                     <-----------------------------------.
+Progress update 2024-12-08 02:07:00.725280+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:07:05.348480+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:07:09.847411+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:07:14.370557+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:07:18.819929+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:07:23.351148+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:07:27.866861+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:07:32.398967+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:07:36.922322+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:07:41.629463+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:07:42.312336+00:00 : Number rows selected :   101453.
+Progress update 2024-12-08 02:07:42.313334+00:00 : Number rows inserted :   101453.
+Progress update 2024-12-08 02:07:42.320332+00:00 :
+Progress update 2024-12-08 02:07:42.320332+00:00 : Database table       : ntsb_admin                    <-----------------------------------.
+Progress update 2024-12-08 02:07:47.011424+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:07:51.568727+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:07:52.618401+00:00 : ERROR.00.946 The ev_id '20210527103155' is missing in database table events.
+Progress update 2024-12-08 02:07:53.249006+00:00 : ERROR.00.946 The ev_id '20220328104839' is missing in database table events.
+Progress update 2024-12-08 02:07:55.300518+00:00 : Number rows selected :    28234.
+Progress update 2024-12-08 02:07:55.300518+00:00 : Number rows inserted :    28232.
+Progress update 2024-12-08 02:07:55.302518+00:00 :
+Progress update 2024-12-08 02:07:55.302518+00:00 : Database table       : dt_aircraft                   <-----------------------------------.
+Progress update 2024-12-08 02:08:01.123859+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:08:05.856056+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:08:10.521143+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:08:15.162231+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:08:19.827400+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:08:24.575722+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:08:29.265682+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:08:33.931219+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:08:38.564009+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:08:43.495932+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:08:48.160647+00:00 : Number of rows so far read :   110000.
+Progress update 2024-12-08 02:08:52.817417+00:00 : Number of rows so far read :   120000.
+Progress update 2024-12-08 02:08:57.666630+00:00 : Number of rows so far read :   130000.
+Progress update 2024-12-08 02:09:03.006063+00:00 : Number of rows so far read :   140000.
+Progress update 2024-12-08 02:09:07.779917+00:00 : Number of rows so far read :   150000.
+Progress update 2024-12-08 02:09:12.636476+00:00 : Number of rows so far read :   160000.
+Progress update 2024-12-08 02:09:17.343983+00:00 : Number of rows so far read :   170000.
+Progress update 2024-12-08 02:09:22.401150+00:00 : Number of rows so far read :   180000.
+Progress update 2024-12-08 02:09:27.041621+00:00 : Number of rows so far read :   190000.
+Progress update 2024-12-08 02:09:31.889513+00:00 : Number of rows so far read :   200000.
+Progress update 2024-12-08 02:09:36.689008+00:00 : Number of rows so far read :   210000.
+Progress update 2024-12-08 02:09:41.670347+00:00 : Number of rows so far read :   220000.
+Progress update 2024-12-08 02:09:46.585948+00:00 : Number of rows so far read :   230000.
+Progress update 2024-12-08 02:09:51.267893+00:00 : Number of rows so far read :   240000.
+Progress update 2024-12-08 02:09:52.101260+00:00 : Number rows selected :   241604.
+Progress update 2024-12-08 02:09:52.101260+00:00 : Number rows inserted :   241604.
+Progress update 2024-12-08 02:09:52.122258+00:00 :
+Progress update 2024-12-08 02:09:52.122258+00:00 : Database table       : engines                       <-----------------------------------.
+Progress update 2024-12-08 02:09:58.141012+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:10:02.956574+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:10:05.846442+00:00 : Number rows selected :    25798.
+Progress update 2024-12-08 02:10:05.847445+00:00 : Number rows inserted :    25798.
+Progress update 2024-12-08 02:10:05.852287+00:00 :
+Progress update 2024-12-08 02:10:05.853288+00:00 : Database table       : events_sequence               <-----------------------------------.
+Progress update 2024-12-08 02:10:11.237134+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:10:15.994054+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:10:20.751315+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:10:25.541164+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:10:30.273498+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:10:35.096859+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:10:35.505343+00:00 : Number rows selected :    60795.
+Progress update 2024-12-08 02:10:35.505343+00:00 : Number rows inserted :    60795.
+Progress update 2024-12-08 02:10:35.510342+00:00 :
+Progress update 2024-12-08 02:10:35.511343+00:00 : Database table       : findings                      <-----------------------------------.
+Progress update 2024-12-08 02:10:41.020442+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:10:45.827239+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:10:50.583931+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:10:55.357827+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:11:00.123145+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:11:04.913719+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:11:07.928671+00:00 : Number rows selected :    66354.
+Progress update 2024-12-08 02:11:07.929671+00:00 : Number rows inserted :    66354.
+Progress update 2024-12-08 02:11:07.938670+00:00 :
+Progress update 2024-12-08 02:11:07.938670+00:00 : Database table       : flight_crew                   <-----------------------------------.
+Progress update 2024-12-08 02:11:13.410551+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:11:18.259397+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:11:22.700332+00:00 : Number rows selected :    29096.
+Progress update 2024-12-08 02:11:22.700332+00:00 : Number rows inserted :    29096.
+Progress update 2024-12-08 02:11:22.709336+00:00 :
+Progress update 2024-12-08 02:11:22.709336+00:00 : Database table       : injury                        <-----------------------------------.
+Progress update 2024-12-08 02:11:28.190432+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:11:32.821960+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:11:37.537064+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:11:42.319665+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:11:47.135025+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:11:51.758255+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:11:56.436043+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:12:01.081376+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:12:05.762990+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:12:10.469740+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:12:15.143391+00:00 : Number of rows so far read :   110000.
+Progress update 2024-12-08 02:12:19.800686+00:00 : Number of rows so far read :   120000.
+Progress update 2024-12-08 02:12:24.482976+00:00 : Number of rows so far read :   130000.
+Progress update 2024-12-08 02:12:29.199031+00:00 : Number of rows so far read :   140000.
+Progress update 2024-12-08 02:12:33.929169+00:00 : Number of rows so far read :   150000.
+Progress update 2024-12-08 02:12:37.186959+00:00 : Number rows selected :   156769.
+Progress update 2024-12-08 02:12:37.186959+00:00 : Number rows inserted :   156769.
+Progress update 2024-12-08 02:12:37.197959+00:00 :
+Progress update 2024-12-08 02:12:37.197959+00:00 : Database table       : narratives                    <-----------------------------------.
+Progress update 2024-12-08 02:14:12.060054+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:15:45.649604+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:16:21.298220+00:00 : Number rows selected :    26345.
+Progress update 2024-12-08 02:16:21.299220+00:00 : Number rows inserted :    26345.
+Progress update 2024-12-08 02:16:21.343253+00:00 :
+Progress update 2024-12-08 02:16:21.343253+00:00 : Database table       : occurrences                   <-----------------------------------.
+Progress update 2024-12-08 02:16:21.344253+00:00 : Number rows selected :        0.
+Progress update 2024-12-08 02:16:21.344253+00:00 :
+Progress update 2024-12-08 02:16:21.344253+00:00 : Database table       : dt_flight_crew                <-----------------------------------.
+Progress update 2024-12-08 02:16:27.047338+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:16:31.854043+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:16:36.594202+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:16:41.292782+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:16:46.549350+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:16:52.089115+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:16:57.637722+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:17:03.036862+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:17:08.309825+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:17:13.567107+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:17:18.890053+00:00 : Number of rows so far read :   110000.
+Progress update 2024-12-08 02:17:24.163043+00:00 : Number of rows so far read :   120000.
+Progress update 2024-12-08 02:17:29.611934+00:00 : Number of rows so far read :   130000.
+Progress update 2024-12-08 02:17:35.360759+00:00 : Number of rows so far read :   140000.
+Progress update 2024-12-08 02:17:41.726298+00:00 : Number of rows so far read :   150000.
+Progress update 2024-12-08 02:17:49.198608+00:00 : Number of rows so far read :   160000.
+Progress update 2024-12-08 02:17:50.265111+00:00 : Number rows selected :   161436.
+Progress update 2024-12-08 02:17:50.265111+00:00 : Number rows inserted :   161436.
+Progress update 2024-12-08 02:17:50.283112+00:00 :
+Progress update 2024-12-08 02:17:50.283112+00:00 : Database table       : flight_time                   <-----------------------------------.
+Progress update 2024-12-08 02:17:58.429056+00:00 : Number of rows so far read :    10000.
+Progress update 2024-12-08 02:18:03.977658+00:00 : Number of rows so far read :    20000.
+Progress update 2024-12-08 02:18:09.526642+00:00 : Number of rows so far read :    30000.
+Progress update 2024-12-08 02:18:14.832267+00:00 : Number of rows so far read :    40000.
+Progress update 2024-12-08 02:18:20.148522+00:00 : Number of rows so far read :    50000.
+Progress update 2024-12-08 02:18:25.329882+00:00 : Number of rows so far read :    60000.
+Progress update 2024-12-08 02:18:30.536862+00:00 : Number of rows so far read :    70000.
+Progress update 2024-12-08 02:18:35.668940+00:00 : Number of rows so far read :    80000.
+Progress update 2024-12-08 02:18:40.667518+00:00 : Number of rows so far read :    90000.
+Progress update 2024-12-08 02:18:45.991244+00:00 : Number of rows so far read :   100000.
+Progress update 2024-12-08 02:18:51.572167+00:00 : Number of rows so far read :   110000.
+Progress update 2024-12-08 02:18:56.696272+00:00 : Number of rows so far read :   120000.
+Progress update 2024-12-08 02:19:01.843893+00:00 : Number of rows so far read :   130000.
+Progress update 2024-12-08 02:19:06.926374+00:00 : Number of rows so far read :   140000.
+Progress update 2024-12-08 02:19:12.016937+00:00 : Number of rows so far read :   150000.
+Progress update 2024-12-08 02:19:17.015014+00:00 : Number of rows so far read :   160000.
+Progress update 2024-12-08 02:19:22.121666+00:00 : Number of rows so far read :   170000.
+Progress update 2024-12-08 02:19:27.204099+00:00 : Number of rows so far read :   180000.
+Progress update 2024-12-08 02:19:32.285368+00:00 : Number of rows so far read :   190000.
+Progress update 2024-12-08 02:19:37.642351+00:00 : Number of rows so far read :   200000.
+Progress update 2024-12-08 02:19:42.824028+00:00 : Number of rows so far read :   210000.
+Progress update 2024-12-08 02:19:48.023121+00:00 : Number of rows so far read :   220000.
+Progress update 2024-12-08 02:19:53.105277+00:00 : Number of rows so far read :   230000.
+Progress update 2024-12-08 02:19:58.102953+00:00 : Number of rows so far read :   240000.
+Progress update 2024-12-08 02:20:03.135299+00:00 : Number of rows so far read :   250000.
+Progress update 2024-12-08 02:20:08.134168+00:00 : Number of rows so far read :   260000.
+Progress update 2024-12-08 02:20:13.148857+00:00 : Number of rows so far read :   270000.
+Progress update 2024-12-08 02:20:18.180855+00:00 : Number of rows so far read :   280000.
+Progress update 2024-12-08 02:20:23.396137+00:00 : Number of rows so far read :   290000.
+Progress update 2024-12-08 02:20:29.153416+00:00 : Number of rows so far read :   300000.
+Progress update 2024-12-08 02:20:34.468413+00:00 : Number of rows so far read :   310000.
+Progress update 2024-12-08 02:20:39.424703+00:00 : Number of rows so far read :   320000.
+Progress update 2024-12-08 02:20:44.372738+00:00 : Number of rows so far read :   330000.
+Progress update 2024-12-08 02:20:49.221740+00:00 : Number of rows so far read :   340000.
+Progress update 2024-12-08 02:20:54.179162+00:00 : Number of rows so far read :   350000.
+Progress update 2024-12-08 02:20:59.127068+00:00 : Number of rows so far read :   360000.
+Progress update 2024-12-08 02:21:01.510002+00:00 : Number rows selected :   364885.
+Progress update 2024-12-08 02:21:01.510002+00:00 : Number rows inserted :   364885.
+Progress update 2024-12-08 02:21:01.540003+00:00 :
+Progress update 2024-12-08 02:21:01.540003+00:00 : Database table       : seq_of_events                 <-----------------------------------.
+Progress update 2024-12-08 02:21:01.541004+00:00 : Number rows selected :        0.
+Progress update 2024-12-08 02:21:01.718700+00:00 : INFO.00.065 Cleansing PostgreSQL data.
+Progress update 2024-12-08 02:21:01.718700+00:00 : --------------------------------------------------------------------------------
+2024-12-08 03:21:01,718 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2024-12-08 02:21:01.768312+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'acft_category'.
+Progress update 2024-12-08 02:21:02.554552+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:02.554552+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'dest_country'.
+Progress update 2024-12-08 02:21:03.119926+00:00 : Number cols trimmed  :     1587.
+Progress update 2024-12-08 02:21:03.491652+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:03.491652+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'dprt_country'.
+Progress update 2024-12-08 02:21:03.943699+00:00 : Number cols trimmed  :     1658.
+Progress update 2024-12-08 02:21:04.301634+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:04.301634+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'far_part'.
+Progress update 2024-12-08 02:21:04.985434+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:04.985434+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'oper_country'.
+Progress update 2024-12-08 02:21:05.384269+00:00 : Number cols trimmed  :     1611.
+Progress update 2024-12-08 02:21:05.723154+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:05.723154+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'owner_country'.
+Progress update 2024-12-08 02:21:06.116956+00:00 : Number cols trimmed  :     1542.
+Progress update 2024-12-08 02:21:06.445003+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:06.446003+00:00 : INFO.00.066 Cleansing table 'aircraft' column 'regis_no'.
+Progress update 2024-12-08 02:21:06.800157+00:00 : Number cols trimmed  :       38.
+Progress update 2024-12-08 02:21:07.117564+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:07.117564+00:00 : INFO.00.066 Cleansing table 'events' column 'ev_city'.
+Progress update 2024-12-08 02:21:07.383690+00:00 : Number cols trimmed  :        6.
+Progress update 2024-12-08 02:21:07.510906+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:07.510906+00:00 : INFO.00.066 Cleansing table 'events' column 'ev_site_zipcode'.
+Progress update 2024-12-08 02:21:07.550129+00:00 : Number cols trimmed  :        2.
+Progress update 2024-12-08 02:21:07.563128+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:07.564128+00:00 : INFO.00.066 Cleansing table 'events' column 'latitude'.
+Progress update 2024-12-08 02:21:07.600667+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:07.600667+00:00 : INFO.00.066 Cleansing table 'events' column 'longitude'.
+Progress update 2024-12-08 02:21:07.637692+00:00 : --------------------------------------------------------------------------------
+Progress update 2024-12-08 02:21:07.637692+00:00 : INFO.00.066 Cleansing table 'events_sequence' column 'occurrence_code'.
+Progress update 2024-12-08 02:21:07.967369+00:00 : Number cols trimmed  :     1801.
+Progress update 2024-12-08 02:21:07.974368+00:00 : -------------------------------------------------------------------------------.
+Progress update 2024-12-08 02:21:07.974368+00:00 :                  894 s - Total time launcher.
+Progress update 2024-12-08 02:21:07.975369+00:00 : INFO.00.006 End   Launcher.
+Progress update 2024-12-08 02:21:07.975369+00:00 : ===============================================================================.
+
+---------------------------------------------------------------------------
+The current time is:  3:21:08.20
+Enter the new time:
+---------------------------------------------------------------------------
+End   run_io_avstats_dev
+===========================================================================
+```

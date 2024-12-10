@@ -8,6 +8,7 @@ dependencies:
   - numpy
   - pandas
   - plotly
+  - protobuf==3.20.*
   - psycopg2-binary
   - sqlalchemy
   - streamlit

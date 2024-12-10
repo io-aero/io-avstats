@@ -12,6 +12,7 @@ dependencies:
   - openpyxl
   - pandas
   - plotly
+  - protobuf==3.20.*
   - psycopg2-binary
   - pyodbc
   - requests

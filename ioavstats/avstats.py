@@ -32,13 +32,20 @@ ARG_TASK = ""
 
 
 # -----------------------------------------------------------------------------
-# Check the command line argument: -m / --msaccess.
-# -----------------------------------------------------------------------------
+
 def check_arg_msaccess(args: argparse.Namespace) -> None:
     """Check the command line argument: -m / --msaccess.
 
     Args:
         args (argparse.Namespace): Command line arguments.
+
+    The MS Access database name must be in the format 'upDDmmm' where:
+        - 'up' is a fixed prefix
+        - 'DD' is the day of the month as a two digit number (01-31)
+        - 'mmm' is the month as a three letter abbreviation (jan-dec)
+
+    If the task is 'd_n_a' or 'l_n_a', the argument '-m' or '--msaccess' is
+    required. Otherwise, it is not allowed.
 
     """
     global ARG_MSACCESS  # pylint: disable=global-statement
@@ -99,10 +106,14 @@ def check_arg_msaccess(args: argparse.Namespace) -> None:
 
 
 # -----------------------------------------------------------------------------
-# Check the command line argument: -e / --msexcel.
-# -----------------------------------------------------------------------------
+
 def check_arg_msexcel(args: argparse.Namespace) -> None:
     """Check the command line argument: -e / --msexcel.
+
+    This function checks whether the command line argument -e / --msexcel
+    is valid. If the argument is required but not provided, or if the file
+    does not exist or is not a valid Microsoft Excel file, a fatal error
+    is raised.
 
     Args:
         args (argparse.Namespace): Command line arguments.
@@ -110,11 +121,13 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     """
     global ARG_MSEXCEL  # pylint: disable=global-statement
 
+    # Check if the argument is required but not provided
     if ARG_TASK in [glob_local.ARG_TASK_L_C_D]:
         if not args.msexcel:
             # ERROR.00.923 The task '{task}' requires valid
             # argument '-e' or '--msexcel'
             terminate_fatal(glob_local.ERROR_00_923.replace("{task}", ARG_TASK))
+    # Check if the argument is provided but not required
     elif args.msexcel:
         # ERROR.00.924 The task '{task}' does not require an
         # argument '-e' or '--msexcel'
@@ -122,6 +135,7 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     else:
         return
 
+    # Get the directory name and file name
     directory_name = ""
     if ARG_TASK == glob_local.ARG_TASK_L_C_D:
         directory_name = io_settings.settings.correction_work_dir
@@ -133,6 +147,7 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
     else:
         file_name = Path(directory_name) / ARG_MSEXCEL / ".xlsx"
 
+    # Check if the file exists and is a valid Microsoft Excel file
     try:
         load_workbook(
             filename=file_name,
@@ -148,10 +163,12 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
 
 
 # -----------------------------------------------------------------------------
-# Check the command line argument: -t / --task.
-# -----------------------------------------------------------------------------
+
 def check_arg_task(args: argparse.Namespace) -> None:
     """Check the command line argument: -t / --task.
+
+    Check if the specified task is a valid task name. If not, terminate the program
+    with a fatal error message.
 
     Args:
         args (argparse.Namespace): Command line arguments.
@@ -161,6 +178,7 @@ def check_arg_task(args: argparse.Namespace) -> None:
 
     ARG_TASK = args.task.lower()
 
+    # Check if the specified task is a valid task name
     if ARG_TASK not in [
         glob_local.ARG_TASK_A_O_C,
         glob_local.ARG_TASK_C_D_S,
@@ -181,6 +199,7 @@ def check_arg_task(args: argparse.Namespace) -> None:
         glob_local.ARG_TASK_VERSION,
         glob_local.ARG_TASK_V_N_D,
     ]:
+        # Terminate the program with a fatal error message
         terminate_fatal(
             "The specified task is neither '"
             + glob_local.ARG_TASK_A_O_C
@@ -222,11 +241,13 @@ def check_arg_task(args: argparse.Namespace) -> None:
         )
 
 
-# ------------------------------------------------------------------
-# c_p_d: Cleansing PostgreSQL data.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def cleansing_postgres_data() -> None:
-    """c_p_d: Cleansing PostgreSQL data."""
+    """c_p_d: Cleansing PostgreSQL data.
+
+    This function cleanses the PostgreSQL database.
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.065 Cleansing PostgreSQL data
@@ -238,11 +259,14 @@ def cleansing_postgres_data() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# c_l_l: Correct US decimal latitudes and longitudes.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def correct_dec_lat_lng() -> None:
-    """c_l_l: Correct US decimal latitudes and longitudes."""
+    """c_l_l: Correct US decimal latitudes and longitudes.
+
+    This function corrects the decimal latitude and longitude values in the
+    PostgreSQL database.
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.040 Correct decimal US latitudes and longitudes
@@ -254,27 +278,27 @@ def correct_dec_lat_lng() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# c_d_s: Create the PostgreSQL database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def create_db_schema() -> None:
-    """c_d_s: Create the PostgreSQL database schema."""
+    """c_d_s: Create the PostgreSQL database schema.
+
+    This function creates the PostgreSQL database schema.
+    """
     logging.debug(io_glob.LOGGER_START)
 
-    # INFO.00.044 Creating the database schema
-    io_utils.progress_msg(glob_local.INFO_00_044)
-    io_utils.progress_msg("-" * 80)
-
+    # Create the PostgreSQL database schema
     db_ddl_base.create_db_schema()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# d_n_a: Download a NTSB MS Access database file.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def download_ntsb_msaccess_file(msaccess: str) -> None:
     """d_n_a: Download a NTSB MS Access database file.
+
+    This function downloads a NTSB MS Access database file.
 
     Args:
         msaccess (str):
@@ -287,36 +311,48 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
     io_utils.progress_msg(glob_local.INFO_00_047.replace("{msaccess}", msaccess))
     io_utils.progress_msg("-" * 80)
 
+    # Download the specified NTSB MS Access database file
     db_dml_msaccess.download_ntsb_msaccess_file(msaccess)
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# f_n_a: Find the nearest airports.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def find_nearest_airports() -> None:
-    """f_n_a: Find the nearest airports."""
+    """f_n_a: Find the nearest airports.
+
+    This function determines the nearest airports to the event sites.
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.086 Find the nearest airports
     io_utils.progress_msg(glob_local.INFO_00_086)
     io_utils.progress_msg("-" * 80)
 
+    # Find the nearest airports
     db_dml_corr.find_nearest_airports()
 
     logging.debug(io_glob.LOGGER_END)
 
 
 # -----------------------------------------------------------------------------
-# Generate SQL statements: INSERT & UPDATE.
-# -----------------------------------------------------------------------------
+
 def generate_sql() -> None:
     """Generate SQL statements: INSERT & UPDATE.
+
+    This function generates SQL statements: INSERT & UPDATE.
+
+    It calls the function :func:`code_generator.generate_sql` to generate the
+    SQL statements.
 
     .. :noindex:
     """
     logging.debug(io_glob.LOGGER_START)
+
+    # INFO.00.044 Generate SQL statements
+    io_utils.progress_msg(glob_local.INFO_00_044)
+    io_utils.progress_msg("-" * 80)
 
     code_generator.generate_sql()
 
@@ -324,10 +360,41 @@ def generate_sql() -> None:
 
 
 # -----------------------------------------------------------------------------
-# Load the command line arguments into the memory.
-# -----------------------------------------------------------------------------
+
 def get_args() -> None:
-    """Load the command line arguments into the memory."""
+    """Load the command line arguments into the memory.
+
+    This function loads the command line arguments using the
+    argparse module and checks the arguments for validity.
+
+    The available command line arguments are:
+
+    -e, --msexcel: the MS Excel file
+    -m, --msaccess: the Microsoft Access database file:
+        avall (Data from January 1, 2008 to today)
+        pre2008 (Data from January 1, 1982 to December 31, 2007)
+        upDDMON (New additions and updates until DD day in the month MON)
+    -t, --task: the task to execute:
+        a_o_c (Load aviation occurrence categories into PostgreSQL)
+        c_d_s (Create the PostgreSQL database schema)
+        c_l_l (Correct decimal US latitudes and longitudes)
+        c_p_d (Cleansing PostgreSQL data)
+        d_n_a (Download a NTSB MS Access database file)
+        f_n_a (Find the nearest airports)
+        generate (Generate SQL statements)
+        l_a_p (Load airport data into PostgreSQL)
+        l_c_d (Load data from a correction file into PostgreSQL)
+        l_c_s (Load country and state data into PostgreSQL)
+        l_n_a (Load NTSB MS Access database data into PostgreSQL)
+        l_s_d (Load simplemaps data into PostgreSQL)
+        l_s_e (Load sequence of events data into PostgreSQL)
+        l_z_d (Load ZIP Code Database data into PostgreSQL)
+        r_d_s (Update the PostgreSQL database schema)
+        u_d_s (Refresh the PostgreSQL database schema)
+        version (Show the current version of IO-AVSTATS)
+        v_n_d (Verify selected NTSB data)
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     parser = argparse.ArgumentParser(
@@ -451,43 +518,51 @@ def get_args() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# a_o_c: Load aviation occurrence categories into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_aviation_occurrence_categories() -> None:
-    """a_o_c: Load aviation occurrence categories into PostgreSQL."""
+    """a_o_c: Load aviation occurrence categories into PostgreSQL.
+
+    This function loads the aviation occurrence categories into the PostgreSQL
+    database.
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.073 Load aviation occurrence categories
     io_utils.progress_msg(glob_local.INFO_00_073)
     io_utils.progress_msg("-" * 80)
 
+    # Load the aviation occurrence categories.
     db_dml_base.load_aviation_occurrence_categories()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_a_p: Load airport data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_airport_data() -> None:
-    """l_a_p: Load airport data into PostgreSQL."""
+    """l_a_p: Load airport data into PostgreSQL.
+
+    This function loads the airport data into the PostgreSQL database.
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.085 Load airports
     io_utils.progress_msg(glob_local.INFO_00_085)
     io_utils.progress_msg("-" * 80)
 
+    # Load the airport data.
     db_dml_base.load_airport_data()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_c_d: Load data from a correction file into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_correction_data(filename: str) -> None:
     """l_c_d: Load data from a correction file into PostgreSQL.
+
+    Load data from a correction file into the PostgreSQL database.
 
     Args:
         filename (str):
@@ -497,19 +572,38 @@ def load_correction_data(filename: str) -> None:
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.042 Load corrections from file '{filename}'
-    io_utils.progress_msg(glob_local.INFO_00_042.replace("{filename}", filename))
+    io_utils.progress_msg(
+        glob_local.INFO_00_042.replace("{filename}", filename),
+    )
     io_utils.progress_msg("-" * 80)
 
+    # Load the correction data.
     db_dml_corr.load_correction_data(filename)
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_c_s: Load country and state data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_country_state_data() -> None:
-    """l_c_s: Load country and state data into PostgreSQL."""
+    """l_c_s: Load country and state data into PostgreSQL.
+
+    This function loads the country and state data from a CSV file into the
+    PostgreSQL database.
+
+    Notes:
+        - The country and state data is loaded from a CSV file.
+        - The CSV file is assumed to be in the same directory as the script.
+        - The CSV file is assumed to have the following columns:
+            - country
+            - country_name
+            - state
+            - state_name
+        - The data is loaded into the PostgreSQL tables:
+            - io_countries
+            - io_states
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.057 Load country and state data
@@ -521,15 +615,51 @@ def load_country_state_data() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_n_a: Load NTSB MS Access database data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_ntsb_msaccess_data(msaccess: str) -> None:
     """l_n_a: Load NTSB MS Access database data into PostgreSQL.
+
+    Load the NTSB MS Access database data into the PostgreSQL database.
 
     Args:
         msaccess (str):
             The NTSB MS Access database file without file extension.
+
+    Notes:
+        - The NTSB MS Access database file is assumed to be in the same directory as the script.
+        - The NTSB MS Access database file is assumed to have the following tables:
+            - aircraft
+            - dt_aircraft
+            - dt_events
+            - dt_flight_crew
+            - engines
+            - events
+            - events_sequence
+            - findings
+            - flight_crew
+            - flight_time
+            - injury
+            - narratives
+            - ntsb_admin
+            - occurrences
+            - seq_of_events
+        - The data is loaded into the PostgreSQL tables:
+            - aircraft
+            - dt_aircraft
+            - dt_events
+            - dt_flight_crew
+            - engines
+            - events
+            - events_sequence
+            - findings
+            - flight_crew
+            - flight_time
+            - injury
+            - narratives
+            - ntsb_admin
+            - occurrences
+            - seq_of_events
 
     """
     logging.debug(io_glob.LOGGER_START)
@@ -538,16 +668,31 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     io_utils.progress_msg(glob_local.INFO_00_049.replace("{msaccess}", msaccess))
     io_utils.progress_msg("-" * 80)
 
+    # Load the NTSB MS Access database data.
     db_dml_msaccess.load_ntsb_msaccess_data(msaccess)
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_s_e: Load sequence of events data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_sequence_of_events() -> None:
-    """l_s_e: Load sequence of events data into PostgreSQL."""
+    """l_s_e: Load sequence of events data into PostgreSQL.
+
+    Loads the sequence of events data from a CSV file into the PostgreSQL
+    database.
+
+    Notes:
+        - The sequence of events data is loaded from a CSV file.
+        - The CSV file is assumed to be in the same directory as the script.
+        - The CSV file is assumed to have the following columns:
+            - eventsoe_no
+            - meaning
+            - cictt_code
+        - The data is loaded into the PostgreSQL table:
+            - seq_of_events
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.075 Load sequence of events data
@@ -559,27 +704,68 @@ def load_sequence_of_events() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_s_d: Load simplemaps data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_simplemaps_data() -> None:
-    """l_s_d: Load simplemaps data into PostgreSQL."""
+    """l_s_d: Load simplemaps data into PostgreSQL.
+
+    Notes:
+        - The simplemaps data is loaded from two CSV files.
+        - The CSV files are assumed to be in the same directory as the script.
+        - The CSV files are assumed to have the following columns:
+            - us_cities.csv:
+                - city
+                - lat
+                - lng
+                - state
+                - state_id
+                - zips
+            - us_zips.csv:
+                - zip
+                - lat
+                - lng
+                - city
+                - state
+                - state_id
+                - county
+                - county_fips
+        - The data is loaded into the PostgreSQL tables:
+            - io_lat_lng
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.050 Load simplemaps data
     io_utils.progress_msg(glob_local.INFO_00_050)
     io_utils.progress_msg("-" * 80)
 
+    # Load the simplemaps data.
     db_dml_base.load_simplemaps_data()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# l_z_d: Load ZIP Code Database data into PostgreSQL.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_zip_code_db_data() -> None:
-    """l_z_d: Load ZIP Code Database data into PostgreSQL."""
+    """l_z_d: Load ZIP Code Database data into PostgreSQL.
+
+    Notes:
+        - The ZIP Code Database data is loaded from an Excel file.
+        - The Excel file is assumed to be in the same directory as the script.
+        - The Excel file is assumed to have the following columns:
+            - zip_code
+            - lat
+            - lng
+            - city
+            - state
+            - state_id
+            - county
+            - county_fips
+        - The data is loaded into the PostgreSQL table:
+            - io_lat_lng
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.056 Load ZIP Code Database data
@@ -591,39 +777,50 @@ def load_zip_code_db_data() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# Create a progress message.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def progress_msg(msg: str) -> None:
     """Create a progress message.
 
     Args:
-        msg (str): Progress message
+        msg (str): Progress message to be displayed.
+
+    Notes:
+        - The progress message is only displayed if the verbose mode is on.
 
     """
     if io_settings.settings.is_verbose:
         io_utils.progress_msg_core(msg)
 
 
-# ------------------------------------------------------------------
-# Create a progress message.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def progress_msg_time_elapsed(duration: int, event: str) -> None:
     """Create a time elapsed message.
+
+    The time elapsed is displayed in seconds and milliseconds.
 
     Args:
         duration (int): Time elapsed in ns.
         event (str): Event description.
 
+    Notes:
+        - The time elapsed message is only displayed if the verbose mode is on.
+
     """
     io_utils.progress_msg_time_elapsed(duration, event)
 
 
-# ------------------------------------------------------------------
-# r_d_s: Refresh the PostgreSQL database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def refresh_db_schema() -> None:
-    """r_d_s: Refresh the PostgreSQL database schema."""
+    """Refresh the PostgreSQL database schema.
+
+    Notes:
+        - This function uses the following functions:
+            - db_ddl_base.refresh_db_schema()
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.071 Refreshing the database schema
@@ -635,58 +832,77 @@ def refresh_db_schema() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# Terminate the application immediately.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def terminate_fatal(error_msg: str) -> None:
     """Terminate the application immediately.
 
     Args:
-        error_msg (str): Error message
+        error_msg (str): Error message to be displayed.
+
+    Notes:
+        - This function is used to terminate the application immediately with
+          an error message.
 
     """
     io_utils.terminate_fatal(error_msg)
 
 
-# ------------------------------------------------------------------
-# u_d_s: Update the PostgreSQL database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def update_db_schema() -> None:
-    """u_d_s: Update the PostgreSQL database schema."""
+    """Update the PostgreSQL database schema.
+
+    Notes:
+        - This function calls db_ddl_base.update_db_schema() to update the
+          database schema.
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.045 Updating the database schema
     io_utils.progress_msg(glob_local.INFO_00_045)
     io_utils.progress_msg("-" * 80)
 
+    # Update the database schema.
     db_ddl_base.update_db_schema()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# v_n_d: Verify selected NTSB data.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def verify_ntsb_data() -> None:
-    """v_n_d: Verify selected NTSB data."""
+    """v_n_d: Verify selected NTSB data.
+
+    This function verifies selected NTSB data.
+
+    Notes:
+        - This function is used to verify selected NTSB data.
+        - This function is called by the main entry point of the application.
+
+    """
     logging.debug(io_glob.LOGGER_START)
 
     # INFO.00.043 Verify selected NTSB data
     io_utils.progress_msg(glob_local.INFO_00_043)
     io_utils.progress_msg("-" * 80)
 
+    # Call the function to verify selected NTSB data.
     db_dml_corr.verify_ntsb_data()
 
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# Returns the version number of the IO-AVSTATS application.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def version() -> str:
     """Return the version number of the IO-AVSTATS application.
 
-    Returns
+    Notes:
+        - This function returns the version number of the IO-AVSTATS application.
+
+    Returns:
     -------
         str:
             The version number of the IO-AVSTATS application
@@ -695,4 +911,5 @@ def version() -> str:
     logging.debug(io_glob.LOGGER_START)
     logging.debug(io_glob.LOGGER_END)
 
+    # Return the version number of the IO-AVSTATS application
     return glob_local.IO_AERO_DB_VERSION

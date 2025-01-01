@@ -47,27 +47,46 @@ DLL_VIEW_STMNTS_REFRESH: list[str] = []
 FILE_MAIN_PHASES_OF_FLIGHT = io_settings.settings.download_file_main_phases_of_flight
 
 
-# ------------------------------------------------------------------
-# Alter database tables.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _alter_db_tables(conn_pg: connection, cur_pg: cursor) -> None:
+    """Alter existing database tables.
+
+    This function checks if a database table exists and if it does, it alters the table according to
+    the given SQL statement.
+
+    :param conn_pg: The PostgreSQL database connection.
+    :param cur_pg: The PostgreSQL database cursor.
+
+    """
+    # Iterate over the SQL statements for the tables to be created
     for table_name, stmnt in DLL_TABLE_STMNTS.items():
+        # Check if the database table already exists
         if _check_exists_table(cur_pg, table_name):
+            # Alter the database table
             cur_pg.execute(stmnt)
+            # Commit the changes
             conn_pg.commit()
-            # INFO.00.007 Database table created: {table}
+            # Log the action
             io_utils.progress_msg(
                 glob_local.INFO_00_007.replace("{table}", table_name),
             )
 
 
-# ------------------------------------------------------------------
-# Check the existence of a database index.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _check_exists_index(
     cur_pg: cursor,
     index_name: str,
 ) -> bool:
+    """Check if a database index exists.
+
+    :param cur_pg: The PostgreSQL database cursor.
+    :param index_name: The name of the index to be checked.
+    :return: True if the index exists, False otherwise.
+
+    """
+    # Execute the SQL statement
     cur_pg.execute(
         f"""
     SELECT count(*)
@@ -77,19 +96,28 @@ def _check_exists_index(
         """,
     )
 
+    # Fetch the result
     row_pg = cur_pg.fetchone()
 
+    # Return True if the index exists, False otherwise
     return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
-# ------------------------------------------------------------------
-# Check the existence of a database table.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 # pylint: disable=too-many-lines
 def _check_exists_table(
     cur_pg: cursor,
     table_name: str,
 ) -> bool:
+    """Check if a database table exists.
+
+    :param cur_pg: The PostgreSQL database cursor.
+    :param table_name: The name of the table to be checked.
+    :return: True if the table exists, False otherwise.
+
+    """
+    # Execute the SQL statement
     cur_pg.execute(
         f"""
     SELECT count(*)
@@ -99,19 +127,32 @@ def _check_exists_table(
         """,
     )
 
+    # Fetch the result
     row_pg = cur_pg.fetchone()
 
+    # Return True if the table exists, False otherwise
     return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 
-# ------------------------------------------------------------------
-# Check the existence of a database table column.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _check_exists_table_column(
     cur_pg: cursor,
     table_name: str,
     column_name: str,
 ) -> bool:
+    """Check if a database table column exists.
+
+    Args:
+        cur_pg (cursor): The PostgreSQL database cursor.
+        table_name (str): The name of the table to be checked.
+        column_name (str): The name of the column to be checked.
+
+    Returns:
+        bool: True if the column exists, False otherwise.
+
+    """
+    # Check if the column exists
     cur_pg.execute(
         f"""
     SELECT count(*)
@@ -122,8 +163,10 @@ def _check_exists_table_column(
         """,
     )
 
+    # Fetch the result
     row_pg = cur_pg.fetchone()
 
+    # Return True if the column exists, False otherwise
     return row_pg and row_pg[COLUMN_COUNT] > 0  # type: ignore
 
 

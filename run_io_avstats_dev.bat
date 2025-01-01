@@ -209,7 +209,7 @@ rem ----------------------------------------------------------------------------
 if ["%IO_AERO_TASK%"] EQU ["version"] (
     python scripts\launcher.py -t "%IO_AERO_TASK%"
     if ERRORLEVEL 1 (
-        echo Processing of the script run_io_avstats_dev_db_pytest was aborted
+        echo Processing of the script run_io_avstats_dev was aborted
         exit /b 1
     )
 

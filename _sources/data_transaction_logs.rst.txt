@@ -5,6 +5,9 @@ Transaction Data Logs
 .. toctree::
    :maxdepth: 1
 
+   ./transaction_logs/2025_01_01_log_up01JAN
+   ./transaction_logs/2025_01_01_log_avall
+   ./transaction_logs/2024_12_22_log_up22DEC
    ./transaction_logs/2024_12_15_log_up15DEC
    ./transaction_logs/2024_12_10_log_up08DEC
    ./transaction_logs/2024_12_01_log_up01DEC
@@ -14,9 +17,6 @@ Transaction Data Logs
    ./transaction_logs/2024_11_08_log_up08NOV
    ./transaction_logs/2024_11_01_log_up01NOV
    ./transaction_logs/2024_11_01_log_avall
-   ./transaction_logs/2024_10_22_log_up22OCT
-   ./transaction_logs/2024_10_15_log_up15OCT
-   ./transaction_logs/2024_10_08_log_up08OCT
    ./transaction_logs/2024_10_01_log_up01OCT
    ./transaction_logs/2024_10_01_log_avall
    ./transaction_logs/2024_09_01_log_up01SEP

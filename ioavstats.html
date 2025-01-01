@@ -227,6 +227,9 @@
 </ul>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_transaction_logs.html">Transaction Data Logs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Transaction Data Logs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2025_01_01_log_up01JAN.html">2025.01.01 up01JAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2025_01_01_log_avall.html">2025.01.01 avall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_12_22_log_up22DEC.html">2024.12.22 up22DEC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_12_15_log_up15DEC.html">2024.12.15 up15DEC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_12_10_log_up08DEC.html">2024.12.10 up08DEC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_12_01_log_up01DEC.html">2024.12.01 up01DEC</a></li>
@@ -236,9 +239,6 @@
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_11_08_log_up08NOV.html">2024.11.08 up08NOV</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_11_01_log_up01NOV.html">2024.11.01 up01NOV</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_11_01_log_avall.html">2024.11.01 avall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_22_log_up22OCT.html">2024.10.22 up22OCT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_15_log_up15OCT.html">2024.10.15 up15OCT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_08_log_up08OCT.html">2024.10.08 up08OCT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_01_log_up01OCT.html">2024.10.01 up01OCT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_10_01_log_avall.html">2024.10.01 avall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction_logs/2024_09_01_log_up01SEP.html">2024.09.01 up01SEP</a></li>
@@ -362,12 +362,26 @@
 <dd class="field-odd"><p><strong>args</strong> (<em>argparse.Namespace</em>) – Command line arguments.</p>
 </dd>
 </dl>
+<dl class="simple">
+<dt>The MS Access database name must be in the format ‘upDDmmm’ where:</dt><dd><ul class="simple">
+<li><p>‘up’ is a fixed prefix</p></li>
+<li><p>‘DD’ is the day of the month as a two digit number (01-31)</p></li>
+<li><p>‘mmm’ is the month as a three letter abbreviation (jan-dec)</p></li>
+</ul>
+</dd>
+</dl>
+<p>If the task is ‘d_n_a’ or ‘l_n_a’, the argument ‘-m’ or ‘–msaccess’ is
+required. Otherwise, it is not allowed.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.check_arg_msexcel">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">check_arg_msexcel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.check_arg_msexcel" title="Link to this definition">¶</a></dt>
 <dd><p>Check the command line argument: -e / –msexcel.</p>
+<p>This function checks whether the command line argument -e / –msexcel
+is valid. If the argument is required but not provided, or if the file
+does not exist or is not a valid Microsoft Excel file, a fatal error
+is raised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>args</strong> (<em>argparse.Namespace</em>) – Command line arguments.</p>
@@ -379,6 +393,8 @@
 <dt class="sig sig-object py" id="ioavstats.avstats.check_arg_task">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">check_arg_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.check_arg_task" title="Link to this definition">¶</a></dt>
 <dd><p>Check the command line argument: -t / –task.</p>
+<p>Check if the specified task is a valid task name. If not, terminate the program
+with a fatal error message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>args</strong> (<em>argparse.Namespace</em>) – Command line arguments.</p>
@@ -390,24 +406,29 @@
 <dt class="sig sig-object py" id="ioavstats.avstats.cleansing_postgres_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">cleansing_postgres_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.cleansing_postgres_data" title="Link to this definition">¶</a></dt>
 <dd><p>c_p_d: Cleansing PostgreSQL data.</p>
+<p>This function cleanses the PostgreSQL database.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.correct_dec_lat_lng">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">correct_dec_lat_lng</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.correct_dec_lat_lng" title="Link to this definition">¶</a></dt>
 <dd><p>c_l_l: Correct US decimal latitudes and longitudes.</p>
+<p>This function corrects the decimal latitude and longitude values in the
+PostgreSQL database.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.create_db_schema">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">create_db_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.create_db_schema" title="Link to this definition">¶</a></dt>
 <dd><p>c_d_s: Create the PostgreSQL database schema.</p>
+<p>This function creates the PostgreSQL database schema.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.download_ntsb_msaccess_file">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">download_ntsb_msaccess_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msaccess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.download_ntsb_msaccess_file" title="Link to this definition">¶</a></dt>
 <dd><p>d_n_a: Download a NTSB MS Access database file.</p>
+<p>This function downloads a NTSB MS Access database file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>msaccess</strong> (<em>str</em>) – The NTSB MS Access database file without file extension.</p>
@@ -419,36 +440,75 @@
 <dt class="sig sig-object py" id="ioavstats.avstats.find_nearest_airports">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">find_nearest_airports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.find_nearest_airports" title="Link to this definition">¶</a></dt>
 <dd><p>f_n_a: Find the nearest airports.</p>
+<p>This function determines the nearest airports to the event sites.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.generate_sql">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">generate_sql</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.generate_sql" title="Link to this definition">¶</a></dt>
 <dd><p>Generate SQL statements: INSERT &amp; UPDATE.</p>
+<p>This function generates SQL statements: INSERT &amp; UPDATE.</p>
+<p>It calls the function <code class="xref py py-func docutils literal notranslate"><span class="pre">code_generator.generate_sql()</span></code> to generate the
+SQL statements.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.get_args">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">get_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.get_args" title="Link to this definition">¶</a></dt>
 <dd><p>Load the command line arguments into the memory.</p>
+<p>This function loads the command line arguments using the
+argparse module and checks the arguments for validity.</p>
+<p>The available command line arguments are:</p>
+<p>-e, –msexcel: the MS Excel file
+-m, –msaccess: the Microsoft Access database file:</p>
+<blockquote>
+<div><p>avall (Data from January 1, 2008 to today)
+pre2008 (Data from January 1, 1982 to December 31, 2007)
+upDDMON (New additions and updates until DD day in the month MON)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>-t, –task: the task to execute:</dt><dd><p>a_o_c (Load aviation occurrence categories into PostgreSQL)
+c_d_s (Create the PostgreSQL database schema)
+c_l_l (Correct decimal US latitudes and longitudes)
+c_p_d (Cleansing PostgreSQL data)
+d_n_a (Download a NTSB MS Access database file)
+f_n_a (Find the nearest airports)
+generate (Generate SQL statements)
+l_a_p (Load airport data into PostgreSQL)
+l_c_d (Load data from a correction file into PostgreSQL)
+l_c_s (Load country and state data into PostgreSQL)
+l_n_a (Load NTSB MS Access database data into PostgreSQL)
+l_s_d (Load simplemaps data into PostgreSQL)
+l_s_e (Load sequence of events data into PostgreSQL)
+l_z_d (Load ZIP Code Database data into PostgreSQL)
+r_d_s (Update the PostgreSQL database schema)
+u_d_s (Refresh the PostgreSQL database schema)
+version (Show the current version of IO-AVSTATS)
+v_n_d (Verify selected NTSB data)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_aviation_occurrence_categories">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_aviation_occurrence_categories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_aviation_occurrence_categories" title="Link to this definition">¶</a></dt>
 <dd><p>a_o_c: Load aviation occurrence categories into PostgreSQL.</p>
+<p>This function loads the aviation occurrence categories into the PostgreSQL
+database.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_airport_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_airport_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_airport_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_a_p: Load airport data into PostgreSQL.</p>
+<p>This function loads the airport data into the PostgreSQL database.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_correction_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_correction_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_correction_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_c_d: Load data from a correction file into PostgreSQL.</p>
+<p>Load data from a correction file into the PostgreSQL database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The filename of the correction file.</p>
@@ -460,35 +520,200 @@
 <dt class="sig sig-object py" id="ioavstats.avstats.load_country_state_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_country_state_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_country_state_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_c_s: Load country and state data into PostgreSQL.</p>
+<p>This function loads the country and state data from a CSV file into the
+PostgreSQL database.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The country and state data is loaded from a CSV file.</p></li>
+<li><p>The CSV file is assumed to be in the same directory as the script.</p></li>
+<li><dl class="simple">
+<dt>The CSV file is assumed to have the following columns:</dt><dd><ul>
+<li><p>country</p></li>
+<li><p>country_name</p></li>
+<li><p>state</p></li>
+<li><p>state_name</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The data is loaded into the PostgreSQL tables:</dt><dd><ul>
+<li><p>io_countries</p></li>
+<li><p>io_states</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_ntsb_msaccess_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_ntsb_msaccess_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msaccess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_ntsb_msaccess_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_n_a: Load NTSB MS Access database data into PostgreSQL.</p>
+<p>Load the NTSB MS Access database data into the PostgreSQL database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>msaccess</strong> (<em>str</em>) – The NTSB MS Access database file without file extension.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The NTSB MS Access database file is assumed to be in the same directory as the script.</p></li>
+<li><dl class="simple">
+<dt>The NTSB MS Access database file is assumed to have the following tables:</dt><dd><ul>
+<li><p>aircraft</p></li>
+<li><p>dt_aircraft</p></li>
+<li><p>dt_events</p></li>
+<li><p>dt_flight_crew</p></li>
+<li><p>engines</p></li>
+<li><p>events</p></li>
+<li><p>events_sequence</p></li>
+<li><p>findings</p></li>
+<li><p>flight_crew</p></li>
+<li><p>flight_time</p></li>
+<li><p>injury</p></li>
+<li><p>narratives</p></li>
+<li><p>ntsb_admin</p></li>
+<li><p>occurrences</p></li>
+<li><p>seq_of_events</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The data is loaded into the PostgreSQL tables:</dt><dd><ul>
+<li><p>aircraft</p></li>
+<li><p>dt_aircraft</p></li>
+<li><p>dt_events</p></li>
+<li><p>dt_flight_crew</p></li>
+<li><p>engines</p></li>
+<li><p>events</p></li>
+<li><p>events_sequence</p></li>
+<li><p>findings</p></li>
+<li><p>flight_crew</p></li>
+<li><p>flight_time</p></li>
+<li><p>injury</p></li>
+<li><p>narratives</p></li>
+<li><p>ntsb_admin</p></li>
+<li><p>occurrences</p></li>
+<li><p>seq_of_events</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_sequence_of_events">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_sequence_of_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_sequence_of_events" title="Link to this definition">¶</a></dt>
 <dd><p>l_s_e: Load sequence of events data into PostgreSQL.</p>
+<p>Loads the sequence of events data from a CSV file into the PostgreSQL
+database.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The sequence of events data is loaded from a CSV file.</p></li>
+<li><p>The CSV file is assumed to be in the same directory as the script.</p></li>
+<li><dl class="simple">
+<dt>The CSV file is assumed to have the following columns:</dt><dd><ul>
+<li><p>eventsoe_no</p></li>
+<li><p>meaning</p></li>
+<li><p>cictt_code</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The data is loaded into the PostgreSQL table:</dt><dd><ul>
+<li><p>seq_of_events</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_simplemaps_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_simplemaps_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_simplemaps_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_s_d: Load simplemaps data into PostgreSQL.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The simplemaps data is loaded from two CSV files.</p></li>
+<li><p>The CSV files are assumed to be in the same directory as the script.</p></li>
+<li><dl class="simple">
+<dt>The CSV files are assumed to have the following columns:</dt><dd><ul>
+<li><dl class="simple">
+<dt>us_cities.csv:</dt><dd><ul>
+<li><p>city</p></li>
+<li><p>lat</p></li>
+<li><p>lng</p></li>
+<li><p>state</p></li>
+<li><p>state_id</p></li>
+<li><p>zips</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>us_zips.csv:</dt><dd><ul>
+<li><p>zip</p></li>
+<li><p>lat</p></li>
+<li><p>lng</p></li>
+<li><p>city</p></li>
+<li><p>state</p></li>
+<li><p>state_id</p></li>
+<li><p>county</p></li>
+<li><p>county_fips</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The data is loaded into the PostgreSQL tables:</dt><dd><ul>
+<li><p>io_lat_lng</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.load_zip_code_db_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">load_zip_code_db_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.load_zip_code_db_data" title="Link to this definition">¶</a></dt>
 <dd><p>l_z_d: Load ZIP Code Database data into PostgreSQL.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The ZIP Code Database data is loaded from an Excel file.</p></li>
+<li><p>The Excel file is assumed to be in the same directory as the script.</p></li>
+<li><dl class="simple">
+<dt>The Excel file is assumed to have the following columns:</dt><dd><ul>
+<li><p>zip_code</p></li>
+<li><p>lat</p></li>
+<li><p>lng</p></li>
+<li><p>city</p></li>
+<li><p>state</p></li>
+<li><p>state_id</p></li>
+<li><p>county</p></li>
+<li><p>county_fips</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The data is loaded into the PostgreSQL table:</dt><dd><ul>
+<li><p>io_lat_lng</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -497,15 +722,20 @@
 <dd><p>Create a progress message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Progress message</p>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Progress message to be displayed.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The progress message is only displayed if the verbose mode is on.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.progress_msg_time_elapsed">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">progress_msg_time_elapsed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.progress_msg_time_elapsed" title="Link to this definition">¶</a></dt>
 <dd><p>Create a time elapsed message.</p>
+<p>The time elapsed is displayed in seconds and milliseconds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -514,12 +744,26 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The time elapsed message is only displayed if the verbose mode is on.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.refresh_db_schema">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">refresh_db_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.refresh_db_schema" title="Link to this definition">¶</a></dt>
-<dd><p>r_d_s: Refresh the PostgreSQL database schema.</p>
+<dd><p>Refresh the PostgreSQL database schema.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>This function uses the following functions:</dt><dd><ul>
+<li><p>db_ddl_base.refresh_db_schema()</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -528,35 +772,56 @@
 <dd><p>Terminate the application immediately.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>error_msg</strong> (<em>str</em>) – Error message</p>
+<dd class="field-odd"><p><strong>error_msg</strong> (<em>str</em>) – Error message to be displayed.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is used to terminate the application immediately with
+an error message.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.update_db_schema">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">update_db_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.update_db_schema" title="Link to this definition">¶</a></dt>
-<dd><p>u_d_s: Update the PostgreSQL database schema.</p>
+<dd><p>Update the PostgreSQL database schema.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function calls db_ddl_base.update_db_schema() to update the
+database schema.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.verify_ntsb_data">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">verify_ntsb_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ioavstats.avstats.verify_ntsb_data" title="Link to this definition">¶</a></dt>
 <dd><p>v_n_d: Verify selected NTSB data.</p>
+<p>This function verifies selected NTSB data.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is used to verify selected NTSB data.</p></li>
+<li><p>This function is called by the main entry point of the application.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ioavstats.avstats.version">
 <span class="sig-prename descclassname"><span class="pre">ioavstats.avstats.</span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ioavstats.avstats.version" title="Link to this definition">¶</a></dt>
 <dd><p>Return the version number of the IO-AVSTATS application.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The version number of the IO-AVSTATS application</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function returns the version number of the IO-AVSTATS application.</p></li>
+</ul>
+<section id="returns">
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>str:</dt><dd><p>The version number of the IO-AVSTATS application</p>
 </dd>
 </dl>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>

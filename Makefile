@@ -225,8 +225,8 @@ final: format lint docs tests
 format: ## format: Format the code with docformatter.
 format: docformatter
 
-lint: ## lint: Lint the code with ruff, Bandit, Vulture, Pylint and Mypy.
-lint: ruff bandit vulture pylint mypy
+lint: ## lint: Lint the code with ruff, Bandit, Vulture, and Mypy.
+lint: ruff bandit vulture mypy
 
 ## Find typing issues with Mypy.
 mypy:

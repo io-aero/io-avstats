@@ -266,7 +266,7 @@ Processed files
 Data source `up08DEC.zip`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Download link: `12/22/2024 3:00:23 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22DEC.zip`__\
+- Download link: `12/22/2024 3:00:23 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup22DEC.zip>`__\
 
 Version 24.12.15
 ================
@@ -353,7 +353,7 @@ Processed files
 Data source `up08DEC.zip`
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Download link: `12/15/2024 3:00:37 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15DEC.zip`__\
+- Download link: `12/15/2024 3:00:37 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup15DEC.zip>`__\
 
 Version 24.12.08
 ================

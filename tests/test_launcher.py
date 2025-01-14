@@ -64,6 +64,7 @@ def test_launcher_version() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "version"],
         "Linux": ["./run_io_avstats_test.sh", "version"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "version"],
     }
@@ -82,6 +83,7 @@ def test_launcher_d_d_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "d_d_c"],
         "Linux": ["./run_io_avstats_test.sh", "d_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "d_d_c"],
     }
@@ -100,6 +102,7 @@ def test_launcher_d_d_f() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "d_d_f"],
         "Linux": ["./run_io_avstats_test.sh", "d_d_f"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "d_d_f"],
     }
@@ -118,6 +121,7 @@ def test_launcher_s_d_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "s_d_c"],
         "Linux": ["./run_io_avstats_test.sh", "s_d_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "s_d_c"],
     }
@@ -136,6 +140,7 @@ def test_launcher_c_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "c_d_s"],
         "Linux": ["./run_io_avstats_test.sh", "c_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_d_s"],
     }
@@ -154,6 +159,7 @@ def test_launcher_u_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "u_d_s"],
         "Linux": ["./run_io_avstats_test.sh", "u_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "u_d_s"],
     }
@@ -172,6 +178,7 @@ def test_launcher_l_a_p() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_a_p"],
         "Linux": ["./run_io_avstats_test.sh", "l_a_p"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_a_p"],
     }
@@ -190,6 +197,7 @@ def test_launcher_a_o_c() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "a_o_c"],
         "Linux": ["./run_io_avstats_test.sh", "a_o_c"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "a_o_c"],
     }
@@ -208,6 +216,7 @@ def test_launcher_l_c_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_c_s"],
         "Linux": ["./run_io_avstats_test.sh", "l_c_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_c_s"],
     }
@@ -226,6 +235,7 @@ def test_launcher_l_c_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_c_d", "test"],
         "Linux": ["./run_io_avstats_test.sh", "l_c_d", "test"],
         "Windows": [
             "cmd.exe",
@@ -250,6 +260,7 @@ def test_launcher_l_s_e() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_s_e"],
         "Linux": ["./run_io_avstats_test.sh", "l_s_e"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_e"],
     }
@@ -268,6 +279,7 @@ def test_launcher_l_s_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_s_d"],
         "Linux": ["./run_io_avstats_test.sh", "l_s_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_s_d"],
     }
@@ -286,6 +298,7 @@ def test_launcher_l_z_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "l_z_d"],
         "Linux": ["./run_io_avstats_test.sh", "l_z_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "l_z_d"],
     }
@@ -303,6 +316,8 @@ def test_launcher_u_p_d() -> None:
     """Test case: Complete processing of a modifying MS Access file."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        pytest.skip("Skipping u_p_d on macOS due to custom handling.")
     if platform.system() == "Linux":
         pytest.skip("Skipping u_p_d on Linux due to custom handling.")
 
@@ -329,6 +344,8 @@ def test_launcher_l_n_a() -> None:
     """Test case: Load NTSB MS Access database data into PostgreSQL."""
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
+    if platform.system() == "Darwin":
+        pytest.skip("Skipping l_n_a on macOS due to custom handling.")
     if platform.system() == "Linux":
         pytest.skip("Skipping l_n_a on Linux due to custom handling.")
 
@@ -356,6 +373,7 @@ def test_launcher_c_l_l() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "c_l_l"],
         "Linux": ["./run_io_avstats_test.sh", "c_l_l"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_l_l"],
     }
@@ -374,6 +392,7 @@ def test_launcher_f_n_a() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "f_n_a"],
         "Linux": ["./run_io_avstats_test.sh", "f_n_a"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "f_n_a"],
     }
@@ -392,6 +411,7 @@ def test_launcher_r_d_s() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "r_d_s"],
         "Linux": ["./run_io_avstats_test.sh", "r_d_s"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "r_d_s"],
     }
@@ -410,6 +430,7 @@ def test_launcher_c_p_d() -> None:
     assert settings.check_value == "test", "Settings check_value is not 'test'"
 
     commands = {
+        "Darwin": ["./run_io_avstats_test.sh", "c_p_d"],
         "Linux": ["./run_io_avstats_test.sh", "c_p_d"],
         "Windows": ["cmd.exe", "/c", "run_io_avstats_test.bat", "c_p_d"],
     }

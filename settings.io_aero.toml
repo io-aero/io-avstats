@@ -1,5 +1,10 @@
 [default]
 check_value = "default"
+
+countries_timeout = 10
+countries_transaction_size = 500
+countries_url = "https://raw.githubusercontent.com/mledoze/countries/master/dist/countries.csv"
+
 correction_work_dir = "data/correction"
 
 database_commit_size = 10000
@@ -68,13 +73,6 @@ razorsql_java_path_windows = "C:\\Program Files\\RazorSQL\\jre11\\bin\\java"
 razorsql_profile = "IO-AVSTATS"
 razorsql_reference_dir = "data/RazorSQL"
 razorsql_reference_file = "2024.01.22_avall.sql"
-
-rest_countries_file = "rest_countries.csv"
-rest_countries_timeout = 10
-rest_countries_transaction_size = 500
-rest_countries_url = "https://restcountries.com/v3.1/all"
-rest_countries_url_url = "https://restcountries.com"
-rest_countries_workdir = "data/Rest Countries"
 
 terminal_area_distance_nmi = 5
 

@@ -8,6 +8,7 @@ import shutil
 import sys
 import zipfile
 from datetime import UTC, datetime
+from io import StringIO
 from pathlib import Path
 
 import pandas as pd
@@ -19,6 +20,7 @@ from psycopg.errors import (
     ForeignKeyViolation,  # pylint: disable=no-name-in-module
     UniqueViolation,  # pylint: disable=no-name-in-module
 )
+from traittypes import DataFrame
 
 from ioavstats import glob_local
 
@@ -81,6 +83,14 @@ COLUMN_Y = "Y"
 COLUMN_ZIP = "zip"
 COLUMN_ZIPS = "zips"
 
+COUNTRIES_TIMEOUT = int(
+    io_settings.settings.countries_timeout,
+)
+COUNTRIES_TRANSACTION_SIZE = int(
+    io_settings.settings.countries_transaction_size,
+)
+COUNTRIES_URL = io_settings.settings.countries_url
+
 DOWNLOAD_FILE_AVIATION_OCCURRENCE_CATEGORIES = (
     io_settings.settings.download_file_aviation_occurrence_categories
 )
@@ -128,17 +138,6 @@ OPENDATASOFT_TRANSACTION_SIZE = int(
     io_settings.settings.opendatasoft_transaction_size,
 )
 OPENDATASOFT_WORKDIR = io_settings.settings.opendatasoft_workdir
-
-REST_COUNTRIES_FILE = io_settings.settings.rest_countries_file
-REST_COUNTRIES_TIMEOUT = int(
-    io_settings.settings.rest_countries_timeout,
-)
-REST_COUNTRIES_TRANSACTION_SIZE = int(
-    io_settings.settings.rest_countries_transaction_size,
-)
-REST_COUNTRIES_URL = io_settings.settings.rest_countries_url
-REST_COUNTRIES_URL_URL = io_settings.settings.rest_countries_url_url
-REST_COUNTRIES_WORKDIR = io_settings.settings.rest_countries_workdir
 
 
 # ------------------------------------------------------------------
@@ -673,14 +672,10 @@ def _load_aviation_occurrence_categories() -> None:
 # ------------------------------------------------------------------
 # Load country data.
 # ------------------------------------------------------------------
-def _load_country_data(file_path: Path) -> None:
+def _load_country_data(dataframe: DataFrame) -> None:
     logging.info("=" * 80)
-    logging.info(glob_local.INFO_00_132.replace("{file_name}", str(file_path)))
+    logging.info(glob_local.INFO_00_132.replace("{file_name}", str(COUNTRIES_URL)))
     logging.info("-" * 80)
-
-    if not file_path.exists():
-        logging.fatal(glob_local.FATAL_00_931.replace("{file_name}", str(file_path)))
-        sys.exit(1)
 
     insert_query = sql.SQL(
         """
@@ -709,49 +704,6 @@ def _load_country_data(file_path: Path) -> None:
              OR ic.dec_longitude IS DISTINCT FROM %s);
     """,
     )
-
-    # --------------------------------------------------------------
-    # Load the airport base data in a Pandas dataframe.
-    # --------------------------------------------------------------
-
-    dataframe: pd.DataFrame = pd.DataFrame()
-
-    try:
-        columns = [
-            COLUMN_COUNTRY_LOWER,
-            COLUMN_COUNTRY_NAME,
-            COLUMN_DEC_LATITUDE,
-            COLUMN_DEC_LONGITUDE,
-        ]
-
-        # Attempt to read the csv file
-        dataframe = pd.read_csv(str(file_path), sep=",", usecols=columns)
-
-    except FileNotFoundError:
-        io_utils.terminate_fatal(
-            glob_local.FATAL_00_931.replace("{file_name}", str(file_path)),
-        )
-
-    except pd.errors.EmptyDataError:
-        io_utils.terminate_fatal(
-            glob_local.FATAL_00_932.replace("{file_name}", str(file_path)),
-        )
-
-    except ValueError as err:
-        io_utils.terminate_fatal(
-            glob_local.FATAL_00_933.replace("{file_name}", str(file_path)).replace(
-                "{error}",
-                str(err),
-            ),
-        )
-
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
-        io_utils.terminate_fatal(
-            glob_local.FATAL_00_934.replace("{file_name}", str(file_path)).replace(
-                "{error}",
-                str(exc),
-            ),
-        )
 
     # --------------------------------------------------------------
     # Create database connection.
@@ -788,25 +740,18 @@ def _load_country_data(file_path: Path) -> None:
     for _index, row in dataframe.iterrows():
         count_select += 1
 
-        country = extract_column_value(row, COLUMN_COUNTRY_LOWER, is_required=True)
-        if country == COLUMN_COUNTRY_LOWER:
+        country = extract_column_value(row, "cca3", is_required=True)
+        if country == "cca3":
             continue
 
         count_relevant += 1
 
-        country_name = extract_column_value(row, COLUMN_COUNTRY_NAME, is_required=True)
-        dec_latitude = extract_column_value(
-            row,
-            COLUMN_DEC_LATITUDE,
-            float,
-            is_required=True,
-        )
-        dec_longitude = extract_column_value(
-            row,
-            COLUMN_DEC_LONGITUDE,
-            float,
-            is_required=True,
-        )
+        country_name = extract_column_value(row, "name.common", is_required=True)
+
+        latlng = extract_column_value(row, "latlng", is_required=True)
+        dec_latitude_str, dec_longitude_str = latlng.split(",")
+        dec_latitude = float(dec_latitude_str.strip())
+        dec_longitude = float(dec_longitude_str.strip())
 
         if country in primary_keys:
             update_data.append(
@@ -832,7 +777,7 @@ def _load_country_data(file_path: Path) -> None:
                 ),
             )
 
-        if count_relevant % REST_COUNTRIES_TRANSACTION_SIZE == 0:
+        if count_relevant % COUNTRIES_TRANSACTION_SIZE == 0:
             cur_pg.executemany(insert_query, insert_data)
             count_insert += cur_pg.rowcount
             cur_pg.executemany(update_query, update_data)
@@ -870,15 +815,15 @@ def _load_country_data(file_path: Path) -> None:
         logging.info(info_msg)
 
     # ------------------------------------------------------------------
-    # Finalize airport processing.
+    # Finalize country processing.
     # ------------------------------------------------------------------
 
     db_utils.upd_io_processed_data(
         cur_pg=cur_pg,
         table_name="io_countries",
-        data_source=REST_COUNTRIES_URL,
+        data_source=COUNTRIES_URL,
         task_timestamp=IO_LAST_SEEN,
-        url=REST_COUNTRIES_URL_URL,
+        url=COUNTRIES_URL,
     )
 
     cur_pg.close()
@@ -2689,42 +2634,30 @@ def load_country_state_data() -> None:
     # Load the country data.
     # ------------------------------------------------------------------
 
-    # Reference to the working directory as a Path object
-    workdir_path = Path(REST_COUNTRIES_WORKDIR)
-
-    # Delete and recreate the working directory
-    if workdir_path.exists() and workdir_path.is_dir():
-        shutil.rmtree(workdir_path)
-
-    workdir_path.mkdir(parents=True, exist_ok=True)
-
-    file_path = Path(REST_COUNTRIES_WORKDIR) / REST_COUNTRIES_FILE
+    dataframe: DataFrame
 
     try:
-        response = requests.get(REST_COUNTRIES_URL, timeout=REST_COUNTRIES_TIMEOUT)
-        response.raise_for_status()
-        data = response.json()
+        # Send HTTP GET request to download the CSV data
+        response = requests.get(COUNTRIES_URL, timeout=COUNTRIES_TIMEOUT)
+        response.raise_for_status()  # Raise an exception for HTTP errors
 
-        countries = [
-            {
-                "country": country.get("cca3", ""),
-                "country_name": country.get("name", {}).get("common", ""),
-                "dec_latitude": country.get("latlng", [None, None])[0],
-                "dec_longitude": country.get("latlng", [None, None])[1],
-            }
-            for country in data
-        ]
+        # Decode the content to a string (assuming UTF-8 encoding)
+        csv_data = response.content.decode("utf-8")
 
-        pd.DataFrame(countries).to_csv(file_path, index=False)
-        logging.info(
-            glob_local.INFO_00_133.replace("{file_name}", str(file_path)),
-        )
+        # Use StringIO to convert the string data into a file-like object
+        csv_buffer = StringIO(csv_data)
+
+        # Define the desired columns without trailing comma
+        desired_columns = ["cca3", "name.common", "latlng"]
+
+        # Read the CSV data into a pandas DataFrame, selecting only desired columns
+        dataframe = pd.read_csv(csv_buffer, usecols=desired_columns)
 
     except requests.RequestException as e:
         logging.fatal(glob_local.FATAL_00_972.replace("{error}", str(e)))
         sys.exit(1)
 
-    _load_country_data(file_path)
+    _load_country_data(dataframe)
 
     # ------------------------------------------------------------------
     # Load the state data.

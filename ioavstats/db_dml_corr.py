@@ -19,8 +19,6 @@ from psycopg import connection, cursor
 from ioavstats import glob_local
 from ioavstats.utils import prepare_latitude, prepare_longitude
 
-# pylint: disable=too-many-lines
-
 # -----------------------------------------------------------------------------
 # Global variables.
 # -----------------------------------------------------------------------------
@@ -67,33 +65,44 @@ TERMINAL_AREA_DISTANCE_NMI: float = io_settings.settings.terminal_area_distance_
 VALUE: str = ""
 
 
-# ------------------------------------------------------------------
-# Check the corrected value column.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _check_corrected_value() -> bool:
-    if COLUMN_NAME == "io_latitude":
-        try:
+    """Check if the corrected value is valid."""
+    # Check if the corrected value is valid
+    try:
+        if COLUMN_NAME == "io_latitude":
+            # Check if the value is a valid latitude
             lat_lon_parser.parse(prepare_latitude(VALUE))
 
-            return True  # noqa: TRY300
-        except ValueError:
-            _error_msg(glob_local.ERROR_00_920)
-
-    if COLUMN_NAME == "io_longitude":
-        try:
+            return True
+        if COLUMN_NAME == "io_longitude":
+            # Check if the value is a valid longitude
             lat_lon_parser.parse(prepare_longitude(VALUE))
 
-            return True  # noqa: TRY300
-        except ValueError:
-            _error_msg(glob_local.ERROR_00_921)
+            return True
+    except ValueError:
+        # ERROR.00.920 The value is not a valid latitude or longitude
+        _error_msg(glob_local.ERROR_00_920)
 
     return False
 
 
-# ------------------------------------------------------------------
-# Check the existence of an event with the given identification.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _check_events_ev_id(cur_pg: cursor) -> bool:
+    """Check if the ev_id is present in database table events.
+
+    Args:
+        cur_pg: The PostgreSQL database cursor.
+
+    Returns:
+        bool: True if the ev_id is present in the database table events.
+
+    """
+    # INFO.00.067 Checking if ev_id is present in database table events
+    io_utils.progress_msg(glob_local.INFO_00_067)
+
     cur_pg.execute(
         f"""
     SELECT *
@@ -192,7 +201,7 @@ def _delete_missing_aircraft(
 
     rows_tbd = cur_pg_2.fetchall()
 
-    # pylint: disable=R0801
+
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -205,7 +214,6 @@ def _delete_missing_aircraft(
         ev_id = row_tbd[COLUMN_EV_ID]
         aircraft_key = row_tbd[COLUMN_AIRCRAFT_KEY]
 
-        # pylint: disable=line-too-long
         cur_pg.execute(
             f"""
         DELETE FROM {table_name}
@@ -236,7 +244,7 @@ def _delete_missing_aircraft(
 # Create an error message.
 # ------------------------------------------------------------------
 def _error_msg(msg: str) -> None:
-    global COUNT_ERROR  # pylint: disable=global-statement
+    global COUNT_ERROR
 
     print(f"Row #{COUNT_SELECT + 1:4}: {ROW}")  # noqa: T201
     print(f"has error: {msg}")  # noqa: T201
@@ -247,15 +255,13 @@ def _error_msg(msg: str) -> None:
 # ------------------------------------------------------------------
 # Process correction request for database table events.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-return-statements
 def _process_events(
     cur_pg: cursor,
 ) -> None:
-    global COLUMN_NAME  # pylint: disable=global-statement
-    global VALUE  # pylint: disable=global-statement
-    global EV_ID  # pylint: disable=global-statement
+    global COLUMN_NAME
+    global VALUE
+    global EV_ID
 
-    # pylint: disable=line-too-long
     COLUMN_NAME = str(extract_column_value(ROW, COLUMN_COLUMN_NAME)).lower() if str(extract_column_value(ROW, COLUMN_COLUMN_NAME)) else None  # type: ignore
     if not COLUMN_NAME:
         # ERROR.00.930 Excel column '{column_name}' must not be empty
@@ -344,7 +350,7 @@ def _sql_query_io_airports(conn_pg: connection) -> list[tuple[str, float, float]
 # Update the database table row.
 # ------------------------------------------------------------------
 def _upd_table_events_row(cur_pg: cursor) -> None:
-    global COUNT_UPDATE  # pylint: disable=global-statement
+    global COUNT_UPDATE
 
     if VALUE == "null":
         cur_pg.execute(
@@ -380,7 +386,7 @@ def _upd_table_events_row(cur_pg: cursor) -> None:
 # ------------------------------------------------------------------
 # Update latitude and longitude.
 # ------------------------------------------------------------------
-def _upd_table_events_row_io_lat_lng(  # pylint: disable=too-many-arguments
+def _upd_table_events_row_io_lat_lng(
     ev_id: str,
     io_dec_lat_lng_actions: str,
     io_dec_latitude: float | None,
@@ -388,7 +394,6 @@ def _upd_table_events_row_io_lat_lng(  # pylint: disable=too-many-arguments
     io_latlong_acq: str,
     cur_pg: cursor,
 ) -> int:
-    # pylint: disable=line-too-long
     cur_pg.execute(
         """
     UPDATE events SET
@@ -413,14 +418,13 @@ def _upd_table_events_row_io_lat_lng(  # pylint: disable=too-many-arguments
 # ------------------------------------------------------------------
 # Update next airport data.
 # ------------------------------------------------------------------
-def _upd_table_events_row_next_airport(  # pylint: disable=too-many-arguments
+def _upd_table_events_row_next_airport(
     ev_id: str,
     nearest_airport_distance: float,
     nearest_airport_global_id: str,
     terminal_areas: list[tuple[float, str]],
     cur_pg: cursor,
 ) -> int:
-    # pylint: disable=line-too-long
     cur_pg.execute(
         """
     UPDATE events SET
@@ -443,9 +447,6 @@ def _upd_table_events_row_next_airport(  # pylint: disable=too-many-arguments
 # ------------------------------------------------------------------
 # Cleansing PostgreSQL data.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def cleansing_postgres_data() -> None:
     """Cleansing PostgreSQL data."""
     logging.debug(io_glob.LOGGER_START)
@@ -494,9 +495,6 @@ def cleansing_postgres_data() -> None:
 # ------------------------------------------------------------------
 # Correct decimal latitude and longitude.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def correct_dec_lat_lng() -> None:
     """Correct decimal latitude and longitude."""
     logging.debug(io_glob.LOGGER_START)
@@ -539,7 +537,6 @@ def correct_dec_lat_lng() -> None:
 
     conn_pg_2.autocommit = False
 
-    # pylint: disable=line-too-long
     cur_pg_2.execute(
         """
     SELECT *
@@ -787,22 +784,21 @@ def find_nearest_airports() -> None:
 
     airports = _sql_query_io_airports(conn_pg_2)
 
-    # pylint: disable=line-too-long
     cur_pg_2.execute(
         """
-    SELECT ev_id,
-           COALESCE(io_dec_latitude,  e.dec_latitude)  dec_latitude,
-           COALESCE(io_dec_longitude, e.dec_longitude) dec_longitude
-      FROM events e LEFT OUTER JOIN io_states i
-                    ON (e.ev_state   = i.state
-                    AND e.ev_country = i.country)
-     WHERE COALESCE(io_dec_latitude,  e.dec_latitude)  IS NOT NULL
-       AND COALESCE(io_dec_longitude, e.dec_longitude) IS NOT NULL
-       AND i.state IS NOT NULL
-       AND ev_country = 'USA'
-     ORDER BY COALESCE(io_dec_latitude,  e.dec_latitude),
-              COALESCE(io_dec_longitude, e.dec_longitude)
-        """,
+        SELECT ev_id,
+               COALESCE(io_dec_latitude,  e.dec_latitude)  dec_latitude,
+               COALESCE(io_dec_longitude, e.dec_longitude) dec_longitude
+          FROM events e LEFT OUTER JOIN io_states i
+                        ON (e.ev_state   = i.state
+                        AND e.ev_country = i.country)
+         WHERE COALESCE(io_dec_latitude,  e.dec_latitude)  IS NOT NULL
+           AND COALESCE(io_dec_longitude, e.dec_longitude) IS NOT NULL
+           AND i.state IS NOT NULL
+           AND ev_country = 'USA'
+         ORDER BY COALESCE(io_dec_latitude,  e.dec_latitude),
+                  COALESCE(io_dec_longitude, e.dec_longitude)
+            """,
     )
 
     prev_ev_dec_latitude = -999999.9
@@ -920,9 +916,9 @@ def load_correction_data(filename: str) -> None:
             The MS Excel file.
 
     """
-    global COUNT_SELECT  # pylint: disable=global-statement
-    global ROW  # pylint: disable=global-statement
-    global TABLE_NAME  # pylint: disable=global-statement
+    global COUNT_SELECT
+    global ROW
+    global TABLE_NAME
 
     logging.debug(io_glob.LOGGER_START)
 
@@ -953,7 +949,7 @@ def load_correction_data(filename: str) -> None:
         # Load the correction data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, ROW in dataframe.iterrows():
 
             COUNT_SELECT += 1
@@ -1009,7 +1005,7 @@ def load_correction_data(filename: str) -> None:
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", corr_file).replace(
                 "{error}",
@@ -1021,9 +1017,6 @@ def load_correction_data(filename: str) -> None:
 # ------------------------------------------------------------------
 # Verify selected NTSB data.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def verify_ntsb_data() -> None:
     """Verify selected NTSB data."""
     logging.debug(io_glob.LOGGER_START)
@@ -1103,8 +1096,7 @@ def verify_ntsb_data() -> None:
     """,
     )
 
-    # pylint: disable=R0801
-    # pylint: disable=too-many-nested-blocks
+
     for row_pg in cur_pg_2.fetchall():
         count_select += 1
 

@@ -10,13 +10,13 @@ import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
 
-import pyodbc  # pylint: disable=import-error # type: ignore
+import pyodbc  # type: ignore
 import requests
 from iocommon import db_utils, io_glob, io_settings, io_utils
 from psycopg import connection, cursor
 from psycopg.errors import (
-    ForeignKeyViolation,  # pylint: disable=no-name-in-module
-    UniqueViolation,  # pylint: disable=no-name-in-module
+    ForeignKeyViolation,
+    UniqueViolation,
 )
 
 from ioavstats import glob_local, utils_msaccess
@@ -38,7 +38,6 @@ IO_LAST_SEEN = datetime.now(UTC)
 # ------------------------------------------------------------------
 # Check for DDL changes.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-lines
 def _check_ddl_changes(msaccess: str) -> None:
     """Check for DDL changes."""
     logging.debug(io_glob.LOGGER_START)
@@ -162,7 +161,6 @@ def _compare_ddl(msaccess: str) -> None:
         io_settings.settings.razorsql_reference_file,
     )
 
-    # pylint: disable=consider-using-with
     reference_file = Path(reference_filename).open(  # noqa: SIM115
         encoding=io_glob.FILE_ENCODING_DEFAULT,
     )
@@ -174,7 +172,6 @@ def _compare_ddl(msaccess: str) -> None:
         (msaccess + "." + glob_local.FILE_EXTENSION_SQL),
     )
 
-    # pylint: disable=consider-using-with
     msaccess_file = Path(msaccess_filename).open(  # noqa: SIM115
         encoding=io_glob.FILE_ENCODING_DEFAULT,
     )
@@ -293,9 +290,6 @@ def _delete_ntsb_data(
 # ------------------------------------------------------------------
 # Load data from MS Access to the PostgreSQL database.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def load_ntsb_msaccess_data(msaccess: str) -> None:
     """Load data from MS Access to the PostgreSQL database.
 
@@ -310,7 +304,6 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
     # Start processing.
     # ------------------------------------------------------------------
 
-    # pylint: disable=R0801
     filename = Path(
         io_settings.settings.download_work_dir,
         (msaccess + "." + glob_local.FILE_EXTENSION_MDB),
@@ -524,7 +517,6 @@ def load_ntsb_msaccess_data(msaccess: str) -> None:
 
     conn_pg.autocommit = True
 
-    # pylint: disable=R0801
     db_utils.upd_io_processed_data(
         cur_pg=cur_pg,
         table_name="events",
@@ -566,7 +558,6 @@ def _load_table_aircraft(
 
     rows_mdb = cur_mdb.fetchall()
 
-    # pylint: disable=R0801
     for row_mdb in rows_mdb:
         count_select += 1
 
@@ -577,7 +568,6 @@ def _load_table_aircraft(
             )
 
         try:
-            # pylint: disable=line-too-long
             cur_pg.execute(
                 """
             INSERT INTO aircraft (
@@ -1001,7 +991,6 @@ def _load_table_dt_aircraft(
             )
             count_insert += 1
         except UniqueViolation:
-            # pylint: disable=line-too-long
             cur_pg.execute(
                 """
             UPDATE dt_aircraft
@@ -1215,7 +1204,6 @@ def _load_table_dt_flight_crew(
             )
             count_insert += 1
         except UniqueViolation:
-            # pylint: disable=line-too-long
             cur_pg.execute(
                 """
             UPDATE dt_flight_crew
@@ -1298,7 +1286,6 @@ def _load_table_engines(
             )
 
         try:
-            # pylint: disable=line-too-long
             cur_pg.execute(
                 """
             INSERT INTO engines (
@@ -1403,7 +1390,6 @@ def _load_table_engines(
 # ------------------------------------------------------------------
 # Load the data from database table events.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
 def _load_table_events(
     msaccess: str,
     table_name: str,
@@ -1438,7 +1424,6 @@ def _load_table_events(
 
         try:
             if msaccess == glob_local.MSACCESS_PRE2008:
-                # pylint: disable=line-too-long
                 cur_pg.execute(
                     """
                 INSERT INTO events (
@@ -1561,7 +1546,6 @@ def _load_table_events(
                     ),
                 )
             else:
-                # pylint: disable=line-too-long
                 cur_pg.execute(
                     """
                 INSERT INTO events (
@@ -1692,7 +1676,7 @@ def _load_table_events(
                 )
         except UniqueViolation:
             if msaccess == glob_local.MSACCESS_PRE2008:
-                # pylint: disable=line-too-long
+
                 cur_pg.execute(
                     """
                 UPDATE events
@@ -1929,7 +1913,7 @@ def _load_table_events(
                     ),
                 )
             else:
-                # pylint: disable=line-too-long
+
                 cur_pg.execute(
                     """
                 UPDATE events
@@ -2229,7 +2213,7 @@ def _load_table_events_sequence(
             )
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO events_sequence (
@@ -2344,7 +2328,7 @@ def _load_table_findings(
             )
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO findings (
@@ -2507,7 +2491,7 @@ def _load_table_flight_crew(
             )
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO flight_crew (
@@ -2700,7 +2684,7 @@ def _load_table_flight_time(
             )
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO flight_time (
@@ -2806,7 +2790,7 @@ def _load_table_injury(
             )
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO injury (
@@ -2917,7 +2901,6 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
 
     conn_pg_2.autocommit = False
 
-    # pylint: disable=line-too-long
     cur_pg_2.execute(
         f"""
     SELECT country, state, city, sum(dec_latitude)/count(*) dec_latitude, sum(dec_longitude)/count(*) dec_longitude
@@ -3023,7 +3006,6 @@ def _load_table_narratives(
 
         try:
             cur_pg.execute(
-                # pylint: disable=line-too-long
                 """
             INSERT INTO narratives (
                    ev_id,aircraft_key,narr_accp,narr_accf,narr_cause,narr_inc,lchg_date,lchg_userid,io_last_seen_ntsb
@@ -3044,7 +3026,7 @@ def _load_table_narratives(
             )
             count_insert += 1
         except UniqueViolation:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             UPDATE narratives
@@ -3154,7 +3136,7 @@ def _load_table_ntsb_admin(
             )
             count_insert += 1
         except UniqueViolation:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             UPDATE ntsb_admin
@@ -3252,7 +3234,7 @@ def _load_table_occurrences(
             continue
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO occurrences (
@@ -3373,7 +3355,7 @@ def _load_table_seq_of_events(
             continue
 
         try:
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO seq_of_events (
@@ -3499,18 +3481,27 @@ def _sql_query_us_states(conn_pg: connection) -> list[str]:
         return sorted(data)
 
 
-# ------------------------------------------------------------------
-# Download an MS Access database file.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
+# -----------------------------------------------------------------------------
+
 def download_ntsb_msaccess_file(msaccess: str) -> None:
-    """Download an MS Access database file.
+    """Download an MS Access database file from the NTSB website.
 
     Args:
         msaccess (str):
             The MS Access database file without file extension.
+
+    Notes:
+        - The function attempts to download the file from the NTSB website.
+        - The function checks the status code of the response and checks if the
+          file has been downloaded successfully. If not, it terminates with an
+          error message.
+        - The function also checks if the file is a valid zip file and if it can
+          be unpacked. If the file is not a valid zip file or if it cannot be
+          unpacked, it terminates with an error message.
+        - The function prints a message with the filename and the number of
+          chunks that have been downloaded.
+        - The function also prints a message with the filename and the number
+          of chunks that have been downloaded.
 
     """
     logging.debug(io_glob.LOGGER_START)
@@ -3565,7 +3556,7 @@ def download_ntsb_msaccess_file(msaccess: str) -> None:
         )
 
         try:
-            zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
+            zipped_files = zipfile.ZipFile(
                 filename_zip,
             )
 

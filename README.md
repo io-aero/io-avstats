@@ -69,7 +69,7 @@ docs                      docs: Create the user documentation.
 everything                everything: Do everything pre-checkin
 final                     final: Format, lint and test the code and create the documentation.
 format                    format: Format the code with Black and docformatter.
-lint                      lint: Lint the code with ruff, Bandit, Vulture, Pylint and Mypy.
+lint                      lint: Lint the code with ruff, Bandit, Vulture, and Mypy.
 mypy-stubgen              Autogenerate stub files.
 pre-push                  pre-push: Preparatory work for the pushing process.
 pytest-ci                 Run all tests with pytest after test tool installation.

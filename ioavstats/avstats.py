@@ -48,7 +48,7 @@ def check_arg_msaccess(args: argparse.Namespace) -> None:
     required. Otherwise, it is not allowed.
 
     """
-    global ARG_MSACCESS  # pylint: disable=global-statement
+    global ARG_MSACCESS
 
     if ARG_TASK in [
         glob_local.ARG_TASK_D_N_A,
@@ -119,7 +119,7 @@ def check_arg_msexcel(args: argparse.Namespace) -> None:
         args (argparse.Namespace): Command line arguments.
 
     """
-    global ARG_MSEXCEL  # pylint: disable=global-statement
+    global ARG_MSEXCEL
 
     # Check if the argument is required but not provided
     if ARG_TASK in [glob_local.ARG_TASK_L_C_D]:
@@ -174,7 +174,7 @@ def check_arg_task(args: argparse.Namespace) -> None:
         args (argparse.Namespace): Command line arguments.
 
     """
-    global ARG_TASK  # pylint: disable=global-statement
+    global ARG_TASK
 
     ARG_TASK = args.task.lower()
 
@@ -364,35 +364,35 @@ def generate_sql() -> None:
 def get_args() -> None:
     """Load the command line arguments into the memory.
 
-    This function loads the command line arguments using the
-    argparse module and checks the arguments for validity.
+    This function loads the command line arguments using the `argparse` module
+    and checks the arguments for validity.
 
     The available command line arguments are:
 
-    -e, --msexcel: the MS Excel file
-    -m, --msaccess: the Microsoft Access database file:
-        avall (Data from January 1, 2008 to today)
-        pre2008 (Data from January 1, 1982 to December 31, 2007)
-        upDDMON (New additions and updates until DD day in the month MON)
-    -t, --task: the task to execute:
-        a_o_c (Load aviation occurrence categories into PostgreSQL)
-        c_d_s (Create the PostgreSQL database schema)
-        c_l_l (Correct decimal US latitudes and longitudes)
-        c_p_d (Cleansing PostgreSQL data)
-        d_n_a (Download a NTSB MS Access database file)
-        f_n_a (Find the nearest airports)
-        generate (Generate SQL statements)
-        l_a_p (Load airport data into PostgreSQL)
-        l_c_d (Load data from a correction file into PostgreSQL)
-        l_c_s (Load country and state data into PostgreSQL)
-        l_n_a (Load NTSB MS Access database data into PostgreSQL)
-        l_s_d (Load simplemaps data into PostgreSQL)
-        l_s_e (Load sequence of events data into PostgreSQL)
-        l_z_d (Load ZIP Code Database data into PostgreSQL)
-        r_d_s (Update the PostgreSQL database schema)
-        u_d_s (Refresh the PostgreSQL database schema)
-        version (Show the current version of IO-AVSTATS)
-        v_n_d (Verify selected NTSB data)
+    - **-e**, **--msexcel**: The MS Excel file.
+    - **-m**, **--msaccess**: The Microsoft Access database file:
+        - **avall**: Data from January 1, 2008 to today.
+        - **pre2008**: Data from January 1, 1982 to December 31, 2007.
+        - **upDDMON**: New additions and updates until DD day in the month MON.
+    - **-t**, **--task**: The task to execute:
+        - **a_o_c**: Load aviation occurrence categories into PostgreSQL.
+        - **c_d_s**: Create the PostgreSQL database schema.
+        - **c_l_l**: Correct decimal US latitudes and longitudes.
+        - **c_p_d**: Cleansing PostgreSQL data.
+        - **d_n_a**: Download a NTSB MS Access database file.
+        - **f_n_a**: Find the nearest airports.
+        - **generate**: Generate SQL statements.
+        - **l_a_p**: Load airport data into PostgreSQL.
+        - **l_c_d**: Load data from a correction file into PostgreSQL.
+        - **l_c_s**: Load country and state data into PostgreSQL.
+        - **l_n_a**: Load NTSB MS Access database data into PostgreSQL.
+        - **l_s_d**: Load simplemaps data into PostgreSQL.
+        - **l_s_e**: Load sequence of events data into PostgreSQL.
+        - **l_z_d**: Load ZIP Code Database data into PostgreSQL.
+        - **r_d_s**: Update the PostgreSQL database schema.
+        - **u_d_s**: Refresh the PostgreSQL database schema.
+        - **version**: Show the current version of IO-AVSTATS.
+        - **v_n_d**: Verify selected NTSB data.
 
     """
     logging.debug(io_glob.LOGGER_START)
@@ -903,7 +903,6 @@ def version() -> str:
         - This function returns the version number of the IO-AVSTATS application.
 
     Returns:
-    -------
         str:
             The version number of the IO-AVSTATS application
 

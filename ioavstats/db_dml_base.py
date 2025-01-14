@@ -17,8 +17,8 @@ from iocommon import db_utils, io_settings, io_utils
 from iocommon.io_utils import extract_column_value, setup_retry_session
 from psycopg import connection, cursor, sql
 from psycopg.errors import (
-    ForeignKeyViolation,  # pylint: disable=no-name-in-module
-    UniqueViolation,  # pylint: disable=no-name-in-module
+    ForeignKeyViolation,
+    UniqueViolation,
 )
 from traittypes import DataFrame
 
@@ -170,7 +170,7 @@ def _download_file(
         status_forcelist=[500, 502, 503, 504],
     )
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",  # pylint: disable=line-too-long
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
     }
     try:
         response = session.get(url, headers=headers, timeout=timeout)
@@ -186,10 +186,6 @@ def _download_file(
 # ------------------------------------------------------------------
 # Load airport data from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-lines
-# pylint: disable=too-many-statements
 def _load_airport_data() -> None:
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -263,7 +259,6 @@ def _load_airport_data() -> None:
         # Load the airport data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
         for _index, row in dataframe.iterrows():
             count_select += 1
 
@@ -453,7 +448,7 @@ def _load_airport_data() -> None:
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -468,9 +463,6 @@ def _load_airport_data() -> None:
 # ------------------------------------------------------------------
 # Load aviation occurrence categories from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def _load_aviation_occurrence_categories() -> None:
     # ------------------------------------------------------------------
     # Start processing.
@@ -525,7 +517,6 @@ def _load_aviation_occurrence_categories() -> None:
         # Load the aviation occurrence categories.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -587,7 +578,7 @@ def _load_aviation_occurrence_categories() -> None:
 
         count_select = 0
 
-        # pylint: disable=line-too-long
+
         cur_pg.execute(
             """
         SELECT cictt_code
@@ -660,7 +651,7 @@ def _load_aviation_occurrence_categories() -> None:
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -899,7 +890,6 @@ def _load_io_states_primary_keys(cur_pg: cursor) -> set[tuple[str, str]]:
 # ------------------------------------------------------------------
 # Load NPIAS data from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=inconsistent-return-statements
 def _load_npias_data(us_states: list[str]) -> list[str]:
     # ------------------------------------------------------------------
     # Start processing NPIAS data.
@@ -933,7 +923,6 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
         # Load the NPIAS data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -969,7 +958,7 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -984,9 +973,6 @@ def _load_npias_data(us_states: list[str]) -> list[str]:
 # ------------------------------------------------------------------
 # Load runway data from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
 def _load_runway_data() -> None:
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
@@ -1042,7 +1028,7 @@ def _load_runway_data() -> None:
         # Load the runway data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             airport_id = extract_column_value(row, COLUMN_AIRPORT_ID)
@@ -1081,7 +1067,7 @@ def _load_runway_data() -> None:
         count_select = 0
         count_update = 0
 
-        # pylint: disable=R0801
+
         for airport_id, (comp_code, length) in runway_data.items():
             count_select += 1
 
@@ -1154,7 +1140,7 @@ def _load_runway_data() -> None:
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -1169,8 +1155,6 @@ def _load_runway_data() -> None:
 # ------------------------------------------------------------------
 # Load sequence of events sequence data from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-statements
 def _load_sequence_of_events() -> None:
     # ------------------------------------------------------------------
     # Start processing.
@@ -1223,7 +1207,7 @@ def _load_sequence_of_events() -> None:
 
         cictt_codes = _sql_query_cictt_codes(conn_pg)
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -1291,7 +1275,7 @@ def _load_sequence_of_events() -> None:
 
         count_select = 0
 
-        # pylint: disable=line-too-long
+
         cur_pg.execute(
             """
         SELECT soe_no
@@ -1372,7 +1356,7 @@ def _load_sequence_of_events() -> None:
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -1384,7 +1368,6 @@ def _load_sequence_of_events() -> None:
 # ------------------------------------------------------------------
 # Load city data from a US city file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-locals
 def _load_simplemaps_data_cities_from_us_cities(
     conn_pg: connection,
     cur_pg: cursor,
@@ -1427,7 +1410,7 @@ def _load_simplemaps_data_cities_from_us_cities(
         # Load the US city data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -1443,7 +1426,7 @@ def _load_simplemaps_data_cities_from_us_cities(
             lng = extract_column_value(row, COLUMN_LNG, float)
             state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO io_lat_lng AS ill (
@@ -1528,7 +1511,7 @@ def _load_simplemaps_data_cities_from_us_cities(
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -1540,8 +1523,7 @@ def _load_simplemaps_data_cities_from_us_cities(
 # ------------------------------------------------------------------
 # Load zip data from a US city file.
 # ------------------------------------------------------------------
-# pylint: disable=R0801
-# pylint: disable=too-many-locals
+
 def _load_simplemaps_data_zips_from_us_cities(
     conn_pg: connection,
     cur_pg: cursor,
@@ -1584,7 +1566,7 @@ def _load_simplemaps_data_zips_from_us_cities(
         # Load the US city data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             city = str(extract_column_value(row, COLUMN_CITY)).upper().rstrip()
@@ -1601,7 +1583,7 @@ def _load_simplemaps_data_zips_from_us_cities(
                         f"Number of rows so far read : {count_select!s:>8}",
                     )
 
-                # pylint: disable=line-too-long
+
                 cur_pg.execute(
                     """
                 INSERT INTO io_lat_lng (
@@ -1665,7 +1647,7 @@ def _load_simplemaps_data_zips_from_us_cities(
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -1677,7 +1659,6 @@ def _load_simplemaps_data_zips_from_us_cities(
 # ------------------------------------------------------------------
 # Load zip data from a US zip code file.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-locals
 def _load_simplemaps_data_zips_from_us_zips(
     conn_pg: connection,
     cur_pg: cursor,
@@ -1718,7 +1699,7 @@ def _load_simplemaps_data_zips_from_us_zips(
         # Load the US zip data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -1735,7 +1716,7 @@ def _load_simplemaps_data_zips_from_us_zips(
             lng = extract_column_value(row, COLUMN_LNG, float)
             state_id = str(extract_column_value(row, COLUMN_STATE_ID)).upper().rstrip()
 
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             INSERT INTO io_lat_lng AS ill (
@@ -1827,7 +1808,7 @@ def _load_simplemaps_data_zips_from_us_zips(
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -1909,7 +1890,7 @@ def _load_state_data(file_path: Path) -> None:
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", str(file_path)).replace(
                 "{error}",
@@ -2081,7 +2062,7 @@ def _load_table_io_lat_lng_average(conn_pg: connection, cur_pg: cursor) -> None:
 
     conn_pg_2, cur_pg_2 = db_utils.get_postgres_cursor()
 
-    # pylint: disable=line-too-long
+
     cur_pg_2.execute(
         sql.SQL(
             f"""
@@ -2249,7 +2230,7 @@ def _load_zip_codes_org_data_zips(
         # Load the US city data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -2285,7 +2266,7 @@ def _load_zip_codes_org_data_zips(
 
             for city in primary_city:
                 if city and city.rstrip():
-                    # pylint: disable=line-too-long
+
                     cur_pg.execute(
                         """
                     INSERT INTO io_lat_lng AS ill (
@@ -2365,7 +2346,7 @@ def _load_zip_codes_org_data_zips(
             ),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace("{file_name}", filename).replace(
                 "{error}",
@@ -2427,14 +2408,21 @@ def _sql_query_us_state_names(conn_pg: connection) -> list[str]:
         return sorted(data)
 
 
-# ------------------------------------------------------------------
-# Download a US zip code file.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
+# -----------------------------------------------------------------------------
+
 def download_us_cities_file() -> None:
-    """Download a US zip code file."""
+    """Download the US cities file from the simplemaps website.
+
+    The function downloads the US cities file from the simplemaps website and stores it in the
+    download work directory. The filename is specified in the settings.
+
+    The function checks the status code of the response and checks if the file has been downloaded
+    successfully. If not, it terminates with an error message.
+
+    The function also checks if the file is a valid zip file and if it can be unpacked. If the file
+    is not a valid zip file or if it cannot be unpacked, it terminates with an error message.
+
+    """
     url = io_settings.settings.download_url_simplemaps_us_cities
 
     try:
@@ -2492,7 +2480,7 @@ def download_us_cities_file() -> None:
         )
 
         try:
-            zipped_files = zipfile.ZipFile(  # pylint: disable=consider-using-with
+            zipped_files = zipfile.ZipFile(
                 filename_zip,
             )
 
@@ -2530,14 +2518,21 @@ def download_us_cities_file() -> None:
         )
 
 
-# ------------------------------------------------------------------
-# Download the ZIP Code Database file.
-# ------------------------------------------------------------------
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
+# -----------------------------------------------------------------------------
+
 def download_zip_code_db_file() -> None:
-    """Download the ZIP Code Database file."""
+    """Download the ZIP Code Database file.
+
+    The function downloads the ZIP Code Database file from the Zip Codes.org website and stores it
+    in the download work directory. The filename is specified in the settings.
+
+    The function checks the status code of the response and checks if the file has been downloaded
+    successfully. If not, it terminates with an error message.
+
+    If the file has been downloaded successfully, it prints a message with the filename and the
+    number of chunks that have been downloaded.
+
+    """
     url = io_settings.settings.download_url_zip_codes_org
 
     try:
@@ -2560,7 +2555,10 @@ def download_zip_code_db_file() -> None:
         # INFO.00.058 The connection to the Zip Code Database file '{filename}'
         # on the Zip Codes.org download page was successfully established
         io_utils.progress_msg(
-            glob_local.INFO_00_058.replace("{filename}", DOWNLOAD_FILE_ZIP_CODES_ORG),
+            glob_local.INFO_00_058.replace(
+                "{filename}",
+                DOWNLOAD_FILE_ZIP_CODES_ORG,
+            ),
         )
 
         if not Path(io_settings.settings.download_work_dir).is_dir():
@@ -2596,7 +2594,9 @@ def download_zip_code_db_file() -> None:
 
     except ConnectionError:
         # ERROR.00.905 Connection problem with url={url}
-        io_utils.terminate_fatal(glob_local.ERROR_00_905.replace("{url}", url))
+        io_utils.terminate_fatal(
+            glob_local.ERROR_00_905.replace("{url}", url),
+        )
     except TimeoutError:
         # ERROR.00.909 Timeout after '{timeout}' seconds with url='{url}
         io_utils.terminate_fatal(
@@ -2607,33 +2607,48 @@ def download_zip_code_db_file() -> None:
         )
 
 
-# ------------------------------------------------------------------
-# Load airports.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_airport_data() -> None:
-    """Load airports."""
+    """l_a_p: Load airport data into PostgreSQL.
+
+    This function loads the airport data into the PostgreSQL database.
+    The airport data is read from a CSV file and stored into the tables
+    'io_airports' and 'io_runways'.
+    """
     _load_airport_data()
 
     _load_runway_data()
 
 
-# ------------------------------------------------------------------
-# Load aviation occurrence categories.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_aviation_occurrence_categories() -> None:
-    """Load aviation occurrence categories."""
+    """Load aviation occurrence categories from an Excel file.
+
+    The categories are part of the ICAO common taxonomy, which is used to categorize events. The
+    categories are used to link events to their corresponding CICTT codes.
+
+    The function loads the categories from an Excel file into the PostgreSQL database. The Excel
+    file is expected to be in the same directory as this module.
+
+    """
     _load_aviation_occurrence_categories()
 
 
-# ------------------------------------------------------------------
-# Load country and state data.
-# ------------------------------------------------------------------
-def load_country_state_data() -> None:
-    """Load country and state data."""
-    # ------------------------------------------------------------------
-    # Load the country data.
-    # ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
+def load_country_state_data() -> None:
+    """Load country and state data from various sources and save it into the PostgreSQL database.
+
+    The function first loads the country data from a CSV file into a pandas DataFrame. Then, it
+    loads the state data from an Excel file into another pandas DataFrame. The data is then saved
+    into the 'io_countries' and 'io_states' tables in the PostgreSQL database.
+
+    :return: None
+
+    """
+    # Load the country data.
     dataframe: DataFrame
 
     try:
@@ -2684,19 +2699,47 @@ def load_country_state_data() -> None:
     _load_state_data(file_path)
 
 
-# ------------------------------------------------------------------
-# Load sequence of events sequence data.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_sequence_of_events() -> None:
-    """Load sequence of events sequence data."""
+    """Load sequence of events sequence data.
+
+    This function loads sequence of events sequence data from a CSV file into the PostgreSQL
+    database. The data is loaded into the 'seq_of_events' table.
+
+    The function starts by deleting any existing data from the table and then loads the data from
+    the CSV file.
+
+    The function then finalizes the processing by closing the database connection.
+
+    """
     _load_sequence_of_events()
 
 
-# ------------------------------------------------------------------
-# Load simplemaps data.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_simplemaps_data() -> None:
-    """Load simplemaps data."""
+    """Load simplemaps data.
+
+    This function loads data from simplemaps into the PostgreSQL database. The
+    data is loaded into the 'io_lat_lng' table.
+
+    The data loaded is from two sources:
+
+    1. A US city file
+    2. A US zip code file
+
+    The data from the two sources is loaded into two separate tables and then
+    averaged into a third table.
+
+    The function starts by deleting any existing data from the two sources
+    and then loads the data from the two sources. The data is then averaged
+    and inserted into the third table.
+
+    The function then finalizes the processing by closing the database
+    connection.
+
+    """
     # ------------------------------------------------------------------
     # Start processing.
     # ------------------------------------------------------------------
@@ -2768,9 +2811,13 @@ def load_simplemaps_data() -> None:
     conn_pg.close()
 
 
-# ------------------------------------------------------------------
-# Load ZIP Code Database data.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def load_zip_codes_org_data() -> None:
-    """Load ZIP Code Database data."""
+    """Load ZIP Code Database data.
+
+    This function loads data from the ZIP Code Database file into the PostgreSQL database. The data
+    is loaded into the 'io_lat_lng' table.
+
+    """
     _load_zip_codes_org_data()

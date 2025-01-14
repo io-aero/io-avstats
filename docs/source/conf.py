@@ -1,12 +1,16 @@
+#!/usr/bin/env python3
+
 """Configuration file for the Sphinx documentation builder."""
 
 import sys
 import warnings
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import tomli
 from docutils.nodes import inline  # type: ignore
+from sphinx.application import Sphinx
 
 EXCLUDE_FROM_PDF = [
     "2023_*.md",
@@ -25,12 +29,20 @@ warnings.filterwarnings(
     category=DeprecationWarning,
 )
 
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="visions.utils.monkeypatches.imghdr_patch")
+
 warnings.filterwarnings(
     "ignore",
     message="missing ScriptRunContext!.*",
     category=UserWarning,
 )
 
+# Suppress specific warnings
+warnings.filterwarnings("ignore", message="No runtime found, using MemoryCacheStorageManager")
+warnings.filterwarnings("ignore", message="missing ScriptRunContext! This warning can be ignored when running in bare mode.")
+
+
+# -----------------------------------------------------------------------------
 
 def get_version_from_pyproject() -> str:
     """Retrieve the version from pyproject.toml if available.
@@ -44,20 +56,51 @@ def get_version_from_pyproject() -> str:
         if the file is not structured as expected, or if no version is specified.
 
     """
+    # Path to the pyproject.toml file
     pyproject_path = Path(__file__).resolve().parent.parent.parent / "pyproject.toml"
 
+    # Check if the file exists
     if not pyproject_path.exists():
         return "unknown"
 
     try:
+        # Attempt to open and parse the pyproject.toml file
         with pyproject_path.open("rb") as f:
             pyproject_data = tomli.load(f)
+
         # Retrieve the version if available, otherwise return "unknown"
         version_local: str | None = pyproject_data.get("project", {}).get("version")
         return version_local if version_local is not None else "unknown"  # noqa: TRY300
     except (tomli.TOMLDecodeError, OSError) as e:
+        # Print an error message if reading the file fails
         print(f"==========> Error reading pyproject.toml: {e}")  # noqa: T201
+        # If any error occurs while reading the file, return "unknown"
         return "unknown"
+
+
+# -----------------------------------------------------------------------------
+
+def skip_private_members(
+    _app: Sphinx,
+    _what: str,
+    name: str,
+    _obj: Any,  # noqa: ANN401
+    skip: bool,  # noqa: FBT001
+    _options: Any,  # noqa: ANN401
+) -> bool:
+    """Skip private members (starting with a single underscore).
+
+    This function is used as a callback to the autodoc-skip-member event. It allows special members
+    like __init__ to be included based on configuration.
+
+    """
+    # Skip members that start with a single underscore, but not special members
+    # starting with double underscore
+    if name.startswith("_") and not name.startswith("__"):
+        # Skip private members
+        return True
+    # Use default behavior
+    return skip
 
 
 # Debug: Print the current working directory and sys.path
@@ -72,9 +115,8 @@ print("==========>")  # noqa: T201
 
 # -- Project information -----------------------------------------------------
 
-# pylint: disable=invalid-name
 author = "IO-Aero Team"
-copyright = "2022 - 2024, IO-Aero"  # pylint: disable=redefined-builtin # noqa: A001
+copyright = "2022 - 2024, IO-Aero"  # noqa: A001
 github_url = f"https://github.com/io-aero/{REPOSITORY_NAME}"
 project = REPOSITORY_NAME.upper()
 
@@ -88,7 +130,6 @@ else:
     release = version.replace(".", "-")
 
 todays_date = datetime.now(tz=UTC)
-# pylint: enable=invalid-name
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -108,20 +149,30 @@ if "rinoh" in sys.argv:
     exclude_patterns.extend(EXCLUDE_FROM_PDF)
 
 extensions = [
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
-    "myst_parser",
 ]
 
 # Configuration for autodoc extension
 autodoc_default_options = {
-    "member-order": "bysource",
-    "special-members": "__init__",
-    "undoc-members": True,
-    "exclude-members": "__weakref__",
+    "members": True,  # Include all public members
+    "private-members": False,  # Exclude private members (starting with _)
+    "undoc-members": False,  # Exclude members without docstrings
+    "special-members": "__init__",  # Include the __init__ method specifically
+    "exclude-members": "__weakref__",  # Exclude specific members, such as __weakref__
+    "inherited-members": False,  # Exclude inherited members unless explicitly documented
+    "member-order": "alphabetical",  # Order members alphabetically
+    "show-inheritance": True,  # Show inheritance relationships in class documentation
 }
+
+# Separate setting for type hints
+autodoc_typehints = "description"  # Render type hints in the description
+
+# Mock imports that Sphinx should ignore
+autodoc_mock_imports = ["streamlit"]
 
 extlinks = {
     "repo": (f"https://github.com/io-aero/{MODULE_NAME}%s", "GitHub Repository"),
@@ -130,7 +181,6 @@ extlinks = {
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-# pylint: disable=invalid-name
 html_favicon = "img/IO-Aero_1_Favicon.ico"
 html_logo = "img/IO-Aero_1_Logo.png"
 html_show_sourcelink = False
@@ -141,7 +191,6 @@ html_theme_options = {
 
 # The master toctree document.
 master_doc = "index"
-# pylint: enable=invalid-name
 
 # -- Options for PDF output --------------------------------------------------
 rinoh_documents = [
@@ -162,8 +211,9 @@ source_suffix = {
 }
 
 
-class Desc_Sig_Space(inline):  # pylint: disable=invalid-name # noqa: N801
+# -----------------------------------------------------------------------------
 
+class Desc_Sig_Space(inline):  # noqa: N801
     """A custom inline node for managing space in document signatures.
 
     This class extends `docutils.nodes.inline` to provide specific handling
@@ -186,3 +236,20 @@ class Desc_Sig_Space(inline):  # pylint: disable=invalid-name # noqa: N801
         or custom processing within Sphinx documentation projects.
 
     """
+
+
+# -----------------------------------------------------------------------------
+
+def setup(app: Any) -> None:  # noqa: ANN401
+    """Connect the skip_private_members function to the autodoc-skip-member event.
+
+    This setup function is called when Sphinx initializes the extension. It
+    connects the skip_private_members function to the autodoc-skip-member event, which
+    allows the function to filter out TypedDict fields from the documentation.
+
+    Args:
+        app: The Sphinx application object.
+
+    """
+    # Connect the skip_private_members function to the autodoc-skip-member event
+    app.connect("autodoc-skip-member", skip_private_members)

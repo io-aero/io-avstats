@@ -1,6 +1,5 @@
 # noqa: N999
 
-# pylint: disable=invalid-name
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
@@ -25,14 +24,11 @@ if not credential_path.exists():
         credential_path,
     )
 
-# pylint: disable=line-too-long
 st.set_page_config(
     layout="wide",
-    # pylint: disable=line-too-long
     page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
     page_title="Aviation Events Statistics by IO-Aero",
 )
-# pylint: enable=line-too-long
 
 st.write("# Welcome to IO-AVSTATS!")
 

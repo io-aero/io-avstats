@@ -13,15 +13,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
 # -----------------------------------------------------------------------------
-# Global variables.
-# -----------------------------------------------------------------------------
 
-
-# ------------------------------------------------------------------
-# Determine the last processed update file.
-# ------------------------------------------------------------------
 def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
     """Determine the last processed update file.
+
+    This function executes a database query to determine the last update file
+    processed. It returns the file name and the date it was processed.
 
     Args:
         pg_conn (connection): Database connection.
@@ -30,10 +27,11 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
         tuple[str, str]: File name and processing date.
 
     """
+    # Determine the last processed file and date
     with pg_conn.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
         cur.execute(
             """
+            -- Determine the last processed file and date
             SELECT data_source,
                    MAX(TO_CHAR(COALESCE(last_processed, first_processed), 'DD.MM.YYYY'))
               FROM io_processed_data
@@ -45,14 +43,25 @@ def _sql_query_last_file_name(pg_conn: connection) -> tuple[str, str]:
         """,
         )
 
+        # Fetch and return the result
         return cur.fetchone()  # type: ignore
 
 
 # -----------------------------------------------------------------------------
-# Load the command line arguments into the memory.
-# -----------------------------------------------------------------------------
+
 def get_args() -> str:
-    """Load the command line arguments into the memory."""
+    """Load the command line arguments into the memory.
+
+    This function parses the command line arguments and determines the host
+    mode and the execution mode.
+
+    The host mode can be either 'Cloud' or 'Local'. The execution mode can be
+    either 'ltd' (limited demo version) or 'std' (full version).
+
+    Returns:
+        str: The host mode: 'Cloud' or 'Local'.
+
+    """
     parser = argparse.ArgumentParser(
         description="Streamlit Applications",
         prog="streamlit",
@@ -93,12 +102,29 @@ def get_args() -> str:
     return host
 
 
-# ------------------------------------------------------------------
-# Create a simple user PostgreSQL database engine.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
+# -----------------------------------------------------------------------------
+
 def get_engine(settings: Dynaconf) -> Engine:
-    """Create a simple user PostgreSQL database engine."""
+    """Create a simple user PostgreSQL database engine.
+
+    This function creates a database engine which is used to connect to the
+    PostgreSQL database.
+
+    Args:
+        settings (Dynaconf): The settings object.
+
+    Returns:
+        Engine: The database engine.
+
+    The engine is created using the following parameters:
+
+    - `postgres_user_guest`: The PostgreSQL user for the database.
+    - `postgres_password_guest`: The password for the PostgreSQL user.
+    - `postgres_host`: The host name of the PostgreSQL server.
+    - `postgres_connection_port`: The port number of the PostgreSQL server.
+    - `postgres_dbname`: The name of the PostgreSQL database.
+
+    """
     return create_engine(
         f"postgresql://{settings.postgres_user_guest}:"
         f"{settings.postgres_password_guest}@"
@@ -108,19 +134,24 @@ def get_engine(settings: Dynaconf) -> Engine:
     )
 
 
-# ------------------------------------------------------------------
-# Create a PostgreSQL connection.
-# ------------------------------------------------------------------
-# pylint: disable=R0801
+# -----------------------------------------------------------------------------
+
 def get_postgres_connection() -> connection:
-    """Create a PostgreSQL connection."""
+    """Create a PostgreSQL connection.
+
+    The function creates a connection to the PostgreSQL database.
+
+    Returns:
+        connection: The PostgreSQL connection object.
+
+    """
+    # Create a PostgreSQL connection using the secrets stored in the Streamlit
+    # secrets dictionary.
     return psycopg.connect(**st.secrets["db_postgres"])
 
 
 # -----------------------------------------------------------------------------
-# Prepare a latitude structure.
-# -----------------------------------------------------------------------------
-# pylint: disable=too-many-return-statements
+
 def prepare_latitude(latitude_string: str) -> str:
     """Prepare a latitude structure.
 
@@ -130,10 +161,16 @@ def prepare_latitude(latitude_string: str) -> str:
     Returns:
         str: Latitude structure.
 
+    This function takes a latitude string and prepares it for display. The string
+    is expected to be in the format "DDDMMSS" where DDD is the degrees, MM is the
+    minutes and SS is the seconds. The string will be divided into its components
+    and returned as a string with spaces between the components.
+
     """
     len_latitude_string = len(latitude_string)
 
     if len_latitude_string == 7:
+        # 7 character latitude string format: DDDMMSS
         return (
             latitude_string[:2]
             + " "
@@ -145,6 +182,7 @@ def prepare_latitude(latitude_string: str) -> str:
         )
 
     if len_latitude_string == 6:
+        # 6 character latitude string format: DMMSSS
         return (
             latitude_string[:1]
             + " "
@@ -156,27 +194,30 @@ def prepare_latitude(latitude_string: str) -> str:
         )
 
     if len_latitude_string == 5:
+        # 5 character latitude string format: DDMMSS
         return (
             latitude_string[:2] + " " + latitude_string[2:4] + " " + latitude_string[4:]
         )
 
     if len_latitude_string == 4:
+        # 4 character latitude string format: DMMSS
         return (
             latitude_string[:1] + " " + latitude_string[1:3] + " " + latitude_string[3:]
         )
 
     if len_latitude_string == 3:
+        # 3 character latitude string format: DDMM
         return latitude_string[:2] + " " + latitude_string[2:]
 
     if len_latitude_string == 2:
+        # 2 character latitude string format: DD
         return latitude_string[:1] + " " + latitude_string[1:]
 
     return latitude_string
 
 
 # -----------------------------------------------------------------------------
-# Prepare a longitude structure.
-# -----------------------------------------------------------------------------
+
 def prepare_longitude(longitude_string: str) -> str:
     """Prepare a longitude structure.
 
@@ -185,6 +226,14 @@ def prepare_longitude(longitude_string: str) -> str:
 
     Returns:
         str: longitude structure.
+
+    This function takes a longitude string and prepares it for display. The string
+    is expected to be in the format "DDDMMSS" where DDD is the degrees, MM is the
+    minutes and SS is the seconds. The function will split the string into its
+    components and return a string in the format "DD MM SS.SSS".
+
+    If the string is not in the expected format, the function will return the
+    original string.
 
     """
     if len(longitude_string) == 8:
@@ -201,9 +250,8 @@ def prepare_longitude(longitude_string: str) -> str:
     return prepare_latitude(longitude_string)
 
 
-# ------------------------------------------------------------------
-# Present the 'about' information.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def present_about(pg_conn: connection, app_id: str) -> None:
     """Present the 'about' information.
 
@@ -211,9 +259,14 @@ def present_about(pg_conn: connection, app_id: str) -> None:
         pg_conn (connection): Database connection.
         app_id (str): Application name.
 
+    This function presents the 'about' information, including the latest NTSB
+    database file and the copyright information.
+
     """
+    # Get the latest NTSB database file name and the date it was processed
     file_name, processed = _sql_query_last_file_name(pg_conn)
 
+    # Present the 'about' information
     st.warning(
         f"""
 IO-AVSTATS Application: **{app_id}**

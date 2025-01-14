@@ -1,5 +1,4 @@
 # noqa: N999
-# pylint: disable=invalid-name
 
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
@@ -10,7 +9,7 @@ import time
 
 import pandas as pd
 import streamlit as st
-import utils  # type: ignore  # pylint: disable=import-error
+import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from pandas import DataFrame
 from psycopg import Connection
@@ -22,7 +21,6 @@ from ydata_profiling import ProfileReport  # type: ignore
 # ------------------------------------------------------------------
 APP_ID = "pd1982"
 
-# pylint: disable=R0801
 CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
@@ -324,7 +322,6 @@ SETTINGS = Dynaconf(
 # ------------------------------------------------------------------
 # Filter the data frame.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-branches
 def _apply_filter_controls(
     df_unfiltered: DataFrame,
 ) -> DataFrame:
@@ -419,10 +416,10 @@ The database columns of the selected rows are always displayed in full.
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
-    global CHOICE_UG_DETAILS  # pylint: disable=global-statement
-    global CHOICE_UG_DATA_PROFILE  # pylint: disable=global-statement
-    global DF_FILTERED_ROWS  # pylint: disable=global-statement
-    global DF_UNFILTERED_ROWS  # pylint: disable=global-statement
+    global CHOICE_UG_DETAILS
+    global CHOICE_UG_DATA_PROFILE
+    global DF_FILTERED_ROWS
+    global DF_UNFILTERED_ROWS
 
     if CHOICE_ACTIVE_FILTERS:
         st.warning(CHOICE_ACTIVE_FILTERS_TEXT)
@@ -547,10 +544,10 @@ def _present_data_data_profile() -> None:
 # Set up the filter controls.
 # ------------------------------------------------------------------
 def _setup_filter_controls() -> None:
-    global CHOICE_ACTIVE_FILTERS_TEXT  # pylint: disable=global-statement
-    global CHOICE_FILTER_DATA  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
+    global CHOICE_ACTIVE_FILTERS_TEXT
+    global CHOICE_FILTER_DATA
+    global FILTER_EV_YEAR_FROM
+    global FILTER_EV_YEAR_TO
 
     CHOICE_FILTER_DATA = st.sidebar.checkbox(
         help="""
@@ -577,7 +574,7 @@ def _setup_filter_controls() -> None:
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
-        # pylint: disable=line-too-long
+
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
@@ -590,11 +587,11 @@ def _setup_filter_controls() -> None:
 # Set up the page.
 # ------------------------------------------------------------------
 def _setup_page() -> None:
-    global CHOICE_ABOUT  # pylint: disable=global-statement
-    global CHOICE_ACTIVE_FILTERS  # pylint: disable=global-statement
-    global CHOICE_UG_APP  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_FROM  # pylint: disable=global-statement
-    global FILTER_EV_YEAR_TO  # pylint: disable=global-statement
+    global CHOICE_ABOUT
+    global CHOICE_ACTIVE_FILTERS
+    global CHOICE_UG_APP
+    global FILTER_EV_YEAR_FROM
+    global FILTER_EV_YEAR_TO
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
     FILTER_EV_YEAR_TO = (
@@ -653,10 +650,10 @@ def _setup_sidebar() -> None:
 # Set up the task controls.
 # ------------------------------------------------------------------
 def _setup_task_controls() -> None:
-    global CHOICE_DDL_OBJECT_SELECTED  # pylint: disable=global-statement
-    global CHOICE_DDL_OBJECT_SELECTION  # pylint: disable=global-statement
-    global CHOICE_DETAILS  # pylint: disable=global-statement
-    global CHOICE_DATA_PROFILE  # pylint: disable=global-statement
+    global CHOICE_DDL_OBJECT_SELECTED
+    global CHOICE_DDL_OBJECT_SELECTION
+    global CHOICE_DETAILS
+    global CHOICE_DATA_PROFILE
 
     CHOICE_DATA_PROFILE = st.sidebar.checkbox(
         help="Pandas profiling of the dataset.",
@@ -697,10 +694,10 @@ def _setup_task_controls() -> None:
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
-    global DF_FILTERED  # pylint: disable=global-statement
-    global DF_UNFILTERED  # pylint: disable=global-statement
-    global HOST_CLOUD  # pylint: disable=global-statement
-    global PG_CONN  # pylint: disable=global-statement
+    global DF_FILTERED
+    global DF_UNFILTERED
+    global HOST_CLOUD
+    global PG_CONN
 
     # Start time measurement.
     start_time = time.time_ns()
@@ -712,13 +709,12 @@ def _streamlit_flow() -> None:
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
-    # pylint: disable=line-too-long
+
     st.set_page_config(
         layout="wide",
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="pd1982 by IO-Aero",
     )
-    # pylint: enable=line-too-long
 
     st.logo(
         image="resources/Images/Logo_IO-Blank_JW_32x32.png",
@@ -771,12 +767,18 @@ def _streamlit_flow() -> None:
 
 
 # -----------------------------------------------------------------------------
-# Program start.
-# -----------------------------------------------------------------------------
+
 def main() -> None:
-    """Start program."""
+    """Start program.
+
+    This function is the main entry point of the program and calls the
+    `_streamlit_flow` function to start the Streamlit application.
+
+    """
     _streamlit_flow()
 
+
+# -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
     main()

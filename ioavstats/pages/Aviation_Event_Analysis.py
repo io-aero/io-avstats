@@ -1,5 +1,4 @@
 # noqa: N999
-# pylint: disable=invalid-name
 
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
@@ -14,7 +13,7 @@ import pandas as pd
 import plotly.express as px  # type: ignore
 import plotly.graph_objects as go  # type: ignore
 import streamlit as st
-import utils  # type: ignore # pylint: disable=import-error
+import utils  # type: ignore
 from dynaconf import Dynaconf  # type: ignore
 from iocommon import io_settings
 from pandas import DataFrame
@@ -34,8 +33,6 @@ CHARTS_LEGEND_N_A = "n/a"
 CHARTS_LEGEND_N_A_DESC = "no data"
 CHARTS_LEGEND_THRESHOLD = "below threshold"
 
-# pylint: disable=R0801
-# pylint: disable=too-many-lines
 CHOICE_ABOUT: bool | None = None
 CHOICE_ACTIVE_FILTERS: bool | None = None
 CHOICE_ACTIVE_FILTERS_TEXT: str = ""
@@ -347,10 +344,7 @@ ZOOM = 4
 # ------------------------------------------------------------------
 # Filter the data frame.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-arguments
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-locals
-# pylint: disable=too-many-statements
+
 def _apply_filter(
     df_unfiltered: DataFrame,
 ) -> DataFrame:
@@ -385,7 +379,6 @@ def _apply_filter(
     # noinspection PyUnboundLocalVariable
     if FILTER_DEFINING_PHASES:
         # noinspection PyUnboundLocalVariable
-        # pylint: disable=line-too-long
         df_filtered = df_filtered.loc[
             df_filtered["phase_codes_defining"].apply(
                 lambda x: bool(set(x) & set(_get_prepared_codes(FILTER_DEFINING_PHASES))),  # type: ignore
@@ -612,7 +605,7 @@ def _apply_filter_incompatible(df_filtered: DataFrame) -> DataFrame:
 # Filter the data frame - US aviation.
 # ------------------------------------------------------------------
 def _apply_filter_us_aviation(
-    _df_unfiltered: DataFrame,  # pylint: disable=unused-argument
+    _df_unfiltered: DataFrame,
     filter_params: list | None,
 ) -> DataFrame:
     _print_timestamp("_apply_filter_us_aviation() - Start")
@@ -645,7 +638,7 @@ def _apply_filter_us_aviation(
 
     filter_cmd += "]"
 
-    df_filtered = eval(filter_cmd)  # pylint: disable=eval-used # noqa: S307
+    df_filtered = eval(filter_cmd)  # noqa: S307
 
     _print_timestamp("_apply_filter_us_aviation() - End")
 
@@ -811,7 +804,7 @@ def _get_user_guide_chart(
                 chart_id,
                 chart_title,
             )
-        # pylint: disable=line-too-long
+
         case (
             "ey_aoc"
             | "ey_il"
@@ -828,7 +821,7 @@ def _get_user_guide_chart(
                 chart_id,
                 chart_title,
             )
-        # pylint: disable=line-too-long
+
         case (
             "te_aoc"
             | "te_il"
@@ -1139,9 +1132,9 @@ With the button **Download the chart data** this data can be loaded into a local
 def _prep_data_chart_d_na(
     df_filtered: DataFrame,
 ) -> DataFrame:
-    # pylint: disable=global-statement
+
     global CHOICE_CHARTS_TYPE_D_NA_NO
-    # pylint: enable=global-statement
+
 
     df_chart_data = _apply_filter(df_filtered)
 
@@ -2622,10 +2615,10 @@ def _present_chart_fy_sfp() -> None:
 # Present the filtered data.
 # ------------------------------------------------------------------
 def _present_data() -> None:
-    # pylint: disable=global-statement
+
     global DF_FILTERED_ROWS
     global DF_UNFILTERED_ROWS
-    # pylint: enable=global-statement
+
 
     _print_timestamp("_present_data() - Start")
 
@@ -2702,9 +2695,9 @@ def _present_data() -> None:
 # Present data profile.
 # ------------------------------------------------------------------
 def _present_data_profile() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_UG_DATA_PROFILE
-    # pylint: enable=global-statement
+
 
     col1, col2 = st.columns(
         [
@@ -2714,13 +2707,13 @@ def _present_data_profile() -> None:
     )
 
     with col1:
-        # pylint: disable=line-too-long
+
         st.markdown(
             f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
             'font-weight: normal;border-radius:2%;">Profiling of the Filtered io_app_ae1982 data</p>',
             unsafe_allow_html=True,
         )
-        # pylint: enable=line-too-long
+
 
     with col2:
         CHOICE_UG_DATA_PROFILE = st.checkbox(
@@ -2761,9 +2754,9 @@ def _present_data_profile() -> None:
 # Present details.
 # ------------------------------------------------------------------
 def _present_details() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_UG_DETAILS
-    # pylint: enable=global-statement
+
 
     if CHOICE_DETAILS:
         col1, col2 = st.columns(
@@ -2774,13 +2767,13 @@ def _present_details() -> None:
         )
 
         with col1:
-            # pylint: disable=line-too-long
+
             st.markdown(
                 f'<p style="text-align:left;color:{COLOR_HEADER};font-size:{FONT_SIZE_SUBHEADER}px;'
                 'font-weight: normal;border-radius:2%;">Detailed data from DB view io_app_ae1982</p>',
                 unsafe_allow_html=True,
             )
-            # pylint: enable=line-too-long
+
 
         with col2:
             CHOICE_UG_DETAILS = st.checkbox(
@@ -2792,11 +2785,11 @@ def _present_details() -> None:
         if CHOICE_UG_DETAILS:
             _get_user_guide_details()
 
-        # pylint: disable=line-too-long
+
         st.write(
             f"No {EVENT_TYPE_DESC.lower() + 's'} unfiltered: {DF_UNFILTERED_ROWS} - filtered: {DF_FILTERED_ROWS}",
         )
-        # pylint: enable=line-too-long
+
 
         st.dataframe(DF_FILTERED)
 
@@ -2923,9 +2916,9 @@ def _present_distance_charts() -> None:
 # Present the events on the US map.
 # ------------------------------------------------------------------
 def _present_map() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_UG_MAP
-    # pylint: enable=global-statement
+
 
     col1, col2 = st.columns([2, 1])
 
@@ -3232,7 +3225,6 @@ def _present_totals_charts() -> None:
             _prep_data_chart_te_tlp(DF_FILTERED),
         )
 
-    # pylint: disable=too-many-boolean-expressions
     if (
         CHOICE_CHARTS_TYPE_TF_FP
         or CHOICE_CHARTS_TYPE_TF_SFP
@@ -3247,16 +3239,15 @@ def _present_totals_charts() -> None:
     ):
         (df_filtered_rows, _) = DF_FILTERED.shape
         st.write(f"**Total: {df_filtered_rows}**")
-    # pylint: enable=too-many-boolean-expressions
 
 
 # ------------------------------------------------------------------
 # Print a timestamp.
 # ------------------------------------------------------------------
 def _print_timestamp(identifier: str) -> None:
-    # pylint: disable=global-statement
+
     global LAST_READING
-    # pylint: enable=global-statement
+
 
     if not IS_TIMEKEEPING:
         return
@@ -3280,9 +3271,8 @@ def _print_timestamp(identifier: str) -> None:
 # ------------------------------------------------------------------
 # Set up the filter controls.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-statements
 def _setup_filter() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_ACTIVE_FILTERS_TEXT
     global CHOICE_FILTER_DATA
     global FILTER_ACFT_CATEGORIES
@@ -3310,7 +3300,7 @@ def _setup_filter() -> None:
     global FILTER_TLL_PARAMETERS
     global FILTER_US_AVIATION
     global FILTER_US_STATES
-    # pylint: enable=global-statement
+
 
     _print_timestamp("_setup_filter - Start")
 
@@ -3364,12 +3354,12 @@ def _setup_filter() -> None:
             or (FILTER_NO_AIRCRAFT_TO
             and max_no_aircraft != FILTER_NO_AIRCRAFT_TO)
         ):
-            # pylint: disable=line-too-long
+
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Aircraft involved**: between **`{FILTER_NO_AIRCRAFT_FROM}`** and **`{FILTER_NO_AIRCRAFT_TO}`**"
             )
-            # pylint: enable=line-too-long
+
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_CICTT_CODES = st.sidebar.multiselect(
@@ -3386,13 +3376,13 @@ def _setup_filter() -> None:
                 + f"\n- **CICTT code(s)**: **`{','.join(FILTER_CICTT_CODES)}`**"
             )
 
-    # pylint: disable=line-too-long
+
     FILTER_DISTANCE_NEAREST_AIRPORT = st.sidebar.checkbox(
         help="Distance in nautical miles from the place of the event to the nearest US airport (after filtering the data).",
         label="**Distance to the nearest US airport**",
         value=False,
     )
-    # pylint: enable=line-too-long
+
 
     if FILTER_DISTANCE_NEAREST_AIRPORT:
         max_distance = 2800.0
@@ -3417,19 +3407,19 @@ def _setup_filter() -> None:
 
     if FILTER_DISTANCE_NEAREST_AIRPORT_FROM and FILTER_DISTANCE_NEAREST_AIRPORT_TO:
         if FILTER_DISTANCE_NEAREST_AIRPORT_TO < FILTER_DISTANCE_NEAREST_AIRPORT_FROM:
-            # pylint: disable=line-too-long
+
             st.error(
                 "##### Error: Distance to the nearest US airport: Minimum must not be greater than the maximum.",
             )
-            # pylint: enable=line-too-long
+
             st.stop()
         else:
-            # pylint: disable=line-too-long
+
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Distance to the nearest US airport (nmi)**: between **`{FILTER_DISTANCE_NEAREST_AIRPORT_FROM}`** and **`{FILTER_DISTANCE_NEAREST_AIRPORT_TO}`**"
             )
-            # pylint: enable=line-too-long
+
 
     FILTER_EV_TYPE = st.sidebar.multiselect(
         default=FILTER_EV_TYPE_DEFAULT,
@@ -3459,12 +3449,12 @@ def _setup_filter() -> None:
     )
 
     if FILTER_EV_YEAR_FROM or FILTER_EV_YEAR_TO:
-        # pylint: disable=line-too-long
+
         CHOICE_ACTIVE_FILTERS_TEXT = (
             CHOICE_ACTIVE_FILTERS_TEXT
             + f"\n- **Event year(s)**: between **`{FILTER_EV_YEAR_FROM}`** and **`{FILTER_EV_YEAR_TO}`**"
         )
-        # pylint: enable=line-too-long
+
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FAR_PARTS = st.sidebar.multiselect(
@@ -3500,12 +3490,12 @@ def _setup_filter() -> None:
             or (FILTER_INJ_F_GRND_TO
             and max_inj_f_grnd != FILTER_INJ_F_GRND_TO)
         ):
-            # pylint: disable=line-too-long
+
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities on ground**: between **`{FILTER_INJ_F_GRND_FROM}`** and **`{FILTER_INJ_F_GRND_TO}`**"
             )
-            # pylint: enable=line-too-long
+
 
     if CHOICE_EXTENDED_VERSION:
         max_inj_tot_f = _sql_query_max_inj_tot_f()
@@ -3526,12 +3516,12 @@ def _setup_filter() -> None:
             or (FILTER_INJ_TOT_F_TO
             and max_inj_tot_f != FILTER_INJ_TOT_F_TO)
         ):
-            # pylint: disable=line-too-long
+
             CHOICE_ACTIVE_FILTERS_TEXT = (
                 CHOICE_ACTIVE_FILTERS_TEXT
                 + f"\n- **Fatalities total**: between **`{FILTER_INJ_TOT_F_FROM}`** and **`{FILTER_INJ_TOT_F_TO}`**"
             )
-            # pylint: enable=line-too-long
+
 
     if CHOICE_EXTENDED_VERSION:
         FILTER_FINDING_CODES = st.sidebar.multiselect(
@@ -3685,21 +3675,18 @@ def _setup_filter() -> None:
     _print_timestamp("_setup_filter - End")
 
 
-# pylint: enable=too-many-statements
-
-
 # ------------------------------------------------------------------
 # Set up the page.
 # ------------------------------------------------------------------
 def _setup_page() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_ABOUT
     global CHOICE_ACTIVE_FILTERS
     global CHOICE_UG_APP
     global EVENT_TYPE_DESC
     global FILTER_EV_YEAR_FROM
     global FILTER_EV_YEAR_TO
-    # pylint: enable=global-statement
+
 
     FILTER_EV_YEAR_FROM = FILTER_EV_YEAR_FROM if FILTER_EV_YEAR_FROM else 1982
     FILTER_EV_YEAR_TO = (
@@ -3765,9 +3752,8 @@ def _setup_sidebar() -> None:
 # ------------------------------------------------------------------
 # Set up the task controls.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-statements
 def _setup_task_controls() -> None:
-    # pylint: disable=global-statement
+
     global CHOICE_BOX_PLOTS
     global CHOICE_CHARTS_TYPE_EY_AOC
     global CHOICE_CHARTS_TYPE_EY_AOC_THRESHOLD
@@ -3828,12 +3814,12 @@ def _setup_task_controls() -> None:
     global CHOICE_YEARS_CHARTS_DETAILS_TOTAL_ROWS
     global CHOICE_YEARS_CHARTS_HEIGHT
     global CHOICE_YEARS_CHARTS_WIDTH
-    # pylint: enable=global-statement
+
 
     # --------------------------------------------------------------
     # Run the Data Analysis.
     # --------------------------------------------------------------
-    # pylint: disable=line-too-long
+
     CHOICE_RUN_ANALYSIS = st.sidebar.checkbox(
         help="""
     For efficiency reasons, it is very useful to define the parameter settings and filter conditions first and then run the selected data analysis.        """,
@@ -3841,7 +3827,7 @@ def _setup_task_controls() -> None:
         label="**Run the Data Analysis**",
         value=False,
     )
-    # pylint: enable=line-too-long
+
 
     # ----------------------------------------------------------
     # Extended Version.
@@ -3994,13 +3980,13 @@ def _setup_task_controls() -> None:
                     value=1.5,
                 )
 
-            # pylint: disable=line-too-long
+
             CHOICE_CHARTS_TYPE_EY_NA = st.sidebar.checkbox(
                 help="Events per year by distance to the nearest airport (after filtering the data).",
                 label=f"{EVENT_TYPE_DESC}s per Year by Nearest Airport",
                 value=False,
             )
-            # pylint: enable=line-too-long
+
             if CHOICE_CHARTS_TYPE_EY_NA:
                 col1, col2 = st.sidebar.columns(2)
                 with col1:
@@ -4022,11 +4008,11 @@ def _setup_task_controls() -> None:
                         value=5.0,
                     )
                 if CHOICE_CHARTS_TYPE_EY_NA_I_2_OG <= CHOICE_CHARTS_TYPE_EY_NA_I_1_OG: # type: ignore
-                    # pylint: disable=line-too-long
+
                     st.error(
                         "##### Error: Events per Year by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",
                     )
-                    # pylint: enable=line-too-long
+
                     st.stop()
 
             CHOICE_CHARTS_TYPE_EY_PF = st.sidebar.checkbox(
@@ -4216,11 +4202,11 @@ def _setup_task_controls() -> None:
                         value=5.0,
                     )
                 if CHOICE_CHARTS_TYPE_TE_NA_I_2_OG <= CHOICE_CHARTS_TYPE_TE_NA_I_1_OG: # type: ignore
-                    # pylint: disable=line-too-long
+
                     st.error(
                         "##### Error: Total Events by Nearest Airport: The upper limit 2 must be greater than the upper limit 1.",
                     )
-                    # pylint: enable=line-too-long
+
                     st.stop()
 
             CHOICE_CHARTS_TYPE_TE_PF = st.sidebar.checkbox(
@@ -4335,9 +4321,6 @@ def _setup_task_controls() -> None:
     )
 
 
-# pylint: enable=too-many-statements
-
-
 # ------------------------------------------------------------------
 # Execute a query that returns the list of aircraft categories.
 # ------------------------------------------------------------------
@@ -4393,14 +4376,14 @@ def _sql_query_description_main_phase() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_ev_highest_injury() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
+
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END, ',' ORDER BY CASE WHEN ev_highest_injury IS NULL THEN 'n/a' ELSE ev_highest_injury END)
           FROM io_app_ae1982;
 """,
         )
-        # pylint: enable=line-too-long
+
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4414,14 +4397,14 @@ def _sql_query_ev_highest_injury() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_ev_type() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
+
         cur.execute(
             """
         SELECT string_agg(DISTINCT CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END, ',' ORDER BY CASE WHEN ev_type IS NULL THEN 'n/a' ELSE ev_type END)
           FROM io_app_ae1982;
 """,
         )
-        # pylint: enable=line-too-long
+
 
         keys = (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4452,7 +4435,7 @@ def _sql_query_far_parts() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_finding_codes() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
+
         cur.execute(
             """
         SELECT string_agg(DISTINCT finding_code, ',' ORDER BY finding_code)
@@ -4470,7 +4453,7 @@ def _sql_query_finding_codes() -> list[str]:
                    AND finding_code IS NOT NULL) f
 """,
         )
-        # pylint: enable=line-too-long
+
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4572,7 +4555,7 @@ def _sql_query_md_codes_phase() -> list[str]:
 # ------------------------------------------------------------------
 def _sql_query_occurrence_codes() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
-        # pylint: disable=line-too-long
+
         cur.execute(
             """
         SELECT string_agg(DISTINCT occurrence_code, ',' ORDER BY occurrence_code)
@@ -4595,7 +4578,7 @@ def _sql_query_occurrence_codes() -> list[str]:
                 AND occurrence_code IS NOT NULL) o
 """,
         )
-        # pylint: enable=line-too-long
+
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4659,14 +4642,14 @@ def _sql_query_us_ll() -> dict[str, float]:
 def _sql_query_us_states() -> list[str]:
     with PG_CONN.cursor() as cur:  # type: ignore
         cur.execute(
-            # pylint: disable=line-too-long
+
             """
         SELECT string_agg(CONCAT(state_name, ' - ', state), ',' ORDER BY state)
           FROM io_states
          WHERE country  = 'USA';
 """,
         )
-        # pylint: enable=line-too-long
+
 
         return (cur.fetchone()[0]).split(",")  # type: ignore
 
@@ -4675,14 +4658,14 @@ def _sql_query_us_states() -> list[str]:
 # Streamlit flow.
 # ------------------------------------------------------------------
 def _streamlit_flow() -> None:
-    # pylint: disable=global-statement
+
     global DF_FILTERED
     global DF_UNFILTERED
     global EVENT_TYPE_DESC
     global HOST_CLOUD
     global PG_CONN
     global START_TIME
-    # pylint: enable=global-statement
+
 
     # Start time measurement.
     START_TIME = time.time_ns()
@@ -4696,13 +4679,13 @@ def _streamlit_flow() -> None:
         HOST_CLOUD = bool(host == "Cloud")
         st.session_state["HOST_CLOUD"] = HOST_CLOUD
 
-    # pylint: disable=line-too-long
+
     st.set_page_config(
         layout="wide",
         page_icon="https://github.com/io-aero/io-avstats/blob/main/resources/Images/IO-Aero_1_Favicon.ico?raw=true",
         page_title="ae1982 by IO-Aero",
     )
-    # pylint: enable=line-too-long
+
 
     st.logo(
         image="resources/Images/Logo_IO-Blank_JW_32x32.png",
@@ -4733,22 +4716,30 @@ def _streamlit_flow() -> None:
     _print_timestamp("_present_data()")
 
     # Stop time measurement.
-    # pylint: disable=line-too-long
+
     print(  # noqa: T201
         str(datetime.datetime.now(datetime.UTC))
         + f" {f'{time.time_ns() - START_TIME:,}':>20} ns - Total runtime for application {APP_ID:<10}",
         flush=True,
     )
-    # pylint: enable=line-too-long
+
 
 
 # -----------------------------------------------------------------------------
-# Program start.
-# -----------------------------------------------------------------------------
+
 def main() -> None:
-    """Start program."""
+    """Start program.
+
+    This function is the main entry point of the program and will be called if the program is
+    started directly (i.e. not imported as a module).
+
+    It will start the Streamlit application flow.
+
+    """
     _streamlit_flow()
 
+
+# -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
     main()

@@ -37,13 +37,6 @@ This project utilizes Python from version 3.10, which introduced significant enh
 These improvements provide a more robust and clear definition of function parameters, return types, and variable types, contributing to improved code readability and maintainability.
 The use of Python 3.12 ensures compatibility with these advanced typing features, offering a more structured and error-resistant development environment.
 
-`Docker Desktop <https://www.docker.com/products/docker-desktop/>`__\
----------------------------------------------------------------------
-
-The project employs PostgreSQL for data storage and leverages Docker images provided by PostgreSQL to simplify the installation process.
-Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
-This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
-
 `Miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`__\
 --------------------------------------------------------------------
 
@@ -52,6 +45,13 @@ Some of the Python libraries required by the project are exclusively available t
 By using Miniconda, users can access the extensive repositories of Conda packages while keeping their environment lean and manageable. To install Miniconda, follow the instructions provided in the ``scripts`` directory of the project, where operating system-specific installation scripts named ``run_install_miniconda`` are available for Windows (CMD shell) and, Ubuntu (Bash shell).
 
 Utilizing Miniconda ensures that you have the necessary Conda environment with the minimal set of dependencies required to run and develop the project efficiently.
+
+`Docker Desktop <https://www.docker.com/products/docker-desktop/>`__\
+---------------------------------------------------------------------
+
+The project employs PostgreSQL for data storage and leverages Docker images provided by PostgreSQL to simplify the installation process.
+Docker Desktop is used for its ease of managing and running containerized applications, allowing for a consistent and isolated environment for PostgreSQL.
+This approach streamlines the setup, ensuring that the database environment is quickly replicable and maintainable across different development setups.
 
 `MS Access Database Engine <https://www.microsoft.com/en-us/download/details.aspx?id=54920>`__\ - only for Windows
 ------------------------------------------------------------------------------------------------------------------

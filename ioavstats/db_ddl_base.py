@@ -11,8 +11,8 @@ from iocommon import db_utils, io_glob, io_settings, io_utils
 from iocommon.io_utils import extract_column_value
 from psycopg import DatabaseError, connection, cursor
 from psycopg.errors import (
-    DuplicateDatabase,  # pylint: disable=no-name-in-module
-    DuplicateObject,  # pylint: disable=no-name-in-module
+    DuplicateDatabase,
+    DuplicateObject,
 )
 
 from ioavstats import glob_local
@@ -105,7 +105,6 @@ def _check_exists_index(
 
 # -----------------------------------------------------------------------------
 
-# pylint: disable=too-many-lines
 def _check_exists_table(
     cur_pg: cursor,
     table_name: str,
@@ -321,7 +320,6 @@ def _create_db_io_md_codes_category(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -346,7 +344,6 @@ def _create_db_io_md_codes_category(
 
     unstructured_desc: dict[str, list[str]] = {}
 
-    # pylint: disable=R0801
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -420,7 +417,6 @@ def _create_db_io_md_codes_eventsoe(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -445,7 +441,6 @@ def _create_db_io_md_codes_eventsoe(
 
     unstructured_desc: dict[str, list[str]] = {}
 
-    # pylint: disable=R0801
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -517,7 +512,6 @@ def _create_db_io_md_codes_modifier(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -542,7 +536,6 @@ def _create_db_io_md_codes_modifier(
 
     unstructured_desc: dict[str, list[str]] = {}
 
-    # pylint: disable=R0801
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -616,7 +609,6 @@ def _create_db_io_md_codes_phase(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -641,7 +633,7 @@ def _create_db_io_md_codes_phase(
 
     unstructured_desc: dict[str, list[str]] = {}
 
-    # pylint: disable=R0801
+
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -701,7 +693,6 @@ def _create_db_io_md_codes_phase(
 # ------------------------------------------------------------------
 # Create database IO-Aero codes of sections data.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-locals
 def _create_db_io_md_codes_section(
     table_name: str,
     conn_pg: connection,
@@ -720,7 +711,7 @@ def _create_db_io_md_codes_section(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
+
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -748,7 +739,7 @@ def _create_db_io_md_codes_section(
 
     unstructured_desc: dict[tuple[str, str, str], list[str]] = {}
 
-    # pylint: disable=R0801
+
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -834,7 +825,7 @@ def _create_db_io_md_codes_subcategory(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
+
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -860,7 +851,7 @@ def _create_db_io_md_codes_subcategory(
 
     unstructured_desc: dict[tuple[str, str], list[str]] = {}
 
-    # pylint: disable=R0801
+
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -923,7 +914,7 @@ def _create_db_io_md_codes_subcategory(
 # ------------------------------------------------------------------
 # Create database IO-Aero codes of subsections data.
 # ------------------------------------------------------------------
-# pylint: disable=too-many-locals
+
 def _create_db_io_md_codes_subsection(
     table_name: str,
     conn_pg: connection,
@@ -942,7 +933,7 @@ def _create_db_io_md_codes_subsection(
     # ------------------------------------------------------------------
     # Delete the existing data.
     # ------------------------------------------------------------------
-    # pylint: disable=line-too-long
+
     cur_pg.execute(
         f"""
     DELETE FROM {table_name}
@@ -970,7 +961,7 @@ def _create_db_io_md_codes_subsection(
 
     unstructured_desc: dict[tuple[str, str, str, str], list[str]] = {}
 
-    # pylint: disable=R0801
+
     for row_tbd in rows_tbd:
         count_select += 1
 
@@ -1120,7 +1111,7 @@ def _create_db_role_guest(conn_pg: connection, cur_pg: cursor) -> None:
     )
 
     cur_pg.execute(
-        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_settings.settings.postgres_user_guest}",  # pylint: disable=line-too-long
+        f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {io_settings.settings.postgres_user_guest}",
     )
 
     conn_pg.commit()
@@ -2273,7 +2264,7 @@ def _create_dll_table_io_states() -> None:
 # io_app_ae1982.
 # ------------------------------------------------------------------
 def _create_dll_view_io_app_ae1982() -> None:
-    # pylint: disable=line-too-long
+
     DLL_VIEW_STMNTS_REFRESH.append("io_app_ae1982")
 
     DLL_VIEW_STMNTS_CREATE_MAT[
@@ -3301,7 +3292,7 @@ def _create_dll_view_io_app_ae1982() -> None:
 # io_lat_lng_issues.
 # ------------------------------------------------------------------
 def _create_dll_view_io_lat_lng_issues() -> None:
-    # pylint: disable=line-too-long
+
     DLL_VIEW_STMNTS_DROP.append("io_lat_lng_issues")
 
     DLL_VIEW_STMNTS_CREATE[
@@ -3391,7 +3382,7 @@ def _create_tokens_4_finding_description(finding_description: str) -> list[str]:
 # ------------------------------------------------------------------
 # Load the description_main_phase from an MS Excel file.
 # ------------------------------------------------------------------
-# pylint: disable=R0801
+
 def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
     logging.debug(io_glob.LOGGER_START)
 
@@ -3428,7 +3419,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
         # Load the NPIAS data.
         # ------------------------------------------------------------------
 
-        # pylint: disable=R0801
+
         for _index, row in dataframe.iterrows():
 
             count_select += 1
@@ -3442,7 +3433,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             phase_code = str(extract_column_value(row, COLUMN_PHASE_CODE))
             main_phase = extract_column_value(row, COLUMN_MAIN_PHASE)
 
-            # pylint: disable=line-too-long
+
             cur_pg.execute(
                 """
             UPDATE io_md_codes_phase imcp
@@ -3478,7 +3469,7 @@ def _load_description_main_phase(conn_pg: connection, cur_pg: cursor) -> None:
             ).replace("{error}", str(err)),
         )
 
-    except Exception as exc:  # pylint: disable=broad-exception-caught # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         io_utils.terminate_fatal(
             glob_local.FATAL_00_934.replace(
                 "{file_name}",
@@ -3511,30 +3502,48 @@ def _prep_token_4_finding_description(token: str) -> str:
     )
 
 
-# ------------------------------------------------------------------
-# Refresh database views.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def _refresh_db_views(conn_pg: connection, cur_pg: cursor) -> None:
+    """Refresh the materialized database views.
+
+    This function refreshes the materialized database views by calling the REFRESH MATERIALIZED VIEW
+    statement for each view in the list of views to be refreshed.
+
+    :param conn_pg: The PostgreSQL database connection.
+    :param cur_pg: The PostgreSQL database cursor.
+
+    """
+    # Add the io_app_ae1982 view to the list of views to be refreshed
     DLL_VIEW_STMNTS_REFRESH.append("io_app_ae1982")
 
+    # Iterate over the list of views to be refreshed
     for view_name in DLL_VIEW_STMNTS_REFRESH:
+        # Refresh the materialized view
         cur_pg.execute("REFRESH MATERIALIZED VIEW " + view_name + ";")
         conn_pg.commit()
-        # INFO.00.069 Materialized database view is refreshed: {view}
+        # Log the action
         io_utils.progress_msg(
+            # INFO.00.069 Materialized database view is refreshed: {view}
             glob_local.INFO_00_069.replace("{view}", view_name),
         )
 
 
-# ------------------------------------------------------------------
-# Creating the database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def create_db_schema() -> None:
-    """Create the database schema."""
-    global DLL_TABLE_STMNTS  # pylint: disable=global-statement
+    """Create the database schema.
+
+    This function is a part of the setup of the database. It is called after the database has been
+    created and the tables have been created. It creates the database schema by calling the
+    functions that create the tables and the views.
+
+    """
+    global DLL_TABLE_STMNTS
 
     logging.debug(io_glob.LOGGER_START)
 
+    # Create the PostgreSQL database role.
     conn_pg, cur_pg = db_utils.get_postgres_cursor_admin()
 
     try:
@@ -3559,6 +3568,7 @@ def create_db_schema() -> None:
             ),
         )
 
+    # Create the PostgreSQL database.
     try:
         cur_pg.execute(
             f"CREATE DATABASE {io_settings.settings.postgres_dbname} "
@@ -3586,13 +3596,16 @@ def create_db_schema() -> None:
 
     DLL_TABLE_STMNTS = {}
 
+    # Create the tables.
     _create_dll_tables_base()
     _create_dll_create_tables_io()
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # Create the composite database types.
     _create_db_types_composite(conn_pg, cur_pg)
 
+    # Create the tables.
     _create_db_tables(conn_pg, cur_pg)
 
     cur_pg.close()
@@ -3601,21 +3614,29 @@ def create_db_schema() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# Refresh the database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def refresh_db_schema() -> None:
-    """Refresh the database schema."""
-    global DLL_VIEW_STMNTS_REFRESH  # pylint: disable=global-statement
+    """Refresh the database schema.
+
+    This function is a part of the setup of the database. It is called after the database has been
+    created and the tables have been created. It updates the database schema by refreshing the
+    materialized views.
+
+    """
+    global DLL_VIEW_STMNTS_REFRESH
 
     logging.debug(io_glob.LOGGER_START)
 
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # Refresh the database IO-Aero specific data.
     _create_db_io_aero_data(conn_pg, cur_pg)
 
+    # Initialize the list of database views that need to be refreshed.
     DLL_VIEW_STMNTS_REFRESH = []
 
+    # Refresh the database views.
     _refresh_db_views(conn_pg, cur_pg)
 
     cur_pg.close()
@@ -3624,49 +3645,64 @@ def refresh_db_schema() -> None:
     logging.debug(io_glob.LOGGER_END)
 
 
-# ------------------------------------------------------------------
-# Updating the database schema.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def update_db_schema() -> None:
-    """Update the database schema."""
-    global DLL_TABLE_STMNTS  # pylint: disable=global-statement
-    global DLL_VIEW_STMNTS_CREATE  # pylint: disable=global-statement
-    global DLL_VIEW_STMNTS_DROP  # pylint: disable=global-statement
-    global DLL_VIEW_STMNTS_REFRESH  # pylint: disable=global-statement
+    """Update the database schema.
+
+    This function is a part of the setup of the database. It is called after the database has been
+    created and the tables have been created. It drops all existing views and creates new ones and
+    also creates the indexes for the tables.
+
+    """
+    global DLL_TABLE_STMNTS
+    global DLL_VIEW_STMNTS_CREATE
+    global DLL_VIEW_STMNTS_DROP
+    global DLL_VIEW_STMNTS_REFRESH
 
     logging.debug(io_glob.LOGGER_START)
 
+    # Connect to the database.
     conn_pg, cur_pg = db_utils.get_postgres_cursor()
 
+    # Drop the existing tables.
     DLL_TABLE_STMNTS = {}
     _create_dll_alter_tables_io()
     _alter_db_tables(conn_pg, cur_pg)
 
+    # Create the new tables.
     DLL_TABLE_STMNTS = {}
     _create_dll_create_tables_io()
     _create_db_tables(conn_pg, cur_pg)
 
+    # Create the columns for the tables.
     _create_db_table_columns(conn_pg, cur_pg)
 
+    # Create the IO-Aero specific data.
     _create_db_io_aero_data(conn_pg, cur_pg)
 
+    # Create the database views.
     DLL_VIEW_STMNTS_CREATE = {}
     DLL_VIEW_STMNTS_DROP = []
     DLL_VIEW_STMNTS_REFRESH = []
-
     _create_db_views(conn_pg, cur_pg)
 
+    # Create the indexes for the tables.
     _create_db_indexes(conn_pg, cur_pg)
 
+    # Close the database connection.
     cur_pg.close()
     conn_pg.close()
 
+    # Connect to the database as the admin user.
     conn_pg, cur_pg = db_utils.get_postgres_cursor_admin(
         dbname=io_settings.settings.postgres_dbname,
     )
 
+    # Create the guest user.
     _create_db_role_guest(conn_pg, cur_pg)
 
+    # Close the database connection.
     cur_pg.close()
     conn_pg.close()
 

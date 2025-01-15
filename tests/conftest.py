@@ -1,10 +1,7 @@
-# pylint: disable=E1101
-
 # Copyright (c) 2022-2024 IO-Aero. All rights reserved. Use of this
 # source code is governed by the IO-Aero License, that can
 # be found in the LICENSE.md file.
 
-# pylint: disable=redefined-outer-name
 """Test Configuration and Fixtures.
 
 Setup test configuration and store fixtures.
@@ -17,23 +14,19 @@ Returns
 import logging
 import logging.config
 import os
-import pathlib
 import shutil
+from pathlib import Path
 
 import pytest
 from iocommon import io_glob, io_logger
 
-# -----------------------------------------------------------------------------
-# Global variables.
 # -----------------------------------------------------------------------------
 
 io_logger.initialise_logger()
 
 
 # -----------------------------------------------------------------------------
-# Fixture - Before any test.
-# -----------------------------------------------------------------------------
-# pylint: disable=protected-access
+
 @pytest.fixture(scope="session", autouse=True)
 def _fxtr_before_any_test() -> None:
     """Fixture Factory: Before and after any test."""
@@ -46,11 +39,10 @@ def _fxtr_before_any_test() -> None:
 
 
 # -----------------------------------------------------------------------------
-# Copy files from the sample test file directory.
-# -----------------------------------------------------------------------------
+
 def copy_files_4_pytest(
     file_list: list[
-        tuple[tuple[str, str | None], tuple[pathlib.Path, list[str], str | None]]
+        tuple[tuple[str, str | None], tuple[Path, list[str], str | None]]
     ],
 ) -> None:
     """Copy files from the sample test file directory to a specified destination.
@@ -79,7 +71,7 @@ def copy_files_4_pytest(
       destination directory for the copied files.
 
     """
-    assert pathlib.Path(
+    assert Path(
         get_os_independent_name(get_test_files_source_directory_name()),
     ).is_dir(), (
         "source directory '" + get_test_files_source_directory_name() + "' missing"
@@ -96,11 +88,11 @@ def copy_files_4_pytest(
             get_test_files_source_directory_name(),
             source_file_name,
         )
-        assert pathlib.Path(source_file).is_file(), (
+        assert Path(source_file).is_file(), (
             "source file '" + str(source_file) + "' missing"
         )
 
-        assert pathlib.Path(get_os_independent_name(target_dir)).is_dir(), (
+        assert Path(get_os_independent_name(target_dir)).is_dir(), (
             "target directory '" + str(target_dir.absolute()) + "' missing"
         )
         target_file_name = (
@@ -109,22 +101,21 @@ def copy_files_4_pytest(
             else "_".join(target_file_comp) + "." + target_ext
         )
         target_file = get_full_name_from_components(target_dir, target_file_name)
-        assert pathlib.Path(target_file).is_file() is False, (
+        assert Path(target_file).is_file() is False, (
             "target file '" + str(target_file) + "' already existing"
         )
 
         shutil.copy(source_file, target_file)
-        assert pathlib.Path(target_file).is_file(), (
+        assert Path(target_file).is_file(), (
             "target file '" + str(target_file) + "' is missing"
         )
 
 
 # -----------------------------------------------------------------------------
-# Copy files from the sample test file directory.
-# -----------------------------------------------------------------------------
+
 def copy_files_4_pytest_2_dir(
     source_files: list[tuple[str, str | None]],
-    target_path: pathlib.Path,
+    target_path: Path,
 ) -> None:
     """Copy files from the sample test file directory.
 
@@ -139,11 +130,10 @@ def copy_files_4_pytest_2_dir(
         copy_files_4_pytest([(source_file, (target_path, [source_stem], source_ext))])
 
 
-# ------------------------------------------------------------------
-# Get the full name of a file from its components.
-# ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 def get_full_name_from_components(
-    directory_name: pathlib.Path | str,
+    directory_name: Path | str,
     stem_name: str = "",
     file_extension: str = "",
 ) -> str:
@@ -153,7 +143,7 @@ def get_full_name_from_components(
 
     Args:
     ----
-        directory_name (pathlib.Path or str): Directory name or directory path.
+        directory_name (Path or str): Directory name or directory path.
         stem_name (str, optional): Stem name or file name including file extension.
             Defaults to "".
         file_extension (str, optional): File extension.
@@ -173,7 +163,7 @@ def get_full_name_from_components(
 
     directory_name_int = (
         str(directory_name)
-        if isinstance(directory_name, pathlib.Path)
+        if isinstance(directory_name, Path)
         else directory_name
     )
 
@@ -182,15 +172,14 @@ def get_full_name_from_components(
     )
 
 
-# ------------------------------------------------------------------
-# Get the platform-independent name.
-# ------------------------------------------------------------------
-def get_os_independent_name(file_name: pathlib.Path | str) -> str:
+# -----------------------------------------------------------------------------
+
+def get_os_independent_name(file_name: Path | str) -> str:
     """Get the platform-independent name.
 
     Args:
     ----
-        file_name (pathlib.Path | str): File name or file path.
+        file_name (Path | str): File name or file path.
 
     Returns:
     -------
@@ -204,8 +193,7 @@ def get_os_independent_name(file_name: pathlib.Path | str) -> str:
 
 
 # -----------------------------------------------------------------------------
-# Provide the file directory name where the test files are located.
-# -----------------------------------------------------------------------------
+
 def get_test_files_source_directory_name() -> str:
     """Provide test file directory.
 

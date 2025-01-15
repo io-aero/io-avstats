@@ -75,8 +75,6 @@ def _generate_sql_insert(ref_lines: list[str]) -> None:
 
 # -----------------------------------------------------------------------------
 
-# pylint: disable=too-many-branches
-# pylint: disable=too-many-statements
 def _generate_sql_update(ref_lines: list[str]) -> None:
     """Generate SQL statements: UPDATE.
 

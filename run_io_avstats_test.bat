@@ -176,7 +176,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -189,7 +189,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         call scripts\run_docker_compose_local %IO_AERO_COMPOSE_TASK%
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -202,13 +202,13 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t "u_d_s"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -221,7 +221,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -234,7 +234,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -247,7 +247,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         call scripts\run_delete_postgresql_container
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -260,7 +260,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         call scripts\run_delete_postgresql_files
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -273,7 +273,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -286,7 +286,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -299,7 +299,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%" -e "%IO_AERO_MSEXCEL%".xlsx
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -312,7 +312,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -325,13 +325,13 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t "%IO_AERO_TASK%" -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -344,7 +344,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -357,7 +357,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -370,7 +370,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -383,7 +383,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -396,7 +396,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         call scripts\run_setup_postgresql
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -409,7 +409,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t "%IO_AERO_TASK%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -422,37 +422,37 @@ if exist %IO_AERO_AVSTATS_LOG% (
         python scripts\launcher.py -t d_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t l_n_a -m "%IO_AERO_MSACCESS%"
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t c_l_l
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t f_n_a
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t v_n_d
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         python scripts\launcher.py -t r_d_s
         if ERRORLEVEL 1 (
             echo Processing of the script run_io_avstats_test was aborted
-            exit 1
+            exit /b 1
         )
 
         goto END_OF_SCRIPT
@@ -465,7 +465,7 @@ if exist %IO_AERO_AVSTATS_LOG% (
 	    python scripts\launcher.py -t "%IO_AERO_TASK%"
 	    if ERRORLEVEL 1 (
 	        echo Processing of the script run_io_avstats_test was aborted
-	        exit 1
+	        exit /b 1
 	    )
 
 	    goto END_OF_SCRIPT
@@ -477,7 +477,7 @@ rem Program abort due to wrong input.
 rem ----------------------------------------------------------------------------
 
 echo Processing of the script run_io_avstats_test is aborted: unknown task='%IO_AERO_TASK%'
-exit 1
+exit /b 1
 
 :END_OF_SCRIPT
 echo.

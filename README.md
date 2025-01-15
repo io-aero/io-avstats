@@ -69,7 +69,7 @@ docs                      docs: Create the user documentation.
 everything                everything: Do everything pre-checkin
 final                     final: Format, lint and test the code and create the documentation.
 format                    format: Format the code with Black and docformatter.
-lint                      lint: Lint the code with ruff, Bandit, Vulture, Pylint and Mypy.
+lint                      lint: Lint the code with ruff, Bandit, Vulture, and Mypy.
 mypy-stubgen              Autogenerate stub files.
 pre-push                  pre-push: Preparatory work for the pushing process.
 pytest-ci                 Run all tests with pytest after test tool installation.
@@ -118,7 +118,7 @@ The script is available in versions for Ubuntu and Windows 10/11 and provides th
 
 ## Documentation
 
-The complete documentation for this repository is contained in the github pages [here](https://io-aero.github.io/io-avstats/).
+The complete documentation for this repository is contained in the GitHub pages [here](https://io-aero.github.io/io-avstats/).
 See that documentation for installation instructions
 
 Further IO-Aero software documentation can be found under the following links.
@@ -126,21 +126,11 @@ Further IO-Aero software documentation can be found under the following links.
 - [IO-AIRPLANE-SIM - Airplane Simulator](https://io-aero.github.io/io-airplane-sim/)
 - [IO-AVSTATS - Aviation Event Statistics](https://io-aero.github.io/io-avstats/) 
 - [IO-AX4-DI - Flight Data Interface](https://github.com/IO-Aero-Projects-2024/io-ax4-di/) 
-- [IO-AX4-DOCS - AX4 Documentation Repository](https://github.com/IO-Aero-Projects-2024/io-ax4-docs/) 
-- [IO-AX4-UI - Pilot Data Interface](https://github.com/io-swiss/io-ax4-ui/) 
-- [IO-COMMON - Common Elements](https://io-aero.github.io/io-common/) 
-- [IO-DATA-SOURCES - Data Source Documentation](https://io-aero.github.io/io-data-sources/) 
 - [IO-EVAA-MAP-CREATOR - A tool to create EVAA elevation maps](https://io-aero.github.io/io-evaa-map-creator/) 
-- [IO-LANDINGSPOT - Landing spot identification](https://io-aero.github.io/io-landingspot/) 
-- [IO-LIDAR - Lidar Map Processing](https://io-aero.github.io/io-lidar/) 
-- [IO-LIDAR-DATA - Lidar Data Management](https://io-aero.github.io/io-lidar-data/)
 - [IO-MAP-APPS - IO Map Applications](https://io-aero.github.io/io-map-apps/) 
-- [IO-RASTER - Raster Map Processing](https://io-aero.github.io/io-raster/) 
 - [IO-RESOURCES - All relevant books, articles, etc](https://github.com/io-aero/io-resources/) 
 - [IO-TEMPLATE-APP - Template for Application Repositories](https://io-aero.github.io/io-template-app/)
 - [IO-TEMPLATE-LIB - Template for Library Repositories](https://io-aero.github.io/io-template-lib/)
-- [IO-VECTOR - Vector Map Processing](https://io-aero.github.io/io-vector/) 
-- [IO-XPA-CORE - IO-XPA Data Processing](https://io-aero.github.io/io-xpa-core/)
 - [IO-XPI - X-Plane Interface](https://github.com/IO-Aero-Projects-2024/io-xpi/)
 
 ## Directory and File Structure of this Repository
@@ -160,7 +150,7 @@ Further IO-Aero software documentation can be found under the following links.
 | ioavstats         | Python script files.                          |
 | libs              | Contains libraries that are not used via pip. |
 | resources         | Selected manuals and software.                |
-| scripts           | Supporting Ubuntu and Windows Scripts. |
+| scripts           | Supporting Ubuntu and Windows Scripts.        |
 | tests             | Scripts and data for **pytest**.              |
 
 ### 2. Files
@@ -182,7 +172,6 @@ Further IO-Aero software documentation can be found under the following links.
 | run_io_avstats_test    | Main script for using the functionality in a test environment.        |
 | run_ioavstats          | Main script for using the functionality based on a Docker executable. |
 | settings.io_aero.toml  | Configuration data.                                                   |
-| setup.cfg              | Optional configuration data.                                          |
 
 ## Converting the application into an executable file with docker2exe
 
@@ -192,7 +181,7 @@ The tools support creating executables specifically for Ubuntu, or Windows. This
 
 **Platform-Specific Build**
 
-The process of creating an executable is required to be conducted on the operating system for which the executable is intended. This means building a Windows executable on a Windows machine and a linux executable on a Ubuntu machine.
+The process of creating an executable is required to be conducted on the operating system for which the executable is intended. This means building a Windows executable on a Windows machine and a linux executable on an Ubuntu machine.
 
 **Use of Makefile**
 
@@ -219,7 +208,7 @@ The executable files for `docker2exe` are downloaded from the [GitHub Releases p
 - The directory, in addition to the executable file (`ioavstats` or `ioavstats.exe`), includes the following components:
     - **data**: A directory for the application data.
     - **logging_cfg.yaml**: A configuration file for logging.
-    - **run_ioavstats.[bat|sh|zsh]**: A shell script to run the application.
+    - **run_ioavstats.[bat|sh]**: A shell script to run the application.
     - **settings.io-aero.toml**: Configuration data for the `io-avstats` application.
 
 - The converted application requires Docker to be installed in order to run, ensuring that the application's environment is appropriately replicated.

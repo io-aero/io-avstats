@@ -39,7 +39,6 @@ dependencies:
     - myst-parser
     - ordered-set
     - pandas-stubs
-    - pylint
     - pytest
     - pytest-cov
     - pytest-deadfixtures

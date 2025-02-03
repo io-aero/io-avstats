@@ -1,5 +1,93 @@
 # 8. Load simplemaps data
 
+## 2025-01-31
+
+```
+===========================================================================
+Start run_io_avstats_dev
+---------------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+---------------------------------------------------------------------------
+ENV_FOR_DYNACONF : prod
+PYTHONPATH       : .
+---------------------------------------------------------------------------
+TASK             : l_s_d
+APPLICATION      :
+COMPOSE_TASK     :
+MSACCESS         :
+MSEXCEL          :
+---------------------------------------------------------------------------
+The current time is:  4:25:34.51
+Enter the new time:
+===========================================================================
+2025-01-31 04:25:35,556 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2025-01-31 04:25:35,556 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2025-01-31 04:25:35,556 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2025-01-31 04:25:35,557 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2025-01-31 03:25:36.925310+00:00 : ===============================================================================.
+Progress update 2025-01-31 03:25:36.926311+00:00 : INFO.00.004 Start Launcher.
+2025-01-31 04:25:36,926 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'l_s_d']
+2025-01-31 04:25:36,926 [root] [launcher.py  ] INFO  Start launcher.py
+2025-01-31 04:25:36,937 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2025-01-31 03:25:36.938548+00:00 : INFO.00.005 Argument task='l_s_d'.
+Progress update 2025-01-31 03:25:36.938548+00:00 : -------------------------------------------------------------------------------.
+Progress update 2025-01-31 03:25:36.938548+00:00 : INFO.00.050 Load simplemaps data.
+Progress update 2025-01-31 03:25:36.938548+00:00 : --------------------------------------------------------------------------------
+2025-01-31 04:25:36,938 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2025-01-31 03:25:37.662827+00:00 : INFO.00.063 Processed data source 'simplemaps United States Cities Database'.
+Progress update 2025-01-31 03:25:37.662827+00:00 : INFO.00.063 Processed data source 'simplemaps US Zip Codes Database'.
+Progress update 2025-01-31 03:25:37.662827+00:00 : Number rows deleted  :    86847.
+Progress update 2025-01-31 03:25:37.663828+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:25:37.663828+00:00 : INFO.00.039 Database table io_lat_lng: Load zipcode data from file 'data/simplemaps/uscities.xlsx'.
+Progress update 2025-01-31 03:25:37.663828+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:29:10.537997+00:00 : Number of rows so far read :    10000.
+Progress update 2025-01-31 03:32:39.382347+00:00 : Number of rows so far read :    20000.
+Progress update 2025-01-31 03:36:10.241240+00:00 : Number of rows so far read :    30000.
+Progress update 2025-01-31 03:39:39.726056+00:00 : Number of rows so far read :    40000.
+Progress update 2025-01-31 03:42:20.100065+00:00 : Number rows selected :    48374.
+Progress update 2025-01-31 03:42:20.100065+00:00 : Number rows inserted :    46178.
+Progress update 2025-01-31 03:42:20.104776+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:42:20.104776+00:00 : INFO.00.025 Database table io_lat_lng: Load zipcode data from file 'data/simplemaps/uszips.xlsx'.
+Progress update 2025-01-31 03:42:20.104776+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:46:00.589386+00:00 : Number of rows so far read :    10000.
+Progress update 2025-01-31 03:50:12.446763+00:00 : Number of rows so far read :    20000.
+Progress update 2025-01-31 03:54:03.491973+00:00 : Number of rows so far read :    30000.
+Progress update 2025-01-31 03:55:25.269995+00:00 : Number rows selected :    33783.
+Progress update 2025-01-31 03:55:25.270996+00:00 : Number rows upserted :    33779.
+Progress update 2025-01-31 03:55:25.276499+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:55:25.276499+00:00 : INFO.00.027 Database table io_lat_lng: Load city data from file 'data/simplemaps/uscities.xlsx'.
+Progress update 2025-01-31 03:55:25.276499+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 03:59:09.751112+00:00 : Number of rows so far read :    10000.
+Progress update 2025-01-31 04:02:47.041940+00:00 : Number of rows so far read :    20000.
+Progress update 2025-01-31 04:06:25.874679+00:00 : Number of rows so far read :    30000.
+Progress update 2025-01-31 04:06:55.358148+00:00 : Number rows selected :    31254.
+Progress update 2025-01-31 04:06:55.358148+00:00 : Number rows upserted :    31254.
+Progress update 2025-01-31 04:06:55.363657+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 04:06:55.533624+00:00 : INFO.00.063 Processed data source 'average'.
+Progress update 2025-01-31 04:06:55.533624+00:00 : Number rows deleted  :    15601.
+Progress update 2025-01-31 04:06:55.533624+00:00 : --------------------------------------------------------------------------------
+Progress update 2025-01-31 04:06:55.533624+00:00 : INFO.00.062 Database table io_lat_lng: Load the averaged city data.
+Progress update 2025-01-31 04:06:55.533624+00:00 : --------------------------------------------------------------------------------
+2025-01-31 05:06:55,534 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+Progress update 2025-01-31 04:08:19.292911+00:00 : Number of rows so far read :    10000.
+Progress update 2025-01-31 04:09:36.848432+00:00 : Number of rows so far read :    20000.
+Progress update 2025-01-31 04:10:54.634026+00:00 : Number of rows so far read :    30000.
+Progress update 2025-01-31 04:12:15.863096+00:00 : Number of rows so far read :    40000.
+Progress update 2025-01-31 04:13:14.360686+00:00 : Number rows selected :    46788.
+Progress update 2025-01-31 04:13:14.361687+00:00 : Number rows inserted :    46788.
+Progress update 2025-01-31 04:13:14.363687+00:00 : -------------------------------------------------------------------------------.
+Progress update 2025-01-31 04:13:14.363687+00:00 :                2,857 s - Total time launcher.
+Progress update 2025-01-31 04:13:14.364687+00:00 : INFO.00.006 End   Launcher.
+Progress update 2025-01-31 04:13:14.364687+00:00 : ===============================================================================.
+
+---------------------------------------------------------------------------
+The current time is:  5:13:14.82
+Enter the new time:
+---------------------------------------------------------------------------
+End   run_io_avstats_dev
+===========================================================================
+```
+
 ## 2024-11-01
 
 ```

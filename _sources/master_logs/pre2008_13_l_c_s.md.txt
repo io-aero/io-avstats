@@ -1,9 +1,72 @@
 # 6. Load country and state data
 
-## 2025-02-01
+## 2025-01-31
 
 ```
+===========================================================================
+Start run_io_avstats_dev
+---------------------------------------------------------------------------
+IO-AVSTATS - Aviation Event Statistics.
+---------------------------------------------------------------------------
+ENV_FOR_DYNACONF : prod
+PYTHONPATH       : .
+---------------------------------------------------------------------------
+TASK             : l_c_s
+APPLICATION      :
+COMPOSE_TASK     :
+MSACCESS         :
+MSEXCEL          :
+---------------------------------------------------------------------------
+The current time is:  4:15:27.57
+Enter the new time:
+===========================================================================
+2025-01-31 04:15:28,598 [root] [io_logger.py  ] INFO  You are using io-aero's iocommon version 1.2.63 logger (Copyright (c) 2022-2024 IO-Aero)
+2025-01-31 04:15:28,598 [root] [io_settings.py  ] INFO  Starting the configuration management system.
+2025-01-31 04:15:28,598 [root] [io_settings.py  ] INFO  Running in a source (non-compiled) environment. Configuration loading from: D:\SoftDevelopment\Projects\IO-Aero\io-avstats
+2025-01-31 04:15:28,599 [root] [io_settings.py  ] INFO  Dynaconf settings loaded successfully.
+Progress update 2025-01-31 03:15:29.964424+00:00 : ===============================================================================.
+Progress update 2025-01-31 03:15:29.964424+00:00 : INFO.00.004 Start Launcher.
+2025-01-31 04:15:29,964 [root] [launcher.py  ] INFO  param argv=['scripts\\launcher.py', '-t', 'l_c_s']
+2025-01-31 04:15:29,965 [root] [launcher.py  ] INFO  Start launcher.py
+2025-01-31 04:15:29,975 [root] [launcher.py  ] INFO  locale=('en_US', 'UTF-8')
+Progress update 2025-01-31 03:15:29.976427+00:00 : INFO.00.005 Argument task='l_c_s'.
+Progress update 2025-01-31 03:15:29.977427+00:00 : -------------------------------------------------------------------------------.
+Progress update 2025-01-31 03:15:29.977427+00:00 : INFO.00.057 Load country and state data.
+Progress update 2025-01-31 03:15:29.977427+00:00 : --------------------------------------------------------------------------------
+2025-01-31 04:15:30,490 [root] [db_dml_base.py  ] INFO  ================================================================================
+2025-01-31 04:15:30,490 [root] [db_dml_base.py  ] INFO  INFO.00.132 Processing file 'https://raw.githubusercontent.com/mledoze/countries/master/dist/countries.csv'
+2025-01-31 04:15:30,490 [root] [db_dml_base.py  ] INFO  --------------------------------------------------------------------------------
+2025-01-31 04:15:30,490 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:30,491 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+2025-01-31 04:15:30,562 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:30,575 [root] [db_dml_base.py  ] INFO  Number rows existing :      250
+2025-01-31 04:15:30,641 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:30,642 [root] [db_dml_base.py  ] INFO  Number rows selected :      250
+2025-01-31 04:15:30,642 [root] [db_dml_base.py  ] INFO  Number rows relevant :      250
+2025-01-31 04:15:30,642 [root] [db_dml_base.py  ] INFO  Number rows updated  :       12
+2025-01-31 04:15:30,670 [root] [db_dml_base.py  ] INFO  ================================================================================
+2025-01-31 04:15:30,670 [root] [db_dml_base.py  ] INFO  INFO.00.132 Processing file 'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/us-state-boundaries/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B'
+2025-01-31 04:15:31,311 [root] [db_dml_base.py  ] INFO  ================================================================================
+2025-01-31 04:15:31,311 [root] [db_dml_base.py  ] INFO  INFO.00.132 Processing file 'data\opendatasoft\us-state-boundaries.csv'
+2025-01-31 04:15:31,311 [root] [db_dml_base.py  ] INFO  --------------------------------------------------------------------------------
+2025-01-31 04:15:31,323 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:31,323 [root] [db_utils.py  ] INFO  INFO.00.080 Admin connect request host=localhost port=5432 dbname=io_aero_db user=io_aero
+2025-01-31 04:15:31,396 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:31,399 [root] [db_dml_base.py  ] INFO  Number rows existing :       56
+2025-01-31 04:15:31,453 [root] [db_dml_base.py  ] INFO
+2025-01-31 04:15:31,453 [root] [db_dml_base.py  ] INFO  Number rows selected :       56
+2025-01-31 04:15:31,453 [root] [db_dml_base.py  ] INFO  Number rows relevant :       56
+Progress update 2025-01-31 03:15:31.478225+00:00 : -------------------------------------------------------------------------------.
+Progress update 2025-01-31 03:15:31.478225+00:00 :                    1 s - Total time launcher.
+Progress update 2025-01-31 03:15:31.478225+00:00 : INFO.00.006 End   Launcher.
+Progress update 2025-01-31 03:15:31.478225+00:00 : ===============================================================================.
 
+---------------------------------------------------------------------------
+The current time is:  4:15:31.91
+Enter the new time:
+---------------------------------------------------------------------------
+End   run_io_avstats_dev
+===========================================================================
 ```
 
 ## 2024-11-04

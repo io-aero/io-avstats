@@ -11,7 +11,6 @@ database_commit_size = 10000
 download_chunk_size = 524288
 download_file_aviation_occurrence_categories = "data/Aviation_Occurrence_Categories/aviation_occurrence_categories.xlsx"
 download_file_aviation_occurrence_categories_url = "https://www.ntsb.gov/safety/data/Documents/datafiles/OccurrenceCategoryDefinitions.pdf"
-download_file_countries_states_json = "data/Countries_States/countries_states.json"
 download_file_faa_airports = "data/FAA_Airports/Airports.csv"
 download_file_faa_airports_url = "https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.000338%2C-1.633886%2C2.00"
 download_file_faa_npias = "data/FAA_Airports/ARP-NPIAS-2025-2029-AppendixA.xlsx"

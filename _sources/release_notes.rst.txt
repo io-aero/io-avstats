@@ -2,6 +2,124 @@
 Release Notes
 =============
 
+Version 25.03.01
+================
+
+Release Date: 01.03.2025
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker
+     - 27.5.1
+     -
+     -
+   * - Docker Desktop
+     - 4.38.0
+     -
+     - upgrade
+   * - Miniconda
+     - 24.11.3
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.12.3
+     -
+     -
+   * - RazorSQL
+     - 10.6.4
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.09
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.12.4
+     -
+     - upgrade
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`FAA - Aeronautical Data Delivery Service <https://adds-faa.opendata.arcgis.com>`__\
+....................................................................................
+
+Data source `Airports`
+^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 02/20/2025 <https://adds-faa.opendata.arcgis.com/datasets/faa::airports-1/explore?location=0.000001%2C-1.633886%2C2.00>`__\
+
+Data source `Runways`
+^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 02/20/2025 <https://adds-faa.opendata.arcgis.com/datasets/faa::runways/explore?location=0.000000%2C-1.628764%2C2.00>`__\
+
+`World countries in JSON, CSV, XML and YAML <https://github.com/mledoze/countries>`__\
+......................................................................................
+
+Data source `Countries`
+^^^^^^^^^^^^^^^^^^^^^^^^
+- Download link: `Version: 02/26/2025 <https://github.com/mledoze/countries/tree/master/dist>`__\
+
+`United States Zip Codes.org <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `ZIP Code Database`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `42,735 ZIP codes <https://www.unitedstateszipcodes.org/zip-code-database/>`__\
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `avall.zip`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `03/01/2025 06:38:09 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cavall.zip>`__\
+
+Data source `up01MAR.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `03/01/2025 6:00:43 PM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup01FEB.zip>`__\
+
 Version 25.02.22
 ================
 
@@ -1431,7 +1549,6 @@ Data source `ZIP Code Database`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Download link: `42,735 ZIP codes <https://www.unitedstateszipcodes.org/zip-code-database/>`__\
-
 
 `NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
 ..................................................................................

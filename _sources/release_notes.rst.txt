@@ -2,6 +2,93 @@
 Release Notes
 =============
 
+Version 25.03.08
+================
+
+Release Date: 09.03.2025
+
+Applied Software
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - Docker
+     - 27.5.1
+     -
+     -
+   * - Docker Desktop
+     - 4.38.0
+     -
+     - upgrade
+   * - Miniconda
+     - 24.11.3
+     -
+     -
+   * - PostgreSQL
+     - 16.3
+     -
+     -
+   * - Python
+     - 3.12.3
+     -
+     -
+   * - RazorSQL
+     - 10.6.4
+     -
+     -
+
+Windows-specific Software
+.........................
+
+**Important**: All software components should be installed in the 64 bit version!
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 10 20 10
+
+   * - Software
+     - Version
+     - Remark
+     - Status
+   * - 7-Zip
+     - 24.09
+     -
+     -
+   * - Make for Windows
+     - 3.81
+     -
+     -
+   * - MS Access Database Engine 2016 Redistributable
+     - 8/11/2020
+     -
+     -
+   * - Visual Studio Community 2022
+     - 17.12.4
+     -
+     -
+
+Minimal Requirements Visual Studio Community 2022
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: img/Visual_Studio_Requirements.png
+
+Processed files
+---------------
+
+`NTSB - National Transport Safety Board <https://www.ntsb.gov/Pages/home.aspx>`__\
+..................................................................................
+
+Data source `up08MAR.zip`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Download link: `03/08/2025 3:00:41 AM <https://data.ntsb.gov/avdata/FileDirectory/DownloadFile?fileID=C%3A%5Cavdata%5Cup08MAR.zip>`__\
+
 Version 25.03.01
 ================
 
